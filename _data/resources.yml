@@ -1,0 +1,18 @@
+
+- title: 文章
+  data: articles
+
+- title: 项目
+  data: projects
+
+- title: 书籍
+  data: books
+
+- title: 幻灯
+  data: slides
+
+- title: 论文
+  data: papers
+
+- title: 活动
+  data: activities

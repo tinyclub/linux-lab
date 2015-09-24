@@ -1,0 +1,36 @@
+
+- title: Linux 0.11 实验环境 
+  url: /linux-0.11-lab
+  desc: 可快速搭建的 Linux 0.11 实验环境，支持 Docker, 支持 Ubuntu / Windows / Mac OS X，也内置支持 Qemu / Bochs。
+
+- title: B9Creator 3D 打印中文支持
+  url: /b9creator-zh-cn
+  recommend: false
+  group: translation
+  desc: 为高精度开源3D打印机（B9Creator）添加中文支持
+
+- title: CS630 Qemu 实验环境
+  url: /cs630-qemu-lab
+  desc: 通过 Qemu 学习旧金山大学的汇编语言课程 CS630
+
+- title: 社区版龙芯 Linux
+  url: /linux-loongson-community
+  desc: 支持龙芯 2F 系列机型。
+
+- title: 龙芯/MIPS 实时抢占 Linux
+  url: /preempt-rt-4-loongson
+  desc: 为龙芯/MIPS 版 Linux 添加实时抢占支持
+
+- title: 'TinyDraw: Linux 数据渲染套件'
+  url: /tinydraw
+  recommend: false
+  desc: 收集/开发各类 Linux 下的数据渲染工具
+
+- title: 'TinyLinux: Linux 内核裁剪'
+  url: /tinylinux
+  recommend: false
+  desc: 致力于裁剪 Linux，降低 磁盘和内存开销
+
+- title: 'vnStatSVG: Linux 流量监控'
+  url: /vnstatsvg
+  desc: 用于监控 Linux 主机、集群甚至嵌入式设备的网络流量

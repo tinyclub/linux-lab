@@ -1,0 +1,15 @@
+<div id="go-down">
+  <a href="#down" title="去到底部"><i class="icon-large icon-fixed-width icon-down-open"></i></a>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+  $(window).scroll(function () {
+    var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+    if (scrollBottom < 100) {
+      $('#go-down').hide();
+    } else {
+      $('#go-down').show();
+    }
+  });
+});
+</script>

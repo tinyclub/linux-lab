@@ -1,0 +1,9 @@
+{% assign truncate = true %}
+{% assign title = "相关文章" %}
+{% assign icon = "attach" %}
+{% capture related_header %}<a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>{% endcapture %}
+{% include widgets/related_posts %}
+{% assign more = "" %}
+{% assign prompt = "" %}
+{% assign url = "" %}
+{% assign truncate = false %}

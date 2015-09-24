@@ -1,0 +1,13 @@
+<!-- 站长统计 -->
+
+<script>
+(function() {
+  var cnzzCreateScript = document.createElement("script");
+  cnzzCreateScript.type = 'text/javascript';
+  cnzzCreateScript.async = true;
+  {% assign tracking_id = site.JB.analytics.cnzz.tracking_id %}
+  cnzzCreateScript.src = "http://s22.cnzz.com/stat.php?id={{ tracking_id }}&web_id={{ tracking_id }}";
+  var getCnzzScript = document.getElementsByTagName("script")[0];
+  getCnzzScript.parentNode.insertBefore(cnzzCreateScript, getCnzzScript);
+})();
+</script>

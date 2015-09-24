@@ -1,0 +1,20 @@
+
+- name: 开源项目
+  icon: code
+  data: projects 
+
+- name: 开源书籍
+  icon: book
+  data: books
+
+- name: 工作机会
+  icon: flag-empty
+  data: jobs
+  src: posts
+  condition: group
+  value: jobs
+
+- name: 友情链接
+  icon: link
+  data: links
+  disable: true

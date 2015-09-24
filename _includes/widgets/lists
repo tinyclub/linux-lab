@@ -1,0 +1,27 @@
+<a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
+{% if more %}{{ more }}{% endif %}
+<ul>
+  {% assign total_num = 0 %}
+  {% for item in list %}
+    {% if condition and item[{{condition}}] != {{value}} %}
+      {% continue %}
+    {% endif %}
+
+    {% if total_num >= site.JB.sidebar.items_limit %}
+      {% break %}
+    {% endif %}
+    {% if item.recommend == false %}
+      {% continue %}
+    {% endif %}
+    {% assign total_num =  total_num | plus:1 %}
+    <li>
+       <a rel="nofollow" class="tooltip list" href="{{ item.url }}" target="_blank">{% if truncate %}{{ item.title | truncate: site.JB.posts.title_length }}{% else %}{{ item.title }}{% endif %}
+        {% if tooltip %}
+        <span>
+          {{ item.desc }}
+        </span>
+        {% endif %}
+       </a>
+    </li>
+  {% endfor %}
+</ul>

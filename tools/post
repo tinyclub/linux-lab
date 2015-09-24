@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# post.sh -- Write a post with the default Markdown template
+#
+
+# Necessary
+
+author="Your Name"
+nick="Your Nick Name"
+
+title="new-post"
+
+# If title is in Chinese, this must be set in English
+permalink="new-post-slug"
+
+# Optional
+
+description=""
+
+group=""
+album=""
+tagline=""
+
+tags=""
+categories=""
+
+args=""
+[ -n "$tags" ] && args=args' tags="$tags"'
+[ -n "$categories" ] && args=args' categories="$categories"'
+
+[ -n "$tagline" ] && args=args' tagline="$tagline"'
+[ -n "$album" ] && args=args' album="$album"'
+[ -n "$group" ] && args=args' group="$group"'
+
+[ -n "$description" ] && args=args' description="$description"'
+
+rake post author="$author" nick="$nick" title="$title" permalink="$permalink" $args $@

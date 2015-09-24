@@ -1,0 +1,60 @@
+/*
+  From: https://github.com/i5ting/How-to-write-jQuery-plugin/tree/master/examples/jquery_plugin/plugin_four
+*/
+
+#tab {
+    width: 600px;
+    height: 300px;
+    border: 0 solid #dcdee0
+}
+.tab_content div {
+    display: none;
+    float: left;
+    max-width: 599px;
+    margin-left: 65px;
+    margin-top: 0;
+    position: absolute;
+    border-left: 2px solid #ccc
+}
+
+.tab_content * {
+    padding: 0;
+    margin: 0;
+    font-size: 103%;
+    list-style: none
+}
+
+.tab_content div {
+    padding-top: 15px;
+}
+
+.tab_content li {
+    margin-left: 20px;
+    margin-bottom: 15px
+}
+.tab_content_item span {
+    font-size: 95%;
+    line-height: 22px
+}
+.tab_header * {
+    list-style: none
+}
+.tab_content .active {
+    display: block
+}
+.tab_header ul {
+    margin-left: 0;
+    float: left;
+    line-height: 50px;
+    font-size: 100%
+}
+.tab_header li {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+    width: 45px;
+    text-align: center;
+    border-bottom: 1px solid #dcdee0;
+}
+.tab_header li.active {
+    border-bottom: 2px solid #ccc
+}

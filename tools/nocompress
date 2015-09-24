@@ -1,0 +1,14 @@
+# Cancel css/js/html compress via_data/compress.yml
+
+TOP_DIR=$(dirname `readlink -f $0`)
+
+compress_yml=$TOP_DIR/../_data/compress.yml
+
+# Update the .min flag
+sed -i -e "s/css_js:.*/css_js: false/g" $compress_yml
+
+# Enable html compressor: _layout/prettify.yml
+sed -i -e "s/html:.*/html: false/g" $compress_yml
+
+# Remove all compressed css/jss
+find $TOP_DIR/../assets/themes/ -name "*.min.css" -o -name "*.min.js" -exec rm {} \;

@@ -1,0 +1,5 @@
+<p align="center">&copy; {{ site.start }} ~ {{ site.time | date: '%Y' }} {{ site.title }} 
+ {% for footer in site.data.footer %}
+    | <a href="{{ footer.url }}">{{ footer.text }}</a>
+ {% endfor %}
+</p>

@@ -1,0 +1,17 @@
+_site/*
+_theme_packages/*
+
+Thumbs.db
+.DS_Store
+
+!.gitkeep
+
+.rbenv-version
+.rvmrc
+*.swp
+*~
+*.orig
+*.rej
+*.min.js
+*.min.css
+_data/compress.yml

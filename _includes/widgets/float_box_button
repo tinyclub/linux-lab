@@ -1,0 +1,34 @@
+<div id="show-float-box">
+  <a><i class="icon-large icon-fixed-width icon-help"></i></a>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function () {
+  var float_box = $('#float-box');
+  var float_menu = $('#menu-container');
+  var float_box_on = float_box.css('display') == 'none' ? 0 : 1;
+  var float_menu_on = float_menu.css('display') == 'none' ?  0 : 1;
+
+  $('#show-float-box a').click(function () {
+     if (!float_box_on) {
+       float_box.show();
+       float_box_on = 1;
+     } else {
+       float_box.hide();
+       float_box_on = 0;
+     }
+  });
+
+
+  $('#menu-icon a i').click(function () {
+     if (!float_menu_on) {
+       float_menu.show();
+       float_menu_on = 1;
+     } else {
+       float_menu.hide();
+       float_menu_on = 0;
+     }
+  });
+
+});
+</script>

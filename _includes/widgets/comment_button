@@ -1,0 +1,15 @@
+<div id="go-comment-and-share" style="display: none;">
+  <a href="#comments" title="评论或分享"><i class="icon-large icon-fixed-width icon-comment-empty"></i></a>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+  $(window).scroll(function () {
+    var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+    if (scrollBottom < 100) {
+      $('#go-comment-and-share').hide();
+    } else {
+      $('#go-comment-and-share').show();
+    }
+  });
+});
+</script>

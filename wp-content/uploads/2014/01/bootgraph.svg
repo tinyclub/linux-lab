@@ -1,0 +1,132 @@
+<?xml version="1.0" standalone="no"?> 
+<svg width="2000" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<rect x="8.15135135135136" width="12.9297297297297" y="150" height="145" style="fill:rgb(0,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(9.15135135135136,154) rotate(90)" font-size="3pt">s3c_fb_init</text>
+<rect x="21.0810810810811" width="44.972972972973" y="150" height="145" style="fill:rgb(0,255,0);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(27.0810810810811,154) rotate(90)">s5p_mipi_dsi_register</text>
+<rect x="66.6162162162162" width="2.67027027027029" y="150" height="145" style="fill:rgb(255,0,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(67.6162162162162,154) rotate(90)" font-size="3pt">pl330_driver_init</text>
+<rect x="69.5675675675676" width="661.524324324324" y="150" height="145" style="fill:rgb(255,255,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(75.5675675675676,154) rotate(90)">s3c24xx_serial_modinit</text>
+<rect x="735.589189189189" width="10.8216216216216" y="150" height="145" style="fill:rgb(255,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(736.589189189189,154) rotate(90)" font-size="3pt">PVRCore_Init</text>
+<rect x="750.767567567568" width="8.15135135135131" y="150" height="145" style="fill:rgb(0,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(751.767567567568,154) rotate(90)" font-size="3pt">brd_init</text>
+<rect x="759.902702702703" width="1.96756756756747" y="150" height="145" style="fill:rgb(0,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(760.902702702703,154) rotate(90)" font-size="3pt">loop_init</text>
+<rect x="764.4" width="4.21621621621603" y="150" height="145" style="fill:rgb(0,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(765.4,154) rotate(90)" font-size="3pt">max77665_muic_init</text>
+<rect x="768.616216216216" width="4.91891891891896" y="150" height="145" style="fill:rgb(255,0,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(769.616216216216,154) rotate(90)" font-size="3pt">arizona_spi_driver_init</text>
+<rect x="774.518918918919" width="42.864864864865" y="150" height="145" style="fill:rgb(255,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(780.518918918919,154) rotate(90)">mx_hub_init</text>
+<rect x="818.227027027027" width="5.62162162162178" y="150" height="145" style="fill:rgb(255,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(819.227027027027,154) rotate(90)" font-size="3pt">bcm2079x_dev_init</text>
+<rect x="829.47027027027" width="2.38918918918932" y="150" height="145" style="fill:rgb(128,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(830.47027027027,154) rotate(90)" font-size="3pt">tun_init</text>
+<rect x="852.237837837838" width="3.65405405405397" y="150" height="145" style="fill:rgb(0,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(853.237837837838,154) rotate(90)" font-size="3pt">exynos_drd_driver_init</text>
+<rect x="857.016216216216" width="6.88648648648643" y="150" height="145" style="fill:rgb(0,255,0);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(858.016216216216,154) rotate(90)" font-size="3pt">ehci_hcd_init</text>
+<rect x="864.886486486487" width="8.01081081081088" y="150" height="145" style="fill:rgb(255,0,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(865.886486486487,154) rotate(90)" font-size="3pt">xhci_hcd_init</text>
+<rect x="873.881081081081" width="2.95135135135149" y="150" height="145" style="fill:rgb(255,255,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(874.881081081081,154) rotate(90)" font-size="3pt">usb_stor_init</text>
+<rect x="877.816216216216" width="1.82702702702704" y="150" height="145" style="fill:rgb(255,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(878.816216216216,154) rotate(90)" font-size="3pt">exynos_ss_udc_driver_init</text>
+<rect x="893.837837837838" width="2.10810810810813" y="150" height="145" style="fill:rgb(0,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(894.837837837838,154) rotate(90)" font-size="3pt">mx_tpi_init</text>
+<rect x="901.708108108108" width="2.81081081081084" y="150" height="145" style="fill:rgb(0,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(902.708108108108,154) rotate(90)" font-size="3pt">gp2ap_init</text>
+<rect x="905.362162162162" width="13.0702702702703" y="150" height="145" style="fill:rgb(0,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(906.362162162162,154) rotate(90)" font-size="3pt">akm_compass_init</text>
+<rect x="919.416216216216" width="23.4702702702702" y="150" height="145" style="fill:rgb(255,0,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(925.416216216216,154) rotate(90)">lsm330dlc_acc_init</text>
+<rect x="943.72972972973" width="20.9405405405406" y="150" height="145" style="fill:rgb(255,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(949.72972972973,154) rotate(90)">lsm330dlc_gyr_init</text>
+<rect x="965.513513513513" width="159.654054054054" y="150" height="145" style="fill:rgb(255,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(971.513513513513,154) rotate(90)">synaptics_rmi4_init</text>
+<rect x="1136.83243243243" width="11.8054054054053" y="150" height="145" style="fill:rgb(128,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1137.83243243243,154) rotate(90)" font-size="3pt">max77802_rtc_init</text>
+<rect x="1151.16756756757" width="1.82702702702704" y="150" height="145" style="fill:rgb(0,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1152.16756756757,154) rotate(90)" font-size="3pt">i2c_dev_init</text>
+<rect x="1155.52432432432" width="1.96756756756736" y="150" height="145" style="fill:rgb(0,255,0);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1156.52432432432,154) rotate(90)" font-size="3pt">ms2r_is_spi_init</text>
+<rect x="1158.33513513514" width="8.8540540540539" y="150" height="145" style="fill:rgb(255,0,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1159.33513513514,154) rotate(90)" font-size="3pt">s5pcsis_driver_init</text>
+<rect x="1168.17297297297" width="24.0324324324324" y="150" height="145" style="fill:rgb(255,255,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1174.17297297297,154) rotate(90)">flite_driver_init</text>
+<rect x="1193.18918918919" width="10.2594594594595" y="150" height="145" style="fill:rgb(255,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1194.18918918919,154) rotate(90)" font-size="3pt">gsc_driver_init</text>
+<rect x="1204.43243243243" width="2.52972972972975" y="150" height="145" style="fill:rgb(0,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1205.43243243243,154) rotate(90)" font-size="3pt">sc_driver_init</text>
+<rect x="1207.94594594595" width="3.09189189189192" y="150" height="145" style="fill:rgb(0,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1208.94594594595,154) rotate(90)" font-size="3pt">jpeg_init</text>
+<rect x="1212.02162162162" width="6.18378378378384" y="150" height="145" style="fill:rgb(0,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1213.02162162162,154) rotate(90)" font-size="3pt">fimg2d_register</text>
+<rect x="1219.04864864865" width="3.51351351351332" y="150" height="145" style="fill:rgb(255,0,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1220.04864864865,154) rotate(90)" font-size="3pt">s5p_mfc_init</text>
+<rect x="1223.40540540541" width="2.52972972972998" y="150" height="145" style="fill:rgb(255,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1224.40540540541,154) rotate(90)" font-size="3pt">hdcp_init</text>
+<rect x="1226.91891891892" width="3.23243243243246" y="150" height="145" style="fill:rgb(255,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1227.91891891892,154) rotate(90)" font-size="3pt">hdmi_init</text>
+<rect x="1232.54054054054" width="12.508108108108" y="150" height="145" style="fill:rgb(128,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1233.54054054054,154) rotate(90)" font-size="3pt">mxr_init</text>
+<rect x="1245.89189189189" width="2.38918918918921" y="150" height="145" style="fill:rgb(0,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1246.89189189189,154) rotate(90)" font-size="3pt">rot_driver_init</text>
+<rect x="1249.12432432432" width="3.65405405405409" y="150" height="145" style="fill:rgb(0,255,0);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1250.12432432432,154) rotate(90)" font-size="3pt">jpeg_hx_init</text>
+<rect x="1253.76216216216" width="1.68648648648627" y="150" height="145" style="fill:rgb(255,0,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1254.76216216216,154) rotate(90)" font-size="3pt">exynos_tmu_driver_init</text>
+<rect x="1256.43243243243" width="5.62162162162144" y="150" height="145" style="fill:rgb(255,255,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1257.43243243243,154) rotate(90)" font-size="3pt">watchdog_init</text>
+<rect x="1263.03783783784" width="2.52972972972975" y="150" height="145" style="fill:rgb(255,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1264.03783783784,154) rotate(90)" font-size="3pt">dm_init</text>
+<rect x="1268.0972972973" width="2.81081081081106" y="150" height="145" style="fill:rgb(0,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1269.0972972973,154) rotate(90)" font-size="3pt">hci_uart_init</text>
+<rect x="1272.03243243243" width="5.90270270270275" y="150" height="145" style="fill:rgb(0,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1273.03243243243,154) rotate(90)" font-size="3pt">init_menu</text>
+<rect x="1282.99459459459" width="1.68648648648627" y="150" height="145" style="fill:rgb(0,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1283.99459459459,154) rotate(90)" font-size="3pt">dw_mci_init</text>
+<rect x="1292.97297297297" width="9.69729729729715" y="150" height="145" style="fill:rgb(255,0,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1293.97297297297,154) rotate(90)" font-size="3pt">m6x_audio_init</text>
+<rect x="1305.48108108108" width="392.67027027027" y="150" height="145" style="fill:rgb(255,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1311.48108108108,154) rotate(90)">vfp_init</text>
+<rect x="1703.63243243243" width="4.63783783783788" y="150" height="145" style="fill:rgb(255,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1704.63243243243,154) rotate(90)" font-size="3pt">modem_device_init</text>
+<rect x="1723.72972972973" width="4.07567567567571" y="150" height="145" style="fill:rgb(128,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1724.72972972973,154) rotate(90)" font-size="3pt">regulator_init_complete</text>
+<rect x="1730.75675675676" width="5.19999999999982" y="150" height="145" style="fill:rgb(0,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1731.75675675676,154) rotate(90)" font-size="3pt">S3cLcdBridgeInit</text>
+<rect x="1742.56216216216" width="137.589189189189" y="150" height="145" style="fill:rgb(0,255,0);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1748.56216216216,154) rotate(90)">dhd_module_init</text>
+<rect x="1881.13513513514" width="1.96756756756781" y="150" height="145" style="fill:rgb(255,0,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1882.13513513514,154) rotate(90)" font-size="3pt">gpio_keys_init</text>
+<rect x="1883.94594594595" width="3.09189189189169" y="150" height="145" style="fill:rgb(255,255,20);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1884.94594594595,154) rotate(90)" font-size="3pt">rtc_hctosys</text>
+<rect x="1889.70810810811" width="10.6810810810809" y="150" height="145" style="fill:rgb(255,0,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1890.70810810811,154) rotate(90)" font-size="3pt">max17047_init</text>
+<rect x="1902.4972972973" width="3.65405405405386" y="150" height="145" style="fill:rgb(0,255,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1903.4972972973,154) rotate(90)" font-size="3pt">max77665_charger_init</text>
+<rect x="1917.53513513514" width="19.9567567567569" y="150" height="145" style="fill:rgb(0,128,255);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1923.53513513514,154) rotate(90)">exynos5_busfreq_mif_init</text>
+<rect x="1941.98918918919" width="2.52972972972998" y="150" height="145" style="fill:rgb(0,255,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1942.98918918919,154) rotate(90)" font-size="3pt">exynos_cpufreq_init</text>
+<rect x="1945.36216216216" width="1.82702702702704" y="150" height="145" style="fill:rgb(255,0,128);fill-opacity:0.5;stroke-width:1;stroke:rgb(0,0,0)"/>
+<text transform="translate(1946.36216216216,154) rotate(90)" font-size="3pt">alsa_sound_last_init</text>
+<text transform="translate(0,89) rotate(90)">0.61</text>
+<text transform="translate(130,89) rotate(90)">1.53</text>
+<text transform="translate(260,89) rotate(90)">2.46</text>
+<text transform="translate(390,89) rotate(90)">3.38</text>
+<text transform="translate(520,89) rotate(90)">4.31</text>
+<text transform="translate(650,89) rotate(90)">5.23</text>
+<text transform="translate(780,89) rotate(90)">6.16</text>
+<text transform="translate(910,89) rotate(90)">7.08</text>
+<text transform="translate(1040,89) rotate(90)">8.01</text>
+<text transform="translate(1170,89) rotate(90)">8.93</text>
+<text transform="translate(1300,89) rotate(90)">9.86</text>
+<text transform="translate(1430,89) rotate(90)">10.78</text>
+<text transform="translate(1560,89) rotate(90)">11.71</text>
+<text transform="translate(1690,89) rotate(90)">12.63</text>
+<text transform="translate(1820,89) rotate(90)">13.56</text>
+</svg>

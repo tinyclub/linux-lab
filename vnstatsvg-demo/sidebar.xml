@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+<sidebar id="sidebar">
+<!-- if you want to get help, please read the *-template-* file in the source code vnstatsvg-<version>/src/admin  -->
+<iface>
+	<name>eth1</name>
+	<host>tinylab.org</host>
+	<description>TinyLab.org</description>
+</iface>
+<iface>
+	<name>eth0</name>
+	<host>tinylab.org</host>
+	<description>Local Host</description>
+</iface>
+<!--
+<iface>
+	<name>test.org-eth0</name>
+	<host>localhost</host>
+	<protocol>http</protocol>
+	<dump_tool>/cgi-bin/vnstat.sh</dump_tool>
+	<description>Remote Host</description>
+</iface>
+-->
+</sidebar>

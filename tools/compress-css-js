@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# compress.sh -- compress the css/js to minimal one to optimize performance
+#
+
+in=""
+[ -z "$1" ] && echo "Usage: $0 CSS/JS file" && exit 1
+in=$1
+[ ! -f "$in" ] && echo "ERROR: No such file $in" && exit 2
+
+TOP_DIR=$(dirname `readlink -f $0`)
+compressor="java -jar $TOP_DIR/yuicompressor-2.4.8.jar"
+
+file_type=${in##*.}
+file_name=${in%.*}
+out=${file_name}.min.${file_type}
+
+[ "$file_type" != "css" -a "$file_type" != "js" ] && echo "Input file must be CSS or JS" && exit 3
+
+$compressor --type=$file_type $in > $out

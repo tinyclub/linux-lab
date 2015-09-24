@@ -1,0 +1,89 @@
+<div id="fixed-container">
+  <section id="author_widget" class="active">
+    {% assign author_box_visible="style='display:none'" %}
+    {% assign author_box_ref = 0 %}
+    {% assign author_box_icon_id = "id='author-box-icon'" %}
+    {% include widgets/author_box %}
+    {% assign author_box_visible="" %}
+  </section>
+
+  {% if page.group != "home" %}
+    <section id="toc_widget" style="display: none" {% if page.group != "home" %} class="active" {% endif %}>
+      {% include widgets/toc_box %}
+    </section>
+
+    <section id="related_posts" style="display:block;">
+      {% include widgets/related_posts_list %}
+    </section>
+    <section id="recent_posts" style="display:block;">
+      {% include widgets/recent_posts_list %}
+    </section>
+  {% else %}
+    <section id="other_sidebars" style="border:0">
+      {% include widgets/sidebars %}
+    </section>
+  {% endif %}
+
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  var container_top = $('#fixed-container').offset().top;
+  var author_widget_header = $(".author-box-header");
+  var author_widget_container = $(".author-box");
+  var author_widget_icon = $("#author-box-icon");
+  var firefox = 0;
+  var scroll_over = 0;
+  var scroll_top = 0, top;
+  var zoom;
+
+  function get_zoom() {
+    zoom = parseFloat($(document.body).css('zoom'));
+    if (!zoom) {
+      zoom = parseFloat($(document.body).css('transform').split(',')[0].split('(')[1]);
+      if (!zoom)
+        zoom = 1;
+      firefox = 1;
+    }
+  }
+
+  get_zoom();
+
+  $(window).resize(function() {
+    if (scroll_over && firefox) {
+      get_zoom();
+
+      top = (scroll_top / zoom) + "px";
+      $('#fixed-container').css('position', 'fixed').css('top', top);
+    }
+  });
+
+  $(window).scroll(function() {
+    scroll_top = $(window).scrollTop();
+    /* console.log(scroll_top, container_top); */
+    if(scroll_top > container_top) {
+      scroll_over = 1;
+      top = 0;
+      if (firefox)
+           top = (scroll_top / zoom) + "px";
+
+      $('#fixed-container').css('position', 'fixed').css('top', top);
+    } else {
+      scroll_over = 1;
+      $('#fixed-container').css('position','static');
+    }
+  });
+
+  author_widget_header.click(function() {
+    var status = author_widget_container.css("display");
+    if (status == "block") {
+      author_widget_container.hide();
+      author_widget_icon.removeClass('icon-heart');
+      author_widget_icon.addClass('icon-heart-empty');
+    } else {
+      author_widget_icon.removeClass('icon-heart-empty');
+      author_widget_icon.addClass('icon-heart');
+      author_widget_container.show();
+    }
+  });
+});
+</script>

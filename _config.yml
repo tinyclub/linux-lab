@@ -1,0 +1,82 @@
+# This is the default format.
+# For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink: /:title
+
+baseurl: /
+encoding: utf-8
+
+safe: true
+
+markdown: kramdown
+# markdown: redcarpet
+# redcarpet:
+#  extensions: ["no_intra_emphasis", "autolink", "tables"]
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "tools"]
+highlighter: pygments
+
+paginate: 15
+
+# Themes are encouraged to use these universal variables
+# so be sure to set them if your theme uses them.
+#
+
+title : 泰晓科技
+tagline: 聚焦 Android/Linux - 以小窥大，追本溯源！
+start: 2010
+
+production_url : http://tinylab.org
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  ignore:
+    envs: []
+
+# All Jekyll-Bootstrap specific configurations are namespaced into this hash
+#
+JB :
+  version : 0.3.0
+
+  BASE_PATH : false
+  
+  ASSET_PATH : false
+  IMAGE_PATH : false
+  
+  archive_path: /archive.html
+  authors_path: /authors.html
+  categories_path : /categories.html
+  tags_path : /tags.html
+  atom_path : /atom.xml
+  rss_path : /rss.xml
+  albums_path: /albums.html
+  groups_path: /groups.html
+
+  posts:
+    title_length: 25
+    related_limit: 5
+  sidebar:
+    items_limit: 5
+
+  code_prettify:
+    theme: doxy
+
+  comments :
+    provider : duoshuo
+    duoshuo :
+      short_name : tinylab
+    disqus :
+      short_name : tinylab
+
+  analytics :
+    providers :
+      - baidu
+      - cnzz
+    baidu :
+      tracking_id : '15260089f8e103dc1cca30bcc1957b7c'
+    cnzz :
+      tracking_id : '5542089'
+
+  sharing :
+    provider : false

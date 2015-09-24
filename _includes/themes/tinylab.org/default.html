@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="zh-CN"> <!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8">
+  <!--[if IE 8 ]><meta http-equiv="X-UA-Compatible" content="IE=7"><![endif]-->
+
+  <title>{{ site.title }} - {% if page.group == "home" %}{{ page.tagline }}{% else %}{{ page.title }}{% endif %}</title>
+
+  {% assign meta_keyword_and_desc = 1 %}
+    {% if page.keywords %}
+      <meta name="keywords" content="{{ page.keywords | join: "," }}">
+    {% else %}
+      {% if page.categories or page.tags %}
+        <meta name="keywords" content='{{ page.categories | join: "," }},{{ page.tags | join: "," }}'/>
+      {% else %}
+        {% assign meta_keyword_and_desc = 0 %}
+      {% endif %}
+    {% endif %}
+
+  {% if meta_keyword_and_desc == 1 %}
+    {% if page.description %}
+       <meta name="description" content="{{ page.description }}">
+    {% else %}
+       <meta name="description" content="{{ page.content | strip_html | strip_newlines | remove: '>' | remove: '<' | remove: '"' | remove: "'"  | truncate:200 }}"/>
+    {% endif %}
+  {% endif %}
+
+  <meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif%}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{{ BASE_PATH }}/favicon.ico">
+
+  <!-- Feed -->
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{{ site.JB.rss_path }}">
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="{{ site.JB.atom_path }}">
+
+  <!-- Styles -->
+  {% if site.data.compress.css_js %}
+    {{ assign css_js_compress_tag = site.data.compress.css_js_tag }}
+  {% else %}
+    {{ assign css_js_compress_tag = "" }}
+  {% endif %}
+
+  <link rel="stylesheet" href="{{ ASSET_PATH }}/css/style{{ css_js_compress_tag }}.css">
+  <link rel="stylesheet" href="{{ ASSET_PATH }}/css/fontello{{ css_js_compress_tag }}.css">
+  <link rel="stylesheet" href="{{ ASSET_PATH }}/css/tooltip{{ css_js_compress_tag }}.css" media="screen">
+
+  {% if page.group != "home" %}
+    {% if page.toc != false %}
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/tocmd/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="all">
+    {% endif %}
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/code-prettify/{{ site.JB.code_prettify.theme }}{{ css_js_compress_tag }}.css" type="text/css" media="all">
+  {% endif %}
+
+  {% if page.plugin %}<link rel="stylesheet" href="{{ ASSET_PATH }}/css/{{ page.plugin }}{{ css_js_compress_tag }}.css" type="text/css" media="all">{% endif %}
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery-1.10.1{{ css_js_compress_tag }}.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/qrcode/jquery.qrcode{{ css_js_compress_tag }}.js"></script>
+
+</head>
+
+<body>
+
+  <div id="up"></div>
+  {% include widgets/site_info %}
+  <div id="top-wrap">
+    <section id="top-wrap-inner">
+    <header id="top">
+      <!-- Home Link -->
+      <!--
+      <a id="logo" href="{{ HOME_PATH }}" title="回到首页">
+        <img src="{{ ASSET_PATH }}/img/logo.png" alt="{{ site.title }}">
+      </a>
+      -->
+      <div id="search-box">
+        {% include widgets/search_box %}
+      </div>
+      <!-- Navigation Bar -->
+      <nav id="navbar">
+          <div id="menu-icon">
+               <a title="导航菜单"><i class="icon-large icon-fixed-width icon-menu"></i></a>
+          </div>
+          <div id="menu-container">
+           {% include widgets/navbar_list %}
+          </div>
+      </nav>
+    </header>
+   </section>
+  </div>
+
+  <div id="wrap">
+    <section id="main">
+      {% include widgets/float_box %}
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        {% include widgets/fixed_container %}
+      </aside>
+      <!-- Main Content -->
+      <div id="main-inner">
+        <div id="loader"><img src="{{ ASSET_PATH }}/img/loading.gif" alt="请稍侯"></div>
+        <div id="main-content">
+          {{ content }}
+        </div>
+      </div>
+
+    </section>
+
+    <footer id="bottom">
+    {% include widgets/footer %}
+    </footer>
+  </div>
+  <div id="down"></div>
+
+
+  {% if page.group != "home" %}
+    {% if page.toc != false %}
+      <script src="{{ ASSET_PATH }}/js/toc{{ css_js_compress_tag }}.js"></script>
+      <script src="{{ ASSET_PATH }}/tocmd/js/jquery.toc{{ css_js_compress_tag }}.js"></script>
+    {% endif %}
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/scrollspy{{ css_js_compress_tag }}.js"></script>
+
+  <script src="{{ ASSET_PATH }}/code-prettify/prettify{{ css_js_compress_tag }}.js"></script>
+  {% include widgets/code-prettify %}
+  {% endif %}
+
+  {% if page.plugin %}<script src="{{ ASSET_PATH }}/js/{{ page.plugin }}{{ css_js_compress_tag }}.js"></script>{% endif %}
+
+  {% include JB/analytics %}
+
+</body>
+</html>

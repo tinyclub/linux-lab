@@ -1,0 +1,9 @@
+{% include JB/is_production %}
+
+{% if site.JB.analytics.providers and page.JB.analytics != false %}
+
+{% for provider in site.JB.analytics.providers %}
+{% include JB/analytics-providers/{{ provider }} %}
+{% endfor %}
+
+{% endif %}

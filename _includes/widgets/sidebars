@@ -1,0 +1,29 @@
+{% for sidebar in site.data.sidebars %}
+  {% if sidebar.disable %}
+    {% continue %}
+  {% endif %}
+  <section id="{{ sidebar.data }}">
+   {% assign title = sidebar.name %}
+   {% assign icon = sidebar.icon %}
+   {% assign tooltip = false %}
+   {% assign size = 0 %}
+   {% if site.data[sidebar.data] != nil %}
+     {% assign list = site.data[sidebar.data] %}
+     {% assign tooltip = true %}
+     {% assign size = list.size %}
+   {% else %}
+     {% assign list = site[sidebar.src] %}
+     {% assign condition = sidebar.condition %}
+     {% assign value = sidebar.value  %}
+     {% for item in list %}
+       {% if item.group == {{value}} %}
+         {% assign size = 1 %}
+         {% break %}
+       {% endif %}
+     {% endfor %}
+   {% endif %}
+   {% if size != 0 %}
+     {% include widgets/lists %}
+   {% endif %}
+  </section>
+{% endfor %}

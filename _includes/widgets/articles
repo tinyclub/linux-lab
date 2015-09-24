@@ -1,0 +1,16 @@
+{% for article in articles %}
+{% if condition and article[{{condition}}] != {{value}} %}
+    {% continue %}
+{% endif %}
+
+<article>
+  <header>
+    <h2>
+        <a class="tooltip article" href="{{ article.url }}">{% if article.desc %}<span>{{ article.desc }}</span>{% endif %}{{ article.title }}</a>
+    </h2>
+    {% if article.group %}{% assign group = article.group %}{% else %}{% assign group = "original" %}{% endif %}
+    {% assign group_name = site.data.groups[group] %}
+    <group><a href="{{ BASE_PATH }}{{ site.JB.groups_path }}#{{ group_name | replace: ' ','-' }}-ref">{{ group_name }}</a></group>
+  </header>
+</article>
+{% endfor %}

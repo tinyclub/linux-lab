@@ -1,0 +1,12 @@
+{% assign url = site.JB.archive_path %}
+{% assign prompt = "查看所有文章" %}
+{% assign truncate = true %}
+{% assign tooltip = false %}
+{% assign title = "最近文章" %}
+{% assign icon = "star-empty" %}
+{% assign list = site.posts %}
+{% include widgets/lists %}
+{% assign more = "" %}
+{% assign prompt = "" %}
+{% assign url = "" %}
+{% assign truncate = false %}

@@ -1,0 +1,32 @@
+---
+layout: page
+title: 专辑
+author: admin
+header: Post By Albums
+group: navigation
+order: 2
+---
+{% include JB/setup %}
+
+{% assign posts_by_album = site.posts | group_by:"album" | sort:"album" %}
+
+{% for album in posts_by_album %}
+  {% if album.name == empty %}
+    {% continue %}
+  {% endif %}
+
+  {% assign album_url = "" %}
+  {% for book in site.data.books %}
+    {% assign book_title = book.title | remove: " " | upcase %}
+    {% assign album_title = album.name | remove: " " | upcase %}
+    {% if book_title == album_title %}
+      {% assign album_url = book.url %}
+    {% endif %}
+  {% endfor %}
+  <h2 id="{{ album.name | replace:' ','-' }}-ref">{% if album_url != "" %}<a href="{{ album_url }}" title="该专辑已发布为GitBook，点击查看！">{{ album.name}}</a>{% else %}{{ album.name }}{% endif %} <sup>({{ album.items.size }})</sup></h2>
+  <ul>
+    {% for post in album.items %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endfor %}

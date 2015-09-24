@@ -1,0 +1,20 @@
+
+found:
+  prompt:
+    - prepend: '主人，帮您找到'
+      append: '根金条，请慢用：'
+    - prepend: '客官，就剩 '
+      append: '个了，您看合口味不？'
+    - prepend: '哥辛苦攒了 '
+      append: '篇，记得打赏哈！'
+
+nothing:
+  prompt:
+    - string: '大叔，很抱歉，没能帮您找到梦姑！'
+    - string: '您好，宝藏正在努力开采中……'
+    - string: '哥哥，还没有同学写这个主题呢，抽空撰写篇哈？'
+    - string: 'Linux 地大物博，这个坑还没人挖呢！'
+
+query:
+  mouseover: ''
+  mouseout: '站内搜索 - 泰晓科技'

@@ -1,0 +1,18 @@
+
+- title: C 语言编程透视
+  url: /open-c-book
+  desc: 以实验的方式去探究类似 `Hello World` 这样的小程序在开发与执行过程中的微妙变化，一层层揭开 C 语言开发过程的神秘面纱，透视背后的秘密，不断享受醍醐灌顶的美妙。
+
+- title: Shell 编程范例
+  url: /open-shell-book
+  desc: 不同于传统 Shell 书，本书未花大篇幅介绍 Shell 语法，而以面向“对象”的方式引入大量实例介绍 Shell 日常操作，“对象” 涵盖数值、逻辑值、字符串、文件、进程、文件系统等。这样有助于学以致用中加强兴趣。也可作为 Shell 编程索引，随时检索。
+
+- title: 嵌入式 Linux 知识库
+  url: /elinux
+  group: translation
+  desc: The GitBook of Embedded Linux Wiki (elinux.org)，中文翻译计划正在进行中。
+
+- title: Linux Doc 中文版
+  url: /linux-doc
+  group: translation
+  desc: Linux Documentation 中文翻译计划，该计划包括三阶段目标：第一阶段把原有的中文文档转成 Markdown 并导入；第二阶段翻译余下的部分；第三阶段，持续维护和更新

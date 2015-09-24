@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="1827" height="858.2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Generated at Mon Apr 27 21:46:50 2015 by:
+  Graph::Easy v0.75
+  Graph::Easy::As_svg v0.23
+-->
+
+<title>G</title>
+<defs>
+ <!-- filled arrow -->
+ <g id="ahf" stroke-linecap="round" stroke-width="1">
+  <polygon points="-8,-4, 1,0, -8,4"/>
+ </g>
+
+ <!-- class definitions -->
+ <style type="text/css"><![CDATA[
+ .edge {
+  font-size: 13px;
+  stroke: black;
+  text-align: center;
+ }
+ .graph {
+  font-size: 16px;
+  text-align: center;
+  x-dot-size: 1920,1080;
+ }
+ .node {
+  font-size: 16px;
+  text-align: center;
+ }
+ ]]></style>
+</defs>
+
+<!-- graph background with border (mainly for printing) -->
+<rect x="0.5" y="0.5" width="1825" height="856.2" fill="white" stroke="white" />
+
+<g id="10" class="edge">
+ <!-- from main to chr_dev_init -->
+ <!-- vertical -->
+ <line x1="514.8" y1="599.4" x2="514.8" y2="649.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(514.8 650.6)rotate(90)"/>
+</g>
+
+<g id="12" class="edge">
+ <!-- from main to tty_init -->
+ <!-- vertical -->
+ <line x1="432.4" y1="599.4" x2="432.4" y2="657" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="432.4" y1="657" x2="432.4" y2="701.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="432.4" y1="701.8" x2="432.4" y2="733.8" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="432.4" y1="733.8" x2="432.4" y2="752.3" />
+  <line x1="415.48" y1="751.8" x2="432.9" y2="751.8" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(414.48 751.8)rotate(180)"/>
+</g>
+
+<g id="14" class="edge">
+ <!-- from main to time_init -->
+ <!-- vertical -->
+ <line x1="728.8" y1="196.2" x2="728.8" y2="253.8" stroke="#000000" />
+
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="728.8" y1="173.3" x2="728.8" y2="196.2" />
+  <line x1="728.3" y1="173.8" x2="745.72" y2="173.8" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="746.72" y="173.8"/>
+</g>
+
+<g id="16" class="edge">
+ <!-- from time_init to CMOS_READ -->
+ <!-- vertical -->
+ <line x1="816.7" y1="94.8" x2="816.7" y2="145" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(816.7 93.8)rotate(-90)"/>
+</g>
+
+<g id="18" class="edge">
+ <!-- from time_init to BCD_TO_BIN -->
+ <!-- horizontal -->
+ <line x1="889.24" y1="173.8" x2="944.56" y2="173.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="945.56" y="173.8"/>
+</g>
+
+<g id="2" class="edge">
+ <!-- from main to rd_init -->
+ <!-- vertical -->
+ <line x1="357" y1="203.6" x2="357" y2="253.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(357 202.6)rotate(-90)"/>
+</g>
+
+<g id="20" class="edge">
+ <!-- from time_init to kernel_mktime -->
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="816.7" y1="202.6" x2="816.7" y2="228.7" />
+  <line x1="816.2" y1="228.2" x2="882.2" y2="228.2" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="882.2" y1="228.2" x2="952.6" y2="228.2" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="952.6" y1="228.2" x2="1080.6" y2="228.2" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="1080.6" y1="228.2" x2="1138.2" y2="228.2" />
+  <line x1="1109.4" y1="196.2" x2="1109.4" y2="253.8" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1210.7" y1="203.6" x2="1210.7" y2="228.7" />
+  <line x1="1138.2" y1="228.2" x2="1211.2" y2="228.2" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1210.7 202.6)rotate(-90)"/>
+</g>
+
+<g id="22" class="edge">
+ <!-- from main to sched_init -->
+ <!-- vertical -->
+ <line x1="514.8" y1="203.6" x2="514.8" y2="253.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(514.8 202.6)rotate(-90)"/>
+</g>
+
+<g id="24" class="edge">
+ <!-- from main to buffer_init -->
+ <!-- vertical -->
+ <line x1="357" y1="599.4" x2="357" y2="649.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(357 650.6)rotate(90)"/>
+</g>
+
+<g id="26" class="edge">
+ <!-- from main to hd_init -->
+ <!-- horizontal -->
+ <line x1="241.64" y1="282.6" x2="296.96" y2="282.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(240.64 282.6)rotate(180)"/>
+</g>
+
+<g id="28" class="edge">
+ <!-- from main to floppy_init -->
+ <!-- vertical -->
+ <line x1="653.4" y1="599.4" x2="653.4" y2="649.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(653.4 650.6)rotate(90)"/>
+</g>
+
+<g id="30" class="edge">
+ <!-- from main to sti -->
+ <!-- vertical -->
+ <line x1="653.4" y1="203.6" x2="653.4" y2="253.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(653.4 202.6)rotate(-90)"/>
+</g>
+
+<g id="32" class="edge">
+ <!-- from main to move_to_user_mode -->
+ <!-- horizontal -->
+ <line x1="241.64" y1="461.8" x2="296.96" y2="461.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(240.64 461.8)rotate(180)"/>
+</g>
+
+<g id="34" class="edge">
+ <!-- from main to fork -->
+ <!-- vertical -->
+ <line x1="816.7" y1="599.4" x2="816.7" y2="649.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(816.7 650.6)rotate(90)"/>
+</g>
+
+<g id="36" class="edge">
+ <!-- from main to init -->
+ <!-- horizontal -->
+ <line x1="889.24" y1="282.6" x2="944.56" y2="282.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="945.56" y="282.6"/>
+</g>
+
+<g id="38" class="edge">
+ <!-- from init to setup -->
+ <!-- vertical -->
+ <line x1="1296" y1="196.2" x2="1296" y2="253.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="1296" y1="151.4" x2="1296" y2="196.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="1296" y1="87.4" x2="1296" y2="151.4" stroke="#000000" />
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="1296" y1="64.5" x2="1296" y2="87.4" />
+  <line x1="1283.2" y1="65" x2="1296.5" y2="65" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1138.2" y1="65" x2="1283.2" y2="65" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1087.36" y1="65" x2="1138.2" y2="65" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1086.36 65)rotate(180)"/>
+</g>
+
+<g id="4" class="edge">
+ <!-- from main to mem_init -->
+ <!-- horizontal -->
+ <line x1="241.64" y1="372.2" x2="296.96" y2="372.2" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(240.64 372.2)rotate(180)"/>
+</g>
+
+<g id="40" class="edge">
+ <!-- from init to open -->
+ <!-- horizontal -->
+ <line x1="1390.84" y1="417" x2="1454.2" y2="417" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1454.2" y1="417" x2="1540.2" y2="417" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1540.2" y1="417" x2="1610.6" y2="417" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1648.6" y1="400.08" x2="1648.6" y2="417.5" />
+  <line x1="1610.6" y1="417" x2="1649.1" y2="417" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1648.6 399.08)rotate(-90)"/>
+</g>
+
+<g id="42" class="edge">
+ <!-- from init to dup -->
+ <!-- vertical -->
+ <line x1="1346.3" y1="490.6" x2="1346.3" y2="540.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1346.3 541.8)rotate(90)"/>
+</g>
+
+<g id="44" class="edge">
+ <!-- from init to printf -->
+ <!-- horizontal -->
+ <line x1="1390.84" y1="282.6" x2="1446.16" y2="282.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="1447.16" y="282.6"/>
+</g>
+
+<g id="46" class="edge">
+ <!-- from printf to va_start -->
+ <!-- vertical -->
+ <line x1="1497.2" y1="203.6" x2="1497.2" y2="253.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1497.2 202.6)rotate(-90)"/>
+</g>
+
+<g id="50" class="edge">
+ <!-- from printf to vsprintf -->
+ <!-- horizontal -->
+ <line x1="1547.24" y1="327.4" x2="1610.6" y2="327.4" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1610.6" y1="327.4" x2="1686.6" y2="327.4" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1686.6" y1="327.4" x2="1725" y2="327.4" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1767" y1="310.48" x2="1767" y2="327.9" />
+  <line x1="1725" y1="327.4" x2="1767.5" y2="327.4" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1767 309.48)rotate(-90)"/>
+</g>
+
+<g id="52" class="edge">
+ <!-- from printf to va_end -->
+ <!-- horizontal -->
+ <line x1="1547.24" y1="282.6" x2="1602.56" y2="282.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="1603.56" y="282.6"/>
+</g>
+
+<g id="55" class="edge">
+ <!-- from init to close -->
+ <!-- horizontal -->
+ <line x1="1390.84" y1="461.8" x2="1446.16" y2="461.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="1447.16" y="461.8"/>
+</g>
+
+<g id="57" class="edge">
+ <!-- from init to execve -->
+ <!-- vertical -->
+ <line x1="1346.3" y1="203.6" x2="1346.3" y2="253.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1346.3 202.6)rotate(-90)"/>
+</g>
+
+<g id="59" class="edge">
+ <!-- from init to wait -->
+ <!-- vertical -->
+ <line x1="1109.4" y1="151.4" x2="1109.4" y2="196.2" stroke="#000000" />
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="1109.4" y1="118.9" x2="1109.4" y2="151.4" />
+  <line x1="1080.6" y1="119.4" x2="1109.9" y2="119.4" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="952.6" y1="119.4" x2="1080.6" y2="119.4" stroke="#000000" />
+
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="917.4" y1="87.4" x2="917.4" y2="119.9" />
+  <line x1="916.9" y1="119.4" x2="952.6" y2="119.4" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="917.4" y1="42.6" x2="917.4" y2="87.4" stroke="#000000" />
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="917.4" y1="29.3" x2="917.4" y2="42.6" />
+  <line x1="882.2" y1="29.8" x2="917.9" y2="29.8" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="751.2" y1="29.8" x2="882.2" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="706.4" y1="29.8" x2="751.2" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="600.4" y1="29.8" x2="706.4" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="574.8" y1="29.8" x2="600.4" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="454.8" y1="29.8" x2="574.8" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="410" y1="29.8" x2="454.8" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="304" y1="29.8" x2="410" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="233.6" y1="29.8" x2="304" y2="29.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="42.6" y1="29.8" x2="233.6" y2="29.8" stroke="#000000" />
+
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="29.8" y1="29.3" x2="29.8" y2="42.6" />
+  <line x1="29.3" y1="29.8" x2="42.6" y2="29.8" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="29.8" y1="42.6" x2="29.8" y2="87.4" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="87.4" x2="29.8" y2="151.4" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="151.4" x2="29.8" y2="196.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="196.2" x2="29.8" y2="260.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="260.2" x2="29.8" y2="305" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="305" x2="29.8" y2="349.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="349.8" x2="29.8" y2="394.6" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="394.6" x2="29.8" y2="439.4" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="439.4" x2="29.8" y2="484.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="484.2" x2="29.8" y2="548.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="548.2" x2="29.8" y2="593" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="593" x2="29.8" y2="657" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="657" x2="29.8" y2="701.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="701.8" x2="29.8" y2="733.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="733.8" x2="29.8" y2="769.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="29.8" y1="769.8" x2="29.8" y2="795.4" stroke="#000000" />
+
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="29.8" y1="795.4" x2="29.8" y2="818.3" />
+  <line x1="29.3" y1="817.8" x2="42.6" y2="817.8" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="42.6" y1="817.8" x2="233.6" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="233.6" y1="817.8" x2="304" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="304" y1="817.8" x2="410" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="410" y1="817.8" x2="454.8" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="454.8" y1="817.8" x2="574.8" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="574.8" y1="817.8" x2="600.4" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="600.4" y1="817.8" x2="706.4" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="706.4" y1="817.8" x2="751.2" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="751.2" y1="817.8" x2="882.2" y2="817.8" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="882.2" y1="817.8" x2="944.56" y2="817.8" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="945.56" y="817.8"/>
+</g>
+
+<g id="6" class="edge">
+ <!-- from main to trap_init -->
+ <!-- horizontal -->
+ <line x1="889.24" y1="516.2" x2="952.6" y2="516.2" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="952.6" y1="516.2" x2="1080.6" y2="516.2" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="1080.6" y1="516.2" x2="1138.2" y2="516.2" />
+  <line x1="1109.4" y1="490.6" x2="1109.4" y2="548.2" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="1210.7" y1="515.7" x2="1210.7" y2="540.8" />
+  <line x1="1138.2" y1="516.2" x2="1211.2" y2="516.2" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1210.7 541.8)rotate(90)"/>
+</g>
+
+<g id="61" class="edge">
+ <!-- from init to setsid -->
+ <!-- vertical -->
+ <line x1="1296" y1="490.6" x2="1296" y2="548.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="1296" y1="548.2" x2="1296" y2="593" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="1296" y1="593" x2="1296" y2="657" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1296" y1="657" x2="1296" y2="679.9" />
+  <line x1="1283.2" y1="679.4" x2="1296.5" y2="679.4" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1138.2" y1="679.4" x2="1283.2" y2="679.4" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1087.36" y1="679.4" x2="1138.2" y2="679.4" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(1086.36 679.4)rotate(180)"/>
+</g>
+
+<g id="63" class="edge">
+ <!-- from init to sync -->
+ <!-- vertical -->
+ <line x1="1109.4" y1="548.2" x2="1109.4" y2="593" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1109.4" y1="593" x2="1109.4" y2="625.5" />
+  <line x1="1080.6" y1="625" x2="1109.9" y2="625" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="952.6" y1="625" x2="1080.6" y2="625" stroke="#000000" />
+
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="917.4" y1="624.5" x2="917.4" y2="657" />
+  <line x1="916.9" y1="625" x2="952.6" y2="625" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="917.4" y1="657" x2="917.4" y2="701.8" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="917.4" y1="701.8" x2="917.4" y2="733.8" stroke="#000000" />
+
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="917.4" y1="733.8" x2="917.4" y2="752.3" />
+  <line x1="916.9" y1="751.8" x2="944.56" y2="751.8" />
+ </g>
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="945.56" y="751.8"/>
+</g>
+
+<g id="65" class="edge">
+ <!-- from main to pause -->
+ <!-- horizontal -->
+ <line x1="241.64" y1="570.6" x2="296.96" y2="570.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" transform="translate(240.64 570.6)rotate(180)"/>
+</g>
+
+<g id="8" class="edge">
+ <!-- from main to blk_dev_init -->
+ <!-- horizontal -->
+ <line x1="889.24" y1="570.6" x2="944.56" y2="570.6" stroke="#000000" />
+ <use fill="#000000" stroke="#000000" xlink:href="#ahf" x="945.56" y="570.6"/>
+</g>
+
+<g id="0" class="node">
+ <!-- main, rect -->
+ <rect fill="#f5deb3" height="331.8" stroke="#000000" width="577.2" x="304.5" y="260.7" />
+ <text x="593" y="432" style="font-family:serif" fill="#0000ff" text-anchor="middle">main</text>
+</g>
+
+<g id="1" class="node">
+ <!-- rd_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="105" x="304.5" y="151.9" />
+ <text x="357" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">rd_init</text>
+</g>
+
+<g id="3" class="node">
+ <!-- mem_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="190" x="43.1" y="350.3" />
+ <text x="138" y="378" style="font-family:serif" fill="#0000ff" text-anchor="middle">mem_init</text>
+</g>
+
+<g id="5" class="node">
+ <!-- trap_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="144" x="1138.7" y="548.7" />
+ <text x="1210" y="576" style="font-family:serif" fill="#0000ff" text-anchor="middle">trap_init</text>
+</g>
+
+<g id="7" class="node">
+ <!-- blk_dev_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="127" x="953.1" y="548.7" />
+ <text x="1016" y="576" style="font-family:serif" fill="#0000ff" text-anchor="middle">blk_dev_init</text>
+</g>
+
+<g id="9" class="node">
+ <!-- chr_dev_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="119" x="455.3" y="657.5" />
+ <text x="514" y="685" style="font-family:serif" fill="#0000ff" text-anchor="middle">chr_dev_init</text>
+</g>
+
+<g id="11" class="node">
+ <!-- tty_init, rect -->
+ <rect fill="#f5deb3" height="35" stroke="#000000" width="105" x="304.5" y="734.3" />
+ <text x="357" y="757" style="font-family:serif" fill="#0000ff" text-anchor="middle">tty_init</text>
+</g>
+
+<g id="13" class="node">
+ <!-- time_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="130" x="751.7" y="151.9" />
+ <text x="816" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">time_init</text>
+</g>
+
+<g id="15" class="node">
+ <!-- CMOS_READ, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="130" x="751.7" y="43.1" />
+ <text x="816" y="71" style="font-family:serif" fill="#0000ff" text-anchor="middle">CMOS_READ</text>
+</g>
+
+<g id="17" class="node">
+ <!-- BCD_TO_BIN, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="127" x="953.1" y="151.9" />
+ <text x="1016" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">BCD_TO_BIN</text>
+</g>
+
+<g id="19" class="node">
+ <!-- kernel_mktime, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="144" x="1138.7" y="151.9" />
+ <text x="1210" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">kernel_mktime</text>
+</g>
+
+<g id="21" class="node">
+ <!-- sched_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="119" x="455.3" y="151.9" />
+ <text x="514" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">sched_init</text>
+</g>
+
+<g id="23" class="node">
+ <!-- buffer_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="105" x="304.5" y="657.5" />
+ <text x="357" y="685" style="font-family:serif" fill="#0000ff" text-anchor="middle">buffer_init</text>
+</g>
+
+<g id="25" class="node">
+ <!-- hd_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="190" x="43.1" y="260.7" />
+ <text x="138" y="288" style="font-family:serif" fill="#0000ff" text-anchor="middle">hd_init</text>
+</g>
+
+<g id="27" class="node">
+ <!-- floppy_init, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="105" x="600.9" y="657.5" />
+ <text x="653" y="685" style="font-family:serif" fill="#0000ff" text-anchor="middle">floppy_init</text>
+</g>
+
+<g id="29" class="node">
+ <!-- sti, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="105" x="600.9" y="151.9" />
+ <text x="653" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">sti</text>
+</g>
+
+<g id="31" class="node">
+ <!-- move_to_user_mode, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="190" x="43.1" y="439.9" />
+ <text x="138" y="467" style="font-family:serif" fill="#0000ff" text-anchor="middle">move_to_user_mode</text>
+</g>
+
+<g id="33" class="node">
+ <!-- fork, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="130" x="751.7" y="657.5" />
+ <text x="816" y="685" style="font-family:serif" fill="#0000ff" text-anchor="middle">fork</text>
+</g>
+
+<g id="35" class="node">
+ <!-- init, rect -->
+ <rect fill="#f5deb3" height="223" stroke="#000000" width="430.2" x="953.1" y="260.7" />
+ <text x="1168" y="378" style="font-family:serif" fill="#0000ff" text-anchor="middle">init</text>
+</g>
+
+<g id="37" class="node">
+ <!-- setup, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="127" x="953.1" y="43.1" />
+ <text x="1016" y="71" style="font-family:serif" fill="#0000ff" text-anchor="middle">setup</text>
+</g>
+
+<g id="39" class="node">
+ <!-- open, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="75" x="1611.1" y="350.3" />
+ <text x="1648" y="378" style="font-family:serif" fill="#0000ff" text-anchor="middle">open</text>
+</g>
+
+<g id="41" class="node">
+ <!-- dup, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="74" x="1309.3" y="548.7" />
+ <text x="1346" y="576" style="font-family:serif" fill="#0000ff" text-anchor="middle">dup</text>
+</g>
+
+<g id="43" class="node">
+ <!-- printf, rect -->
+ <rect fill="#f5deb3" height="133.4" stroke="#000000" width="85" x="1454.7" y="260.7" />
+ <text x="1497" y="333" style="font-family:serif" fill="#0000ff" text-anchor="middle">printf</text>
+</g>
+
+<g id="45" class="node">
+ <!-- va_start, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="85" x="1454.7" y="151.9" />
+ <text x="1497" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">va_start</text>
+</g>
+
+<g id="47" class="node">
+ <!-- write, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="85" x="1454.7" y="548.7" />
+ <text x="1497" y="576" style="font-family:serif" fill="#0000ff" text-anchor="middle">write</text>
+</g>
+
+<g id="49" class="node">
+ <!-- vsprintf, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="83" x="1725.5" y="260.7" />
+ <text x="1767" y="288" style="font-family:serif" fill="#0000ff" text-anchor="middle">vsprintf</text>
+</g>
+
+<g id="51" class="node">
+ <!-- va_end, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="75" x="1611.1" y="260.7" />
+ <text x="1648" y="288" style="font-family:serif" fill="#0000ff" text-anchor="middle">va_end</text>
+</g>
+
+<g id="54" class="node">
+ <!-- close, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="85" x="1454.7" y="439.9" />
+ <text x="1497" y="467" style="font-family:serif" fill="#0000ff" text-anchor="middle">close</text>
+</g>
+
+<g id="56" class="node">
+ <!-- execve, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="74" x="1309.3" y="151.9" />
+ <text x="1346" y="179" style="font-family:serif" fill="#0000ff" text-anchor="middle">execve</text>
+</g>
+
+<g id="58" class="node">
+ <!-- wait, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="127" x="953.1" y="795.9" />
+ <text x="1016" y="823" style="font-family:serif" fill="#0000ff" text-anchor="middle">wait</text>
+</g>
+
+<g id="60" class="node">
+ <!-- setsid, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="127" x="953.1" y="657.5" />
+ <text x="1016" y="685" style="font-family:serif" fill="#0000ff" text-anchor="middle">setsid</text>
+</g>
+
+<g id="62" class="node">
+ <!-- sync, rect -->
+ <rect fill="#f5deb3" height="35" stroke="#000000" width="127" x="953.1" y="734.3" />
+ <text x="1016" y="757" style="font-family:serif" fill="#0000ff" text-anchor="middle">sync</text>
+</g>
+
+<g id="64" class="node">
+ <!-- pause, rect -->
+ <rect fill="#f5deb3" height="43.8" stroke="#000000" width="190" x="43.1" y="548.7" />
+ <text x="138" y="576" style="font-family:serif" fill="#0000ff" text-anchor="middle">pause</text>
+</g>
+
+</svg>

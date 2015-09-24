@@ -1,0 +1,17 @@
+<div id="do-search" style="display: none;">
+  <a href="#up" title="我要搜索"><i class="icon-large icon-fixed-width icon-search"></i></a>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+  $(window).scroll(function () {
+    scrl_top = $('#main-inner').offset().top;
+
+    cur_scrl = $(this).scrollTop();
+    if (cur_scrl > scrl_top) {
+        $('#do-search').show();
+    } else {
+      $('#do-search').hide();
+    }
+  });
+});
+</script>

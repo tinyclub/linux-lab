@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Build tags from wordpress exported xml file
+#
+# The wordpress jekyll export plugin can not capture the tags, use this tool to
+# extract them from the wordpress exported xml file instead.
+#
+# Usage:
+#   Step 1: Export the xml file from the wordpress website and set the wordpress_xml variable
+#           wordpress_xml=/path/to/wordpress.xxxx-yy-zz.xml
+#   Step 2: Goto the jekyll root directory and run this tool:
+#           $ tools/build-tags.sh
+#
+
+# Extract the tags list
+wordpress_xml=/path/to/wordpress.xxxx-yy-zz.xml
+tags_list=tags.list
+
+egrep "_文章/|\"post_tag\"|_faqs/" $wordpress_xml \
+   | sed -e "s/.*CDATA\[\([^]]*\)\].*/\1/g" \
+   | sed -e "s#_文章/#_posts/#g;s#_faqs/#_posts/#g" > ${tags_list}
+
+# Build the tags
+
+tags="tags:"
+while read line
+do
+	echo "$line" | grep -q "_posts/"
+	if [ $? -eq 0 ]; then
+		echo -e $tags
+		post="`echo $line | sed -e "s#_posts/\(.*\)#_posts/*\1*#g"`"
+		echo $post
+
+		# Insert tags before categroies
+		# sed -i -e "/categories:/i$tags" $post
+		sed -e "/categories:/i$tags" $post
+
+		tags="tags:"
+	else
+		tags="$tags\n  - $line"
+	fi
+
+done < ${tags_list}

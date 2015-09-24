@@ -1,0 +1,36 @@
+<div class="post-extra">
+  <div class="pull-left">
+  {% if page.date %}
+    {% assign post_date = page.date %}
+  {% else %}
+    {%if page.update %}
+    {% assign post_date = page.update %}
+    {%endif %}
+  {% endif %}
+  <span>由 <a id="author" class="author" href="#" title="点击 关注/联系/赞助 {% if page.author == 'admin' %}管理员{%else%}作者{%endif%}">{{ page.author }}</a> 创建{%if post_date%}于 {{ post_date | date: "%Y/%m/%d" }}{%endif%} </span>
+  </div>
+  {% if page.comments != false %}
+  <div class="pull-right">
+    <span><a href="#comments" style="text-decoration:none;" title="评论或分享本文">
+      <i class="icon-large icon-comment-empty"> 评论 / 分享</i>
+    </a></span>
+  </div>
+  {% endif %}
+</div>
+<div id="author-box-wrap" class="author-box-wrap">
+   {% assign author_box_ref = 1 %}
+   {% include widgets/author_box %}
+</div>
+<script>
+jQuery(document).ready(function(){
+  var author_box = $('#author-box-wrap');
+  $("#author").click(function(e){
+    var status = author_box.css('display');
+    if (status == "none") {
+        author_box.show();
+    } else {
+        author_box.hide();
+    }
+  });
+});
+</script>

@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# test.sh -- test the latest post quickly
+#
+
+[ -n "$1" ] && limit_posts=$1
+[ -z "$limit_posts" ] && limit_posts=5
+
+TOP_DIR=$(dirname `readlink -f $0`)
+
+theme=tinylab.org
+browser=chromium-browser
+inet=br0
+
+ifconfig | grep -q $inet
+[ $? -ne 0 ] && inet=eth0
+
+host=`ifconfig $inet | grep "inet addr" | sed -e "s/inet addr:\([^ ]*\) .*/\1/g" | tr -d ' '`
+
+sudo pkill jekyll
+
+nohup jekyll s --limit_posts $limit_posts -H $host 2>&1 >/dev/null &
+
+sleep $(($limit_posts/3 + 2))
+
+$browser http://$host:4000 &

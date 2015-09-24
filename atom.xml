@@ -1,0 +1,50 @@
+---
+layout: null
+title : Atom Feed
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }}</title>
+  <subtitle>{{ site.tagline }}</subtitle>
+  <link href="{{ site.production_url }}{{ site.JB.atom_path }}" rel="self"/>
+  <link href="{{ site.production_url }}"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>{{ site.production_url }}</id>
+  <author>
+    <name>{{ site.data.people["admin"].name }}</name>
+    <email>{{ site.data.people["admin"].email }}</email>
+  </author>
+
+{% for post in site.posts %}
+  <entry>
+    <title>{{ post.title | replace:':','：', | strip_html | xml_escape }}</title>
+    <link href="{{ site.production_url }}{{ post.url }}"/>
+    <updated>{{ post.date | date_to_xmlschema }}</updated>
+    <id>{{ site.production_url }}{{ post.id }}</id>
+	{% if post.keywords %}
+    <summary>{{ post.keywords }}</summary>
+    {% else %}
+	<summary>{{ post.categories | join: "," | replace:':','：' | strip_html | xml_escape }},{{ post.tags | join: "," | replace:':','：' | strip_html | xml_escape  }}</summary>
+    {% endif %}
+    <content type="html">{{ post.content | replace:':','：' | strip_html | truncate:300 | xml_escape }}</content>
+  </entry>
+{% endfor %}
+
+{% for page in site.pages %}
+{% if page.comments == false or page.layout == null or page.layout == "default" or page.group == "home" %}
+  {% continue %}
+{% endif %}
+  <entry>
+    <title>{{ page.title | replace:':','：' | strip_html | xml_escape }}</title>
+    <link href="{{ site.production_url }}{{ page.url }}"/>
+    <updated>{{ site.time | date_to_xmlschema }}</updated>
+    <id>{{ site.production_url }}{{ page.permalink }}</id>
+	{% if post.keywords %}
+    <summary>{{ post.keywords }}</summary>
+    {% else %}
+	<summary>{{ post.categories | replace:':','：' | strip_html | xml_escape | join: "," }},{{ post.tags | replace:':','：' | strip_html | xml_escape | join: "," }}</summary>
+    {% endif %}
+    <content type="html">{{ page.content | replace:':','：' | strip_html | truncate:300 | xml_escape }}</content>
+  </entry>
+{% endfor %}
+</feed>

@@ -1,0 +1,8 @@
+<section id="site-info">
+  <a href="{{ site.production_url}}">{{ site.title }}</a> -- <small>{{ site.tagline}}</small> <br/>
+  <small>网站地址：{{ site.production_url}}</small>
+  <small>
+  {% assign contact_info = "关注我们" %}
+  {% include widgets/contact %}
+  </small>
+</section>

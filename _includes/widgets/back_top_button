@@ -1,0 +1,14 @@
+<div id="back-top" style="display: none;">
+  <a href="#up" title="回到顶部"><i class="icon-large icon-fixed-width icon-up-open"></i></a>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > $('#main-inner').offset().top) {
+      $('#back-top').show();
+    } else {
+      $('#back-top').hide();
+    }
+  });
+});
+</script>

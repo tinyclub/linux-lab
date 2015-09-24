@@ -1,0 +1,205 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="1200" height="98" onload="init(evt)" viewBox="0 0 1200 98" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs >
+	<linearGradient id="background" y1="0" y2="1" x1="0" x2="0" >
+		<stop stop-color="#eeeeee" offset="5%" />
+		<stop stop-color="#eeeeb0" offset="95%" />
+	</linearGradient>
+</defs>
+<style type="text/css">
+	.func_g:hover { stroke:black; stroke-width:0.5; }
+</style>
+<script type="text/ecmascript">
+<![CDATA[
+	var details;
+	function init(evt) { details = document.getElementById("details").firstChild; }
+	function s(info) { details.nodeValue = "Function: " + info; }
+	function c() { details.nodeValue = ' '; }
+]]>
+</script>
+<rect x="0.0" y="0" width="1200.0" height="98.0" fill="url(#background)"  />
+<text text-anchor="middle" x="600" y="24" font-size="17" font-family="Verdana" fill="rgb(0,0,0)"  >Flame Graph</text>
+<text text-anchor="" x="10" y="81" font-size="12" font-family="Verdana" fill="rgb(0,0,0)" id="details" > </text>
+<g class="func_g" onmouseover="s('rot_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>rot_driver_init (0 samples, 0.00%)</title><rect x="312.0" y="33" width="1.5" height="15.0" fill="rgb(212,60,52)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('exynos_tmu_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>exynos_tmu_driver_init (0 samples, 0.00%)</title><rect x="160.9" y="33" width="1.1" height="15.0" fill="rgb(209,53,34)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('S3cLcdBridgeInit (0 samples, 0.00%)')" onmouseout="c()">
+<title>S3cLcdBridgeInit (0 samples, 0.00%)</title><rect x="17.3" y="33" width="3.3" height="15.0" fill="rgb(226,229,1)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('s5p_mipi_dsi_register (0 samples, 0.00%)')" onmouseout="c()">
+<title>s5p_mipi_dsi_register (0 samples, 0.00%)</title><rect x="769.7" y="33" width="30.0" height="15.0" fill="rgb(209,150,18)" rx="2" ry="2" />
+<text text-anchor="" x="772.661504071531" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >s5..</text>
+</g>
+<g class="func_g" onmouseover="s('hdmi_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>hdmi_init (0 samples, 0.00%)</title><rect x="195.8" y="33" width="2.0" height="15.0" fill="rgb(216,22,47)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('tun_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>tun_init (0 samples, 0.00%)</title><rect x="914.3" y="33" width="1.6" height="15.0" fill="rgb(241,143,48)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('s5p_mfc_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>s5p_mfc_init (0 samples, 0.00%)</title><rect x="767.4" y="33" width="2.3" height="15.0" fill="rgb(214,94,46)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('pl330_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>pl330_driver_init (0 samples, 0.00%)</title><rect x="307.6" y="33" width="1.8" height="15.0" fill="rgb(212,112,27)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('jpeg_hx_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>jpeg_hx_init (0 samples, 0.00%)</title><rect x="202.8" y="33" width="2.4" height="15.0" fill="rgb(213,47,32)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('watchdog_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>watchdog_init (0 samples, 0.00%)</title><rect x="1181.1" y="33" width="3.6" height="15.0" fill="rgb(212,91,8)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('max77665_muic_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>max77665_muic_init (0 samples, 0.00%)</title><rect x="254.2" y="33" width="2.8" height="15.0" fill="rgb(234,37,35)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('lsm330dlc_gyr_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>lsm330dlc_gyr_init (0 samples, 0.00%)</title><rect x="224.2" y="33" width="14.1" height="15.0" fill="rgb(247,202,26)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('exynos_cpufreq_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>exynos_cpufreq_init (0 samples, 0.00%)</title><rect x="155.6" y="33" width="1.7" height="15.0" fill="rgb(230,128,29)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('synaptics_rmi4_init (1 samples, 7.98%)')" onmouseout="c()">
+<title>synaptics_rmi4_init (1 samples, 7.98%)</title><rect x="807.2" y="33" width="107.1" height="15.0" fill="rgb(240,189,28)" rx="2" ry="2" />
+<text text-anchor="" x="810.248922241737" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >synaptics_rmi..</text>
+</g>
+<g class="func_g" onmouseover="s('sc_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>sc_driver_init (0 samples, 0.00%)</title><rect x="805.6" y="33" width="1.6" height="15.0" fill="rgb(213,211,24)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('mx_tpi_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>mx_tpi_init (0 samples, 0.00%)</title><rect x="297.9" y="33" width="1.3" height="15.0" fill="rgb(216,102,40)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('arizona_spi_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>arizona_spi_driver_init (0 samples, 0.00%)</title><rect x="30.4" y="33" width="3.3" height="15.0" fill="rgb(207,163,25)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('dhd_module_init (1 samples, 7.98%)')" onmouseout="c()">
+<title>dhd_module_init (1 samples, 7.98%)</title><rect x="42.9" y="33" width="92.1" height="15.0" fill="rgb(235,223,19)" rx="2" ry="2" />
+<text text-anchor="" x="45.8772153919847" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >dhd_module_..</text>
+</g>
+<g class="func_g" onmouseover="s('s3c_fb_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>s3c_fb_init (0 samples, 0.00%)</title><rect x="758.8" y="33" width="8.6" height="15.0" fill="rgb(234,40,7)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('akm_compass_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>akm_compass_init (0 samples, 0.00%)</title><rect x="20.6" y="33" width="8.7" height="15.0" fill="rgb(229,150,41)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('ms2r_is_spi_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>ms2r_is_spi_init (0 samples, 0.00%)</title><rect x="267.9" y="33" width="1.3" height="15.0" fill="rgb(232,29,3)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('max17047_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>max17047_init (0 samples, 0.00%)</title><rect x="244.7" y="33" width="7.1" height="15.0" fill="rgb(208,164,12)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('m6x_audio_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>m6x_audio_init (0 samples, 0.00%)</title><rect x="238.3" y="33" width="6.4" height="15.0" fill="rgb(208,99,7)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('loop_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>loop_init (0 samples, 0.00%)</title><rect x="207.3" y="33" width="1.3" height="15.0" fill="rgb(254,108,6)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('jpeg_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>jpeg_init (0 samples, 0.00%)</title><rect x="205.2" y="33" width="2.1" height="15.0" fill="rgb(225,82,25)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('init_menu (0 samples, 0.00%)')" onmouseout="c()">
+<title>init_menu (0 samples, 0.00%)</title><rect x="199.0" y="33" width="3.8" height="15.0" fill="rgb(209,176,38)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('xhci_hcd_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>xhci_hcd_init (0 samples, 0.00%)</title><rect x="1184.7" y="33" width="5.3" height="15.0" fill="rgb(251,117,26)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('mxr_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>mxr_init (0 samples, 0.00%)</title><rect x="299.2" y="33" width="8.4" height="15.0" fill="rgb(218,32,41)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('all (13 samples, 100%)')" onmouseout="c()">
+<title>all (13 samples, 100%)</title><rect x="10.0" y="49" width="1180.0" height="15.0" fill="rgb(226,56,26)" rx="2" ry="2" />
+<text text-anchor="" x="13" y="59.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  ></text>
+</g>
+<g class="func_g" onmouseover="s('max77665_charger_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>max77665_charger_init (0 samples, 0.00%)</title><rect x="251.8" y="33" width="2.4" height="15.0" fill="rgb(244,99,34)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('lsm330dlc_acc_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>lsm330dlc_acc_init (0 samples, 0.00%)</title><rect x="208.6" y="33" width="15.6" height="15.0" fill="rgb(216,23,20)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('flite_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>flite_driver_init (0 samples, 0.00%)</title><rect x="166.1" y="33" width="16.0" height="15.0" fill="rgb(247,29,10)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('brd_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>brd_init (0 samples, 0.00%)</title><rect x="37.5" y="33" width="5.4" height="15.0" fill="rgb(210,152,12)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('PVRCore_Init (0 samples, 0.00%)')" onmouseout="c()">
+<title>PVRCore_Init (0 samples, 0.00%)</title><rect x="10.0" y="33" width="7.3" height="15.0" fill="rgb(205,222,16)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('dw_mci_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>dw_mci_init (0 samples, 0.00%)</title><rect x="136.7" y="33" width="1.0" height="15.0" fill="rgb(218,71,21)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('s5pcsis_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>s5pcsis_driver_init (0 samples, 0.00%)</title><rect x="799.7" y="33" width="5.9" height="15.0" fill="rgb(244,101,50)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('vfp_init (3 samples, 23.95%)')" onmouseout="c()">
+<title>vfp_init (3 samples, 23.95%)</title><rect x="917.8" y="33" width="263.3" height="15.0" fill="rgb(214,208,54)" rx="2" ry="2" />
+<text text-anchor="" x="920.844483474373" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >vfp_init</text>
+</g>
+<g class="func_g" onmouseover="s('bcm2079x_dev_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>bcm2079x_dev_init (0 samples, 0.00%)</title><rect x="33.7" y="33" width="3.8" height="15.0" fill="rgb(215,117,26)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('gp2ap_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>gp2ap_init (0 samples, 0.00%)</title><rect x="182.1" y="33" width="1.9" height="15.0" fill="rgb(250,216,52)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('exynos_drd_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>exynos_drd_driver_init (0 samples, 0.00%)</title><rect x="157.3" y="33" width="2.5" height="15.0" fill="rgb(233,172,34)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('gsc_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>gsc_driver_init (0 samples, 0.00%)</title><rect x="185.3" y="33" width="6.9" height="15.0" fill="rgb(215,217,40)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('modem_device_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>modem_device_init (0 samples, 0.00%)</title><rect x="264.8" y="33" width="3.1" height="15.0" fill="rgb(220,144,12)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('hci_uart_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>hci_uart_init (0 samples, 0.00%)</title><rect x="192.2" y="33" width="1.9" height="15.0" fill="rgb(234,161,33)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('mx_hub_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>mx_hub_init (0 samples, 0.00%)</title><rect x="269.2" y="33" width="28.7" height="15.0" fill="rgb(215,37,34)" rx="2" ry="2" />
+<text text-anchor="" x="272.155356857736" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >mx..</text>
+</g>
+<g class="func_g" onmouseover="s('exynos5_busfreq_mif_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>exynos5_busfreq_mif_init (0 samples, 0.00%)</title><rect x="142.3" y="33" width="13.3" height="15.0" fill="rgb(206,92,42)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('fimg2d_register (0 samples, 0.00%)')" onmouseout="c()">
+<title>fimg2d_register (0 samples, 0.00%)</title><rect x="162.0" y="33" width="4.1" height="15.0" fill="rgb(208,186,41)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('alsa_sound_last_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>alsa_sound_last_init (0 samples, 0.00%)</title><rect x="29.3" y="33" width="1.1" height="15.0" fill="rgb(214,1,16)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('s3c24xx_serial_modinit (5 samples, 39.92%)')" onmouseout="c()">
+<title>s3c24xx_serial_modinit (5 samples, 39.92%)</title><rect x="315.5" y="33" width="443.3" height="15.0" fill="rgb(225,14,12)" rx="2" ry="2" />
+<text text-anchor="" x="318.503752195433" y="43.5" font-size="12" font-family="Verdana" fill="rgb(0,0,0)"  >s3c24xx_serial_modinit</text>
+</g>
+<g class="func_g" onmouseover="s('max77802_rtc_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>max77802_rtc_init (0 samples, 0.00%)</title><rect x="257.0" y="33" width="7.8" height="15.0" fill="rgb(250,99,5)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('i2c_dev_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>i2c_dev_init (0 samples, 0.00%)</title><rect x="197.8" y="33" width="1.2" height="15.0" fill="rgb(248,45,12)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('hdcp_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>hdcp_init (0 samples, 0.00%)</title><rect x="194.1" y="33" width="1.7" height="15.0" fill="rgb(243,75,13)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('rtc_hctosys (0 samples, 0.00%)')" onmouseout="c()">
+<title>rtc_hctosys (0 samples, 0.00%)</title><rect x="313.5" y="33" width="2.0" height="15.0" fill="rgb(231,132,9)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('gpio_keys_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>gpio_keys_init (0 samples, 0.00%)</title><rect x="184.0" y="33" width="1.3" height="15.0" fill="rgb(252,199,17)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('ehci_hcd_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>ehci_hcd_init (0 samples, 0.00%)</title><rect x="137.7" y="33" width="4.6" height="15.0" fill="rgb(254,104,46)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('usb_stor_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>usb_stor_init (0 samples, 0.00%)</title><rect x="915.9" y="33" width="1.9" height="15.0" fill="rgb(243,163,43)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('regulator_init_complete (0 samples, 0.00%)')" onmouseout="c()">
+<title>regulator_init_complete (0 samples, 0.00%)</title><rect x="309.4" y="33" width="2.6" height="15.0" fill="rgb(239,42,5)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('exynos_ss_udc_driver_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>exynos_ss_udc_driver_init (0 samples, 0.00%)</title><rect x="159.8" y="33" width="1.1" height="15.0" fill="rgb(209,31,46)" rx="2" ry="2" />
+</g>
+<g class="func_g" onmouseover="s('dm_init (0 samples, 0.00%)')" onmouseout="c()">
+<title>dm_init (0 samples, 0.00%)</title><rect x="135.0" y="33" width="1.7" height="15.0" fill="rgb(252,175,50)" rx="2" ry="2" />
+</g>
+</svg>

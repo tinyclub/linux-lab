@@ -1,0 +1,60 @@
+---
+title: 用 Markdown 写文档
+author: Wu Zhangjin
+layout: post
+permalink: /use-markdown-to-write-document/
+views:
+  - 168
+tags:
+  - Article
+  - Markdown
+  - 文档
+categories:
+  - Markdown
+  - Tools
+---
+
+> by Falcon of [TinyLab.org][1]
+> 2015/05/11
+
+
+## 背景
+
+Markdown 让人回归内容创作本身，本站第四篇关于 Markdown 的文章，这次介绍如何用 Markdown 写中文文档。
+
+## 下载仓库
+
+    git clone https://github.com/tinyclub/markdown-article.git
+
+
+## 安装环境
+
+    sudo apt-get install pandoc
+    sudo apt-get install texlive-xetex texlive-latex-recommended texlive-latex-extra
+
+    sudo apt-get install ttf-arphic-gbsn00lp ttf-arphic-ukai # from arphic
+    sudo apt-get install ttf-wqy-microhei ttf-wqy-zenhei     # from WenQuanYi
+
+
+## 编辑文档
+
+请参照如下两篇使用 Markdown 语法编写文档。
+
+  * [Markdown基本语法][2]
+  * [Pandoc&#8217;s Markdown语法][3]
+
+## 编译
+
+    cd markdown-article/
+    make
+
+
+编译完会生成一份 doc.pdf 文档。
+
+
+
+
+
+ [1]: http://tinylab.org
+ [2]: http://wowubuntu.com/markdown/
+ [3]: http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html

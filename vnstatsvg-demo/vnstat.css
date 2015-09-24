@@ -1,0 +1,238 @@
+body 
+{
+    margin: 8px;
+    padding: 0;
+}
+
+#content
+{
+    width: 858px;
+}
+
+#sidebar
+{
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 160px;
+    border-right: 1px solid #99b;
+    border-collapse: collapse;
+    float: left;
+}
+
+#sidebar ul.iface
+{
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px dashed #99b;    
+    color: #000;
+    background-color: #eef;
+}
+
+#sidebar li.iface_odd
+{
+    margin: 1px;
+    padding: 1px;
+    border-top: 1px dashed #99b;    
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    color: #00BBBB;
+    background-color: #ffe;
+    border-bottom: 1px dashed #99b;
+}
+
+#sidebar li.iface_even
+{
+    margin: 1px;
+    padding: 1px;
+    border-top: 1px dashed #99b;    
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    color: #00CCCC;
+    background-color: #fee;
+    border-bottom: 1px dashed #99b;
+}
+
+#sidebar div.submenu_odd
+{
+    padding: 0px 10px 0px 0px;
+    border-right: 1px solid #99b;    
+    border-collapse: collapse;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    color: #00CCCC;
+    background-color: #ffe;
+}
+
+#sidebar div.submenu_even
+{
+    padding: 0px 10px 0px 0px;
+    border-right: 1px solid #99b;    
+    border-collapse: collapse;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    color: #00CCCC;
+    background-color: #fee;
+}
+
+#sidebar a
+{
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#sidebar ul.page
+{
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px dashed #99b;
+}
+
+#sidebar li.page 
+{
+    list-style-type: none;
+    margin: 0px;
+    padding: 4px;
+    border: none;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 0.75em;
+    font-weight: normal;
+    text-align: right;
+    color: #000;    
+    background-color: #fff;
+}
+
+
+#header
+{
+    width: 680px;
+    margin-left: 160px;
+    padding: 0px 8px 0px 8px;
+    border-width: 1px 1px 1px 1px;
+    border-style: dashed solid dashed solid;
+    border-color: #99b;
+    border-collapse: collapse;
+    color: #000;    
+    background-color: #eef;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;    
+    text-align: center;
+}
+
+#footer
+{
+    width: 680px;
+    margin-left: 160px;
+    padding: 2px 8px 2px 8px;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: #99b;
+    border-collapse: collapse;
+    color: #000;    
+    background-color: #eef;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 0.65em;
+    font-weight: bold;    
+    text-align: center;
+}
+
+#main_wrapper
+{
+    width: 680px;
+    height: 100%;
+    margin-left: 160px;
+    padding: 1px 8px 8px 8px;
+    border-left: 1px solid #99b;
+    border-right: 1px solid #99b;    
+    border-collapse: collapse;
+}
+
+#main
+{
+    width: 100%;
+    height: 100%;
+    margin-left: 0px;
+    padding: 0px 8px 8px 8px;
+    border-collapse: collapse;
+}
+
+#main td
+{
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 0.8em;
+}
+
+#main td.numeric_odd
+{
+    text-align: right;
+    color: #000;
+    background-color: #eef;
+}
+
+#main td.numeric_even
+{
+    text-align: right;
+    color: #000;    
+    background-color: #fff;
+}
+
+#main td.label_odd
+{
+    color: #000;
+    background-color: #dde;
+}
+
+#main td.label_even
+{
+    color: #000;
+    background-color: #eee;
+}
+
+#main th.label
+{
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    color: #000;    
+    background-color: #dde;
+}
+
+#caption
+{
+    margin-left: 160px;
+    padding: 15px 0px 15px 0px;
+    border-left: 1px solid #99b;
+    border-right: 1px solid #99b;    
+    border-collapse: collapse;
+    font-family: 'Trebuchet MS', Verdana, sans-serif;
+    font-size: 1.25em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.str0 {stroke:black;stroke-width:1;}
+.str1 {stroke:black;stroke-width:0.5;stroke-dasharray:0, 1, 0;}
+.str2 {stroke:black;stroke-width:0.5;stroke-dasharray:0, 0, 1;}
+.str3 {stroke:white;stroke-width:1}
+.str4 {stroke:black;}
+
+.fil0 {fill:#FAFAFA}
+.fil1 {fill:#FA7A7A}
+.fil2 {fill:#7A7AFA}
+
+.anc0 {text-anchor:end;}
+.anc1 {text-anchor:middle;}
+
+.fnt0 {font-size:11pt}
+.fnt1 {font-size:10pt}
+
+.gra0 {fill-opacity:0.7; stroke:black; stroke-width:0.1mm}
+
+rect:hover {fill-opacity:0.9; stroke:#7A7A7A; stroke-width:1mm;}
+path:hover {fill-opacity:0.9; stroke:#7A7A7A; stroke-width:1mm;}

@@ -1,0 +1,13 @@
+<table>
+<tr><td style="text-align:center;">微信公众号</td><td width='150px'>{{ contact_info }}</td><td style="text-align:center;">新浪微博</td></tr>
+<tr>
+  <td style="text-align:center;">
+    <img src='/images/wechat/tinylab-org.jpg' width='120px' />
+  </td>
+  <td style="text-align:center;"><br/><br/><b>扫一扫<br/><br/>关注 @泰晓科技</b>
+  </td>
+  <td>
+    <img src='/images/weibo/tinylaborg.jpg' width='120px' />
+  </td>
+  </tr>
+</table>

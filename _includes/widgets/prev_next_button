@@ -1,0 +1,44 @@
+{% assign icon_left = "<i class='icon-large icon-fixed-width icon-left-open'></i>" %}
+{% assign icon_right = "<i class='icon-large icon-fixed-width icon-right-open'></i>" %}
+{% assign visible = "" %}
+{% assign invisible = "class='invisible'" %}
+<div id="prev">
+  <!-- Previous Page -->
+  {% if paginator.previous_page %}
+    {% if paginator.previous_page == 1 %}
+     {% assign href = "/index.html" %}
+     {% assign title = "首页" %}
+    {% else %}
+     {% assign href = paginator.previous_page | prepend: "/page" %}
+     {% assign title = paginator.previous_page | prepend: "第 " | append: " 页" %}
+    {% endif %}
+  {% else %}
+     {% if page.previous %}
+       {% assign href = BASE_PATH | append: page.previous.url %}
+       {% assign title = page.previous.title %}
+     {% else %}
+   {% assign title = "最后一篇" %}
+   {% assign href = "#" %}
+       {% assign visible = invisible %}
+     {% endif %}
+  {% endif %}
+  <a {{ visible }} title="{{ title }}" href="{{ href }}">{{ icon_left }}</a>
+</div>
+{% assign visible = "" %}
+<div id="next">
+  <!-- Next Page -->
+  {% if paginator.next_page %}
+     {% assign href = paginator.next_page | prepend: "/page" %}
+     {% assign title = paginator.next_page | prepend: "第 " | append: " 页" %}
+  {% else %}
+     {% if page.next %}
+       {% assign href = BASE_PATH | append: page.next.url %}
+       {% assign title = page.next.title %}
+     {% else %}
+   {% assign title = "最后一篇" %}
+   {% assign href = "#" %}
+       {% assign visible = invisible %}
+     {% endif %}
+  {% endif %}
+  <a {{ visible }} title="{{ title }}" href="{{ href }}">{{ icon_right }}</a>
+</div>

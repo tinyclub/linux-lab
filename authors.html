@@ -1,0 +1,40 @@
+---
+layout: page
+title: 作者
+header: Post By Authors
+comments: false
+---
+{% include JB/setup %}
+
+{% assign posts_by_author = site.posts | group_by:"author" | sort:"author" %}
+
+{% for post_author in posts_by_author %}
+  {% assign author_name = post_author.name %}
+  {% assign post_author_name = post_author.name | replace:' ','-' %}
+  <h2 id="{{ post_author_name }}-ref"><a id="author-{{post_author_name}}" title="点击查看作者详细信息">{{ post_author.name }}</a> <sup>({{ post_author.items.size }})</sup></h2>
+
+  <div id="author-box-wrap-{{ post_author_name }}" class="author-box-wrap" style="display:none">
+  {% assign author_box_ref = post_author_name | prepend:"-" %}
+  {% assign author_box_visible = "style='display: block;'" %}
+  {% include widgets/author_box %}
+  <script>
+  jQuery(document).ready(function(){
+    var author_box = $('#author-box-wrap-{{ post_author_name }}');
+    $("#author-{{ post_author_name }}").click(function(e){
+           var status = author_box.css('display');
+           if (status == "none") {
+               author_box.show();
+           } else {
+               author_box.hide();
+           }
+    });
+  });
+  </script>
+  </div>
+
+  <ul>
+    {% for post in post_author.items %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endfor %}

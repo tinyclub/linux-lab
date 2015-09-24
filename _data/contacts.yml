@@ -1,0 +1,39 @@
+
+- name: article
+  icon: export
+  desc: 本文
+
+- name: archive
+  icon: docs
+  desc: 文章
+
+- name: site
+  url: http://
+  icon: link-ext
+  desc: 作者网站
+
+- name: email
+  url: "mailto:"
+  icon: mail
+  desc: Email
+
+- name: github
+  url: https://github.com/
+  icon: git
+  desc: ' Github 仓库'
+
+- name: weibo
+  url: http://weibo.com/
+  icon: weibo
+  desc: 新浪微博
+
+- name: wechat
+  icon: wechat
+  desc: 微信公众号
+
+- name: sponsor
+  icon: yen
+  desc: 赞助
+
+- name: info
+  icon: info-circled

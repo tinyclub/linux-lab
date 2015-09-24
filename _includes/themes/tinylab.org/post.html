@@ -1,0 +1,60 @@
+<section id="content">
+  <article>
+    <header>
+      <h1 title="{{ page.title }}">{{ page.title }}</h1>
+    </header>
+    <header>
+       {% if page.tagline %}<small>{{ page.tagline }}</small>{% endif %}
+    </header>
+
+   <section>
+     {% include widgets/post_header %}
+
+     <div id="main_content_container">
+     {{ content }}
+     </div>
+
+     {% assign related_header = "<h2> Read More: </h2>" %}
+     {% include widgets/related_posts %}
+
+   </section>
+  </article>
+</section>
+
+<section>
+  <hr>
+  {% unless page.categories == empty %}
+  <ul class="tag-box inline">
+    <li><i class="icon-large icon-folder-open"></i></li>
+    {% assign categories_list = page.categories %}
+    {% include JB/categories_list %}
+  </ul>
+  {% endunless %}
+
+  {% unless page.tags == empty %}
+  <ul class="tag-box inline">
+    <li><i class="icon-large icon-tags"></i></li>
+    {% assign tags_list = page.tags %}
+    {% include JB/tags_list %}
+  </ul>
+  {% endunless %}
+
+  <hr>
+
+  {% if page.license != false %}
+  <footer>
+     {% include widgets/copyright %}
+  </footer>
+  {% endif %}
+
+  <hr>
+
+  {% include widgets/sponsor %}
+
+  {% include widgets/prev_next_post %}
+
+</section>
+
+<section id="comments">
+  {% include JB/comments %}
+</section>

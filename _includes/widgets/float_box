@@ -1,0 +1,60 @@
+<div id="float-box-wrap">
+  <div id="float-box">
+    {% include widgets/back_top_button %}
+    {% include widgets/go_down_button %}
+    {% include widgets/search_button %}
+    {% include widgets/comment_button %}
+    {% include widgets/home_button %}
+    {% include widgets/full_screen_button %}
+    {% include widgets/prev_next_button %}
+  </div>
+  {% include widgets/float_box_button %}
+</div>
+<script>
+$(document).ready(function() {
+  var firefox = 0;
+  var bottom;
+  var zoom = 1;
+  var scrolltop = 0;
+  var navbar_fixed = $('#navbar').css('position') == "fixed" ? 1 : 0;
+
+  function get_zoom() {
+    zoom = parseFloat($(document.body).css('zoom'));
+    if (!zoom) {
+      zoom = parseFloat($(document.body).css('transform').split(',')[0].split('(')[1]);
+      if (!zoom)
+        zoom = 1;
+      firefox = 1;
+    }
+  }
+
+  function getViewPortHeight() {
+    return document.documentElement.clientHeight || document.body.clientHeight;
+  }
+
+  function fix_up_firefox_floatbox(scrolltop) {
+    get_zoom();
+    if (firefox) {
+      bottom = getViewPortHeight() * ((zoom - 1) * 0.65) + 20;
+      bottom = document.body.clientHeight - getViewPortHeight() + bottom - scrolltop;
+      $('#float-box-wrap').css('bottom', bottom + "px");
+
+      if (navbar_fixed)
+         $('#navbar').css('top', scrolltop + 'px');
+      else
+         $('#navbar').css('top', 0);
+    }
+  }
+
+  fix_up_firefox_floatbox(0);
+
+  $(window).scroll(function() {
+    scrolltop = $(window).scrollTop() / zoom;
+    fix_up_firefox_floatbox(scrolltop);
+  });
+
+  $(window).resize(function() {
+    fix_up_firefox_floatbox(scrolltop);
+  });
+});
+</script>

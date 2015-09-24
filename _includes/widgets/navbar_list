@@ -1,0 +1,14 @@
+<ul class="nav">
+  <li id="home-link" {% if page.url == "/index.html" %} class="active"{% endif %}>
+    <a rel="bookmark" href="{{ HOME_PATH }}" title="首页">首页</a>
+  </li>
+
+   {% assign pages_list = site.pages | sort: "order" %}
+   {% assign group = 'navigation' %}
+   {% include JB/pages_list %}
+
+  <li id="rss-link">
+    <a rel="bookmark" href="{{ site.JB.rss_path }}" title="订阅 RSS"><i class="icon-large icon-fixed-width icon-rss"></i></a>
+  </li>
+</ul>
+

@@ -1,0 +1,33 @@
+<?xml version= "1.0" encoding = "UTF-8" standalone = 'no' ?>
+<menu id="menu">
+	<submenu>
+		<name>Summary</name>
+		<caption>Summary of network traffic</caption>
+		<page>summary</page>
+	</submenu>
+	<submenu>
+		<name>Top10</name>
+		<caption>Top 10 day of network traffic</caption>
+		<page>top10</page>
+	</submenu>
+	<submenu>
+		<name>Month</name>
+		<caption>Network traffic of every month</caption>
+		<page>month</page>
+	</submenu>
+	<submenu>
+		<name>Day</name>
+		<caption>Network traffic of every day</caption>
+		<page>day</page>
+	</submenu>
+	<submenu>
+		<name>Hour</name>
+		<caption>Network traffic of every hour</caption>
+		<page>hour</page>
+	</submenu>
+	<submenu>
+		<name>Second</name>
+		<caption>Network traffic of current second</caption>
+		<page>second</page>
+	</submenu>
+</menu>

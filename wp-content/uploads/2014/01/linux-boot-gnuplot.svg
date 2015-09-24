@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"  standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg 
+ width="800" height="300" 
+ viewBox="0 0 800 300"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+
+<title>Gnuplot</title>
+<desc>Produced by GNUPLOT 4.6 patchlevel 0 </desc>
+
+<g id="gnuplot_canvas">
+
+<rect x="0" y="0" width="800" height="300" fill="none"/>
+<defs>
+
+	<circle id='gpDot' r='0.5' stroke-width='0.5'/>
+	<path id='gpPt0' stroke-width='0.667' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
+	<path id='gpPt1' stroke-width='0.667' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
+	<path id='gpPt2' stroke-width='0.667' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
+	<rect id='gpPt3' stroke-width='0.667' stroke='currentColor' x='-1' y='-1' width='2' height='2'/>
+	<rect id='gpPt4' stroke-width='0.667' stroke='currentColor' fill='currentColor' x='-1' y='-1' width='2' height='2'/>
+	<circle id='gpPt5' stroke-width='0.667' stroke='currentColor' cx='0' cy='0' r='1'/>
+	<use xlink:href='#gpPt5' id='gpPt6' fill='currentColor' stroke='none'/>
+	<path id='gpPt7' stroke-width='0.667' stroke='currentColor' d='M0,-1.33 L-1.33,0.67 L1.33,0.67 z'/>
+	<use xlink:href='#gpPt7' id='gpPt8' fill='currentColor' stroke='none'/>
+	<use xlink:href='#gpPt7' id='gpPt9' stroke='currentColor' transform='rotate(180)'/>
+	<use xlink:href='#gpPt9' id='gpPt10' fill='currentColor' stroke='none'/>
+	<use xlink:href='#gpPt3' id='gpPt11' stroke='currentColor' transform='rotate(45)'/>
+	<use xlink:href='#gpPt11' id='gpPt12' fill='currentColor' stroke='none'/>
+</defs>
+<g style="fill:none; color:white; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+</g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path  d='M18.2,269.3 L21.2,269.3 M791.5,269.3 L788.5,269.3  h0.01'/>	<g transform="translate(15.4,270.8)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 0</text>
+	</g>
+	<path  d='M18.2,242.9 L21.2,242.9 M791.5,242.9 L788.5,242.9  h0.01'/>	<g transform="translate(15.4,244.4)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 0.5</text>
+	</g>
+	<path  d='M18.2,216.6 L21.2,216.6 M791.5,216.6 L788.5,216.6  h0.01'/>	<g transform="translate(15.4,218.1)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 1</text>
+	</g>
+	<path  d='M18.2,190.2 L21.2,190.2 M791.5,190.2 L788.5,190.2  h0.01'/>	<g transform="translate(15.4,191.7)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 1.5</text>
+	</g>
+	<path  d='M18.2,163.9 L21.2,163.9 M791.5,163.9 L788.5,163.9  h0.01'/>	<g transform="translate(15.4,165.4)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 2</text>
+	</g>
+	<path  d='M18.2,137.5 L21.2,137.5 M791.5,137.5 L788.5,137.5  h0.01'/>	<g transform="translate(15.4,139.0)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 2.5</text>
+	</g>
+	<path  d='M18.2,111.1 L21.2,111.1 M791.5,111.1 L788.5,111.1  h0.01'/>	<g transform="translate(15.4,112.6)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 3</text>
+	</g>
+	<path  d='M18.2,84.8 L21.2,84.8 M791.5,84.8 L788.5,84.8  h0.01'/>	<g transform="translate(15.4,86.3)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 3.5</text>
+	</g>
+	<path  d='M18.2,58.4 L21.2,58.4 M791.5,58.4 L788.5,58.4  h0.01'/>	<g transform="translate(15.4,59.9)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 4</text>
+	</g>
+	<path  d='M18.2,32.1 L21.2,32.1 M791.5,32.1 L788.5,32.1  h0.01'/>	<g transform="translate(15.4,33.6)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 4.5</text>
+	</g>
+	<path  d='M18.2,5.7 L21.2,5.7 M791.5,5.7 L788.5,5.7  h0.01'/>	<g transform="translate(15.4,7.2)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text> 5</text>
+	</g>
+	<path  d='M31.5,269.3 L31.5,266.3 M31.5,5.7 L31.5,8.7  h0.01'/>	<g transform="translate(33.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>s3c_fb_init</text>
+	</g>
+	<path  d='M44.9,269.3 L44.9,266.3 M44.9,5.7 L44.9,8.7  h0.01'/>	<g transform="translate(46.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>s5p_mipi_dsi_register</text>
+	</g>
+	<path  d='M58.2,269.3 L58.2,266.3 M58.2,5.7 L58.2,8.7  h0.01'/>	<g transform="translate(59.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>pl330_driver_init</text>
+	</g>
+	<path  d='M71.5,269.3 L71.5,266.3 M71.5,5.7 L71.5,8.7  h0.01'/>	<g transform="translate(73.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>s3c24xx_serial_modinit</text>
+	</g>
+	<path  d='M84.9,269.3 L84.9,266.3 M84.9,5.7 L84.9,8.7  h0.01'/>	<g transform="translate(86.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>PVRCore_Init</text>
+	</g>
+	<path  d='M98.2,269.3 L98.2,266.3 M98.2,5.7 L98.2,8.7  h0.01'/>	<g transform="translate(99.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>brd_init</text>
+	</g>
+	<path  d='M111.5,269.3 L111.5,266.3 M111.5,5.7 L111.5,8.7  h0.01'/>	<g transform="translate(113.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>loop_init</text>
+	</g>
+	<path  d='M124.9,269.3 L124.9,266.3 M124.9,5.7 L124.9,8.7  h0.01'/>	<g transform="translate(126.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>max77665_muic_init</text>
+	</g>
+	<path  d='M138.2,269.3 L138.2,266.3 M138.2,5.7 L138.2,8.7  h0.01'/>	<g transform="translate(139.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>arizona_spi_driver_init</text>
+	</g>
+	<path  d='M151.5,269.3 L151.5,266.3 M151.5,5.7 L151.5,8.7  h0.01'/>	<g transform="translate(153.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>mx_hub_init</text>
+	</g>
+	<path  d='M164.9,269.3 L164.9,266.3 M164.9,5.7 L164.9,8.7  h0.01'/>	<g transform="translate(166.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>bcm2079x_dev_init</text>
+	</g>
+	<path  d='M178.2,269.3 L178.2,266.3 M178.2,5.7 L178.2,8.7  h0.01'/>	<g transform="translate(179.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>tun_init</text>
+	</g>
+	<path  d='M191.5,269.3 L191.5,266.3 M191.5,5.7 L191.5,8.7  h0.01'/>	<g transform="translate(193.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>exynos_drd_driver_init</text>
+	</g>
+	<path  d='M204.9,269.3 L204.9,266.3 M204.9,5.7 L204.9,8.7  h0.01'/>	<g transform="translate(206.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>ehci_hcd_init</text>
+	</g>
+	<path  d='M218.2,269.3 L218.2,266.3 M218.2,5.7 L218.2,8.7  h0.01'/>	<g transform="translate(219.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>xhci_hcd_init</text>
+	</g>
+	<path  d='M231.5,269.3 L231.5,266.3 M231.5,5.7 L231.5,8.7  h0.01'/>	<g transform="translate(233.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>usb_stor_init</text>
+	</g>
+	<path  d='M244.9,269.3 L244.9,266.3 M244.9,5.7 L244.9,8.7  h0.01'/>	<g transform="translate(246.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>exynos_ss_udc_driver_init</text>
+	</g>
+	<path  d='M258.2,269.3 L258.2,266.3 M258.2,5.7 L258.2,8.7  h0.01'/>	<g transform="translate(259.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>mx_tpi_init</text>
+	</g>
+	<path  d='M271.5,269.3 L271.5,266.3 M271.5,5.7 L271.5,8.7  h0.01'/>	<g transform="translate(273.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>gp2ap_init</text>
+	</g>
+	<path  d='M284.9,269.3 L284.9,266.3 M284.9,5.7 L284.9,8.7  h0.01'/>	<g transform="translate(286.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>akm_compass_init</text>
+	</g>
+	<path  d='M298.2,269.3 L298.2,266.3 M298.2,5.7 L298.2,8.7  h0.01'/>	<g transform="translate(299.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>lsm330dlc_acc_init</text>
+	</g>
+	<path  d='M311.5,269.3 L311.5,266.3 M311.5,5.7 L311.5,8.7  h0.01'/>	<g transform="translate(313.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>lsm330dlc_gyr_init</text>
+	</g>
+	<path  d='M324.9,269.3 L324.9,266.3 M324.9,5.7 L324.9,8.7  h0.01'/>	<g transform="translate(326.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>synaptics_rmi4_init</text>
+	</g>
+	<path  d='M338.2,269.3 L338.2,266.3 M338.2,5.7 L338.2,8.7  h0.01'/>	<g transform="translate(339.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>max77802_rtc_init</text>
+	</g>
+	<path  d='M351.5,269.3 L351.5,266.3 M351.5,5.7 L351.5,8.7  h0.01'/>	<g transform="translate(353.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>i2c_dev_init</text>
+	</g>
+	<path  d='M364.9,269.3 L364.9,266.3 M364.9,5.7 L364.9,8.7  h0.01'/>	<g transform="translate(366.4,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>ms2r_is_spi_init</text>
+	</g>
+	<path  d='M378.2,269.3 L378.2,266.3 M378.2,5.7 L378.2,8.7  h0.01'/>	<g transform="translate(379.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>s5pcsis_driver_init</text>
+	</g>
+	<path  d='M391.5,269.3 L391.5,266.3 M391.5,5.7 L391.5,8.7  h0.01'/>	<g transform="translate(393.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>flite_driver_init</text>
+	</g>
+	<path  d='M404.8,269.3 L404.8,266.3 M404.8,5.7 L404.8,8.7  h0.01'/>	<g transform="translate(406.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>gsc_driver_init</text>
+	</g>
+	<path  d='M418.2,269.3 L418.2,266.3 M418.2,5.7 L418.2,8.7  h0.01'/>	<g transform="translate(419.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>sc_driver_init</text>
+	</g>
+	<path  d='M431.5,269.3 L431.5,266.3 M431.5,5.7 L431.5,8.7  h0.01'/>	<g transform="translate(433.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>jpeg_init</text>
+	</g>
+	<path  d='M444.8,269.3 L444.8,266.3 M444.8,5.7 L444.8,8.7  h0.01'/>	<g transform="translate(446.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>fimg2d_register</text>
+	</g>
+	<path  d='M458.2,269.3 L458.2,266.3 M458.2,5.7 L458.2,8.7  h0.01'/>	<g transform="translate(459.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>s5p_mfc_init</text>
+	</g>
+	<path  d='M471.5,269.3 L471.5,266.3 M471.5,5.7 L471.5,8.7  h0.01'/>	<g transform="translate(473.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>hdcp_init</text>
+	</g>
+	<path  d='M484.8,269.3 L484.8,266.3 M484.8,5.7 L484.8,8.7  h0.01'/>	<g transform="translate(486.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>hdmi_init</text>
+	</g>
+	<path  d='M498.2,269.3 L498.2,266.3 M498.2,5.7 L498.2,8.7  h0.01'/>	<g transform="translate(499.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>mxr_init</text>
+	</g>
+	<path  d='M511.5,269.3 L511.5,266.3 M511.5,5.7 L511.5,8.7  h0.01'/>	<g transform="translate(513.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>rot_driver_init</text>
+	</g>
+	<path  d='M524.8,269.3 L524.8,266.3 M524.8,5.7 L524.8,8.7  h0.01'/>	<g transform="translate(526.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>jpeg_hx_init</text>
+	</g>
+	<path  d='M538.2,269.3 L538.2,266.3 M538.2,5.7 L538.2,8.7  h0.01'/>	<g transform="translate(539.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>exynos_tmu_driver_init</text>
+	</g>
+	<path  d='M551.5,269.3 L551.5,266.3 M551.5,5.7 L551.5,8.7  h0.01'/>	<g transform="translate(553.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>watchdog_init</text>
+	</g>
+	<path  d='M564.8,269.3 L564.8,266.3 M564.8,5.7 L564.8,8.7  h0.01'/>	<g transform="translate(566.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>dm_init</text>
+	</g>
+	<path  d='M578.2,269.3 L578.2,266.3 M578.2,5.7 L578.2,8.7  h0.01'/>	<g transform="translate(579.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>hci_uart_init</text>
+	</g>
+	<path  d='M591.5,269.3 L591.5,266.3 M591.5,5.7 L591.5,8.7  h0.01'/>	<g transform="translate(593.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>init_menu</text>
+	</g>
+	<path  d='M604.8,269.3 L604.8,266.3 M604.8,5.7 L604.8,8.7  h0.01'/>	<g transform="translate(606.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>dw_mci_init</text>
+	</g>
+	<path  d='M618.2,269.3 L618.2,266.3 M618.2,5.7 L618.2,8.7  h0.01'/>	<g transform="translate(619.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>m6x_audio_init</text>
+	</g>
+	<path  d='M631.5,269.3 L631.5,266.3 M631.5,5.7 L631.5,8.7  h0.01'/>	<g transform="translate(633.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>vfp_init</text>
+	</g>
+	<path  d='M644.8,269.3 L644.8,266.3 M644.8,5.7 L644.8,8.7  h0.01'/>	<g transform="translate(646.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>modem_device_init</text>
+	</g>
+	<path  d='M658.2,269.3 L658.2,266.3 M658.2,5.7 L658.2,8.7  h0.01'/>	<g transform="translate(659.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>regulator_init_complete</text>
+	</g>
+	<path  d='M671.5,269.3 L671.5,266.3 M671.5,5.7 L671.5,8.7  h0.01'/>	<g transform="translate(673.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>S3cLcdBridgeInit</text>
+	</g>
+	<path  d='M684.8,269.3 L684.8,266.3 M684.8,5.7 L684.8,8.7  h0.01'/>	<g transform="translate(686.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>dhd_module_init</text>
+	</g>
+	<path  d='M698.2,269.3 L698.2,266.3 M698.2,5.7 L698.2,8.7  h0.01'/>	<g transform="translate(699.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>gpio_keys_init</text>
+	</g>
+	<path  d='M711.5,269.3 L711.5,266.3 M711.5,5.7 L711.5,8.7  h0.01'/>	<g transform="translate(713.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>rtc_hctosys</text>
+	</g>
+	<path  d='M724.8,269.3 L724.8,266.3 M724.8,5.7 L724.8,8.7  h0.01'/>	<g transform="translate(726.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>max17047_init</text>
+	</g>
+	<path  d='M738.2,269.3 L738.2,266.3 M738.2,5.7 L738.2,8.7  h0.01'/>	<g transform="translate(739.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>max77665_charger_init</text>
+	</g>
+	<path  d='M751.5,269.3 L751.5,266.3 M751.5,5.7 L751.5,8.7  h0.01'/>	<g transform="translate(753.0,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>exynos5_busfreq_mif_init</text>
+	</g>
+	<path  d='M764.8,269.3 L764.8,266.3 M764.8,5.7 L764.8,8.7  h0.01'/>	<g transform="translate(766.3,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>exynos_cpufreq_init</text>
+	</g>
+	<path  d='M778.2,269.3 L778.2,266.3 M778.2,5.7 L778.2,8.7  h0.01'/>	<g transform="translate(779.7,272.1) rotate(45)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:start">
+		<text>alsa_sound_last_init</text>
+	</g>
+	<path  d='M18.2,5.7 L18.2,269.3 L791.5,269.3 L791.5,5.7 L18.2,5.7 Z  h0.01'/></g>
+	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
+<g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<g transform="translate(768.9,13.2)" style="stroke:none; fill:black; font-family:Arial; font-size:4.00pt; text-anchor:end">
+		<text>'./boot-initcall.log' using 2:xticlabels(1)</text>
+	</g>
+	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '771.7,13.2 785.9,13.2 785.9,10.2 771.7,10.2 '/>
+	</g>
+	<path  d='M771.7,13.2 L785.9,13.2 L785.9,10.2 L771.7,10.2 L771.7,13.2 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '28.5,269.3 34.6,269.3 34.6,264.4 28.5,264.4 '/>
+	</g>
+	<path  d='M28.5,269.3 L28.5,264.5 L34.5,264.5 L34.5,269.3 L28.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '41.9,269.3 48.0,269.3 48.0,252.4 41.9,252.4 '/>
+	</g>
+	<path  d='M41.9,269.3 L41.9,252.5 L47.9,252.5 L47.9,269.3 L41.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '55.2,269.3 61.3,269.3 61.3,268.2 55.2,268.2 '/>
+	</g>
+	<path  d='M55.2,269.3 L55.2,268.3 L61.2,268.3 L61.2,269.3 L55.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '68.5,269.3 74.6,269.3 74.6,21.1 68.5,21.1 '/>
+	</g>
+	<path  d='M68.5,269.3 L68.5,21.2 L74.5,21.2 L74.5,269.3 L68.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '81.9,269.3 88.0,269.3 88.0,265.1 81.9,265.1 '/>
+	</g>
+	<path  d='M81.9,269.3 L81.9,265.2 L87.9,265.2 L87.9,269.3 L81.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '95.2,269.3 101.3,269.3 101.3,266.2 95.2,266.2 '/>
+	</g>
+	<path  d='M95.2,269.3 L95.2,266.3 L101.2,266.3 L101.2,269.3 L95.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '108.5,269.3 114.6,269.3 114.6,268.5 108.5,268.5 '/>
+	</g>
+	<path  d='M108.5,269.3 L108.5,268.6 L114.5,268.6 L114.5,269.3 L108.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '121.9,269.3 128.0,269.3 128.0,267.6 121.9,267.6 '/>
+	</g>
+	<path  d='M121.9,269.3 L121.9,267.7 L127.9,267.7 L127.9,269.3 L121.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '135.2,269.3 141.3,269.3 141.3,267.4 135.2,267.4 '/>
+	</g>
+	<path  d='M135.2,269.3 L135.2,267.5 L141.2,267.5 L141.2,269.3 L135.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '148.5,269.3 154.6,269.3 154.6,253.1 148.5,253.1 '/>
+	</g>
+	<path  d='M148.5,269.3 L148.5,253.2 L154.5,253.2 L154.5,269.3 L148.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '161.9,269.3 168.0,269.3 168.0,267.1 161.9,267.1 '/>
+	</g>
+	<path  d='M161.9,269.3 L161.9,267.2 L167.9,267.2 L167.9,269.3 L161.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '175.2,269.3 181.3,269.3 181.3,268.3 175.2,268.3 '/>
+	</g>
+	<path  d='M175.2,269.3 L175.2,268.4 L181.2,268.4 L181.2,269.3 L175.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '188.5,269.3 194.6,269.3 194.6,267.8 188.5,267.8 '/>
+	</g>
+	<path  d='M188.5,269.3 L188.5,267.9 L194.5,267.9 L194.5,269.3 L188.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '201.9,269.3 208.0,269.3 208.0,266.7 201.9,266.7 '/>
+	</g>
+	<path  d='M201.9,269.3 L201.9,266.8 L207.9,266.8 L207.9,269.3 L201.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '215.2,269.3 221.3,269.3 221.3,266.2 215.2,266.2 '/>
+	</g>
+	<path  d='M215.2,269.3 L215.2,266.3 L221.2,266.3 L221.2,269.3 L215.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '228.5,269.3 234.6,269.3 234.6,268.1 228.5,268.1 '/>
+	</g>
+	<path  d='M228.5,269.3 L228.5,268.2 L234.5,268.2 L234.5,269.3 L228.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '241.9,269.3 248.0,269.3 248.0,268.6 241.9,268.6 '/>
+	</g>
+	<path  d='M241.9,269.3 L241.9,268.7 L247.9,268.7 L247.9,269.3 L241.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '255.2,269.3 261.3,269.3 261.3,268.5 255.2,268.5 '/>
+	</g>
+	<path  d='M255.2,269.3 L255.2,268.6 L261.2,268.6 L261.2,269.3 L255.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '268.5,269.3 274.6,269.3 274.6,268.1 268.5,268.1 '/>
+	</g>
+	<path  d='M268.5,269.3 L268.5,268.2 L274.5,268.2 L274.5,269.3 L268.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '281.9,269.3 288.0,269.3 288.0,264.3 281.9,264.3 '/>
+	</g>
+	<path  d='M281.9,269.3 L281.9,264.4 L287.9,264.4 L287.9,269.3 L281.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '295.2,269.3 301.3,269.3 301.3,260.4 295.2,260.4 '/>
+	</g>
+	<path  d='M295.2,269.3 L295.2,260.5 L301.2,260.5 L301.2,269.3 L295.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '308.5,269.3 314.6,269.3 314.6,261.3 308.5,261.3 '/>
+	</g>
+	<path  d='M308.5,269.3 L308.5,261.4 L314.5,261.4 L314.5,269.3 L308.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '321.9,269.3 328.0,269.3 328.0,209.3 321.9,209.3 '/>
+	</g>
+	<path  d='M321.9,269.3 L321.9,209.4 L327.9,209.4 L327.9,269.3 L321.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '335.2,269.3 341.3,269.3 341.3,264.8 335.2,264.8 '/>
+	</g>
+	<path  d='M335.2,269.3 L335.2,264.9 L341.2,264.9 L341.2,269.3 L335.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '348.5,269.3 354.6,269.3 354.6,268.6 348.5,268.6 '/>
+	</g>
+	<path  d='M348.5,269.3 L348.5,268.7 L354.5,268.7 L354.5,269.3 L348.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '361.9,269.3 368.0,269.3 368.0,268.5 361.9,268.5 '/>
+	</g>
+	<path  d='M361.9,269.3 L361.9,268.6 L367.9,268.6 L367.9,269.3 L361.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '375.2,269.3 381.3,269.3 381.3,265.9 375.2,265.9 '/>
+	</g>
+	<path  d='M375.2,269.3 L375.2,266.0 L381.2,266.0 L381.2,269.3 L375.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '388.5,269.3 394.6,269.3 394.6,260.2 388.5,260.2 '/>
+	</g>
+	<path  d='M388.5,269.3 L388.5,260.3 L394.5,260.3 L394.5,269.3 L388.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '401.9,269.3 407.9,269.3 407.9,265.4 401.9,265.4 '/>
+	</g>
+	<path  d='M401.9,269.3 L401.9,265.5 L407.8,265.5 L407.8,269.3 L401.9,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '415.2,269.3 421.3,269.3 421.3,268.3 415.2,268.3 '/>
+	</g>
+	<path  d='M415.2,269.3 L415.2,268.4 L421.2,268.4 L421.2,269.3 L415.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '428.5,269.3 434.6,269.3 434.6,268.0 428.5,268.0 '/>
+	</g>
+	<path  d='M428.5,269.3 L428.5,268.1 L434.5,268.1 L434.5,269.3 L428.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '441.8,269.3 447.9,269.3 447.9,266.9 441.8,266.9 '/>
+	</g>
+	<path  d='M441.8,269.3 L441.8,267.0 L447.8,267.0 L447.8,269.3 L441.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '455.2,269.3 461.3,269.3 461.3,267.9 455.2,267.9 '/>
+	</g>
+	<path  d='M455.2,269.3 L455.2,268.0 L461.2,268.0 L461.2,269.3 L455.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '468.5,269.3 474.6,269.3 474.6,268.3 468.5,268.3 '/>
+	</g>
+	<path  d='M468.5,269.3 L468.5,268.4 L474.5,268.4 L474.5,269.3 L468.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '481.8,269.3 487.9,269.3 487.9,268.0 481.8,268.0 '/>
+	</g>
+	<path  d='M481.8,269.3 L481.8,268.1 L487.8,268.1 L487.8,269.3 L481.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '495.2,269.3 501.3,269.3 501.3,264.5 495.2,264.5 '/>
+	</g>
+	<path  d='M495.2,269.3 L495.2,264.6 L501.2,264.6 L501.2,269.3 L495.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '508.5,269.3 514.6,269.3 514.6,268.4 508.5,268.4 '/>
+	</g>
+	<path  d='M508.5,269.3 L508.5,268.5 L514.5,268.5 L514.5,269.3 L508.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '521.8,269.3 527.9,269.3 527.9,267.9 521.8,267.9 '/>
+	</g>
+	<path  d='M521.8,269.3 L521.8,268.0 L527.8,268.0 L527.8,269.3 L521.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '535.2,269.3 541.3,269.3 541.3,268.6 535.2,268.6 '/>
+	</g>
+	<path  d='M535.2,269.3 L535.2,268.7 L541.2,268.7 L541.2,269.3 L535.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '548.5,269.3 554.6,269.3 554.6,267.1 548.5,267.1 '/>
+	</g>
+	<path  d='M548.5,269.3 L548.5,267.2 L554.5,267.2 L554.5,269.3 L548.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '561.8,269.3 567.9,269.3 567.9,268.3 561.8,268.3 '/>
+	</g>
+	<path  d='M561.8,269.3 L561.8,268.4 L567.8,268.4 L567.8,269.3 L561.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '575.2,269.3 581.3,269.3 581.3,268.1 575.2,268.1 '/>
+	</g>
+	<path  d='M575.2,269.3 L575.2,268.2 L581.2,268.2 L581.2,269.3 L575.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '588.5,269.3 594.6,269.3 594.6,267.0 588.5,267.0 '/>
+	</g>
+	<path  d='M588.5,269.3 L588.5,267.1 L594.5,267.1 L594.5,269.3 L588.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '601.8,269.3 607.9,269.3 607.9,268.6 601.8,268.6 '/>
+	</g>
+	<path  d='M601.8,269.3 L601.8,268.7 L607.8,268.7 L607.8,269.3 L601.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '615.2,269.3 621.3,269.3 621.3,265.6 615.2,265.6 '/>
+	</g>
+	<path  d='M615.2,269.3 L615.2,265.7 L621.2,265.7 L621.2,269.3 L615.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '628.5,269.3 634.6,269.3 634.6,121.9 628.5,121.9 '/>
+	</g>
+	<path  d='M628.5,269.3 L628.5,122.0 L634.5,122.0 L634.5,269.3 L628.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '641.8,269.3 647.9,269.3 647.9,267.5 641.8,267.5 '/>
+	</g>
+	<path  d='M641.8,269.3 L641.8,267.6 L647.8,267.6 L647.8,269.3 L641.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '655.2,269.3 661.3,269.3 661.3,267.7 655.2,267.7 '/>
+	</g>
+	<path  d='M655.2,269.3 L655.2,267.8 L661.2,267.8 L661.2,269.3 L655.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '668.5,269.3 674.6,269.3 674.6,267.3 668.5,267.3 '/>
+	</g>
+	<path  d='M668.5,269.3 L668.5,267.4 L674.5,267.4 L674.5,269.3 L668.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '681.8,269.3 687.9,269.3 687.9,217.6 681.8,217.6 '/>
+	</g>
+	<path  d='M681.8,269.3 L681.8,217.7 L687.8,217.7 L687.8,269.3 L681.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '695.2,269.3 701.3,269.3 701.3,268.5 695.2,268.5 '/>
+	</g>
+	<path  d='M695.2,269.3 L695.2,268.6 L701.2,268.6 L701.2,269.3 L695.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '708.5,269.3 714.6,269.3 714.6,268.1 708.5,268.1 '/>
+	</g>
+	<path  d='M708.5,269.3 L708.5,268.2 L714.5,268.2 L714.5,269.3 L708.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '721.8,269.3 727.9,269.3 727.9,265.2 721.8,265.2 '/>
+	</g>
+	<path  d='M721.8,269.3 L721.8,265.3 L727.8,265.3 L727.8,269.3 L721.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '735.2,269.3 741.3,269.3 741.3,267.9 735.2,267.9 '/>
+	</g>
+	<path  d='M735.2,269.3 L735.2,268.0 L741.2,268.0 L741.2,269.3 L735.2,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '748.5,269.3 754.6,269.3 754.6,261.7 748.5,261.7 '/>
+	</g>
+	<path  d='M748.5,269.3 L748.5,261.8 L754.5,261.8 L754.5,269.3 L748.5,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '761.8,269.3 767.9,269.3 767.9,268.3 761.8,268.3 '/>
+	</g>
+	<path  d='M761.8,269.3 L761.8,268.4 L767.8,268.4 L767.8,269.3 L761.8,269.3 Z  h0.01'/>	<g style = 'stroke:none; shape-rendering:crispEdges'>
+		<polygon fill = 'currentColor' fill-opacity = '0.400000' points = '775.2,269.3 781.3,269.3 781.3,268.6 775.2,268.6 '/>
+	</g>
+	<path  d='M775.2,269.3 L775.2,268.7 L781.2,268.7 L781.2,269.3 L775.2,269.3 Z  h0.01'/></g>
+	</g>
+<g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
+	<path  d='M18.2,5.7 L18.2,269.3 L791.5,269.3 L791.5,5.7 L18.2,5.7 Z  h0.01'/></g>
+</g>
+</svg>
+

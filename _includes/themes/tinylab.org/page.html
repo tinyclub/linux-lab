@@ -1,0 +1,30 @@
+<section id="content">
+  <article>
+
+    <section>
+      <header>
+        <h1>{{ page.title }}</h1>
+      </header>
+    </section>
+    <section>
+      <header>
+        {% if page.tagline %}<small>{{ page.tagline }}</small>{% endif %}
+      </header>
+    </section>
+
+  <section>
+    {% if page.group != "home" %}
+      {% include widgets/page_header %}
+    {% endif %}
+
+    <div {% if page.group != "home" %} id="main_content_container" {% endif %}>
+    {{ content }}
+    </div>
+  </section>
+
+  </article>
+</section>
+
+<section id="comments">
+  {% include JB/comments %}
+</section>

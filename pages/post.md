@@ -22,7 +22,7 @@ order: 30
 
 我们的文章仓库托管在 [Github][1] 上，可用如下命令下载：
 
-    $ git clone https://github.com/tinyclub/website.git && cd website
+    $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
 
 如果希望持续参与/关注我们的原创进程，请 Fork / Start 我们的仓库。
 
@@ -154,5 +154,5 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上述命令创�
 
 
 
- [1]: https://github.com/tinyclub/website.git
+ [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: http://wowubuntu.com/markdown/

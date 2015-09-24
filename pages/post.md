@@ -42,7 +42,7 @@ order: 30
 
 或者
 
-    $ tools/post.sh
+    $ tools/post
 
 后者是前者的封装，可以简化命令行的输入。
 
@@ -53,6 +53,10 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上述命令创�
 ### 编译文稿
 
     $ jekyll s --limit_posts 1
+
+或者
+
+    $ tools/start
 
 **注**：`--limit_posts 1` 只编译最新的一篇，会大大加快编译和测试效率。
 

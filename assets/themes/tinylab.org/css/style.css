@@ -975,18 +975,6 @@ short_prev_next {
 #ds-reset .ds-comment-body p {
     font-size: 100%!important
 }
-/*  Baidu Share  */
-
-#bdshare_s a,
-#bdshare_s h6,
-#bdshare a,
-#bdshare span {
-    font-family: inherit!important
-}
-#bdshare_l_c p,
-#bdshare_pop p {
-    display: none
-}
 /*  Float box  */
 
 #float-box-wrap {
@@ -1260,7 +1248,6 @@ short_prev_next {
     #float-box-wrap,
     #search-box,
     #comments,
-    #bdshare,
     .pagination {
         display: none
     }

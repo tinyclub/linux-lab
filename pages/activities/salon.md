@@ -1,6 +1,6 @@
 ---
 title: 沙龙
-author: Wu Zhangjin
+tagline: 由泰晓科技举办的线下沙龙活动
 layout: page
 group: navigation
 permalink: /tinysalon/

@@ -1,6 +1,5 @@
 ---
 layout: page
-author: admin
 # group: navigation
 toc: false
 title: 工作

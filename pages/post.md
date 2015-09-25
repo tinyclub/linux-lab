@@ -1,7 +1,6 @@
 ---
 title: 投稿
 tagline: 欢迎投递原创稿件、工作机会、求职简历等
-author: Wu Zhangjin
 layout: page
 group: navigation
 permalink: /post/

@@ -13,7 +13,7 @@
     </section>
 
   <section>
-    {% if page.group != "home" %}
+    {% if page.group != "home" and (page.author != null or page.comments == null)) %}
       {% include widgets/page_header %}
     {% endif %}
 

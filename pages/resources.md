@@ -1,6 +1,5 @@
 ---
 title: 更多
-author: Wu Zhangjin
 layout: page
 tagline: 本站各类资源合集
 permalink: /resources/

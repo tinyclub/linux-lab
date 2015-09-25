@@ -24,7 +24,7 @@ categories:
   - Linux
 ---
 
-> 书籍：[嵌入式 Linux 知识库（eLinux.org 中文版）][1]
+> 书籍：[嵌入式 Linux 知识库][1]
 > 原文：[eLinux.org][2]
 > 翻译：[@lzufalcon][3]
 > 校订：[@ibrother][4]

@@ -1,6 +1,6 @@
-<a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
+<a {% if prompt %}title="{{ prompt }}"{% endif %} onclick="common_click('#list-{{ icon }}')"><i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
 {% if more %}{{ more }}{% endif %}
-<ul>
+<ul id="list-{{ icon }}">
   {% assign total_num = 0 %}
   {% for item in list %}
     {% if condition and item[{{condition}}] != {{value}} %}

@@ -19,6 +19,8 @@
     border-radius: 10px;
     font-size: 95%;
     padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 #toc h2, .toc h2 {
     border: medium none;

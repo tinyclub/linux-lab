@@ -14,37 +14,27 @@ title : Atom Feed
     <name>{{ site.data.people["admin"].name }}</name>
     <email>{{ site.data.people["admin"].email }}</email>
   </author>
-
+{% capture tmpcache %}
+{% capture nl0 %}
+{% endcapture %}
+{% endcapture %}{% assign tmpcache = nil %}
 {% for post in site.posts %}
   <entry>
-    <title>{{ post.title | replace:':','：', | strip_html | xml_escape }}</title>
+    <title>{% capture post_title %}{{ post.title | replace:':','：' | strip_html | xml_escape | strip }}{%endcapture%}{{post_title}}</title>
     <link href="{{ site.production_url }}{{ post.url }}"/>
     <updated>{{ post.date | date_to_xmlschema }}</updated>
     <id>{{ site.production_url }}{{ post.id }}</id>
-	{% if post.keywords %}
-    <summary>{{ post.keywords }}</summary>
-    {% else %}
-	<summary>{{ post.categories | join: "," | replace:':','：' | strip_html | xml_escape }},{{ post.tags | join: "," | replace:':','：' | strip_html | xml_escape  }}</summary>
-    {% endif %}
-    <content type="html">{{ post.content | replace:':','：' | strip_html | truncate:300 | xml_escape }}</content>
+	{% capture summary %}{% assign tags = post.tags | join: "," %}{{ post.categories | join: "," | append: "," | append: post.keywords | append:"," | append: tags| replace:':','：' | strip_html | xml_escape | split:"," | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{summary | replace: ",,,":"," | replace: ",,":"," }}</summary>{%endif%}
+    {% capture content %}{{ post.content | replace:':','：' | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:300 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content type="html">{{content}}</content>{% endif %}
   </entry>
 {% endfor %}
-
-{% for page in site.pages %}
-{% if page.comments == false or page.layout == null or page.layout == "default" or page.group == "home" %}
-  {% continue %}
-{% endif %}
-  <entry>
-    <title>{{ page.title | replace:':','：' | strip_html | xml_escape }}</title>
+{% for page in site.pages %}{% if page.url contains ".html" or page.content contains '% assign' or page.content contains '% include' or page.content contains '% for ' or page.content contains '% if' or page.content contains '{{ site.' %}{% continue %}{% endif %}  <entry>
+    <title>{% capture page_title %}{{ page.title | replace:':','：' | strip_html | xml_escape | strip }}{%endcapture%}{{page_title}}</title>
     <link href="{{ site.production_url }}{{ page.url }}"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
-    <id>{{ site.production_url }}{{ page.permalink }}</id>
-	{% if post.keywords %}
-    <summary>{{ post.keywords }}</summary>
-    {% else %}
-	<summary>{{ post.categories | replace:':','：' | strip_html | xml_escape | join: "," }},{{ post.tags | replace:':','：' | strip_html | xml_escape | join: "," }}</summary>
-    {% endif %}
-    <content type="html">{{ page.content | replace:':','：' | strip_html | truncate:300 | xml_escape }}</content>
+    <id>{{ site.production_url }}{{ page.url }}</id>
+	{% capture summary %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append: page.keywords | append:"," | append: tags| replace:':','：' | strip_html | xml_escape | split:"," | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{summary | replace: ",,,":"," | replace: ",,":"," }}</summary>{%endif%}
+    {% capture content %}{{ page.content | replace:':','：' | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:300 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content type="html">{{content}}</content>{% endif %}
   </entry>
 {% endfor %}
 </feed>

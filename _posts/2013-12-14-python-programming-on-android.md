@@ -3,8 +3,6 @@ title: Python Programming on Android
 author: Wu Zhangjin
 layout: post
 permalink: /python-programming-on-android/
-views:
-  - 442
 tags:
   - ADT
   - Android

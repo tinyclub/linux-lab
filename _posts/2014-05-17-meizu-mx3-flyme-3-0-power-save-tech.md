@@ -3,8 +3,6 @@ title: 魅族 MX3 Flyme 3.0 省电技术详解
 author: Wu Zhangjin
 layout: post
 permalink: /meizu-mx3-flyme-3-0-power-save-tech/
-views:
-  - 35279
 tags:
   - 热能转换为电能
   - 电话模式
@@ -482,7 +480,3 @@ WLAN自动休眠其实是wifi在无数据通信时（没有wifi wakelock）自�
  [6]: http://blog.chinaunix.net/uid-29208421-id-3950131.html
  [7]: http://www.dramx.com/Knowledge/post/5/6043.html
  [8]: http://www.beareyes.com.cn/html/2013/09/05/review/11498.shtml
- [9]: http://www.cnmo.com/reviews/206132.html
- [10]: http://www.pingwest.com/greenify-android/
- [11]: http://blog.oasisfeng.com/2013/04/14/dirty-secret-behind-weixin-charge-gate/
- [12]: research.microsoft.com/en-us/people/mzh/eurosys-2012.pdf

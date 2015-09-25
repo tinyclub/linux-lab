@@ -3,8 +3,6 @@ title: 基于 ssh + Xpra 构建 Docker 桌面系统
 author: Wu Zhangjin
 layout: post
 permalink: /based-on-ssh-build-docker-xpra-desktop/
-views:
-  - 150
 tags:
   - Desktop
   - Docker

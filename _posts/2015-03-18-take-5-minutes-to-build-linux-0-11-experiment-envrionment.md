@@ -3,8 +3,6 @@ title: 五分钟内搭建 Linux 0.11 的实验环境
 author: Wu Zhangjin
 layout: post
 permalink: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
-views:
-  - 484
 tags:
   - Bochs
   - Callgraph

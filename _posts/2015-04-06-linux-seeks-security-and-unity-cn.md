@@ -4,8 +4,6 @@ author: Youkee
 layout: post
 group: translation
 permalink: /linux-seeks-security-and-unity-cn/
-views:
-  - 55
 tags:
   - AllSeen
   - IoT

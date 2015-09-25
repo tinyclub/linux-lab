@@ -3,8 +3,6 @@ title: Break through Linux image size limitation of Uboot
 author: Wu Zhangjin
 layout: post
 permalink: /break-through-the-linux-kernel-image-size-limitation-of-the-uboot/
-views:
-  - 1014
 tags:
   - kernel image size limitation
   - Linux

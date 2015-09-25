@@ -3,8 +3,6 @@ title: Java Programming on Android
 author: Wu Zhangjin
 layout: post
 permalink: /java-programming-on-android/
-views:
-  - 1478
 tags:
   - ADT
   - Android

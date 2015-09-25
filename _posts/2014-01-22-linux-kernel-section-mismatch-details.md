@@ -3,8 +3,6 @@ title: Linux 内核 Section Mismatch 详解
 author: Wu Zhangjin
 layout: post
 permalink: /linux-kernel-section-mismatch-details/
-views:
-  - 578
 tags:
   - Debug，CONFIG_DEBUG_SECTION_MISMATCH
   - Linux

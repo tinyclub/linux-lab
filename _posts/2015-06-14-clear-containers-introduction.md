@@ -4,8 +4,6 @@ author: Tao HongLiang
 layout: post
 group: translation
 permalink: /clear-containers-introduction/
-views:
-  - 25
 tags:
   - Container
   - 翻译，Clear Containers

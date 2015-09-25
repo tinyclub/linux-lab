@@ -3,8 +3,6 @@ title: 在 BASH 中进行高效的目录切换
 author: Wen Pingbo
 layout: post
 permalink: /bash-directory-change/
-views:
-  - 41
 tags:
   - Bash
   - dirstack

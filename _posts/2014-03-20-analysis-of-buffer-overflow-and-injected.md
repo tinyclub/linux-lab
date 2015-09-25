@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /analysis-of-buffer-overflow-and-injected/
-views:
-  - 574
 tags:
   - 缓冲区溢出，缓冲区注入，C 语言编程透视，内存映像
 categories:

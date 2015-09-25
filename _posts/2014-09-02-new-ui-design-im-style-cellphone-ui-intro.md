@@ -3,8 +3,6 @@ title: 移动终端 UI 设计新思路：从图形界面回归“命令行”?
 author: Chen Jie
 layout: post
 permalink: /new-ui-design-im-style-cellphone-ui-intro/
-views:
-  - 136
 tags:
   - 移动终端
   - UI

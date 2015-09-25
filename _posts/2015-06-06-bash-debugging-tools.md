@@ -3,8 +3,6 @@ title: BASH 的调试手段
 author: Wen Pingbo
 layout: post
 permalink: /bash-debugging-tools/
-views:
-  - 146
 tags:
   - Bash
   - bashdb

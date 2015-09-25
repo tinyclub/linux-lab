@@ -3,8 +3,6 @@ title: 移植 Linux 3.4 到 3.10:__devinit,__devexit 引起的编译失败
 author: Wen Pingbo
 layout: post
 permalink: /faqs/fixup-compile-error-with-devinit-devexit/
-views:
-  - 375
 tags:
   - 3.8
   - 编译失败

@@ -3,8 +3,6 @@ title: 小米、魅族不约而同开源部分机型 Linux 内核
 author: 泰晓科技
 layout: post
 permalink: /xiaomi-and-meizu-release-linux-kernel-for-parts-of-their-phones/
-views:
-  - 302
 tags:
   - 魅族
   - Linux

@@ -3,8 +3,6 @@ title: Buddy 和 CMA 在 Android 中的实用报告
 author: teawater
 layout: post
 permalink: /buddy-actually-use-cma-and-cma-brochures-as-well-as-android-problem-improving/
-views:
-  - 86
 tags:
   - Android
   - Buddy

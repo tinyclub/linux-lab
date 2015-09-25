@@ -3,8 +3,6 @@ title: Linux 系统启动速度优化概述
 author: Wu Zhangjin
 layout: post
 permalink: /linux-system-boot-speedup-overview/
-views:
-  - 39
 tags:
   - Linux
   - 启动速度

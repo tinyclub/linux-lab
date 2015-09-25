@@ -8,8 +8,6 @@ excerpt: |
   <!--:-->
 layout: post
 permalink: /how-time-machine-works-on-mac-os-x/
-views:
-  - 43
 tags:
 categories:
   - OS X

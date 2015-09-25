@@ -3,8 +3,6 @@ title: Hello TinyLab | 泰晓科技!
 author: Wu Zhangjin
 layout: post
 permalink: /hello-tinylab/
-views:
-  - 479
 tags:
   - TinyLab
   - TinyLab简介

@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /summary-of-shell-programming-paradigm-article/
-views:
-  - 1277
 tags:
   - Bash
   - 编程

@@ -3,8 +3,6 @@ title: Measure and Draw the Boot-up Time of Linux Kernel
 author: Wu Zhangjin
 layout: post
 permalink: /measure-and-draw-the-boot-up-time-of-linux-kernel/
-views:
-  - 476
 tags:
   - Boot
   - bootgraph.pl

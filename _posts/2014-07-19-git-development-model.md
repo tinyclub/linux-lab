@@ -3,8 +3,6 @@ title: 常用 Git 开发模型
 author: Wu Zhangjin
 layout: post
 permalink: /git-development-model/
-views:
-  - 198
 tags:
   - Gerrit
   - Git

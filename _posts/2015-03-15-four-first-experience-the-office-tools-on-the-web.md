@@ -3,8 +3,6 @@ title: 四大移动办公应用初体验
 author: Tao HongLiang
 layout: post
 permalink: /four-first-experience-the-office-tools-on-the-web/
-views:
-  - 85
 tags:
   - 移动办公
   - 项目管理

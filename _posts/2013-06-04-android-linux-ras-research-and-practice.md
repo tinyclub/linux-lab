@@ -5,8 +5,6 @@ layout: post
 permalink: /android-linux-ras-research-and-practice/
 transposh_can_translate:
   - 'true'
-views:
-  - 257
 tags:
   - Android
   - 珠海GDG

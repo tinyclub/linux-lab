@@ -3,8 +3,6 @@ title: CTA 介绍
 author: Wen Pingbo
 layout: post
 permalink: /cta-introduces/
-views:
-  - 99
 tags:
   - CCC
   - CQC

@@ -3,8 +3,6 @@ title: Linux 片面报告：从 4.0 到 4.2
 author: Chen Jie
 layout: post
 permalink: /linux-one-sided-reports-from-4-0-to-4-2/
-views:
-  - 82
 tags:
   - BPF
   - DAX

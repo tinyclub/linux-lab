@@ -3,8 +3,6 @@ title: WordPress 文章保存为 PDF 的最佳方式
 author: Wu Zhangjin
 layout: post
 permalink: /export-wordpress-articles-to-pdf-files/
-views:
-  - 257
 tags:
   - CleanPrint
   - CleanSave

@@ -3,8 +3,6 @@ title: 从开源到自我学习
 author: Youkee
 layout: post
 permalink: /from-open-source-to-learning/
-views:
-  - 216
 tags:
   - Arduino
   - GPU

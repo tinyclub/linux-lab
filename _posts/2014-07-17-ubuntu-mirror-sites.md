@@ -3,8 +3,6 @@ title: 常用 Ubuntu 镜像站
 author: Wu Zhangjin
 layout: post
 permalink: /ubuntu-mirror-sites/
-views:
-  - 118
 tags:
   - 镜像站
   - mirrors

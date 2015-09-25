@@ -3,8 +3,6 @@ title: s2n：亚马逊的 TLS 之道
 author: Chen Jie
 layout: post
 permalink: /s2n-amazons-road-to-tls/
-views:
-  - 29
 tags:
   - Amazon
   - OpenSSL

@@ -3,8 +3,6 @@ title: Android 加载不同 DPI 资源与内存消耗之间的关系
 author: will
 layout: post
 permalink: /android-loading-a-different-relationship-between-dpi-and-memory-consumption-of-resources/
-views:
-  - 860
 tags:
   - Android
   - DPI

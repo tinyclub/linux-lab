@@ -3,8 +3,6 @@ title: 升级 Ubuntu 14.04 后彻底解决权限问题
 author: Wu Zhangjin
 layout: post
 permalink: /ubuntu-upgrade-thoroughly-resolve-the-permissions-issue/
-views:
-  - 64
 tags:
   - 13.10
   - 14.04

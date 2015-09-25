@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /the-smallest-elf-executable-hello-world/
-views:
-  - 372
 tags:
   - 45
   - c

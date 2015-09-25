@@ -3,8 +3,6 @@ title: 如何制作终端中的动画
 author: Wen Pingbo
 layout: post
 permalink: /how-to-write-terminal-animation/
-views:
-  - 65
 tags:
   - Bash
   - csi

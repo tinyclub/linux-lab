@@ -3,8 +3,6 @@ title: 魅族 MX4 Flyme 4 初体验 【多图慎入，魅友投稿】
 author: 泰晓科技
 layout: post
 permalink: /mx4-flyme-4-my-first-user-experience/
-views:
-  - 567
 tags:
   - 40T云盘
   - 4k录像

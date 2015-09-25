@@ -3,8 +3,6 @@ title: 编译 Python 源代码 py 成字节码 pyc
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/compile-python-from-py-to-pyc/
-views:
-  - 269
 tags:
 categories:
   - Python

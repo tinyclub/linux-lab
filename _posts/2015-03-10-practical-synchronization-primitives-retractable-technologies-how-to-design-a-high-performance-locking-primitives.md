@@ -5,8 +5,6 @@ author: Chen Jie
 layout: post
 group: translation
 permalink: /practical-synchronization-primitives-retractable-technologies-how-to-design-a-high-performance-locking-primitives/
-views:
-  - 53
 tags:
   - concurrent
   - 锁

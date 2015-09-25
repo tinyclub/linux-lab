@@ -3,8 +3,6 @@ title: Free online Linux Labs
 author: Wu Zhangjin
 layout: post
 permalink: /free-online-linux-labs/
-views:
-  - 467
 tags:
   - Free
   - Labs

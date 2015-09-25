@@ -3,8 +3,6 @@ title: Linux 时钟 API 使用详解：事关实时响应、功耗与调试
 author: 泰晓科技
 layout: post
 permalink: /the-usage-of-linux-time-api/
-views:
-  - 137
 tags:
   - alarm
   - 非原子上下文

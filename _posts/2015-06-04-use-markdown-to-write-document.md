@@ -3,8 +3,6 @@ title: 用 Markdown 写文档
 author: Wu Zhangjin
 layout: post
 permalink: /use-markdown-to-write-document/
-views:
-  - 168
 tags:
   - Article
   - Markdown

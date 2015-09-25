@@ -4,8 +4,6 @@ author: Chen Jie
 layout: post
 group: translation
 permalink: /myths-about-urandom/
-views:
-  - 45
 tags:
   - /dev/random
   - /dev/urandom

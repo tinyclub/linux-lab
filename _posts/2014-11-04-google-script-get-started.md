@@ -3,8 +3,6 @@ title: 'Google Script: Get Started'
 author: Wen Pingbo
 layout: post
 permalink: /google-script-get-started/
-views:
-  - 34
 tags:
   - Google Script
   - JavaScript

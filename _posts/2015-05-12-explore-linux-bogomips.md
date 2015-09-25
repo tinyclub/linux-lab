@@ -3,8 +3,6 @@ title: 内核探索：Linux BogoMips 探秘
 author: Wu Zhangjin
 layout: post
 permalink: /explore-linux-bogomips/
-views:
-  - 37
 tags:
   - BogoMIPS
   - 龙芯

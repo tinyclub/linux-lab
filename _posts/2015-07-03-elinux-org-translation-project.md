@@ -3,8 +3,6 @@ title: eLinux.org 翻译计划
 author: Wu Zhangjin
 layout: post
 permalink: /elinux-org-translation-project/
-views:
-  - 38
 tags:
   - 翻译
   - eLinux.org

@@ -3,8 +3,6 @@ title: 在 CentOS 7 下配置 Android 开发环境
 author: bigz.zhang
 layout: post
 permalink: /develop-android-under-centos7/
-views:
-  - 104
 tags:
   - Android
   - CentOS

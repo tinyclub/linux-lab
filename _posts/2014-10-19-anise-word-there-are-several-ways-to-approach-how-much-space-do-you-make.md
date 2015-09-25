@@ -3,8 +3,6 @@ title: '“茴”字有几种写法：结构体占多少空间你造吗？'
 author: Chen Jie
 layout: post
 permalink: /anise-word-there-are-several-ways-to-approach-how-much-space-do-you-make/
-views:
-  - 62
 tags:
   - big endness
   - bit-order

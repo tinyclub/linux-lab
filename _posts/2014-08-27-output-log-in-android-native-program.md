@@ -3,8 +3,6 @@ title: 在 Android Native 程序中输出 LOG
 author: Wen Pingbo
 layout: post
 permalink: /output-log-in-android-native-program/
-views:
-  - 354
 tags:
   - Android
   - liblog

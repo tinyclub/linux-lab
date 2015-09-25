@@ -5,8 +5,6 @@ layout: post
 permalink: /lua-programing-on-android/
 tp_language:
   - en
-views:
-  - 995
 tags:
   - Android
   - AndroLua

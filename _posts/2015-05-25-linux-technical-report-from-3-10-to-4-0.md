@@ -3,8 +3,6 @@ title: Linux 技术报告：从 3.10 到 4.0
 author: Wu Zhangjin
 layout: post
 permalink: /linux-technical-report-from-3-10-to-4-0/
-views:
-  - 67
 tags:
   - 3.10
   - 4.0

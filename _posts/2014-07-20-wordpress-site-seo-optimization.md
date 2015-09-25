@@ -3,8 +3,6 @@ title: WordPress 网站 SEO 优化
 author: Wu Zhangjin
 layout: post
 permalink: /wordpress-site-seo-optimization/
-views:
-  - 149
 tags:
   - async
   - BOM

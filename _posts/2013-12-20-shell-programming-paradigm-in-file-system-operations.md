@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-programming-paradigm-in-file-system-operations/
-views:
-  - 961
 tags:
   - Bash
   - 编程

@@ -5,8 +5,6 @@ layout: post
 permalink: /using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
 transposh_can_translate:
   - 'true'
-views:
-  - 2668
 tags:
   - busybox
   - initramfs

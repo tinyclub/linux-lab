@@ -3,8 +3,6 @@ title: SSDAlloc：用 SSD 扩展内存
 author: Chen Jie
 layout: post
 permalink: /ssdalloc-using-ssd-for-expandable-memory/
-views:
-  - 492
 tags:
   - OPP
   - SSD

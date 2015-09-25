@@ -3,8 +3,6 @@ title: 开源书籍：《C 语言编程透视》发布 0.1 版
 author: Wu Zhangjin
 layout: post
 permalink: /the-c-programming-language-insight-publishing-version-0-01/
-views:
-  - 871
 tags:
   - C 语言编程
   - C 语言编程透视

@@ -3,8 +3,6 @@ title: 盘点那些已经开放 Linux 内核源代码的智能手机厂商
 author: Wu Zhangjin
 layout: post
 permalink: /counting-those-who-have-already-opened-the-kernel-source-smartphone-maker/
-views:
-  - 846
 tags:
   - CyanogenMod
   - 魅族

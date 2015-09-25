@@ -3,8 +3,6 @@ title: 汇编实战：龙芯处理器之 memcpy 优化
 author: Chen Jie
 layout: post
 permalink: /assembly-practice-loongson-processor-memcpy-optimization/
-views:
-  - 231
 tags:
   - gslq
   - gssq

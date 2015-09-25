@@ -3,8 +3,6 @@ title: 源码分析：动态分析 C 程序函数调用关系
 author: Wu Zhangjin
 layout: post
 permalink: /source-code-analysis-gprof2dot-draw-a-runtime-function-calls-the-c-program/
-views:
-  - 242
 tags:
   - Callgrind
   - Gprof

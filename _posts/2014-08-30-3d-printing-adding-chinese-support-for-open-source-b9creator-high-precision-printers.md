@@ -3,8 +3,6 @@ title: '为开源 B9Creator 打印机添加中文支持'
 author: Wu Zhangjin
 layout: post
 permalink: /3d-printing-adding-chinese-support-for-open-source-b9creator-high-precision-printers/
-views:
-  - 108
 tags:
   - 3D打印机
   - B9Creator

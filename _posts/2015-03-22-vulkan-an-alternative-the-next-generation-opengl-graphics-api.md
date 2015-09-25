@@ -3,8 +3,6 @@ title: 'Vulkan：替代 OpenGL 的下一代图形 API'
 author: Chen Jie
 layout: post
 permalink: /vulkan-an-alternative-the-next-generation-opengl-graphics-api/
-views:
-  - 311
 tags:
   - Denver
   - GDC15

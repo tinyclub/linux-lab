@@ -3,8 +3,6 @@ title: Optimizing Embedded Systems using Busybox
 author: Wu Zhangjin
 layout: post
 permalink: /optimizing-embedded-systems-using-busybox/
-views:
-  - 553
 tags:
   - Android
   - Android emulator

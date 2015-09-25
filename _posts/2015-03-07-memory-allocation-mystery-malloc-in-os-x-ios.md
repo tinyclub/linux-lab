@@ -3,8 +3,6 @@ title: 内存分配奥义·malloc in OS X
 author: Chen Jie
 layout: post
 permalink: /memory-allocation-mystery-malloc-in-os-x-ios/
-views:
-  - 75
 tags:
   - apple
   - iOS

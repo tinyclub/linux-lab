@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq-scope-outside-linkage-and-storage-class/
-views:
-  - 319
 tags:
   - c
   - faq

@@ -3,8 +3,6 @@ title: Qt 多国语言支持
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/qt-multi-languages-support/
-views:
-  - 152
 voted_ID:
   - 'a:3:{s:11:"A1945097233";s:10:"1404712013";s:11:"A1945097294";s:10:"1405172057";s:11:"A1945097412";s:10:"1405338501";}'
 votes_count:

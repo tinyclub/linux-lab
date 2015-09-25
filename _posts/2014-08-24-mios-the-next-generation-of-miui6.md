@@ -3,8 +3,6 @@ title: MIUI6：从优秀到卓越，离 MIOS 仅一步之遥
 author: 泰晓科技
 layout: post
 permalink: /mios-the-next-generation-of-miui6/
-views:
-  - 523
 tags:
   - Bitmap Cache Delete
   - Cgroup

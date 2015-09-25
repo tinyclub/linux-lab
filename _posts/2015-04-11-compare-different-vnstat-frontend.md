@@ -3,8 +3,6 @@ title: 'vnStatSVG: 流量监控软件 vnStat 最佳 Web 前端'
 author: Wu Zhangjin
 layout: post
 permalink: /compare-different-vnstat-frontend/
-views:
-  - 185
 tags:
   - Frontend
   - vnStat

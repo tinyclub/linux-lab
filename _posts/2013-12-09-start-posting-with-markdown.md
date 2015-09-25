@@ -3,8 +3,6 @@ title: Start posting with Markdown
 author: Wu Zhangjin
 layout: post
 permalink: /start-posting-with-markdown/
-views:
-  - 1100
 tags:
   - markdown on save
   - retext

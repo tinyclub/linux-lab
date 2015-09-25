@@ -3,8 +3,6 @@ title: Docker 快速上手：用 Docker + GitBook 写书
 author: Wu Zhangjin
 layout: post
 permalink: /docker-quick-start-docker-gitbook-writing-a-book/
-views:
-  - 481
 tags:
   - Docker
   - gitbook

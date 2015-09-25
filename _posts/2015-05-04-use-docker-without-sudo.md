@@ -3,8 +3,6 @@ title: 如何免 sudo 使用 docker
 author: Wu Zhangjin
 layout: post
 permalink: /use-docker-without-sudo/
-views:
-  - 349
 tags:
   - Docker
   - sudo

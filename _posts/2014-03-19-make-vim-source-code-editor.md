@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /make-vim-source-code-editor/
-views:
-  - 452
 tags:
   - C 语言编程透视
   - cscope

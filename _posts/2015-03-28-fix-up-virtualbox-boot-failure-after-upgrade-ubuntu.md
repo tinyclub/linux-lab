@@ -3,8 +3,6 @@ title: 升级 Ubuntu 后 VirtualBox 因驱动失效无法启动
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/fix-up-virtualbox-boot-failure-after-upgrade-ubuntu/
-views:
-  - 36
 tags:
   - DKMS
   - linux-headers

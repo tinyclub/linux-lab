@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq3-16-left-and-right-values/
-views:
-  - 211
 tags:
   - c
   - lvalue

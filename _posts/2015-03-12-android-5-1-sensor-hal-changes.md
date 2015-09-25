@@ -3,8 +3,6 @@ title: 解析 Android 5.1 Sensor HAL
 author: Wen Pingbo
 layout: post
 permalink: /android-5-1-sensor-hal-changes/
-views:
-  - 189
 tags:
   - Android 5.1
   - Android L

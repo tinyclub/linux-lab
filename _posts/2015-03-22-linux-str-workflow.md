@@ -3,8 +3,6 @@ title: 以龙芯 3A 为例图解 Linux 休眠唤醒流程
 author: Tao HongLiang
 layout: post
 permalink: /linux-str-workflow/
-views:
-  - 145
 tags:
   - 3A
   - 龙芯

@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /details-of-a-dynamic-symlink/
-views:
-  - 371
 tags:
   - C语言
   - C 语言编程透视

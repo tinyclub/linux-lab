@@ -3,8 +3,6 @@ title: Ubuntu 14.04 CHM 文档最佳阅读器
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/ubuntu-14-04-chm-reader/
-views:
-  - 447
 tags:
   - chm
   - chm2pdf

@@ -3,8 +3,6 @@ title: 大开脑洞：当丹佛核心遇上超线程
 author: Chen Jie
 layout: post
 permalink: /brain-wide-open-holes-when-the-denver-core-meets-the-hyper-threading/
-views:
-  - 57
 tags:
   - Denver
   - 超线程

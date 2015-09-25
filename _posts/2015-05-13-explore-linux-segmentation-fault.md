@@ -3,8 +3,6 @@ title: Linux 段错误详解
 author: Wu Zhangjin
 layout: post
 permalink: /explore-linux-segmentation-fault/
-views:
-  - 105
 tags:
   - backtace
   - catchsegv

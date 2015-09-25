@@ -3,8 +3,6 @@ title: 技术专辑：内存管理（1）
 author: Wu Zhangjin
 layout: post
 permalink: /memory-management-album-1/
-views:
-  - 130
 tags:
   - CMA
   - jemalloc

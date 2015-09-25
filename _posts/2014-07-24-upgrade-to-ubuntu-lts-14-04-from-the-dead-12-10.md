@@ -3,8 +3,6 @@ title: Ubuntu 升级：从 12.10 到 14.04(LTS)
 author: Wu Zhangjin
 layout: post
 permalink: /upgrade-to-ubuntu-lts-14-04-from-the-dead-12-10/
-views:
-  - 470
 tags:
   - 12.10
   - 14.04

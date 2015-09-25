@@ -3,8 +3,6 @@ title: 泰晓沙龙 第一期：古镇深巷，品茶谈今
 author: Wu Zhangjin
 layout: post
 permalink: /first-tiny-salon-at-tea-house-of-tangjia-town/
-views:
-  - 28
 tags:
   - 蜗居茶坊
   - Tiny Salon

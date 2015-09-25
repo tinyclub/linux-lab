@@ -3,8 +3,6 @@ title: 用 Markdown 制作简历
 author: Wu Zhangjin
 layout: post
 permalink: /write-resume-with-markdown/
-views:
-  - 462
 tags:
   - 简历
   - Latex

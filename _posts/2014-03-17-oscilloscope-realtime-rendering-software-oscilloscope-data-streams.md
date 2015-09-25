@@ -3,8 +3,6 @@ title: 'Oscilloscope: 用软件示波器实时渲染数据流'
 author: Wu Zhangjin
 layout: post
 permalink: /oscilloscope-realtime-rendering-software-oscilloscope-data-streams/
-views:
-  - 486
 tags:
   - cpu调频
   - cpufreq

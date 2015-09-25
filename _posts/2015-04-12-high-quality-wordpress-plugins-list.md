@@ -3,8 +3,6 @@ title: 35 款 WordPress 精品插件一览
 author: Wu Zhangjin
 layout: post
 permalink: /high-quality-wordpress-plugins-list/
-views:
-  - 167
 tags:
   - 精品插件
   - Plugin

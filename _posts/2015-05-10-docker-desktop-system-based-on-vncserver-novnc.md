@@ -3,8 +3,6 @@ title: 基于 VNCServer + noVNC 构建 Docker 桌面系统
 author: Wu Zhangjin
 layout: post
 permalink: /docker-desktop-system-based-on-vncserver-novnc/
-views:
-  - 178
 tags:
   - Docker
   - noVNC

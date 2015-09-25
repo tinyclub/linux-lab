@@ -3,8 +3,6 @@ title: 剖析触摸屏上的电容按键
 author: Wen Pingbo
 layout: post
 permalink: /analysis-of-capacitive-button-on-the-touch-screen/
-views:
-  - 473
 tags:
   - 电容按键
   - 触摸屏

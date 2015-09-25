@@ -3,8 +3,6 @@ title: 下载 Google Play 上的APK
 author: Wen Pingbo
 layout: post
 permalink: /faqs/download-google-on-the-play-of-the-apk/
-views:
-  - 72
 tags:
   - APK
   - Google Play

@@ -3,8 +3,6 @@ title: Add CGI support for Nginx
 author: Wu Zhangjin
 layout: post
 permalink: /add-cgi-support-for-nginx/
-views:
-  - 410
 tags:
   - Bash
   - CGI

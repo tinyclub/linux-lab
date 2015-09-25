@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /program-execution-the-moment/
-views:
-  - 345
 tags:
   - Bash
   - c

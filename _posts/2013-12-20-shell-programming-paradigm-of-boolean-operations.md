@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-programming-paradigm-of-boolean-operations/
-views:
-  - 1153
 tags:
   - Bash
   - 编程

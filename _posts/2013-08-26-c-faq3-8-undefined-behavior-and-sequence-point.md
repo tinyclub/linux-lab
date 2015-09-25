@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq3-8-undefined-behavior-and-sequence-point/
-views:
-  - 164
 tags:
   - c
   - faq

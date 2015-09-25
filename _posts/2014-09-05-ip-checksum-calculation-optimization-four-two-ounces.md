@@ -3,8 +3,6 @@ title: IP 校验和计算优化：四两拨千斤
 author: Chen Jie
 layout: post
 permalink: /ip-checksum-calculation-optimization-four-two-ounces/
-views:
-  - 105
 tags:
   - csum_partial
   - 龙芯

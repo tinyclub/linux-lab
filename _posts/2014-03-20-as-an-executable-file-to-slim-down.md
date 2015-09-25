@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /as-an-executable-file-to-slim-down/
-views:
-  - 632
 tags:
   - C 语言编程透视
   - dd

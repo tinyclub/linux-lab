@@ -3,8 +3,6 @@ title: 'NVIDIA 黑科技: 丹佛核心杀到！'
 author: Chen Jie
 layout: post
 permalink: /nvidia-black-tech-the-denver-core/
-views:
-  - 189
 tags:
   - AArch64
   - ARMv8

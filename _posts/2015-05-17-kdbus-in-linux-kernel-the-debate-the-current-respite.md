@@ -3,8 +3,6 @@ title: KDBUS 合入 Linux Kernel：激烈论战，目前暂歇
 author: Chen Jie
 layout: post
 permalink: /kdbus-in-linux-kernel-the-debate-the-current-respite/
-views:
-  - 45
 tags:
   - Binder
   - DBus

@@ -3,8 +3,6 @@ title: 内核探索：Regmap 框架：简化慢速 I/O 接口优化性能
 author: Wen Pingbo
 layout: post
 permalink: /kernel-explore-regmap-framework/
-views:
-  - 133
 tags:
   - I2C
   - Linux

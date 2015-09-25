@@ -3,8 +3,6 @@ title: 用 Kexec 快速切换当前 Linux 内核
 author: Wu Zhangjin
 layout: post
 permalink: /directly-switch-to-another-kernel-with-kexec/
-views:
-  - 38
 tags:
   - bootloader
   - Kexec

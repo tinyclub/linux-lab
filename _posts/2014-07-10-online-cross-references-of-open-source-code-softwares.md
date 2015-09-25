@@ -3,8 +3,6 @@ title: 开源软件在线代码交叉检索
 author: Wu Zhangjin
 layout: post
 permalink: /online-cross-references-of-open-source-code-softwares/
-views:
-  - 122
 tags:
   - Android
   - Linux

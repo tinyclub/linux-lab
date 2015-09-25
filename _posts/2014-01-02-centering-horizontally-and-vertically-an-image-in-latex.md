@@ -3,8 +3,6 @@ title: Centering (horizontally and vertically) an image in Latex
 author: Wu Zhangjin
 layout: post
 permalink: /centering-horizontally-and-vertically-an-image-in-latex/
-views:
-  - 303
 tags:
   - Book
   - Centering

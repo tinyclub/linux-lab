@@ -3,8 +3,6 @@ title: BASH 中的空格
 author: Wen Pingbo
 layout: post
 permalink: /bash-space/
-views:
-  - 21
 tags:
   - assignment word
   - Bash

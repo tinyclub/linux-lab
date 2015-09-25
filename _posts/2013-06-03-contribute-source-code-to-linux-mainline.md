@@ -5,8 +5,6 @@ layout: post
 permalink: /contribute-source-code-to-linux-mainline/
 transposh_can_translate:
   - 'true'
-views:
-  - 348
 tags:
   - 贡献代码到Linux官方
   - Linux contribution

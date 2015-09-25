@@ -3,8 +3,6 @@ title: Linux 下的 initrd 映像文件初探
 author: Wu Zhangjin
 layout: post
 permalink: /explore-linux-initrd-image-file/
-views:
-  - 34
 tags:
   - initramfs
   - initrd

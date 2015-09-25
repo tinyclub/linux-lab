@@ -3,8 +3,6 @@ title: 也谈虚拟化技术
 author: Wu Zhangjin
 layout: post
 permalink: /talk-about-virtulization-technology/
-views:
-  - 36
 tags:
   - 虚拟化
   - Linux

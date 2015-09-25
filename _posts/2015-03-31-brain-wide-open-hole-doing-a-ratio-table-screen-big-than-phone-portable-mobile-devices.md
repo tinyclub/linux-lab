@@ -3,8 +3,6 @@ title: 大开脑洞，做一个比表屏大，比 phone 便携的移动设备
 author: Chen Jie
 layout: post
 permalink: /brain-wide-open-hole-doing-a-ratio-table-screen-big-than-phone-portable-mobile-devices/
-views:
-  - 219
 tags:
   - Adam
   - Clutter

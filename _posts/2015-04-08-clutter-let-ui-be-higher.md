@@ -3,8 +3,6 @@ title: Clutter：UI 得瑟起来～～
 author: Chen Jie
 layout: post
 permalink: /clutter-let-ui-be-higher/
-views:
-  - 81
 tags:
   - Clutter
   - GNOME

@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq1-25-implicit-function-declarations/
-views:
-  - 154
 tags:
   - c
   - faq

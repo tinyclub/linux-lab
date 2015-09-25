@@ -6,8 +6,6 @@ layout: post
 permalink: /why-computer-students-learn-linux-open-source-technologies/
 transposh_can_translate:
   - 'true'
-views:
-  - 7566
 tags:
   - CS630
   - 计算机学生

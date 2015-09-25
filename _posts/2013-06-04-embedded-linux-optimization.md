@@ -5,8 +5,6 @@ layout: post
 permalink: /embedded-linux-optimization/
 transposh_can_translate:
   - 'true'
-views:
-  - 379
 tags:
   - 稳定性优化
   - 系统裁剪

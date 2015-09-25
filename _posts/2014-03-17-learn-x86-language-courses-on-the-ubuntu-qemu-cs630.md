@@ -3,8 +3,6 @@ title: 'Linux 下通过 Qemu 学习 X86 AT T 汇编语言'
 author: Wu Zhangjin
 layout: post
 permalink: /learn-x86-language-courses-on-the-ubuntu-qemu-cs630/
-views:
-  - 626
 tags:
   - Assembly
   - AT&amp;T

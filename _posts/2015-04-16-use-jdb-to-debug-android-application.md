@@ -3,8 +3,6 @@ title: 使用 JDB 调试 Android 应用程序
 author: Huang Tao
 layout: post
 permalink: /use-jdb-to-debug-android-application/
-views:
-  - 386
 tags:
   - ADB
   - ADT

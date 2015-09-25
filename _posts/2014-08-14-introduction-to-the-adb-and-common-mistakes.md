@@ -3,8 +3,6 @@ title: Android ADB 介绍及常见错误分析
 author: Wen Pingbo
 layout: post
 permalink: /introduction-to-the-adb-and-common-mistakes/
-views:
-  - 112
 tags:
   - ADB
   - Android

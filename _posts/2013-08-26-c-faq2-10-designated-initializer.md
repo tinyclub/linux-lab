@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq2-10-designated-initializer/
-views:
-  - 292
 tags:
   - c
   - faq

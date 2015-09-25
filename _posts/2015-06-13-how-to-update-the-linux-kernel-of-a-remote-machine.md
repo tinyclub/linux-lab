@@ -3,8 +3,6 @@ title: 如何更新远程主机上的 Linux 内核
 author: Wu Zhangjin
 layout: post
 permalink: /how-to-update-the-linux-kernel-of-a-remote-machine/
-views:
-  - 39
 tags:
   - 系统维护
   - Linux

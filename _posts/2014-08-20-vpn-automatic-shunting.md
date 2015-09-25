@@ -3,8 +3,6 @@ title: VPN 自动分流：GFW 困境突围
 author: Wen Pingbo
 layout: post
 permalink: /faqs/vpn-automatic-shunting/
-views:
-  - 509
 tags:
   - chnroutes
   - 自动分流

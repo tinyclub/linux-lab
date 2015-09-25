@@ -3,8 +3,6 @@ title: 内存分配奥义·jemalloc(二)
 author: Chen Jie
 layout: post
 permalink: /memory-allocation-mystery-%c2%b7-jemalloc-b/
-views:
-  - 213
 tags:
   - jemalloc
   - malloc

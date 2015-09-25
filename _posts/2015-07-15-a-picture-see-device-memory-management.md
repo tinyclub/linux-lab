@@ -3,8 +3,6 @@ title: 一张图看明白手机设备内存管理
 author: Chen Jie
 layout: post
 permalink: /a-picture-see-device-memory-management/
-views:
-  - 57
 tags:
   - apt-get
   - aptitude

@@ -5,8 +5,6 @@ layout: post
 permalink: /c-programming-on-android/
 tp_language:
   - en
-views:
-  - 689
 tags:
   - Android
   - c

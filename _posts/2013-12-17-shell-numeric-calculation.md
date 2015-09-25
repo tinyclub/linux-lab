@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-numeric-calculation/
-views:
-  - 5582
 tags:
   - Bash
   - 编程

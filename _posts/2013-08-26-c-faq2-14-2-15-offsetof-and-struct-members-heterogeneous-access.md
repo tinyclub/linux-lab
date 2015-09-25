@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq2-14-2-15-offsetof-and-struct-members-heterogeneous-access/
-views:
-  - 188
 tags:
   - c
   - faq

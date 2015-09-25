@@ -3,8 +3,6 @@ title: 源码分析：动态分析 Linux 内核函数调用关系
 author: Wu Zhangjin
 layout: post
 permalink: /source-code-analysis-dynamic-analysis-of-linux-kernel-function-calls/
-views:
-  - 123
 tags:
   - C语言
   - FlameGraph

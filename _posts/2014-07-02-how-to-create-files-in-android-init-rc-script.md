@@ -3,8 +3,6 @@ title: 在 Android init.rc 脚本中创建文件
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/how-to-create-files-in-android-init-rc-script/
-views:
-  - 154
 tags:
   - Android
   - create file

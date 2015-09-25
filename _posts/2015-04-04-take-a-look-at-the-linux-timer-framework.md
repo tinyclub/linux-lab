@@ -3,8 +3,6 @@ title: 内核探索：浅谈 Linux 下的 Timer 框架
 author: Tao HongLiang
 layout: post
 permalink: /take-a-look-at-the-linux-timer-framework/
-views:
-  - 169
 tags:
   - Clocksource
   - Clock_event_device

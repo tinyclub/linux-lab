@@ -3,8 +3,6 @@ title: Wordpress Q and A Focus Plus FAQ 中用 Markdown
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/user-markdown-in-q-and-a-focus-plus-faq/
-views:
-  - 20
 tags:
   - Markdown
   - Q and A Focus Plus FAQ

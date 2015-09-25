@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 group: translation
 permalink: /elinux-org-boot-time-optimization/
-views:
-  - 74
 tags:
   - Boot Time
   - bootloader

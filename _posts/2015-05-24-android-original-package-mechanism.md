@@ -3,8 +3,6 @@ title: 'Android &#8220;original-package&#8221; 机制'
 author: will
 layout: post
 permalink: /android-original-package-mechanism/
-views:
-  - 43
 tags:
   - Android
   - original-package

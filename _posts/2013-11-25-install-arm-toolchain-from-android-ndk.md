@@ -3,8 +3,6 @@ title: Install ARM toolchain from Android NDK
 author: Wu Zhangjin
 layout: post
 permalink: /install-arm-toolchain-from-android-ndk/
-views:
-  - 599
 tags:
   - Android NDK
   - busybox

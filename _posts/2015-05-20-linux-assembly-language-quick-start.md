@@ -3,8 +3,6 @@ title: Linux 汇编语言快速上手：4大架构一块学
 author: Wu Zhangjin
 layout: post
 permalink: /linux-assembly-language-quick-start/
-views:
-  - 178
 tags:
   - ARM
   - Linux

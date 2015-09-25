@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /testing-debugging-and-optimization-of-code-summary/
-views:
-  - 610
 tags:
   - C 语言编程透视
   - 调试

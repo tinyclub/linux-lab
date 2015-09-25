@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-programming-study-notes/
-views:
-  - 7627
 tags:
   - Bash
   - 编程

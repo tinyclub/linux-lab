@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-programming-paradigm-of-string-manipulation/
-views:
-  - 1955
 tags:
   - Bash
   - 编程

@@ -3,8 +3,6 @@ title: 魅族 MX4 卖疯了：发布首日预售即破 100 万【1799￥】
 author: 泰晓科技
 layout: post
 permalink: /meizu-mx4-was-released-the-first-day-reservations-broken-millions/
-views:
-  - 588
 tags:
   - 100万
   - 2070万

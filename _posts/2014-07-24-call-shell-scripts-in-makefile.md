@@ -3,8 +3,6 @@ title: Makefile 中调用 Shell 脚本
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/call-shell-scripts-in-makefile/
-views:
-  - 101
 tags:
   - Makefile
   - sed

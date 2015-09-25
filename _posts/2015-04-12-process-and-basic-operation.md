@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /process-and-basic-operation/
-views:
-  - 29
 tags:
   - C语言
   - 运行时

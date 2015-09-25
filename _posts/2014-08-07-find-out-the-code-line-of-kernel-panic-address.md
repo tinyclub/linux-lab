@@ -3,8 +3,6 @@ title: 如何快速定位 Linux Panic 出错的代码行
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/find-out-the-code-line-of-kernel-panic-address/
-views:
-  - 388
 tags:
   - addr2line
   - Backtrace

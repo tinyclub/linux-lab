@@ -3,8 +3,6 @@ title: 用 Markdown 高效地写幻灯片
 author: Wu Zhangjin
 layout: post
 permalink: /use-markdown-to-write-slides/
-views:
-  - 256
 tags:
   - Markdown
   - Slides

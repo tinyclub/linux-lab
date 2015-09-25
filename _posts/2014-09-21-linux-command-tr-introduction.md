@@ -3,8 +3,6 @@ title: Linux 命令 tr 介绍
 author: Wen Pingbo
 layout: post
 permalink: /linux-command-tr-introduction/
-views:
-  - 54
 tags:
   - 非打印字符
   - Linux

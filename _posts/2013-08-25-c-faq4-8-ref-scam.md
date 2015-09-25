@@ -4,8 +4,6 @@ author: Wen Pingbo
 layout: post
 album: C FAQ
 permalink: /c-faq4-8-ref-scam/
-views:
-  - 162
 tags:
   - c
   - faq

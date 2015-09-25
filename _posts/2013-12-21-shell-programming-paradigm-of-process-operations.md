@@ -4,8 +4,6 @@ author: Wu Zhangjin
 layout: post
 album: Shell 编程范例
 permalink: /shell-programming-paradigm-of-process-operations/
-views:
-  - 742
 tags:
   - Bash
   - 编程

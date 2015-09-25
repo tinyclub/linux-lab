@@ -3,8 +3,6 @@ title: 删除 Git 仓库中的第一条记录
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/delete-the-first-commit-of-the-git-repositor/
-views:
-  - 59
 tags:
   - --root
   - Git

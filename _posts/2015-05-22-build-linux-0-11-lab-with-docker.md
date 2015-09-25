@@ -3,8 +3,6 @@ title: 基于 Docker 快速构建 Linux 0.11 实验环境
 author: Wu Zhangjin
 layout: post
 permalink: /build-linux-0-11-lab-with-docker/
-views:
-  - 220
 tags:
   - 0.11
   - Docker

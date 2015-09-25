@@ -3,8 +3,6 @@ title: 用 kGDB 调试 Linux 内核
 author: Wen Pingbo
 layout: post
 permalink: /kgdb-debugging-kernel/
-views:
-  - 583
 tags:
   - Debug
   - KGDB

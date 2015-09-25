@@ -3,8 +3,6 @@ title: 泰晓开放书籍计划介绍
 author: Wu Zhangjin
 layout: post
 permalink: /open-books/
-views:
-  - 44
 tags:
   - C 语言编程透视
   - Shell编程范例

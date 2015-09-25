@@ -3,8 +3,6 @@ title: Q and A Focus Plus FAQ 显示到网站首页
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/show-post-of-q-and-a-focus-plus-plugin-in-homepage/
-views:
-  - 19
 tags:
   - 首页
   - faq

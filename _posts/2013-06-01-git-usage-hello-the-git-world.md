@@ -3,8 +3,6 @@ title: 'Git 用法详解'
 author: Wu Zhangjin
 layout: post
 permalink: /git-usage-hello-the-git-world/
-views:
-  - 366
 tags:
   - Git
   - Git用法详解

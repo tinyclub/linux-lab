@@ -3,8 +3,6 @@ title: GStreamer 多媒体开发：现已加入 Android 和 iOS 平台
 author: Chen Jie
 layout: post
 permalink: /gstreamer-sdk-a-cross-platform-multimedia-framework/
-views:
-  - 327
 tags:
   - Android
   - Android NDK

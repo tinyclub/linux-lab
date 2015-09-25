@@ -3,8 +3,6 @@ title: 五分钟内把项目仓库从 gitorious 搬到 GitLab
 author: Wu Zhangjin
 layout: post
 permalink: /take-5-minutes-to-migrate-projects-repo-from-gitorious-to-gitlab/
-views:
-  - 46
 tags:
   - GitLab
   - Gitorious.org

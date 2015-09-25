@@ -3,8 +3,6 @@ title: 智能手机功耗问题初探
 author: Wu Zhangjin
 layout: post
 permalink: /smart-phone-power-opt-part1/
-views:
-  - 715
 tags:
   - 功耗优化
   - 智能手机

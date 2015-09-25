@@ -3,8 +3,6 @@ title: 如何发布 docker 镜像到公有仓库
 author: Wu Zhangjin
 layout: post
 permalink: /how-to-publish-a-docker-image/
-views:
-  - 6
 tags:
   - Docker
   - Dockerfile

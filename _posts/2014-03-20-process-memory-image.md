@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /process-memory-image/
-views:
-  - 377
 tags:
   - 进程
   - 内存映像，C 语言编程透视

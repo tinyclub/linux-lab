@@ -3,8 +3,6 @@ title: 也谈 C 语言编程风格：完成从程序员到工程师的蜕变
 author: Wu Zhangjin
 layout: post
 permalink: /talk-about-c-language-programming-style/
-views:
-  - 175
 tags:
   - C语言
   - CodingStyle

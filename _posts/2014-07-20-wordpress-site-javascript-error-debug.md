@@ -3,8 +3,6 @@ title: WordPress 站点 JavaScript 错误调试
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/wordpress-site-javascript-error-debug/
-views:
-  - 26
 tags:
   - Chrome
   - 调试

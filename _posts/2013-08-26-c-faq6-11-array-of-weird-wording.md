@@ -4,8 +4,6 @@ author: Wen Pingbo
 album: C FAQ
 layout: post
 permalink: /c-faq6-11-array-of-weird-wording/
-views:
-  - 177
 tags:
   - c
   - faq

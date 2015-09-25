@@ -3,8 +3,6 @@ title: Q and A Focus Plus FAQ 添加随机 FAQ 小工具
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/q-and-a-focus-plus-faq-add-random-faq-widget/
-views:
-  - 20
 tags:
   - Q and A Focus Plus FAQ
   - Random FAQ

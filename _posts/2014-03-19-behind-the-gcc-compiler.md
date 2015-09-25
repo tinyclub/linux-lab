@@ -4,8 +4,6 @@ author: Wu Zhangjin
 album: C 语言编程透视
 layout: post
 permalink: /behind-the-gcc-compiler/
-views:
-  - 672
 tags:
   - as
   - C 语言编程透视

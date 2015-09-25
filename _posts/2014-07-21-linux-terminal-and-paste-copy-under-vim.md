@@ -3,8 +3,6 @@ title: 在 LINUX 终端和 VIM 下复制粘贴
 author: Wen Pingbo
 layout: post
 permalink: /linux-terminal-and-paste-copy-under-vim/
-views:
-  - 624
 tags:
   - clipboard
   - 粘贴

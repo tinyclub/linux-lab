@@ -3,8 +3,6 @@ title: Linux 系统调用
 author: Wen Pingbo
 layout: post
 permalink: /linux-system-calls/
-views:
-  - 442
 tags:
   - syscall
   - vdso

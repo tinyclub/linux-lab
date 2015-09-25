@@ -3,8 +3,6 @@ title: 'Use tables in Pandoc&#8217;s Markdown'
 author: Wu Zhangjin
 layout: post
 permalink: /use-tables-in-pandocs-markdown/
-views:
-  - 275
 tags:
   - Latex
   - Markdown

@@ -384,6 +384,10 @@ a:active {
     padding-top: 20px
 }
 
+#sidebar #fixed-container {
+   width: 100%;
+}
+
 #sidebar section a,
 #sidebar section:hover *,
 #sidebar section.active * {

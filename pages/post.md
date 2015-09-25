@@ -58,11 +58,16 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上述命令创�
 
     $ tools/start
 
-**注**：`--limit_posts 1` 只编译最新的一篇，会大大加快编译和测试效率。
+**注**
+
+* `--limit_posts 1` 只编译最新的一篇，会大大加快编译和测试效率。
+* `tools/start` 默认编译最近 5 篇，并自动启动浏览器（默认为 `chromium-browser`）访问，另外，IP 地址为自动获取到的 `br0` 或者 `eth0` 的地址，可在本地局域网访问。可修改 `tools/start` 进行配置。
 
 ### 浏览文稿
 
-通过浏览器打开：<http://localhost:4000> 进行查看。
+如果使用 `jekyll s` 而且没有通过 `-H` 指定 IP 地址，那么默认 IP 地址为 `127.0.0.1` 或者域名 `localhost`，可以通过浏览器打开：<http://localhost:4000> 进行查看。
+
+而 `tools/start` 使用了 `-H` 自动获取 IP 地址并主动启动浏览器打开，所以不需要自己输入地址，执行完 `tools/start` 后即可看到浏览器窗口，如果没有及时打开，可以点击 `RELOAD` 即可。 
 
 ### 递送稿件
 

@@ -104,6 +104,7 @@
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 22px;
+    font-style: italic;
     font-weight: 400
 }
 #toc_widget_container .nav .nav .nav > li > a:hover,

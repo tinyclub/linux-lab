@@ -15,3 +15,4 @@ Thumbs.db
 *.min.js
 *.min.css
 _data/compress.yml
+pdfs/*

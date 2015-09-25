@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# md2pdf -- Convert md 2 pdf with pandoc
+#
+# Requirements:
+#
+#  sudo apt-get install pandoc
+#  sudo apt-get install texlive-xetex texlive-latex-recommended texlive-latex-extra
+#
+#  sudo apt-get install ttf-arphic-gbsn00lp ttf-arphic-ukai # from arphic
+#  sudo apt-get install ttf-wqy-microhei ttf-wqy-zenhei     # from WenQuanYi
+#
+#  sudo apt-get install imagemagick
+#
+
+font="WenQuanYi Micro Hei"
+
+# Get arguments
+[ -z "$1" ] && echo "Usage: $0 /path/to/xxx.md" && exit 1
+[ ! -f "$1" ] && echo "ERROR: No such file: $1 " && exit 2
+in=$1
+file_type=${in##*.}
+file_name=`basename $in`
+file_name=${file_name%.*}
+[ "$file_type" != "md" ] && echo "ERROR: $1 is not suffixed with .md" && exit 3
+
+# Convert to a tmp markdown
+TOP_DIR=$(dirname `readlink -f $0`)
+DATA_DIR=$TOP_DIR/../
+PDF_DIR=$TOP_DIR/../pdfs/
+MD_DIR=$TOP_DIR/../_posts/
+
+in_orig=$MD_DIR/${file_name}.${file_type}
+in=`mktemp`
+sed -e "s#\"/#$DATA_DIR/#g;s# /# $DATA_DIR/#g" $in_orig > $in
+
+out=$PDF_DIR/${file_name}.pdf
+
+convertor="pandoc -f markdown --latex-engine=xelatex --toc -N --latex-engine=xelatex -V mainfont='$font'"
+echo "$convertor $in -o $out"
+eval "$convertor $in -o $out"
+
+rm $in

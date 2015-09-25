@@ -17,6 +17,10 @@
     margin-left: 5px
 }
 
+#sidebar #home_toc_widget nav ul ul {
+    display: none;
+}
+
 /* First level of nav */
 
 #toc_widget_content {

@@ -1,0 +1,119 @@
+
+- name: 编程语言
+  categories:
+    - name: 汇编
+    - name: C
+    - name: Shell
+    - name: Python
+    - name: C++
+    - name: Java
+    - name: Lua
+
+- name: 操作系统
+  categories:
+    - name: Linux 0.11
+    - name: Linux 内核分析
+      categories:
+        - name: 启动管理
+        - name: 时钟系统
+        - name: 中断与异常
+        - name: 内核同步
+        - name: 进程管理
+          categories:
+            - name: 进程调度
+            - name: 进程通信
+        - name: 内存子系统
+          categories:
+            - name: 内存寻址
+            - name: 进程地址空间
+            - name: 内存管理
+            - name: 页高速缓存
+            - name: 页面回收和页交换
+        - name: 文件管理
+          categories:
+            - name: 虚拟文件系统
+            - name: 访问文件
+            - name: 文件系统
+            - name: 数据同步
+        - name: 系统调用
+        - name: 程序执行
+        - name: 模块与热插拔
+        - name: 网络管理
+        - name: 电源管理
+        - name: 安全管理
+        - name: 实时抢占
+        - name: 内核虚拟化
+        - name: 内核函数库
+        - name: 内核调试与跟踪
+        - name: 内核配置与编译
+
+    - name: Linux 设备驱动
+      categories:
+        - name: I/O 体系结构
+        - name: 设备驱动模型
+        - name: 字符设备
+        - name: 块设备
+        - name: 资源分配
+        - name: 总线系统
+        - name: 设备树
+
+- name: 嵌入式开发
+  categories:
+    - name: 处理器体系架构
+      categories:
+        - name: 体系结构基础
+        - name: ARM
+        - name: MIPS
+        - name: X86
+        - name: PowerPC
+    - name: 开发板与模拟器
+      categories:
+        - name: 电路基础
+        - name: 原理图设计
+        - name: 模拟器
+    - name: 开发环境
+      categories:
+        - name: 准备环境
+        - name: 交叉编译
+    - name: 引导与启动
+      categories:
+        - name: Bootloaders
+    - name: 系统初始化
+      categories:
+        - name: 根文件系统
+        - name: 文件系统类型
+    - name: 移植 Linux
+
+- name: Android 开发
+  categories:
+    - name: Android 入门
+    - name: Android Linux
+    - name: Android HAL/Framework
+    - name: Android 软件开发
+    - name: Android 系统
+    - name: Android 社区
+
+- name: 系统优化
+  categories:
+    - name: 稳定性
+    - name: 性能优化
+    - name: 系统裁剪
+    - name: 实时性
+    - name: 功耗优化
+    - name: 系统安全
+
+- name: 技术漫谈
+  categories:
+    - name: 编码风格
+    - name: 源码分析
+    - name: 调试技巧
+    - name: 设计规范
+    - name: 效率工具
+
+- name: 行业思考
+  categories:
+    - name: 开源文化
+    - name: 技术热点
+    - name: 行业观察
+    - name: 产品创意
+    - name: 研发管理

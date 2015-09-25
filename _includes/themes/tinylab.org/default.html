@@ -49,11 +49,11 @@
   <link rel="stylesheet" href="{{ ASSET_PATH }}/css/fontello{{ css_js_compress_tag }}.css">
   <link rel="stylesheet" href="{{ ASSET_PATH }}/css/tooltip{{ css_js_compress_tag }}.css" media="screen">
 
-  {% if page.group != "home" %}
-    {% if page.toc != false %}
+  {% if page.toc != false %}
     <link rel="stylesheet" href="{{ ASSET_PATH }}/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ ASSET_PATH }}/tocmd/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="all">
-    {% endif %}
+  {% endif %}
+  {% if page.group != "home" %}
     <link rel="stylesheet" href="{{ ASSET_PATH }}/code-prettify/{{ site.JB.code_prettify.theme }}{{ css_js_compress_tag }}.css" type="text/css" media="all">
   {% endif %}
 

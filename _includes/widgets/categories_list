@@ -1,7 +1,115 @@
-<a href="{{ site.JB.categories_path }}" title="查看所有分类"><i class="icon-fixed-width icon-folder-open"></i> 文章分类</a>
-<span title="分类总数">{{ site.categories | size }}</span>
-<ul>
-{% for category in site.categories %}
-  <li><a href="{{ site.JB.categories_path }}#{{ category[0] }}-ref">{{ category[0] }} ({{ category[1] | size }})</a></li>
-{% endfor %}
-</ul>
+<section id="home_toc_widget" class="active">
+<a id="toc_widget_header"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
+<nav id="toc_widget_container" class="toc_widget_container">
+  <ul id="toc_widget_content" class="nav">
+    {% for category in site.data.categories %}
+    {% assign forloop0 = forloop %}
+    <li id="ctg-{{ forloop.index }}" ><a title="{{ category.name }}">
+      {% if category.categories %}
+        <i id="ctg-{{ forloop.index }}-icon" class="icon-fixed-width icon-right-dir"></i>
+      {% else %}
+        <i class="icon-fixed-width icon-angle-right"></i>
+      {% endif %}
+      {{ category.name }}</a>
+    </li>
+
+      {% if category.categories %}
+       <ul id="ctg-{{ forloop0.index }}-child" class="nav">
+        {% for child in category.categories %}
+          <li id="cld-{{ forloop0.index }}-{{ forloop.index }}"><a title="{{ child.name }}">
+             {% if child.categories %}
+               <i id="cld-{{ forloop.index }}-icon" class="icon-fixed-width icon-right-dir"></i>
+             {% else %}
+               <i class="icon-fixed-width icon-angle-right"></i>
+             {% endif %}
+             {{ child.name }}</a>
+          </li>
+
+          {% if child.categories %}
+           <ul id="cld-{{ forloop0.index }}-{{ forloop.index }}-g" class="nav">
+            {% for g in child.categories %}
+              <li><a title="{{ g.name }}">{{ g.name }}</a></li>
+            {% endfor %}
+           </ul>
+          {% endif %}
+
+        {% endfor %}
+       </ul>
+      {% endif %}
+
+    {% endfor %}
+  </ul>
+</nav>
+</section>
+
+<script>
+jQuery(function($) {
+    var toc_widget_header = $("#toc_widget_header");
+    var toc_widget_container = $("#toc_widget_container");
+    var toc_widget_icon = $("#toc_widget_icon");
+
+    $(document).ready( function() {
+        toc_widget_header.click(function() {
+            var status = toc_widget_container.css("display");
+            if (status == "block") {
+              toc_widget_container.hide();
+              toc_widget_icon.removeClass('icon-bookmark');
+              toc_widget_icon.addClass('icon-bookmark-empty');
+            } else {
+              toc_widget_icon.removeClass('icon-bookmark-empty');
+              toc_widget_icon.addClass('icon-bookmark');
+              toc_widget_container.show();
+            }
+        });
+
+    {% for category in site.data.categories %}
+      {% assign forloop0 = forloop %}
+      {% if category.categories %}
+        {% capture ctg %}ctg_{{ forloop0.index }}{% endcapture %}
+        {% capture ctg_icon %}ctg_{{ forloop0.index }}_i{% endcapture %}
+        {% capture ctg_child %}ctg_{{ forloop0.index }}_child{% endcapture %}
+
+        var {{ ctg }} = $("#ctg-{{ forloop0.index }}");
+        var {{ ctg_icon }} = $("#ctg-{{ forloop0.index }} a i");
+        var {{ ctg_child }} = $("#ctg-{{ forloop0.index }}-child");
+        {{ ctg }}.click( function() {
+          var status = {{ ctg_child }}.css("display");
+          if (status == "block") {
+             {{ ctg_child }}.hide();
+             {{ ctg_icon }}.removeClass('icon-down-dir');
+             {{ ctg_icon }}.addClass('icon-right-dir');
+          } else {
+             {{ ctg_icon }}.removeClass('icon-right-dir');
+             {{ ctg_icon }}.addClass('icon-down-dir');
+             {{ ctg_child }}.show();
+          }
+        });
+
+        {% for child in category.categories %}
+          {% if child.categories %}
+            {% capture cld %}cld_{{ forloop0.index }}_{{ forloop.index }}{% endcapture %}
+            {% capture cld_icon %}cld_{{ forloop0.index }}_{{ forloop.index }}_i{% endcapture %}
+            {% capture cld_g %}cld_{{ forloop0.index }}_{{ forloop.index }}_g{% endcapture %}
+            var {{ cld }} = $("#cld-{{ forloop0.index }}-{{ forloop.index }}");
+            var {{ cld_icon }} = $("#cld-{{ forloop0.index }}-{{ forloop.index }} a i");
+            var {{ cld_g }} = $("#cld-{{ forloop0.index }}-{{ forloop.index }}-g");
+            {{ cld }}.click( function() {
+              var status = {{ cld_g }}.css("display");
+              if (status == "block") {
+                {{ cld_g }}.hide();
+                {{ cld_icon }}.removeClass('icon-down-dir');
+                {{ cld_icon }}.addClass('icon-right-dir');
+              } else {
+                {{ cld_icon }}.removeClass('icon-right-dir');
+                {{ cld_icon }}.addClass('icon-down-dir');
+                {{ cld_g }}.show();
+              }
+            });
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+  });
+});
+</script>

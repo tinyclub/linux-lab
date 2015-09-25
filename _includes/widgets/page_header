@@ -24,6 +24,7 @@
 
 {% if page.author %}
 <div id="author-box-wrap" class="author-box-wrap">
+   {% assign author_box_id = "page_header" %}
    {% assign author_box_ref = 1 %}
    {% include widgets/author_box %}
 </div>

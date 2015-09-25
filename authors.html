@@ -14,6 +14,7 @@ comments: false
   <h2 id="{{ post_author_name }}-ref"><a id="author-{{post_author_name}}" title="点击查看作者详细信息">{{ post_author.name }}</a> <sup>({{ post_author.items.size }})</sup></h2>
 
   <div id="author-box-wrap-{{ post_author_name }}" class="author-box-wrap" style="display:none">
+  {% assign author_box_id = post_author_name %}
   {% assign author_box_ref = post_author_name | prepend:"-" %}
   {% assign author_box_visible = "style='display: block;'" %}
   {% include widgets/author_box %}

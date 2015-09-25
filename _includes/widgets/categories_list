@@ -1,10 +1,10 @@
 <section id="home_toc_widget" class="active">
-<a id="toc_widget_header" onclick="common_click('toc_widget_container', 'toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
+<a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
 <nav id="toc_widget_container" class="toc_widget_container">
   <ul id="toc_widget_content" class="nav">
     {% for category in site.data.categories %}
     {% assign forloop0 = forloop %}
-    <li id="ctg-{{ forloop.index }}" onclick="click_toc('ctg-{{ forloop.index }}')"><a title="{{ category.name }}">
+    <li onclick="click_toc('#ctg-{{ forloop.index }}')"><a title="{{ category.name }}">
       {% if category.categories %}
         <i class="icon-fixed-width icon-right-dir"></i>
       {% else %}
@@ -16,7 +16,7 @@
       {% if category.categories %}
        <ul id="ctg-{{ forloop0.index }}-cld" class="nav">
         {% for child in category.categories %}
-          <li id="cld-{{ forloop0.index }}-{{ forloop.index }}" onclick="click_toc('cld-{{ forloop0.index }}-{{ forloop.index }}')"><a title="{{ child.name }}">
+          <li id="cld-{{ forloop0.index }}-{{ forloop.index }}" onclick="click_toc('#cld-{{ forloop0.index }}-{{ forloop.index }}')"><a title="{{ child.name }}">
              {% if child.categories %}
                <i class="icon-fixed-width icon-right-dir"></i>
              {% else %}
@@ -41,33 +41,3 @@
   </ul>
 </nav>
 </section>
-
-<script>
-
-function common_click(child, icon, icon_open, icon_close)
-{
-  var child = $("#" + child);
-  var icon= $("#" + icon);
-  var status = child.css("display");
-  var icon_open = "icon-" + icon_open;
-  var icon_close = "icon-" + icon_close;
-
-  if (status == "block") {
-    child.hide();
-    icon.removeClass(icon_open);
-    icon.addClass(icon_close);
-  } else {
-    icon.removeClass(icon_close);
-    icon.addClass(icon_open);
-    child.show();
-  }
-}
-
-function click_toc(pid)
-{
-  var child = pid + "-cld";
-  var icon = pid + " a i";
-
-  common_click(child, icon, 'right-dir', 'down-dir');
-}
-</script>

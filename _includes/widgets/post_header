@@ -9,6 +9,7 @@
   </div>
 </div>
 <div id="author-box-wrap" class="author-box-wrap">
+   {% assign author_box_id = "post_header" %}
    {% assign author_box_ref = 1 %}
    {% include widgets/author_box %}
 </div>

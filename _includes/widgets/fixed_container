@@ -2,7 +2,7 @@
   <section id="author_widget" class="active">
     {% assign author_box_visible="style='display:none'" %}
     {% assign author_box_ref = 0 %}
-    {% assign author_box_icon_id = "id='author-box-icon'" %}
+    {% assign author_box_id = "sidebar" %}
     {% include widgets/author_box %}
     {% assign author_box_visible="" %}
   </section>
@@ -29,9 +29,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
   var container_top = $('#fixed-container').offset().top;
-  var author_widget_header = $(".author-box-header");
-  var author_widget_container = $(".author-box");
-  var author_widget_icon = $("#author-box-icon");
   var firefox = 0;
   var scroll_over = 0;
   var scroll_top = 0, top;
@@ -71,19 +68,6 @@ $(document).ready(function() {
     } else {
       scroll_over = 1;
       $('#fixed-container').css('position','static');
-    }
-  });
-
-  author_widget_header.click(function() {
-    var status = author_widget_container.css("display");
-    if (status == "block") {
-      author_widget_container.hide();
-      author_widget_icon.removeClass('icon-heart');
-      author_widget_icon.addClass('icon-heart-empty');
-    } else {
-      author_widget_icon.removeClass('icon-heart-empty');
-      author_widget_icon.addClass('icon-heart');
-      author_widget_container.show();
     }
   });
 });

@@ -175,8 +175,6 @@ var Toc = {
             node_num ++;
         });  /* end of each */
 
-        console.log(node_num);
-
         /* show the table of content */
         if (node_num > 0)
 	    toc_widget.show();
@@ -186,28 +184,11 @@ var Toc = {
 
 
 jQuery(function($) {
-    var toc_widget_header = $("#toc_widget_header");
-    var toc_widget_container = $("#toc_widget_container");
-    var toc_widget_icon = $("#toc_widget_icon");
-
     $(document).ready( function() {
         /* Generate the side navigation `ul` elements */
         Toc.createToc($("#toc_widget_content"), $("#main_content_container"), $("#toc_widget"));
 
         /* caculate affixing */
         Toc.setTocAffixing();
-
-        toc_widget_header.click(function() {
-            var status = toc_widget_container.css("display");
-            if (status == "block") {
-              toc_widget_container.hide();
-              toc_widget_icon.removeClass('icon-bookmark');
-              toc_widget_icon.addClass('icon-bookmark-empty');
-            } else {
-              toc_widget_icon.removeClass('icon-bookmark-empty');
-              toc_widget_icon.addClass('icon-bookmark');
-              toc_widget_container.show();
-            }
-        });
     });
 });

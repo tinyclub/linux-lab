@@ -1,18 +1,25 @@
 function common_click(child, icon, icon_open, icon_close)
 {
   var child = $(child);
-  var icon= $(icon);
   var status = child.css("display");
-  var icon_open = "icon-" + icon_open;
-  var icon_close = "icon-" + icon_close;
+
+  if (icon) {
+    var icon= $(icon);
+    var icon_open = "icon-" + icon_open;
+    var icon_close = "icon-" + icon_close;
+  }
 
   if (status == "block") {
     child.hide();
-    icon.removeClass(icon_open);
-    icon.addClass(icon_close);
+    if (icon) {
+      icon.removeClass(icon_open);
+      icon.addClass(icon_close);
+    }
   } else {
-    icon.removeClass(icon_close);
-    icon.addClass(icon_open);
+    if (icon) {
+      icon.removeClass(icon_close);
+      icon.addClass(icon_open);
+    }
     child.show();
   }
 }

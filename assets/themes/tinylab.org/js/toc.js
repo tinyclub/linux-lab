@@ -32,7 +32,7 @@ function build_toc(h_cnt, hid, h_id, n, open, close, item_a, tocid_suffix, tocid
     if (h_cnt[n] > 1)
       var nav_li_a = $("#" + hid[n]).append(li_a);
     else
-      var nav_li_a = $("<ul class='nav' id='" + hid[n] +"'></ul>").append(li_a);
+      var nav_li_a = $("<ul class='nav' id='" + hid[n] +"' style='display: none;'></ul>").append(li_a);
 
     if (n == 1)
       return nav_li_a;

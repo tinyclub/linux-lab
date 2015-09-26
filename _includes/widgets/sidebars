@@ -16,7 +16,7 @@
      {% assign condition = sidebar.condition %}
      {% assign value = sidebar.value  %}
      {% for item in list %}
-       {% if item.group == {{value}} %}
+       {% if item[{{condition}}] == {{value}} %}
          {% assign size = 1 %}
          {% break %}
        {% endif %}

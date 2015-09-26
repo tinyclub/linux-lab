@@ -38,7 +38,7 @@ function click_toc(pid, open, close)
     childid = child.replace('#','');
     if (child != nodeid && child.indexOf(nodeid) < 0 && $(this).css('display') == "block") {
       var iconid = nodeid.replace(/-cld$/,'');
-      var myicon = $("#ctg-1 a i");
+      var myicon = $("#" + iconid + " a i");
 
       $(this).hide();
       switch_icon(myicon, open, close);

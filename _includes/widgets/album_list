@@ -1,0 +1,34 @@
+{% if page.album %}
+
+{% assign url = "" %}
+{% assign prompt = "" %}
+{% assign truncate = true %}
+{% assign tooltip = false %}
+{% assign title = "专辑文章" %}
+{% assign icon = "coffee" %}
+{% assign list = site.posts %}
+{% assign condition = "album" %}
+{% assign value = page.album %}
+
+{% for item in list %}
+{% if item[{{condition}}] == {{value}} %}
+ {% assign size = 1 %}
+ {% break %}
+{% endif %}
+{% endfor %}
+
+{% if size != 0 %}
+
+<section id="album_widget">
+{% include widgets/lists %}
+</section>
+
+{% endif %}
+
+
+{% assign more = "" %}
+{% assign prompt = "" %}
+{% assign url = "" %}
+{% assign truncate = false %}
+
+{% endif %}

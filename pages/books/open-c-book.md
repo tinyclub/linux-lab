@@ -2,6 +2,7 @@
 title: '开源书籍: C 语言编程透视'
 author: Wu Zhangjin
 layout: page
+album: 'C 语言编程透视'
 permalink: /open-c-book/
 views:
   - 2178

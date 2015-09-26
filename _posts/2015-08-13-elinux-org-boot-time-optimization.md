@@ -2,6 +2,7 @@
 title: '嵌入式 Linux 启动时间优化'
 author: Wu Zhangjin
 layout: post
+album: '嵌入式 Linux 知识库'
 group: translation
 permalink: /elinux-org-boot-time-optimization/
 tags:

@@ -2,6 +2,7 @@
 title: Linux Documentation/ 中文翻译计划
 author: Wu Zhangjin
 layout: page
+album: 'Linux Doc 中文版'
 permalink: /linux-doc/
 views:
   - 115

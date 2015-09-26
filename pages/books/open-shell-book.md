@@ -2,6 +2,7 @@
 title: '开源书籍: Shell 编程范例系列'
 author: Wu Zhangjin
 layout: page
+album: 'Shell 编程范例'
 permalink: /open-shell-book/
 views:
   - 576

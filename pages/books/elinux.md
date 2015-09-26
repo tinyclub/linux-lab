@@ -2,6 +2,7 @@
 title: 嵌入式 Linux 知识库中文翻译计划
 author: Wu Zhangjin
 layout: page
+album: '嵌入式 Linux 知识库'
 permalink: /elinux/
 views:
   - 278

@@ -12,6 +12,8 @@
       {% include widgets/toc_box %}
     </section>
 
+    {% include widgets/album_list %}
+
     <section id="related_posts" style="display:block;">
       {% include widgets/related_posts_list %}
     </section>

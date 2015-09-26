@@ -18,11 +18,15 @@
 }
 
 #sidebar nav ul ul {
-    display: none;
+    display: none
 }
 
 #sidebar nav ul li i {
-    float: left;
+    float: left
+}
+
+#sidebar nav ul .not_collapsable {
+    color: #ccc
 }
 
 /* First level of nav */

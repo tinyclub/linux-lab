@@ -176,7 +176,7 @@ var Toc = {
              return;
           if (child.length <= 0) {
              icon.removeAttr('onclick');
-             icon.css('color', '#ddd');
+             icon.addClass("not_collapsable");
           } else {
             /* console.log(nodeid); */
           }

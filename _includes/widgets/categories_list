@@ -1,6 +1,6 @@
 {% assign icon_open = "angle-down" %}
 {% assign icon_close = "angle-right" %}
-{% assign inactive = "style='color:#ddd'" %}
+{% assign not_collapsable = "not_collapsable" %}
 
 <section id="home_toc_widget" class="active">
 <a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
@@ -12,7 +12,7 @@
       {% if category.categories %}
         <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
       {% else %}
-        <i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }} ></i>
+        <i class="icon-fixed-width icon-{{ icon_close }}" {{ not_collapsable }} ></i>
       {% endif %}
       <a title="{{ category.name }}">{{ category.name }}</a>
     </li>
@@ -24,7 +24,7 @@
              {% if child.categories %}
                <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}-cld-{{ forloop.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
              {% else %}
-               <i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }}></i>
+               <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
              {% endif %}
              <a title="{{ child.name }}">{{ child.name }}</a>
           </li>
@@ -32,7 +32,7 @@
           {% if child.categories %}
            <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}-cld" class="nav">
             {% for g in child.categories %}
-              <li><i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }}></i><a title="{{ g.name }}">{{ g.name }}</a></li>
+              <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a title="{{ g.name }}">{{ g.name }}</a></li>
             {% endfor %}
            </ul>
           {% endif %}

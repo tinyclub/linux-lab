@@ -149,11 +149,11 @@ var Toc = {
             /* h4: layer 4: ul - ul - ul - li - a */
             /* h5: layer 5: ul - ul - ul - ul - li - a */
             h = $this.get(0).tagName;
-            var n = parseInt(h.replace("H", ""));
+            var n = parseInt(h.replace("H", "")) - h1_n;
 
-            ret_li = build_toc(h_cnt, hid, h_id,  n - h1_n, icon_open, icon_close, item_a, tocid_suffix, tocid_prefix);
+            ret_li = build_toc(h_cnt, hid, h_id,  n, icon_open, icon_close, item_a, tocid_suffix, tocid_prefix);
 
-            h_ol = h_cnt.slice(0, n + 1 > h_cnt.length ? h_cnt.length : n + 1);
+            h_ol = h_cnt.slice(0, n + 1);
             $(this).prepend("<ahead>" + h_ol.join('.') + "</ahead> ");
 
             if(!ret_li) {

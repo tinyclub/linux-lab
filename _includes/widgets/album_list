@@ -1,7 +1,7 @@
 {% if page.album %}
 
-{% assign url = "" %}
-{% assign prompt = "" %}
+{% assign url = page.album | replace:' ','-' | prepend: "/albums.html#" | append: "-ref" %}
+{% assign prompt = "查看该专辑" %}
 {% assign truncate = true %}
 {% assign tooltip = false %}
 {% assign title = "专辑文章" %}
@@ -9,6 +9,7 @@
 {% assign list = site.posts %}
 {% assign condition = "album" %}
 {% assign value = page.album %}
+{% assign items_limit = 15 %}
 
 {% for item in list %}
 {% if item[{{condition}}] == {{value}} %}
@@ -18,17 +19,9 @@
 {% endfor %}
 
 {% if size != 0 %}
-
 <section id="album_widget">
 {% include widgets/lists %}
 </section>
-
 {% endif %}
-
-
-{% assign more = "" %}
-{% assign prompt = "" %}
-{% assign url = "" %}
-{% assign truncate = false %}
 
 {% endif %}

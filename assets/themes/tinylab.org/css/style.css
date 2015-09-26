@@ -400,7 +400,6 @@ a:active {
     text-decoration: none
 }
 #sidebar section:hover {
-    border-right: 2px solid #ccc;
     text-decoration: none
 }
 #sidebar section.active i:hover,
@@ -408,6 +407,7 @@ a:active {
 #sidebar section.active > a i {
     color: #f60
 }
+#sidebar .section_header a,
 #sidebar section >a {
     display: block;
     font-size: 95%;
@@ -605,6 +605,27 @@ article header h2,
 .post-extra .pull-right span {
     line-height: 25px
 }
+
+#sidebar .section_header {
+    overflow: hidden;
+    border-right: 1px dotted #dcdee0;
+    border-top: 1px dotted #dcdee0
+}
+#sidebar .section-header small {
+    font-size: 85%
+}
+#sidebar .section_header .pull-right {
+    margin-right: 5px
+}
+
+#sidebar .section_header .pull-right > a {
+    color: #4a630f;
+}
+
+#sidebar .section_header .pull-right:hover > a {
+    color: #66f;
+}
+
 /*  Image  */
 
 #logo img {

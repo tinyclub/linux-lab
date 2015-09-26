@@ -2,8 +2,10 @@
 - title: Embedded Linux Wiki
   url: http://elinux.org
   desc: Linux 基金会下属 CE Linux Forum 维护的嵌入式 Linux 维基百科。
+  group: links
 
 - title: Linux Kernel Homepage
   url: http://www.kernel.org
   recommend: false
   desc: Linux 内核官方首页。
+  group: links

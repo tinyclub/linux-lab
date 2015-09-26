@@ -1,15 +1,32 @@
-<a {% if prompt %}title="{{ prompt }}"{% endif %} onclick="common_click('#list-{{ icon }}')"><i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
-{% if more %}{{ more }}{% endif %}
-<ul id="list-{{ icon }}">
+<div class="section_header">
+  <div class="pull-left">
+    <a onclick="common_click('#list-{{ icon }}')">
+      <i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
+  </div>
+  <div class="pull-right">
+    <a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><small>更多</small></a>
+  </div>
+</div>
+
+<div id="list-{{ icon }}">
+<ul>
   {% assign total_num = 0 %}
   {% for item in list %}
     {% if condition and item[{{condition}}] != {{value}} %}
       {% continue %}
     {% endif %}
 
-    {% if total_num >= site.JB.sidebar.items_limit %}
-      {% break %}
+    {% if items_limit %}
+    {{ items_limit | debug }}
+       {% if total_num >= items_limit %}
+          {% break %}
+       {% endif %}
+    {% else %}
+      {% if total_num >= site.JB.sidebar.items_limit %}
+        {% break %}
+      {% endif %}
     {% endif %}
+
     {% if item.recommend == false %}
       {% continue %}
     {% endif %}
@@ -25,3 +42,10 @@
     </li>
   {% endfor %}
 </ul>
+</div>
+
+{% assign items_limit = nil %}
+{% assign more = "" %}
+{% assign prompt = "" %}
+{% assign url = nil %}
+{% assign truncate = false %}

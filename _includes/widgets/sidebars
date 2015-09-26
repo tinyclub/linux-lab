@@ -6,7 +6,13 @@
    {% assign title = sidebar.name %}
    {% assign icon = sidebar.icon %}
    {% assign tooltip = false %}
+   {% assign prompt = title | prepend: "更多" %}
+   {% assign url = sidebar.url %}
    {% assign size = 0 %}
+   {% assign condition = nil %}
+   {% assign value = "" %}
+   {% assign item_limits = nil %}
+
    {% if site.data[sidebar.data] != nil %}
      {% assign list = site.data[sidebar.data] %}
      {% assign tooltip = true %}
@@ -15,12 +21,14 @@
      {% assign list = site[sidebar.src] %}
      {% assign condition = sidebar.condition %}
      {% assign value = sidebar.value  %}
+
      {% for item in list %}
        {% if item[{{condition}}] == {{value}} %}
          {% assign size = 1 %}
          {% break %}
        {% endif %}
      {% endfor %}
+
    {% endif %}
    {% if size != 0 %}
      {% include widgets/lists %}

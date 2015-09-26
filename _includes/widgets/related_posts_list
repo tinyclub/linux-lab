@@ -1,10 +1,20 @@
+{% assign url = site.JB.categories_path %}
+{% assign prompt = "更多分类" %}
 {% assign truncate = true %}
 {% assign title = "相关文章" %}
 {% assign icon = "attach" %}
 {% assign related_container = "related_container" %}
 
 {% capture related_header %}
-<a onclick="common_click('#{{ related_container }}')" {% if prompt %}title="{{ prompt }}"{% endif %}><i class="icon-fixed-width icon-{{ icon }}"></i>{{ title }}</a>
+<div class="section_header">
+  <div class="pull-left">
+    <a onclick="common_click('#list-{{ icon }}')">
+      <i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
+  </div>
+  <div class="pull-right">
+    <a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><small>更多</small></a>
+  </div>
+</div>
 {% endcapture %}
 
 {% include widgets/related_posts %}

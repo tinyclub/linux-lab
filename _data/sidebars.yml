@@ -1,11 +1,13 @@
 
 - name: 开源项目
   icon: code
-  data: projects 
+  data: projects
+  url: /projects/
 
 - name: 开源书籍
   icon: book
   data: books
+  url: /books/
 
 - name: 工作机会
   icon: flag-empty
@@ -13,8 +15,10 @@
   src: posts
   condition: group
   value: jobs
+  url: /jobs/
 
 - name: 友情链接
   icon: link
   data: links
+  url: /links/
   disable: true

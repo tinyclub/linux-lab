@@ -7,7 +7,7 @@
   {% for thisTag in page.tags %}
     {% if SimilarNum < site.JB.post.related_limit and post != page and tag == thisTag %}
     {% if SimilarNum == 0 %}
-                  {{ related_header }}
+    {{ related_header }}
     <ul id="{{ related_container  }}">
     {% endif %}
     <li>

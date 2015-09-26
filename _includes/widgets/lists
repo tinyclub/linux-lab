@@ -17,7 +17,6 @@
     {% endif %}
 
     {% if items_limit %}
-    {{ items_limit | debug }}
        {% if total_num >= items_limit %}
           {% break %}
        {% endif %}

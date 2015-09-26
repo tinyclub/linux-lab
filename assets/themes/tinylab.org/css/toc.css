@@ -57,7 +57,6 @@
 
 #toc_widget_container .nav > li {
     display: block;
-    padding: 4px 10px;
     font-weight: 700;
     /*no wrap*/
     
@@ -84,8 +83,6 @@
     /* padding-bottom: 10px; */
 }
 #toc_widget_container .nav .nav > li {
-    padding-top: 1px;
-    padding-bottom: 1px;
     padding-left: 16px;
     font-weight: 400
 }
@@ -102,8 +99,6 @@
     /* padding-bottom: 10px;*/
 }
 #toc_widget_container .nav .nav .nav > li {
-    padding-top: 1px;
-    padding-bottom: 1px;
     padding-left: 22px;
     font-style: italic;
     font-weight: 400

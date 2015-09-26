@@ -21,7 +21,6 @@
       {% include widgets/recent_posts_list %}
     </section>
   {% else %}
-    {% include widgets/categories_list %}
     <section id="other_sidebars" style="border:0">
       {% include widgets/sidebars %}
     </section>

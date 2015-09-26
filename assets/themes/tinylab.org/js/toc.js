@@ -11,6 +11,42 @@ Array.prototype.fill = function(value, start, length) {
     return this;
 }
 
+function build_toc(h_cnt, hid, h_id, n, open, close, item_a, tocid_suffix, tocid_prefix) {
+    h_cnt[n] ++;
+    if (h_cnt[n] > 1)
+      h_cnt.fill(0, n+1, h_cnt.length);
+
+    if (n == 0)
+      h_id[n] = tocid_prefix.concat(h_cnt[0]);
+    else {
+      hid[n] = h_id[n-1].concat(tocid_suffix);
+      h_id[n] = hid[n].concat("-", h_cnt[n]);
+    }
+
+    $("<i class='icon-fixed-width icon-" + close +"' onclick=\"click_toc('#" + "".concat(h_id[n], "','", open, "','", close) + "')\"></i>").prependTo(item_a);
+    var li_a = $("<li id='" + h_id[n] +"'></li>").append(item_a);
+
+    if (n == 0)
+      return li_a;
+
+    if (h_cnt[n] > 1)
+      var nav_li_a = $("#" + hid[n]).append(li_a);
+    else
+      var nav_li_a = $("<ul class='nav' id='" + hid[n] +"'></ul>").append(li_a);
+
+    if (n == 1)
+      return nav_li_a;
+    else if (n == 2) {
+      return $("#" + hid[n-1]).append(nav_li_a);
+    } else if (n == 3) {
+      return $("#" + hid[n-2]).append($("#" + hid[n-1]).append(nav_li_a));
+    } else {
+      return $("#" + hid[n-3]).append($("#" + hid[n-2]).append($("#" + hid[n-1]).append(nav_li_a)));
+    }
+
+    return null;
+}
+
 var Toc = {
     /*
      * Toc Affixing
@@ -56,7 +92,7 @@ var Toc = {
         var ultoc = toc_widget_content;
 
         var node_num = 0;
-        var h1, h2, h3, h4, h5;
+        var h1, h1_n = 2;
         var h_cnt = new Array(0, 0, 0, 0, 0);
         var h_id = new Array("", "", "", "");
         var hid = new Array("", "", "", "");
@@ -90,33 +126,18 @@ var Toc = {
                 switch($this.get(0).tagName) {
                 case "H1":
                     h1 = "H1";
-                    h2 = "H2";
-                    h3 = "H3";
-                    h4 = "H4";
-                    h5 = "H5";
                     break;
                 case "H2":
                     h1 = "H2";
-                    h2 = "H3";
-                    h3 = "H4";
-                    h4 = "H5";
-                    h5 = "H6";
                     break;
                 case "H3":
                     h1 = "H3";
-                    h2 = "H4";
-                    h3 = "H5";
-                    h4 = "H6";
-                    h5 = "H7";
                     break;
                 case "H4":
                     h1 = "H4";
-                    h2 = "H5";
-                    h3 = "H6";
-                    h4 = "H7";
-                    h5 = "H8";
                     break;
                 }
+                h1_n = parseInt(h1.replace("H", ""));
             }
 
             var ret_li;
@@ -128,107 +149,11 @@ var Toc = {
             /* h4: layer 4: ul - ul - ul - li - a */
             /* h5: layer 5: ul - ul - ul - ul - li - a */
             h = $this.get(0).tagName;
-            switch(h) {
-            case h1:
-                h_cnt[0] ++;
-                if (h_cnt[0] > 1)
-                  h_cnt.fill(0, 1, h_cnt.length);
-                h_ol = h_cnt.slice(0, 1);
+            var n = parseInt(h.replace("H", ""));
 
-                h_id[0] = tocid_prefix.concat(h_ol);
-                console.log("h_id[0]: " + h_id[0]);
+            ret_li = build_toc(h_cnt, hid, h_id,  n - h1_n, icon_open, icon_close, item_a, tocid_suffix, tocid_prefix);
 
-                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[0], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
-                var li_a = $("<li id='" + h_id[0] + "'></li>").append(item_a);
-
-                ret_li = li_a;
-                break;
-            case h2:
-                h_cnt[1] ++;
-                if (h_cnt[1] > 1)
-                  h_cnt.fill(0, 2, h_cnt.length);
-                h_ol = h_cnt.slice(0, 2);
-
-                hid[1] = h_id[0].concat(tocid_suffix);
-                h_id[1] = hid[1].concat("-", h_cnt[1]);
-                console.log("h_id[1]: " + h_id[1]);
-
-                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[1], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
-                var li_a = $("<li id='" + h_id[1] +"'></li>").append(item_a);
-                if (h_cnt[1] > 1)
-                  var nav_li_a = $("#" + hid[1]).append(li_a);
-                else
-                  var nav_li_a = $("<ul class='nav' id='" + hid[1] +"'></ul>").append(li_a);
-
-                ret_li = nav_li_a;
-                break;
-            case h3:
-                h_cnt[2] ++;
-                if (h_cnt[2] > 1)
-                  h_cnt.fill(0, 3, h_cnt.length);
-                h_ol = h_cnt.slice(0, 3);
-
-                hid[2] = h_id[1].concat(tocid_suffix);
-                h_id[2] = hid[2].concat("-", h_cnt[2]);
-                console.log("h_id[2]: " + h_id[2]);
-
-                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[2], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
-                var li_a = $("<li id='" + h_id[2] +"'></li>").append(item_a);
-                if (h_cnt[2] > 1)
-                  var nav_li_a = $("#" + hid[2]).append(li_a);
-                else
-                  var nav_li_a = $("<ul class='nav' id='" + hid[2] +"'></ul>").append(li_a);
-
-                var nav_nav_li_a = $("#" + hid[1]).append(nav_li_a);
-
-                ret_li = nav_nav_li_a;
-
-                break;
-            case h4:
-                h_cnt[3] ++;
-                if (h_cnt[3] > 1)
-                  h_cnt.fill(0, 4, h_cnt.length);
-                h_ol = h_cnt.slice(0, 4);
-
-                hid[3] = h_id[2].concat(tocid_suffix);
-                h_id[3] = hid[3].concat("-", h_cnt[3]);
-                console.log("h_id[3]: " + h_id[3]);
-
-                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[3], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
-                var li_a = $("<li id='" + h_id[3] +"'></li>").append(item_a);
-                if (h_cnt[3] > 1)
-                  var nav_li_a = $("#" + hid[3]).append(li_a);
-                else
-                  var nav_li_a = $("<ul class='nav' id='" + hid[3] +"'></ul>").append(li_a);
-
-                var nav_nav_li_a = $("#" + hid[2]).append(nav_li_a);
-
-                var nav_nav_nav_li_a = $("#" + hid[1]).append(nav_nav_li_a);
-                ret_li = nav_nav_nav_li_a;
-
-                break;
-            case h5:
-                h_cnt[4] ++;
-                h_ol = h_cnt.slice(0, 5);
-
-                hid[4] = h_id[3].concat(tocid_suffix);
-                h_id[4] = hid[4].concat("-", h_cnt[4]);
-                console.log("h_id[4]: " + h_id[4]);
-
-                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[4], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
-                var li_a = $("<li id='" + h_id[4] +"'></li>").append(item_a);
-                if (h_cnt[4] > 1)
-                  var nav_li_a = $("#" + hid[4]).append(li_a);
-                else
-                  var nav_li_a = $("<ul class='nav' id='" + hid[4] +"'></ul>").append(li_a);
-
-                var nav_nav_li_a = $("#" + hid[3]).append(nav_li_a);
-                var nav_nav_nav_li_a = $("#" + hid[2]).append(nav_li_a);
-                var nav_nav_nav_nav_li_a = $("#" + hid[1]).append(nav_nav_nav_li_a);
-                ret_li = nav_nav_nav_nav_li_a;
-                break;
-            }
-
+            h_ol = h_cnt.slice(0, n + 1 > h_cnt.length ? h_cnt.length : n + 1);
             $(this).prepend("<ahead>" + h_ol.join('.') + "</ahead> ");
 
             if(!ret_li) {

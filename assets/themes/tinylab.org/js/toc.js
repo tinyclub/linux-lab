@@ -3,9 +3,15 @@
  * Thomas.Zhao, 2015-01-13
  */
 
+Array.prototype.fill = function(value, start, length) {
+    while (length--){
+        if (length >= start)
+          this[length] = value;
+    }
+    return this;
+}
 
 var Toc = {
-
     /*
      * Toc Affixing
      *
@@ -108,7 +114,7 @@ var Toc = {
             }
 
             var ret_li;
-            var ol_str;
+            var h_ol;
             /* wrapper: ul ( in the template, outside this code ) */
             /* h1: layer 1: li - a */
             /* h2: layer 2: ul - li - a */
@@ -122,7 +128,9 @@ var Toc = {
                 ret_li = li_a;
 
                 h_cnt[0] ++;
-                ol_str = h_cnt[0];
+                if (h_cnt[0] > 1)
+                  h_cnt.fill(0, 1, h_cnt.length);
+                h_ol = h_cnt.slice(0, 1);
                 break;
             case h2:
                 var li_a = $("<li></li>").append(item_a);
@@ -130,7 +138,9 @@ var Toc = {
                 ret_li = nav_li_a;
 
                 h_cnt[1] ++;
-                ol_str = h_cnt[0] + "." + h_cnt[1];
+                if (h_cnt[1] > 1)
+                  h_cnt.fill(0, 2, h_cnt.length);
+                h_ol = h_cnt.slice(0, 2);
                 break;
             case h3:
                 var li_a = $("<li></li>").append(item_a);
@@ -139,7 +149,9 @@ var Toc = {
                 ret_li = nav_nav_li_a;
 
                 h_cnt[2] ++;
-                ol_str = h_cnt[0] + "." + h_cnt[1] + "." + h_cnt[2];
+                if (h_cnt[2] > 1)
+                  h_cnt.fill(0, 3, h_cnt.length);
+                h_ol = h_cnt.slice(0, 3);
                 break;
             case h4:
                 var li_a = $("<li></li>").append(item_a);
@@ -149,7 +161,9 @@ var Toc = {
                 ret_li = nav_nav_nav_li_a;
 
                 h_cnt[3] ++;
-                ol_str = h_cnt[0] + "." + h_cnt[1] + "." + h_cnt[2] + "." + h_cnt[3];
+                if (h_cnt[3] > 1)
+                  h_cnt.fill(0, 4, h_cnt.length);
+                h_ol = h_cnt.slice(0, 4);
                 break;
             case h5:
                 var li_a = $("<li></li>").append(item_a);
@@ -160,11 +174,11 @@ var Toc = {
                 ret_li = nav_nav_nav_nav_li_a;
 
                 h_cnt[4] ++;
-                ol_str = h_cnt[0] + "." + h_cnt[1] + "." + h_cnt[2] + "." + h_cnt[3] + "." + h_cnt[4];
+                h_ol = h_cnt;
                 break;
             }
 
-            $(this).prepend("<ahead>" + ol_str + "</ahead> ");
+            $(this).prepend("<ahead>" + h_ol.join('.') + "</ahead> ");
 
             if(!ret_li) {
                 /* do nothing */

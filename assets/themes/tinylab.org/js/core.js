@@ -1,33 +1,46 @@
-function common_click(child, icon, icon_open, icon_close)
+function switch_icon(icon, open, close)
+{
+    if (icon) {
+      icon.removeClass("icon-" + open);
+      icon.addClass("icon-" + close);
+    }
+}
+
+function common_click(child, icon, open, close)
 {
   var child = $(child);
   var status = child.css("display");
-
-  if (icon) {
-    var icon= $(icon);
-    var icon_open = "icon-" + icon_open;
-    var icon_close = "icon-" + icon_close;
-  }
+  var icon= $(icon);
 
   if (status == "block") {
     child.hide();
-    if (icon) {
-      icon.removeClass(icon_open);
-      icon.addClass(icon_close);
-    }
+    switch_icon(icon, open, close);
   } else {
-    if (icon) {
-      icon.removeClass(icon_close);
-      icon.addClass(icon_open);
-    }
+    switch_icon(icon, close, open);
     child.show();
   }
 }
 
-function click_toc(pid, icon_open, icon_close)
+function click_toc(pid, open, close)
 {
+  var root = $('#toc_widget_content');
   var child = pid + "-cld";
   var icon = pid + " a i";
 
-  common_click(child, icon, icon_open, icon_close);
+  /* Hide all of the other nodes */
+  var nodes = root.find("ul");
+  $.each(nodes, function() {
+    var nodeid = $(this).attr('id');
+
+    childid = child.replace('#','');
+    if (child != nodeid && child.indexOf(nodeid) < 0 && $(this).css('display') == "block") {
+      var iconid = nodeid.replace(/-cld$/,'');
+      var myicon = $("#ctg-1 a i");
+
+      $(this).hide();
+      switch_icon(myicon, open, close);
+    }
+  });
+
+  common_click(child, icon, open, close);
 }

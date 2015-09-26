@@ -24,10 +24,10 @@ function common_click(child, icon, icon_open, icon_close)
   }
 }
 
-function click_toc(pid)
+function click_toc(pid, icon_open, icon_close)
 {
   var child = pid + "-cld";
   var icon = pid + " a i";
 
-  common_click(child, icon, 'right-dir', 'down-dir');
+  common_click(child, icon, icon_open, icon_close);
 }

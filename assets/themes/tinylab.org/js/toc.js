@@ -29,10 +29,11 @@ function build_toc(h_cnt, hid, h_id, n, open, close, item_a, tocid_suffix, tocid
     if (n == 0)
       return li_a;
 
+    var nav_li_a;
     if (h_cnt[n] > 1)
-      var nav_li_a = $("#" + hid[n]).append(li_a);
+      nav_li_a = $("#" + hid[n]).append(li_a);
     else
-      var nav_li_a = $("<ul class='nav' id='" + hid[n] +"' style='display: none;'></ul>").append(li_a);
+      nav_li_a = $("<ul class='nav' id='" + hid[n] +"' style='display: none;'></ul>").append(li_a);
 
     if (n == 1)
       return nav_li_a;
@@ -96,12 +97,12 @@ var Toc = {
         var h_cnt = new Array(0, 0, 0, 0, 0);
         var h_id = new Array("", "", "", "");
         var hid = new Array("", "", "", "");
+        var tocid_prefix = 'ctg-';
+        var tocid_suffix = '-cld';
+        var anchorPrefix = 'tocAnchor-';
+        var icon_close = 'angle-right';
+        var icon_open = 'angle-down';
         $.each(nodes,function(){
-            var anchorPrefix = 'tocAnchor-';
-            var tocid_prefix = 'ctg-';
-            var tocid_suffix = '-cld';
-            var icon_close = 'angle-right';
-            var icon_open = 'angle-down';
             var $this = $(this);
 
             var nodetext = $this.text();
@@ -164,6 +165,22 @@ var Toc = {
 
             node_num ++;
         });  /* end of each */
+
+
+        var nodes = toc_widget_content.find("li");
+        $.each(nodes, function() {
+          var nodeid = $(this).attr('id');
+          var child = $("#" + nodeid + "-cld");
+          var icon = $("#" + nodeid + " i");
+          if (!nodeid)
+             return;
+          if (child.length <= 0) {
+             icon.removeAttr('onclick');
+             icon.css('color', '#ddd');
+          } else {
+            /* console.log(nodeid); */
+          }
+        });
 
         /* show the table of content */
         if (node_num > 0)

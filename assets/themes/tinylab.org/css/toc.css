@@ -17,8 +17,12 @@
     margin-left: 5px
 }
 
-#sidebar #home_toc_widget nav ul ul {
+#sidebar nav ul ul {
     display: none;
+}
+
+#sidebar nav ul li i {
+    float: left;
 }
 
 /* First level of nav */
@@ -47,7 +51,7 @@
 
 /* All levels of nav */
 
-#toc_widget_container .nav > li > a {
+#toc_widget_container .nav > li {
     display: block;
     padding: 4px 10px;
     font-weight: 700;
@@ -57,8 +61,8 @@
     white-space: nowrap;
     text-overflow: ellipsis
 }
-#toc_widget_container .nav > li > a:hover,
-#toc_widget_container .nav > li > a:focus {
+#toc_widget_container .nav > li:hover,
+#toc_widget_container .nav > li:focus {
     text-decoration: none;
     background-color: transparent;
 }
@@ -75,7 +79,7 @@
     /* display: none; Hide by default, but at >768px, show it */
     /* padding-bottom: 10px; */
 }
-#toc_widget_container .nav .nav > li > a {
+#toc_widget_container .nav .nav > li {
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 16px;
@@ -93,7 +97,7 @@
     /*display: none;  Hide by default, but at >768px, show it */
     /* padding-bottom: 10px;*/
 }
-#toc_widget_container .nav .nav .nav > li > a {
+#toc_widget_container .nav .nav .nav > li {
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 22px;

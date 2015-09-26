@@ -23,8 +23,8 @@ function build_toc(h_cnt, hid, h_id, n, open, close, item_a, tocid_suffix, tocid
       h_id[n] = hid[n].concat("-", h_cnt[n]);
     }
 
-    $("<i class='icon-fixed-width icon-" + close +"' onclick=\"click_toc('#" + "".concat(h_id[n], "','", open, "','", close) + "')\"></i>").prependTo(item_a);
     var li_a = $("<li id='" + h_id[n] +"'></li>").append(item_a);
+    $("<i class='icon-fixed-width icon-" + close +"' onclick=\"click_toc('#" + "".concat(h_id[n], "','", open, "','", close) + "')\"></i>").prependTo(li_a);
 
     if (n == 0)
       return li_a;

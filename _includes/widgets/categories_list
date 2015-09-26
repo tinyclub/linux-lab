@@ -8,31 +8,31 @@
   <ul id="toc_widget_content" class="nav">
     {% for category in site.data.categories %}
     {% assign forloop0 = forloop %}
-    <li id="ctg-{{ forloop0.index }}"><a title="{{ category.name }}">
+    <li id="ctg-{{ forloop0.index }}">
       {% if category.categories %}
         <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
       {% else %}
         <i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }} ></i>
       {% endif %}
-      {{ category.name }}</a>
+      <a title="{{ category.name }}">{{ category.name }}</a>
     </li>
 
       {% if category.categories %}
        <ul id="ctg-{{ forloop0.index }}-cld" class="nav">
         {% for child in category.categories %}
-          <li id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}"><a title="{{ child.name }}">
+          <li id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}">
              {% if child.categories %}
                <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}-cld-{{ forloop.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
              {% else %}
                <i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }}></i>
              {% endif %}
-             {{ child.name }}</a>
+             <a title="{{ child.name }}">{{ child.name }}</a>
           </li>
 
           {% if child.categories %}
            <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}-cld" class="nav">
             {% for g in child.categories %}
-              <li><a title="{{ g.name }}"><i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }}></i>{{ g.name }}</a></li>
+              <li><i class="icon-fixed-width icon-{{ icon_close }}" {{ inactive }}></i><a title="{{ g.name }}">{{ g.name }}</a></li>
             {% endfor %}
            </ul>
           {% endif %}

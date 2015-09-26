@@ -25,7 +25,7 @@ function click_toc(pid, open, close)
 {
   var root = $('#toc_widget_content');
   var child = pid + "-cld";
-  var icon = pid + " a i";
+  var icon = pid + " i";
 
   /* Hide all of the other nodes */
   var nodes = root.find("ul");
@@ -38,7 +38,7 @@ function click_toc(pid, open, close)
     childid = child.replace('#','');
     if (child != nodeid && child.indexOf(nodeid) < 0 && $(this).css('display') == "block") {
       var iconid = nodeid.replace(/-cld$/,'');
-      var myicon = $("#" + iconid + " a i");
+      var myicon = $("#" + iconid + " i");
 
       $(this).hide();
       switch_icon(myicon, open, close);

@@ -3,7 +3,7 @@
 {% assign not_collapsable = "not_collapsable" %}
 
 <section id="home_toc_widget" class="active">
-<a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
+<a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 文章分类</a>
 <nav id="toc_widget_container" class="toc_widget_container">
   <ul id="toc_widget_content" class="nav">
     {% for category in site.data.categories %}

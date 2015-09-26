@@ -32,6 +32,9 @@ function click_toc(pid, open, close)
   $.each(nodes, function() {
     var nodeid = $(this).attr('id');
 
+    if (!nodeid)
+       return; 
+
     childid = child.replace('#','');
     if (child != nodeid && child.indexOf(nodeid) < 0 && $(this).css('display') == "block") {
       var iconid = nodeid.replace(/-cld$/,'');

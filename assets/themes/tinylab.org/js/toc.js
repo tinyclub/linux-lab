@@ -57,9 +57,15 @@ var Toc = {
 
         var node_num = 0;
         var h1, h2, h3, h4, h5;
-        var h_cnt = new Array(0, 0, 0, 0, 0)
+        var h_cnt = new Array(0, 0, 0, 0, 0);
+        var h_id = new Array("", "", "", "");
+        var hid = new Array("", "", "", "");
         $.each(nodes,function(){
             var anchorPrefix = 'tocAnchor-';
+            var tocid_prefix = 'ctg-';
+            var tocid_suffix = '-cld';
+            var icon_close = 'angle-right';
+            var icon_open = 'angle-down';
             var $this = $(this);
 
             var nodetext = $this.text();
@@ -124,57 +130,102 @@ var Toc = {
             h = $this.get(0).tagName;
             switch(h) {
             case h1:
-                var li_a = $("<li></li>").append(item_a);
-                ret_li = li_a;
-
                 h_cnt[0] ++;
                 if (h_cnt[0] > 1)
                   h_cnt.fill(0, 1, h_cnt.length);
                 h_ol = h_cnt.slice(0, 1);
+
+                h_id[0] = tocid_prefix.concat(h_ol);
+                console.log("h_id[0]: " + h_id[0]);
+
+                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[0], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
+                var li_a = $("<li id='" + h_id[0] + "'></li>").append(item_a);
+
+                ret_li = li_a;
                 break;
             case h2:
-                var li_a = $("<li></li>").append(item_a);
-                var nav_li_a = $("<ul class=\"nav\"></ul>").append(li_a);
-                ret_li = nav_li_a;
-
                 h_cnt[1] ++;
                 if (h_cnt[1] > 1)
                   h_cnt.fill(0, 2, h_cnt.length);
                 h_ol = h_cnt.slice(0, 2);
+
+                hid[1] = h_id[0].concat(tocid_suffix);
+                h_id[1] = hid[1].concat("-", h_cnt[1]);
+                console.log("h_id[1]: " + h_id[1]);
+
+                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[1], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
+                var li_a = $("<li id='" + h_id[1] +"'></li>").append(item_a);
+                if (h_cnt[1] > 1)
+                  var nav_li_a = $("#" + hid[1]).append(li_a);
+                else
+                  var nav_li_a = $("<ul class='nav' id='" + hid[1] +"'></ul>").append(li_a);
+
+                ret_li = nav_li_a;
                 break;
             case h3:
-                var li_a = $("<li></li>").append(item_a);
-                var nav_li_a = $("<ul class=\"nav\"></ul>").append(li_a);
-                var nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_li_a);
-                ret_li = nav_nav_li_a;
-
                 h_cnt[2] ++;
                 if (h_cnt[2] > 1)
                   h_cnt.fill(0, 3, h_cnt.length);
                 h_ol = h_cnt.slice(0, 3);
+
+                hid[2] = h_id[1].concat(tocid_suffix);
+                h_id[2] = hid[2].concat("-", h_cnt[2]);
+                console.log("h_id[2]: " + h_id[2]);
+
+                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[2], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
+                var li_a = $("<li id='" + h_id[2] +"'></li>").append(item_a);
+                if (h_cnt[2] > 1)
+                  var nav_li_a = $("#" + hid[2]).append(li_a);
+                else
+                  var nav_li_a = $("<ul class='nav' id='" + hid[2] +"'></ul>").append(li_a);
+
+                var nav_nav_li_a = $("#" + hid[1]).append(nav_li_a);
+
+                ret_li = nav_nav_li_a;
+
                 break;
             case h4:
-                var li_a = $("<li></li>").append(item_a);
-                var nav_li_a = $("<ul class=\"nav\"></ul>").append(li_a);
-                var nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_li_a);
-                var nav_nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_nav_li_a);
-                ret_li = nav_nav_nav_li_a;
-
                 h_cnt[3] ++;
                 if (h_cnt[3] > 1)
                   h_cnt.fill(0, 4, h_cnt.length);
                 h_ol = h_cnt.slice(0, 4);
+
+                hid[3] = h_id[2].concat(tocid_suffix);
+                h_id[3] = hid[3].concat("-", h_cnt[3]);
+                console.log("h_id[3]: " + h_id[3]);
+
+                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[3], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
+                var li_a = $("<li id='" + h_id[3] +"'></li>").append(item_a);
+                if (h_cnt[3] > 1)
+                  var nav_li_a = $("#" + hid[3]).append(li_a);
+                else
+                  var nav_li_a = $("<ul class='nav' id='" + hid[3] +"'></ul>").append(li_a);
+
+                var nav_nav_li_a = $("#" + hid[2]).append(nav_li_a);
+
+                var nav_nav_nav_li_a = $("#" + hid[1]).append(nav_nav_li_a);
+                ret_li = nav_nav_nav_li_a;
+
                 break;
             case h5:
-                var li_a = $("<li></li>").append(item_a);
-                var nav_li_a = $("<ul class=\"nav\"></ul>").append(li_a);
-                var nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_li_a);
-                var nav_nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_nav_li_a);
-                var nav_nav_nav_nav_li_a = $("<ul class=\"nav\"></ul>").append(nav_nav_nav_li_a);
-                ret_li = nav_nav_nav_nav_li_a;
-
                 h_cnt[4] ++;
-                h_ol = h_cnt;
+                h_ol = h_cnt.slice(0, 5);
+
+                hid[4] = h_id[3].concat(tocid_suffix);
+                h_id[4] = hid[4].concat("-", h_cnt[4]);
+                console.log("h_id[4]: " + h_id[4]);
+
+                $("<i class='icon-fixed-width icon-" + icon_close +"' onclick=\"click_toc('#" + "".concat(h_id[4], "','", icon_open, "','", icon_close) + "')\"></i>").prependTo(item_a);
+                var li_a = $("<li id='" + h_id[4] +"'></li>").append(item_a);
+                if (h_cnt[4] > 1)
+                  var nav_li_a = $("#" + hid[4]).append(li_a);
+                else
+                  var nav_li_a = $("<ul class='nav' id='" + hid[4] +"'></ul>").append(li_a);
+
+                var nav_nav_li_a = $("#" + hid[3]).append(nav_li_a);
+                var nav_nav_nav_li_a = $("#" + hid[2]).append(nav_li_a);
+                var nav_nav_nav_nav_li_a = $("#" + hid[1]).append(nav_nav_nav_li_a);
+                ret_li = nav_nav_nav_nav_li_a;
                 break;
             }
 

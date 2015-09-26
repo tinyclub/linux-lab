@@ -141,13 +141,9 @@ if (typeof jQuery === 'undefined') {
       .parents('li')
       .addClass('active')
 
-    if (active.parent('.dropdown-menu').length) {
-      active = active
-        .closest('li.dropdown')
-        .addClass('active')
-    }
+    var icon = $("#" + active.attr('id') + " i")
 
-    active.trigger('activate.bs.scrollspy')
+    icon.click()
   }
 
   ScrollSpy.prototype.clear = function () {

@@ -128,8 +128,8 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 |description| 文章摘要              | 可选
 |album      | 所属文章系列/专题     | 可选
 |group      | 默认 original，可选 translation, news, resume or jobs, 详见 `_data/groups.yml` | 可默认
-|category   | 分类，每行一个，至少一个 | **必须**
-|tags       | 标签，每行一个，至少一个 | **必须**
+|category   | 分类，每行1个，至少1个，必须在`_data/categories.yml` | **必须**
+|tags       | 标签，每行1个，至少1个，至多5个 | **必须**
 
 ## 完善作者信息
 

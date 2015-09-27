@@ -6,6 +6,7 @@
 {% assign icon = "star-empty" %}
 {% assign list = site.posts %}
 {% assign condition = nil %}
+{% assign items_limit = false %}
 
 {% for item in list %}
 {% if item.title and page.title and page.title == item.title %}

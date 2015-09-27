@@ -54,3 +54,4 @@
 {% assign truncate = false %}
 {% assign size = 0 %}
 {% assign condition = nil %}
+{% assign items_limit = nil %}

@@ -97,6 +97,8 @@
   categories:
     - name: 稳定性
     - name: 性能优化
+      categories:
+        - name: 启动速度
     - name: 系统裁剪
     - name: 实时性
     - name: 功耗优化
@@ -117,3 +119,8 @@
     - name: 行业观察
     - name: 产品创意
     - name: 研发管理
+
+- name: 工程实践
+  categories:
+    - name: 开源项目
+    - name: 开放书籍

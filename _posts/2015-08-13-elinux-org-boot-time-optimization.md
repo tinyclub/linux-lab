@@ -17,10 +17,8 @@ tags:
   - Perf
   - Splash
   - XIP
-  - 启动时间
 categories:
-  - Boot Time
-  - Linux
+  - 启动速度
 ---
 
 > 书籍：[嵌入式 Linux 知识库][1]

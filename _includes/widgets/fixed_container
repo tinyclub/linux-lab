@@ -8,9 +8,7 @@
   </section>
 
   {% if page.group != "home" %}
-    <section id="toc_widget" style="display: none" {% if page.group != "home" %} class="active" {% endif %}>
-      {% include widgets/toc_box %}
-    </section>
+    {% include widgets/toc_box %}
 
     {% include widgets/album_list %}
 

@@ -6,13 +6,9 @@ permalink: /open-books/
 tags:
   - C 语言编程透视
   - Shell编程范例
-  - TCC
   - 嵌入式Linux知识库
-  - 开源书籍
-  - 汇编
 categories:
-  - Computer Language
-  - Open Source
+  - 开放书籍
 ---
 
 > by Falcon of [TinyLab.org][1]

@@ -4,9 +4,7 @@ author: Chen Jie
 title: KDBUS 实现为一个内核驱动，真地好吗？
 permalink: /kdbus-kernel-is-implemented-as-a-driver-its-really-okay/
 category:
-  - Android
-  - Linux
-  - Open Source
+  - 进程通信
 tags:
   - AF_BUS
   - Binder

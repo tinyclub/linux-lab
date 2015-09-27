@@ -2,6 +2,7 @@
 title: 开源书籍：《Shell 编程范例》发布0.1版
 author: Wu Zhangjin
 layout: post
+album: 'Shell 编程范例'
 permalink: /the-shell-programming-example-sequence-of-release-version-0-1/
 tags:
   - Bash

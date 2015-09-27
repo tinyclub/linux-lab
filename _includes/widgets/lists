@@ -42,7 +42,7 @@
     {% endif %}
     {% assign total_num =  total_num | plus:1 %}
     <li>
-       <a rel="nofollow" class="tooltip list" href="{{ item.url }}" target="_blank">{% if truncate %}{{ item.title | truncate: site.JB.posts.title_length }}{% else %}{{ item.title }}{% endif %}
+       <a rel="nofollow" class="tooltip list" href="{{ item.url }}" target="_blank" {% if tooltip == false %}title="{{ item.title }}"{%endif%}>{% if truncate %}{{ item.title | truncate: site.JB.posts.title_length }}{% else %}{{ item.title }}{% endif %}
         {% if tooltip %}
         <span>
           {{ item.desc }}
@@ -61,3 +61,4 @@
 {% assign size = 0 %}
 {% assign condition = nil %}
 {% assign items_limit = nil %}
+{% assign tooltip = false %}

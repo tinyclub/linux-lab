@@ -4,8 +4,10 @@
 
 <section id="home_toc_widget" class="active">
 <a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 文章分类</a>
+
 <nav id="toc_widget_container" class="toc_widget_container">
   <ul id="toc_widget_content" class="nav">
+    {% assign p_ctg_list = "" %}
     {% for category in site.data.categories %}
     {% assign forloop0 = forloop %}
     <li id="ctg-{{ forloop0.index }}">
@@ -18,6 +20,7 @@
       {% assign name = category.name %}
       {% assign size = site.categories[name].size %}
       {% if size %}
+        {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
         {% capture size %} <sup>({{size}})</sup>{% endcapture %}
         {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
       {%endif%}
@@ -39,6 +42,7 @@
              {% assign name = child.name %}
              {% assign size = site.categories[name].size %}
              {% if size %}
+               {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                {% capture size %} <sup>({{size}})</sup>{% endcapture %}
                {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
              {%endif%}
@@ -61,6 +65,7 @@
                  {% assign name = g.name %}
                  {% assign size = site.categories[name].size %}
                  {% if size %}
+                   {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                    {% capture size %} <sup>({{size}})</sup>{% endcapture %}
                    {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
                  {%endif%}
@@ -75,6 +80,7 @@
                     {% assign name = gg.name %}
                     {% assign size = site.categories[name].size %}
                     {% if size %}
+                      {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                       {% capture size %} <sup>({{size}})</sup>{% endcapture %}
                       {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
                     {%endif%}
@@ -100,32 +106,21 @@
    <li id="{{ ctg_id }}"><li>
       <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#{{ ctg_id }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
       {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
-      <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
+      <a {{ url }} title="{{ name }}">{{ name }}</a>
    </li>
    <ul id="{{ ctg_id }}-cld" class="nav">
+
+    {% assign p_ctg_list = p_ctg_list | plit:"," %}
+
     {% for category in site.categories %}
-      {% for category in site.data.categories %}
-        {% if category.name == "category[0]" %}
-          {% continue %}
-        {% endif %}
-
-        {% for child in category.categories %}
-          {% if child.name == "category[0]" %}
-            {% continue %}
-          {% endif %}
-
-          {% for child in child.categories %}
-            {% if child.name == "category[0]" %}
-              {% continue %}
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-      {% endfor %}
+      {% assign name = category[0] %}
+      {% if p_ctg_list contains name  %}
+        {% continue %}
+      {% endif %}
 
       <li>
           <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
 
-          {% assign name = category[0] %}
           {% assign size = category[1].size %}
           {% if size %}
             {% capture size %} <sup>({{size}})</sup>{% endcapture %}
@@ -136,8 +131,6 @@
 
       </li>
     {% endfor %}
-   </ul>
-   <!-- 其他分类 -->
 
   </ul>
 </nav>

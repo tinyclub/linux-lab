@@ -69,13 +69,6 @@
     text-decoration: none;
     background-color: transparent;
 }
-#toc_widget_container .nav > .active > a,
-#toc_widget_container .nav > .active:hover > a,
-#toc_widget_container .nav > .active:focus > a {
-    font-weight: 700;
-    color: red;
-    background-color: transparent;
-}
 /* Nav: second level (shown on .active) */
 
 #toc_widget_container .nav .nav {
@@ -83,14 +76,9 @@
     /* padding-bottom: 10px; */
 }
 #toc_widget_container .nav .nav > li {
-    padding-left: 16px;
+    font-size: 96%;
+    padding-left: 12px;
     font-weight: 400
-}
-#toc_widget_container .nav .nav > .active > a,
-#toc_widget_container .nav .nav > .active:hover > a,
-#toc_widget_container .nav .nav > .active:focus > a {
-    font-weight: 700;
-    color: red
 }
 /* Nav: 3rd level (shown on .active) */
 
@@ -99,13 +87,23 @@
     /* padding-bottom: 10px;*/
 }
 #toc_widget_container .nav .nav .nav > li {
-    padding-left: 22px;
-    font-style: italic;
+    font-size: 93%;
+    padding-left: 18px;
     font-weight: 400
 }
-#toc_widget_container .nav .nav .nav > .active > a,
-#toc_widget_container .nav .nav .nav > .active:hover > a,
-#toc_widget_container .nav .nav .nav > .active:focus > a {
+
+#toc_widget_container .nav .nav .nav .nav > li {
+    font-size: 90%;
+    padding-left: 24px;
+    font-style: normal;
+    font-weight: 100
+}
+
+#toc_widget_container .nav .active *,
+#toc_widget_container .nav .nav .active *,
+#toc_widget_container .nav .nav .nav .active *,
+#toc_widget_container .nav .nav .nav .nav .active * {
     font-weight: 700;
-    color: red
+    color: red;
+    background-color: transparent;
 }

@@ -1,7 +1,6 @@
 ---
 title: 为什么计算机的学生要学习 Linux 开源技术
 author: Wu Zhangjin
-album: C 语言编程透视
 layout: post
 permalink: /why-computer-students-learn-linux-open-source-technologies/
 transposh_can_translate:

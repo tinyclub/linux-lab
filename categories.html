@@ -21,18 +21,42 @@ comments: false
       <!-- child -->
       {% if child.categories %}
 
-          {% for grandchild in child.categories %}
+          {% for g in child.categories %}
 
-            {% assign grandchild_categories = site.categories[grandchild.name] %}
-            {% assign grandchild_category_size = grandchild_categories.size %}
-            <h4 id="{{ grandchild.name }}-ref">{{ grandchild.name }}{% if grandchild_category_size %}<sup>({{ grandchild_category_size }})</sup>{% endif %}</h4>
+            {% assign g_categories = site.categories[g.name] %}
+            {% assign g_category_size = g_categories.size %}
+            <h4 id="{{ g.name }}-ref">{{ g.name }}{% if g_category_size %}<sup>({{ g_category_size }})</sup>{% endif %}</h4>
 
-            {% if grandchild_category_size %}
-              <ul>
-                {% assign pages_list = grandchild_categories %}
-                {% include JB/pages_list %}
-              </ul>
-            {% endif %}
+              <!-- g -->
+              {% if g.categories %}
+
+                  {% for gg in g.categories %}
+
+                    {% assign gg_categories = site.categories[gg.name] %}
+                    {% assign gg_category_size = gg_categories.size %}
+                    <h5 id="{{ gg.name }}-ref">{{ gg.name }}{% if gg_category_size %}<sup>({{ gg_category_size }})</sup>{% endif %}</h5>
+
+                    {% if gg_category_size %}
+                      <ul>
+                        {% assign pages_list = gg_categories %}
+                        {% include JB/pages_list %}
+                      </ul>
+                    {% endif %}
+
+                  {% endfor %}
+
+              <!-- child else -->
+              {% else %}
+
+                {% if gg_category_size %}
+                  <ul>
+                    {% assign pages_list = g_categories %}
+                    {% include JB/pages_list %}
+                  </ul>
+                {% endif %}
+
+              <!-- child end -->
+              {% endif %}
 
           {% endfor %}
 

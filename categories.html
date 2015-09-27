@@ -6,10 +6,88 @@ comments: false
 ---
 {% include JB/setup %}
 
-{% for category in site.categories %} 
-<h2 id="{{ category[0] }}-ref">{{ category[0] | join: "/" }} <sup>({{ category[1].size }})</sup></h2>
-<ul>
-  {% assign pages_list = category[1] %}  
-  {% include JB/pages_list %}
-</ul>
+{% for category in site.data.categories %}
+  {% assign categories = site.categories[category.name] %}
+  {% assign category_size = categories.size %}
+  <h2>{{ category.name }}{% if category_size %}<sup>({{ category_size }})</sup>{% endif %}</h2>
+
+  <!-- top -->
+  {% if category.categories %}
+    {% for child in category.categories %}
+      {% assign child_categories = site.categories[child.name] %}
+      {% assign child_category_size = child_categories.size %}
+      <h3>{{ child.name }}{% if child_size %}<sup>({{ child_category_size }})</sup>{% endif %}</h3>
+
+      <!-- child -->
+      {% if child.categories %}
+
+          {% for grandchild in child.categories %}
+
+            {% assign grandchild_categories = site.categories[grandchild.name] %}
+            {% assign grandchild_category_size = grandchild_categories.size %}
+            <h4 id="{{ grandchild.name }}-ref">{{ grandchild.name }}{% if grandchild_category_size %}<sup>({{ grandchild_category_size }})</sup>{% endif %}</h4>
+
+            {% if grandchild_category_size %}
+              <ul>
+                {% assign pages_list = grandchild_categories %}
+                {% include JB/pages_list %}
+              </ul>
+            {% endif %}
+
+          {% endfor %}
+
+      <!-- child else -->
+      {% else %}
+
+        {% if child_category_size %}
+          <ul>
+            {% assign pages_list = child_categories %}
+            {% include JB/pages_list %}
+          </ul>
+        {% endif %}
+
+      <!-- child end -->
+      {% endif %}
+
+    {% endfor %}
+  <!-- top else -->
+  {% else %}
+
+    {% if category_size %}
+      <ul>
+        {% assign pages_list = categories %}
+        {% include JB/pages_list %}
+      </ul>
+    {% endif %}
+
+  <!-- top end -->
+  {% endif %}
+{% endfor %}
+
+<h2 id="其他分类-ref">其他分类</h2>
+
+{% for category in site.categories %}
+  {% for category in site.data.categories %}
+    {% if category.name == "category[0]" %}
+      {% continue %}
+    {% endif %}
+
+    {% for child in category.categories %}
+      {% if child.name == "category[0]" %}
+        {% continue %}
+      {% endif %}
+
+      {% for child in child.categories %}
+        {% if child.name == "category[0]" %}
+          {% continue %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+
+  <h3 id="{{ category[0] }}-ref">{{ category[0] | join: "/" }} <sup>({{ category[1].size }})</sup></h3>
+  <ul>
+    {% assign pages_list = category[1] %}
+    {% include JB/pages_list %}
+  </ul>
 {% endfor %}

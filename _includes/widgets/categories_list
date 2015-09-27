@@ -14,7 +14,14 @@
       {% else %}
         <i class="icon-fixed-width icon-{{ icon_close }}" {{ not_collapsable }} ></i>
       {% endif %}
-      <a title="{{ category.name }}">{{ category.name }}</a>
+
+      {% assign name = category.name %}
+      {% assign size = site.categories[name].size %}
+      {% if size %}
+        {% capture size %} <sup>({{size}})</sup>{% endcapture %}
+        {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
+      {%endif%}
+      <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
     </li>
 
       {% if category.categories %}
@@ -28,7 +35,15 @@
              {% else %}
                <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
              {% endif %}
-             <a title="{{ child.name }}">{{ child.name }}</a>
+
+             {% assign name = child.name %}
+             {% assign size = site.categories[name].size %}
+             {% if size %}
+               {% capture size %} <sup>({{size}})</sup>{% endcapture %}
+               {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
+             {%endif%}
+
+             <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
           </li>
 
           {% if child.categories %}
@@ -42,13 +57,29 @@
                  {% else %}
                    <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
                  {% endif %}
-                 <a title="{{ g.name }}">{{ g.name }}</a>
+
+                 {% assign name = g.name %}
+                 {% assign size = site.categories[name].size %}
+                 {% if size %}
+                   {% capture size %} <sup>({{size}})</sup>{% endcapture %}
+                   {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
+                 {%endif%}
+
+                 <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
               </li>
 
               {% if g.categories %}
                 <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}-cld-{{ forloop.index }}-cld" class="nav">
                   {% for gg in g.categories %}
-                    <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a title="{{ gg.name }}">{{ gg.name }}</a></li>
+
+                    {% assign name = gg.name %}
+                    {% assign size = site.categories[name].size %}
+                    {% if size %}
+                      {% capture size %} <sup>({{size}})</sup>{% endcapture %}
+                      {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
+                    {%endif%}
+
+                    <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a {{url}} title="{{ name }}">{{ name }}{{ size }}</a></li>
                  {% endfor %}
                 </ul>
               {% endif %}

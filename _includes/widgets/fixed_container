@@ -20,6 +20,7 @@
 
     {% include widgets/recent_posts_list %}
   {% else %}
+    {% include widgets/categories_list %}
     {% include widgets/sidebars %}
   {% endif %}
 

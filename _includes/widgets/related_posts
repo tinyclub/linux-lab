@@ -2,6 +2,10 @@
 {% assign hasSimilarCat = '' %}
 {% assign SimilarNum = 0 %}
 {% for post in site.related_posts %}
+{% if page.album and post.album and page.album == post.album %}
+  {% continue %}
+{% endif %}
+
   {% assign matched = false %}
   {% for tag in post.tags %}
   {% for thisTag in page.tags %}

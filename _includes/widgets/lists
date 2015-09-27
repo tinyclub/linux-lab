@@ -8,17 +8,24 @@
   </div>
 </div>
 
-<div id="list-{{ icon }}">
-<ul>
+<ul id="list-{{ icon }}">
   {% assign total_num = 0 %}
   {% for item in list %}
-    {% if condition and item[{{condition}}] != {{value}} %}
-      {% continue %}
+    {% if condition %}
+      {% if item[{{condition}}] != {{value}} %}
+        {% continue %}
+      {% endif %}
+    {% else %}
+     {% if page.album and item.album and page.album == item.album %}
+       {% continue %}
+     {% endif %}
     {% endif %}
 
     {% if item.title and page.title and page.title == item.title %}
       {% continue %}
     {% endif %}
+
+
 
     {% if items_limit %}
        {% if total_num >= items_limit %}
@@ -45,7 +52,6 @@
     </li>
   {% endfor %}
 </ul>
-</div>
 
 {% assign items_limit = nil %}
 {% assign more = "" %}

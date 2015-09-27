@@ -8,7 +8,7 @@
 {% capture related_header %}
 <div class="section_header">
   <div class="pull-left">
-    <a onclick="common_click('#list-{{ icon }}')">
+    <a onclick="common_click('#{{related_container}}')">
       <i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
   </div>
   <div class="pull-right">

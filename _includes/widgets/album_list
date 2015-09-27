@@ -10,8 +10,13 @@
 {% assign condition = "album" %}
 {% assign value = page.album %}
 {% assign items_limit = 15 %}
+{% assign size = 0 %}
 
 {% for item in list %}
+{% if item.title and page.title and page.title == item.title %}
+  {% continue %}
+{% endif %}
+
 {% if item[{{condition}}] == {{value}} %}
  {% assign size = 1 %}
  {% break %}

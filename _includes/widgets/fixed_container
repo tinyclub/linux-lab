@@ -17,9 +17,8 @@
     <section id="related_posts" style="display:block;">
       {% include widgets/related_posts_list %}
     </section>
-    <section id="recent_posts" style="display:block;">
-      {% include widgets/recent_posts_list %}
-    </section>
+
+    {% include widgets/recent_posts_list %}
   {% else %}
     <section id="other_sidebars" style="border:0">
       {% include widgets/sidebars %}

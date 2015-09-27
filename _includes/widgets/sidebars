@@ -23,6 +23,10 @@
      {% assign value = sidebar.value  %}
 
      {% for item in list %}
+       {% if item.title and page.title and page.title == item.title %}
+         {% continue %}
+       {% endif %}
+
        {% if item[{{condition}}] == {{value}} %}
          {% assign size = 1 %}
          {% break %}

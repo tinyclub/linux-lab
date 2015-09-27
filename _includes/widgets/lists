@@ -16,6 +16,10 @@
       {% continue %}
     {% endif %}
 
+    {% if item.title and page.title and page.title == item.title %}
+      {% continue %}
+    {% endif %}
+
     {% if items_limit %}
        {% if total_num >= items_limit %}
           {% break %}
@@ -48,3 +52,5 @@
 {% assign prompt = "" %}
 {% assign url = nil %}
 {% assign truncate = false %}
+{% assign size = 0 %}
+{% assign condition = nil %}

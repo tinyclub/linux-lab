@@ -7,18 +7,19 @@
     {% assign author_box_visible="" %}
   </section>
 
+  {% if page.ctg == true %}
+   {% include widgets/categories_list %}
+  {% endif %}
+
+  {% if page.toc != false %}
+   {% include widgets/toc_box %}
+  {% endif %}
+
   {% if page.group != "home" %}
-    {% include widgets/toc_box %}
-
     {% include widgets/album_list %}
-
-    <section id="related_posts" style="display:block;">
-      {% include widgets/related_posts_list %}
-    </section>
-
+    {% include widgets/related_posts_list %}
     {% include widgets/recent_posts_list %}
   {% else %}
-    {% include widgets/categories_list %}
     {% include widgets/sidebars %}
   {% endif %}
 

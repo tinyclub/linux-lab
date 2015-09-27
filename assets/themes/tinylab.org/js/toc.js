@@ -12,10 +12,6 @@ Array.prototype.fill = function(value, start, length) {
 }
 
 function build_toc(h_cnt, hid, h_id, n, open, close, item_a, tocid_suffix, tocid_prefix) {
-    h_cnt[n] ++;
-    if (h_cnt[n] > 1)
-      h_cnt.fill(0, n+1, h_cnt.length);
-
     if (n == 0)
       h_id[n] = tocid_prefix.concat(h_cnt[0]);
     else {
@@ -83,7 +79,7 @@ var Toc = {
      * processing: search header elements(h1,h2,h3) in `main_content_container`,
      * generate directory tree list, and put them into toc_widget_content.
      */
-    createToc:function (toc_widget_content, main_content_container, toc_widget){
+    createToc:function (toc_widget_content, main_content_container, toc_widget, draw_toc){
         if(!toc_widget || main_content_container.length < 1 ||
                 !toc_widget_content) {
             return false;
@@ -152,20 +148,30 @@ var Toc = {
             h = $this.get(0).tagName;
             var n = parseInt(h.replace("H", "")) - h1_n;
 
-            ret_li = build_toc(h_cnt, hid, h_id,  n, icon_open, icon_close, item_a, tocid_suffix, tocid_prefix);
+            h_cnt[n] ++;
+            if (h_cnt[n] > 1)
+              h_cnt.fill(0, n+1, h_cnt.length);
+
+            if (draw_toc)
+              ret_li = build_toc(h_cnt, hid, h_id,  n, icon_open, icon_close, item_a, tocid_suffix, tocid_prefix);
 
             h_ol = h_cnt.slice(0, n + 1);
             $(this).prepend("<ahead>" + h_ol.join('.') + "</ahead> ");
 
-            if(!ret_li) {
-                /* do nothing */
-            } else {
-                ultoc.append(ret_li);
+            if (draw_toc) {
+                if(!ret_li) {
+                    /* do nothing */
+                } else {
+                    ultoc.append(ret_li);
+                }
             }
 
             node_num ++;
         });  /* end of each */
 
+
+        if (!draw_toc)
+           return;
 
         var nodes = toc_widget_content.find("li");
         $.each(nodes, function() {
@@ -188,14 +194,3 @@ var Toc = {
 
     } /* end of createToc:function() */
 };
-
-
-jQuery(function($) {
-    $(document).ready( function() {
-        /* Generate the side navigation `ul` elements */
-        Toc.createToc($("#toc_widget_content"), $("#main_content_container"), $("#toc_widget"));
-
-        /* caculate affixing */
-        Toc.setTocAffixing();
-    });
-});

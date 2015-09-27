@@ -17,7 +17,9 @@
 </div>
 {% endcapture %}
 
+<section id="related_posts" style="display:block;">
 {% include widgets/related_posts %}
+</section>
 
 {% assign more = "" %}
 {% assign prompt = "" %}

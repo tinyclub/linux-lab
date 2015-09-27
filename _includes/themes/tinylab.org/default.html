@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="{{ ASSET_PATH }}/css/fontello{{ css_js_compress_tag }}.css">
   <link rel="stylesheet" href="{{ ASSET_PATH }}/css/tooltip{{ css_js_compress_tag }}.css" media="screen">
 
-  {% if page.toc != false %}
+  {% if page.toc != false or page.ctg == true %}
     <link rel="stylesheet" href="{{ ASSET_PATH }}/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ ASSET_PATH }}/tocmd/css/toc{{ css_js_compress_tag }}.css" type="text/css" media="all">
   {% endif %}
@@ -120,11 +120,12 @@
   <div id="down"></div>
 
 
+  {% if page.toc != false %}
+    <script src="{{ ASSET_PATH }}/js/toc{{ css_js_compress_tag }}.js"></script>
+    <script src="{{ ASSET_PATH }}/tocmd/js/jquery.toc{{ css_js_compress_tag }}.js"></script>
+  {% endif %}
+
   {% if page.group != "home" %}
-    {% if page.toc != false %}
-      <script src="{{ ASSET_PATH }}/js/toc{{ css_js_compress_tag }}.js"></script>
-      <script src="{{ ASSET_PATH }}/tocmd/js/jquery.toc{{ css_js_compress_tag }}.js"></script>
-    {% endif %}
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/scrollspy{{ css_js_compress_tag }}.js"></script>
 
   <script src="{{ ASSET_PATH }}/code-prettify/prettify{{ css_js_compress_tag }}.js"></script>

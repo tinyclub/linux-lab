@@ -6,3 +6,21 @@
   </ul>
 </nav>
 </section>
+
+{% if page.ctg %}
+  {% assign draw_toc = 0 %}
+{% else %}
+  {% assign draw_toc = 1 %}
+{% endif %}
+
+<script>
+jQuery(function($) {
+    $(document).ready( function() {
+        /* Generate the side navigation `ul` elements */
+        Toc.createToc($("#toc_widget_content"), $("#main_content_container"), $("#toc_widget"), {{ draw_toc }});
+
+        /* caculate affixing */
+        Toc.setTocAffixing();
+    });
+});
+</script>

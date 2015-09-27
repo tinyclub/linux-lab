@@ -1282,8 +1282,8 @@ short_prev_next {
 
 @media (min-width: 1500px) {
     body {
-      -moz-transform: scale(1.5);
+      -moz-transform: scale(1.35);
       -moz-transform-origin: center top 0;
-      zoom: 1.5
+      zoom: 1.35
     }
 }

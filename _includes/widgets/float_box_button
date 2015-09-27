@@ -1,3 +1,3 @@
-<div id="show-float-box">
-  <a onclick="common_click('#float-box', '#show-float-box a i', 'help-circled', 'help')"><i class="icon-large icon-fixed-width icon-help"></i></a>
+<div id="float-box-button">
+  <a onclick="common_click('#float-box', '#float-box-button a i', 'help-circled', 'help')"><i class="icon-large icon-fixed-width icon-help"></i></a>
 </div>

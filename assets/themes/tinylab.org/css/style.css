@@ -439,10 +439,6 @@ a:active {
     font-weight: 400;
     text-shadow: none
 }
-#sidebar #other_sidebars {
-    max-height: 540px;
-    overflow: auto
-}
 #main-inner {
     background-color: #fcfcfc;
     min-height: 600px;
@@ -1030,7 +1026,8 @@ short_prev_next {
 #float-box {
     display: none;
 }
-#show-float-box {
+#float-box-button {
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
     display: block
 }
 
@@ -1186,6 +1183,7 @@ short_prev_next {
         margin: 0;
         margin-left: 40px;
         padding-top: 7px;
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
     }
     #navbar #menu-icon i {
         font-size: 2em;

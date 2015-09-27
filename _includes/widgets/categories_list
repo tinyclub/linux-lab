@@ -19,10 +19,12 @@
 
       {% if category.categories %}
        <ul id="ctg-{{ forloop0.index }}-cld" class="nav">
+
         {% for child in category.categories %}
-          <li id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}">
+          {% assign forloop1 = forloop %}
+          <li id="ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}">
              {% if child.categories %}
-               <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}-cld-{{ forloop.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
+               <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
              {% else %}
                <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
              {% endif %}
@@ -30,10 +32,28 @@
           </li>
 
           {% if child.categories %}
-           <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop.index }}-cld" class="nav">
+
+           <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}-cld" class="nav">
+
             {% for g in child.categories %}
-              <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a title="{{ g.name }}">{{ g.name }}</a></li>
+              <li id="ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}-cld-{{ forloop.index }}">
+                 {% if g.categories %}
+                   <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}-cld-{{ forloop.index }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
+                 {% else %}
+                   <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
+                 {% endif %}
+                 <a title="{{ g.name }}">{{ g.name }}</a>
+              </li>
+
+              {% if g.categories %}
+                <ul id="ctg-{{ forloop0.index }}-cld-{{ forloop1.index }}-cld-{{ forloop.index }}-cld" class="nav">
+                  {% for gg in g.categories %}
+                    <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a title="{{ gg.name }}">{{ gg.name }}</a></li>
+                 {% endfor %}
+                </ul>
+              {% endif %}
             {% endfor %}
+
            </ul>
           {% endif %}
 

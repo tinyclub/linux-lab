@@ -58,6 +58,8 @@ JB :
     related_limit: 5
   sidebar:
     items_limit: 5
+  author_box:
+    max_oneline: 4
 
   code_prettify:
     theme: doxy

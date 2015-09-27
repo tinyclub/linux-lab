@@ -20,9 +20,7 @@
 
     {% include widgets/recent_posts_list %}
   {% else %}
-    <section id="other_sidebars" style="border:0">
-      {% include widgets/sidebars %}
-    </section>
+    {% include widgets/sidebars %}
   {% endif %}
 
 </div>

@@ -2,7 +2,6 @@
   {% if sidebar.disable %}
     {% continue %}
   {% endif %}
-  <section id="{{ sidebar.data }}">
    {% assign title = sidebar.name %}
    {% assign icon = sidebar.icon %}
    {% assign tooltip = false %}
@@ -35,7 +34,8 @@
 
    {% endif %}
    {% if size != 0 %}
+    <section id="{{ sidebar.data }}">
      {% include widgets/lists %}
+    </section>
    {% endif %}
-  </section>
 {% endfor %}

@@ -9,14 +9,14 @@ comments: false
 {% for category in site.data.categories %}
   {% assign categories = site.categories[category.name] %}
   {% assign category_size = categories.size %}
-  <h2>{{ category.name }}{% if category_size %}<sup>({{ category_size }})</sup>{% endif %}</h2>
+  <h2>{{ category.name }}{% if category_size %} <sup>({{ category_size }})</sup>{% endif %}</h2>
 
   <!-- top -->
   {% if category.categories %}
     {% for child in category.categories %}
       {% assign child_categories = site.categories[child.name] %}
       {% assign child_category_size = child_categories.size %}
-      <h3>{{ child.name }}{% if child_size %}<sup>({{ child_category_size }})</sup>{% endif %}</h3>
+      <h3>{{ child.name }}{% if child_size %} <sup>({{ child_category_size }})</sup>{% endif %}</h3>
 
       <!-- child -->
       {% if child.categories %}
@@ -25,7 +25,7 @@ comments: false
 
             {% assign g_categories = site.categories[g.name] %}
             {% assign g_category_size = g_categories.size %}
-            <h4 id="{{ g.name }}-ref">{{ g.name }}{% if g_category_size %}<sup>({{ g_category_size }})</sup>{% endif %}</h4>
+            <h4 id="{{ g.name }}-ref">{{ g.name }}{% if g_category_size %} <sup>({{ g_category_size }})</sup>{% endif %}</h4>
 
               <!-- g -->
               {% if g.categories %}
@@ -34,7 +34,7 @@ comments: false
 
                     {% assign gg_categories = site.categories[gg.name] %}
                     {% assign gg_category_size = gg_categories.size %}
-                    <h5 id="{{ gg.name }}-ref">{{ gg.name }}{% if gg_category_size %}<sup>({{ gg_category_size }})</sup>{% endif %}</h5>
+                    <h5 id="{{ gg.name }}-ref">{{ gg.name }}{% if gg_category_size %} <sup>({{ gg_category_size }})</sup>{% endif %}</h5>
 
                     {% if gg_category_size %}
                       <ul>

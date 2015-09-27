@@ -1,6 +1,7 @@
 {% assign icon_open = "angle-down" %}
 {% assign icon_close = "angle-right" %}
 {% assign not_collapsable = "not_collapsable" %}
+{% assign not_empty = "class='not_empty'" %}
 
 <section id="home_toc_widget" class="active">
 <a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 文章分类</a>
@@ -19,12 +20,13 @@
 
       {% assign name = category.name %}
       {% assign size = site.categories[name].size %}
+      {% assign more = "" %}
       {% if size %}
         {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
         {% capture size %} <sup>({{size}})</sup>{% endcapture %}
-        {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
+        {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref" {{ not_empty }}{% endcapture %}
       {%endif%}
-      <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
+      <a {{ more }}  title="{{ name }}">{{ name }}{{ size }}</a>
     </li>
 
       {% if category.categories %}
@@ -41,13 +43,14 @@
 
              {% assign name = child.name %}
              {% assign size = site.categories[name].size %}
+             {% assign more = "" %}
              {% if size %}
                {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                {% capture size %} <sup>({{size}})</sup>{% endcapture %}
-               {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
+               {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref" {{ not_empty }} {% endcapture %}
              {%endif%}
 
-             <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
+             <a {{ more }} title="{{ name }}">{{ name }}{{ size }}</a>
           </li>
 
           {% if child.categories %}
@@ -64,13 +67,14 @@
 
                  {% assign name = g.name %}
                  {% assign size = site.categories[name].size %}
+                 {% assign more = "" %}
                  {% if size %}
                    {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                    {% capture size %} <sup>({{size}})</sup>{% endcapture %}
-                   {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
+                   {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref" {{ not_empty }} {% endcapture %}
                  {%endif%}
 
-                 <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
+                 <a {{ more }} title="{{ name }}">{{ name }}{{ size }}</a>
               </li>
 
               {% if g.categories %}
@@ -79,13 +83,14 @@
 
                     {% assign name = gg.name %}
                     {% assign size = site.categories[name].size %}
+                    {% assign more = "" %}
                     {% if size %}
                       {% assign p_ctg_list = p_ctg_list | append:"," | append:name %}
                       {% capture size %} <sup>({{size}})</sup>{% endcapture %}
-                      {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
+                      {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref" {{ not_empty }} {% endcapture %}
                     {%endif%}
 
-                    <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a {{url}} title="{{ name }}">{{ name }}{{ size }}</a></li>
+                    <li><i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i><a {{ more }} title="{{ name }}">{{ name }}{{ size }}</a></li>
                  {% endfor %}
                 </ul>
               {% endif %}
@@ -102,11 +107,12 @@
 
    <!-- 其他分类 -->
    {% assign name = "其他分类" %}
-   {% assign ctg_id = "ctg-1000" %}
-   <li id="{{ ctg_id }}"><li>
+   {% assign ctg_id = "ctg-xxxx" %}
+   {% assign more = "" %}
+   <li id="{{ ctg_id }}">
       <i class="icon-fixed-width icon-{{ icon_close }}" onclick="click_toc('#{{ ctg_id }}', '{{ icon_open }}', '{{ icon_close }}')"></i>
-      {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref"{% endcapture %}
-      <a {{ url }} title="{{ name }}">{{ name }}</a>
+      {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name }}-ref" {% endcapture %}
+      <a {{ more }} title="{{ name }}">{{ name }}</a>
    </li>
    <ul id="{{ ctg_id }}-cld" class="nav">
 
@@ -122,12 +128,13 @@
           <i class="icon-fixed-width icon-{{ icon_close }} {{ not_collapsable }}"></i>
 
           {% assign size = category[1].size %}
+          {% assign more = "" %}
           {% if size %}
             {% capture size %} <sup>({{size}})</sup>{% endcapture %}
-            {% capture url %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref"{% endcapture %}
+            {% capture more %}href="{{ site.JB.categories_path | append:'#' | append:name | replace:" ","-" }}-ref" {{ not_empty }} {% endcapture %}
           {%endif%}
 
-          <a {{ url }} title="{{ name }}">{{ name }}{{ size }}</a>
+          <a {{ more }} title="{{ name }}">{{ name }}{{ size }}</a>
 
       </li>
     {% endfor %}
@@ -135,3 +142,9 @@
   </ul>
 </nav>
 </section>
+
+<script>
+$(document).ready(function() {
+   color_toc();
+});
+</script>

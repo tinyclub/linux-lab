@@ -47,3 +47,24 @@ function click_toc(pid, open, close)
 
   common_click(child, icon, open, close);
 }
+
+function color_toc()
+{
+  var root_id = "toc_widget_content";
+  var root = $('#' + root_id);
+
+  var nodes = root.find(".not_empty");
+  $.each(nodes, function() {
+     var p = $(this).parent().parent();;
+     var p_id = p.attr('id');
+     var cnt = 0;
+     while (p_id != root_id && cnt < 4) {
+       /* console.log(p_id); */
+       var p_li = p_id.replace(/-cld$/,'');
+       $("#" + p_li + " a").addClass('not_empty');
+       cnt ++;
+       p = p.parent();
+       p_id = p.attr('id');
+     }
+  });
+}

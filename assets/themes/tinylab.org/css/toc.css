@@ -29,6 +29,11 @@
     color: #ccc
 }
 
+#sidebar nav ul .not_empty {
+    color: #e0e
+}
+
+
 /* First level of nav */
 
 #toc_widget_content {

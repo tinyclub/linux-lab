@@ -4,8 +4,11 @@ author: Wu Zhangjin
 layout: post
 permalink: /faqs/turn-raw-data-into-a-picture-framebuffer/
 tags:
-categories:
   - Android
+  - Framebuffer
+  - 图片
+categories:
+  - 效率工具
 ---
 
   * 问题描述

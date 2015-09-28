@@ -37,3 +37,17 @@ Chen Jie:
   github: cee1
   weibo: cee1i
   info: Linux / Freedesktop / GNOME
+
+Wen Pingbo:
+  name : Wen Pingbo
+  nickname: Pingbo
+  archive: true
+  article: true
+  site: blog.miopeco.com
+  email : wengpingbo@gmail.com
+  github : wengpingbo
+  weibo : echowpb
+  sponsor: weixin-pay-pingbo-1.00
+  sponsor-qrcode: true
+  info: A coder, a gamer
+

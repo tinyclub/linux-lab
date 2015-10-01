@@ -16,3 +16,5 @@ Thumbs.db
 *.min.css
 _data/compress.yml
 pdfs/*
+
+.idea

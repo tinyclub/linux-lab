@@ -1,5 +1,5 @@
 
-css_js: true
+css_js: false
 css_js_tag: .min
 
-html: true
+html: false

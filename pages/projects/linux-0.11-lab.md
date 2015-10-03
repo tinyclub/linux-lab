@@ -1,10 +1,16 @@
 ---
-title: 'Linux-0.11-Lab: 五分钟实验环境'
+title: 'Linux 0.11 实验环境'
+tagline: '可快速构建，支持Docker/Qemu/Bochs/Ubuntu/OS X/Windows'
 author: Wu Zhangjin
 layout: page
 permalink: /linux-0.11-lab/
-views:
-  - 320
+description: 可快速搭建的 Linux 0.11 实验环境，支持 Docker, 支持 Ubuntu / Windows / Mac OS X，也内置支持 Qemu / Bochs。
+update: 2015-10-1
+categories:
+  - 开源项目
+  - Linux 0.11
+tags:
+  - 实验环境
 ---
 
 ## 项目描述

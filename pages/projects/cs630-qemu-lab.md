@@ -1,13 +1,20 @@
 ---
-title: 'CS630-Qemu-Lab: Qemu 上学汇编语言课'
+title: 'CS630 Qemu 实验环境'
+tagline: '通过 Qemu 学习旧金山大学的 CS630 汇编语言课程'
 author: Wu Zhangjin
 layout: page
 permalink: /cs630-qemu-lab/
-views:
-  - 282
+description: 通过 Qemu 学习旧金山大学的汇编语言课程 CS630。
+update: 2015-10-1
+categories:
+  - 开源项目
+  - 汇编
+  - Qemu
+tags:
+  - CS630
 ---
 
-### 简介
+## 简介
 
 该项目致力于通过 Qemu 学习旧金山大学的汇编语言课程 [CS630][1]。
 
@@ -15,7 +22,7 @@ views:
 
 有了这些脚本，学生就可以很方便地在当前开发主机上实验，从而免去了不必要的重启，也避免了烧坏自己主机的风险。
 
-### 代码仓库
+## 代码仓库
 
   * 仓库地址：[https://github.com/tinyclub/cs630-qemu-lab.git][3]
 
@@ -30,13 +37,13 @@ views:
     
     上述命令将从 CS630 课程网站 [CS 630: Advanced Microcomputer Programming (Fall 2006)][1] 下载最新的源码到 `res/`。
 
-### 通过 Qemu 学 CS630
+## 通过 Qemu 学 CS630
 
 现在开学了，写了两个简单的文档: README.md 和 NOTE.md, 请参考它们做实验。
 
 下面以 helloworld 和 rtc 为例展开：
 
-#### Real Mode
+### Real Mode
 
   * helloworld
     
@@ -50,7 +57,7 @@ views:
         $ make boot
         
 
-#### Protected Mode
+### Protected Mode
 
   * helloworld
     
@@ -64,7 +71,7 @@ views:
         $ make pmboot
         
 
-### 演示图
+## 演示图
 
 下面是 rtcdemo 在 Qemu 上运行时的截图:
 

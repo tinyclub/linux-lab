@@ -1,17 +1,23 @@
 ---
-title: 'Linux-Loongson: 社区版龙芯 Linux'
+title: '社区版龙芯 Linux'
+tagline: '社区维护，支持龙芯 2F 系列，已进入官方 Linux'
 author: Wu Zhangjin
 layout: page
 permalink: /linux-loongson-community/
-views:
-  - 61
+description: 用于维护龙芯 2F 系列机型的 Linux 支持。
+update: 2015-10-1
+categories:
+  - 开源项目
+  - 开源社区
+tags:
+  - 龙芯
+  - Linux
+  - 社区版
 ---
-【注】因该项目的原主页已无法访问，这里将作为社区版龙芯 Linux 的临时主页。
-
-
-# Linux-Loongson-Community (社区版龙芯Linux)
 
 The Linux Kernel For Loongson Maintained by Community.
+
+因该项目的原主页已无法访问，这里将作为社区版龙芯 Linux 的临时主页。
 
 ## Introduction (项目简介)
 

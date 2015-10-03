@@ -1,11 +1,21 @@
 ---
-title: '开源书籍: C 语言编程透视'
+title: 'C 语言编程透视'
+tagline: 一本透视 C 语言开发过程的开源书籍
 author: Wu Zhangjin
 layout: page
 album: 'C 语言编程透视'
 permalink: /open-c-book/
-views:
-  - 2178
+description: 以实验的方式去探究类似 `Hello World` 这样的小程序在开发与执行过程中的微妙变化，一层层揭开 C 语言开发过程的神秘面纱，透视背后的秘密，不断享受醍醐灌顶的美妙。
+update: 2015-10-1
+categories:
+  - 开源书籍
+  - C
+tags:
+  - gcc
+  - 程序执行
+  - 进程
+  - 动态链接
+  - ELF
 ---
 
 ## 背景

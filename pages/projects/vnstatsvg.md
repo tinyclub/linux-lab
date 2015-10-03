@@ -1,8 +1,17 @@
 ---
-title: 'vnStatSVG: Linux 网络流量监控'
+title: 'vnStatSVG: Linux 流量监控'
+tagline: '最佳vnStat Web前端，专为嵌入式与分布式系统设计'
 author: Wu Zhangjin
 layout: page
-permalink: /vnstatsvg/ 
+permalink: /vnstatsvg/
+update: 2015-10-1
+description: 用于监控 Linux 主机、集群甚至嵌入式设备的网络流量
+categories:
+  - 开源项目
+  - 流量监控
+  - vnStatSVG
+tags:
+  - vnStat
 ---
 
 > by falcon of [TinyLab.org][2]

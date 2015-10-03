@@ -1,10 +1,18 @@
 ---
 title: 'TinyLinux: Linux 内核裁剪'
+tagline: '2010 年 eLinux.org 项目，含 GC Sections 等技术'
 author: Wu Zhangjin
 layout: page
 permalink: /tinylinux/
-views:
-  - 317
+description: 致力于裁剪 Linux，降低 磁盘和内存开销
+update: 2015-10-1
+categories:
+  - 开源项目
+  - 系统裁剪
+tags:
+  - Linux
+  - TinyLinux
+  - 内核裁剪
 ---
 
 ## Introduction

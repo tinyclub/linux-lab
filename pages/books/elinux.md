@@ -1,11 +1,19 @@
 ---
-title: 嵌入式 Linux 知识库中文翻译计划
+title: 嵌入式 Linux 知识库
+tagline: Embedded Linux Wiki (eLinux.org) 中文翻译计划
 author: Wu Zhangjin
 layout: page
 album: '嵌入式 Linux 知识库'
+group: translation
+update: 2015-10-1
 permalink: /elinux/
-views:
-  - 278
+description: The GitBook of Embedded Linux Wiki (elinux.org)，中文翻译计划正在进行中。
+categories:
+  - 开源书籍
+  - Linux 综合知识
+tags:
+  - eLinux.org
+  - 中文翻译
 ---
 
 ## 简介

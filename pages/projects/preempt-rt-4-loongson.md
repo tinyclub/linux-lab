@@ -1,12 +1,22 @@
 ---
-title: Preempt-RT：龙芯/MIPS 实时抢占 Linux
+title: '龙芯/MIPS 实时抢占 Linux'
+tagline: 为龙芯加入实时抢占，龙芯 2F 最大延迟小到 80us
 author: Wu Zhangjin
 layout: page
 permalink: /preempt-rt-4-loongson/
-views:
-  - 20
+description: 为龙芯/MIPS 版 Linux 添加实时抢占支持。
+update: 2015-10-1
+categories:
+  - 开源项目
+  - MIPS
+  - 实时抢占
+tags:
+  - 实时性
+  - 龙芯
+  - Linux
 ---
-【注】因该项目的原主页已无法访问，这里将作为龙芯/MIPS 版实时抢占 Linux 的临时主页。
+
+因该项目的原主页已无法访问，这里将作为龙芯/MIPS 版实时抢占 Linux 的临时主页。
 
 ## 代码仓库
 

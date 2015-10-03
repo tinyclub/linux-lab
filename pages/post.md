@@ -49,6 +49,12 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 如果希望使用更多样式，可参照 `_posts` 下的其他文章。
 
+*注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
+
+    $ ln tools/post tools/falcon.post
+
+把 `falcon` 替换为你自己的昵称即可。
+
 ### 编译文稿
 
     $ jekyll s --limit_posts 1

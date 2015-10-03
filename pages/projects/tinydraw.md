@@ -1,10 +1,19 @@
 ---
-title: 'TinyDraw: Linux 数据渲染套件'
+title: 'Linux 数据渲染套件'
+tagline: 含数字示波器 Oscilloscope 等工具，可辅助系统优化
 author: Wu Zhangjin
 layout: page
 permalink: /tinydraw/
-views:
-  - 180
+recommend: false
+description: 收集/开发各类 Linux 下的数据渲染工具。
+update: 2015-10-1
+categories:
+  - 开源项目
+tags:
+  - TinyDraw
+  - Linux
+  - 数据渲染
+  - Oscilloscope
 ---
 
 ## Introduction

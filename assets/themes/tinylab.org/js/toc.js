@@ -95,7 +95,7 @@ var Toc = {
         var hid = new Array("", "", "", "");
         var tocid_prefix = 'ctg-';
         var tocid_suffix = '-cld';
-        var anchorPrefix = 'tocAnchor-';
+        var anchorPrefix = 'tocanchor-';
         var icon_close = 'angle-right';
         var icon_open = 'angle-down';
         $.each(nodes,function(){

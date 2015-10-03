@@ -31,8 +31,29 @@
   .atv { color: #060 }
 }
 
+pre.prettyprint, code.prettyprint {
+  font-family:'Droid Sans Mono','CPMono_v07 Bold','Droid Sans';
+  font-weight: 500;
+  font-size: 9pt;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -o-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+}  /*  background is black (well, just a tad less dark )  */
+
 /* Put a border around prettyprinted code snippets. */
-pre.prettyprint { padding: 2px; border: 1px solid #888 }
+pre.prettyprint {
+  width: 92%;
+  margin: 0 auto;
+  margin-left: 1.2em;
+  margin-top: 1.16em;
+  margin-bottom: 1em;
+  padding: 1em;
+  white-space: pre-wrap;
+  border: 1px solid #ccc
+}
 
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums { margin-top: 0; margin-bottom: 0 } /* IE indents via margin-left */
@@ -50,3 +71,15 @@ li.L3,
 li.L5,
 li.L7,
 li.L9 { background: #eee }
+
+@media (max-width: 999px) {
+  pre.prettyprint {
+    width: 98%;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 0
+  }
+  pre.prettyprint, code.prettyprint {
+    font-size: 8pt
+  }
+}

@@ -170,7 +170,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin: 0 auto;
-    margin-top: 1.5em;
+    margin-top: 1.16em;
     margin-bottom: 1em
 }
 hr {
@@ -230,7 +230,8 @@ textarea {
 /*  General Settings  */
 
 body {
-    font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+    background: #000;
+    font-family: 'Lucida Grande', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'WenQuanYi Micro Hei', sans-serif, 'SimSun', "宋体", 'Heiti', "黑体";
     font-size: 13.34px;
     *font-size: small;
     -moz-transform: scale(1);
@@ -244,7 +245,7 @@ textarea {
 }
 strong,
 th {
-    font-weight: 500
+    font-weight: 600
 }
 em {
     font-style: italic
@@ -303,7 +304,7 @@ a:active {
 
 #top-wrap {
     width: 100%;
-    background: #dcdee0;
+    background: #345;
     overflow: hidden;
     height: 40px;
     margin: 0 auto
@@ -353,16 +354,16 @@ a:active {
     font-size: 115%
 }
 #navbar ul li a {
-    color: #53585f;
+    color: #888;
     padding: 5px
 }
 #navbar ul li.active a,
 #navbar ul li a:hover {
-    color: #53585f;
+    color: #eee;
     text-decoration: none;
     padding: 5px;
 
-    border-bottom: 1px solid #53585f
+    border-bottom: 1px solid #eee
 }
 
 #navbar #menu-icon {
@@ -389,11 +390,13 @@ a:active {
 }
 
 #sidebar section a,
+#sidebar section i,
 #sidebar section:hover *,
 #sidebar section.active * {
     color: #345;
     text-decoration: none
 }
+#sidebar section i:hover,
 #sidebar section a:hover,
 #sidebar section.active {
     color: #4a630f;
@@ -407,20 +410,26 @@ a:active {
 #sidebar section.active > a i {
     color: #f60
 }
-#sidebar .section_header a,
+#sidebar .section_header > i {
+    float: left;
+    margin-right: 5px;
+}
+
+#sidebar .section_header > i,
+#sidebar .section_header > a,
 #sidebar section >a {
     display: block;
-    font-size: 95%;
+    font-size: 100%;
     font-weight: 500;
     height: 27px;
     padding: 5px 0 0 5px;
     -webkit-transition: color 400ms ease;
     -moz-transition: color 400ms ease;
     transition: color 400ms ease;
-    text-shadow: 0px 0px 1px #666
+    text-shadow: 0px 0px 1px #333
 }
 #sidebar section ul {
-    font-size: 100%;
+    font-size: 98%;
     margin-left: 20px;
     margin-right: 5px
 }
@@ -435,8 +444,9 @@ a:active {
 }
 #sidebar section ul li a {
     padding: 3px 0;
-    font-size: 80%;
+    font-size: 95%;
     font-weight: 400;
+    text-transform: capitalize;
     text-shadow: none
 }
 #main-inner {
@@ -450,6 +460,7 @@ a:active {
     -moz-box-shadow: 2px 2px 12px #787878;
     -webkit-box-shadow: 2px 2px 12px #787878;
     box-shadow: 2px 2px 12px #787878;
+    border-radius: 5px;
 }
 #content {
     margin-bottom: 35px
@@ -471,7 +482,7 @@ article header h2 {
     float: left
 }
 article header h1 {
-    font-size: 135%;
+    font-size: 130%;
     font-weight: 500;
     margin-bottom: 10px
 }
@@ -487,29 +498,29 @@ article section h2,
 article section h3,
 article section h4,
 article section h5 {
-    margin-top: 1.8em;
-    margin-bottom: 1.5em;
+    margin-top: 1.2em;
+    margin-bottom: 1em;
     color: #333;
     font-weight: 500
 }
 article section h1 {
-    font-size: 135%
+    font-size: 120%
 }
 article section h2 {
     color: #a33;
-    font-size: 130%
+    font-size: 115%
 }
 article section h3 {
     color: #33a;
-    font-size: 125%
+    font-size: 110%
 }
 article section h4 {
     color: #3a3;
-    font-size: 120%
+    font-size: 107%
 }
 article section h5 {
     color: #333;
-    font-size: 115%
+    font-size: 105%
 }
 article section p {
     text-indent: 1.16em;
@@ -530,15 +541,46 @@ article section ol li {
 section footer p {
     text-indent: 1.16em;
 }
+#wrap footer p {
+    color: #345
+}
 article header group {
-    font-size: 100%;
+    text-transform: capitalize;
+    font-size: 90%;
     font-weight: 300;
-    float: right;
-    margin-top: -1.28em;
+    float: left;
+    margin-top: -1.4em;
     line-height: .98em
 }
 article header group a {
-    color: #66f
+    color: #9bd
+}
+article header group i {
+    font-size: 80%;
+    color: #ccc
+}
+
+article header group sup {
+    font-size: 70%;
+    line-height: 0;
+    position: relative;
+    top: -.5em
+}
+article header time {
+    color: #ccc;
+    overflow: visible;
+    text-align: center;
+    font-size: 80%;
+    float: right;
+
+    margin-top: 3px;
+    padding: 0;
+    padding-left: 3px;
+    padding-right: 3px;
+    border: 1px dotted #dcdee0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 article header span a:hover {
@@ -575,16 +617,20 @@ article aside {
 
 article header h2,
 #home header h2 {
-    font-size: 110%;
     font-weight: 500;
+    font-size: 110%;
     width: 100%;
-    padding-top: 1em;
-    padding-bottom: .8em;
+    padding-top: 0.1em;
+    padding-bottom: 2.1em;
     border-bottom: 1px solid #efefef;
 
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis
+}
+article header h2 {
+    padding-top: 1.0em;
+    padding-bottom: 1.0em;
 }
 
 .post-extra {
@@ -600,26 +646,6 @@ article header h2,
 .post-extra .pull-left span,
 .post-extra .pull-right span {
     line-height: 25px
-}
-
-#sidebar .section_header {
-    overflow: hidden;
-    border-right: 1px dotted #dcdee0;
-    border-top: 1px dotted #dcdee0
-}
-#sidebar .section-header small {
-    font-size: 85%
-}
-#sidebar .section_header .pull-right {
-    margin-right: 5px
-}
-
-#sidebar .section_header .pull-right > a {
-    color: #4a630f;
-}
-
-#sidebar .section_header .pull-right:hover > a {
-    color: #66f;
 }
 
 /*  Image  */
@@ -668,7 +694,7 @@ td {
     border: 1px solid #e5e5e5
 }
 th {
-    font-size: 116%
+    font-size: 100%
 }
 tbody tr:nth-child(odd) {
     background-color: #f2f2f2
@@ -700,7 +726,7 @@ pre {
     display: block;
     padding: 9.5px;
     margin: 0 auto;
-    margin-top: 1.5em;
+    margin-top: 1.16em;
     margin-bottom: 1em;
     margin-left: 1.16em;
     line-height: 20px;
@@ -736,34 +762,34 @@ pre code {
     float: left
 }
 #query {
-    background: #eef;
+    background: #357;
     text-align: center;
     font-size: 100%;
     font-weight: 200;
     width: 150px;
     height: 28px;
-    border: 1px solid #ccc;
+    border: 1px solid #444;
     float: left;
 }
 input::-webkit-input-placeholder {
     /* WebKit browsers */
 
-    color: #bbb
+    color: #ccc
 }
 input:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
 
-    color: #bbb
+    color: #ccc
 }
 input::-moz-placeholder {
     /* Mozilla Firefox 19+ */
 
-    color: #bbb
+    color: #ccc
 }
 input:-ms-input-placeholder {
     /* Internet Explorer 10+ */
 
-    color: #bbb
+    color: #ccc
 }
 /*  Pagination  */
 
@@ -905,12 +931,14 @@ short_prev_next {
     opacity: .9
 }
 .tag-box a {
+    font-size: 85%;
     padding: 4px 6px;
     margin: 2px;
     background: #eee;
     color: #555;
     border-radius: 3px;
     text-decoration: none;
+    text-transform: capitalize;
     border: 1px dashed #ccc
 }
 .tag-box a span {
@@ -1024,7 +1052,7 @@ short_prev_next {
     font-size: 2em
 }
 #float-box {
-    display: none;
+    display: block;
 }
 #float-box-button {
     -webkit-tap-highlight-color:rgba(0,0,0,0);
@@ -1032,7 +1060,7 @@ short_prev_next {
 }
 
 #float-box-wrap a:hover {
-    color: #55f
+    color: #579
 }
 #bottom {
     margin-bottom: 5px
@@ -1104,25 +1132,8 @@ short_prev_next {
     article header h1 {
         font-size: 120%;
     }
-    article section h1 {
-        font-size: 130%
-    }
-    article section h2 {
-        font-size: 125%
-    }
-    article section h3 {
-        font-size: 120%
-    }
-    article section h4 {
-        font-size: 115%
-    }
-    article section h5 {
-        font-size: 110%
-    }
-    article header h2,
-    #home header h2 {
-        font-size: 105%;
-        font-weight: 500
+    article header time {
+        font-size: 60%;
     }
     .author-article,
     long_prev_next,
@@ -1132,7 +1143,7 @@ short_prev_next {
     #float-box-wrap .invisible {
         display: none
     }
-    #show-float-box,
+    #float-box-button,
     short_prev_next,
     #toc-container {
         display: block
@@ -1143,6 +1154,9 @@ short_prev_next {
     #float-box-wrap {
         margin: 0 auto;
         bottom: 0px;
+    }
+    #float-box-wrap a {
+        color: #357
     }
     .author-box-wrap {
         margin-left: 50px
@@ -1159,10 +1173,6 @@ short_prev_next {
     }
     article header {
         white-space: nowrap
-    }
-    article header group {
-        font-size: 80%;
-        margin-top: -1.27em
     }
     #navbar {
         position: fixed;
@@ -1182,12 +1192,12 @@ short_prev_next {
 
         margin: 0;
         margin-left: 40px;
-        padding-top: 7px;
+        padding-top: 8px;
         -webkit-tap-highlight-color:rgba(0,0,0,0);
     }
     #navbar #menu-icon i {
         font-size: 2em;
-        color: #3a8
+        color: #579
     }
     #navbar #menu-container {
         z-index: 99999999;
@@ -1197,7 +1207,7 @@ short_prev_next {
         right: 10px;
         margin-top: 15px;
 
-        background: #dcdee0;
+        background: #357;
         position: fixed;
 
         border-radius: 5px;
@@ -1218,16 +1228,16 @@ short_prev_next {
         padding: 15px;
     }
     #navbar ul li a {
+        color: #888;
         overflow: visible;
         width: 120px;
-        border-bottom: 1px solid #ccf;
     }
     #navbar ul li.active a,
     #navbar ul li a:hover {
-        color: #53585f;
+        color: #eee;
         text-decoration: none;
 
-        border-bottom: 1px solid #53585f
+        border-bottom: 1px solid #eee
     }
     #navbar ul li a,
     #navbar ul li.active a,
@@ -1272,18 +1282,18 @@ short_prev_next {
     }
 }
 
-@media (min-width: 1250px) {
-    body {
-      -moz-transform: scale(1.25);
-      -moz-transform-origin: center top 0;
-      zoom: 1.25
-    }
-}
-
 @media (min-width: 1500px) {
     body {
       -moz-transform: scale(1.35);
       -moz-transform-origin: center top 0;
       zoom: 1.35
+    }
+}
+
+@media (min-width: 2500px) {
+    body {
+      -moz-transform: scale(2);
+      -moz-transform-origin: center top 0;
+      zoom: 2
     }
 }

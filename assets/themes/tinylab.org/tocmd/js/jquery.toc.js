@@ -30,7 +30,7 @@
 
     $.fn.toc = function(settings) {
         var config = {
-            anchorPrefix: 'tocAnchor-',
+            anchorPrefix: 'tocanchor-',
             showAlways: false,
             saveShowStatus: true,
             contentsText: '目录',

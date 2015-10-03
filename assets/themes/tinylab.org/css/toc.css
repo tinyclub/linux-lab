@@ -26,13 +26,12 @@
 }
 
 #sidebar nav ul .not_collapsable {
-    color: #ccc
+    color: #222
 }
 
 #sidebar nav ul .not_empty {
-    color: #e0e
+    color: #c0c
 }
-
 
 /* First level of nav */
 
@@ -41,20 +40,16 @@
     margin-bottom: 10px
 }
 #toc_widget_container {
-    max-height: 600px;
+    max-height: 400px;
     overflow: auto;
     margin-left: 5px;
     margin-right: 10px;
     padding-left: 0;
 }
 
-::-webkit-scrollbar {
-    visibility: hidden;
-}
-
 @media (min-width: 1500px) {
     #toc_widget_container {
-      max-height: 450px;
+      max-height: 400px;
     }
 }
 
@@ -81,7 +76,7 @@
     /* padding-bottom: 10px; */
 }
 #toc_widget_container .nav .nav > li {
-    font-size: 96%;
+    font-size: 98%;
     padding-left: 12px;
     font-weight: 400
 }
@@ -92,13 +87,13 @@
     /* padding-bottom: 10px;*/
 }
 #toc_widget_container .nav .nav .nav > li {
-    font-size: 93%;
+    font-size: 95%;
     padding-left: 18px;
     font-weight: 400
 }
 
 #toc_widget_container .nav .nav .nav .nav > li {
-    font-size: 90%;
+    font-size: 93%;
     padding-left: 24px;
     font-style: normal;
     font-weight: 100

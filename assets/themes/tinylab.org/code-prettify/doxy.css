@@ -34,7 +34,7 @@ pre.prettyprint {
   width: 92%;
   margin: 0 auto;
   margin-left: 1.2em;
-  margin-top: 1.5em;
+  margin-top: 1.16em;
   margin-bottom: 1em;
   padding: 1em;
   white-space: pre-wrap;
@@ -72,5 +72,8 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     padding-left: 0.2em;
     padding-right: 0.2em;
     margin-left: 0
+  }
+  pre.prettyprint, code.prettyprint {
+    font-size: 8pt
   }
 }

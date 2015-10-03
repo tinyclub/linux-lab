@@ -49,15 +49,15 @@ end #JB
 
 # Usage: rake post author='Author' nick="Nick Name" title="A Title" [date="2012-02-09"] [tags=[tag1,tag2]] [categories="[category1,category2]"] \
 #                  group='Article Group' album='Article Series' tagline='subtitle' description="summary"  \
-#                  permalink='URL with English characeters'
+#                  slug='URL with English characeters'
 #
 
 desc "Begin a new post in #{CONFIG['posts']}"
 task :post do
   abort("rake aborted: '#{CONFIG['posts']}' directory not found.") unless FileTest.directory?(CONFIG['posts'])
   title = ENV["title"] || "new-post"
-  if ENV["permalink"]
-    slug = ENV["permalink"].downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  if ENV["slug"]
+    slug = ENV["slug"].downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   else
     slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   end
@@ -137,8 +137,8 @@ task :post do
   end
 
   # Build the permalink
-  if ENV["permalink"]
-    permalink = ENV["permalink"]
+  if ENV["slug"]
+    permalink = ENV["slug"]
     permalink = "permalink: /#{permalink}/"
   else
     permalink = "permalink: /#{slug}/"

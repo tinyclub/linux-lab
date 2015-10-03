@@ -4,15 +4,13 @@ author: Wu Zhangjin
 layout: post
 permalink: /build-linux-0-11-lab-with-docker/
 tags:
-  - 0.11
-  - Docker
   - Dockerfile
   - Linux
-  - 实验
+  - 实验环境
   - 操作系统
 categories:
-  - Linux
-  - Virtualization
+  - Linux 0.11
+  - Docker
 ---
 
 > by Falcon of [TinyLab.org][1]

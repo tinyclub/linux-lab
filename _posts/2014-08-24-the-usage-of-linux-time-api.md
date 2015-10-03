@@ -24,11 +24,8 @@ tags:
   - 时钟管理
   - 中断处理
 categories:
-  - Android
-  - Debug, Trace and Profile
-  - Linux
-  - Performance
-  - Real Time
+  - 时钟系统
+  - 实时性
 ---
 
 > by falcon of [TinyLab.org][2]

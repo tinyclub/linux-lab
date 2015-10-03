@@ -5,12 +5,10 @@ album: C FAQ
 layout: post
 permalink: /c-faq1-25-implicit-function-declarations/
 tags:
-  - c
   - faq
   - 函数原型
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

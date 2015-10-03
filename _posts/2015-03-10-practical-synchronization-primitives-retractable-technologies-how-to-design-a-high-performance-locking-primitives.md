@@ -15,10 +15,7 @@ tags:
   - 临界区
   - 伸缩性
 categories:
-  - C
-  - Linux
-  - Performance
-  - Synchronization
+  - 内核同步
 ---
 
 > 原文：[Scalability Techniques for Practical Synchronization Primitives][1]

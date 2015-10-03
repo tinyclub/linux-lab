@@ -14,7 +14,6 @@ tags:
   - 布尔运算
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

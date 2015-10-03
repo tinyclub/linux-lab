@@ -14,8 +14,7 @@ tags:
   - Uboot
   - 开源
 categories:
-  - Life
-  - Linux
+  - 开源社区
 ---
 
 > by falcon of [TinyLab.org][1]

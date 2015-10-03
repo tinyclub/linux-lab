@@ -3,10 +3,6 @@ title: 获取某个存储设备的 UUID
 author: Wu Zhangjin
 layout: post
 permalink: /faqs/get-and-set-the-uuid-of-a-disk-partition/
-voted_ID:
-  - 'a:2:{s:11:"A1945097411";s:10:"1405061853";s:11:"A1945097416";s:10:"1405637893";}'
-votes_count:
-  - 2
 tags:
   - /dev/disk/by-uuid/
   - blkid
@@ -14,7 +10,7 @@ tags:
   - UUID
   - uuidgen
 categories:
-  - Linux
+  - Shell
 ---
 * 问题描述
 

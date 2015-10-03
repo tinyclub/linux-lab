@@ -9,8 +9,7 @@ tags:
   - Linux
   - timer
 categories:
-  - Device Driver
-  - Linux
+  - 时钟系统
 ---
 
 <!-- title: 浅谈 Linux 下的 Timer 框架 -->

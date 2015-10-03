@@ -4,6 +4,7 @@ author: Wu Zhangjin
 layout: post
 permalink: /faqs/compile-python-from-py-to-pyc/
 tags:
+  - pyc
 categories:
   - Python
 ---

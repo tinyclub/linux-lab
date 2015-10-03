@@ -11,8 +11,7 @@ tags:
   - PHP
   - Shell
 categories:
-  - CGI
-  - Computer Language
+  - Nginx
 ---
 
 > by falcon of [TinyLab.org][2]

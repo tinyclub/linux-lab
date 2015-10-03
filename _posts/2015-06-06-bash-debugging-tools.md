@@ -9,7 +9,7 @@ tags:
   - Debug
   - Linux
 categories:
-  - Linux
+  - Shell
 ---
 
 > By WEN Pingbo of [TinyLab.org][1]

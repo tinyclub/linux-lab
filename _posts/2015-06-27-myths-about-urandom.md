@@ -13,8 +13,8 @@ tags:
   - random
   - 伪随机数
 categories:
-  - Linux
-  - Security
+  - 系统安全
+  - 安全管理
 ---
 
 > 原文：[Myths about /dev/urandom][1]

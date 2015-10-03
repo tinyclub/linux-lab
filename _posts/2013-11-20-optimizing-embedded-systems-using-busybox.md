@@ -16,16 +16,7 @@ tags:
   - Stability
   - Test automation
 categories:
-  - Android
-  - Boot Time
-  - Debug, Trace and Profile
-  - File Systems
-  - Linux
-  - Power Management
-  - Real Time
-  - Reliability, Availability, Serviceability
-  - System Size
-  - Testing
+  - 综合优化
 ---
 
 > by falcon of TinyLab.org

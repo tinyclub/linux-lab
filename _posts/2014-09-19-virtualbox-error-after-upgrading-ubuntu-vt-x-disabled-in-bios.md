@@ -13,7 +13,7 @@ tags:
   - VirtualBox
   - VT-x
 categories:
-  - Linux
+  - Ubuntu
 ---
   * 问题描述
 

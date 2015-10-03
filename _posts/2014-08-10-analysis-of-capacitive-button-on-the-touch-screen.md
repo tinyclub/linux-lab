@@ -8,9 +8,9 @@ tags:
   - 触摸屏
   - touchscreen
 categories:
-  - Android
-  - Linux
-  - Mobile
+  - TP
+  - Android 触摸屏
+  - TP 驱动
 ---
 
 

@@ -9,7 +9,7 @@ tags:
   - non-printable characters
   - tr
 categories:
-  - Linux
+  - Shell
 ---
 
 > by WEN Pingbo of [TinyLab.org][1]

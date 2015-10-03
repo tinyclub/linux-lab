@@ -4,11 +4,10 @@ author: Wu Zhangjin
 layout: post
 permalink: /install-arm-toolchain-from-android-ndk/
 tags:
-  - Android NDK
   - busybox
   - Cross compiler
 categories:
-  - Android
+  - Android NDK
   - C
 ---
 

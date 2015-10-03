@@ -18,7 +18,6 @@ tags:
   - wordpress
   - 搜索引擎收录
 categories:
-  - Misc
   - WordPress
 ---
 

@@ -6,15 +6,13 @@ layout: post
 permalink: /the-smallest-elf-executable-hello-world/
 tags:
   - 45
-  - c
   - ELF
   - 可执行文件
   - 最小
-categories:
-  - Assembly
-  - C
   - Linux
-  - System Size
+categories:
+  - C
+  - 系统裁剪
 ---
  
 > by Falcon of [TinyLab.org][1]

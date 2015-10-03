@@ -9,8 +9,7 @@ tags:
   - 在线更新
   - 服务器
 categories:
-  - Linux
-  - Reliability, Availability, Serviceability
+  - 稳定性
 ---
 
 > By Falcon of [TinyLab.org][1]

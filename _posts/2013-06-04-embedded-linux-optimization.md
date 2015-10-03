@@ -8,22 +8,15 @@ transposh_can_translate:
 tags:
   - 稳定性优化
   - 系统裁剪
-  - 系统实时性优化
+  - 实时性优化
   - Debugging
   - Linux
   - Optimization
   - 功耗优化
   - 启动速度优化
-  - 嵌入式系统优化
+  - 嵌入式系统
 categories:
-  - Boot Time
-  - Debug, Trace and Profile
-  - Linux
-  - Memory Management
-  - Power Management
-  - Reliability, Availability, Serviceability
-  - System Size
-  - Testing
+  - 综合优化
 ---
 
 > by falcon of TinyLab.org

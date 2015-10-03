@@ -5,7 +5,6 @@ album: C 语言编程透视
 layout: post
 permalink: /as-an-executable-file-to-slim-down/
 tags:
-  - C 语言编程透视
   - dd
   - ELF
   - hexdump
@@ -15,6 +14,7 @@ tags:
 categories:
   - C
   - X86
+  - 系统裁剪
 ---
 
 > by falcon of [TinyLab.org][2]

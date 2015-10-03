@@ -5,12 +5,10 @@ album: C FAQ
 layout: post
 permalink: /c-faq6-11-array-of-weird-wording/
 tags:
-  - c
   - faq
   - 数组
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

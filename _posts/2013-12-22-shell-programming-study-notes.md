@@ -14,7 +14,6 @@ tags:
   - 实例
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

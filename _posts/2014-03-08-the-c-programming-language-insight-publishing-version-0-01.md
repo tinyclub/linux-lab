@@ -6,15 +6,13 @@ album: 'C 语言编程透视'
 permalink: /the-c-programming-language-insight-publishing-version-0-01/
 tags:
   - C 语言编程
-  - C 语言编程透视
   - 透视
   - Hacking Hello World
   - Hello World
   - Markdown
-  - 开源书籍
 categories:
+  - 开源书籍
   - C
-  - Markdown
 ---
 
 > by falcon of [TinyLab.org][1]

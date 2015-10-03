@@ -4,13 +4,12 @@ author: Wu Zhangjin
 layout: post
 permalink: /docker-desktop-system-based-on-vncserver-novnc/
 tags:
-  - Docker
   - noVNC
   - VNCServer
   - 桌面系统
-categories:
   - Linux
-  - Virtualization
+categories:
+  - Docker
 ---
 
 > by Falcon of [TinyLab.org][1]

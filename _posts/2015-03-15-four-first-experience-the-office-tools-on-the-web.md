@@ -11,8 +11,7 @@ tags:
   - tower
   - worktile
 categories:
-  - Linux
-  - Tools
+  - 移动办公
 ---
 
 > By HongLiang of [TinyLab.org][1]

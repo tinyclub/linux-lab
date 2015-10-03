@@ -5,14 +5,12 @@ album: C FAQ
 layout: post
 permalink: /c-faq-scope-outside-linkage-and-storage-class/
 tags:
-  - c
   - faq
   - linkage
   - scope
   - storage class
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

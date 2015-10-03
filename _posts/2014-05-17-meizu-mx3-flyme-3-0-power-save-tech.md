@@ -19,9 +19,8 @@ tags:
   - 内存局部刷新
   - 无线充电
 categories:
-  - Android
-  - Linux
-  - Power Management
+  - 产品评测
+  - 功耗优化
 ---
 
 > by falcon of [TinyLab.org][2]

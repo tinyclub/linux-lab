@@ -4,11 +4,10 @@ author: Wu Zhangjin
 layout: post
 permalink: /faqs/delete-the-first-commit-of-the-git-repositor/
 tags:
-  - --root
-  - Git
   - rebase
+  - 删除历史记录
 categories:
-  - Linux
+  - Git
 ---
   * 问题描述
 

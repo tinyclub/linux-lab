@@ -13,7 +13,6 @@ tags:
   - 总结
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

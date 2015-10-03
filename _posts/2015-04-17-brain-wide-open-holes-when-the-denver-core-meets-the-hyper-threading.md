@@ -14,10 +14,10 @@ tags:
   - Tegra K1
   - VLIW
   - 丹佛
-categories:
-  - ARM
   - ISA
-  - Tegra
+categories:
+  - Denver
+  - 技术动态
 ---
 
 <!-- title: 大开脑洞：当丹佛核心遇上超线程 -->

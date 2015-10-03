@@ -4,11 +4,9 @@ author: Wu Zhangjin
 layout: post
 permalink: /use-docker-without-sudo/
 tags:
-  - Docker
   - sudo
 categories:
-  - Linux
-  - Virtualization
+  - Docker
 ---
 
 > by Falcon of [TinyLab.org][1]

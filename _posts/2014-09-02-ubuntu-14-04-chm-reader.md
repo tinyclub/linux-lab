@@ -11,7 +11,7 @@ tags:
   - kchmviewer
   - xchm
 categories:
-  - Linux
+  - Ubuntu
 ---
   * 问题描述
 

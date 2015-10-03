@@ -7,15 +7,15 @@ tags:
   - Bochs
   - Callgraph
   - calltree
-  - Linux 0.11
-  - Linux内核完全注释
-  - Mac OSX
+  - Linux 内核完全注释
+  - OS X
   - Qemu
   - tree2dotx
   - Ubuntu
   - 实验环境
 categories:
-  - Linux
+  - Linux 0.11
+  - Linux 0.11 Lab
 ---
 
 > by Falcon of [TinyLab.org][1]

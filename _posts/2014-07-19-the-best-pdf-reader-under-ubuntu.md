@@ -11,7 +11,7 @@ tags:
   - xpdf
   - 原理图
 categories:
-  - Linux
+  - Ubuntu
 ---
   * 问题描述
 

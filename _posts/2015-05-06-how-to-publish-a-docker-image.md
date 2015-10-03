@@ -4,12 +4,11 @@ author: Wu Zhangjin
 layout: post
 permalink: /how-to-publish-a-docker-image/
 tags:
-  - Docker
   - Dockerfile
   - 发布
+  - 镜像
 categories:
-  - Linux
-  - Virtualization
+  - Docker
 ---
 
 > by Falcon of [TinyLab.org][1]

@@ -2,6 +2,7 @@
 title: 内存分配奥义·jemalloc(一)
 author: Chen Jie
 layout: post
+album: 内存管理
 permalink: /memory-allocation-mystery-%c2%b7-jemalloc-a/
 tags:
   - c
@@ -10,7 +11,6 @@ tags:
   - malloc
 categories:
   - C
-  - Performance
 ---
 
 <!-- title: 内存分配奥义·jemalloc(一) -->

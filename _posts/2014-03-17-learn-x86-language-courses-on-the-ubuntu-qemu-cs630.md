@@ -8,10 +8,9 @@ tags:
   - AT&amp;T
   - CS630
   - Linux
-  - Qemu
   - Ubuntu
 categories:
-  - Assembly
+  - 汇编
   - Qemu
   - X86
 ---

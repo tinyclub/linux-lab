@@ -13,7 +13,6 @@ tags:
   - 实例
   - 文件系统
 categories:
-  - Computer Language
   - Shell
 ---
 

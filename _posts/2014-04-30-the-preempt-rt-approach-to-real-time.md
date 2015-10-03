@@ -7,7 +7,8 @@ tags:
   - PREEMPT_RT
   - Real Time
 categories:
-  - Linux
+  - 实时抢占
+  - 实时性
 ---
 
 下载：[The PREEMPT_RT Approach To Real Time](/wp-content/uploads/2014/04/preempt_rt1.pdf)。

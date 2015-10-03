@@ -1,14 +1,11 @@
 ---
 title: Mac OS X 上的 Time Machine 是如何工作的
 author: Peng Jingwen
-excerpt: |
-  <!--:zh--><a href="https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine.png"><img class="alignnone size-medium wp-image-588" src="https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine-600x356.png" alt="Time-Machine" /></a>
-
-  如果要问我究竟为什么喜欢 Mac OS X，那么 Time Machine 一定是一个重要的原因。Time Machine 不仅可以完完整整地将我的电脑备份出来，而且可以记录数据的各个版本，有了这个贴心小棉袄，我几乎不会为丢失任何重要数据而担心，甚至在关键时刻它还可以救我一命。本文要研究一下酷炫的 Time Machine 究竟是如何工作的。
-  <!--:-->
+description: 如果要问我究竟为什么喜欢 Mac OS X，那么 Time Machine 一定是一个重要的原因。Time Machine 不仅可以完完整整地将我的电脑备份出来，而且可以记录数据的各个版本，有了这个贴心小棉袄，我几乎不会为丢失任何重要数据而担心，甚至在关键时刻它还可以救我一命。本文要研究一下酷炫的 Time Machine 究竟是如何工作的。
 layout: post
 permalink: /how-time-machine-works-on-mac-os-x/
 tags:
+  - Time Machine
 categories:
   - OS X
 ---

@@ -4,13 +4,16 @@ author: Wu Zhangjin
 layout: post
 permalink: /faqs/find-out-the-code-line-of-kernel-panic-address/
 tags:
-  - addr2line
   - Backtrace
   - gdb
   - objdump
   - Panic
 categories:
-  - Linux
+  - 内核调试与跟踪
+  - 调试技巧
+  - objdump
+  - addr2line
+  - 稳定性
 ---
 * 问题描述
 

@@ -5,13 +5,14 @@ layout: post
 permalink: /explore-linux-segmentation-fault/
 tags:
   - backtace
-  - catchsegv
   - coredump
   - Segmentation Fault
   - 段错误
-categories:
-  - Debug, Trace and Profile
   - Linux
+categories:
+  - Catchsegv
+  - 调试技巧
+  - 稳定性
 ---
 
 > By Falcon of [TinyLab.org][1]

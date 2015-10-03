@@ -8,12 +8,10 @@ tags:
   - 龙芯
   - Loongson
   - MIPS
-  - 性能优化
 categories:
-  - Assembly
-  - Linux
+  - 汇编
   - MIPS
-  - Performance
+  - 性能优化
 ---
 
 > by Chen Jie of [TinyLab.org][1]

@@ -2,6 +2,7 @@
 title: Linux 技术报告：从 3.10 到 4.0
 author: Wu Zhangjin
 layout: post
+group: news
 permalink: /linux-technical-report-from-3-10-to-4-0/
 tags:
   - 3.10
@@ -13,7 +14,8 @@ tags:
   - Security
   - Stability
 categories:
-  - Linux
+  - 技术动态
+  - 综合优化
 ---
 
 > By Falcon of [TinyLab.org][1]

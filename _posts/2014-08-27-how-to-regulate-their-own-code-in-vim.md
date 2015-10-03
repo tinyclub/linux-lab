@@ -9,7 +9,8 @@ tags:
   - Vim
   - vim plugin
 categories:
-  - Linux
+  - 编码风格
+  - Vim 
 ---
   * 代码缩进
 

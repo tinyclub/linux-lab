@@ -18,8 +18,7 @@ tags:
   - 树莓派
   - 临近奇点
 categories:
-  - Linux
-  - Open Source
+  - 开源社区
 ---
 
 > By Yao Qi of [TinyLab.org][1]

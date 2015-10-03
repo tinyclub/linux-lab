@@ -5,10 +5,13 @@ album: C 语言编程透视
 layout: post
 permalink: /analysis-of-buffer-overflow-and-injected/
 tags:
-  - 缓冲区溢出，缓冲区注入，C 语言编程透视，内存映像
+  - 缓冲区溢出
+  - 缓冲区注入
+  - 内存映像
 categories:
   - C
   - X86
+  - 稳定性
 ---
 
 > by falcon of [TinyLab.org][2]

@@ -11,8 +11,8 @@ tags:
   - Web
   - 前端
 categories:
-  - Tools
-  - vnstatSVG
+  - vnStatSVG
+  - 流量监控
 ---
 
 > by Falcon of [TinyLab.org][1]

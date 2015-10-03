@@ -9,7 +9,6 @@ tags:
   - Linux
   - space
 categories:
-  - Linux
   - Shell
 ---
 

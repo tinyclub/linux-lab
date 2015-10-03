@@ -13,15 +13,14 @@ tags:
   - Security
   - Tizen
 categories:
-  - Linux
-  - Security
+  - 系统安全
 ---
 
 > 原文：[Linux Seeks Security, Unity][1]
 > 作者：Rick Merritt
 > 译者：Youkee
 
-![][3]
+![Image][3]
 
 **Linux 正在扩大其自身的覆盖领域，并承诺要在物联网（IoT）中发挥重要作用。**但是，据[嵌入式 Linux 会议][4]上专家的说法，开源软件需要更多地关注互操作性、安全以及其内核。
 

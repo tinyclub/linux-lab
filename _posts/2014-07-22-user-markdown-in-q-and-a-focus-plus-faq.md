@@ -6,9 +6,8 @@ permalink: /faqs/user-markdown-in-q-and-a-focus-plus-faq/
 tags:
   - Markdown
   - Q and A Focus Plus FAQ
-  - wordpress
 categories:
-  - WordPress
+  - Wordpress
 ---
   * 问题描述
 

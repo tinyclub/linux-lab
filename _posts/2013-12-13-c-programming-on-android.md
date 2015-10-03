@@ -11,14 +11,14 @@ tags:
   - JNI
   - NDK
 categories:
-  - Android
   - C
+  - Android NDK
 ---
 
 > by falcon of [TinyLab.org][2]
 > 2013/12/13
 
-### Background
+## Background
 
 There are lots of powerful C/C++ applications in the FLOSS world, it is invaluable if we can reuse them in Android system.
 
@@ -26,7 +26,7 @@ We have introduced the installation of Android NDK in [Install ARM Toolchain fro
 
 The cross compiled executable can be run through
 
-adb shell
+    $ adb shell
 
 command, but it is not convenient for users for they often have no USB connected and even don't know what adb is! so, a better method should be: package the program into an APK file and allow users to install it and run it through a generic Android application.
 
@@ -39,7 +39,7 @@ The basic principle of the first way is: If put an executable in the assets/ dir
 
 And as we know, Java is the mother language of Android, to call functions of the native C programs from Java, *JNI*: [Java Native Interface][6] must be applied, to simplify C programming with JNI, [Android NDK][7] and [some samples][8] are provided by Google, Let's use hell-jni as our example.
 
-### Prepare ndk-build
+## Prepare ndk-build
 
 ndk-build is a tool provided by Android NDK, which simplifies the whole building of the C programs wrapped with JNI symbols.
 
@@ -51,12 +51,12 @@ Let's download Android NDK, decompress it and set the PATH variable for the ndk-
     $ echo "export PATH=\$PATH:~/workspace/android-ndk-r9b" >> ~/.bashrc
     $ source ~/.bashrc
 
-### Update the project: hello-jni
+## Update the project: hello-jni
 
     $ cd android-ndk-r9b/samples/hello-jni
     $ android update project -p ./ -s
 
-### Build native code into shared libraries
+## Build native code into shared libraries
 
 The native C code and the related Makefile are put in jni/, let's use ndk-build to build the C code and generate a shared library.
 
@@ -75,7 +75,7 @@ The native C code and the related Makefile are put in jni/, let's use ndk-build 
     [armeabi] Gdbsetup       : libs/armeabi/gdb.setup
     [armeabi] Install        : libhello-jni.so => libs/armeabi/libhello-jni.so
 
-### Build and install a normal Android application
+## Build and install a normal Android application
 
 The C function: stringFromJNI() is called from the onCreate() function of src/com/example/hellojni/HelloJni.java:
 
@@ -104,7 +104,7 @@ Let's build the Android application:
     $ ant debug
     $ ant install bin/HelloJni-debug.apk
 
-### Conclusion
+## Conclusion
 
 After installation, it should be able to print 'Hello from JNI!'.
 

@@ -10,8 +10,7 @@ tags:
   - Swift
   - 小屏幕
 categories:
-  - Life
-  - Mobile
+  - 产品创意
 ---
 
 <!-- title: 大开脑洞，做一个比表屏大，比 phone 便携的移动设备 -->

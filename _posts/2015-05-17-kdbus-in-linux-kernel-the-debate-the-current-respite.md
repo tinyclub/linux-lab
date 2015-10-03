@@ -2,6 +2,7 @@
 title: KDBUS 合入 Linux Kernel：激烈论战，目前暂歇
 author: Chen Jie
 layout: post
+group: news
 permalink: /kdbus-in-linux-kernel-the-debate-the-current-respite/
 tags:
   - Binder
@@ -11,7 +12,7 @@ tags:
   - Plumber
   - SIMPL
 categories:
-  - Linux
+  - 进程通信
 ---
 
 <!-- title: KDBUS 合入 Linux Kernel：激烈论战，目前暂息 -->

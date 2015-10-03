@@ -13,7 +13,7 @@ tags:
   - 无法安装软件
   - 权限问题
 categories:
-  - Linux
+  - Ubuntu
 ---
 
   * 问题描述

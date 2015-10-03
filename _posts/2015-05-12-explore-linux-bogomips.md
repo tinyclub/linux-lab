@@ -1,6 +1,6 @@
 ---
 title: 内核探索：Linux BogoMips 探秘
-author: Wu Zhangjin
+author: Tao HongLiang
 layout: post
 permalink: /explore-linux-bogomips/
 tags:
@@ -10,7 +10,7 @@ tags:
   - Linux
   - loops_per_jiffy
 categories:
-  - Linux
+  - 时钟系统
 ---
 
 <!-- title: Linux BogoMips 探秘 -->

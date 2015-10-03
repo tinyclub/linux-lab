@@ -8,7 +8,7 @@ tags:
   - Android
   - 常见错误
 categories:
-  - Android
+  - ADB
 ---
 
 > by WenPingbo of [TinyLab.org][1]

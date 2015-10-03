@@ -6,11 +6,9 @@ permalink: /faqs/replace-the-default-console-for-busybox-android-ash/
 tags:
   - Android
   - Ash
-  - busybox
   - toolbox
 categories:
-  - Android
-  - Linux
+  - Busybox
 ---
 * 问题描述
 

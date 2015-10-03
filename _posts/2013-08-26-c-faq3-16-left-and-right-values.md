@@ -5,12 +5,10 @@ album: C FAQ
 layout: post
 permalink: /c-faq3-16-left-and-right-values/
 tags:
-  - c
   - lvalue
   - rvalue
 categories:
   - C
-  - Computer Language
 ---
 
 > by Pingbo Wen of TinyLab.org

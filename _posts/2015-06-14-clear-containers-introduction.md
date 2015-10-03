@@ -6,13 +6,12 @@ group: translation
 permalink: /clear-containers-introduction/
 tags:
   - Container
-  - 翻译，Clear Containers
+  - Clear Containers
   - Docker
   - Linux
   - LWN
 categories:
-  - Linux
-  - Virtualization
+  - 虚拟化
 ---
 
 <!-- title: Clear Containers 介绍 -->

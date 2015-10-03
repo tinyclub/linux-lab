@@ -11,7 +11,7 @@ tags:
   - popd
   - pushd
 categories:
-  - Linux
+  - Shell
 ---
 
 > By WEN Pingbo of [TinyLab.org][1]

@@ -7,17 +7,15 @@ tags:
   - cpu调频
   - cpufreq
   - Linux
-  - oscilloscope
   - performance tuning
   - rt-tests
   - Software Digital Oscilloscope
-  - TinyDraw
   - tuna
   - 功耗优化
 categories:
-  - Linux
-  - Performance
-  - Python
+  - 功耗优化
+  - Oscilloscope
+  - TinyDraw
 ---
 
 > by falcon of [TinyLab.org][2]

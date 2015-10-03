@@ -6,11 +6,9 @@ layout: post
 permalink: /behind-the-gcc-compiler/
 tags:
   - as
-  - C 语言编程透视
   - cpp
   - 链接脚本
   - 预处理，链接，静态链接
-  - gcc
   - ld
   - linker script
   - readelf
@@ -18,7 +16,7 @@ tags:
   - 汇编
 categories:
   - C
-  - gcc
+  - Gcc
   - X86
 ---
 

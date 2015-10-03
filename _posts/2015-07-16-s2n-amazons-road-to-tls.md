@@ -1,6 +1,7 @@
 ---
 title: s2n：亚马逊的 TLS 之道
 author: Chen Jie
+group: news
 layout: post
 permalink: /s2n-amazons-road-to-tls/
 tags:
@@ -10,11 +11,10 @@ tags:
   - SSL
   - TLS
   - 亚马逊
-categories:
-  - Debug, Trace and Profile
   - Linux
-  - Open Source
-  - Security
+categories:
+  - 技术动态
+  - 开源社区
 ---
 
 <!-- title: s2n：亚马逊的 TLS 之道 -->

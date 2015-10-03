@@ -2,6 +2,7 @@
 title: Linux 片面报告：从 4.0 到 4.2
 author: Chen Jie
 layout: post
+group: news
 permalink: /linux-one-sided-reports-from-4-0-to-4-2/
 tags:
   - BPF
@@ -11,10 +12,9 @@ tags:
   - KDBUS
   - kernel C
   - Live patching
-categories:
-  - ARM
   - Linux
-  - MIPS
+categories:
+  - 技术动态
 ---
 
 <!-- title: Linux 片面报告：从 4.0 到 4.2 -->

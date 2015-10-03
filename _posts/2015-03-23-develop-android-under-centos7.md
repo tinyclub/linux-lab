@@ -21,8 +21,7 @@ tags:
   - VPN
   - 开发环境
 categories:
-  - Android
-  - Linux
+  - Android 开发环境
 ---
 
 > by bigz of [TinyLab.org][1]

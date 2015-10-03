@@ -6,10 +6,9 @@ permalink: /online-cross-references-of-open-source-code-softwares/
 tags:
   - Android
   - Linux
+categories:
   - LXR
   - OpenGrok
-categories:
-  - Computer Language
 ---
 
 > by falcon of [TinyLab.org][2]

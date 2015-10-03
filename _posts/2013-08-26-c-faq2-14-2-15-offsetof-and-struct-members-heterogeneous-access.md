@@ -5,13 +5,11 @@ album: C FAQ
 layout: post
 permalink: /c-faq2-14-2-15-offsetof-and-struct-members-heterogeneous-access/
 tags:
-  - c
   - faq
   - kernel
   - offsetof
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

@@ -2,6 +2,7 @@
 title: eLinux.org 翻译计划
 author: Wu Zhangjin
 layout: post
+album: '嵌入式 Linux 知识库'
 permalink: /elinux-org-translation-project/
 tags:
   - 翻译
@@ -9,7 +10,7 @@ tags:
   - Linux
   - 嵌入式
 categories:
-  - Linux
+  - 开源书籍
 ---
 
 > By Falcon of [TinyLab.org][1]

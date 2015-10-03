@@ -2,12 +2,12 @@
 title: Start posting with Markdown
 author: Wu Zhangjin
 layout: post
+album: Markdown 用法详解
 permalink: /start-posting-with-markdown/
 tags:
   - markdown on save
   - retext
   - Tools
-  - wordpress
 categories:
   - Markdown
 ---

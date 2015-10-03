@@ -12,7 +12,6 @@ tags:
   - 开篇
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

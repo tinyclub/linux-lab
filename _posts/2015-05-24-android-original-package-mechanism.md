@@ -1,5 +1,5 @@
 ---
-title: 'Android &#8220;original-package&#8221; 机制'
+title: 'Android original-package 机制'
 author: will
 layout: post
 permalink: /android-original-package-mechanism/
@@ -8,7 +8,7 @@ tags:
   - original-package
   - PackageManagerService
 categories:
-  - Android
+  - 包管理
 ---
 
 <!-- 链接：原创空间 -->

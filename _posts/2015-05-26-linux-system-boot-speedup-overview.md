@@ -5,10 +5,9 @@ layout: post
 permalink: /linux-system-boot-speedup-overview/
 tags:
   - Linux
-  - 启动速度
   - 优化
 categories:
-  - Linux
+  - 启动速度
 ---
 
 > By Falcon of [TinyLab.org][1]

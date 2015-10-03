@@ -11,7 +11,7 @@ tags:
   - 手机认证
   - 三C认证
 categories:
-  - Mobile
+  - CTA
 ---
 
 > by WEN Pingbo of [Tinylab.org][1]

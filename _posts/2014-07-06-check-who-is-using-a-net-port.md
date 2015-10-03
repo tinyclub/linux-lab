@@ -9,7 +9,7 @@ tags:
   - nmap
   - port
 categories:
-  - Linux
+  - Shell 
 ---
 * 问题描述
 

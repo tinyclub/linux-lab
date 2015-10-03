@@ -11,8 +11,7 @@ tags:
   - iOS
   - Multimedia
 categories:
-  - Android
-  - Linux
+  - GStreamer
 ---
 
 > by Chen Jie of [TinyLab.org][1]

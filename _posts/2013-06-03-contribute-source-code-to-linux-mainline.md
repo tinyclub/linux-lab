@@ -10,7 +10,7 @@ tags:
   - Linux contribution
   - Loongson
 categories:
-  - Linux
+  - 开源社区
 ---
 
 > by falcon of TinyLab.org

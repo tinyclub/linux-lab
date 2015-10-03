@@ -13,7 +13,6 @@ tags:
   - 数值运算
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

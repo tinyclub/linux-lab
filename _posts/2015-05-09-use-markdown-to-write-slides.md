@@ -2,14 +2,13 @@
 title: 用 Markdown 高效地写幻灯片
 author: Wu Zhangjin
 layout: post
+album: Markdown 用法详解
 permalink: /use-markdown-to-write-slides/
 tags:
-  - Markdown
   - Slides
   - 幻灯
 categories:
   - Markdown
-  - Tools
 ---
 
 > By Falcon of [TinyLab.org][1]

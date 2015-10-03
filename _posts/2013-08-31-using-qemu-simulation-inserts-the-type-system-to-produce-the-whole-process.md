@@ -9,12 +9,10 @@ tags:
   - busybox
   - initramfs
   - kernel
-  - Qemu
   - Uboot
   - 交叉编译
 categories:
-  - File Systems
-  - Toolbox
+  - Qemu
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

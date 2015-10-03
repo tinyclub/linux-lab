@@ -21,9 +21,8 @@ tags:
   - 刷机
   - 小米
 categories:
-  - Android
-  - Linux
-  - Mobile
+  - 开源社区
+  - 行业动向
 ---
 
 > by falcon of [TinyLab.org][2]

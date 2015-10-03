@@ -5,13 +5,12 @@ layout: post
 permalink: /new-ui-design-im-style-cellphone-ui-intro/
 tags:
   - 移动终端
-  - UI
   - 命令行
   - 图形界面
   - 新思路
 categories:
-  - Life
-  - Mobile
+  - 产品创意
+  - UI
 ---
 
 > by Chen Jie of [TinyLab.org][1]

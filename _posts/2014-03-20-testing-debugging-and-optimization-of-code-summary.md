@@ -5,13 +5,12 @@ album: C 语言编程透视
 layout: post
 permalink: /testing-debugging-and-optimization-of-code-summary/
 tags:
-  - C 语言编程透视
   - 调试
-  - 优化，测试
+  - 优化
+  - 测试
 categories:
   - C
-  - Debug, Trace and Profile
-  - X86
+  - 调试技巧
 ---
 
 > by falcon of [TinyLab.org][2]

@@ -2,16 +2,18 @@
 title: 《Shell 编程范例系列》自由书籍计划
 author: Wu Zhangjin
 layout: post
+album: Shell 编程范例
 permalink: /the-sequence-of-shell-programming-paradigm-free-book-plans/
 tags:
   - Bash
-  - 编程范例序列
+  - 编程范例系列
   - 自由书籍
   - Shell
-  - 实例，范例
+  - 实例
+  - 范例
 categories:
-  - Computer Language
   - Shell
+  - 开源书籍
 ---
 
 > by falcon of [TinyLab.org][2]

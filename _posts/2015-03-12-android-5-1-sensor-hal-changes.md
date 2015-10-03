@@ -10,7 +10,7 @@ tags:
   - Lollipop
   - Sensor
 categories:
-  - Linux
+  - Android 传感器
 ---
 
 > by WEN Pingbo of [TinyLab.org][1]

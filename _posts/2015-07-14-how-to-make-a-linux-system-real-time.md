@@ -8,9 +8,11 @@ tags:
   - 软实时
   - Real Time
   - 实时
-categories:
+  - 抢占
   - Linux
-  - Real Time
+categories:
+  - 实时性
+  - 实时抢占
 ---
 
 > By Falcon of [TinyLab.org][2]

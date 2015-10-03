@@ -2,15 +2,14 @@
 title: Buddy 和 CMA 在 Android 中的实用报告
 author: teawater
 layout: post
+album: 内存管理
 permalink: /buddy-actually-use-cma-and-cma-brochures-as-well-as-android-problem-improving/
 tags:
   - Android
   - Buddy
   - CMA
 categories:
-  - Android
-  - Linux
-  - Memory Management
+  - 内存管理
 ---
 
 > by Hui Zhu of [TinyLab.org][1]

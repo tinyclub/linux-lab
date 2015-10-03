@@ -9,7 +9,7 @@ tags:
   - Linux
   - script animation
 categories:
-  - Linux
+  - Shell
 ---
 
 > By WEN Pingbo of [TinyLab.org][1]

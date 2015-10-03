@@ -7,9 +7,8 @@ tags:
   - TinyLab
   - TinyLab简介
   - 泰晓
-  - 泰晓科技
 categories:
-  - Team
+  - 关于我们
 ---
 
 > by falcon of [TinyLab.org][2]

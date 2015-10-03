@@ -8,7 +8,7 @@ tags:
   - sed
   - Shell
 categories:
-  - Linux
+  - Makefile
 ---
 * 问题描述
 

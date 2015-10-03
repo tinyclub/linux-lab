@@ -9,7 +9,7 @@ tags:
   - Ubuntu
   - VirtualBox
 categories:
-  - Linux
+  - Ubuntu
 ---
   * 问题描述
 

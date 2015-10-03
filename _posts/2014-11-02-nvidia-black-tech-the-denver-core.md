@@ -7,14 +7,13 @@ tags:
   - AArch64
   - ARMv8
   - CPU
-  - Denver
   - Dynamic Code Optimization
   - NVIDIA
   - Tegra K1
   - VLIW
 categories:
-  - ARM
-  - Mobile
+  - Denver
+  - 技术动态
 ---
 
 > by Chen Jie of [TinyLab.org][1]

@@ -10,7 +10,7 @@ tags:
   - Vim
   - 复制
 categories:
-  - Linux
+  - Vim
 ---
 
 > by WEN Pingbo of [Tinylab.org][1]

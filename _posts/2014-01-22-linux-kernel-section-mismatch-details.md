@@ -4,13 +4,13 @@ author: Wu Zhangjin
 layout: post
 permalink: /linux-kernel-section-mismatch-details/
 tags:
-  - Debug，CONFIG_DEBUG_SECTION_MISMATCH
+  - CONFIG_DEBUG_SECTION_MISMATCH
   - Linux
   - Section Mismatch
 categories:
-  - C
-  - Debug, Trace and Profile
-  - Linux
+  - 内核调试与跟踪
+  - 稳定性
+  - 调试技巧
 ---
 
 > by falcon of [TinyLab.org][2]

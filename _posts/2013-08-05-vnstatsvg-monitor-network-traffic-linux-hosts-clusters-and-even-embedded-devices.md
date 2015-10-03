@@ -13,8 +13,8 @@ tags:
   - 分布式系统监控
   - 嵌入式系统监控
 categories:
-  - Linux
-  - Networking
+  - 流量监控
+  - vnStatSVG
 ---
 
 > by falcon of [TinyLab.org][1]

@@ -5,12 +5,12 @@ album: C 语言编程透视
 layout: post
 permalink: /process-and-basic-operation/
 tags:
-  - C语言
+  - C
   - 运行时
   - 进程
 categories:
   - C
-  - Linux
+  - 进程管理
 ---
 
 > by falcon of [TinyLab.org][2]

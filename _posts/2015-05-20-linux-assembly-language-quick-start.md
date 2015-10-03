@@ -4,20 +4,16 @@ author: Wu Zhangjin
 layout: post
 permalink: /linux-assembly-language-quick-start/
 tags:
-  - ARM
   - Linux
-  - MIPS
-  - PowerPC
   - Qemu-User-Static
   - X86
-  - 汇编
 categories:
+  - 汇编
   - ARM
-  - Assembly
-  - Linux
   - MIPS
   - PowerPC
   - X86
+  - Qemu
 ---
 
 > By Falcon of [TinyLab.org][1]

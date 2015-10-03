@@ -5,15 +5,13 @@ album: C 语言编程透视
 layout: post
 permalink: /make-vim-source-code-editor/
 tags:
-  - C 语言编程透视
   - cscope
   - ctags
   - editor
   - Vim
 categories:
   - C
-  - Misc
-  - vim
+  - Vim
 ---
 
 > by falcon of [TinyLab.org][2]

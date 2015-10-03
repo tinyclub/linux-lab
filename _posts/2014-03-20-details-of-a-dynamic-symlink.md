@@ -6,7 +6,6 @@ layout: post
 permalink: /details-of-a-dynamic-symlink/
 tags:
   - C语言
-  - C 语言编程透视
   - 重定位表
   - 过程链接表
   - 全局偏移表

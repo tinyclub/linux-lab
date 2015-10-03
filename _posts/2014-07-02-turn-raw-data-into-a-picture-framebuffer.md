@@ -6,9 +6,12 @@ permalink: /faqs/turn-raw-data-into-a-picture-framebuffer/
 tags:
   - Android
   - Framebuffer
+  - ffmpeg
+  - screenshot
+  - screencap
   - 图片
 categories:
-  - 效率工具
+  - Android 显示系统
 ---
 
   * 问题描述

@@ -18,8 +18,7 @@ tags:
   - 游戏中心
   - 便携式热点
 categories:
-  - Android
-  - Mobile
+  - 产品评测
 ---
 
 > by 魅友投稿, 由[泰晓科技][1]主编 整理

@@ -4,7 +4,6 @@ author: Wu Zhangjin
 layout: post
 permalink: /faqs/how-to-install-qt-in-ubuntu/
 tags:
-  - Qt
   - QtCreator
   - Ubuntu
 categories:

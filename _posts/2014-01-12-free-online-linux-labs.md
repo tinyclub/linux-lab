@@ -1,5 +1,5 @@
 ---
-title: Free online Linux Labs
+title: 免费在线 Linux 实验系统
 author: Wu Zhangjin
 layout: post
 permalink: /free-online-linux-labs/
@@ -8,28 +8,33 @@ tags:
   - Labs
   - Linux
   - online
+  - Javascript PC Emulator
+  - RISC-V
+  - OpenRISC
 categories:
-  - Linux
-  - Tools
+  - 在线 Linux
 ---
 
 > by falcon of [TinyLab.org][2]
 > 2014/01/12
 
-This post collects some free online Linux *Labs* from the internet for Linux newbies:
+这里收集各类可以直接在线访问的 Linux 系统，方便初学者快速体验：
 
-  * [Javscript Linux: A Linux running on Javascript Emulator written by Fabrice Bellard][3]
+1. 运行在 Javascript 模拟器上的 Linux
+  * [JsLinux][3]: 由 Qemu 作者 Fabrice Bellard 原创
+  * [jor1k][8]: OpenRISC OR1K CPU emulator.
+  * [v86][9]: PC emulator.
+  * [angel][10]: RISC-V CPU emulator.
+
+2. 其他
+  * [Linux 实验楼](https://www.shiyanlou.com/)
   * [Linuxzoo: Learn Linux from the safety of your chair using a remote private linux machine with root access][4]
-  * [Linux 体验中心][5]
-
-Please [let me know][6] if you have other Free online Linux Labs.
-
-
-
 
 
  [2]: http://tinylab.org
  [3]: http://bellard.org/jslinux/
  [4]: http://linuxzoo.net/
- [5]: http://linuxlearn.net/webconsole
- [6]: /about/
+ [7]: https://www.shiyanlou.com/
+ [8]: http://s-macke.github.io/jor1k/demos/main.html
+ [9]: http://copy.sh/v86/
+[10]: http://riscv.org/angel/

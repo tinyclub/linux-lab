@@ -2,17 +2,17 @@
 title: 源码分析：动态分析 Linux 内核函数调用关系
 author: Wu Zhangjin
 layout: post
+album: 源码分析之道
 permalink: /source-code-analysis-dynamic-analysis-of-linux-kernel-function-calls/
 tags:
-  - C语言
-  - FlameGraph
-  - Ftrace
-  - Perf
   - 函数调用
   - 源码分析
 categories:
   - C
-  - Linux
+  - 源码分析 
+  - FlameGraph
+  - Ftrace
+  - Perf
 ---
 
 > By Falcon of [TinyLab.org][1]

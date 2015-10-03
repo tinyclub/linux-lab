@@ -8,11 +8,9 @@ tags:
   - gssq
   - Loongson
   - memcpy
-  - MIPS
 categories:
-  - Assembly
+  - 汇编
   - MIPS
-  - Performance
 ---
 
 <!-- title: 汇编实战：龙芯处理器之 memcpy 优化 -->

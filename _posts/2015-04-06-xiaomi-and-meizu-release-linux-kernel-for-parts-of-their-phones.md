@@ -14,8 +14,8 @@ tags:
   - 小米
   - 开源
 categories:
-  - Android
-  - Mobile
+  - 行业动向
+  - 开源社区
 ---
 
 > by 泰晓科技

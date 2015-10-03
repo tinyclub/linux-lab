@@ -8,7 +8,7 @@ tags:
   - screen
   - script
 categories:
-  - Linux
+  - Shell
 ---
 * 问题描述
 

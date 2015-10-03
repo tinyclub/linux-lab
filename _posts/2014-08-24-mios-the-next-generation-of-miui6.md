@@ -28,8 +28,7 @@ tags:
   - 小米
   - 智能省电技术
 categories:
-  - Android
-  - Mobile
+  - 产品评测
 ---
 
 > by falcon of [TinyLab.org][2]

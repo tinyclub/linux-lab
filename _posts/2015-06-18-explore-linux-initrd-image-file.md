@@ -8,8 +8,7 @@ tags:
   - initrd
   - Linux
 categories:
-  - File Systems
-  - Linux
+  - 根文件系统
 ---
 
 > by falcon of [TinyLab.org][2]

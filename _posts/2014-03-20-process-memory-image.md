@@ -6,10 +6,10 @@ layout: post
 permalink: /process-memory-image/
 tags:
   - 进程
-  - 内存映像，C 语言编程透视
+  - 内存映像
 categories:
   - C
-  - X86
+  - 进程管理
 ---
 
 > by falcon of [TinyLab.org][2]

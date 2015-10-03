@@ -8,7 +8,7 @@ tags:
   - DNS
   - 锁定
 categories:
-  - Linux
+  - Shell
 ---
 * 问题描述
 

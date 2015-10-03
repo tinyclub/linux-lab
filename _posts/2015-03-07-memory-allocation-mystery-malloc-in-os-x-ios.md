@@ -2,6 +2,7 @@
 title: 内存分配奥义·malloc in OS X
 author: Chen Jie
 layout: post
+album: 内存管理
 permalink: /memory-allocation-mystery-malloc-in-os-x-ios/
 tags:
   - apple
@@ -10,11 +11,10 @@ tags:
   - malloc
   - memory zone
   - nano malloc
-  - OS X
   - scalable malloc
 categories:
-  - C
   - OS X
+  - C
 ---
 
 <!-- title: 内存分配奥义·malloc in OS X -->

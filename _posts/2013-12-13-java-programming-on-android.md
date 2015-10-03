@@ -13,7 +13,7 @@ tags:
   - SDK
   - 开发环境
 categories:
-  - Android
+  - Android ADT
   - Java
 ---
 

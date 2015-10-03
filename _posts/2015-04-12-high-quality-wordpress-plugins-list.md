@@ -6,9 +6,8 @@ permalink: /high-quality-wordpress-plugins-list/
 tags:
   - 精品插件
   - Plugin
-  - Wordpres
 categories:
-  - WordPress
+  - Wordpres
 ---
 
 > by Falcon of [TinyLab.org][1]

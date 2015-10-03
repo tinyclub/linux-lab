@@ -1,5 +1,5 @@
 ---
-title: 批量清除条件编译代码
+title: 'unifdef: 批量清除条件编译代码'
 author: Wen Pingbo
 layout: post
 permalink: /faqs/remove-condition-code-in-kernel/
@@ -8,7 +8,7 @@ tags:
   - unifdef
   - 条件编译
 categories:
-  - Linux
+  - C
 ---
   * 问题描述
 

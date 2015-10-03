@@ -3,8 +3,12 @@ title: Linux 文件系统：procfs, sysfs, debugfs 用法简介
 author: Wu Zhangjin
 layout: post
 permalink: /show-the-usage-of-procfs-sysfs-debugfs/
+tags:
+  - procfs
+  - sysfs
+  - debugfs
 categories:
-  - Linux
+  - 文件系统
 ---
 
 > by falcon of [TinyLab.org][2]

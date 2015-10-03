@@ -9,7 +9,7 @@ tags:
   - init.rc
   - 创建文件
 categories:
-  - Android
+  - Toolbox
 ---
 * 问题描述
 

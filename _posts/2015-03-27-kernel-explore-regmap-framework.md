@@ -12,8 +12,8 @@ tags:
   - regmap_ops
   - 内核探索
 categories:
-  - Device Driver
-  - Linux
+  - 性能优化
+  - I/O 体系结构
 ---
 
 > by WEN Pingbo of [TinyLab.org][1]

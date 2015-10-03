@@ -4,12 +4,9 @@ author: Wu Zhangjin
 layout: post
 permalink: /smart-phone-power-opt-part1/
 tags:
-  - 功耗优化
   - 智能手机
 categories:
-  - Android
-  - Computer Language
-  - Power Management
+  - 功耗优化
 ---
 
 > by falcon of [TinyLab.org][2]

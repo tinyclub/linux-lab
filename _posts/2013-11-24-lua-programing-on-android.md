@@ -14,7 +14,7 @@ tags:
   - LuaJIT
   - SL4A
 categories:
-  - Android
+  - Android NDK
   - Lua
 ---
 

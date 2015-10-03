@@ -2,6 +2,7 @@
 title: 技术专辑：内存管理（1）
 author: Wu Zhangjin
 layout: post
+album: 内存管理
 permalink: /memory-management-album-1/
 tags:
   - CMA
@@ -13,7 +14,6 @@ tags:
   - SSDAlloc
 categories:
   - C
-  - Memory Management
 ---
 
 > by 主编 of [泰晓科技 | TinyLab.org][1]

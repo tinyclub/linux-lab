@@ -5,13 +5,12 @@ layout: post
 permalink: /based-on-ssh-build-docker-xpra-desktop/
 tags:
   - Desktop
-  - Docker
   - ssh
   - Xpra
   - 桌面系统
-categories:
   - Linux
-  - Virtualization
+categories:
+  - Docker
 ---
 
 > by Falcon of [TinyLab.org][1]

@@ -9,7 +9,9 @@ tags:
   - KGDBOC
   - Linux
 categories:
-  - Debug, Trace and Profile
+  - KGDB
+  - 稳定性
+  - 内核调试与跟踪
 ---
 
 > by Pingbo Wen of [TinyLab.org][1]

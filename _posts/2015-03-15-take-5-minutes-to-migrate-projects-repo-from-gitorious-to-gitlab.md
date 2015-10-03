@@ -9,7 +9,7 @@ tags:
   - 停止服务
   - 收购
 categories:
-  - git
+  - Git
 ---
 
 > by Falcon of [TinyLab.org][1]

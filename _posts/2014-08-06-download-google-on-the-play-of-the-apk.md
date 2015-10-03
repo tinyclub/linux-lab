@@ -5,10 +5,9 @@ layout: post
 permalink: /faqs/download-google-on-the-play-of-the-apk/
 tags:
   - APK
-  - Google Play
   - 开发小工具
 categories:
-  - Android
+  - Google Play
 ---
   * 问题描述
 

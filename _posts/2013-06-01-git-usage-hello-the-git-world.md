@@ -4,13 +4,11 @@ author: Wu Zhangjin
 layout: post
 permalink: /git-usage-hello-the-git-world/
 tags:
-  - Git
   - Git用法详解
   - Lemote
   - Loongson Debian
 categories:
-  - Life
-  - SCM
+  - Git
 ---
 
 > by falcon of TinyLab.org

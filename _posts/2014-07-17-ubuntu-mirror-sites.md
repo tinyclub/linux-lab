@@ -8,7 +8,7 @@ tags:
   - mirrors
   - Ubuntu
 categories:
-  - Linux
+  - Ubuntu
 ---
 
 > by falcon of [TinyLab.org][2]

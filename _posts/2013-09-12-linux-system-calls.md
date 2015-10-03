@@ -8,9 +8,7 @@ tags:
   - vdso
   - vsyscall
 categories:
-  - Debug, Trace and Profile
-  - Linux
-  - Reliability, Availability, Serviceability
+  - 系统调用
 ---
 
 > by Pingbo Wen of [TinyLab.org][1]

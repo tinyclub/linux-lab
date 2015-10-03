@@ -7,18 +7,13 @@ permalink: /the-shell-programming-example-sequence-of-release-version-0-1/
 tags:
   - Bash
   - 编程
-  - 范例
-  - Markdown
   - Shell
-  - Shell 编程范例序列
+  - 范例
   - 实例
-  - 开源书籍
-  - 书籍模板
   - 例子
 categories:
-  - Computer Language
-  - Markdown
   - Shell
+  - 开源书籍
 ---
 
 > by falcon of [TinyLab.org][2]

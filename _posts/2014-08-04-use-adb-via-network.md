@@ -8,7 +8,7 @@ tags:
   - 网络
   - 开发小工具
 categories:
-  - Android
+  - ADB
 ---
 * 问题描述
 

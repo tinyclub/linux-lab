@@ -7,10 +7,9 @@ tags:
   - chnroutes
   - 自动分流
   - GFW
-  - VPN
   - 国内IP
 categories:
-  - Linux
+  - VPN
 ---
   * 问题描述
 

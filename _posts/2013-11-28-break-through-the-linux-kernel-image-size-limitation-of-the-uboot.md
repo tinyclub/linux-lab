@@ -9,8 +9,7 @@ tags:
   - Uboot
 categories:
   - C
-  - Linux
-  - System Size
+  - 系统裁剪
 ---
 
 > by falcon <wuzhangjin@gmail.com> of [TinyLab.org](http://tinylab.org)

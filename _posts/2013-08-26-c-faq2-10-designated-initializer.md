@@ -5,12 +5,10 @@ album: C FAQ
 layout: post
 permalink: /c-faq2-10-designated-initializer/
 tags:
-  - c
   - faq
   - initializer
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

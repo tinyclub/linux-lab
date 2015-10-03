@@ -8,9 +8,8 @@ tags:
   - faq
   - Q and A Focus Plus FAQ
   - qa_posts
-  - wordpress
 categories:
-  - WordPress
+  - Wordpress
 ---
 * 问题描述
 

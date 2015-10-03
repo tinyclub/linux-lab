@@ -11,7 +11,6 @@ tags:
   - 文件操作
   - 例子
 categories:
-  - Computer Language
   - Shell
 ---
 

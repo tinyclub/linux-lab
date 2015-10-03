@@ -11,8 +11,7 @@ tags:
   - JDB
   - JDWP
 categories:
-  - Android
-  - Debug, Trace and Profile
+  - JDB
 ---
 
 <!-- Title: Use JDB to debug Android Application -->

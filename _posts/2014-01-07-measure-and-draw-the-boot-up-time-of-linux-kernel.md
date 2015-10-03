@@ -1,5 +1,5 @@
 ---
-title: Measure and Draw the Boot-up Time of Linux Kernel
+title: 测量和分析 Linux 内核启动时间
 author: Wu Zhangjin
 layout: post
 permalink: /measure-and-draw-the-boot-up-time-of-linux-kernel/
@@ -14,10 +14,8 @@ tags:
   - Time
   - TinyDraw
 categories:
-  - Boot Time
-  - Computer Language
-  - Linux
-  - Shell
+  - 启动速度
+  - FlameGraph
 ---
 
 > by falcon of [TinyLab.org][2]

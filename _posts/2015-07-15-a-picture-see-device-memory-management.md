@@ -4,19 +4,12 @@ author: Chen Jie
 layout: post
 permalink: /a-picture-see-device-memory-management/
 tags:
-  - apt-get
-  - aptitude
-  - dependencies
-  - Ubuntu
   - CMA
   - DMA-BUF
   - IOMMU
-  - 内存管理
   - 手机
 categories:
-  - Linux
-  - Memory Management
-  - Mobile
+  - 内存管理
 ---
 
 <!-- title: 一张图看明白手机设备内存管理 -->

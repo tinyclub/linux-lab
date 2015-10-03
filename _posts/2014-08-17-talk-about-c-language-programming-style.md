@@ -16,7 +16,7 @@ tags:
   - 工程师
 categories:
   - C
-  - Computer Language
+  - 编码风格
 ---
 
 > by falcon <wuzhangjin@gmail.com> of [TinyLab.org][1]

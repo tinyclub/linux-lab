@@ -2,6 +2,7 @@
 title: SSDAlloc：用 SSD 扩展内存
 author: Chen Jie
 layout: post
+album: 内存管理
 permalink: /ssdalloc-using-ssd-for-expandable-memory/
 tags:
   - OPP
@@ -10,7 +11,8 @@ tags:
   - swap
   - VM
 categories:
-  - Memory Management
+  - C
+  - 性能优化
 ---
 
 > by Chen Jie of [TinyLab.org][1]

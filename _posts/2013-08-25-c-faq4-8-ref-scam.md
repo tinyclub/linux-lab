@@ -5,12 +5,10 @@ layout: post
 album: C FAQ
 permalink: /c-faq4-8-ref-scam/
 tags:
-  - c
   - faq
   - 参数传递
 categories:
   - C
-  - Computer Language
 ---
 
 > by Pingbo Wen of [TinyLab.org][1]

@@ -10,7 +10,7 @@ tags:
   - Patchwork
   - 开发模型
 categories:
-  - SCM
+  - Git
 ---
 
 > by falcon of [TinyLab.org][2]

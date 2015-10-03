@@ -15,8 +15,8 @@ tags:
   - 一图流
   - 休眠
 categories:
-  - Linux
-  - Power Management
+  - System Suspend
+  - MIPS
 ---
 
 <!-- title: 图解 Linux STR 流程 -->

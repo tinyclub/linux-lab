@@ -6,14 +6,12 @@ layout: post
 permalink: /program-execution-the-moment/
 tags:
   - Bash
-  - c
-  - C 语言编程透视
-  - 程序执行
   - init
   - inittab
 categories:
   - C
   - X86
+  - 程序执行
 ---
 
 > by falcon of [TinyLab.org][2]

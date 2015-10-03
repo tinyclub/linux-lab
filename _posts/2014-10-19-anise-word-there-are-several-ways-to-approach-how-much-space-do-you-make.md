@@ -2,6 +2,7 @@
 title: '“茴”字有几种写法：结构体占多少空间你造吗？'
 author: Chen Jie
 layout: post
+album: 内存管理
 permalink: /anise-word-there-are-several-ways-to-approach-how-much-space-do-you-make/
 tags:
   - big endness
@@ -17,7 +18,7 @@ tags:
   - 位序
 categories:
   - C
-  - gcc
+  - Gcc
 ---
 
 > by Chen Jie of [TinyLab.org][1]

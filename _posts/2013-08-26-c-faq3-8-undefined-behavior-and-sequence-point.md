@@ -5,12 +5,10 @@ album: C FAQ
 layout: post
 permalink: /c-faq3-8-undefined-behavior-and-sequence-point/
 tags:
-  - c
   - faq
   - sequence point
 categories:
   - C
-  - Computer Language
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

@@ -11,7 +11,7 @@ tags:
   - SL4A
   - ttsSpeak
 categories:
-  - Android
+  - SL4A
   - Python
 ---
 

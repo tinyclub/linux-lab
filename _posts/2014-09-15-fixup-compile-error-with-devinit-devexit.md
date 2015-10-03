@@ -12,8 +12,7 @@ tags:
   - __devexit
   - __devinit
 categories:
-  - Android
-  - Linux
+  - 移植 Linux 内核
 ---
   * 问题描述
 

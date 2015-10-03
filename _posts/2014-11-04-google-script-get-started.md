@@ -2,12 +2,12 @@
 title: 'Google Script: Get Started'
 author: Wen Pingbo
 layout: post
+group: news
 permalink: /google-script-get-started/
 tags:
-  - Google Script
   - JavaScript
 categories:
-  - Life
+  - Google Script
 ---
 
 > by WEN Pingbo of [TinyLab.org][1]

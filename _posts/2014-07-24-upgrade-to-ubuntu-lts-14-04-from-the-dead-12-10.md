@@ -20,7 +20,7 @@ tags:
   - 无法安装软件
   - 权限问题
 categories:
-  - Linux
+  - Ubuntu
 ---
 
 > by falcon of [TinyLab.org][2]

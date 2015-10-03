@@ -15,8 +15,7 @@ tags:
   - 可维护性
   - 可靠性
 categories:
-  - Android
-  - Reliability, Availability, Serviceability
+  - 稳定性
 ---
 
 > by falcon <wuzhangjin@gmail.com> of TinyLab.org

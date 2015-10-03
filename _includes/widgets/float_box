@@ -39,10 +39,11 @@ $(document).ready(function() {
       bottom = document.body.clientHeight - getViewPortHeight() + bottom - scrolltop;
       $('#float-box-wrap').css('bottom', bottom + "px");
 
-      if (navbar_fixed)
+      if (navbar_fixed) {
          $('#navbar').css('top', scrolltop + 'px');
-      else
+      } else {
          $('#navbar').css('top', 0);
+      }
     }
   }
 

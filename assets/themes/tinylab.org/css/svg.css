@@ -1,0 +1,20 @@
+.str0 {stroke:black;stroke-width:2;}
+.str1 {stroke:black;stroke-width:0.5;stroke-dasharray:0, 1, 0;}
+.str2 {stroke:black;stroke-width:0.5;stroke-dasharray:0, 0, 1;}
+.str3 {stroke:white;stroke-width:1}
+.str4 {stroke:black;}
+
+.fil0 {fill:#FAFAFA; stroke:#ccc;stroke-width:1px}
+.fil1 {fill:#FA7A7A}
+.fil2 {fill:#7A7AFA}
+
+.anc0 {text-anchor:end;}
+.anc1 {text-anchor:middle;}
+
+.fnt0 {font-size:11pt}
+.fnt1 {font-size:6pt}
+
+.gra0 {fill-opacity:0.7; stroke:#ccc; stroke-width:0mm}
+
+rect.rect1:hover {fill-opacity:0.9; stroke:#FA7A7A; stroke-width:1mm;}
+rect.rect0:hover {fill-opacity:0.9; stroke:#7A7A7A; stroke-width:1px;}

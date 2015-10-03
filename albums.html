@@ -5,10 +5,17 @@ tagline: 泰晓科技撰写的文章专辑
 header: Post By Albums
 group: navigation
 order: 2
+comments: false
 ---
 {% include JB/setup %}
 
 {% assign posts_by_album = site.posts | group_by:"album" | sort:"album" %}
+
+{% assign x_label = '专辑' %}
+{% assign y_label = '数目' %}
+
+{% assign list = nil %}
+{% assign total = 0 %}
 
 {% for album in posts_by_album %}
   {% if album.name == empty %}
@@ -23,10 +30,22 @@ order: 2
       {% assign album_url = book.url %}
     {% endif %}
   {% endfor %}
-  <h2 id="{{ album.name | replace:' ','-' }}-ref">{% if album_url != "" %}<a href="{{ album_url }}" title="该专辑已发布为GitBook，点击查看！">{{ album.name}}</a>{% else %}{{ album.name }}{% endif %} <sup>({{ album.items.size }})</sup></h2>
+
+   {% assign list0 = album.items.size | append:',' | append: album.name %}
+   {% if list == nil %}
+     {% assign list = list0 %}
+   {% else %}
+     {% assign list = list | append:';' | append: list0 %}
+   {% endif %}
+   {% assign total = total | plus: album.items.size %}
+
+  <h3 id="{{ album.name | downcase | replace:' ','-' | replace:'/','-' }}-ref">{% if album_url != "" %}<a href="{{ album_url }}" title="该专辑已发布为GitBook，点击查看！">{{ album.name}}</a>{% else %}{{ album.name }}{% endif %} <sup>({{ album.items.size }})</sup></h3>
   <ul>
     {% for post in album.items %}
     <li><a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
 {% endfor %}
+
+<h3>{{ x_label}}{{ y_label}}统计 <sup>({{ total }})</sup></h3>
+{% include widgets/svg_statistic %}

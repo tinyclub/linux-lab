@@ -14,7 +14,7 @@ markdown: kramdown
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "tools", "pdfs"]
 highlighter: pygments
 
-paginate: 15
+paginate: 10
 
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
@@ -60,9 +60,11 @@ JB :
     items_limit: 5
   author_box:
     max_oneline: 4
+  article:
+    categories_limit: 3
 
   code_prettify:
-    theme: doxy
+    theme: prettify
 
   comments :
     provider : duoshuo

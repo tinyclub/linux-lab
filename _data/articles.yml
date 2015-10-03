@@ -1,24 +1,24 @@
 
 - title: 分类
-  url: /categories.html
-  desc: 按分类排列文章
+  permalink: /categories.html
+  description: 按分类排列文章
 
 - title: 存档
-  url: /archive.html
-  desc: 按发表时间排列文章
+  permalink: /archive.html
+  description: 按发表时间排列文章
 
 - title: 标签
-  url: /tags.html
-  desc: 按标签排列文章
+  permalink: /tags.html
+  description: 按标签排列文章
 
 - title: 作者
-  url: /authors.html
-  desc: 按作者排列文章
+  permalink: /authors.html
+  description: 按作者排列文章
 
 - title: 专辑
-  url: /albums.html
-  desc: 文章专辑
+  permalink: /albums.html
+  description: 文章专辑
 
 - title: 分组
-  url: /groups.html
-  desc: 文章按原创、资讯、招聘、人才等类型分组
+  permalink: /groups.html
+  description: 文章按原创、资讯、招聘、人才等类型分组

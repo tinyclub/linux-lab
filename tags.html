@@ -6,10 +6,29 @@ comments: false
 ---
 {% include JB/setup %}
 
-{% for tag in site.tags %} 
-<h2 id="{{ tag[0] }}-ref">{{ tag[0] }} <sup>({{ tag[1].size }})</sup></h2>
+{% assign x_label = '标签' %}
+{% assign y_label = '数目' %}
+
+{% assign list = nil %}
+
+{% for tag in site.tags %}
+
+   {% assign list0 = tag[1].size | append:',' | append: tag[0] %}
+   {% if list == nil %}
+     {% assign list = list0 %}
+   {% else %}
+     {% assign list = list | append:';' | append: list0 %}
+   {% endif %}
+
+
+<h3 id="{{ tag[0] | downcase | replace:' ','-' | replace:'/','-' }}-ref">{{ tag[0] }} <sup>({{ tag[1].size }})</sup></h3>
 <ul>
   {% assign pages_list = tag[1] %}  
   {% include JB/pages_list %}
 </ul>
 {% endfor %}
+
+{% assign list = list | split:';' | sort | reverse | join:';' %}
+
+<h3>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h3>
+{% include widgets/svg_statistic %}

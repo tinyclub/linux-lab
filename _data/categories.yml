@@ -1,3 +1,41 @@
+- name: 硬件基础
+  categories:
+    - name: 基础电路
+    - name: 常见总线
+    - name: GPIO
+    - name: PMIC
+    - name: CPU
+    - name: MCU
+    - name: GPU
+    - name: 内存
+    - name: Display
+      categories:
+        - name: LCD
+        - name: OLED
+        - name: LED
+    - name: 外存
+      categories:
+        - name: EMMC
+        - name: UFS
+    - name: Video
+    - name: Camera
+    - name: Audio
+    - name: 无线与通信
+      categories:
+        - name: Modem
+        - name: WIFI
+        - name: GPS
+        - name: Bluetooth
+        - name: NFC
+    - name: TP
+    - name: 指纹
+    - name: USB
+    - name: 充电
+    - name: 传感器
+    - name: 硬件杂项
+      categories:
+        - name: Keys
+        - name: 霍尔器件
 
 - name: 编程语言
   categories:
@@ -7,12 +45,15 @@
     - name: Python
     - name: C++
     - name: Java
-    - name: Lua
+    - name: 其他语言
+      categories:
+        - name: Lua
 
 - name: 操作系统
   categories:
+    - name: OS X
     - name: Linux 0.11
-    - name: Linux 内核分析
+    - name: Linux 内核
       categories:
         - name: 启动管理
         - name: 时钟系统
@@ -37,60 +78,197 @@
             - name: 数据同步
         - name: 系统调用
         - name: 程序执行
-        - name: 模块与热插拔
         - name: 网络管理
+        - name: 多媒体管理
         - name: 电源管理
+          categories:
+            - name: System Suspend
+            - name: CPUIdle
+            - name: DVFS
+            - name: Regulator
+            - name: Clock Gating
+            - name: RunTime PM
+            - name: Wakelocks
         - name: 安全管理
         - name: 实时抢占
         - name: 内核虚拟化
         - name: 内核函数库
         - name: 内核调试与跟踪
         - name: 内核配置与编译
-
-    - name: Linux 设备驱动
+        - name: 其他特性
+          categories:
+            - name: Kexec
+        - name: 设备驱动
+          categories:
+            - name: I/O 体系结构
+            - name: 设备驱动模型
+            - name: 字符设备
+            - name: 块设备
+            - name: 资源分配
+            - name: 总线系统
+            - name: 设备树
+    - name: Linux 系统
       categories:
-        - name: I/O 体系结构
-        - name: 设备驱动模型
-        - name: 字符设备
-        - name: 块设备
-        - name: 资源分配
-        - name: 总线系统
-        - name: 设备树
+        - name: Ubuntu
+        - name: 在线 Linux
 
-- name: 嵌入式开发
+- name: Linux 开发
   categories:
-    - name: 处理器体系架构
+    - name: Linux 综合知识
+    - name: 硬件架构
       categories:
-        - name: 体系结构基础
-        - name: ARM
-        - name: MIPS
-        - name: X86
-        - name: PowerPC
-    - name: 开发板与模拟器
+        - name: CPU
+          categories:
+            - name: ARM
+            - name: MIPS
+            - name: X86
+            - name: PowerPC
+            - name: Denver
+        - name: GPU
+          categories:
+            - name: Mali
+            - name: PowerVR
+    - name: 软件架构
       categories:
-        - name: 电路基础
-        - name: 原理图设计
-        - name: 模拟器
+        - name: Graphic
+          categories:
+            - name: OpenGL
+            - name: Vulkan
+        - name: UI
+          categories:
+            - name: Clutter
+            - name: Qt
+        - name: Multimedia
+          categories:
+            - name: GStreamer
+    - name: 开发板
+      categories:
+        - name: 树莓派
+    - name: 模拟器
+      categories:
+        - name: Qemu
+        - name: Javascript PC Emulator
     - name: 开发环境
       categories:
-        - name: 准备环境
-        - name: 交叉编译
+        - name: 开发工具
+          categories:
+            - name: Busybox
+            - name: Buildroot
+        - name: 编译环境
+          categories:
+            - name: Makefile
+            - name: Gcc
+            - name: 交叉编译
+        - name: 调试和优化
+          categories:
+            - name: GDB
+            - name: KGDB
+            - name: Ftrace
+            - name: Perf
+            - name: Oprofile
+            - name: Gprof
+            - name: Gcov
+            - name: Valgrind
+            - name: Objdump
+            - name: addr2line
+            - name: catchsegv
+            - name: hexdump
+            - name: strace
+            - name: ltrace
+            - name: mtrace
+            - name: ptrace
     - name: 引导与启动
       categories:
         - name: Bootloaders
     - name: 系统初始化
       categories:
         - name: 根文件系统
-        - name: 文件系统类型
-    - name: 移植 Linux
+        - name: 设备初始化
+        - name: 服务初始化
+    - name: 移植 Linux 系统
+      categories:
+        - name: 移植 Linux 内核
+        - name: 调试设备驱动
+          categories:
+            - name: I2C 驱动
+            - name: GPIO 驱动
+            - name: PMIC 驱动
+            - name: LCD/OLED 驱动
+            - name: LED 驱动
+            - name: EMMC 驱动
+            - name: GPU 驱动
+            - name: UFS 驱动
+            - name: Video 驱动
+            - name: Camera 驱动
+            - name: Audio 驱动
+            - name: Modem 驱动
+            - name: WIFI 驱动
+            - name: GPS 驱动
+            - name: Bluetooth 驱动
+            - name: NFC 驱动
+            - name: TP 驱动
+            - name: 指纹 驱动
+            - name: USB 驱动
+            - name: 充电 驱动
+            - name: 传感器 驱动
+            - name: Keys 驱动
+            - name: RTC 驱动
+            - name: Watchdog 驱动
+            - name: 霍尔器件 驱动
+        - name: 构建 Linux 服务
+          categories:
+            - name: 流量监控
+        - name: 开发 Linux 应用
 
 - name: Android 开发
   categories:
-    - name: Android 入门
+    - name: Android 综合知识
+    - name: Android 基础
+      categories:
+        - name: Android 开发环境
+          categories:
+            - name: Android Studio
+            - name: Android ADT
+            - name: Android SDK
+            - name: Android NDK
+            - name: SL4A
+        - name: Android 开发工具
+          categories:
+            - name: Toolbox
+            - name: Systrace
+            - name: JDB
+            - name: ADB
+    - name: Android 模拟器
+      categories:
+        - name: Goldfish
     - name: Android Linux
-    - name: Android HAL/Framework
-    - name: Android 软件开发
+      categories:
+        - name: LMK
+        - name: ION
+        - name: Ashmem
+        - name: Binder
+        - name: FIQ Debugger
+        - name: Pstore ramoops
+        - name: Android Logger
+        - name: Android USB Gadgets
+        - name: Goldfish 内核驱动
     - name: Android 系统
+      categories:
+        - name: Android 启动管理
+        - name: Android 电源管理
+        - name: Android 显示系统
+        - name: Android 多媒体
+        - name: Android 时钟服务
+        - name: Android 无线与通信
+        - name: Android 传感器
+        - name: Android 触摸屏
+        - name: Android Recovery
+        - name: Android 安全服务
+    - name: Android 应用
+      categories:
+        - name: Google Play
+        - name: 包管理
+    - name: Android 产品
     - name: Android 社区
 
 - name: 系统优化
@@ -103,24 +281,86 @@
     - name: 实时性
     - name: 功耗优化
     - name: 系统安全
+    - name: 虚拟化
+      categories:
+        - name: Docker
+    - name: 综合优化
 
 - name: 技术漫谈
   categories:
+    - name: 代码编辑
+      categories:
+        - name: Vim
     - name: 编码风格
-    - name: 源码分析
-    - name: 调试技巧
     - name: 设计规范
+      categories:
+        - name: UML
+    - name: 变更管理
+      categories:
+        - name: Git
+        - name: SVN
+    - name: 源码分析
+      categories:
+        - name: Cscope
+        - name: OpenGrok
+        - name: LXR
+    - name: 代码评审
+    - name: 自动构建
+    - name: 调试技巧
+    - name: 产品测试
     - name: 效率工具
+      categories:
+        - name: Latex
+        - name: Markdown
+        - name: Gitbook
+        - name: FlameGraph
+        - name: Oscilloscope
 
-- name: 行业思考
+- name: 行业观察
   categories:
-    - name: 开源文化
-    - name: 技术热点
-    - name: 行业观察
+    - name: 开源社区
+    - name: 技术动态
+    - name: 行业动向
+    - name: 行业标准
+      categories:
+        - name: CTA
     - name: 产品创意
+    - name: 产品评测
     - name: 研发管理
+    - name: 质量保障
 
-- name: 工程实践
+- name: 项目实践
   categories:
     - name: 开源项目
-    - name: 开放书籍
+      categories:
+        - name: vnStatSVG
+        - name: Linux 0.11 Lab
+        - name: TinyDraw
+    - name: 开源书籍
+
+- name: 技术交流
+  categories:
+    - name: 泰晓沙龙
+    - name: 关于我们
+
+- name: 招聘求职
+  categories:
+    - name: 招聘
+      categories:
+        - name: Linux 职位
+        - name: Android 职位
+    - name: 求职
+      categories:
+        - name: Linux 简历
+        - name: Android 简历
+
+- name: 其他杂项
+  categories:
+    - name: Web 建站
+      categories:
+        - name: Web 服务器
+          categories:
+            - name: Nginx
+        - name: Web 建站系统
+          categories:
+            - name: Wordpress

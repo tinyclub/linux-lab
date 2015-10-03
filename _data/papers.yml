@@ -1,16 +1,16 @@
 
 - title: Tiny Linux Kernel Project - Section Garbage Collection Patchset
-  url: https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf
-  desc: 为 Linux 添加的 Gc-Sections 支持，能够在编译时静态裁剪掉 10% 左右的 deadcode
+  permalink: https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf
+  description: 为 Linux 添加的 Gc-Sections 支持，能够在编译时静态裁剪掉 10% 左右的 deadcode
 
 - title: Research and Practice on Preempt-RT Patch of Linux
-  url: http://www.docin.com/p-170582115.html
-  desc: 本文详解了 Linux 官方实时支持：Preempt-RT
+  permalink: http://www.docin.com/p-170582115.html
+  description: 本文详解了 Linux 官方实时支持：Preempt-RT
 
 - title: Porting RT-preempt to Loongson2F
-  url: http://lwn.net/images/conf/rtlws11/papers/proc/p14.pdf
-  desc: 本文详解了如何移植 Preempt-RT 到龙芯 2F 平台上
+  permalink: http://lwn.net/images/conf/rtlws11/papers/proc/p14.pdf
+  description: 本文详解了如何移植 Preempt-RT 到龙芯 2F 平台上
 
 - title: SIL4Linux - An attempt to explore Linux satisfying SIL4 in some restrictive conditions
-  url: http://lwn.net/images/conf/rtlws11/papers/proc/p26.pdf
-  desc: SIL4Linux - Linux 在某些受限的条件下满足 SIL4 的可行性研究
+  permalink: http://lwn.net/images/conf/rtlws11/papers/proc/p26.pdf
+  description: SIL4Linux - Linux 在某些受限的条件下满足 SIL4 的可行性研究

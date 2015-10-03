@@ -4,16 +4,12 @@
 {% assign title = "相关文章" %}
 {% assign icon = "attach" %}
 {% assign related_container = "related_container" %}
+{% assign condition = nil %}
 
 {% capture related_header %}
 <div class="section_header">
-  <div class="pull-left">
-    <a onclick="common_click('#{{related_container}}')">
-      <i class="icon-fixed-width icon-{{ icon }}"></i> {{ title }}</a>
-  </div>
-  <div class="pull-right">
-    <a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}><small>更多</small></a>
-  </div>
+   <i onclick="common_click('#{{related_container}}')" class="icon-fixed-width icon-{{ icon }}"></i>
+   <a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}>{{ title }}</a>
 </div>
 {% endcapture %}
 

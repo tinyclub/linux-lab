@@ -4,9 +4,19 @@
 
 - title: 项目
   data: projects
+  src: pages
+  condition: path
+  value: /projects/
+  url: /projects/
+  tooltip: true
 
 - title: 书籍
   data: books
+  src: pages
+  condition: path
+  value: /books/
+  url: /books/
+  tooltip: true
 
 - title: 幻灯
   data: slides
@@ -16,3 +26,20 @@
 
 - title: 活动
   data: activities
+  src: pages
+  condition: path
+  value: /activities/
+  url: /activities/
+  tooltip: true
+
+- title: 工作
+  data: jobs
+  src: posts
+  condition: group
+  value: jobs
+  url: /jobs/
+
+- title: 链接
+  data: links
+  url: /links/
+  tooltip: true

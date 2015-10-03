@@ -9,23 +9,23 @@
 
   <title>{{ site.title }} - {% if page.group == "home" %}{{ page.tagline }}{% else %}{{ page.title }}{% endif %}</title>
 
-  {% assign meta_keyword_and_desc = 1 %}
-    {% if page.keywords %}
-      <meta name="keywords" content="{{ page.keywords | join: "," }}">
-    {% else %}
-      {% if page.categories or page.tags %}
-        <meta name="keywords" content='{{ page.categories | join: "," }},{{ page.tags | join: "," }}'/>
-      {% else %}
-        {% assign meta_keyword_and_desc = 0 %}
-      {% endif %}
+{% capture tmpcache %}
+{% capture nl0 %}
+{% endcapture %}
+{% endcapture %}{% assign tmpcache = nil %}
+
+  {% capture keywords %}{% assign keywords = page.keywords %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append: page.keywords | append:"," | append: tags | append:',' | append: keywords | append:',' | append:page.album | replace:':','：' | strip_html | xml_escape | downcase | remove:' ' | split:"," | sort | uniq | join:"," }}{% endcapture %}
+
+  {% assign keywords = keywords | prepend:"pLACeHoldER," | replace: ",,,":"," | replace: ",,":"," | remove:'pLACeHoldER,' %}
+
+  {% if keywords %}
+    <meta name="keywords" content="{{ keywords }}">
+
+    {% capture description %}{% if page.description %}{{ page.description }}{% else %}{{ page.content | replace:':','：' | strip_html | remove:'>' | remove: '<' | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' |  strip | truncate:200 | xml_escape }}{% endif %}{% endcapture %}
+    {% if content %}
+     <meta name="description" content="{{ description }}"/>
     {% endif %}
 
-  {% if meta_keyword_and_desc == 1 %}
-    {% if page.description %}
-       <meta name="description" content="{{ page.description }}">
-    {% else %}
-       <meta name="description" content="{{ page.content | strip_html | strip_newlines | remove: '>' | remove: '<' | remove: '"' | remove: "'"  | truncate:200 }}"/>
-    {% endif %}
   {% endif %}
 
   <meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif%}">
@@ -55,6 +55,7 @@
   {% endif %}
   {% if page.group != "home" %}
     <link rel="stylesheet" href="{{ ASSET_PATH }}/code-prettify/{{ site.JB.code_prettify.theme }}{{ css_js_compress_tag }}.css" type="text/css" media="all">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/svg{{ css_js_compress_tag }}.css">
   {% endif %}
 
   {% if page.plugin %}<link rel="stylesheet" href="{{ ASSET_PATH }}/css/{{ page.plugin }}{{ css_js_compress_tag }}.css" type="text/css" media="all">{% endif %}

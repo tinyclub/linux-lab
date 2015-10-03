@@ -8,3 +8,37 @@ comments: false
 
 {% assign posts_collate = site.posts %}
 {% include JB/posts_collate %}
+
+{% assign x_label = '月度' %}
+{% assign y_label = '贡献' %}
+
+{% assign list = nil %}
+{% assign oldmonth = "" %}
+{% assign size = 0 %}
+
+{% for post in site.posts  %}
+   {% assign month = post.date | date: '%Y-%m' %}
+   {% if oldmonth != month or post == site.posts.last %}
+     {% if post == site.posts.last %}
+       {% assign oldmonth = month %}
+       {% assign size = size | plus: 1 %}
+     {% endif %}
+     {% if size > 0 %}
+       {% assign list0 = size | append:',' | append: oldmonth %}
+     {% endif %}
+     {% assign size = 1 %}
+
+     {% if list == nil %}
+       {% assign list = list0 %}
+     {% else %}
+       {% assign list = list | append:';' | append: list0 %}
+     {% endif %}
+   {% else %}
+     {% assign size = size | plus: 1 %}
+   {% endif %}
+
+   {% assign oldmonth = month %}
+{% endfor %}
+
+<h2>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h2>
+{% include widgets/svg_statistic %}

@@ -7,105 +7,149 @@ comments: false
 ---
 {% include JB/setup %}
 
+{% assign x_label = '分类' %}
+{% assign y_label = '数目' %}
+
+{% assign list = nil %}
+
 {% assign p_ctg_list = "" %}
 {% for category in site.data.categories %}
-  {% assign categories = site.categories[category.name] %}
-  {% assign category_size = categories.size %}
-  <h2 id="{{ category.name | replace:" ","-" }}-ref">{{ category.name }}{% if category_size %} <sup>({{ category_size }})</sup>{% endif %}</h2>
+  {% assign name = category.name %}
+  {% assign downcase_name = name | downcase %}
+  {% assign categories = site.categories[downcase_name] %}
+  {% assign size = categories.size %}
+  <h2 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h2>
+
+  {% if size %}
+  {% assign p_ctg_list = p_ctg_list | append:"," | append:downcase_name %}
+  <ul>
+    {% assign pages_list = categories %}
+    {% include JB/pages_list %}
+  </ul>
+   {% assign list0 = size | append:',' | append: name %}
+   {% if list == nil %}
+     {% assign list = list0 %}
+   {% else %}
+     {% assign list = list | append:';' | append: list0 %}
+   {% endif %}
+
+  {% endif %}
 
   <!-- top -->
   {% if category.categories %}
     {% for child in category.categories %}
-      {% assign child_categories = site.categories[child.name] %}
-      {% assign child_category_size = child_categories.size %}
-      <h3 id ="{{ child.name | replace:" ","-" }}-ref">{{ child.name }}{% if child_size %} <sup>({{ child_category_size }})</sup>{% endif %}</h3>
+      {% assign name = child.name %}
+      {% assign downcase_name = name | downcase %}
+      {% assign child_categories = site.categories[downcase_name] %}
+      {% assign size = child_categories.size %}
+      <h3 id ="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if child_size %} <sup>({{ size }})</sup>{% endif %}</h3>
+
+      {% if size %}
+      {% assign p_ctg_list = p_ctg_list | append:"," | append:downcase_name %}
+        <ul>
+          {% assign pages_list = child_categories %}
+          {% include JB/pages_list %}
+        </ul>
+       {% assign list0 = size | append:',' | append: name %}
+       {% if list == nil %}
+         {% assign list = list0 %}
+       {% else %}
+         {% assign list = list | append:';' | append: list0 %}
+       {% endif %}
+
+      {% endif %}
 
       <!-- child -->
       {% if child.categories %}
-
           {% for g in child.categories %}
 
-            {% assign g_categories = site.categories[g.name] %}
-            {% assign g_category_size = g_categories.size %}
-            <h4 id="{{ g.name | replace:" ","-" }}-ref">{{ g.name }}{% if g_category_size %} <sup>({{ g_category_size }})</sup>{% endif %}</h4>
+            {% assign name = g.name %}
+            {% assign downcase_name = name | downcase %}
+            {% assign g_categories = site.categories[downcase_name] %}
+            {% assign size = g_categories.size %}
+            <h4 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h4>
+            {% if size %}
+              {% assign p_ctg_list = p_ctg_list | append:"," | append:downcase_name %}
+                <ul>
+                  {% assign pages_list = g_categories %}
+                  {% include JB/pages_list %}
+                </ul>
+               {% assign list0 = size | append:',' | append: name %}
+               {% if list == nil %}
+                 {% assign list = list0 %}
+               {% else %}
+                 {% assign list = list | append:';' | append: list0 %}
+               {% endif %}
+
+            {% endif %}
 
               <!-- g -->
               {% if g.categories %}
 
                   {% for gg in g.categories %}
 
-                    {% assign gg_categories = site.categories[gg.name] %}
-                    {% assign gg_category_size = gg_categories.size %}
-                    <h5 id="{{ gg.name }}-ref">{{ gg.name }}{% if gg_category_size %} <sup>({{ gg_category_size }})</sup>{% endif %}</h5>
+                    {% assign name = gg.name %}
+                    {% assign downcase_name = name | downcase %}
+                    {% assign gg_categories = site.categories[downcase_name] %}
+                    {% assign size = gg_categories.size %}
+                    <h5 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h5>
 
-                    {% if gg_category_size %}
-                    {% assign p_ctg_list = p_ctg_list | append:"," | append:gg.name %}
+                    {% if size %}
+                    {% assign p_ctg_list = p_ctg_list | append:"," | append:downcase_name %}
                       <ul>
                         {% assign pages_list = gg_categories %}
                         {% include JB/pages_list %}
                       </ul>
+                       {% assign list0 = size | append:',' | append: name %}
+                       {% if list == nil %}
+                         {% assign list = list0 %}
+                       {% else %}
+                         {% assign list = list | append:';' | append: list0 %}
+                       {% endif %}
+
                     {% endif %}
 
                   {% endfor %}
-
-              <!-- child else -->
-              {% else %}
-
-                {% if g_category_size %}
-                {% assign p_ctg_list = p_ctg_list | append:"," | append:g.name %}
-                  <ul>
-                    {% assign pages_list = g_categories %}
-                    {% include JB/pages_list %}
-                  </ul>
-                {% endif %}
-
               <!-- child end -->
               {% endif %}
 
           {% endfor %}
 
-      <!-- child else -->
-      {% else %}
-
-        {% if child_category_size %}
-        {% assign p_ctg_list = p_ctg_list | append:"," | append:child.name %}
-          <ul>
-            {% assign pages_list = child_categories %}
-            {% include JB/pages_list %}
-          </ul>
-        {% endif %}
-
       <!-- child end -->
       {% endif %}
 
     {% endfor %}
-  <!-- top else -->
-  {% else %}
-
-    {% if category_size %}
-      {% assign p_ctg_list = p_ctg_list | append:"," | append:category.name %}
-      <ul>
-        {% assign pages_list = categories %}
-        {% include JB/pages_list %}
-      </ul>
-    {% endif %}
-
   <!-- top end -->
   {% endif %}
 {% endfor %}
 
 <h2 id="其他分类-ref">其他分类</h2>
 
-{% assign p_ctg_list = p_ctg_list | plit:"," %}
+{% assign p_ctg_list = p_ctg_list | split:"," %}
 {% for category in site.categories %}
   {% assign name = category[0] %}
-  {% if p_ctg_list contains name  %}
+  {% if p_ctg_list contains name %}
     {% continue %}
   {% endif %}
 
-  <h3 id="{{ name | replace:" ","-" }}-ref">{{ name | join: "/" }} <sup>({{ category[1].size }})</sup></h3>
+  {% assign size = category[1].size %}
+  <h3 id="{{ name | downcase | replace:" ","-" | replace:"/","-" }}-ref">{{ name | join: "/" }} <sup>({{ size }})</sup></h3>
   <ul>
     {% assign pages_list = category[1] %}
     {% include JB/pages_list %}
   </ul>
+  {% if size %}
+   {% assign list0 = size | append:',' | append: name %}
+   {% if list == nil %}
+     {% assign list = list0 %}
+   {% else %}
+     {% assign list = list | append:';' | append: list0 %}
+   {% endif %}
+  {% endif %}
+
 {% endfor %}
+
+{% assign list = list | split:';' | sort | reverse | join:';' %}
+
+<h2 id="{{x_label}}统计-ref">{{ x_label}}统计 <sup>({{ site.posts.size }})</sup></h2>
+{% include widgets/svg_statistic %}

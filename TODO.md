@@ -14,6 +14,8 @@ in the sidebar as the toc of that book.
 
 Just need to add 'album' to the page header.
 
+## Align _data/resources.yml with _data/sidebars.yml
+
 ## References
 
 - Book features

@@ -1,15 +1,23 @@
 
-- name: 开源项目
+- title: 开源项目
   icon: code
   data: projects
+  src: pages
+  condition: path
+  value: /projects/
   url: /projects/
+  tooltip: true
 
-- name: 开源书籍
+- title: 开源书籍
   icon: book
   data: books
+  src: pages
+  condition: path
+  value: /books/
   url: /books/
+  tooltip: true
 
-- name: 工作机会
+- title: 工作机会
   icon: flag-empty
   data: jobs
   src: posts
@@ -17,8 +25,9 @@
   value: jobs
   url: /jobs/
 
-- name: 友情链接
+- title: 友情链接
   icon: link
   data: links
   url: /links/
+  tooltip: true
   disable: true

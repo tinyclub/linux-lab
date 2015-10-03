@@ -1,20 +1,20 @@
 
 - title: The PREEMPT_RT Approach To Real Time
-  url: /the-preempt-rt-approach-to-real-time/
-  desc: 基于 PREEMPT_RT 的实时 Linux 系统详解
+  permalink: /the-preempt-rt-approach-to-real-time/
+  description: 基于 PREEMPT_RT 的实时 Linux 系统详解
 
 - title: Embedded Linux System Optimization
-  url: /embedded-linux-optimization/
-  desc: 嵌入式 Linux 系统优化详解
+  permalink: /embedded-linux-optimization/
+  description: 嵌入式 Linux 系统优化详解
 
 - title: Git Usage - Hello, The Git World!
-  url: /git-usage-hello-the-git-world/
-  desc: Git 版本管理工具简介
+  permalink: /git-usage-hello-the-git-world/
+  description: Git 版本管理工具简介
 
 - title: How to Contribute to Linux Mainline
-  url: /contribute-source-code-to-linux-mainline/
-  desc: 如何往 Linux 官方社区贡献代码
+  permalink: /contribute-source-code-to-linux-mainline/
+  description: 如何往 Linux 官方社区贡献代码
 
 - title: Android Linux RAS Research and Practice
-  url: /android-linux-ras-research-and-practice/
-  desc: Android Linux 系统可靠性保障
+  permalink: /android-linux-ras-research-and-practice/
+  description: Android Linux 系统可靠性保障

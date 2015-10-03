@@ -2,9 +2,9 @@
   {% if sidebar.disable %}
     {% continue %}
   {% endif %}
-   {% assign title = sidebar.name %}
+   {% assign title = sidebar.title %}
    {% assign icon = sidebar.icon %}
-   {% assign tooltip = false %}
+   {% assign tooltip = sidebar.tooltip %}
    {% assign prompt = title | prepend: "更多" %}
    {% assign url = sidebar.url %}
    {% assign size = 0 %}
@@ -14,7 +14,6 @@
 
    {% if site.data[sidebar.data] != nil %}
      {% assign list = site.data[sidebar.data] %}
-     {% assign tooltip = true %}
      {% assign size = list.size %}
    {% else %}
      {% assign list = site[sidebar.src] %}
@@ -26,9 +25,15 @@
          {% continue %}
        {% endif %}
 
-       {% if item[{{condition}}] == {{value}} %}
-         {% assign size = 1 %}
-         {% break %}
+       {% if condition %}
+         {% if item[{{condition}}] == {{value}} %}
+           {% assign size = 1 %}
+           {% break %}
+         {% endif %}
+         {% if condition == 'path' and item[{{condition}}] contains {{value}} %}
+           {% assign size = 1 %}
+           {% break %}
+         {% endif %}
        {% endif %}
      {% endfor %}
 

@@ -1,3 +1,4 @@
+{% if page.comments != false %}
 <div id="go-comment-and-share" style="display: none;">
   <a href="#comments" title="评论或分享"><i class="icon-large icon-fixed-width icon-comment-empty"></i></a>
 </div>
@@ -13,3 +14,4 @@ $(document).ready(function () {
   });
 });
 </script>
+{% endif %}

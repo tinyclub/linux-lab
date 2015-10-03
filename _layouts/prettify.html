@@ -38,7 +38,7 @@
 
   {% assign _profile = site.compress_html.profile %}
   {% if site.compress_html.endings == "all" %}
-    {% assign _endings = "html head body li dt dd p rt rp optgroup option colgroup caption thead tbody tfoot tr td th" | split: " " %}
+    {% assign _endings = "html head body dt dd p rt rp optgroup option colgroup caption thead tbody tfoot tr td th" | split: " " %}
   {% else %}
     {% assign _endings = site.compress_html.endings %}
   {% endif %}

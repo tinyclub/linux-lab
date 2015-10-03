@@ -168,7 +168,7 @@
 
       </li>
     {% endfor %}
-
+   </ul>
   </ul>
 </nav>
 </section>

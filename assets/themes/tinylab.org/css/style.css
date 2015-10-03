@@ -230,7 +230,7 @@ textarea {
 /*  General Settings  */
 
 body {
-    background: #000;
+    background: #efefef;
     font-family: 'Lucida Grande', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'WenQuanYi Micro Hei', sans-serif, 'SimSun', "宋体", 'Heiti', "黑体";
     font-size: 13.34px;
     *font-size: small;
@@ -304,10 +304,12 @@ a:active {
 
 #top-wrap {
     width: 100%;
-    background: #345;
+    background: #363D48;
     overflow: hidden;
-    height: 40px;
-    margin: 0 auto
+    height: 45px;
+    padding: 5px 0 0 0;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px #999999;
 }
 
 #wrap,
@@ -408,7 +410,7 @@ a:active {
 #sidebar section.active i:hover,
 #sidebar section.active > a,
 #sidebar section.active > a i {
-    color: #f60
+    color: #13579b
 }
 #sidebar .section_header > i {
     float: left;
@@ -588,7 +590,7 @@ article header span a:hover {
 }
 article header small {
     font-size: 100%;
-    border-top: 2px dotted #f60;
+    border-top: 2px dotted #214d41;
     margin-left: 10px;
     padding-top: 10px;
     line-height: 60px
@@ -762,7 +764,7 @@ pre code {
     float: left
 }
 #query {
-    background: #357;
+    background: #eeeeee;
     text-align: center;
     font-size: 100%;
     font-weight: 200;
@@ -774,22 +776,22 @@ pre code {
 input::-webkit-input-placeholder {
     /* WebKit browsers */
 
-    color: #ccc
+    color: #333333;
 }
 input:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
 
-    color: #ccc
+    color: #333333;
 }
 input::-moz-placeholder {
     /* Mozilla Firefox 19+ */
 
-    color: #ccc
+    color: #333333;
 }
 input:-ms-input-placeholder {
     /* Internet Explorer 10+ */
 
-    color: #ccc
+    color: #333333;
 }
 /*  Pagination  */
 
@@ -1043,7 +1045,7 @@ short_prev_next {
 #float-box-wrap a {
     display: block;
     text-decoration: none;
-    color: #3a8
+    color: #263238
 }
 #float-box-wrap .invisible {
     display: none;

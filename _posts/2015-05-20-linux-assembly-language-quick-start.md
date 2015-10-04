@@ -493,6 +493,7 @@ _start:
   * MIPS
 
       * [Programmed Introduction to MIPS Assembly Language][23]
+      * [MIPS Architecture and Assembly Language Overview][34]
       * [MIPS Assembly Language Programmer’s Guide][24]
       * [MIPS Assembly Language Examples][25]
       * [MIPS GCC 嵌入式汇编（龙芯适用）][26]
@@ -545,3 +546,5 @@ _start:
  [31]: http://www.ibm.com/developerworks/cn/linux/l-powasm3.html
  [32]: http://www.ibm.com/developerworks/cn/linux/l-powasm4.html
  [33]: http://www.ibm.com/developerworks/cn/aix/library/au-inline_assembly/index.html
+
+ [34]: http://logos.cs.uic.edu/366/notes/MIPS%20Quick%20Tutorial.htm

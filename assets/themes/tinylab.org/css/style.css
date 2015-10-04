@@ -524,9 +524,10 @@ article section h5 {
     color: #333;
     font-size: 105%
 }
+section footer p,
 article section p {
     text-indent: 1.16em;
-    font-size: 107%;
+    font-size: 100%;
     line-height: 160%;
     margin-bottom: .67em
 }
@@ -539,9 +540,6 @@ article section ul li {
 }
 article section ol li {
     line-height: 180%
-}
-section footer p {
-    text-indent: 1.16em;
 }
 #wrap footer p {
     color: #345
@@ -693,10 +691,11 @@ th,
 td {
     padding: 8px 4px 4px;
     text-align: left;
+    font-size: 90%;
     border: 1px solid #e5e5e5
 }
 th {
-    font-size: 100%
+    font-size: 90%
 }
 tbody tr:nth-child(odd) {
     background-color: #f2f2f2
@@ -712,7 +711,7 @@ tbody tr:hover {
 code,
 pre {
     font-family: Courier, monospace;
-    font-size: 13px
+    font-size: 90%
 }
 code {
     padding: 1px 3px;
@@ -1194,7 +1193,7 @@ short_prev_next {
 
         margin: 0;
         margin-left: 40px;
-        padding-top: 8px;
+        padding-top: 12px;
         -webkit-tap-highlight-color:rgba(0,0,0,0);
     }
     #navbar #menu-icon i {

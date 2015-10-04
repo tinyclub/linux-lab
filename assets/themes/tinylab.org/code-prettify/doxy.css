@@ -20,7 +20,7 @@ a {
 pre.prettyprint, code.prettyprint {
   font-family:'Droid Sans Mono','CPMono_v07 Bold','Droid Sans';
   font-weight: bold;
-  font-size: 9pt;
+  font-size: 90%;
   background-color: #0f0f0f;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -74,6 +74,6 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     margin-left: 0
   }
   pre.prettyprint, code.prettyprint {
-    font-size: 8pt
+    font-size: 80%
   }
 }

@@ -34,7 +34,7 @@
 pre.prettyprint, code.prettyprint {
   font-family:'Droid Sans Mono','CPMono_v07 Bold','Droid Sans';
   font-weight: 500;
-  font-size: 9pt;
+  font-size: 90%;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   -o-border-radius: 8px;
@@ -80,6 +80,6 @@ li.L9 { background: #eee }
     margin-left: 0
   }
   pre.prettyprint, code.prettyprint {
-    font-size: 8pt
+    font-size: 80%
   }
 }

@@ -8,11 +8,11 @@ tags:
   - Labs
   - Linux
   - online
-  - Javascript PC Emulator
   - RISC-V
   - OpenRISC
 categories:
   - 在线 Linux
+  - Javascript Emulator
 ---
 
 > by falcon of [TinyLab.org][2]

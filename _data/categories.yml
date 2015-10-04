@@ -147,7 +147,7 @@
     - name: 模拟器
       categories:
         - name: Qemu
-        - name: Javascript PC Emulator
+        - name: Javascript Emulator
     - name: 开发环境
       categories:
         - name: 开发工具

@@ -47,11 +47,8 @@ pre.prettyprint, code.prettyprint {
 pre.prettyprint {
   width: 92%;
   margin: 0 auto;
-  margin-left: 1.2em;
-  margin-top: 1.16em;
-  margin-bottom: 1em;
-  padding: 1em;
-  white-space: pre-wrap;
+  margin-bottom: .67em;
+  padding: 2px;
   border: 1px solid #ccc
 }
 

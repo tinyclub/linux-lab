@@ -37,7 +37,7 @@
     <group>
 
      <i class="icon-fixed-width icon-direction"></i>
-     <a href="{{ BASE_PATH }}{{ site.JB.groups_path }}#{{ group_name | downcase | replace: ' ','-' }}-ref" title="查看所有 {{group_name}} 文章">{{ group_name }}</a>
+     <a href="{{ BASE_PATH }}{{ site.JB.groups_path }}#{{ group_name | downcase | replace: ' ','-' }}-ref" title="查看所有 {{group_name}} 文章">{{ group_name }}</a> 
 
     {% assign categories_limit = site.JB.article.categories_limit %}
     {% if article.album %}
@@ -54,7 +54,7 @@
         {% break %}
       {% endif %}
      {% assign downcase_name = category | downcase %}
-      <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看所有 {{category}} 文章">{{ category }} <sup>{{ site.categories[downcase_name].size}}</sup></a>
+      <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看所有 {{category}} 文章">{{ category | capitalize }} <sup>{{ site.categories[downcase_name].size}}</sup></a> 
     {% endfor %}
 
     {% if article.album %}

@@ -14,9 +14,9 @@ tags:
 > By Falcon of TinyLab.org
 > 2009-01-18
 
-## Hello, MIPS Assembly Language Programmer!
+## Hello, MIPS Assembly Programmer!
 
-Hello, MIPS Assembly Language Programmer, I'm also a newbie of MIPS Assembly
+Hello, MIPS Assembly Programmer, I'm also a newbie of MIPS Assembly
 Programmer, and here is the practical & "step by step" examples of MIPS
 Assembly Lanaguage Programming in Linux. which will give us a quick start of
 MIPS Assembly Programming and safely say goodbye to the other boring materials.

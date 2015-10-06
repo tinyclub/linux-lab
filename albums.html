@@ -23,11 +23,13 @@ comments: false
   {% endif %}
 
   {% assign album_url = "" %}
-  {% for book in site.data.books %}
-    {% assign book_title = book.title | remove: " " | upcase %}
-    {% assign album_title = album.name | remove: " " | upcase %}
-    {% if book_title == album_title %}
-      {% assign album_url = book.url %}
+  {% for page in site.pages %}
+    {% if page.path contains '/books/' and page.album %}
+      {% assign book_title = page.album | remove: " " | upcase %}
+      {% assign album_title = album.name | remove: " " | upcase %}
+      {% if book_title == album_title %}
+        {% assign album_url = page.url %}
+      {% endif %}
     {% endif %}
   {% endfor %}
 

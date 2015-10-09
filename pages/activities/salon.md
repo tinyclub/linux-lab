@@ -1,6 +1,6 @@
 ---
 title: 沙龙
-tagline: 由泰晓科技举办的线下沙龙活动
+tagline: 由泰晓举办的各类线下交流活动
 layout: page
 album: 泰晓沙龙
 group: navigation

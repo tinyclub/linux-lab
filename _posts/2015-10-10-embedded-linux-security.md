@@ -12,6 +12,10 @@ category:
 tags:
   - Security
   - Linux
+  - SELinux
+  - Tomoyo
+  - SMACK
+  - MAC
 ---
 
 > By Falcon of TinyLab.org

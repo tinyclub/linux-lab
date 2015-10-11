@@ -5,10 +5,10 @@ layout: post
 permalink: /faqs/linux-kernel-uapi/
 tags:
   - Header
-  - kernel
   - UAPI
-categories:
   - Linux
+categories:
+  - 内核函数库
 ---
   * 问题描述
 
@@ -20,7 +20,7 @@ categories:
 
   * 解决方案
 
-    在3.5之前，Linux Kernel 的头文件一般是这样的：
+    在 3.5 之前，Linux Kernel 的头文件一般是这样的：
 
         /* Header comments (copyright, etc.) */
         
@@ -40,7 +40,7 @@ categories:
         #endif
 
 
-    而在3.5之后，这样一个头文件就会被分为两个：
+    而在 3.5 之后，这样一个头文件就会被分为两个：
 
         .filename.h
         /* Header comments (copyright, etc.) */
@@ -64,7 +64,7 @@ categories:
         #endif
 
 
-    这样做有什么好处呢？一个是解决 Linux Kernel 里的交叉引用，另外一个就是方便用户态的开发者，可以简单的查看 uapi 里的代码变化来确定 Linux Kernel是否改变了系统 API。
+    这样做有什么好处呢？一个是解决 Linux Kernel 里的交叉引用，另外一个就是方便用户态的开发者，可以简单的查看 uapi 里的代码变化来确定 Linux Kernel 是否改变了系统 API。
 
     参考资料：
 

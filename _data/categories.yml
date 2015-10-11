@@ -95,6 +95,7 @@
         - name: 内核函数库
         - name: 内核调试与跟踪
         - name: 内核配置与编译
+        - name: 内核模块化
         - name: 其他特性
           categories:
             - name: Kexec

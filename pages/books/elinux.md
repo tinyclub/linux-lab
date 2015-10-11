@@ -20,7 +20,7 @@ tags:
 
 [eLinux.org][1] 是 Linux 基金会下属 [Consumer Electronics Linux Forum][2] 维护的一个 Embedded Linux Wiki。该 Wiki 全面系统地梳理了嵌入式 Linux 方方面面的知识。
 
-该项目致力于翻译 [Embedded Linux Wiki][3] 为中文版。
+该项目致力于翻译 [Embedded Linux Wiki][1] 为中文版。
 
   * 在线阅读：<http://tinylab.gitbooks.io/elinux>
   * 代码仓库：[https://github.com/tinyclub/elinux.git][4]
@@ -71,7 +71,6 @@ tags:
 
  [1]: http://elinux.org
  [2]: http://www.celinuxforum.org/
- [3]: elinux.org
  [4]: https://github.com/tinyclub/elinux
  [5]: http://weibo.com/tinylaborg
  [6]: http://help.gitbook.com/format/markdown.html

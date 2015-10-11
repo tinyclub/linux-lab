@@ -1,11 +1,12 @@
 ---
-title: 大开脑洞：当丹佛核心遇上超线程
+title: 大开脑洞：丹佛核心，碰上超线程与逆超线程
 author: Chen Jie
 layout: post
 permalink: /brain-wide-open-holes-when-the-denver-core-meets-the-hyper-threading/
 tags:
   - Denver
   - 超线程
+  - 逆超线程
   - HT
   - Hyper-Threading
   - NVIDIA
@@ -14,27 +15,31 @@ tags:
   - Tegra K1
   - VLIW
   - 丹佛
+  - 矢量调度
+  - Scheduler
   - ISA
 categories:
   - Denver
   - 技术动态
 ---
 
-<!-- title: 大开脑洞：当丹佛核心遇上超线程 -->
+<!-- title: 大开脑洞：丹佛核心，碰上超线程与逆超线程 -->
 
 <!-- %s/!\[image\](/&#038;\/wp-content\/uploads\/2015\/04\// -->
 
 > by Chen Jie of [TinyLab.org][1]
 > 2015/4/15
 
+## 前言：丹佛微架构很快
 最近，先是某表火爆销售，随后 12 寸的新 Macbook 也终于开卖。后者的一些评测报告也纷纷出现，最有意思的大概是下面这个：
 
 ![image][2]
 
 iPad Air2 A8X CPU 的性能渐近新 Macbook 搭载的低功耗版 Core M。这大概是苹果产品上，首次嵌入式 CPU 性能如此接近桌面级 CPU —— 并不是 Intel CPU 不给力，只是 ARM 阵营发展太猛。
 
-说到 ARM 阵营的强 U，除了水果的 A8，就数 NVIDIA 丹佛（Denver）核心的 Tegra K1。后者采用了独特的动态剖析，并据此生成优化 VLIW (Very Long Instruction Word) 代码并缓存起来，供后续使用。进一步了解可戳[这里][3]。
+说到 ARM 阵营的强 CPU，除了水果的 A8，就数 NVIDIA 丹佛（Denver）核心的 Tegra K1。后者采用了独特的动态剖析，并据此生成优化 VLIW (Very Long Instruction Word) 代码并缓存起来，供后续使用。进一步了解可戳[这里][3]。
 
+## 丹佛微架构之喻
 如果我们能站在 CPU 的一排执行单元前，看着指令进来，最壮观的景象大概是下面这个样子：
 
 ![image][4]
@@ -51,9 +56,10 @@ iPad Air2 A8X CPU 的性能渐近新 Macbook 搭载的低功耗版 Core M。这�
 
 ![image][5]
 
-每时刻只有一辆“车”（指令）跑在一个 “车道”（执行单元）上通过路口（确切的说，这也算是理想，实际上会有一些时刻没有一辆“车”通过路口）—— 偌大的超宽 n “车道”，就这么白白浪费了。换句话说，这种情况下，Tegra K1 退化成了一个顺序执行的 U。
+每时刻只有一辆“车”（指令）跑在一个 “车道”（执行单元）上通过路口（确切的说，这也算是理想，实际上会有一些时刻没有一辆“车”通过路口）—— 偌大的超宽 n “车道”，就这么白白浪费了。换句话说，这种情况下，Tegra K1 退化成了一个顺序执行的 CPU。
 
-顺序执行的 U，常有用到另一种增加执行单元利用率的方法，且耗的硬件资源不多。这方法大名叫做“超线程”，学名唤做“同时多线程”（SMT）技术。即是将来自两个以上线程的指令混在一起，丢给执行单元：
+## 丹佛碰上超线程
+顺序执行的 CPU，常有用到另一种增加执行单元利用率的方法，且耗的硬件资源不多。这方法大名叫做“超线程”，学名唤做“同时多线程”（SMT）技术。即是将来自两个以上线程的指令混在一起，丢给执行单元：
 
 ![image][6]
 
@@ -63,22 +69,35 @@ iPad Air2 A8X CPU 的性能渐近新 Macbook 搭载的低功耗版 Core M。这�
 
 ![image][7]
 
-此时，该怎么办呢？想一想，比如让这个虚拟的 CPU 下线（i.e. CPU hotplug），例如：
+综上，很容易脑洞出，提高丹佛微架构下各执行单元利用率的方案：
 
-  1. 当 VLIW 指令连着执行时，即阻塞了另一线程，硬件上在某寄存器中加以标识。
-  2. 内核在中断和异常处理返回前，检测该寄存器，并调整 *被阻塞线程* 的运行时间（runtime），以期使进程调度更公平些。
-  3. 为消除 CPU 下线带来的进程迁移开销，让运行在同一核心（Core）、不同虚拟 CPU 上的调度器，共享同一调度队列（runqueue）。
+* 当前执行非 VLIW 指令时，让其进入 _超线程_ 模式，即从多个线程取指令，并发执行。
+* 当前执行 VLIW 指令时，仅从单个线程取指令，换言之，_逆超线程_ 模式。
 
-YY 结束，未来会不会有这样的实现呢？且骑着驴看唱本 —— 走着瞧。
+那么，如何实现之？更进一步地说，操作系统的调度器该如何去支持呢？
 
+## 矢量调度：游刃与超线程与逆超线程的戏法
 
+接上节问，在此提出矢量调度 - 操作系统的任务调度器一次调度一个线程去执行，而矢量调度一次调度一组线程。这组线程又分一个 __焦点线程__ 和 一群 __背景线程__：
 
+* 焦点线程。焦点线程就是本该被调度的线程 - 用 Linux CFS 调度算法的判定，就是运行时间最少的线程。
+* 背景线程。趁着焦点线程运行的空隙来运行。即当焦点线程无法完全消耗微处理器的执行资源时，背景线程去用起来。
 
+举几个情景为例：
 
- [1]: http://tinylab.org
- [2]: http://cdn.macrumors.com/article-new/2015/04/geekbenchmacworld.jpg
- [3]: /nvidia%E9%BB%91%E7%A7%91%E6%8A%80-%E4%B8%B9%E4%BD%9B%E6%A0%B8%E5%BF%83%E6%9D%80%E5%88%B0%EF%BC%81/
- [4]: /wp-content/uploads/2015/04/yy-denver-smt-VLIW.jpg
- [5]: /wp-content/uploads/2015/04/yy-denver-smt-inorder.jpg
- [6]: /wp-content/uploads/2015/04/yy-denver-smt-inorder-with-smt.jpg
- [7]: /wp-content/uploads/2015/04/yy-denver-smt-when-VLIW.jpg
+1. 当_焦点线程_执行一组 VLIW 指令时，此时执行资源完全消耗，所有背景线程停止。
+2. 当某个_背景线程_此刻需执行一组 VLIW 指令时，该背景线程被停止（因对执行资源的完全消耗妨碍了焦点线程的执行）。
+3. 当_焦点线程_时间片耗尽，调度器计算和调度本组所有线程。__调度器的调度时刻，完全取决于焦点线程__。
+4. 当某个_背景线程_执行遇到缺页异常时，该背景线程被停止（因会触发调度，而调度仅由焦点线程决定）。
+5. 调度器调度 _背景线程_，可多于硬件超线程虚拟出的核数 - 当有背景线程停止时，处理器马上从下一个预备的背景线程取指。
+6. 处理器有相应寄存器来指明各背景线程的执行时间，以作调度决策之输入。
+
+进一步扩大脑洞，除了丹佛这样特殊的微架构，矢量调度还可用于通常的 CPU - 即将数个 CPU 核 “并成一体”。例如场景“将一帧数据分块多线程处理，等全部处理完后输出下一阶段”。此时将分块处理的线程们作一次矢量调度，同时在（预留的？）数个CPU 核上执行。
+
+[1]: http://tinylab.org
+[2]: http://cdn.macrumors.com/article-new/2015/04/geekbenchmacworld.jpg
+[3]: /nvidia-black-tech-the-denver-core/
+[4]: /wp-content/uploads/2015/04/yy-denver-smt-VLIW.jpg
+[5]: /wp-content/uploads/2015/04/yy-denver-smt-inorder.jpg
+[6]: /wp-content/uploads/2015/04/yy-denver-smt-inorder-with-smt.jpg
+[7]: /wp-content/uploads/2015/04/yy-denver-smt-when-VLIW.jpg

@@ -4,7 +4,7 @@ author: 'Wu Zhangjin'
 title: "嵌入式 Linux 系统实时性"
 album: "嵌入式 Linux 知识库"
 group: translation
-permalink: /embedded-linux-security/
+permalink: /embedded-linux-real-time/
 description: "介绍了实时 Linux 相关的信息"
 category:
   - 实时抢占

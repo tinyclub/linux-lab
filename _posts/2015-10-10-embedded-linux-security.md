@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Wu Zhangjin'
+author: 'Li Zhaozhong'
 title: "嵌入式 Linux 系统安全"
 album: "嵌入式 Linux 知识库"
 group: translation
@@ -18,7 +18,7 @@ tags:
   - MAC
 ---
 
-> By Falcon of TinyLab.org
+> By Jason Lee of TinyLab.org
 > 2015-10-10
 
 > 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)

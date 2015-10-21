@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Wu Zhangjin'
+author: 'Zhou Yuanbin'
 title: "嵌入式 Linux 系统实时性"
 album: "嵌入式 Linux 知识库"
 group: translation
@@ -17,7 +17,7 @@ tags:
   - hrtimer
 ---
 
-> By Falcon of TinyLab.org
+> By yuanbin of TinyLab.org
 > 2015-10-20
 
 > 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)

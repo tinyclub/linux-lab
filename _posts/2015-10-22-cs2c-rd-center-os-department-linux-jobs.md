@@ -3,7 +3,7 @@ layout: post
 author: 'Huang Wei'
 title: "中标专用 OS 研发部招聘若干 Linux 工程师"
 group: jobs
-permalink: /embedded-linux-real-time/
+permalink: /cs2c-rd-center-os-department-linux-jobs/
 description: "中标软件招聘 Linux 驱动与内核开发工程师"
 category:
   - Linux 职位

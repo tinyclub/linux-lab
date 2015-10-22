@@ -36,7 +36,7 @@
 
     <group>
 
-     <i class="icon-fixed-width icon-direction"></i>
+     <i class="icon-fixed-width icon-direction"></i> 
      <a href="{{ BASE_PATH }}{{ site.JB.groups_path }}#{{ group_name | downcase | replace: ' ','-' }}-ref" title="查看所有 {{group_name}} 文章">{{ group_name }}</a> 
 
     {% assign categories_limit = site.JB.article.categories_limit %}
@@ -48,7 +48,7 @@
     {% for category in article.categories %}
       {% assign cnt = cnt | plus:1 %}
       {% if cnt == 1 %}
-        <i class="icon-fixed-width icon-folder-open"></i>
+        <i class="icon-fixed-width icon-folder-open"></i> 
       {% endif %}
       {% if cnt > categories_limit %}
         {% break %}
@@ -58,7 +58,7 @@
     {% endfor %}
 
     {% if article.album %}
-     <i class="icon-fixed-width icon-coffee"></i>
+     <i class="icon-fixed-width icon-coffee"></i> 
      <a href="{{ BASE_PATH }}{{ site.JB.albums_path }}#{{ article.album | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看该专辑所有文章">{{ article.album }}</a>
     {% endif %}
 

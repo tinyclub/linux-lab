@@ -43,3 +43,9 @@
   data: links
   url: /links/
   tooltip: true
+
+- title: 福利
+  data: welfare
+  src: posts
+  condition: group
+  value: welfare

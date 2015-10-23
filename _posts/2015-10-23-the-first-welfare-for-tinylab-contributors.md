@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "第一批福利回馈原创、翻译贡献者"
+title: "第一批福利回馈原创贡献者"
 group: welfare
 permalink: /the-first-welfare-for-tinylab-contributors/
 description: "为了感谢原创、翻译作者的积极分享和交流，泰晓科技准备了一批书籍发送给大家"

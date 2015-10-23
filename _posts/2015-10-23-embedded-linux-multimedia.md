@@ -23,8 +23,6 @@ tags:
 > 原文：[eLinux.org](http://eLinux.org/Multimedia "http://eLinux.org/Multimedia")
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 
-# 多媒体
-
 ## 简介
 
 本文有 Linux 下的音频、视频、图形系统相关的各类资源。

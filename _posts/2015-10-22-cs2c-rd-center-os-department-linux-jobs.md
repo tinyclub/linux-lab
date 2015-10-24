@@ -8,6 +8,7 @@ description: "中标软件招聘 Linux 驱动与内核开发工程师"
 category:
   - Linux 职位
 tags:
+  - 中标
   - Linux
   - 龙芯
   - 申威
@@ -22,8 +23,8 @@ tags:
 * 薪资：面议
 * 联系：
 
-  * 联系用人部门：点击本文作者或者右侧 “联系作者” 发送邮件。
-  * 联系 HR：孙小姐 <fanglin.sun [AT] cs2c [dot] com [dot] cn>
+  * 用人部门：点击本文作者或者右侧 “联系作者” 发送邮件。
+  * HR：孙小姐 <fanglin.sun [AT] cs2c [dot] com [dot] cn>
 
 具体职位需求如下。
 

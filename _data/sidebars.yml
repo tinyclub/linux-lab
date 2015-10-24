@@ -1,4 +1,12 @@
 
+- title: 工作机会
+  icon: flag-empty
+  data: jobs
+  src: posts
+  condition: group
+  value: jobs
+  url: /jobs/
+
 - title: 开源项目
   icon: code
   data: projects
@@ -16,14 +24,6 @@
   value: /books/
   url: /books/
   tooltip: true
-
-- title: 工作机会
-  icon: flag-empty
-  data: jobs
-  src: posts
-  condition: group
-  value: jobs
-  url: /jobs/
 
 - title: 友情链接
   icon: link

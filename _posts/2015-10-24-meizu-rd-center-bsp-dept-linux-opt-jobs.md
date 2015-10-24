@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "魅族研发中心招聘 Linux 系统优化工程师"
+title: "魅族招聘若干 Linux 系统优化工程师"
 group: jobs
 permalink: /meizu-rd-center-bsp-dept-linux-opt-jobs/
 description: "魅族研发中心智能手机 BSP 部门招聘底层系统优化工程师（包括Android、Linux）"

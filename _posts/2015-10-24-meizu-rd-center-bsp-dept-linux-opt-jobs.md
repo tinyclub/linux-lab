@@ -16,6 +16,7 @@ tags:
   - 性能优化
   - 续航
   - 稳定性
+  - 智能手机底层系统优化的演进
 ---
 
 ## 简介
@@ -35,7 +36,7 @@ tags:
 
 * 看点：魅族在 Android 智能手机底层系统优化方面有多年的技术积累，技术氛围浓厚，协作氛围融洽，工作有挑战性，加上珠海清新的空气，媲美 BAT 的薪酬和业界少有的 ESOP，以及高速成长的公司业绩，这里绝对是一个丰富职业生涯和生活历程的极佳选择。
 
-* 备注：本文作者（即用人部门负责人）在 [CSDN MDCC 2015](http://mdcs.csdn.net) 分享了「[智能手机底层系统优化的演进——从 M9 到 PRO5](http://download.csdn.net/download/tangxiaoyin/9196929)」，据此可以了解魅族在这方面的基本情况。
+* 备注：本文作者（即用人部门负责人）在 [CSDN MDCC 2015](http://mdcs.csdn.net) 分享了「[智能手机底层系统优化的演进——从 M9 到 PRO5](/wp-content/uploads/2015/10/24/mdcc2015-smartphone-sys-opt-wuzhangjin.pdf)」，据此可以了解魅族在这方面的基本情况。
 
 ## Linux 稳定性优化工程师（2人）
 

@@ -4,14 +4,13 @@ author: Wu Zhangjin
 layout: post
 permalink: /3d-printing-adding-chinese-support-for-open-source-b9creator-high-precision-printers/
 tags:
-  - 3D打印机
-  - B9Creator
+  - 3D打印
   - linguist
   - lrelease
   - Qt
   - 中文支持
 categories:
-  - 3D-Print
+  - B9Creator
 ---
 
 > by falcon of [TinyLab.org][2]

@@ -12,6 +12,7 @@ tags:
   - JDWP
 categories:
   - JDB
+  - 调试技巧
 ---
 
 <!-- Title: Use JDB to debug Android Application -->

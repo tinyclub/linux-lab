@@ -10,6 +10,7 @@ tags:
   - logwrapper
 categories:
   - Android 日志管理
+  - 调试技巧
 ---
 
 > by WEN Pingbo of [TinyLab.org][2]

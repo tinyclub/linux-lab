@@ -2,7 +2,7 @@
 title: 替换 Android 的默认 Console 为 BusyBox Ash
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/replace-the-default-console-for-busybox-android-ash/
+permalink: /replace-the-default-console-for-busybox-android-ash/
 tags:
   - Android
   - Ash

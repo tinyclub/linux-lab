@@ -2,7 +2,7 @@
 title: 获取某个存储设备的 UUID
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/get-and-set-the-uuid-of-a-disk-partition/
+permalink: /get-and-set-the-uuid-of-a-disk-partition/
 tags:
   - /dev/disk/by-uuid/
   - blkid

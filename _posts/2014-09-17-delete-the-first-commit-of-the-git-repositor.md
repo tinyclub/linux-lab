@@ -2,7 +2,7 @@
 title: 删除 Git 仓库中的第一条记录
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/delete-the-first-commit-of-the-git-repositor/
+permalink: /delete-the-first-commit-of-the-git-repositor/
 tags:
   - rebase
   - 删除历史记录

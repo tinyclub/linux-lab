@@ -2,7 +2,7 @@
 title: 在 VIM 中如何规范自己的代码
 author: Wen Pingbo
 layout: post
-permalink: /faqs/how-to-regulate-their-own-code-in-vim/
+permalink: /how-to-regulate-their-own-code-in-vim/
 tags:
   - CodingStyle
   - linuxsty

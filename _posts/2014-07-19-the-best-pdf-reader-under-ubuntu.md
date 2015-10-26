@@ -2,7 +2,7 @@
 title: Ubuntu 下最佳 pdf 阅读器
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/the-best-pdf-reader-under-ubuntu/
+permalink: /the-best-pdf-reader-under-ubuntu/
 tags:
   - acroread
   - evince

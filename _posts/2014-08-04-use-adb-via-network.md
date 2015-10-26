@@ -2,7 +2,7 @@
 title: 通过网络使用 ADB
 author: Hu Hongbing
 layout: post
-permalink: /faqs/use-adb-via-network/
+permalink: /use-adb-via-network/
 tags:
   - ADB
   - 网络

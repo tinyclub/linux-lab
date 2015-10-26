@@ -2,7 +2,7 @@
 title: WordPress 站点 JavaScript 错误调试
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/wordpress-site-javascript-error-debug/
+permalink: /wordpress-site-javascript-error-debug/
 tags:
   - Chrome
   - 调试

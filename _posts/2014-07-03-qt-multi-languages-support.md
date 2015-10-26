@@ -2,7 +2,7 @@
 title: Qt 多国语言支持
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/qt-multi-languages-support/
+permalink: /qt-multi-languages-support/
 tags:
   - linguist
   - lrelease

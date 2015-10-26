@@ -2,7 +2,7 @@
 title: Ubuntu 中锁定域名配置文件 /etc/resolv.conf
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/lock-etc-resolv-conf-in-ubuntu/
+permalink: /lock-etc-resolv-conf-in-ubuntu/
 tags:
   - /etc/resolv.conf
   - DNS

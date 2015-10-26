@@ -2,7 +2,7 @@
 title: Makefile 中调用 Shell 脚本
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/call-shell-scripts-in-makefile/
+permalink: /call-shell-scripts-in-makefile/
 tags:
   - Makefile
   - sed

@@ -2,7 +2,7 @@
 title: Linux Kernel UAPI
 author: Wen Pingbo
 layout: post
-permalink: /faqs/linux-kernel-uapi/
+permalink: /linux-kernel-uapi/
 tags:
   - Header
   - UAPI

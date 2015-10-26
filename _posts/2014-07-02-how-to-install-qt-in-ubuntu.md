@@ -2,7 +2,7 @@
 title: 在 Ubuntu 下安装 Qt 开发环境
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/how-to-install-qt-in-ubuntu/
+permalink: /how-to-install-qt-in-ubuntu/
 tags:
   - QtCreator
   - Ubuntu

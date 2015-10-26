@@ -2,7 +2,7 @@
 title: 查看谁在使用某个网络端口
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/check-who-is-using-a-net-port/
+permalink: /check-who-is-using-a-net-port/
 tags:
   - fuser
   - lsof

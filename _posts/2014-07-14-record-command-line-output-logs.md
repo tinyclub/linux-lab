@@ -2,7 +2,7 @@
 title: 记录命令行输出日志
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/record-command-line-output-logs/
+permalink: /record-command-line-output-logs/
 tags:
   - minicom
   - screen

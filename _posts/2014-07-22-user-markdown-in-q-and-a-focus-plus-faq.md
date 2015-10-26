@@ -2,7 +2,7 @@
 title: Wordpress Q and A Focus Plus FAQ 中用 Markdown
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/user-markdown-in-q-and-a-focus-plus-faq/
+permalink: /user-markdown-in-q-and-a-focus-plus-faq/
 tags:
   - Markdown
   - Q and A Focus Plus FAQ

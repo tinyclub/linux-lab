@@ -2,7 +2,7 @@
 title: 'unifdef: 批量清除条件编译代码'
 author: Wen Pingbo
 layout: post
-permalink: /faqs/remove-condition-code-in-kernel/
+permalink: /remove-condition-code-in-kernel/
 tags:
   - kernel
   - unifdef

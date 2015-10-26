@@ -2,7 +2,7 @@
 title: Linux 实时优化：批量优化 mdelay
 author: Wu Zhangjin
 layout: post
-permalink: /faqs/linux-realtime-optimization-replace-mdelay-with-usleep-range-or-msleep/
+permalink: /linux-realtime-optimization-replace-mdelay-with-usleep-range-or-msleep/
 tags:
   - alarm
   - Linux

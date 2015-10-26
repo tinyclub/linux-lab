@@ -7,7 +7,7 @@ tags:
   - 精品插件
   - Plugin
 categories:
-  - Wordpres
+  - Wordpress
 ---
 
 > by Falcon of [TinyLab.org][1]

@@ -255,6 +255,7 @@
         - name: Goldfish 内核驱动
     - name: Android 系统
       categories:
+        - name: Android 日志管理
         - name: Android 启动管理
         - name: Android 电源管理
         - name: Android 显示系统

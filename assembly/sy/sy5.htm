@@ -1,0 +1,94 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验五    编写、调试具有多个段的程序</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验五    编写、调试具有多个段的程序</b></font>
+
+
+
+(1)答：
+	1)cpu执行程序，程序返回前，data段中的数据不变</pre>
+<pre>
+	2)cs=143fh     ss=143eh     ds=143dh         [注：不同情况下可能不同，只要在程序返回前用r命令查看即可]</pre>
+<pre>
+	3)我看到的结果是：cs=143fh      ss=143dh       ds=142dh</pre>
+<pre>
+	X-12h,X-2h                 
+
+(2)答：
+	1)data段中的数据不变</pre>
+<pre>
+	2)cs=143fh       ss=143eh    ds=143dh</pre>
+<pre>
+	3)我看到的结果是：cs=143fh      ss=143dh       ds=142dh</pre>
+<pre>
+	因此同(1)
+
+
+(3)答：
+	1)data段中的数据不变</pre>
+<pre>
+	2)cs=143dh    ss=1441h    ds=1440h</pre>
+<pre>
+	3)我看到的结果是：cs=143dh      ss=143dh       ds=142dh</pre>
+<pre>
+	X-10h,X
+</pre>
+<pre>
+[注：</pre>
+<pre>
+	1)data中的数据情况很容易分析，</pre>
+<pre>
+	2)很容易发现:每个段至少占用16个字节的空间，因为“物理地址＝段地址×16＋偏移地址”；</pre>
+<pre>
+	3)不难发现：因为ds：0是psp的起始地址，它共占256个字节；再结合“每个段至少占用16个字节的空间”就很容易分析结果了]
+
+(4)答：</pre>
+<pre>
+经测试把第三个程序的“end start”改成“end”,照常可以执行，仔细想想，原因自然浮出水面：</pre>
+<pre>
+   	1)&quot;end start&quot;的作用是指名程序的入口，“end”的功能是标志整个程序段的结束。</pre>
+<pre>
+   	2)当各个程序中把“end start”改成“end”以后，程序都没有了指名程序入口的语句了</pre>
+<pre>
+   	3)但是在2)的情况下第一个和第二个程序不能正常执行了，说明可能无法找到程序的入口，但是第三个程序却能正常执行，可见在这个程序中即使没有指明程</pre>
+<pre>序的入口，它依然可以从程序的入口开始执行程序，进行正确的操作。</pre>
+<pre>
+   	4)再仔细看看，只有程序三中的第一个机器码为代码，而前两个程序中的开始机器码都不是代码</pre>
+<pre>　</pre>
+<pre>总结出来，不难发现：</pre>
+<pre>
+   	1)在指明程序入口的情况，程序从程序入口开始执行</pre>
+<pre>
+   	2)在没有指明程序入口的情况下，系统默认从程序的第一个机器码执行</pre>
+<pre>
+
+(5)答：</pre>
+<pre>
+分析：</pre>
+<pre>	由于push与pop指令只对字操作，而这里要操作的是字节，所以不能用push和pop传送数据，那么该如何对多个栈进行操作呢？</pre>
+<pre>
+      	在这里有三个数据段，又因为段寄存器的个数有限所以用多个寄存器指向每个段是不可能的，那么是否可以共用一个段地址呢？当然可以。下面就是这</pre>
+<pre>样实现的：</pre>
+<pre>
+实现：</pre>
+<pre>      	程序见：<a href="../pro/5_5.asm">5_5.asm</a></pre>
+<pre>
+[注：这里每个段占用的实际空间是16字节，因为每个段至少占用16个字节的空间，因为物理地址=段地址*16+偏移地址]
+
+</pre>
+<pre>(6)答：</pre>
+<pre>
+分析：</pre>
+<pre>	这里可以直接通过循环的压栈操作进行数据的移动</pre>
+<pre>实现：
+     	程序见：<a href="../pro/5_6.asm">5_6.asm</a></pre>
+<pre>　</pre>
+<pre>
+【注：这里的数据传送也可以通过后面将要学到的movsw指令实现，具体见p219】</pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

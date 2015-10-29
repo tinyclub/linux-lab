@@ -1,0 +1,51 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验十三  编写、应用中断例程</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验十三  编写、应用中断例程</b></font>
+
+
+
+答：</pre>
+<pre>分析：</pre>
+<pre>	这里其实是我们将在《微机原理》中学到的用int触发的软中断，它的相关操作几乎和子程序一样，下面我们把它的结构和调用过程与子程序进行比较：
+                 中断例程			子程序
+一，结构：
+	入口：中断向量，通过中断类型码设置  	地址标号
+	返回：iret                        	ret
+      	相当于：	                         
+      	pop ip                           	pop ip
+      	pop cs                             	pop cs  
+      	popf                                
+	相关操作：     进行相关寄存器的保护工作
+二，调用：int                            	call
+	相当于：
+	pushf				push cs
+	push cs				pop ip 				
+	push ip				 
+
+在前面我们已经写过很多的子程序拉，所以编写中断处理程序将非常的容易，当然由于中断机制的特性，我们的中断处理程序还需要进行如下的操作：</pre>
+<pre>
+	1，中断处理程序的安装</pre>
+<pre>
+	2，中断向量表的设置</pre>
+<pre>
+	3，原有中断向量的保护和恢复</pre>
+<pre>
+	这三个过程在一个实验我们有过初步的认识，这以后将涉及更多的相关操作，会慢慢地变得更加熟悉。</pre>
+<pre>实现：
+	下面我们直接给出相关的源程序和检测程序：</pre>
+<pre>
+	(1)<a href="../pro/13_1.asm">13_1.asm	</a>	<a href="../pro/13_1jc.asm">13_1jc.asm</a>
+	(2)<a href="../pro/13_2.asm">13_2.asm</a>		<a href="../pro/13_2jc.asm">13_2jc.asm</a>
+	(3)<a href="../pro/13_3.asm">13_3.asm	</a>	
+
+
+<font color="#3366FF"><b>附录：<a href="../fl/fl5.htm">BIOS和DOS中断大全</a></b></font>
+	</pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

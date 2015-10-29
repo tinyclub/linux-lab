@@ -1,0 +1,41 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验十四		访问CMOS RAM
+</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验十四		访问CMOS RAM
+</b></font></pre>
+<pre>
+
+答：</pre>
+<pre>分析：</pre>
+<pre>	这里涉及到：
+	</pre>
+<pre>	1，端口的访问，而CMOS有多个存储单元，所以又涉及到如何访问多个存储单元，也许我们很快会循环结构，但是这些单元地址并没有太多的规律，</pre>
+<pre>那么我们怎么办？应该可以很快的想到上一实验最后一个程序中用到的“表格法”。
+	</pre>
+<pre>	2，把读出的BCD码转换成ASCII码值。</pre>
+<pre>实现：</pre>
+<pre>	下面我们把考虑上述问题后得到的源程序给出：</pre>
+<pre>
+  	程序见：<a href="../pro/14.asm">14.asm</a></pre>
+<pre>
+
+</pre>
+<pre>
+【注：
+	一，在保护模式下，有些端口不能直接访问
+
+	二，考虑到后面的课程设计二，这里我增加了两个功能：
+	1，动态的显示系统当前时间，只是加了一个循环读取的过程。
+	2，按下ESC退出显示，回到dos
+
+	三，提前警示：在这以后的一些实验都与后面的课程设计二有很大的关联，请仔细认真的对待这些实验
+
+ 】</pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

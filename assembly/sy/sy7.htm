@@ -1,0 +1,60 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验七   寻址方式在结构化数据访问中的应用</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验七   寻址方式在结构化数据访问中的应用</b></font>
+
+
+答：
+
+分析：</pre>
+
+<pre>	根据题目要求：要进行的操作只有两种：</pre>
+<pre>	第一：进行一个除法操作，用到div指令，书中156页有详细的介绍。</pre>
+<pre>	第二：对数据进行重排，即要求把按项目格式排列的数据转换成按表格格式排列。实际上只要进行一次循环操作即可，循环体内进行表格中一行数据的</pre>
+<pre>操作。通过循环21次实现。具体流程如下：
+	</pre>
+<pre>	1，初始化操作：</pre>
+<pre>	1)取得data段和table的段的起始地址，分别用ds：si和es：di指向</pre>
+<pre>	2)初始化cx的值为21，也就是循环次数为21</pre>
+<pre>	3)引入bx，控制si的增量保持为4（当然也可以控制si的增量保持为2）。原因：雇员和人均收入记录中的每个数据项长度是2，而其它每个数据项的</pre>
+<pre>长度均为4，为了能在一个循环中进行操作，必须使得他们的增量保持一致</pre>
+<pre>	4)入口地址：标号next：</pre>
+<pre>	</pre>
+<pre>	2，循环体</pre>
+<pre>	1)移动年份数据</pre>
+<pre>	2)移动总收入数据</pre>
+<pre>	3)sub si,bx</pre>
+<pre>	4)移动雇员数据</pre>
+<pre>	5)进行除法操作求出人均收入，并移动人均收入</pre>
+<pre>	</pre>
+<pre>	3，参数修改</pre>
+<pre>	1)si增加4,用si指向每个数据项</pre>
+<pre>	2)di增加16，用di指向每行</pre>
+<pre>	3)bx增加2，与sub si,bx配合控制雇员和人均收入两个数据在data段中的位置</pre>
+<pre>　</pre>
+<pre>	4，循环控制</pre>
+<pre>	loop next</pre>
+<pre>　</pre>
+<pre>	5，程序返回</pre>
+<pre>	mov ah,4ch
+	int 21h</pre>
+<pre>实现：</pre>
+<pre>	在具体编辑源代码的时候，还要对上述流程进行细化！请自己进行相关操作。</pre>
+<pre>
+     	程序见：<a href="../pro/7.asm">7.asm</a></pre>
+<pre>
+　</pre>
+<pre>
+</pre>
+<pre>【注：这里主要涉及两点：第一，寻址方式的灵活运用；第二，如何比较灵活的修改循环中的参数，自己要在实践中不断体会。】</pre>
+<pre>
+</pre>
+<pre>
+<font color="#3366FF"><b>附录：<a href="../fl/fl3.htm">寻址方式总结</a></b></font></pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

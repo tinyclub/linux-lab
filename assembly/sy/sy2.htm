@@ -1,0 +1,46 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验二	debug的使用</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<PRE><b><font size="5" color="#3366FF">实验二	debug的使用</font></b>
+
+
+
+
+
+(1)答：</PRE>
+
+<PRE>	直接用debug中的指令查看各个寄存器中数据的变化即可</PRE>
+
+<PRE>
+ [注：执行push指令和pop的指令时，相关寄存器中数据的变化，具体见栈的的综述p64]</PRE>
+
+<PRE>
+(2)答：</PRE>
+
+<PRE>	这里实际上涉及到后面的中断知识（P238的单步中断）</PRE>
+
+<PRE>
+	当然，我们可以直接从这里得到如下启示：</PRE>
+
+<PRE>
+	1）在执行查看命令d  2000:0000之前,我们使用了t命令，但是我们刚执行过的几行程序并没有直接对2000：0000这段内存空间进行操作，可见2000：0000这</PRE>
+
+<PRE>里内容的改变肯定是由t命令的执行引起的。</PRE>
+
+<PRE>
+	2）可是t命令执行后进行了什么操作呢？又因为我们刚才执行了初始化ss的工作，刚好使得栈段的起始地址为2000：0000，那么由此不难想到系统可能进行了</PRE>
+
+<PRE>相关的压栈操作，仔细一看可以发现cs，ip等的内容都进了栈。
+
+</PRE>
+
+<PRE>　</PRE>
+
+<div align="left">
+  <PRE><b><font color="#3366FF"><strong>附录：</strong><a href="../fl/fl1.htm">debug指令详解</a> 
+</font><font color="#FF00FF">	</font></b><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

@@ -1,0 +1,36 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验八   分析一个奇怪的程序</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验八   分析一个奇怪的程序</b></font>
+
+</pre>
+
+<pre>答：</pre>
+<pre>	我们对着源程序一行一行的运行：</pre>
+<pre>
+	1，首先我们通过“end start”找到程序的入口start，接着进行两个空操作</pre>
+<pre>	2，接着我们发现&quot;mov di,offset s&quot;和&quot;mov si,offset s2&quot;把s和s2中的偏移地址分别存放入了寄存器di和si</pre>
+<pre>	3，之后，&quot;mov ax,cs:[si]&quot;和&quot;mov cs:[di],ax&quot;，这里结合2，不难发现它们实现：把标号s2后的两个字节复制到了标号s后的两个字节处，也就</pre>
+<pre>是把标后s后的两个空操作覆盖了，而复制的内容是什么呢？</pre>
+<pre>	是“jmp short s1”的机器码。</pre>
+<pre>	现在，我们得分析这些机器码是什么呢？</pre>
+<pre>	由于“jmp short s1”是通过转移位移实现跳转（具体见本章），那么我们先找到这个转移位移是多少？</pre>
+<pre>	可以这样表示“offset s1-（offset s2+2）”，经过计算，刚好是10个字节，并且该位移为负数。如果我们学了《微机原理》，那么现在就可以</pre>
+<pre>把它翻译成机器码，当然没有学也不要紧张。我们已经知道了它的功能是：“跳到它的末尾之前的10个字节处”。现在让我们回到下一行将要执行的语句。</pre>
+<pre>	4，在执行完3以后，将执行“jmp short s”,这样程序就转到s处执行</pre>
+<pre>	5，通过对3的分析后，我们发现标号s处的命令是“jmp short s1”的机器码，根据它的功能，我们数到它的末尾之前的10个字节处，发现那里刚好</pre>
+<pre>是&quot;mov ax,4c00h&quot;，现在我们就可以知道这个奇怪的程序是怎么奇怪的正确返回的拉，因为现在它可以执行返回语句拉。</pre>
+<pre>　</pre>
+<pre>
+</pre>
+<pre>【注：</pre>
+<pre>这里的关键是3，也就是跳转指令的工作机制，详细情况请看书中164页的“依据位移进行转移的jmp指令”，如果有兴趣可以看一下《微机原理》中关于</pre>
+<pre>汇编指令和机器码之间的转换问题</pre>
+<pre>】 </pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

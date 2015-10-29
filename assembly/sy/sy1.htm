@@ -1,0 +1,68 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验一	debug的使用</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<PRE><b><font size="5" color="#3366FF">实验一	debug的使用</font></b>
+
+
+</PRE>
+<PRE><b><font color="#333333">(1)</font></b><b><font color="#333333">答：</font></b></PRE>
+<PRE><b><font color="#333333">	</font></b>仅举第一行:</PRE>
+<PRE>
+	机器码		汇编指令
+	b8 20 4e 	   mov ax,4e20h
+答：</PRE>
+<PRE>	1）进入debug，在写入机器码和汇编指令之前，先用r命令查看cpu中各个寄存器（可能回发生变化的寄存器）的情况如下
+     	AX=0000    	CS=13c3		IP=0100</PRE>
+<PRE>
+    	2)用E命令写入机器码，格式如：E 13c3:0100 b8 20 4e</PRE>
+<PRE>
+      	或用A命令写入汇编指令，格式如：A 13c3:0100 mov ax,4e20 [注：这里不能用mov ax,4e20h;debug中默认数据为十六进制]</PRE>
+<PRE>
+    	3<font color="#000000">)用</font>t命令单步运行，之后可以看到变化：AX=4E20   IP=0103</PRE>
+<PRE>　</PRE>
+<PRE>[注：由此可见我们可以用debug中的t命令单步跟踪程序，通过观察其中各个寄存器的变化而发现程序中可能存在的逻辑错误]
+</PRE>
+<PRE><b><font color="#000000">(2)</font></b>答：</PRE>
+<PRE>	进入debug后，首先把这三行指令按如下格式在debug中输入：</PRE>
+<PRE>
+	a 2000:0
+	2000:0000   mov ax,1
+	2000:0003   add ax,ax
+	2000:0005   jmp 2000:0003</PRE>
+<PRE>
+	然后修改其中cs：ip，使之指向我们程序（代码段）的入口2000：0000，这里可以用r命令实现，具体实现如下：
+	r cs
+	CS 13c3
+	:2000
+	r ip
+	IP 0100
+	:0000</PRE>
+<PRE>
+	之后可以通过控制jmp  2000：0003的执行次数实现求2的8次方，具体可以让jmp 2000:0003执行8次。</PRE>
+<PRE>
+[实际上，这里是死循环，只是在debug中可以通过逐条执行的机制控制程序的随时终止；在后面我们可以通过寄存器cx和loop指令对循环进行控制，具体见</PRE>
+<PRE>第五章]
+</PRE>
+<PRE><b><font color="#000000">(3)</font></b><b><font color="#000000">答：</font></b></PRE>
+<PRE><b><font color="#000000">	</font></b>这里直接用d命令进行查看，具体格式：d FFFF:0000</PRE>
+<PRE>
+	之后可以在屏幕右侧看，类似08/06/04之类的时间信息即为生产日期，可以用a命令试图修改，并用d命令查看修改是否成功，实际上是不能修改的，因为ROM</PRE>
+<PRE>	是只读存储器，不能直接修改。
+</PRE>
+<PRE><b><font color="#000000">(4)</font></b><b><font color="#000000">答：</font></b></PRE>
+<PRE><b><font color="#000000">	</font></b>输入书中给出的程序后，可以在屏幕上看到不同色彩的奇怪字符，原因是这样子的：</PRE>
+<PRE>
+	b800:0000开始的一段内存空间是8086pc机显存地址空间，往其中填写不同的数据时，可以在屏幕上显示不同的内容，具体见175页的实验9“根据材料编程”</PRE>
+<PRE>	，里面介绍了一些屏幕操作的知识。
+</PRE>
+<div align="left">
+  <PRE><b><font color="#3366FF"><strong>附录1：</strong><a href="../fl/fl1.htm">debug指令详解 </a>
+<strong>附录2：</strong><a href="../fl/fl2.htm">dos命令大全</a>	</font><font color="#FF00FF">	</font></b></pre>
+</div>
+<div align="center">
+  <center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center>
+</div>

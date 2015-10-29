@@ -1,0 +1,52 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>课程设计一</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>课程设计一</b></font>
+
+
+
+答：</pre>
+<pre>分析：</pre>
+<pre>	这是到现在为止的一个比较大的程序，我们应该仔细的分析和讨论之，实际上涉及到的要解决的问题，前面的三个子程序已经完全可以解决拉。现在我们</pre>
+<pre>	具体的分析一下：</pre>
+<pre>
+	题目要求我们显示实验7中的数据，仔细分析，除了“年份”可以直接输出到显存中显示外，后面的相关数据都要用到，我们设计的第三个子程序，</pre>
+<pre>即先把数据转换成字符，然后显示；此外也同样需要进行求人均收入的操作，而这在实验七中已经解决，所以，我们可以直接给出设计的流程拉：</pre>
+<pre>
+	1)取得数据段的入口地址ds:si（这里我们先在数据段的开头开辟一段空间存放子程序dtoc需要转换过后的字符）</pre>
+<pre>
+	2)初始化cx为21,之后可以初始化颜色属性</pre>
+<pre>
+	3)先把“年份”数据移动到上面定义的一段专用空间，调用show_str显示之</pre>
+<pre>
+	4)先把总收入数据转换成字符，之后存放到上面定义的一段专用空间中，然后调用show_str显示之</pre>
+<pre>
+	5)对雇员数据进行与4)类似的操作</pre>
+<pre>
+	6)先求出人均输入，之后进行与4)类似的操作</pre>
+<pre>
+	7)参数修改与循环控制，cx减一，判断cx是否为零，如果为零，返回3)否则结束</pre>
+<pre>实现：</pre>
+<pre>
+	具体的细化流程请自己完成，下面给出源程序：
+	</pre>
+<pre>	程序见：<a href="../pro/kcsj1.asm">kcsj1.asm</a>
+</pre>
+<pre>
+【注意：</pre>
+<pre>1,其实这里的整体框架与实验七几乎是相同的，只是多了一些操作而已，请自己仔细分析之</pre>
+<pre>
+2,请仔细分析加“***”的地方，看是否有更好的办法解决寄存器的冲突问题,这是一个相当棘手的问题，所以要非常的注意，就因为这个问题我在调试的过程</pre>
+<pre>中出现了一些很郁闷的事情。这里是我经过调整后的源代码<a href="../pro/kcsj12.asm">kcsj12.asm</a>，经过的主要调整有：为了缓解寄存器dh的冲突，我用约定存储单元的方法解决；对于</pre>
+<pre>si的冲突，我用di进行替代，从而也解决了冲突，当然这里也可以采取类似的办法，在以后的汇编语言程序设计中，千万要注意寄存器的冲突问题。</pre>
+<pre>】</pre>
+<div align="left">
+  <PRE>　</pre>
+</div>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

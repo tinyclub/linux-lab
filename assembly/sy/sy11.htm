@@ -1,0 +1,50 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验十一  编写子程序</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验十一  编写子程序</b></font>
+
+</pre>
+<pre>
+答：</pre>
+<pre>分析：</pre>
+<pre>	题目要求编写一个子程序，将包含任意字符，以0结尾的字符串中的小写字母转变成大写字母，那么我们我们需要处理的无非有两点：
+	</pre>
+<pre>	1)从这个字符串中找出小写字母：可以通过条件判断指令根据小写字母的取值范围确定
+	</pre>
+<pre>	2)然后把这些小写字母转变成大写字母，而这在前面的章节中已经很明确的知道了：只需要把小写字母的第五位置0就可以
+</pre>
+<pre>实现：</pre>
+<pre>	下面我们直接给出设计的源程序：
+	</pre>
+<pre>	程序见<a href="../pro/11.asm">11.asm</a>
+</pre>
+<pre>
+【注：</pre>
+<pre>熟悉掌握条件判断指令以及相关的标志寄存器处理操作非常重要：
+</pre>
+<pre>1，比如我们可以通过test指令结合跳转指令判断某个数（二进制形式）的第一位是否为1来判断它是否为偶数，如果为1，那么不是偶数
+   test al,00000001b		;test指令详细使用规则请见其他的参数资料
+   jz  iseven
+   ……
+</pre>
+<pre>2，可以通过比较指令cmp，结合跳转指令限定某些数的范围,例如下面的程序段可以控制输入的数的范围为0～9
+   again:
+         mov ah,1		;注：这里al中将得到的是字符的ACSII码值，所以下面判断的时候要加30h
+	 int 21h 
+
+         cmp al,0+30h          
+         jb again
+	 cmp al,9+30h
+	 ja again
+	 ……
+</pre>
+<pre>当然还有更多的广泛的用途，请大家自己在学习的过程中不断总结。
+】
+</pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

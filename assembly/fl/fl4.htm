@@ -1,0 +1,200 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+<title>80868088汇编语言指令集</title>
+</head>
+
+<body background="../index.files/back_bluh.jpg">
+
+<p><font size="5" color="#3366FF"><b>80868088汇编语言指令集</b></font><br>
+<br>
+　</p>
+<p>一、数据传输指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; 它们在存贮器和寄存器、寄存器和输入输出端口之间传送数据. <br>
+&nbsp; &nbsp; 1. 通用数据传送指令. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; MOV&nbsp; &nbsp; 传送字或字节. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; MOVSX&nbsp; 先符号扩展,再传送. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; MOVZX&nbsp; 先零扩展,再传送. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PUSH&nbsp; &nbsp; 把字压入堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; POP&nbsp; &nbsp; 把字弹出堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PUSHA&nbsp; 把AX,CX,DX,BX,SP,BP,SI,DI依次压入堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; POPA&nbsp; &nbsp; 把DI,SI,BP,SP,BX,DX,CX,AX依次弹出堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PUSHAD&nbsp; 把EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI依次压入堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; POPAD&nbsp; 把EDI,ESI,EBP,ESP,EBX,EDX,ECX,EAX依次弹出堆栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; BSWAP&nbsp; 交换32位寄存器里字节的顺序 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; XCHG&nbsp; &nbsp; 交换字或字节.( 至少有一个操作数为寄存器,段寄存器不可作为操作数) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CMPXCHG 比较并交换操作数.( 第二个操作数必须为累加器AL/AX/EAX ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; XADD&nbsp; &nbsp; 先交换再累加.( 结果在第一个操作数里 ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; XLAT&nbsp; &nbsp; 字节查表转换. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ── BX 指向一张 256 字节的表的起点, AL 为表的索引值 (0-255,即 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0-FFH); 返回 AL 为查表结果. ( [BX+AL]-&gt;AL ) <br>
+&nbsp; &nbsp; 2. 输入输出端口传送指令. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; IN&nbsp; &nbsp; &nbsp; I/O端口输入. ( 语法: IN 累加器, {端口号│DX} ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; OUT&nbsp; &nbsp; I/O端口输出. ( 语法: OUT {端口号│DX},累加器 ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 输入输出端口由立即方式指定时, 其范围是 0-255; 由寄存器 DX 指定时, <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 其范围是 0-65535. <br>
+&nbsp; &nbsp; 3. 目的地址传送指令. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LEA&nbsp; &nbsp; 装入有效地址. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LEA DX,string&nbsp; ;把偏移地址存到DX. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LDS&nbsp; &nbsp; 传送目标指针,把指针内容装入DS. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LDS SI,string&nbsp; ;把段地址:偏移地址存到DS:SI. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LES&nbsp; &nbsp; 传送目标指针,把指针内容装入ES. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LES DI,string&nbsp; ;把段地址:偏移地址存到ES:DI. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LFS&nbsp; &nbsp; 传送目标指针,把指针内容装入FS. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LFS DI,string&nbsp; ;把段地址:偏移地址存到FS:DI. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LGS&nbsp; &nbsp; 传送目标指针,把指针内容装入GS. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LGS DI,string&nbsp; ;把段地址:偏移地址存到GS:DI. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LSS&nbsp; &nbsp; 传送目标指针,把指针内容装入SS. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 例: LSS DI,string&nbsp; ;把段地址:偏移地址存到SS:DI. <br>
+&nbsp; &nbsp; 4. 标志传送指令. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LAHF&nbsp; &nbsp; 标志寄存器传送,把标志装入AH. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SAHF&nbsp; &nbsp; 标志寄存器传送,把AH内容装入标志寄存器. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PUSHF&nbsp; 标志入栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; POPF&nbsp; &nbsp; 标志出栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PUSHD&nbsp; 32位标志入栈. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; POPD&nbsp; &nbsp; 32位标志出栈. <br>
+<br>
+二、算术运算指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; &nbsp; &nbsp; 　　ADD&nbsp; &nbsp; 加法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ADC&nbsp; &nbsp; 带进位加法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; INC&nbsp; &nbsp; 加 1. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; AAA&nbsp; &nbsp; 加法的ASCII码调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; DAA&nbsp; &nbsp; 加法的十进制调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SUB&nbsp; &nbsp; 减法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SBB&nbsp; &nbsp; 带借位减法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; DEC&nbsp; &nbsp; 减 1. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; NEC&nbsp; &nbsp; 求反(以 0 减之). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CMP&nbsp; &nbsp; 比较.(两操作数作减法,仅修改标志位,不回送结果). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; AAS&nbsp; &nbsp; 减法的ASCII码调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; DAS&nbsp; &nbsp; 减法的十进制调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; MUL&nbsp; &nbsp; 无符号乘法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; IMUL&nbsp; &nbsp; 整数乘法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 以上两条,结果回送AH和AL(字节运算),或DX和AX(字运算), <br>
+&nbsp; &nbsp; &nbsp; &nbsp; AAM&nbsp; &nbsp; 乘法的ASCII码调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; DIV&nbsp; &nbsp; 无符号除法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; IDIV&nbsp; &nbsp; 整数除法. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 以上两条,结果回送: <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 商回送AL,余数回送AH, (字节运算); <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 或&nbsp; 商回送AX,余数回送DX, (字运算). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; AAD&nbsp; &nbsp; 除法的ASCII码调整. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CBW&nbsp; &nbsp; 字节转换为字. (把AL中字节的符号扩展到AH中去) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CWD&nbsp; &nbsp; 字转换为双字. (把AX中的字的符号扩展到DX中去) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CWDE&nbsp; &nbsp; 字转换为双字. (把AX中的字符号扩展到EAX中去) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CDQ&nbsp; &nbsp; 双字扩展.&nbsp; &nbsp; (把EAX中的字的符号扩展到EDX中去) <br>
+<br>
+三、逻辑运算指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; &nbsp; &nbsp; 　　AND&nbsp; &nbsp; 与运算. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; OR&nbsp; &nbsp; &nbsp; 或运算. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; XOR&nbsp; &nbsp; 异或运算. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; NOT&nbsp; &nbsp; 取反. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; TEST&nbsp; &nbsp; 测试.(两操作数作与运算,仅修改标志位,不回送结果). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SHL&nbsp; &nbsp; 逻辑左移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SAL&nbsp; &nbsp; 算术左移.(=SHL) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SHR&nbsp; &nbsp; 逻辑右移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SAR&nbsp; &nbsp; 算术右移.(=SHR) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ROL&nbsp; &nbsp; 循环左移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ROR&nbsp; &nbsp; 循环右移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; RCL&nbsp; &nbsp; 通过进位的循环左移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; RCR&nbsp; &nbsp; 通过进位的循环右移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 以上八种移位指令,其移位次数可达255次. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 移位一次时, 可直接用操作码.&nbsp; 如 SHL AX,1. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 移位&gt;1次时, 则由寄存器CL给出移位次数. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 如&nbsp; MOV CL,04 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; SHL AX,CL <br>
+<br>
+四、串指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 　DS:SI&nbsp; 源串段寄存器&nbsp; :源串变址. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ES:DI&nbsp; 目标串段寄存器:目标串变址. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CX&nbsp; &nbsp; &nbsp; 重复次数计数器. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AL/AX&nbsp; 扫描值. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D标志&nbsp; 0表示重复操作中SI和DI应自动增量; 1表示应自动减量. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Z标志&nbsp; 用来控制扫描或比较操作的结束. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; MOVS&nbsp; &nbsp; 串传送. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( MOVSB&nbsp; 传送字符.&nbsp; &nbsp; MOVSW&nbsp; 传送字.&nbsp; &nbsp; MOVSD&nbsp; 传送双字. ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CMPS&nbsp; &nbsp; 串比较. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( CMPSB&nbsp; 比较字符.&nbsp; &nbsp; CMPSW&nbsp; 比较字. ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SCAS&nbsp; &nbsp; 串扫描. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 把AL或AX的内容与目标串作比较,比较结果反映在标志位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LODS&nbsp; &nbsp; 装入串. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 把源串中的元素(字或字节)逐一装入AL或AX中. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( LODSB&nbsp; 传送字符.&nbsp; &nbsp; LODSW&nbsp; 传送字.&nbsp; &nbsp; LODSD&nbsp; 传送双字. ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; STOS&nbsp; &nbsp; 保存串. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 是LODS的逆过程. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; REP&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 当CX/ECX&lt;&gt;0时重复. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; REPE/REPZ&nbsp; &nbsp; &nbsp; 当ZF=1或比较结果相等,且CX/ECX&lt;&gt;0时重复. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; REPNE/REPNZ&nbsp; &nbsp; 当ZF=0或比较结果不相等,且CX/ECX&lt;&gt;0时重复. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; REPC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 当CF=1且CX/ECX&lt;&gt;0时重复. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; REPNC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 当CF=0且CX/ECX&lt;&gt;0时重复. <br>
+<br>
+五、程序转移指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; 　1&gt;无条件转移指令 (长转移) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JMP&nbsp; &nbsp; 无条件转移指令 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CALL&nbsp; &nbsp; 过程调用 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; RET/RETF过程返回. <br>
+&nbsp; &nbsp; 2&gt;条件转移指令 (短转移,-128到+127的距离内) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ( 当且仅当(SF XOR OF)=1时,OP1&lt;OP2 ) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JA/JNBE 不小于或不等于时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JAE/JNB 大于或等于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JB/JNAE 小于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JBE/JNA 小于或等于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 以上四条,测试无符号整数运算的结果(标志C和Z). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JG/JNLE 大于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JGE/JNL 大于或等于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JL/JNGE 小于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JLE/JNG 小于或等于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 以上四条,测试带符号整数运算的结果(标志S,O和Z). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JE/JZ&nbsp; 等于转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JNE/JNZ 不等于时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JC&nbsp; &nbsp; &nbsp; 有进位时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JNC&nbsp; &nbsp; 无进位时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JNO&nbsp; &nbsp; 不溢出时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JNP/JPO 奇偶性为奇数时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JNS&nbsp; &nbsp; 符号位为 &quot;0&quot; 时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JO&nbsp; &nbsp; &nbsp; 溢出转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JP/JPE&nbsp; 奇偶性为偶数时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JS&nbsp; &nbsp; &nbsp; 符号位为 &quot;1&quot; 时转移. <br>
+&nbsp; &nbsp; 3&gt;循环控制指令(短转移) <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LOOP&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CX不为零时循环. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LOOPE/LOOPZ&nbsp; &nbsp; CX不为零且标志Z=1时循环. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LOOPNE/LOOPNZ&nbsp; CX不为零且标志Z=0时循环. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JCXZ&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CX为零时转移. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; JECXZ&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ECX为零时转移. <br>
+&nbsp; &nbsp; 4&gt;中断指令 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; INT&nbsp; &nbsp; 中断指令 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; INTO&nbsp; &nbsp; 溢出中断 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; IRET&nbsp; &nbsp; 中断返回 <br>
+&nbsp; &nbsp; 5&gt;处理器控制指令 <br>
+&nbsp; &nbsp; &nbsp; &nbsp; HLT&nbsp; &nbsp; 处理器暂停, 直到出现中断或复位信号才继续. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; WAIT&nbsp; &nbsp; 当芯片引线TEST为高电平时使CPU进入等待状态. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ESC&nbsp; &nbsp; 转换到外处理器. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; LOCK&nbsp; &nbsp; 封锁总线. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; NOP&nbsp; &nbsp; 空操作. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; STC&nbsp; &nbsp; 置进位标志位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CLC&nbsp; &nbsp; 清进位标志位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CMC&nbsp; &nbsp; 进位标志取反. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; STD&nbsp; &nbsp; 置方向标志位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CLD&nbsp; &nbsp; 清方向标志位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; STI&nbsp; &nbsp; 置中断允许位. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; CLI&nbsp; &nbsp; 清中断允许位. <br>
+<br>
+六、伪指令 <br>
+─────────────────────────────────────── <br>
+&nbsp; &nbsp; &nbsp; &nbsp; 　　DW&nbsp; &nbsp; &nbsp; 定义字(2字节). <br>
+&nbsp; &nbsp; &nbsp; &nbsp; PROC&nbsp; &nbsp; 定义过程. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ENDP&nbsp; &nbsp; 过程结束. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; SEGMENT 定义段. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ASSUME&nbsp; 建立段寄存器寻址. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; ENDS&nbsp; &nbsp; 段结束. <br>
+&nbsp; &nbsp; &nbsp; &nbsp; END&nbsp; &nbsp; 程序结束.
+</p>
+<p>　</p>
+<p>注：信息来自“加密与解密-看雪学院”<br>
+</p>     
+<center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></body></html>

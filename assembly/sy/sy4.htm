@@ -1,0 +1,52 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验四      [bx]和loop的使用</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#6666FF"><b>实验四      [bx]和loop的使用</b></font>
+
+
+</pre>
+<pre>
+(1)答：</pre>
+<pre>	如果用mov指令一个一个的传送，那将是非常要命的，浪费时间又浪费经历，还好，我们在程序编写时不光有候顺序结构，还有循环结构。为实现循环</pre>
+<pre>结构，汇编语言中提供了loop指令。所以我还是直接进入第二题吧！
+</pre>
+<pre>(2)答：</pre>
+<pre>
+分析：</pre>
+<pre>	在对数据进行操作时，我们第一要知道数据存放的地址，第二要知道对多少数据进行操作。而通过[bx]用寄存器间接寻址可以得到数据存放的地址，cx</pre>
+<pre>	可以存放数据的量，再结合loop指令，那么我们可以通过循环对一系列有规律的数据进行循环操作拉！下面进入具体的题目：</pre>
+<pre>实现：
+   	这里，我们可以先取得数据存放的起始地址0:200,用ds：bx指向；然后用cx存放数据的长度，即从0~63共64个数据，下面是具体的程序：</pre>
+<pre>
+     	见程序<a href="../pro/4_2.asm">4_2.asm</a>
+</pre>
+<pre>(3)答：</pre>
+<pre>	
+分析：</pre>
+<pre>	题目要求“把mov  ax,4c00h之前的指令复制到0：200处”，从这里我们可以得到:</pre>
+<pre>
+	1)数据要存放的起始地址是0：200，要复制的数据的起始地址是cs：0;</pre>
+<pre>
+	2)但是还不能直接得到要传送的数据长度，那么应该如何得知呢？</pre>
+<pre>
+	到目前为止，我们恐怕只能一个一个字节的算拉，可是这肯定不是我们所希望，所以我们可以用后面将要学到的offset指令（见p162），通过它我们可以得到</pre>
+<pre>标号的偏移属性。到这里我们就不难对数据进行操作拉：</pre>
+<pre>　</pre>
+<pre>实现：
+     	见程序<a href="../pro/4_3.asm">4_3.asm</a></pre>
+<pre>[注：执行完程序后可以通过debug跟踪执行结果，这里可用到，反汇编指令u命令看0：200处的程序是否是我们刚复制过去的程序。]
+     
+
+</pre>
+<pre>　</pre>
+<pre>
+[注：1,这里初步涉及到数据的寻址和程序设计的循环结构，要深入体会; 2,这里基本上是本书要我们自己第一次写汇编程序，希望在书写程序的时候，逐渐养</pre>
+<pre>成良好的编程风格，从而使自己在往后的学习和工作中更加顺利]
+</pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

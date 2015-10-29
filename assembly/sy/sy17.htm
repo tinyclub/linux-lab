@@ -1,0 +1,34 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title></title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验十七		磁盘的读写</b></font>
+</pre>
+<pre>
+
+答：</pre>
+<pre>分析：</pre>
+<pre>	这里要求写一个新的int7c中断，实现通过逻辑扇区号对软盘进行读写
+    	</pre>
+<pre>	其实，在bios已经提供了int 13h功能的前提下：我们要做的工作无非有如下几点：
+	</pre>
+<pre>	1，把输入的功能号转换成bios提供的功能号
+	</pre>
+<pre>	2，把逻辑扇区号转换成面号：磁道号：扇区号
+	</pre>
+<pre>实现：</pre>
+<pre>	在此基础上即可编写出要求的中断例程和检测程序：
+	</pre>
+<pre>	程序见：<a href="../pro/17.asm">17.asm </a>        <a href="../pro/17jc.asm"> 17jc.asm</a></pre>
+<div align="left">
+  <PRE>　</pre>
+</div>
+<div align="left">
+  <PRE>　</pre>
+</div>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

@@ -1,0 +1,45 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<meta name="Microsoft Theme" content="none">
+<title>实验九	根据材料编程</title>
+</head>
+<body background="../index.files/back_bluh.jpg">
+
+<pre><font size="5" color="#3366FF"><b>实验九	根据材料编程</b></font>
+
+
+答：</pre>
+<pre>	先仔细看看材料，这是一个非常有意思的东西，现在我们可以对显示器进行操作拉！！^-^</pre>
+<pre>
+   	现在我们可以根据材料提供的内容很轻松的完成它的编程要求拉。</pre>
+<pre>
+
+分析：仔细阅读编程要求，我们不难发现，它无非是要求我们：在屏幕上显示字符串，具体涉及两点：</pre>
+<pre>
+      	1)在什么位置显示</pre>
+<pre>
+    	2)显示的字符串的属性是什么</pre>
+<pre>
+	而这两点材料都很清楚的给出，如果还没有明白，请再仔细看看材料。</pre>
+<pre>
+实现：</pre>
+<pre>	首先，我们根据材料找到屏幕中间的位置是：段地址：b800h  偏移地址：160*12+30*2
+      	以及绿色、绿底红色和白底蓝色的属性字节：02h、24h、71h</pre>
+<pre>
+   	然后我们先注意两点：</pre>
+<pre>
+	1)对屏幕操作，实际上是对显存缓冲区进行操作，与前面对内存的操作的一样的，要显示字符，我们只要往显存中写入字符数据就可以拉</pre>
+<pre>
+ 	2)在显存缓冲区中，偶地址存放字符，奇地址存放颜色属性</pre>
+<pre>
+  	 现在我们可以通过编程实现拉。</pre>
+<pre>
+  	 程序见：<a href="../pro/9_1.asm">9_1.asm</a>        <a href="../pro/9_2.asm">9_2.asm</a>     <a href="../pro/9_3.asm">9_3.asm</a>     </pre>
+<pre> 
+【注：这里只给出三种显示绿色字符串的源程序，这三种的主要区别是对要显示的字符串的长度的不同控制。其他两种情况只需改变属性字节就可以】
+
+
+<font color="#3366FF"><b>附录：<a href="../fl/fl4.htm">80868088汇编语言指令集</a></b></font></pre>
+<div align="left">
+  <PRE><center><b><a href="../"><font face="华文行楷" size="5" color="#3333FF">返回目录</font></a></b></center></pre>
+</div>

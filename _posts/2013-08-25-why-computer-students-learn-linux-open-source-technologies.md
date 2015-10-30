@@ -158,7 +158,7 @@ Mysql, PostgreSQL, SQLite?  我在上学的时候，这些东西就很火，这�
  [9]: http://www.linuxforu.com/2011/07/qemu-for-embedded-systems-development-part-2/
  [10]: https://github.com/tinyclub/linux-0.11-lab
  [11]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
- [12]: http://tinylab.org/books/assembly/
+ [12]: http://tinylab.org/assembly/
  [13]: http://www.cs.usfca.edu/~cruse/cs630f06/
  [14]: /cs630-qemu-lab/
  [15]: http://www.cs.usfca.edu/~cruse/

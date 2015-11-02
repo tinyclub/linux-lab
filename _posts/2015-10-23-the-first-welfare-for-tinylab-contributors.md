@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "华章和博文图书福利助力泰晓原创"
+title: "机械工业出版社图书福利助力泰晓原创"
 group: welfare
 permalink: /book-welfare-for-tinylab-contributors/
 description: "为了感谢原创、翻译作者的积极分享和交流，泰晓科技准备了一批书籍发送给大家"
@@ -9,7 +9,6 @@ category:
   - 泰晓福利
 tags:
   - Linux 设备驱动开发详解
-  - Android 开发艺术探索
 ---
 
 ## 简介
@@ -24,23 +23,16 @@ tags:
 
 为了感谢大家的热情参与，也为了吸引更多的工程师们、学生们加入和交流，进而促进大家通过这个平台一起成长，我们特别跟出版社合作，准备了一批书籍送给大家。
 
-这次选的书主要是围绕 Android / Linux，都是业界的前辈精心撰写的，特别推荐。
+这次选的书主要是围绕 Linux，是业界的前辈精心撰写的，特别推荐。
 
 ## 福利清单
 
 * 《Linux 设备驱动开发详解：基于最新的 Linux 4.0 内核》
-  * 简介：“历时 8 年，三次重构，内窖愈加炉火纯青。全部代码更新至全新的 Linux 4.0 版本。全面讲解 ARM Linux 新版本内核架构，如设备树等。不仅仅注重知识和程序的讲解，更注重程序的思想、演变、架构和算法。”
+  * 简介：“ 历时 8 年，三次重构，内窖愈加炉火纯青。全部代码更新至全新的 Linux 4.0 版本。全面讲解 ARM Linux 新版本内核架构，如设备树等。不仅仅注重知识和程序的讲解，更注重程序的思想、演变、架构和算法。”
   * 购买地址：[当当](http://product.dangdang.com/23759630.html)，[京东](http://item.jd.com/11752798.html)
   * 出版社：机械工业出版社华章分社
 
   <img src="/images/books/linux-device-driver-song-978-7-111-50789-5.jpg" title="《Linux 设备驱动开发详解》封面" width="300">
-
-* 《Android 开发艺术探索》
-  * 简介：本书是一本 Android 进阶类书籍，采用理论、源码和实践相结合的方式来阐述高水准的 Android 应用开发要点。本书从三个方面来组织内容。第一，介绍 Android 开发者不容易掌握的一些知识点；第二，结合 Android 源代码和应用层开发过程，融会贯通，介绍一些比较深入的知识点；第三，介绍一些核心技术和 Android 的性能优化思想。
-  * 购买地址：[当当](http://product.dangdang.com/23766472.html)，[京东](http://item.jd.com/1709011859.html)
-  * 出版社：电子工业出版社博文视点
-
-  <img src="/images/books/android-dev-art-ren-978-7-121-26939-4.jpg" title="《Android 开发艺术探索》封面" width="220">
 
 ## 贡献名单
 

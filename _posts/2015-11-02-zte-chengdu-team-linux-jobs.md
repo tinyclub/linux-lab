@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Wu Zhangjin'
+author: 'Xie Baoyou'
 title: "中兴微电子成都团队招聘 Linux 工程师"
 group: jobs
 permalink: /zte-chengdu-team-linux-jobs/
@@ -24,8 +24,8 @@ addrs:
 * 薪资：面议，有竞争力
 
 * 联系：
-  * 邮箱：
-  * 微信：
+  * 邮箱：scxby [AT] 163 [DOT] com
+  * 微博：[kernel-hacker](http://weibo.com/u/2472448382)
 
 ## 推荐
 

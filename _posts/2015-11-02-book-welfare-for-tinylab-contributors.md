@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "机械工业出版社图书福利助力泰晓原创"
+title: "《Linux 设备驱动开发详解》助力泰晓原创"
 group: welfare
 permalink: /book-welfare-for-tinylab-contributors/
 description: "为了感谢原创、翻译作者的积极分享和交流，泰晓科技准备了一批书籍发送给大家"

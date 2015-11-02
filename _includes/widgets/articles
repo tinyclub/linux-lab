@@ -62,6 +62,11 @@
      <a href="{{ BASE_PATH }}{{ site.JB.albums_path }}#{{ article.album | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看该专辑所有文章">{{ article.album }}</a>
     {% endif %}
 
+    {% if article.addrs %}
+     <i class="icon-fixed-width icon-at"></i> 
+     <a>{{ article.addrs }}</a>
+    {% endif %}
+
     </group>
 
   </header>

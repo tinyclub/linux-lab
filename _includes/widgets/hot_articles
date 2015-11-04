@@ -1,0 +1,32 @@
+<section>
+
+{% assign icon="eye" %}
+
+<div class="section_header">
+   <i onclick="common_click('#list-{{ icon }}')" class="icon-fixed-width icon-{{ icon }}"></i>
+   <a>热评文章</a>
+</div>
+
+<ul id="list-{{ icon }}">
+
+<!-- 多说热评文章 start -->
+        <div class="ds-top-threads" data-range="daily" data-num-items="5"></div>
+<!-- 多说热评文章 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+</ul>
+
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"tinylab"};
+        (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                /* ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; */
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//duoshuo-static.u.qiniudn.com/embed-20150727.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0] 
+                 || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+        </script>
+<!-- 多说公共JS代码 end -->
+
+</section>

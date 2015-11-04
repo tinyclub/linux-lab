@@ -23,6 +23,8 @@
     {% include widgets/sidebars %}
   {% endif %}
 
+  {% include widgets/hot_articles %}
+
 </div>
 <script type="text/javascript">
 $(document).ready(function() {

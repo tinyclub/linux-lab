@@ -25,6 +25,8 @@
 
   {% include widgets/hot_articles %}
 
+  {% include widgets/recent_comments %}
+
 </div>
 <script type="text/javascript">
 $(document).ready(function() {

@@ -15,6 +15,7 @@
   value: /projects/
   url: /projects/
   tooltip: true
+  disable: true
 
 - title: 开源书籍
   icon: book
@@ -24,6 +25,7 @@
   value: /books/
   url: /books/
   tooltip: true
+  disable: true
 
 - title: 友情链接
   icon: link

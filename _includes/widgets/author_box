@@ -5,7 +5,7 @@
 
 {% capture who %}{% if author_name == "admin" %}我们{% else %}作者{% endif %}{% endcapture %}
 
-<a class="author-box-header" onclick="common_click('#author-box-{{ author_box_id }}', '#author-box-icon-{{ author_box_id }}', 'heart-empty', 'heart')"><i id="author-box-icon-{{ author_box_id }}" class="icon-fixed-width icon-heart-empty"></i> 联系{{ who }}</a>
+<a class="author-box-header" onclick="common_click('#author-box-{{ author_box_id }}', '#author-box-icon-{{ author_box_id }}', 'heart-empty', 'heart')"><i id="author-box-icon-{{ author_box_id }}" class="icon-fixed-width icon-heart"></i> 联系{{ who }}</a>
 <div class="author-box" id="author-box-{{ author_box_id }}" {{ author_box_visible }}>
 
 {% assign author = site.data.people[author_name] %}

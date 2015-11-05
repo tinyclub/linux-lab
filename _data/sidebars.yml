@@ -1,6 +1,6 @@
 
 - title: 工作机会
-  icon: flag-empty
+  icon: flag
   data: jobs
   src: posts
   condition: group

@@ -3,7 +3,7 @@
 {% assign icon="eye" %}
 
 <div class="section_header">
-   <i onclick="common_click('#list-{{ icon }}')" class="icon-fixed-width icon-{{ icon }}"></i>
+   <i id="icon-{{ icon }}" onclick="common_click('#list-{{ icon }}', '#icon-{{ icon}}', '{{ icon }}', '{{ icon }}-off')" class="icon-fixed-width icon-{{ icon }}"></i>
    <a>热评文章</a>
 </div>
 

@@ -1,5 +1,5 @@
 <section id="toc_widget" style="display: none" class="active">
-<a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark-empty', 'bookmark')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark-empty" style="text-align: center"></i> 内容导航</a>
+<a id="toc_widget_header" onclick="common_click('#toc_widget_container', '#toc_widget_icon', 'bookmark', 'bookmark-empty')"><i id="toc_widget_icon" class="icon-fixed-width icon-bookmark" style="text-align: center"></i> 内容导航</a>
 <nav id="toc_widget_container" class="toc_widget_container hidden-print hidden-xs hidden-sm">
   <ul id="toc_widget_content" class="nav">
     <!-- code will be generated in toc.js -->

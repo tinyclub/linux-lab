@@ -23,8 +23,6 @@
     {% include widgets/sidebars %}
   {% endif %}
 
-  {% include widgets/hot_articles %}
-
   {% include widgets/recent_comments %}
 
 </div>

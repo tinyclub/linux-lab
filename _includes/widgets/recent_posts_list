@@ -7,6 +7,7 @@
 {% assign list = site.posts %}
 {% assign condition = nil %}
 {% assign items_limit = false %}
+{% assign new_icon_style=true %}
 
 {% for item in list %}
 {% if item.title and page.title and page.title == item.title %}

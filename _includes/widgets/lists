@@ -1,5 +1,9 @@
 <div class="section_header">
+   {% if new_icon_style == true %}
    <i id="icon-{{ icon }}" onclick="common_click('#list-{{ icon }}', '#icon-{{ icon}}', '{{ icon }}', '{{ icon }}-empty')" class="icon-fixed-width icon-{{ icon }}-empty"></i>
+   {% else %}
+   <i onclick="common_click('#list-{{ icon }}')" class="icon-fixed-width icon-{{ icon }}"></i>
+   {% endif %}
    <a {% if url %}href="{{ url }}"{% endif %} {% if prompt %}title="{{ prompt }}"{% endif %}>{{ title }}</a>
 </div>
 

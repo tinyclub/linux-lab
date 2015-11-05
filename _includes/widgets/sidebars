@@ -11,6 +11,11 @@
    {% assign condition = nil %}
    {% assign value = "" %}
    {% assign item_limits = nil %}
+   {% if sidebar.style == "new" %}
+   {% assign new_icon_style=true %}
+   {% else %}
+   {% assign new_icon_style=false %}
+   {% endif %}
 
    {% if site.data[sidebar.data] != nil %}
      {% assign list = site.data[sidebar.data] %}

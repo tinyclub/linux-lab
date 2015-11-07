@@ -110,7 +110,7 @@
 
     {% assign count = count | plus:'1' %}
 
-    {% assign mod = count | modulo: site.JB.author_box.max_oneline %}
+    {% assign mod = count | modulo: site.JB.author_box.max_perline %}
     {% if count > 1 and mod == 0 %}<br />{% endif %}
   {% endif %}
 {% endfor %}

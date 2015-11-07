@@ -59,7 +59,7 @@ JB :
   sidebar:
     items_limit: 5
   author_box:
-    max_oneline: 4
+    max_perline: 6
   article:
     categories_limit: 3
 

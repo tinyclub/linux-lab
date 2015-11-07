@@ -145,6 +145,7 @@
     - name: 开发板
       categories:
         - name: 树莓派
+        - name: pcDuino
     - name: 模拟器
       categories:
         - name: Qemu

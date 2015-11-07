@@ -1,6 +1,6 @@
 ---
 title: 'Android original-package 机制'
-author: will
+author: Li Jiawu
 layout: post
 permalink: /android-original-package-mechanism/
 tags:

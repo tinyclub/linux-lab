@@ -1,6 +1,6 @@
 ---
 title: 从开源到自我学习
-author: Youkee
+author: Yao Qi
 layout: post
 permalink: /from-open-source-to-learning/
 tags:
@@ -21,7 +21,7 @@ categories:
   - 开源社区
 ---
 
-> By Yao Qi of [TinyLab.org][1]
+> By Youkee of [TinyLab.org][1]
 > 2015/03/23
 
 

@@ -312,9 +312,13 @@ a:active {
 }
 
 #wrap,
-#top,
 #top-wrap-inner {
-    width: 920px;
+    width: 80%;
+    margin: 0 auto
+}
+
+#top {
+    width: 100%;
     margin: 0 auto
 }
 
@@ -1280,21 +1284,5 @@ short_prev_next {
     #comments,
     .pagination {
         display: none
-    }
-}
-
-@media (min-width: 1500px) {
-    body {
-      -moz-transform: scale(1.35);
-      -moz-transform-origin: center top 0;
-      zoom: 1.35
-    }
-}
-
-@media (min-width: 2500px) {
-    body {
-      -moz-transform: scale(2);
-      -moz-transform-origin: center top 0;
-      zoom: 2
     }
 }

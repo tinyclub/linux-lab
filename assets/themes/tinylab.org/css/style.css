@@ -233,9 +233,9 @@ body {
     font-family: 'Lucida Grande', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'WenQuanYi Micro Hei', sans-serif, 'SimSun', "宋体", 'Heiti', "黑体";
     font-size: 13.34px;
     *font-size: small;
-    -moz-transform: scale(1);
+    -moz-transform: scale(1.1);
     -moz-transform-origin: center top 0;
-    zoom: 1
+    zoom: 1.1
 }
 select,
 input,
@@ -313,7 +313,7 @@ a:active {
 
 #wrap,
 #top-wrap-inner {
-    width: 80%;
+    width: 75%;
     margin: 0 auto
 }
 

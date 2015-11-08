@@ -136,19 +136,18 @@ blockquote p {
 
     overflow: hidden
 }
-
-#weekly .quote {
-    text-indent: -1em;
-    color: #53575f
+div.weekly blockquote {
+    margin-left: 2.4em;
 }
-#weekly .comment {
-    text-indent:-1em;
-    color: #a6aaa9
+div.weekly blockquote p {
+    padding-left: 0;
+    color: #53575f;
 }
-#weekly .flag {
-    font-size:25px
+div.weekly p {
+    padding-left: 2em;
+    text-indent: 0;
+    color: #a6aaa9;
 }
-
 ins {
     background-color: #ff9;
     color: #000;

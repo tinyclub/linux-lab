@@ -1,33 +1,7 @@
 ---
 theme :
   name : tinylab.org
-layout: post
+layout: default
 ---
-
 {% include JB/setup %}
-
-<blockquote>
-<p>by {{ page.author }} of <a href="http://tinylab.org">TinyLab.org</a>
-{{ page.date | post.date | date: "%Y-%m-%d" }}
-</p>
-</blockquote>
-
-<ul id="weekly">
-{% for item in page.weekly %}
- <li>
-
-<p><a href="{{ item.link }}" target="_blank">{{ item.title }}</a></p>
-
-<p class="quote"><span class="flag">&quot;</span>
-{{ item.quote }}
-<span class="flag">&quot;</span></p>
-
-<p class="comment">{{ item.comment }}</p>
-<br/>
- </li>
-
-{% endfor %}
-</ul>
-
-<hr>
-<strong>泰晓周报</strong>，汇总一周技术趣闻与文章。
+{% include themes/tinylab.org/weekly.html %}

@@ -1,6 +1,8 @@
 ---
 title: 泰晓周报·11月 / 第一周 / 2015
 author: Chen Jie
+group: news
+album: 泰晓周报
 layout: post
 permalink: /weekly-11-1st-2015
 tags:

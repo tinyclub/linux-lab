@@ -1,6 +1,6 @@
 ---
 title: Linux 在谋求安全与统一
-author: Youkee
+author: Yao Qi
 layout: post
 group: translation
 permalink: /linux-seeks-security-and-unity-cn/
@@ -18,7 +18,7 @@ categories:
 
 > 原文：[Linux Seeks Security, Unity][1]
 > 作者：Rick Merritt
-> 译者：Youkee
+> 译者：Yao Qi
 
 ![Image][3]
 

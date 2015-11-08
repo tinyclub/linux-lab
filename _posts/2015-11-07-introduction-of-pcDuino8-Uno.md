@@ -128,10 +128,10 @@ pcDuino8 Uno 拿在手上，确实小巧，迫不及待地按照网上提供的�
 
 重要的事情说 3 遍，双十一期间，[LinkSprite 官方淘宝直营店][5]会针对 pcDuino8 Uno 推出很大的优惠活动，敬请关注。
 
- [1]: www.linksprite.com/?page_id=1477
- [2]: www.linksprite.com/image-for-pcduino8-uno/
- [3]: cnlearn.linksprite.com
- [4]: https://shop69294605.taobao.com/?spm=a230r.7195193.1997079397.297.MchY8F
- [5]: www.pcduino.org
+ [1]: http://www.linksprite.com/?page_id=1477
+ [2]: http://www.linksprite.com/image-for-pcduino8-uno/
+ [3]: http://cnlearn.linksprite.com
+ [4]: http://www.pcduino.org
+ [5]: https://shop69294605.taobao.com/?spm=a230r.7195193.1997079397.297.MchY8F
  [6]: http://TinyLab.org
  [7]: http://hiprocessing.net/

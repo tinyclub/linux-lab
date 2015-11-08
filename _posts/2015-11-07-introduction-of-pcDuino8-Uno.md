@@ -88,7 +88,7 @@ pcDuino8 Uno 采用全志的 H8 SoC，CPU 基于台积电最新领先的 28 纳�
 |---|---|---|
 |CPU|全志 H8 8-Core Cortex-A7 @ 2.0GHz|博通 BCM2836 4-Core ARM7 @900MHz|
 |GPU|Power VR SG544 @720MHz|Dual-Core Videocore IV@250MHz|
-|DRAM|	DDR3 1GB	DDR2 1GB|
+|DRAM|	DDR3 1GB|DDR2 1GB|
 |板上存储|microSD 卡|microSD 卡|
 |网络接口|10/100/1000 兆以太网|10/100 兆以太网|
 |操作系统|Ubuntu 14，Android|NOOBS,RASPBIAN,Ubuntu Mate, Windows 10 IOT,OSMC 等|

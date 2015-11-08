@@ -98,7 +98,7 @@ pcDuino8 Uno 采用全志的 H8 SoC，CPU 基于台积电最新领先的 28 纳�
 |音频输出|3.5mm 模拟音频接口|3.5mm 模拟音频接口|
 |红外接收|红外接收器接口（可安装）|无|
 |摄像头|MIPI 接口|CSI 接口|
-|USB|1 x USB Host, 1 x USB OTG	4xUSB host|
+|USB|1 x USB Host, 1 x USB OTG|4xUSB host|
 |电源供电|5V, 2000mA Micro USB|5V, 1000mA Micro USB|
 |尺寸|	92x54mm 86x56mm
 

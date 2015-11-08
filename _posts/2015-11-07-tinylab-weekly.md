@@ -107,3 +107,6 @@ All this kind of crap does is to make the code a unreadable mess with code that 
 
 ---
 泰晓周报，汇总一周技术趣闻与文章。
+
+
+ [1]: http://tinylab.org

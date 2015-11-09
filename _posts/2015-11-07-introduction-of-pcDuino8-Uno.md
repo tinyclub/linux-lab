@@ -80,7 +80,7 @@ pcDuino8 Uno 采用全志的 H8 SoC，CPU 基于台积电最新领先的 28 纳�
 
 ## pcDuino8 Uno 接口
 
-<img src="/images/boards/pcduino/pcduino8_uno_3.png" title="pcDuino8 Uno 接口" width="300">
+<img src="/images/boards/pcduino/pcduino8_uno_3.jpg" title="pcDuino8 Uno 接口" width="300">
 
 ## pcDuino8 Uno V.S. 树莓派2
 
@@ -104,14 +104,14 @@ pcDuino8 Uno 采用全志的 H8 SoC，CPU 基于台积电最新领先的 28 纳�
 
 ## 试用体验
 
-<img src="/images/boards/pcduino/pcduino8_uno_4.png" title="pcDuino8 Uno上手体验" width="300">
+<img src="/images/boards/pcduino/pcduino8_uno_4.jpg" title="pcDuino8 Uno上手体验" width="300">
 
 pcDuino8 Uno 拿在手上，确实小巧，迫不及待地按照网上提供的教程刷了 Ubuntu 14.04 系统。接上显示器，鼠标和键盘，上电启动，10 秒左右，进入系统桌面，这速度真是够可以的。再想想我现在快要淘汰的笔记本，开机速度接近两分钟，这一对比，心中都是泪啊。
 
 既然是 8 核，标称 2.0GHz 的处理器，恨不得将 8 个核全部跑满。于是用来编译 openCV、编译系统内核，完全当作一个编译服务器来用，这时觉得 1G DRAM 还真是不够用啊，编译开个 8 线程（是不是要疯啊），内存就扛不住了。后来装上了 VLC，转播视频流，当作一个视频服务器。再接着用 openCV 做各种图像和视频处理，比如视频监控、摄像头的人脸识别、运动检测等等。试用结果看，pcDuino8 Uno 的性能确实有着很大的优势，但问题来了，如何在程序中充分挖掘多核的性能呢！
 
-<img src="/images/boards/pcduino/pcduino8_uno_5.png" title="人脸识别" width="300">
-<img src="/images/boards/pcduino/pcduino8_uno_6.png" title="网络视频监控" width="300">
+<img src="/images/boards/pcduino/pcduino8_uno_5.jpg" title="人脸识别" width="300">
+<img src="/images/boards/pcduino/pcduino8_uno_6.jpg" title="网络视频监控" width="300">
 
 利用各种开源的项目，在 pcDuino8 Uno 上折腾，乐在其中！最近还想把 Lakka（开源的模拟游戏终端，是一种轻量级的 Linux 系统）移植到 pcDuino8 Uno 上，卡片电脑摇身一变成了游戏终端，这是要“造福”多少人类！有兴趣的童鞋，欢迎加入其中。
 

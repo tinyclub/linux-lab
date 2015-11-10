@@ -61,7 +61,7 @@ tags:
   * [pcDuino8 Uno 系统镜像下载地址][2] 提供了 Ubuntu 14.04 的系统镜像，烧录到 micro-SD 卡中即可
   * [LinkSprite官方直营店](https://item.taobao.com/item.htm?spm=a312a.7700824.w4002-10306272528.18.AoiCcY&id=524127271863)（淘宝）
   * pcDuino8 Uno 开发者群（微信），扫码加入，二维码于 17 号失效，失效后可经由本文作者（微信号：lzufalcon）邀请
-    <img src="/images/boards/nodemcu/nodemcu-weixin-group.jpg" title="pcDuino Developer Group" width="300">
+    <img src="/images/boards/pcduino/pcduino-weixin-group.jpg" title="pcDuino Developer Group" width="300">
 
 ### NodeMCU
   * [NodeMCU 产品简介][5]
@@ -76,7 +76,7 @@ tags:
     <img src="/images/boards/nodemcu/nodemcu-weixin-group.jpg" title="NodeMCU Developer Group" width="300">
 
 
- [1]: http://www.linksprite.com/?page_id=1477
+ [1]: http://tinylab.org/introduction-of-pcduino8-Uno/
  [2]: http://www.linksprite.com/image-for-pcduino8-uno/
  [3]: http://cnlearn.linksprite.com
  [4]: http://www.pcduino.org

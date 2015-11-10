@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "pcDuino8 和 nodeMCU 助力泰晓原创（半价优惠）"
+title: "pcDuino8 和 NodeMCU 助力泰晓原创（半价优惠）"
 group: welfare
 permalink: /board-welfare-for-tinylab-users/
 description: "为了感谢原创、翻译作者的积极分享和交流，泰晓科技准备了一批半价优惠的开源开发板：pcDuino8 Uno 和 NodeMCU 给大家。"
@@ -21,7 +21,7 @@ tags:
 这次双十一，又跟业界领先的 [LinkSprite](http://www.linksprite.com) 和 [深圳安信可科技](http://www.nodemcu.com) 公司合作，为大家带来了两款时下最火热的开源硬件：
 
 * pcDuino8 Uno：8 核嵌入式 Linux 开发板
-* nodeMCU：WIFI 物联网开发板。
+* NodeMCU：WIFI 物联网开发板。
 
 两款开发板，我们各准备了 **50** 套，在今年双十一当天（**今晚 00:00 开售**），均可 **半价** 购买，在其他时间，我们也会针对 **泰晓原创作者** 推出特别的优惠活动。欢迎踊跃 [投递原创稿件](http://tinylab.org/post/)。
 
@@ -37,8 +37,8 @@ tags:
 
     <img src="/images/boards/pcduino/pcduino8_uno.jpg" title="NodeMCU" width="300">
 
-### [nodeMCU](http://www.nodemcu.com)
-  * 简介：“nodeMCU，超简单的物联网开发平台，它是一款开源快速硬件原型平台，包括固件和开发板，用几行简单的 Lua 脚本就能开发物联网应用，关键还内置 WIFI 模块。”
+### [NodeMCU](http://www.nodemcu.com)
+  * 简介：“NodeMCU，超简单的物联网开发平台，它是一款开源快速硬件原型平台，包括固件和开发板，用几行简单的 Lua 脚本就能开发物联网应用，关键还内置 WIFI 模块。”
   * 商品原价：49￥
   * 泰晓福利价：**25￥**（2015 年双十一当天有效，仅适用如下购买地址）
   * 购买地址：[泰晓开源小店（微信）](http://weidian.com/?userid=335178200)
@@ -63,12 +63,12 @@ tags:
   * pcDuino8 Uno 开发者群（微信），扫码加入，二维码于 17 号失效，失效后可经由本文作者（微信号：lzufalcon）邀请
     <img src="/images/boards/nodemcu/nodemcu-weixin-group.jpg" title="pcDuino Developer Group" width="300">
 
-### nodeMCU
-  * [nodeMCU 产品简介][5]
-  * [nodeMCU 中文论坛][9]
-  * [nodeMCU 源码仓库][10]（Github）
-  * [nodeMCU 快速上手][6]（速成，Windows平台）
-  * [nodeMCU Development Workshop][7]（英文书籍），介绍到了 Windows 和 Linux 双平台
+### NodeMCU
+  * [NodeMCU 产品简介][5]
+  * [NodeMCU 中文论坛][9]
+  * [NodeMCU 源码仓库][10]（Github）
+  * [NodeMCU 快速上手][6]（速成，Windows平台）
+  * [NodeMCU Development Workshop][7]（英文书籍），介绍到了 Windows 和 Linux 双平台
   * [NodeMCU 的主要特点和优势是什么？][8]项目组成员亲自回答
   * [NodeMCU 快速上手（资源丰富）][11]，包括项目历史、相关网站、硬件介绍、上手流程、示例代码和相关进阶
   * [深圳安信可科技官方直营店](https://shop72165205.world.taobao.com/)（淘宝）

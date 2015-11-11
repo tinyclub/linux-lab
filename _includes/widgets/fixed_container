@@ -25,6 +25,12 @@
 
   {% include widgets/recent_comments %}
 
+  <section style="margin-left: 10px;">
+   <img src="/images/wechat/tinylab-weixin-group.jpg" title="TinyLab Wechat Group" width="168">
+   <br/><br/>
+   <p><strong>微信扫码</strong>加入<strong> 泰晓原创团队</strong></p>
+  </section>
+
 </div>
 <script type="text/javascript">
 $(document).ready(function() {

@@ -146,6 +146,7 @@
       categories:
         - name: 树莓派
         - name: pcDuino
+        - name: NodeMCU
     - name: 模拟器
       categories:
         - name: Qemu

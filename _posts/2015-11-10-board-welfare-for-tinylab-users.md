@@ -7,9 +7,12 @@ permalink: /board-welfare-for-tinylab-users/
 description: "为了感谢原创、翻译作者的积极分享和交流，泰晓科技准备了一批半价优惠的开源开发板：pcDuino8 Uno 和 NodeMCU 给大家。"
 category:
   - 泰晓福利
+  - pcDuino
+  - NodeMCU
 tags:
   - pcDuino8 Uno
-  - NodeMCU
+  - 物联网
+  - H8
 ---
 
 ## 简介
@@ -23,9 +26,15 @@ tags:
 * pcDuino8 Uno：8 核嵌入式 Linux 开发板
 * NodeMCU：WIFI 物联网开发板。
 
-两款开发板，我们各准备了 **50** 套，在今年双十一当天（**今晚 00:00 开售**），均可 **半价** 购买，在其他时间，我们也会针对 **泰晓原创作者** 推出特别的优惠活动。欢迎踊跃 [投递原创稿件](http://tinylab.org/post/)。
+两款开发板，我们各准备了 **50** 套，在今年双十一当天（**今晚 00:00 开售**），均可 **半价** 购买，在其他时间，我们也会针对 **泰晓原创作者** 推出特别的优惠活动。
 
 详细信息请看下文。
+
+## 参与原创
+
+欢迎踊跃 [投稿](http://tinylab.org/post/)，参与泰晓原创与分享。下面是 **泰晓原创团队** 的微信交流群，微信扫码可加入（失效后可经由本文作者微信 lzufalcon 邀请）。
+
+<img src="/images/wechat/tinylab-weixin-group.jpg" title="NodeMCU" width="300">
 
 ## 福利清单
 

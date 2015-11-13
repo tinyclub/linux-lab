@@ -4,7 +4,7 @@
   description: 为 Linux 添加的 Gc-Sections 支持，能够在编译时静态裁剪掉 10% 左右的 deadcode
 
 - title: Research and Practice on Preempt-RT Patch of Linux
-  permalink: http://www.docin.com/p-170582115.html
+  permalink: /wp-content/uploads/2015/11/linux-preempt-rt-research-and-practice.pdf
   description: 本文详解了 Linux 官方实时支持：Preempt-RT
 
 - title: Porting RT-preempt to Loongson2F

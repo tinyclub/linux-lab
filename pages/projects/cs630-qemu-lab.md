@@ -1,5 +1,5 @@
 ---
-title: 'CS630 Qemu 实验环境'
+title: 'CS630 Qemu 汇编实验环境'
 tagline: '通过 Qemu 学习旧金山大学的 CS630 汇编语言课程'
 author: Wu Zhangjin
 layout: page
@@ -24,11 +24,17 @@ tags:
 
 ## 代码仓库
 
-  * 仓库地址：[https://github.com/tinyclub/cs630-qemu-lab.git][3]
+  * 仓库地址
 
-  * 下载源码：`git clone https://github.com/tinyclub/cs630-qemu-lab.git`
+    [https://github.com/tinyclub/cs630-qemu-lab.git][3]
 
-  * 安装 qemu: `sudo apt-get install qemu`
+  * 下载源码
+
+        git clone https://github.com/tinyclub/cs630-qemu-lab.git
+
+  * 安装 qemu
+
+        sudo apt-get install qemu
 
   * 下载汇编语言源码
     

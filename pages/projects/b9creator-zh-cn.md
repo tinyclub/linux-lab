@@ -1,5 +1,5 @@
 ---
-title: 'B9Creator 中文支持'
+title: 'B9Creator 3D打印中文支持'
 tagline: '为开源 3D 打印机 B9Creator 添加中文支持'
 author: Wu Zhangjin
 layout: page

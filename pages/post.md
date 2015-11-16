@@ -30,7 +30,7 @@ order: 30
     $ sudo apt-get install ruby ruby-dev rake nodejs
     $ sudo gem sources -r http://rubygems.org/
     $ sudo gem sources -r https://rubygems.org/
-    $ sudo gem sources -a http://ruby.taobao.org/
+    $ sudo gem sources -a https://ruby.taobao.org/
     $ sudo gem install jekyll
 
 ### 撰写稿件

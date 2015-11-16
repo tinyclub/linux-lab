@@ -1,5 +1,5 @@
 <!-- Duoshuo Share Button -->
-<div class="ds-share flat" style="float: right;" data-thread-key="{{page.url}}" data-title="{{page.title | remove:' ' }}" data-images="" data-content="{{page.content | replace:':','：', | strip_html | truncate:300 | xml_escape}}" data-url="{{ site.production_url | append: page.url }}">
+<div class="ds-share flat" style="float: right;" data-thread-key="{{page.url}}" data-title="{{page.title | remove:' ' }}" data-images="" data-content="{{page.content | replace:':','：', | strip_html | truncate:300 | xml_escape}}" data-url="{{ site.production_url | append: page.url }}" >
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
       <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
@@ -12,7 +12,8 @@
 </div>
 
 <!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread" data-thread-key="{{page.url}}"></div>
+<div class="ds-thread" data-thread-key="{{page.url}}" data-title="{{page.title | remove:' ' }}" >
+</div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:'{{ site.JB.comments.duoshuo.short_name }}'};
   (function() {

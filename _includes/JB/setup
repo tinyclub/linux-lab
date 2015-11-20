@@ -17,7 +17,15 @@
     {% if site.JB.ASSET_PATH %}
       {% assign ASSET_PATH = site.JB.ASSET_PATH %}
     {% else %}
+      {% if page.theme.name %}
       {% capture ASSET_PATH %}{{ BASE_PATH }}/assets/themes/{{ page.theme.name }}{% endcapture %}
+      {% else %}
+        {% if site.JB.theme_name %}
+          {% capture ASSET_PATH %}{{ BASE_PATH }}/assets/themes/{{ site.JB.theme_name }}{% endcapture %}
+        {% else %}
+          {% capture ASSET_PATH %}{{ BASE_PATH }}/assets/themes/default{% endcapture %}
+        {% endif %}
+      {% endif %}
     {% endif %}  
   {% endif %}
 {% endcapture %}{% assign jbcache = nil %}

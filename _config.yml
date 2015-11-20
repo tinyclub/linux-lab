@@ -43,6 +43,8 @@ JB :
   ASSET_PATH : false
   IMAGE_PATH : false
   
+  theme_name: tinylab.org
+
   archive_path: /archive.html
   authors_path: /authors.html
   categories_path : /categories.html

@@ -28,9 +28,15 @@ order: 30
 ### 搭建 Jekyll 工作环境
 
     $ sudo apt-get install ruby ruby-dev rake nodejs
+
+    // The latest jekyll requires 2.0 ruby, install it
+    $ sudo apt-get install ruby2.0 ruby2.0-dev ruby2.0-doc
+    $ tools/ruby-switch 2.0
+
     $ sudo gem sources -r http://rubygems.org/
     $ sudo gem sources -r https://rubygems.org/
     $ sudo gem sources -a https://ruby.taobao.org/
+    $ sudo gem install iconv
     $ sudo gem install jekyll
 
 ### 撰写稿件

@@ -5,8 +5,6 @@ permalink: /:title
 baseurl: /
 encoding: utf-8
 
-safe: true
-
 markdown: kramdown
 # markdown: redcarpet
 # redcarpet:

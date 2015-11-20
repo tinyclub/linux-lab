@@ -38,6 +38,7 @@ order: 30
     $ sudo gem sources -a https://ruby.taobao.org/
     $ sudo gem install iconv
     $ sudo gem install jekyll
+    $ sudo gem install jekyll-paginate
 
 ### 撰写稿件
 

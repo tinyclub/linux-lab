@@ -49,15 +49,13 @@ Jiri Kosina 在内核峰会上提出现有的 kthread freezer 是非常不合理
 
 Rafael J. Wysocki 随后提出了他的解决方案 - [device link](http://lwn.net/Articles/662205/)。通过管理 device_link 结构体：
 
-```
-struct device_link {
+    struct device_link {
         struct device *supplier;
         struct list_head supplier_node;
         struct device *consumer;
         struct list_head consumer_node;
         <flags, status etc>
-};
-```
+    };
 
 来描述设备之间的依赖关系。
 

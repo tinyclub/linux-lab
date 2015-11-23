@@ -51,7 +51,7 @@
         {% endif %}
       {% endfor %}
       {% assign desc = desc | prepend:" 篇" | prepend: post_num | prepend:"查看作者 " %}
-      {% assign author_ref = author_name | replace:' ','-' | append:"-ref" %}
+      {% assign author_ref = author_name | downcase | replace:' ','-' | append:"-ref" %}
       {% capture url_base %}{{ site.JB.authors_path | prepend: site.production_url | append:"#" | append: author_ref }}{% endcapture %}
     {% endif %}
   {% endif %}

@@ -21,7 +21,11 @@
             </a>
         </li>
 
-        {% assign matched_posts = matched_post | append:"," | append: post.id %}
+        {% if matched_posts == '' %}
+          {% assign matched_posts = post.id %}
+        {% else %}
+          {% assign matched_posts = matched_posts | append:"," | append: post.id %}
+        {% endif %}
         {% assign SimilarNum = SimilarNum | plus:1 %}
         {% assign matched = true %}
         {% break %}
@@ -37,12 +41,13 @@
 
 {% assign matched_posts = matched_posts | split: "," %}
 
-{% for post in site.posts %}
+{% for post in site.related_posts %}
 
 {% if page.album and post.album and page.album == post.album %}
   {% continue %}
 {% endif %}
 
+  {% assign repeat = false %}
   {% assign matched = false %}
 
   {% for tag in post.tags %}
@@ -51,9 +56,13 @@
 
         {% for id in matched_posts %}
           {% if post.id == id %}
-            {% continue %}
+            {% assign repeat = true %}
+            {% break %}
           {% endif %}
         {% endfor %}
+        {% if repeat == true %}
+          {% continue %}
+        {% endif %}
 
         {% if SimilarNum == 0 %}
           {{ related_header }}
@@ -71,7 +80,7 @@
       {% endif %}
     {% endfor %}
 
-    {% if matched == true %}
+    {% if matched == true or repeat == true %}
       {% break %}
     {% endif %}
   {% endfor %}

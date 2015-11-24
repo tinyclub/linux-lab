@@ -5,6 +5,9 @@
 {% if page.album and post.album and page.album == post.album %}
   {% continue %}
 {% endif %}
+{% if post == page %}
+  {% continue %}
+{% endif %}
 
   {% assign matched = false %}
 
@@ -44,6 +47,10 @@
 {% for post in site.related_posts %}
 
 {% if page.album and post.album and page.album == post.album %}
+  {% continue %}
+{% endif %}
+
+{% if post == page %}
   {% continue %}
 {% endif %}
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wen Pingbo'
-title: "2015 内核峰会简报"
+title: "2015 Linux 内核峰会简报"
 group: "news"
 permalink: /kernel-submit-2015/
 category:
@@ -15,7 +15,7 @@ tags:
 > By Pingbo of TinyLab.org
 > 2015-11-22
 
-今年的内核峰会是在 10 月 26 - 28 日，韩国首尔举行，到现行已经过了大半个月了。下面让我们一起看看今年的内核峰会的亮点。
+今年的 Linux 内核峰会于 10 月 26 ~ 28 日在韩国首尔举行，到现在已经过了大半个月了。下面让我们一起看看今年的内核峰会的亮点。
 
 ## Day 0 - minisummit
 

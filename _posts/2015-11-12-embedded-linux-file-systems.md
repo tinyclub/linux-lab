@@ -4,7 +4,7 @@ author: 'Wu Zhangjin'
 title: "嵌入式 Linux 文件系统"
 album: "嵌入式 Linux 知识库"
 group: translation
-permalink: /embedded-linux-real-time/
+permalink: /embedded-linux-file-systems/
 description: "介绍了 Linux 文件系统相关的各类信息"
 category:
   - 文件系统

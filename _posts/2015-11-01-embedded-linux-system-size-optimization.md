@@ -4,7 +4,7 @@ author: 'Wen Pingbo'
 title: "嵌入式 Linux 系统裁剪"
 album: "嵌入式 Linux 知识库"
 group: translation
-permalink: /embedded-linux-real-time/
+permalink: /embedded-linux-system-size-optimization/
 description: "介绍了 Linux 系统裁剪相关的信息"
 category:
   - 系统裁剪

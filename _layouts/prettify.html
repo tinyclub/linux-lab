@@ -58,9 +58,9 @@
     {% assign _pres = _pre_before | split: "</pre>" %}
     {% case _pres.size %}
       {% when 2 %}
-        {% capture _content %}{{ _content }}<pre{{ _pres.first }}</pre>{{ _pres.last | replace:'  ',' ' | replace:'  ',' ' | replace:'  ',' ' | replace:'  ',' ' | remove: nl1 | remove: nl2 | remove: nl3 | replace:nl4,"><" | replace:nl5,"><" | replace:nl6,"><" | replace:nl7,"><" }}{% endcapture %}
+        {% capture _content %}{{ _content }}<pre{{ _pres.first }}</pre>{{ _pres.last | replace:'	',' ' | replace:'     ',' ' | replace:'    ',' ' | replace:'   ',' ' | replace:'  ',' ' | remove: nl1 | remove: nl2 | remove: nl3 | replace:nl4,"><" | replace:nl5,"><" | replace:nl6,"><" | replace:nl7,"><" }}{% endcapture %}
       {% when 1 %}
-        {% capture _content %}{{ _content }}{{ _pres.last | replace:'  ',' ' | replace:'  ',' ' | replace:'  ',' ' | replace:'  ',' ' | remove: nl1 | remove: nl2 | remove: nl3 | replace:nl4,"><" }}{% endcapture | replace:nl4,"><" | replace:nl5,"><" | replace:nl6,"><" | replace:nl7,"><" %}
+        {% capture _content %}{{ _content }}{{ _pres.last | replace:'	', ' ' | replace:'     ',' ' | replace:'    ',' ' | replace:'   ',' ' | replace:'  ',' ' | remove: nl1 | remove: nl2 | remove: nl3 | replace:nl4,"><" }}{% endcapture | replace:nl4,"><" | replace:nl5,"><" | replace:nl6,"><" | replace:nl7,"><" %}
     {% endcase %}
   {% endfor %}
 

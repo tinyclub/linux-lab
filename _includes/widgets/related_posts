@@ -15,7 +15,7 @@
 
   {% for category in post.categories %}
     {% for thiscat in page.categories %}
-      {% if SimilarNum < site.JB.posts.related_limit and post != page and category == thiscat %}
+      {% if SimilarNum < site.JB.posts.related_limit and category == thiscat %}
         {% if SimilarNum == 0 %}
             {{ related_header }}
             <ul id="{{ related_container  }}">
@@ -61,7 +61,7 @@
 
   {% for tag in post.tags %}
     {% for thisTag in page.tags %}
-      {% if SimilarNum < site.JB.posts.related_limit and post != page and tag == thisTag %}
+      {% if SimilarNum < site.JB.posts.related_limit and tag == thisTag %}
 
         {% for id in matched_posts %}
           {% if post.id == id %}

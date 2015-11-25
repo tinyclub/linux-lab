@@ -1,11 +1,13 @@
 {% assign hasSimilarTag = '' %}
 {% assign SimilarNum = 0 %}
 {% assign matched_posts = '' %}
+
 {% for post in site.posts %}
 {% if page.album and post.album and page.album == post.album %}
   {% continue %}
 {% endif %}
-{% if post == page %}
+
+{% if post.id == page.id %}
   {% continue %}
 {% endif %}
 
@@ -50,7 +52,7 @@
   {% continue %}
 {% endif %}
 
-{% if post == page %}
+{% if post.id == page.id %}
   {% continue %}
 {% endif %}
 

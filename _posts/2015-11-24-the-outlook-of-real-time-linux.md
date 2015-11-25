@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "Linux 内核实时化技术的走向"
 permalink: /the-outlook-of-real-time-linux/
-description: "本文摘自泰晓原创交流空间，内容源自清华大学陶品老师和泰晓主创吴章金的一问一答。本文主要讨论了 Linux 内核本身进行实时化改造的发展方向。"
+description: "本文摘自 泰晓原创团队 微信群，内容源自清华大学陶品老师和泰晓主创吴章金的一问一答。本文主要讨论了 Linux 内核本身进行实时化改造的发展方向。"
 category:
   - 实时抢占
   - 实时性

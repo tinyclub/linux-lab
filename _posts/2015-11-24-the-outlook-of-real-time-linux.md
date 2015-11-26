@@ -58,7 +58,7 @@ __答__：首先，RT 所涉猎地内容的确是 Linux 最核心的部分，也
 
 ## 小结
 
-RT 从 2006 年左右启动至今，Linux 内核本身已经达到了一定的产品级实时化程度，关注该方案的企业和机构肯定会越来越多，但是目前来看，实际产品使用经验以及相应的公开资料很少，尤其是上层应用的产品级开发和应用实例严重缺失，导致有需求的企业或者机构处在观望状态。未来如果要继续推广和普及 RT Preempt，加强实际实时应用的开发案例和文档的建设尤为关键。
+RT 从 2006 年左右启动至今，Linux 内核本身已经达到了一定的产品级实时化程度，关注该方案的企业和机构肯定会越来越多，但是目前来看，实际产品使用经验以及相应的公开资料很少，尤其是上层应用的产品级开发和应用实例严重缺失，导致有需求的企业或者机构处在观望状态。未来如果要继续推广和普及 RT Preempt，加强实际实时应用的开发案例和文档的建设尤为关键。在实时应用开发方面，推荐一本书：《POSIX.4: Programming for the Real World》。
 
 笔者从 2008 年左右从事 RT Preempt 相关的研究，完成了[龙芯 2F 系列的 RT Preempt](https://github.com/tinyclub/preempt-rt-linux) 支持，[移植 FTrace 到了 MIPS/龙芯 平台](http://lwn.net/Articles/361128/)，也维护了一段时间的 MIPS 平台的 RT Preempt，另外，也算是在国内较早系统地研究 RT Preempt，相应的研究论文报告为：《[Research and Practice on Preempt-RT Patch of Linux](/wp-content/uploads/2015/11/linux-preempt-rt-research-and-practice.pdf)》。未来希望跟企业合作，在实际工业应用方面做一些尝试，与此同时，会优先在泰晓这个平台分享更多的相关技术分析文章。
 

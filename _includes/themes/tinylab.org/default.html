@@ -40,9 +40,9 @@
 
   <!-- Styles -->
   {% if site.data.compress.css_js %}
-    {{ assign css_js_compress_tag = site.data.compress.css_js_tag }}
+    {% assign css_js_compress_tag = site.data.compress.css_js_tag %}
   {% else %}
-    {{ assign css_js_compress_tag = "" }}
+    {% assign css_js_compress_tag = "" %}
   {% endif %}
 
   <link rel="stylesheet" href="{{ ASSET_PATH }}/css/style{{ css_js_compress_tag }}.css">

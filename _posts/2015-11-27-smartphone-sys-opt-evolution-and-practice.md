@@ -15,6 +15,8 @@ tags:
   - MDCC
   - CSDN
   - 魅族
+  - Android
+  - Linux
 ---
 
 > By Falcon of TinyLab.org

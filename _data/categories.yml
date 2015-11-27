@@ -277,6 +277,7 @@
 
 - name: 系统优化
   categories:
+    - name: 温控
     - name: 稳定性
     - name: 性能优化
       categories:

@@ -164,6 +164,7 @@
             - name: 交叉编译
         - name: 调试和优化
           categories:
+            - name: 串口
             - name: GDB
             - name: KGDB
             - name: Ftrace

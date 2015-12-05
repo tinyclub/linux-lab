@@ -32,6 +32,8 @@ tags:
 
 串口以接入到 MacBook Pro 的 cp2102 为例：`/dev/tty.SLAB_USBtoUART`。
 
+另外假设主机 IP 地址为：`192.168.1.168`，在远端要虚拟的串口命名为：`/dev/vmodem001`。
+
 ### 串口转 TCP 端口
 
     sudo socat tcp-l:54321,reuseaddr,fork file:/dev/tty.SLAB_USBtoUART,waitlock=/var/run/tty0.lock,clocal=1,cs8,nonblock=1,ixoff=0,ixon=0,ispeed=9600,ospeed=9600,raw,echo=0,crtscts=0
@@ -42,7 +44,7 @@ tags:
 
 ### TCP 端口转虚拟串口
 
-    sudo socat pty,link=/dev/vmodem001,waitslave tcp:192.168.0.106:54321
+    sudo socat pty,link=/dev/vmodem001,waitslave tcp:192.168.1.168:54321
 
 ### 远程访问串口
 
@@ -50,7 +52,7 @@ tags:
 
 或
 
-    telnet 192.168.0.106 54321
+    telnet 192.168.1.168 54321
 
 ### 安全访问
 

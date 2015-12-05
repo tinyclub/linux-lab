@@ -10,6 +10,7 @@ category:
 tags:
   - Linux
   - socat
+  - netcat
   - ser2net
   - remserial
   - conmux
@@ -28,7 +29,7 @@ tags:
 
 通过网络虚拟化串口的基本需求很简单，首先要把串口虚拟化为网络端口，之后在网络中的另外一台主机上通过 telnet 等工具直接访问该网络端口或者反过来把网络端口逆向为一个虚拟化的串口，进而通过串口的 minicom 等工具也可以访问。
 
-这样的工具有 socat, ser2net, remserial, conmux，发现 socat 非常好用，这里在参考 [socat-ttyovertcp.txt](http://www.dest-unreach.org/socat/doc/socat-ttyovertcp.txt) 的基础上介绍它的用法。
+这样的工具有 socat, netcat, ser2net, remserial, conmux，发现 socat 非常好用，这里在参考 [socat-ttyovertcp.txt](http://www.dest-unreach.org/socat/doc/socat-ttyovertcp.txt) 的基础上介绍它的用法。
 
 串口以接入到 MacBook Pro 的 cp2102 为例：`/dev/tty.SLAB_USBtoUART`。
 

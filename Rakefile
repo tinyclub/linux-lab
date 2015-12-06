@@ -63,6 +63,7 @@ task :post do
   end
   begin
     date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d-%H-%M-%S')
+    post_date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d %H:%M:%S')
   rescue => e
     puts "Error - date format must be YYYY-MM-DD, please check you typed it correctly!"
     exit -1
@@ -160,7 +161,7 @@ task :post do
     post.puts "---"
     post.puts ""
     post.puts "> By #{nick} of #{CONFIG['site']}"
-    post.puts "> #{date}"
+    post.puts "> #{post_date}"
     post.puts ""
     post.puts "本模板为 泰晓科技 采用的文档模板与约定，为规范文章风格与质量，请在撰稿前务必仔细阅读！"
     post.puts ""

@@ -50,11 +50,28 @@ order: 30
 
     $ tools/post
 
+后者是前者的封装，可以简化命令行的输入。
+
 或者直接把文件名和短地址设置好：
 
-    $ tools/post the-first-post-title
+    $ tools/post slug=the-first-post-slug
 
-后者是前者的封装，可以简化命令行的输入。
+当然，也可以同时把其他参数都默认设置好，比如标题：
+
+    $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
+
+更多参数请参考：
+
+    author='Author'
+    nick="Nick Name"
+    title="A Title"
+    tags="[tag1,tag2]"
+    categories="[category1,category2]"
+    group='Article Group'
+    album='Article Series'
+    tagline='subtitle'
+    description="summary"
+    slug='URL with English characeters'
 
 Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
 

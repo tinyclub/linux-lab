@@ -21,8 +21,7 @@ nick=`grep -i " $nick" -ur $people | grep " nickname" | cut -d':' -f2 | sed -e "
 title="new-post"
 
 # If title is in Chinese, this must be set in English
-slug=$1
-[ -z "$slug" ] && slug="new-post-slug"
+slug="new-post-slug"
 
 # Optional
 

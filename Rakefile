@@ -62,7 +62,7 @@ task :post do
     slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   end
   begin
-    date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
+    date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d-%H-%M-%S')
   rescue => e
     puts "Error - date format must be YYYY-MM-DD, please check you typed it correctly!"
     exit -1

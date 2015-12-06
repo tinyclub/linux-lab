@@ -50,6 +50,10 @@ order: 30
 
     $ tools/post
 
+或者直接把文件名和短地址设置好：
+
+    $ tools/post the-first-post-title
+
 后者是前者的封装，可以简化命令行的输入。
 
 Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
@@ -58,7 +62,8 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 *注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
 
-    $ ln tools/post tools/falcon.post
+    $ cd tools
+    $ ln -s post falcon.post
 
 把 `falcon` 替换为你自己的昵称即可。
 

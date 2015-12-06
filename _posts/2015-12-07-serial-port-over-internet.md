@@ -6,6 +6,7 @@ permalink: /serial-port-over-internet/
 description: "串口是嵌入式开发中常用的调试、通信和下载工具，本文介绍了如何通过网络访问嵌入式设备上的串口，从而极大地方便远程调试和操作嵌入式设备。"
 category:
   - 串口
+  - 虚拟化
   - NodeMCU
 tags:
   - Linux
@@ -31,9 +32,12 @@ tags:
 
 这样的工具有 socat, netcat, ser2net, remserial, conmux，发现 socat 非常好用，这里在参考 [socat-ttyovertcp.txt](http://www.dest-unreach.org/socat/doc/socat-ttyovertcp.txt) 的基础上介绍它的用法。
 
-串口以接入到 MacBook Pro 的 cp2102 为例：`/dev/tty.SLAB_USBtoUART`。
+在具体实验之前，我们做如下假设：
 
-另外假设主机 IP 地址为：`192.168.1.168`，在远端要虚拟的串口命名为：`/dev/vmodem001`。
+串口    | `/dev/tty.SLAB_USBtoUART` | 接入 MacBook Pro 的 cp2102
+主机 IP | `192.168.1.168` | 串口直连的主机 IP 地址
+主机端口 | `54321` | 虚拟化以后的端口
+虚拟串口 | `/dev/tty.virt001`
 
 ### 串口转 TCP 端口
 
@@ -45,11 +49,11 @@ tags:
 
 ### TCP 端口转虚拟串口
 
-    sudo socat pty,link=/dev/vmodem001,waitslave tcp:192.168.1.168:54321
+    sudo socat pty,link=/dev/tty.virt001,waitslave tcp:192.168.1.168:54321
 
 ### 远程访问串口
 
-    sudo minicom -D /dev/vmodem001
+    sudo minicom -D /dev/tty.virt001
 
 或
 
@@ -68,3 +72,9 @@ tags:
 最近刚用到一款 Wifi 物联网开发板（NodeMCU），开发主机是 MacBook Pro 笔记本，但是开发环境搭建在 Virtualbox 上跑的 Linux 中，因此，需要在 Linux 系统中访问串口，但是发现该串口（cp2102）即使通过 Virtualbox 正确设置允许 Linux 访问并且相应的驱动也正常启动，但是 minicom 无法访问该串口（怀疑是 Virtualbox 使用了 ohci，但该设备实际为 uhci），这个时候通过网络虚拟化的串口就非常有帮助了。
 
 更多的例子可能是，如果想远程控制该设备，而该设备本身不支持网络，那么把串口接入带有网络的主机，并把串口通过网络虚拟化就很有帮助了。
+
+汇总几个可能的用处：
+
+* 通过网络把串口接入到更便利的开发环境
+* 通过网络把多个串口汇聚到同一个测试环境，方便统一访问
+* 把串口接入网络，允许各地的学员分时共享同一个硬件学习资源

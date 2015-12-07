@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "通过网络访问串口"
+title: "串口虚拟化：通过网络访问串口"
 permalink: /serial-port-over-internet/
 description: "串口是嵌入式开发中常用的调试、通信和下载工具，本文介绍了如何通过网络访问嵌入式设备上的串口，从而极大地方便远程调试和操作嵌入式设备。"
 category:

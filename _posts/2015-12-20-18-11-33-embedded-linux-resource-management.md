@@ -17,7 +17,7 @@ tags:
 ---
 
 > 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
-> 原文：[eLinux.org](http://eLinux.org/Resource_Management "http://eLinux.org/Resource_Management") 
+> 原文：[eLinux.org](http://eLinux.org/Resource_Management)
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 
 ## 开源项目

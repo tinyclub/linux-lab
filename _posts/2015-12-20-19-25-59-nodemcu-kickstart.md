@@ -231,7 +231,7 @@ esptool.py 烧写时默认的通信波特率为 115200，为了加速烧写速�
         dofile('user.lua')
     end
 
-一旦系统出错，只要拉低 GPIO 2 就可以格式化文件系统。
+一旦系统出错，只要拉高 GPIO 2 就可以格式化文件系统。
 
 暂时先到这里吧，后面会逐步介绍更多实例。
 
@@ -242,7 +242,7 @@ esptool.py 烧写时默认的通信波特率为 115200，为了加速烧写速�
 测试过两个工具都可以用来上传 Lua 程序，分别是：
 
 * [luatool.py](https://github.com/4refr0nt/luatool.git)：可用于命令行传送 Lua 脚本，无须复杂的图形化工具支持，同时支持通过串口和 Telnet 上传
-* [nodemcu.py](https://github.com/md5crypt/nodemcu.py.git)：同上
+* [nodemcu.py](https://github.com/md5crypt/nodemcu.py.git)：除了不支持通过 Telnet 上传外，基本功能同 luatool，只是操作方式稍有差异
 
 下载上述工具：
 

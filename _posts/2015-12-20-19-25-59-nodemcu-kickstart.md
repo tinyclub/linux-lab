@@ -241,7 +241,7 @@ esptool.py 烧写时默认的通信波特率为 115200，为了加速烧写速�
 
 测试过两个工具都可以用来上传 Lua 程序，分别是：
 
-* [luatool.py](https://github.com/4refr0nt/luatool.git)：可用于命令行传送 Lua 脚本，无须复杂的图形化工具支持
+* [luatool.py](https://github.com/4refr0nt/luatool.git)：可用于命令行传送 Lua 脚本，无须复杂的图形化工具支持，同时支持通过串口和 Telnet 上传
 * [nodemcu.py](https://github.com/md5crypt/nodemcu.py.git)：同上
 
 下载上述工具：

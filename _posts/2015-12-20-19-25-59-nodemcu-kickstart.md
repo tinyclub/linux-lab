@@ -28,7 +28,7 @@ tags:
 > By Falcon of TinyLab.org
 > 2015-12-20 19:25:59
 
-## 简介
+## NodeMCU 简介
 
 NodeMCU 是一款开源的物联网开发平台，其固件和开发板均开源，自带 WIFI 模块。基于该平台，用几行简单的 Lua 脚本就能开发物联网应用。
 

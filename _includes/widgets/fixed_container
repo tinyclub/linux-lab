@@ -24,8 +24,6 @@
   {% endif %}
 
   {% include widgets/recent_comments %}
-
-  {% include widgets/admin_wechat %}
 </div>
 <script type="text/javascript">
 $(document).ready(function() {

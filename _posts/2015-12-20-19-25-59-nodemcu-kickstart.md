@@ -55,9 +55,9 @@ NodeMCU 最新版为 1.0，如下图：
   * MCU 为 Xtensa L106
   * RAM 50K
   * Flash 512K
-* CP2102 USB 串口，即插即用（官方驱动支持 Windows, OS X 和 Linux）
-* D1~D10：10 GPIO, 每个都能配置为 PWM, I2C, 1-wire
-* FCC 认证的 WIFI 模块，内置 PCB 天线，可作为 AP
+  * D1~D10：10 GPIO, 每个都能配置为 PWM, I2C, 1-wire
+  * FCC 认证的 WIFI 模块，内置 PCB 天线，可作为 AP
+* CP2102 USB 串口，即插即用（官方驱动支持 Windows, OS X，Linux 以及 VMware）
 
 该平台自 2014 年问世以来，就受到广大物联网开发者喜爱。虽然该平台有上述诸多特性，但是文档方面还是有所欠缺，所以泰晓科技计划跟 NodeMCU 合作，逐步推出一系列文章，介绍该平台的开发环境搭建、SDK 使用、硬件 DIY 精品案例分享等，从而让更多的开发者快速上手和使用该平台。
 

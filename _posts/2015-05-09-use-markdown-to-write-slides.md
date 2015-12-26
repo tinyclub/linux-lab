@@ -14,7 +14,7 @@ categories:
 > By Falcon of [TinyLab.org][1]
 > 2015/05/08
 
-【**背景**：笔者用 M$ PowerPoint, Libreoffice Draw, Latex 等写过幻灯，没有一个是令人省心的工具，没有一个能让人专注于内容创作本身。繁杂的格式、字体、以及所谓特效调节让人困惑烦恼，自从有了 Markdown，让思绪自由流畅不受阻，让创作回归内容本身，把那些繁杂的演示效果交给其他专业的人士打理就好。】
+【**背景**：笔者用 M$ PowerPoint, Libreoffice Draw, LaTeX 等写过幻灯，没有一个是令人省心的工具，没有一个能让人专注于内容创作本身。繁杂的格式、字体、以及所谓特效调节让人困惑烦恼，自从有了 Markdown，让思绪自由流畅不受阻，让创作回归内容本身，把那些繁杂的演示效果交给其他专业的人士打理就好。】
 
 
 # 准备环境
@@ -30,7 +30,7 @@ categories:
 
     请参考[pandoc首页][2]
 
-## 安装Latex以及中文支持
+## 安装LaTeX以及中文支持
 
   * 以Ubuntu为例
 
@@ -105,7 +105,7 @@ categories:
 
       * [Markdown基本语法][3]
       * [Pandoc Markdown语法][4]
-      * Latex语法：[1][5],[2][6]
+      * LaTeX语法：[1][5],[2][6]
 
   * 实例
 

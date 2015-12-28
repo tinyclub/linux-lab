@@ -27,9 +27,9 @@ order: 30
 
 ### 搭建 Jekyll 工作环境
 
-    $ sudo apt-get install ruby ruby-dev rake nodejs
+    $ sudo apt-get install gcc make ruby ruby-dev rake nodejs
 
-    // The latest jekyll requires 2.0 ruby, install it
+    // The latest jekyll requires > 2.0 ruby, install it or newer
     $ sudo apt-get install ruby2.0 ruby2.0-dev ruby2.0-doc
     $ tools/ruby-switch 2.0
 

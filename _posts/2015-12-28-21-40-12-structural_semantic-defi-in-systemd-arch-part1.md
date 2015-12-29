@@ -6,12 +6,13 @@ layout: post
 group: translation
 permalink: /structural-and-semantic-deficiencies-in-the-systemd-architecture-for-real-world-service-management-part1/
 tags:
-  - systemd
   - unit
   - job
   - init
+  - Service
+  - 服务
 categories:
-  - 服务管理
+  - Systemd
 ---
 
 > 原文：[Structural and semantic deficiencies in the systemd architecture for real-world service management, a technical treatise][1]

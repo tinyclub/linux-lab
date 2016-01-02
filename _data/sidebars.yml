@@ -7,6 +7,7 @@
   condition: group
   value: jobs
   url: /jobs/
+  disable: true
 
 - title: 开源项目
   icon: code

@@ -7,7 +7,7 @@ permalink: /post/
 order: 30
 ---
 
-泰晓科技 作为一个 Android / Linux 原创交流平台，热烈欢迎大家的参与。
+泰晓科技 作为一个 Android / Linux 原创交流平台，热烈欢迎大家参与。
 
 而参与的最好方式莫过于创作并分享。我们欢迎各类 Android / Linux 原创、翻译文章，也欢迎发布工作机会，递送求职简历。
 

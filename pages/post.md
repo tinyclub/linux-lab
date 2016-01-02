@@ -29,7 +29,7 @@ order: 30
 
     $ sudo apt-get install gcc make ruby ruby-dev rake nodejs
 
-    // 新版 jekyll 依赖 ruby 版本（大于或者等于2.0）
+    // 新版 jekyll 依赖 ruby 版本（>=2.0）
     $ sudo apt-get install ruby2.0 ruby2.0-dev ruby2.0-doc
     $ tools/ruby-switch 2.0
 

@@ -132,6 +132,9 @@
             - name: PowerVR
     - name: 软件架构
       categories:
+        - name: 服务管理
+          categories:
+            - name: Systemd
         - name: Graphic
           categories:
             - name: OpenGL

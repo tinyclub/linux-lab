@@ -54,7 +54,7 @@ categories:
 
 ## 启动装有实验环境的 Docker 容器
 
-    $ CONTAINER_ID=$(docker run -d -p 6080:6080 dorowu/ubuntu-desktop-lxde-vnc)
+    $ CONTAINER_ID=$(docker run -d -p 6080:6080 -v $PWD/:/linux-0.11-lab/ tinylab/linux-0.11-lab)
 
 
 ## 获得实验环境的密码

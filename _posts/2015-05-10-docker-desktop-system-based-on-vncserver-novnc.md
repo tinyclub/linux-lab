@@ -60,7 +60,7 @@ User: ubuntu Pass: ubuntu
 
       * 先获取 IP 地址
 
-            $ docker exec 8222763de ifconfig eth0 | grep "inet addr:"
+            $ docker exec $CONTAINER_ID ifconfig eth0 | grep "inet addr:"
             inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0
 
 

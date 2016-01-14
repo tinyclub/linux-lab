@@ -32,12 +32,14 @@ categories:
 
   * 安装 docker
 
-        $ sudo apt-get install software-properties-common # 增加 add-apt-repository 命令
-        $ sudo apt-get install python-software-properties
-        $ sudo add-apt-repository ppa:dotcloud/lxc-docker # 增加一个ppa源，如：ppa:user/ppa-name
+        $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+        $ sudo -s
+        $ version=`sed -n -e "/main$/p" /etc/apt/sources.list | head -1 | cut -d' ' -f3`
+        $ echo "deb https://apt.dockerproject.org/repo ubuntu-$(version) main" > /etc/apt/sources.list.d/docker.list
+        $ exit
         $ sudo apt-get -y update
-        $ sudo apt-get install lxc-docker
-
+        $ sudo apt-get -y install docker-engine
+        $ sudo usermod -aG docker $USER
 
 ## 拉下 Linux 0.11 实验环境
 

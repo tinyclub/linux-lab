@@ -202,15 +202,13 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 * 一批《[Linux 设备驱动开发详解](http://tinylab.org/book-welfare-for-tinylab-contributors/)》
 * 双十一 [半价购开源硬件 pcDuino8 和 NodeMCU](http://tinylab.org/board-welfare-for-tinylab-users/)
 
-另外，我们还在不断争取其他的福利，这些福利我们将直接导入 [泰晓开源小店](http://weidian.com/?userid=335178200)，允许大家以最低低到成本价的折扣拍到。
+另外，我们还在不断争取其他的福利，这些福利将直接导入 [泰晓开源小店](http://weidian.com/?userid=335178200)，允许大家以最低低到成本价的折扣拍到。
 
 如果没有特别声明，基本的折扣政策如下：
 
-* 最近一个月有贡献，一率 9 折
-* 最近三个月有贡献，前 5 件一率 8 折
-* 最近半年有贡献，前 2 件一率 7 折
-* 一次性购买 10 件以上一率 8 折
-* 逢国家法定节日限购一件 8 折
+* 最近一个月有贡献，一率 8 折
+* 连续一个季度有贡献，前 2 件一率 5 折
+* 一次性购买 5 件以上一率 7 折
 
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: http://wowubuntu.com/markdown/

@@ -470,7 +470,9 @@ esptool.py 烧写时默认的通信波特率为 115200，为了加速烧写速�
 
 ### 采用泰晓科技的仓库
 
-NodeMCU 的官方仓库，在使用预编译的 Xtensa 工具链编译时有很多问题，泰晓科技进行了一一修复，可直接编译和烧录：
+NodeMCU 的官方仓库，在使用预编译的 Xtensa 工具链编译时有很多问题。
+
+泰晓科技对 Firmware 源码进行一一修复后，就可以用上述预编译的 Xtensa 工具链进行编译和烧录：
 
     $ git clone https://github.com/tinyclub/nodemcu-firmware.git
     $ make -j5

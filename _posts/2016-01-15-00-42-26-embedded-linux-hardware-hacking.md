@@ -7,7 +7,7 @@ group: translation
 permalink: /embedded-linux-hardware-hacking/
 description: "本文介绍普通大众可以拥有或者已经拥有的能够运行 Linux 的设备，包括官方正式支持的设备和工程设备（或者非官方支持的可以运行 Linux 的设备）。"
 category:
-  - Linux 设备
+  - 开发板
 tags:
   - 工程设备
   - 汽车

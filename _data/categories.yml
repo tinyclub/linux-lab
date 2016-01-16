@@ -146,7 +146,6 @@
         - name: Multimedia
           categories:
             - name: GStreamer
-    - name: Linux 设备
     - name: 开发板
       categories:
         - name: 树莓派

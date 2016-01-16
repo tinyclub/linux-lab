@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "泰晓沙龙 第四期：宝华书友会○华南站（预告）"
+title: "泰晓沙龙 第四期：宝华书友会○华南站"
 tagline: "大话开源：开源软件、硬件与社区"
 album: 泰晓沙龙
 group: activity

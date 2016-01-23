@@ -36,42 +36,28 @@ KDBUS 是内核 IPC 进化的最新努力，试图提供带有总线（Bus）概
 
 [Binder](http://elinux.org/Android_Binder) 带着微内核上的 IPC 风格：对于微内核而言，操作系统运作更依赖进程间的消息传递。而将消息传递的开销，尽量逼近系统调用开销（及延时），能够缓解微内核性能劣势。
 
+Binder 中，全局服务发布在 ServiceManager 中。例如，想访问服务（_同时也是远程对象_）“com.hello.world”，首先通过 ServiceManager 发起 `getService()` 来获得其 handle。其内部过程的一个猜测如下：
+
+![image](/wp-content/uploads/2015/09/binder-getService-dataflow.png)
+
+Binder 中，远程对象的 handle 可进一步传给他人，这有点像通过 UNIX socket 传 fd。
+
+接着，调用“com.hello.world” 的 `hello() 方法`，下图是其内部过程的一个猜想：
+
+![image](/wp-content/uploads/2015/09/binder-RPC-dataflow.png)
+
 Binder 带有如下特点：
 
 1. Binder 调用都是同步的。A 向 B 发消息，致 A 暂停执行，而 B 生线程代 A 执行；B 中线程执行完将结果返回 A，A 继续执行 —— 这个过程就好像 A 发起了个系统调用一样。
-2. 线程优先级传递（Thread migration）。A 向 B 发消息， _A 所在线程的优先级_ 就传递给 B 中__代 A 执行的线程__。
+2. 线程优先级传递（Thread migration）。A 向 B 发消息， _A 所在线程的优先级_ 就传递给 B 中 __代 A 执行的线程__。
 3. 节省拷贝：发送消息时，writer 直接写到 reader 的环状缓冲区中。比较 UNIX Domain 的 socket 传消息：1) writer: userspace to kernel; 2) in kernel: writer buffer to reader buffer; 3) reader: kernel to userspace，省略一次拷贝（步骤2 和 3 合并）。
-4. 导出本地对象：远端持有导出对象的引用，并由内核维持引用计数。用 socket 概念来模拟，大概如下：
+4. 导出本地对象：远端持有导出对象的引用，并由内核维持引用计数。
 
-<pre>
-/* Server */
 
-int onBind(/* params */) {
-    int socks[2] = { -1, -1 };
-
-    int r = socketpair(AF_UNIX, SOCK_SEQPACKET, 0, socks);
-
-    if (r == 0) {
-        mClients.append(socks[0]); /* poll the fd */
-
-        return socks[1]; /* fd as a remote reference, 
-                          * will be passed to another process */
-    }
-
-    return -errno;
-}
-
-/*
- * 上述模拟代码中，Server 可以通过 poll 返回的 POLLHUP 知道远端的一个引用被丢失
- * 从而实现引用技术。
- * 注意：所述 Binder 引用是 per-PID 的 - 即状态存在 PID 中。
- * 而此处代码模拟引用是 per-FD 的 － 即状态存在 FD 中。
- */
-</pre>
 
 特点 1 和 2 提高确定性，并严格了优先级，有助于实时性；特点 3 降低了开销；特点 4 在于远程引用变为 0 时，得到通知，从而可实现按需启动，无请求时退出，节省资源占用。
 
-关于 Binder 因“使用场景受限”落选，推测起来，可能是因为服务处理每一笔事务，都要对应一个线程，会受到最多线程数的限制。业务模型中，线程和每笔业务一一对应通常隐含伸缩受限。另一方面，KDBUS 立意于一个更加通用的使用场景，并不是局限于实时嵌入式环境。
+关于 Binder 因“使用场景受限”落选，推测起来，可能是因为服务处理每一笔事务，都要对应一个线程，会受到最大线程数的限制（更糟的是，服务可能再调服务 —— 一次 IPC 背后涉及的线程会更多）。业务模型中，线程和每笔业务一一对应通常隐含伸缩受限。另一方面，KDBUS 立意于一个更加通用的使用场景，并不是局限于实时嵌入式环境。
 
 需要说明的是，Binder 有一种 _One-Way_ 调用，推测起来大概是 Client 将消息递送 Server 缓冲后，不等待结果，继续执行 - 即不关心结果的调用。似乎可用来实现异步的模型，例如 Server 持有 Client 的一个 Callback，通过 Callback 来返回结果。
 

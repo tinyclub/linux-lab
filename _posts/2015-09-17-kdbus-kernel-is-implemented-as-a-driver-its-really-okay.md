@@ -36,13 +36,13 @@ KDBUS 是内核 IPC 进化的最新努力，试图提供带有总线（Bus）概
 
 [Binder](http://elinux.org/Android_Binder) 带着微内核上的 IPC 风格：对于微内核而言，操作系统运作更依赖进程间的消息传递。而将消息传递的开销，尽量逼近系统调用开销（及延时），能够缓解微内核性能劣势。
 
-Binder 中，全局服务发布在 ServiceManager 中。例如，想访问服务（_同时也是远程对象_）“com.hello.world”，首先通过 ServiceManager 发起 `getService()` 来获得其 handle。其内部过程的一个猜测如下：
+Binder 中，全局服务发布在 ServiceManager 中。例如，想访问服务（_同时也是远程对象_）“com.hello.world”，首先由 ServiceManager 的 `getService() 方法` 来获得其 handle。其内部过程的一个猜测如下：
 
 ![image](/wp-content/uploads/2015/09/binder-getService-dataflow.png)
 
 Binder 中，远程对象的 handle 可进一步传给他人，这有点像通过 UNIX socket 传 fd。
 
-接着，调用“com.hello.world” 的 `hello() 方法`，下图是其内部过程的一个猜想：
+取得 handle 后，就可以进行 RPC。例如，调用 “com.hello.world” 之 `hello() 方法`，其内部过程的一个猜想如下：
 
 ![image](/wp-content/uploads/2015/09/binder-RPC-dataflow.png)
 

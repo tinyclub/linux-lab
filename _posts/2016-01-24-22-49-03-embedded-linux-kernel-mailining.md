@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Weilin'
-title: "new post"
+title: "如何贡献内核补丁（Kernel Mainlining）"
 album: "嵌入式 Linux 知识库"
 group: "translation"
 permalink: /embedded-linux-kernel-mailining/

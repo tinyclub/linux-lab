@@ -83,7 +83,7 @@ Data 的内容和结构依据不同的 command 和 reply 都有所不同。比�
 
 上面说了这么多，其实都是为了讲 JDB 的使用原理做的铺垫，JDB 其实是 JDWP 协议中所讲的 Debugger，它运行在 develop machine 上面，它和移动设备上面的 App VMs 通过 JDWP 协议来通信，JDB 一般位于你的 JDK 安装目录下面，可以直接运行，因为 JDB 和移动设备必须通过 ADB 来沟通，所以在 Android 上面使用 JDB 之前必须做一些配置：
 
-  1. 通过 `adb jwdp` 列出移动设备上面可以执行 JDWP 协议的进程 ID。
+  1. 通过 `adb jdwp` 列出移动设备上面可以执行 JDWP 协议的进程 ID。
   2. 通过 `adb forward tcp:123456 jdwp:pid` (第一步所得到的 PID )设置使用 123456 端口来和移动设备上面的App VMs（其实是 adbd）来通信。
   3. 执行 `jdb -attach localhost:123456` 将 jdb attach 到本机的 123456 端口。
 

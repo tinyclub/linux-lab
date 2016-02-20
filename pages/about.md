@@ -40,6 +40,6 @@ order: 50
 
 {% include widgets/contact %}
 
-## 赞助
+## 打赏
 
 {% include widgets/sponsor %}

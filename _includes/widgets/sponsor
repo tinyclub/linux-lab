@@ -1,4 +1,4 @@
-<table>
+<table id='sponsor'>
 <tr><td style="text-align:center;">3.69￥</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">9.68￥</td></tr>
 <tr>
   <td style="text-align:center;">

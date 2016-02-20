@@ -348,8 +348,11 @@ a:active {
     float: left
 }
 #logo {
-    margin-top: 0;
-    display: none
+    margin-top: -5px;
+    font-size: 330%;
+    font-weight: 900;
+    color: #fff;
+    text-decoration: none;
 }
 #navbar {
     z-index: 99;
@@ -666,10 +669,6 @@ article header h2 {
 
 /*  Image  */
 
-#logo img {
-    border: none;
-    height: 45px
-}
 article img {
     max-width: 99%;
     display: block;
@@ -1165,8 +1164,12 @@ short_prev_next {
     #toc-container {
         display: block
     }
+    #logo {
+        margin-left: 25px
+    }
     #search-box {
-        margin-left: 22px
+        float: right;
+        margin-right: 50px
     }
     #float-box-wrap {
         margin: 0 auto;

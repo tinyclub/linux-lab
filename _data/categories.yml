@@ -329,6 +329,9 @@
 - name: 行业观察
   categories:
     - name: 开源社区
+    - name: 版权协议
+      categories:
+        - name: GPL
     - name: 技术动态
     - name: 行业动向
     - name: 行业标准

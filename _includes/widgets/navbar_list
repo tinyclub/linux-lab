@@ -11,4 +11,3 @@
     <a rel="bookmark" href="{{ site.JB.rss_path }}" title="订阅 RSS"><i class="icon-large icon-fixed-width icon-rss"></i></a>
   </li>
 </ul>
-

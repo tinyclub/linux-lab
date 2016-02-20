@@ -377,6 +377,9 @@ a:active {
     color: #888;
     padding: 5px
 }
+#navbar ul li a.highlight {
+    color: #c00
+}
 #navbar ul li.active a,
 #navbar ul li a:hover {
     color: #eee;

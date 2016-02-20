@@ -26,10 +26,14 @@ Usage:
   {% for node in pages_list %}
     {% if node.title != null %}
       {% if group == null or group == node.group %}
+        {% assign highlight = "" %}
+        {% if node.highlight == true %}
+          {% assign highlight = "highlight" %}
+        {% endif %}
       	{% if page.url == node.url %}
-      	<li class="active"><a href="{{ BASE_PATH }}{{node.url}}" class="active">{{node.title}}</a></li>
+	<li class="active"><a href="{{ BASE_PATH }}{{node.url}}" class="active {{ highlight }}">{{node.title}}</a></li>
       	{% else %}
-      	<li><a href="{{ BASE_PATH }}{{node.url}}">{{node.title}}</a></li>
+	<li><a href="{{ BASE_PATH }}{{node.url}}" class="{{ highlight }}" >{{node.title}}</a></li>
       	{% endif %}
       {% endif %}
     {% endif %}

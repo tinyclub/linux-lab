@@ -15,8 +15,12 @@
  {% if page.comments != false %}
   <div class="pull-right">
     <span><a href="#comments" style="text-decoration:none;" title="评论或分享本文">
-      <i class="icon-large icon-comment-empty"> 评论 / 分享</i>
-    </a></span>
+      <i class="icon-large icon-comment-empty"> 评论 </i>
+    </a>
+    <a href="#sponsor" style="text-decoration:none;" title="微信扫码，打赏一下">
+      <i class="icon-large icon-yen"> 打赏</i>
+    </a>
+    </span>
   </div>
  {% endif %}
 </div>

@@ -33,7 +33,7 @@
 
 - name: sponsor
   icon: yen
-  desc: 赞助
+  desc: 打赏
 
 - name: info
   icon: info-circled

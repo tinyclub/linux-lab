@@ -66,12 +66,13 @@ $(document).ready(function() {
       }
     }
     var html = '';
+    var post = '<a style="color:#f00" href="{{ site.data.search['post'].url }}">{{ site.data.search['post'].title }}</a>';
     for (var i = 0; i < matches.length; i++) {
       var match = matches[i]; 
       if (i == 0) {
         html += '<article>';
         {% assign random = site.time | date: "%s%N" | modulo: site.data.search['found'].prompt.size %}
-        html += '<header><h1>{{ site.data.search['found'].prompt[random].prepend }} ' + matches.length + ' {{ site.data.search['found'].prompt[random].append }}</h1></header>';
+        html += '<header><h1>{{ site.data.search['found'].prompt[random].prepend }} ' + matches.length + ' {{ site.data.search['found'].prompt[random].append }}</h1>' + post + '</header>';
         html += '</article><hr>';
       }
       html += '<article>';
@@ -81,7 +82,7 @@ $(document).ready(function() {
     if (matches.length == 0) {
       html += '<article style="margin-top: 200px;">';
       {% assign random = site.time | date: "%s%N" | modulo: site.data.search['nothing'].prompt.size %}
-      html += '<header><h1>{{ site.data.search['nothing'].prompt[random].string }}</h1></header>';
+      html += '<header><h1>{{ site.data.search['nothing'].prompt[random].string }}</h1>' + post + '</header>';
       html += '</article>';
     }
     $('#main-content').html(html);

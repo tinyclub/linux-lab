@@ -18,3 +18,7 @@ nothing:
 query:
   mouseover: ''
   mouseout: '站内搜索 - 泰晓科技'
+
+post:
+  title: "我要投稿！"
+  url: /post/

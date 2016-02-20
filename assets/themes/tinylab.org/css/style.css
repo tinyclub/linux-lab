@@ -1168,11 +1168,10 @@ short_prev_next {
         display: block
     }
     #logo {
-        margin-left: 25px
+        display: none
     }
     #search-box {
-        float: right;
-        margin-right: 50px
+        margin-left: 22px
     }
     #float-box-wrap {
         margin: 0 auto;

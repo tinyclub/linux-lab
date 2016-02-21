@@ -45,7 +45,6 @@ Linux 内核只在 GNU 通用公共许可协议 2.0 版本下被许可！
 查看[原创开发者证书][1]，包含在内核的 [Documentation/SubmittingPatches][2] 文件中。
 
 [1]: "http://elinux.org/Developer_Certificate_Of_Origin" "原创开发者证书"
-
 [2]: "http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches" "SubmittingPatches"
 
 
@@ -67,29 +66,29 @@ Linux 内核只在 GNU 通用公共许可协议 2.0 版本下被许可！
 
 在 2008 年的 1 月，Greg Kroah Hartman 提交了一个补丁将核心 USB API 改变为 `EXPORT_SYMBOL_GPL`。这里是一些关于这个补丁的信息：
 
-* [USB：将 USB 驱动标记为只被 GPL 许可 (LWN.net)][1]
- [1]: "http://lwn.net/Articles/266724/" "USB"
-* [Linux 2.6.25 版本没有 USB 闭源驱动 (Linux 杂志)][2]
- [2]:http://www.linux-magazine.com/Online/News/Linux-2.6.25-without-Closed-Source-USB-Drivers "Linux magazine"
-* [在内核版本 2.6.25 中的 USB 驱动只受 GPL 许可 (Linux 世界)][3]
- [3]:http://www.networkworld.com/category/opensource-subnet/?q=taxonomy/term/24 "Linux world"
-* [实际的 git commit][4]
-[4]:http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=782e70c6fc2290a0395850e8e02583b8b62264d8 "actual commit"
+* [USB：将 USB 驱动标记为只被 GPL 许可 (LWN.net)][3]
+* [Linux 2.6.25 版本没有 USB 闭源驱动 (Linux 杂志)][4]
+* [在内核版本 2.6.25 中的 USB 驱动只受 GPL 许可 (Linux 世界)][5]
+* [实际的 git commit][6]
 
+[3]:http://lwn.net/Articles/266724/ "USB"
+[4]:http://www.linux-magazine.com/Online/News/Linux-2.6.25-without-Closed-Source-USB-Drivers "Linux magazine"
+[5]:http://www.networkworld.com/category/opensource-subnet/?q=taxonomy/term/24 "Linux world"
+[6]:http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=782e70c6fc2290a0395850e8e02583b8b62264d8 "actual commit"
 
 ## 二进制专有的内核模块
 
 在嵌入式 Linux 领域中一个很重要的，也是比较显著的一个法律问题就是二进制（非 GPL）内核模块是否违反 Linux 内核 GPL 协议。关于这个话题有不同的观点。
 下面有一篇文章，包含了一些有趣的信息：
 
-* [支持闭源模块之第一部分：版权和软件][1]
-  [1]:http://www.networkworld.com/article/2301697/smb/encouraging-closed-source-modules-part-1--copyright-and-software.html "part 1"
-* [支持闭源模块之第二部分：法律和模块接口][2]
-   [2]:http://www.networkworld.com/article/2301698/smb/encouraging-closed-source-modules-part-2--law-and-the-module-interface.html "part 2"
-* [支持闭源模块之第三部分：消除 API 更新税][3]
-  [3]:http://www.networkworld.com/article/2301701/smb/encouraging-closed-source-modules-part-3--elimating-the--api-update-tax-.html "part 3"
+* [支持闭源模块之第一部分：版权和软件][7]
+* [支持闭源模块之第二部分：法律和模块接口][8]
+* [支持闭源模块之第三部分：消除 API 更新税][9]
+  
 
-
+[7]:http://www.networkworld.com/article/2301697/smb/encouraging-closed-source-modules-part-1--copyright-and-software.html "part 1"
+[8]:http://www.networkworld.com/article/2301698/smb/encouraging-closed-source-modules-part-2--law-and-the-module-interface.html "part 2"
+[9]:http://www.networkworld.com/article/2301701/smb/encouraging-closed-source-modules-part-3--elimating-the--api-update-tax-.html "part 3"
 
 ## 在用户空间中使用内核头文件
 

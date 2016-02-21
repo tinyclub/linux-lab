@@ -354,6 +354,9 @@ a:active {
     color: #eee;
     text-decoration: none;
 }
+#phone-navbar {
+    display: none
+}
 #navbar {
     z-index: 99;
     overflow: visible;
@@ -1172,6 +1175,21 @@ short_prev_next {
     }
     #search-box {
         margin-left: 22px
+    }
+    #phone-navbar {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        color: #ccc
+    }
+    #phone-navbar a {
+        color: #cc0;
+    }
+    #phone-navbar a#post {
+        color: #0c0;
+    }
+    #phone-navbar a#support {
+        color: #0cc;
     }
     #float-box-wrap {
         margin: 0 auto;

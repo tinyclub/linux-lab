@@ -44,19 +44,19 @@ Linux 内核只在 GNU 通用公共许可协议 2.0 版本下被许可！
 
 查看[原创开发者证书][1]，包含在内核的 [Documentation/SubmittingPatches][2] 文件中。
 
-[1]: "http://elinux.org/Developer_Certificate_Of_Origin" "原创开发者证书"
-[2]: "http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches" "SubmittingPatches"
+[1]:http://elinux.org/Developer_Certificate_Of_Origin "原创开发者证书"
+[2]:http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches "SubmittingPatches"
 
 
 ### 有关法律分析和合规的资源
 
 * 自由软件法律中心针对 GPL 有一份合规指南，很有用：
-  + http://www.softwarefreedom.org/resources/2014/SFLC-Guide_to_GPL_Compliance_2d_ed.pdf -2014 年 10 月
+  + <http://www.softwarefreedom.org/resources/2014/SFLC-Guide_to_GPL_Compliance_2d_ed.pdf> - 2014 年 10 月
 
   + 注意不是所有人都同意这份文件中的所有法律解释，但总体而言，这是一份很好的资源
 
 * 有关 copyleft 和 GNU 的通用公共许可协议的一份全面教程和指南：
-   * http://www.copyleft.org/guide/comprehensive-gpl-guide.html#comprehensive-gpl-guidepa1.html
+   * <http://www.copyleft.org/guide/comprehensive-gpl-guide.html#comprehensive-gpl-guidepa1.html>
 
 
 ## EXPORT\_SYMBOL\_GPL

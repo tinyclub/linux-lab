@@ -351,7 +351,7 @@ a:active {
     margin-top: -5px;
     font-size: 330%;
     font-weight: 900;
-    color: #ccc;
+    color: #eee;
     text-decoration: none;
 }
 #navbar {
@@ -378,7 +378,7 @@ a:active {
     padding: 5px
 }
 #navbar ul li a.highlight {
-    color: #c00
+    color: #0c0
 }
 #navbar ul li.active a,
 #navbar ul li a:hover {

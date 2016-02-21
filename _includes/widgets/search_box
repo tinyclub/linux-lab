@@ -66,7 +66,7 @@ $(document).ready(function() {
       }
     }
     var html = '';
-    var post = '<a style="color:#c00" href="{{ site.data.search['post'].url }}">{{ site.data.search['post'].title }}</a>';
+    var post = '<a style="color:#0c0" href="{{ site.data.search['post'].url }}">{{ site.data.search['post'].title }}</a>';
     for (var i = 0; i < matches.length; i++) {
       var match = matches[i]; 
       if (i == 0) {

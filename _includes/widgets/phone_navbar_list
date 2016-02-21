@@ -1,3 +1,3 @@
 <a href="/" title="回到首页">首页</a> |
 <a href="/post" id="post" title="我要投稿"> 投稿</a> |
-<a href="/about" id="post" title="关于我们"> 关于</a>
+<a href="/about" id="about" title="关于我们"> 关于</a>

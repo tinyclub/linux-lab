@@ -1222,7 +1222,7 @@ short_prev_next {
         top: 0;
         margin: 0;
         min-height: 80px;
-        min-width: 80px;
+        min-width: 40px;
         opacity: 0.85;
         -ms-filter: "alpha(opacity=85)"; /* IE 8 */
         filter: alpha(opacity=85);       /* IE 4-7 */
@@ -1233,7 +1233,6 @@ short_prev_next {
         display: block;
 
         margin: 0;
-        margin-left: 40px;
         padding-top: 12px;
         -webkit-tap-highlight-color:rgba(0,0,0,0);
     }

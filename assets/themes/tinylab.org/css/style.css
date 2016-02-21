@@ -1189,6 +1189,9 @@ short_prev_next {
     #phone-navbar a#post {
         color: #0c0;
     }
+    #phone-navbar a#about {
+        color: #0cc;
+    }
     #float-box-wrap {
         margin: 0 auto;
         bottom: 0px;

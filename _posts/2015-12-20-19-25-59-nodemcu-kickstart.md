@@ -2,7 +2,6 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "NodeMCU 物联网开发快速上手"
-album: "NodeMCU 物联网开发"
 group: original
 permalink: /nodemcu-kickstart/
 description: "NodeMCU 为一款开源 Wifi 物联网模块，本文介绍如何快速上手。"

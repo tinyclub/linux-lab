@@ -1,7 +1,6 @@
 ---
 title: "开源硬件迎来 8 核时代"
 author: 'Yao Qi'
-album: "pcDuino 入门系列"
 group: news
 layout: post
 permalink: /introduction-of-pcduino8-Uno/

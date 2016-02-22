@@ -14,7 +14,7 @@ tags:
   - LinuxCon
   - ELC
   - ELCE
-  - Linux Symposium
+  - OLS
   - FOSDEM
 ---
 

@@ -32,9 +32,9 @@ tags:
 
         git clone https://github.com/tinyclub/cs630-qemu-lab.git
 
-  * 安装 qemu
+  * 安装 qemu 和编译环境
 
-        sudo apt-get install qemu
+        sudo apt-get install qemu build-essential
 
   * 下载汇编语言源码
     

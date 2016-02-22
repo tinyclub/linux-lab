@@ -280,7 +280,7 @@ Callgraph 实际由三个工具组合而成。
  [1]: http://tinylab.org
  [2]: /online-cross-references-of-open-source-code-softwares/
  [3]: http://zh.wikipedia.org/wiki/DOT%E8%AF%AD%E8%A8%80
- [4]: /linux-0-11-lab/
+ [4]: /linux-0.11-lab/
  [5]: /wp-content/uploads/2015/04/callgraph/linux-0.11-main.svg
  [6]: /wp-content/uploads/2015/04/callgraph/linux-0.11-setup_rw_floppy.svg
  [7]: /wp-content/uploads/2015/04/callgraph/linux-update_process_times.svg

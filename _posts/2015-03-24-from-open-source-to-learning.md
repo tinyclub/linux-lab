@@ -111,4 +111,4 @@ PS：本人能力有限，还请多多批评指正。
  [8]: http://www.raspberrypi.org
  [9]: http://www.pcduino.com
  [10]: http://www.raspberrypi.org/
- [11]: /linux-0-11-lab/
+ [11]: /linux-0.11-lab/

@@ -75,7 +75,7 @@ categories:
  [3]: /cs630-qemu/
  [4]: /linux-assembly-language-quick-start/
  [5]: http://tinylab.org/books/assembly
- [6]: /linux-0-11-lab/
+ [6]: /linux-0.11-lab/
  [7]: http://bellard.org/tcc/
  [8]: /using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
  [9]: http://github.com/tinyclub

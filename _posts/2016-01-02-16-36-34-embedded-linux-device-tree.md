@@ -23,7 +23,7 @@ tags:
 > 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://elinux.org/Boot_Time.md)
 > 翻译：[@sdfd](https://github.com/sdfd)
-> 校订：[@falcon](https://github.com/falcon)
+> 校订：[@lzufalcon](https://github.com/lzufalcon)
 
 ## 前言
 

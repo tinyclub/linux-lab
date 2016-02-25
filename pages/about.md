@@ -41,8 +41,7 @@ order: 50
 
 ## 联系
 
-* Q 群：321737134
-* 微信（管理员）：lzufalcon
+* 微信（可通过管理员加专属微信群）：lzufalcon
 * 微博：[泰晓科技](http://weibo.com/tinylaborg)
 * 微信公众号：泰晓科技
 

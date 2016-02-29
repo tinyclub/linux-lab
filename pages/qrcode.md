@@ -1,12 +1,15 @@
 ---
+title: 二维码
+tagline: 二维码生成器，方便手机快速共享资源
 layout: page
-title: 二维码生成器
-tagline: 方便手机快速共享资源
+group: navigation
+permalink: /qrcode/
 comments: false
+order: 500
 ---
 {% include JB/setup %}
 
-<form id="qrcode-form"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:100%" placeholder="请输入任意字符串、网址等"></form><hr>
+<form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:268px" placeholder="请输入任意字符串、网址等"></form><hr>
 
 <div style="text-align:center">
 二维码显示区，手机端扫一扫即可访问：<br/><br/>
@@ -17,6 +20,7 @@ comments: false
 
 <script type="text/javascript">
 $(document).ready(function() {
+  $('#qrcode-picture').qrcode({ text: 'http://tinylab.org', width: 200, height: 200 });
   $('#qrcode-form').submit(function() {
     var qrcode_text = $('#qrcode-text').val();
     var html = '<div id="qrcode-picture" style="margin-left:auto;margin-right:auto;margin-top:1px"></div>';

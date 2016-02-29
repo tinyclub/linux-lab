@@ -640,7 +640,19 @@ article aside {
     margin-bottom: 0
 }
 
-article header h2,
+article header h2 {
+    font-weight: 600;
+    font-size: 100%;
+    width: 100%;
+    padding-top: 1.1em;
+    padding-bottom: 1.1em;
+    border-bottom: 1px solid #efefef;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
 #home header h2 {
     font-weight: 600;
     font-size: 100%;
@@ -652,10 +664,6 @@ article header h2,
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis
-}
-article header h2 {
-    padding-top: 1.0em;
-    padding-bottom: 1.0em;
 }
 
 .post-extra {

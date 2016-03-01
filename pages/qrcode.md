@@ -19,7 +19,7 @@ order: 500
 <br/>
 <form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:268px" placeholder="请输入任意合法网址"></form>
 
-<div style="height:50px;"></div>
+<div style="height:150px;"></div>
 
 <script type="text/javascript">
 $(document).ready(function() {

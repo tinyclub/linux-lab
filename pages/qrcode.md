@@ -1,6 +1,6 @@
 ---
 title: 二维码
-tagline: 生成任意合法网址二维码，手机扫一扫即可访问
+tagline: 生成网址二维码，方便手机扫码访问
 layout: page
 group: navigation
 permalink: /qrcode/

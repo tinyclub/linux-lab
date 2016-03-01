@@ -4,6 +4,8 @@ tagline: 生成网址二维码，方便手机扫码访问
 layout: page
 group: navigation
 permalink: /qrcode/
+update: 2016-03-02
+tags: 字符串,网址,二维码,生成器
 comments: false
 order: 500
 ---
@@ -19,11 +21,13 @@ order: 500
 <br/>
 <form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:268px" placeholder="请输入任意合法网址"></form>
 
-<div style="height:150px;"></div>
+<div style="height:100px;"></div>
 
 <script type="text/javascript">
 $(document).ready(function() {
-  $('#qrcode-picture').qrcode({ text: 'http://tinylab.org', width: 200, height: 200 });
+  /*
+    $('#qrcode-picture').qrcode({ text: 'http://tinylab.org', width: 200, height: 200 });
+   */
   $('#qrcode-form').submit(function() {
     var qrcode_text = $('#qrcode-text').val();
     var html = '<div id="qrcode-picture" style="margin-left:auto;margin-right:auto;margin-top:1px"></div>';

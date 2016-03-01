@@ -9,7 +9,7 @@ order: 500
 ---
 {% include JB/setup %}
 
-<div style="height:100px;"></div>
+<div style="height:50px;"></div>
 
 <div style="text-align:center">
   <div style="margin-left:auto;margin-right:auto;text-align:center;border:1px solid #000;height:202px;width:202px">
@@ -19,7 +19,7 @@ order: 500
 <br/>
 <form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:268px" placeholder="请输入任意合法网址"></form>
 
-<div style="height:100px;"></div>
+<div style="height:50px;"></div>
 
 <script type="text/javascript">
 $(document).ready(function() {

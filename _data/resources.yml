@@ -1,7 +1,4 @@
 
-- title: 工具
-  data: tools
-
 - title: 文章
   data: articles
 
@@ -52,3 +49,6 @@
   src: posts
   condition: group
   value: welfare
+
+- title: 工具
+  data: tools

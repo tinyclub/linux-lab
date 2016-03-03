@@ -2,7 +2,6 @@
 title: 二维码
 tagline: 生成网址二维码，方便手机扫码访问
 layout: page
-group: navigation
 permalink: /qrcode/
 update: 2016-03-02
 tags: 字符串,网址,二维码,生成器

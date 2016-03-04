@@ -68,7 +68,7 @@ User: docker Password: aefieSahk2ci
 
 执行如下命令并输入上述密码即可：
 
-<pre>$ ssh docker@192.168.56.102 -p 2222 "sh -c './docker-desktop -s 800x600 -d 10 > /dev/null 2>&#038;1 &#038;'"
+<pre>$ ssh docker@localhost -p 2222 "sh -c './docker-desktop -s 800x600 -d 10 > /dev/null 2>&#038;1 &#038;'"
 </pre>
 
 **注**：

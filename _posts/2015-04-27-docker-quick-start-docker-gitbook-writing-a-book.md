@@ -32,6 +32,7 @@ categories:
         $ sudo apt-get update
         $ sudo apt-get install -y lxc-docker
 
+  **注**：以上方法在新版 Ubuntu 上已经失效，最新版本已经转为使用 [docker engine](https://docs.docker.com/engine/installation/linux/ubuntulinux/)。
 
 ## 安装 GitBook 环境
 

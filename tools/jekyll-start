@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# For Dockerfile
+#
+
+post_num=5
+site_dir=/tinylab.org
+
+/startup.sh &
+
+cd $site_dir
+jekyll s -q -B --incremental --limit_posts=$post_num

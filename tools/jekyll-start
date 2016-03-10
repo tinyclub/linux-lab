@@ -10,5 +10,5 @@ service nginx start
 
 cd $site_dir
 echo "Start jekyll"
-jekyll s --limit_posts=$post_num --incremental
+jekyll s --future --limit_posts=$post_num --incremental
 echo "Exit jekyll"

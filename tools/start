@@ -19,7 +19,7 @@ host=`ifconfig $inet | grep "inet addr" | sed -e "s/inet addr:\([^ ]*\) .*/\1/g"
 
 sudo pkill jekyll
 
-nohup jekyll s --limit_posts $limit_posts -H $host 2>&1 >/dev/null &
+nohup jekyll s --future --limit_posts $limit_posts -H $host 2>&1 >/dev/null &
 
 sleep $(($limit_posts/3 + 2))
 

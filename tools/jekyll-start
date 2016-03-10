@@ -6,7 +6,9 @@
 post_num=5
 site_dir=/tinylab.org
 
-cd $site_dir
-jekyll s -B --limit_posts=$post_num --incremental
+service nginx start
 
-/startup.sh
+cd $site_dir
+echo "Start jekyll"
+jekyll s --limit_posts=$post_num --incremental
+echo "Exit jekyll"

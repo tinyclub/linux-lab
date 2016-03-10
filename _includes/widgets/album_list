@@ -1,6 +1,6 @@
 {% if page.album %}
 
-{% assign url = page.album | downcase | replace:' ','-' | replace:'/','-' | prepend: "/albums.html#" | append: "-ref" %}
+{% assign url = page.album | downcase | replace:' ','-' | replace:'/','-' | prepend: "/albums/#" | append: "-ref" %}
 {% assign prompt = "查看该专辑" %}
 {% assign truncate = true %}
 {% assign tooltip = false %}

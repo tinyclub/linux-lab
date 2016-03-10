@@ -5,6 +5,7 @@ tagline: 展示成系列撰写的文章
 header: Post By Albums
 group: navigation
 order: 2
+permalink: /albums/
 comments: false
 ---
 {% include JB/setup %}

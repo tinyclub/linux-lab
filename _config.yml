@@ -51,7 +51,7 @@ JB :
   tags_path : /tags.html
   atom_path : /atom.xml
   rss_path : /rss.xml
-  albums_path: /albums.html
+  albums_path: /albums/
   groups_path: /groups.html
 
   posts:

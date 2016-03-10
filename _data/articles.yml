@@ -16,7 +16,7 @@
   description: 按作者排列文章
 
 - title: 专辑
-  permalink: /albums.html
+  permalink: /albums/
   description: 文章专辑
 
 - title: 分组

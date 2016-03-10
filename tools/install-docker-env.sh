@@ -12,6 +12,8 @@ version=`sed -n -e "/main$/p" /etc/apt/sources.list | head -1 | cut -d' ' -f3`
 echo "deb https://apt.dockerproject.org/repo ubuntu-${version} main" > /etc/apt/sources.list.d/docker.list
 apt-get -y update
 apt-get -y install docker-engine
+# For tools/post
+apt-get -y install rake
 usermod -aG docker $USER
 
 docker build -t $image_name $TOP_DIR/../

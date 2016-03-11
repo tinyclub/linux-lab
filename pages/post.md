@@ -16,7 +16,46 @@ order: 30
 
 下面是一般的稿件投递过程。
 
-## 投稿过程
+## 快速上手
+
+* 下载博客仓库
+
+      $ git clone https://github.com/tinyclub/tinylab.org.git
+      $ cd tinylab.org
+
+* 安装 jekyll 编译环境
+
+Ubuntu 14.04 以上用户可直接执行：
+
+    $ sudo tools/install-docker-env.sh
+
+其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
+
+    $ docker build -t tinylab/tinylab.org ./
+
+安装后请重启 X，确保 docker 运行时无需 sudo
+
+    $ sudo pkill X
+
+* 启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最新的 5 篇
+
+      $ tools/run-docker-env.sh
+
+* 生成文章模板, slug 为链接，title 为标题
+
+      $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
+
+* 参照模板编辑文章
+
+      $ vim _posts/*the-first-post-slug*
+
+* 投稿
+
+  写完后可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com 或者按照后面的 “投送稿件” 过程通过 github 提交（推荐）。如果有图片等资料请一并发送到邮件，通过 github 提交则记得存放并上传到 `wp-content/uploads/年/月/`。
+
+**注**：推荐遵循下述完整投稿过程，因为所有过程可通过 github 管控，包括评审等流程，非常便利。
+
+## 完整投稿过程
 
 ### Fork / Star / Clone 文章仓库
 
@@ -27,6 +66,28 @@ order: 30
 打开 [在线仓库][1]，并 Fork / Star，之后就可持续参与/关注我们的原创进程。
 
 ### 搭建 Jekyll 工作环境
+
+#### 通过 Docker 搭建
+
+Ubuntu 14.04 以上用户，可通过 docker 快速搭建：
+
+    $ sudo tools/install-docker-env.sh
+
+其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
+
+    $ docker build -t tinylab/tinylab.org ./
+
+安装后请重启 X，确保 docker 运行时无需 sudo
+
+    $ sudo pkill X
+
+最后，启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最近的 5 篇
+
+    $ tools/run-docker-env.sh
+
+**注**：上述 docker 创建的 jekyll 环境使用了 80 端口，为了避免冲突，使用前请先停掉其他 http 服务，比如 nginx/apache 等。
+
+#### 本地搭建
 
     $ sudo apt-get install gcc make ruby ruby-dev rake nodejs
 
@@ -78,6 +139,8 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
 
+如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
+
 *注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
 
     $ cd tools
@@ -85,7 +148,11 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 把 `falcon` 替换为你自己的昵称即可。
 
-### 编译文稿
+### 编译和浏览文稿
+
+如果 jekyll 环境由 docker 搭建，文章会被自动编译，可实时通过 <http://localhost> 查看编译效果，因此无需下述两步。
+
+#### 编译文稿
 
     $ jekyll s --limit_posts 1
 
@@ -98,7 +165,7 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 * `--limit_posts 1` 只编译最新一篇，会大大加快编译和测试效率。
 * `tools/start` 默认编译最近 5 篇，并自动启动浏览器（默认为 `chromium-browser`）访问，另外，IP 地址为自动获取到的 `br0` 或者 `eth0` 的地址，可在本地局域网访问。可修改 `tools/start` 进行配置。
 
-### 浏览文稿
+#### 浏览文稿
 
 如果使用 `jekyll s` 而且没有通过 `-H` 指定 IP 地址，那么默认 IP 地址为 `127.0.0.1` 或者域名 `localhost`，可以通过浏览器打开：<http://localhost:4000> 进行查看。
 

@@ -20,8 +20,7 @@ order: 30
 
 * 下载博客仓库
 
-      $ git clone https://github.com/tinyclub/tinylab.org.git
-      $ cd tinylab.org
+      $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
 
 * 安装 jekyll 编译环境
 

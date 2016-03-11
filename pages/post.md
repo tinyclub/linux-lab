@@ -50,7 +50,7 @@ Ubuntu 14.04 以上用户可直接执行：
 
 * 投稿
 
-  写完后可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com 或者按照后面的 “投送稿件” 过程通过 github 提交（推荐）。如果有图片等资料请一并发送到邮件，通过 github 提交则记得存放并上传到 `wp-content/uploads/年/月/`。
+  写完后可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com 或者按照后面的 “[递送稿件](#section-7)” 过程通过 github 提交（推荐）。如果有图片等资料请一并发送到邮件，通过 github 提交则记得存放并上传到 `wp-content/uploads/年/月/`。
 
 **注**：推荐遵循下述完整投稿过程，因为所有过程可通过 github 管控，包括评审等流程，非常便利。
 

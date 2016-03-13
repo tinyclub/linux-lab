@@ -36,11 +36,15 @@ Linaro Connect 蛮多的意义还是把各 Engineer，Assignee，所有的会员
 
 Linaro Connect 每半年举办一次，从 2013 至今，共举办了 7 次，基本是一年内，分别在亚洲和美洲各举办一场，今年是第 7 场。
 
+![Linaro Connect](/wp-content/uploads/2016/03/linux-connect-target.jpg)
+
 ## BKK16
 
 这次 Linaro Connect 选在泰国曼谷市中心的 Central World 举行，并命名为 BKK16，从 2016/03/07 到 2016/03/11，为期 5 天，议题涵盖各个工作组的最新工作进展。
 
 由于泰国支持落地签，跟去年的 HKG15 选在香港一样，是尽可能多地考虑不同地区签证和访问的便利性，体现了 Linaro 组织方的用心。另外，曼谷历史悠久而且文化包容开放，与 Linaro 的这种社区的技术积淀和开放性简直是媲美得天衣无缝。
+
+![Linaro Connect](/wp-content/uploads/2016/03/linux-connect-the-grand-palace.jpg)
 
 ## 议题
 
@@ -48,18 +52,58 @@ Linaro Connect 每半年举办一次，从 2013 至今，共举办了 7 次，�
 
 由于内容较多，我们抽取几个稍微做个介绍，更多详细内容请看 Slides。
 
-* [Workload automation tool](): how to generate a workload for a specific benchmark
-* OpenOSD: library for decoding the coresight traces, and sample with perf
-* sched-freq: a new cpufreq governor, integrated with scheduler
-* BFQ: a more interactive I/O scheduler than CFQ
-* OP-TEE: a open source TEE implementation, mainly for security
-* CPUIdle: Irq prediction instead of simple entry/exit statistic
-* AOSP Ram footprint: new toolchains, new features of toolchains, split lib to smaller parts, tweek settings, replace the mem allocator
-* EAS: “Energy Aware Scheduling”, a technique that improves power management on Linux by making it more central and easier to tune. It includes Energy model driven scheduling, Scheduler driven DVFS, Idle CPU improments, Simple tunability, analysis & tuning flows, performance enhancement and tools.
-* IoTL: the methods to make Linux binary suitable for small IoT applications? Similar to our [TinyLinux](http://tinylab.org/tinylinux) project.
-* kernelci.org: doing hundreds of build and boot tests for upstream kernels on a wide variety of hardwares.
-* Android Optimizing Compiler: How to work on intrinsics, instruction simplification, platform specific optimization, checker tests, analyse IRQ, boot.oat measurements, debug perf and execution issues with streamline and GDB.
-* Ubuntu Core: a snappy platform for Embedded, IoT and 96boards
-* Soc Idling & CPU Cluster PM: Use runtime PM for CPU also?
-* Android HAL Consolidation
-* Suspend to Idle: Compare to Suspend to RAM, how much power and perf can we get?
+* Workload automation tool
+
+    how to generate a workload for a specific benchmark
+
+* OpenOSD
+
+    library for decoding the coresight traces, and sample with perf
+
+* sched-freq
+
+    a new cpufreq governor, integrated with scheduler
+
+* BFQ
+
+    a more interactive I/O scheduler than CFQ
+
+* OP-TEE
+
+    a open source TEE implementation, mainly for security
+
+* CPUIdle Improvement
+
+    Irq prediction instead of simple entry/exit statistic
+
+* AOSP RAM footprint
+
+    new toolchains, new features of toolchains, split lib to smaller parts, tweek settings, replace the mem allocator
+
+* EAS
+
+  “Energy Aware Scheduling”, a technique that improves power management on Linux by making it more central and easier to tune. It includes Energy model driven scheduling, Scheduler driven DVFS, Idle CPU improments, Simple tunability, analysis & tuning flows, performance enhancement and tools.
+
+* IoTL
+
+    the methods to make Linux binary suitable for small IoT applications? Similar to our [TinyLinux](http://tinylab.org/tinylinux) project.
+
+* kernelci.org
+
+    doing hundreds of build and boot tests for upstream kernels on a wide variety of hardwares.
+
+* Android Optimizing Compiler
+
+    How to work on intrinsics, instruction simplification, platform specific optimization, checker tests, analyse IRQ, boot.oat measurements, debug perf and execution issues with streamline and GDB.
+
+* Ubuntu Core
+
+    a snappy platform for Embedded, IoT and 96boards
+
+* Soc Idling & CPU Cluster PM
+
+    Extend runtime PM for CPU also, replace the old CPUidle framework.
+
+* Suspend to Idle
+
+    Compare to Suspend to RAM, how much power and perf can we get?

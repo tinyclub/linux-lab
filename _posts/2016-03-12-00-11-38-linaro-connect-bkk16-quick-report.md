@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Linaro Connect BKK16 速报"
-tagline: "第 7 届 Linaro Connect：BKK16 于泰国曼谷举行"
+tagline: "Linaro Connect：BKK16 于泰国曼谷举行"
 group: news
 permalink: /linaro-connect-bkk16-quick-report/
 description: "Linaro Connect 旨在把工程师和业界专家组织到一起，学习、讨论、接入并推进新技术的发展，各种讨论主要围绕 ARM Linux 的开发和相应的生态。"
@@ -30,11 +30,11 @@ Linaro 的绝大部分工作都开放给社区，只有极少数优先释放给�
 
 ## Linaro Connect
 
-由于 Linaro 是一个全球化的组织，它并没有统一的办公场所，各个 Engineer 基本都在家办公，而 Assignee 则在自己企业办公。而为了把大家召集起来，有 F2F 交流和讨论的机会，Linaro 从 2013 开始举办 [Linaro Connect](http://connect.linaro.org)。
+由于 Linaro 是一个全球化的组织，它并没有统一的办公场所，各个 Engineer 基本都在家办公，而 Assignee 则在自己企业办公。而为了把大家召集起来，有 F2F 交流和讨论的机会，Linaro 从 2010 开始举办 [Linaro Connect](http://connect.linaro.org)。
 
 Linaro Connect 蛮多的意义还是把各 Engineer，Assignee，所有的会员企业代表，以及来自其他社区的专家聚集到一起，共同讨论 ARM Linux 业界的技术现状、发展趋势，并提出自己的想法、需求，并基于讨论结果制定未来的工作计划。
 
-Linaro Connect 每半年举办一次，从 2013 至今，共举办了 7 次，基本是一年内，分别在亚洲和美洲各举办一场，今年是第 7 场。
+Linaro Connect 通常是每半年举办一次，每次在亚洲和美洲轮流登场。
 
 ![Linaro Connect](/wp-content/uploads/2016/03/linux-connect-target.jpg)
 

@@ -46,15 +46,20 @@ Linaro Connect 每半年举办一次，从 2013 至今，共举办了 7 次，�
 
 至于这次活动的议题，非常全面，在介绍之前，有很重要的消息需要分享给大家，就是说这次活动的所有演示文稿 Linaro 都已经提前开放到了 [slideshare/linaroorg](http://pt.slideshare.net/linaroorg)。
 
-由于内容较多，我们抽取几个稍微做个介绍：
+由于内容较多，我们抽取几个稍微做个介绍，更多详细内容请看 Slides。
 
-* POWER
-    * schedfreq
-    * EAS
-    * IPA
-
-* Security
-    * OP-TEE
-
-* Kernel
-    * BFQ
+* [Workload automation tool](): how to generate a workload for a specific benchmark
+* OpenOSD: library for decoding the coresight traces, and sample with perf
+* sched-freq: a new cpufreq governor, integrated with scheduler
+* BFQ: a more interactive I/O scheduler than CFQ
+* OP-TEE: a open source TEE implementation, mainly for security
+* CPUIdle: Irq prediction instead of simple entry/exit statistic
+* AOSP Ram footprint: new toolchains, new features of toolchains, split lib to smaller parts, tweek settings, replace the mem allocator
+* EAS: “Energy Aware Scheduling”, a technique that improves power management on Linux by making it more central and easier to tune. It includes Energy model driven scheduling, Scheduler driven DVFS, Idle CPU improments, Simple tunability, analysis & tuning flows, performance enhancement and tools.
+* IoTL: the methods to make Linux binary suitable for small IoT applications? Similar to our [TinyLinux](http://tinylab.org/tinylinux) project.
+* kernelci.org: doing hundreds of build and boot tests for upstream kernels on a wide variety of hardwares.
+* Android Optimizing Compiler: How to work on intrinsics, instruction simplification, platform specific optimization, checker tests, analyse IRQ, boot.oat measurements, debug perf and execution issues with streamline and GDB.
+* Ubuntu Core: a snappy platform for Embedded, IoT and 96boards
+* Soc Idling & CPU Cluster PM: Use runtime PM for CPU also?
+* Android HAL Consolidation
+* Suspend to Idle: Compare to Suspend to RAM, how much power and perf can we get?

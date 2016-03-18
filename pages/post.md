@@ -26,7 +26,7 @@ order: 30
 
 Ubuntu 14.04 以上用户可直接执行：
 
-    $ sudo tools/install-docker-env.sh
+    $ sudo tools/jekyll-env
 
 其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
 
@@ -38,7 +38,7 @@ Ubuntu 14.04 以上用户可直接执行：
 
 * 启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最新的 5 篇
 
-      $ tools/run-docker-env.sh
+      $ tools/jekyll-build
 
 * 生成文章模板, slug 为链接，title 为标题
 
@@ -82,7 +82,7 @@ Ubuntu 14.04 以上用户，可通过 docker 快速搭建：
 
 最后，启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最近的 5 篇
 
-    $ tools/run-docker-env.sh
+    $ tools/jekyll-build
 
 **注**：上述 docker 创建的 jekyll 环境使用了 80 端口，为了避免冲突，使用前请先停掉其他 http 服务，比如 nginx/apache 等。
 

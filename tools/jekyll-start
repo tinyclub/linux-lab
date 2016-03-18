@@ -4,7 +4,7 @@
 #
 
 post_num=5
-site_dir=/tinylab.org
+site_dir=/jekyll
 
 service nginx start
 

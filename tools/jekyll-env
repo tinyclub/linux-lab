@@ -16,7 +16,7 @@ echo "deb https://apt.dockerproject.org/repo ubuntu-${version} main" > /etc/apt/
 apt-get -y update
 apt-get -y install docker-engine
 # For tools/post
-apt-get -y install rake
+apt-get -y install rake git retext
 usermod -aG docker $USER
 
 docker build -t $image_name $TOP_DIR/../

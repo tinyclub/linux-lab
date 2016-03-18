@@ -62,7 +62,7 @@ Ubuntu 14.04 以上用户可直接执行：
 
     $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
 
-打开 [在线仓库][1]，并 Fork / Star，之后就可持续参与/关注我们的原创进程。
+打开 [在线仓库][1]，并 [Fork](https://github.com/tinyclub/tinylab.org#fork-destination-box) / Star，之后就可持续参与/关注我们的原创进程。
 
 ### 搭建 Jekyll 工作环境
 

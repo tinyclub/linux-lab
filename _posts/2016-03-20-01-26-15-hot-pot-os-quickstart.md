@@ -62,15 +62,13 @@ HotPot 的名字很奇怪，但是从作者的工作地点（成都）不难看�
 
 HotPot 当前已经支持 ARM 架构的 Beagle Board，只不过实际开发用的是 Qemu 虚拟机。而官方 Qemu 目前还不支持 Beagle，只有 Linaro 社区的代码才支持，所以得自己编译。我们克隆了一份 HotPot 代码并加入了 Dockerfile 以便支持环境的快速搭建。
 
-除了添加 Docker 支持外，还做了其他内容的部分调整，这些调整包括配置，编译，Clean，.gitignore 等方面，甚至也大大减少了 beagle.img 的大小（从 3G 到 8M），不仅节省了存储开销，并节约实验时解压它的时间。
+除了添加 Docker 支持外，还做了其他内容的部分调整，这些调整包括配置，编译，Clean，.gitignore 等方面，甚至也大大减少了 beagle.img 的大小（从 3G 到 8M），不仅节省了存储开销，并节约了实验时解压它的时间。
 
 相关的改进放置在 Github 上，代码地址如下：<https://github.com/tinyclub/hot-pot-lab.git>，后续会尝试 Upstream 到原作者的仓库。
 
 ### 快速上手 HotPot
 
 有了 Docker 支持，我们就可以跟随 [README.md](https://github.com/tinyclub/hot-pot-lab/blob/master/README.md)，几步就搞定实验环境并把 HotPot 跑起来。
-
-如果是 Ubuntu 14.04，则可以直接参考 README.md 行动起来，如果是其他系统，则可以参考 优先安装好 Docker Engine 并自行参照 `lab-env` 构建 Docker 镜像。
 
 * 克隆 HotPot Lab
 

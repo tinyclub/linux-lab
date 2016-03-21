@@ -52,6 +52,7 @@
 - name: 操作系统
   categories:
     - name: OS X
+    - name: HotPot
     - name: Linux 0.11
     - name: Linux 内核
       categories:

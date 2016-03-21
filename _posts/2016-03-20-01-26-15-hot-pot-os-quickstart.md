@@ -6,7 +6,7 @@ group: original
 permalink: /hot-pot-os-quickstart/
 description: "HotPot 是一款有国内黑客主导开发的操作系统，主要供爱好者学习。"
 category:
-  - Hot Pot
+  - HotPot
 tags:
   - 国产
   - 操作系统

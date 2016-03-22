@@ -10,6 +10,7 @@ tags:
   - online
   - RISC-V
   - OpenRISC
+  - ARMv7
 categories:
   - 在线 Linux
   - Javascript Emulator
@@ -25,10 +26,12 @@ categories:
   * [jor1k][8]: OpenRISC OR1K CPU emulator.
   * [v86][9]: PC emulator.
   * [angel][10]: RISC-V CPU emulator.
+  * [armv7][11]: An ARM emulator written in JavaScript
 
 2. 其他
   * [Linux 实验楼](https://www.shiyanlou.com/)
   * [Linuxzoo: Learn Linux from the safety of your chair using a remote private linux machine with root access][4]
+  * [RT-Thread on Javascript ARMv7 Emulator](http://lab.rt-thread.org/cloudide/simulator/index.html)
 
 
  [2]: http://tinylab.org
@@ -38,3 +41,4 @@ categories:
  [8]: http://s-macke.github.io/jor1k/demos/main.html
  [9]: http://copy.sh/v86/
 [10]: http://riscv.org/angel/
+[11]: https://github.com/ozaki-r/arm-js

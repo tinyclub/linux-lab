@@ -20,7 +20,7 @@ categories:
 
 这篇文章，将介绍如何用qemu来搭建一个基于ARM的嵌入式linux系统。通过该文章，你可以学习到如何配置kernel，如何交叉编译kernel，如何配置busybox并编译，如何制作initramfs，如何制作根文件系统，如何定制自己的uboot，如何通过uboot向kernel传递参数等。开始干活！
 
-## 零、环境搭建
+## 环境搭建
 
 在实现我们的目标之前，我们需要搭建自己的工作环境。在这里，假设你的主机上已经有 gcc 本地编译环境，并运行 Ubuntu 12.10 。但是这并不影响在其他的 linux 平台上进行，只要修改一下对应的命令就可以了。
 
@@ -45,7 +45,7 @@ categories:
     # download latest busybox code to busybox dir
     git clone git://busybox.net/busybox.git ~/armsource/busybox
 
-## 一、配置 kernel
+## 配置 kernel
 
 环境搭建完后，我们就正式进入主题了。现在我们需要配置 kernel 源码，编译，并用 qemu 运行我们自己编译的 kernel 。这样我们就能够对我们的 kernel 进行测试，并做出对应的修改。
 
@@ -88,7 +88,7 @@ OK ， kernel 已经编译好了，那么我们需要用 qemu 把它跑起来。
     CONFIG_EARLY_PRINTK=y
     CONFIG_CMDLINE="earlyprintk console=ttyAMA0 root=/dev/ram0"
 
-## 二、通过 busybox 制作 initramfs 镜像
+## 通过 busybox 制作 initramfs 镜像
 
 如果你注意到了之前传递给 kernel 的参数，你会发现有一个 root=/dev/ram0 的参数。没错，这就是给 kernel 指定的根文件系统， kernel 检查到这个参数的时候，会到指定的地方加载根文件系统，并执行其中的 init 程序。这样就不会出现刚才那种情况，找不到根文件系统了。
 
@@ -232,7 +232,7 @@ busybox 也是采用 Kconfig 来管理配置选项，所以配置和编译 busyb
 
 现在我们的系统起来了，并且正确执行了我们自己写的脚本，进入了shell。我们可以在里面执行基本常用的命令。是不是有点小兴奋。
 
-## 三、配置物理文件系统，切换根文件系统
+## 配置物理文件系统，切换根文件系统
 
 不是已经配置了根文件系统，并加载了，为什么还需要切换呢？可能你还沉浸在刚才的小兴奋里，但是，很不幸的告诉你。现在制作的小 linux 系统还不是一个完全的系统，因为没有完成基本的初始化，尽管看上去好像已经完成了。
 
@@ -345,7 +345,7 @@ busybox 也是采用 Kconfig 来管理配置选项，所以配置和编译 busyb
 
 如果不出意外，你可以看到这个自己做的linux系统，通过调用两个init脚本，跳到最终的hda.img上的文件系统。
 
-## 四、配置 Uboot，加载 kernel
+## 配置 Uboot，加载 kernel
 
 可能到这里，你觉得，终于把整个流程走了一遍了。但是，还差一环。之前我们都是通过 qemu 来直接加载我们的 kernel ， initramfs 和物理镜像，但是在真真的嵌入式设备，这些加载过程都需要你好好考虑。那么在这一节，我们借助 uboot 来模拟加载过程。
 
@@ -387,7 +387,7 @@ uboot 配置完之后，可以通过如下命令来编译 uboot:
 
 命令执行后，你就可以和之前一样的内核加载，最后经过两次跳转，到我们的 sd 卡上的文件系统。
 
-## 五、结语
+## 结语
 
 到这里，我们最终完成了 **qemu --> uboot --> kernel --> initramfs --> hda.img** 这一[过程][10]。而这也是制作嵌入式系统，甚至一个桌面发行版本的基本流程。如果看完这篇文章后，还对嵌入式系统念念不忘，还是建议你买一块开发板，然后真真走一遍这个过程，毕竟这是用qemu模拟的。现在有很多open source hardware project(Arduino, Beagle Board, Cubieboard，Odroid，PandaBoard，Raspberry Pi)，你可以购买他们的板子，然后移植任何自己喜欢的东西。由于是open source，你可以获取到很多资料，并且有社区支持。
 

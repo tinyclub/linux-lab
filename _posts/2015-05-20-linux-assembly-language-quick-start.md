@@ -65,15 +65,15 @@ categories:
 
 先写一个 C 语言的 `hello.c`：
 
-<pre>#include <stdio.h>
+        #include <stdio.h>
+        
+        int main(int argc, char *argv[])
+        {
+                printf("Hello World\n");
+        
+                return 0;
+        }
 
-int main(int argc, char *argv[])
-{
-        printf("Hello World\n");
-
-        return 0;
-}
-</pre>
 
 ### 汇编语言版本
 
@@ -233,26 +233,26 @@ int main(int argc, char *argv[])
 
 ### X86
 
-<pre>.data                   # section declaration
-msg:
-    .string "Hello, world!\n"
-    len = . - msg   # length of our dear string
-.text                   # section declaration
-                        # we must export the entry point to the ELF linker or
-    .global _start      # loader. They conventionally recognize _start as their
-                        # entry point. Use ld -e foo to override the default.
-_start:
-# write our string to stdout
-    movl    $len,%edx   # third argument: message length
-    movl    $msg,%ecx   # second argument: pointer to message to write
-    movl    $1,%ebx     # first argument: file handle (stdout)
-    movl    $4,%eax     # system call number (sys_write)
-    int     $0x80       # call kernel
-# and exit
-    movl    $0,%ebx     # first argument: exit code
-    movl    $1,%eax     # system call number (sys_exit)
-    int     $0x80       # call kernel
-</pre>
+    .data                   # section declaration
+    msg:
+        .string "Hello, world!\n"
+        len = . - msg   # length of our dear string
+    .text                   # section declaration
+                            # we must export the entry point to the ELF linker or
+        .global _start      # loader. They conventionally recognize _start as their
+                            # entry point. Use ld -e foo to override the default.
+    _start:
+    # write our string to stdout
+        movl    $len,%edx   # third argument: message length
+        movl    $msg,%ecx   # second argument: pointer to message to write
+        movl    $1,%ebx     # first argument: file handle (stdout)
+        movl    $4,%eax     # system call number (sys_write)
+        int     $0x80       # call kernel
+    # and exit
+        movl    $0,%ebx     # first argument: exit code
+        movl    $1,%eax     # system call number (sys_exit)
+        int     $0x80       # call kernel
+
 
 编译和链接：
 
@@ -262,48 +262,48 @@ _start:
 
 ### MIPS
 
-<pre># File: hello.s -- "hello, world!" in MIPS Assembly Programming
-# by falcon <wuzhangjin@gmail.com>, 2008/05/21
-# refer to:
-#    [*] http://www.tldp.org/HOWTO/Assembly-HOWTO/mips.html
-#    [*] MIPS Assembly Language Programmer’s Guide
-#    [*] See MIPS Run Linux(second version)
-# compile:
-#       $ as -o hello.o hello.s
-#       $ ld -e main -o hello hello.o
+    # File: hello.s -- "hello, world!" in MIPS Assembly Programming
+    # by falcon <wuzhangjin@gmail.com>, 2008/05/21
+    # refer to:
+    #    [*] http://www.tldp.org/HOWTO/Assembly-HOWTO/mips.html
+    #    [*] MIPS Assembly Language Programmer’s Guide
+    #    [*] See MIPS Run Linux(second version)
+    # compile:
+    #       $ as -o hello.o hello.s
+    #       $ ld -e main -o hello hello.o
+    
+    # data section
+    .rdata
+    hello: .asciiz "hello, world!\n"
+    length: .word . - hello            # length = current address - the string address
+    
+    # text section
+    .text
+    .globl main
+    main:
+        # if compiled with gcc-4.2.3 in 2.6.18-6-qemu the following three statements are needed
+    
+        .set noreorder
+        .cpload $t9
+        .set reorder
+    
+                # there is no need to include regdef.h in gcc-4.2.3 in 2.6.18-6-qemu
+                # but you should use $a0, not a0, of course, you can use $4 directly
+    
+                # print "hello, world!" with the sys_write system call,
+                # -- ssize_t write(int fd, const void *buf, size_t count);
+        li $a0, 1    # first argumen: the standard output, 1
+        la $a1, hello    # second argument: the string addr
+        lw $a2, length  # third argument: the string length
+        li $v0, 4004    # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
+        syscall        # causes a system call trap.
+    
+                # exit from this program via calling the sys_exit system call
+        move $a0, $0    # or "li $a0, 0", set the normal exit status as 0
+                # you can print the exit status with "echo $?" after executing this program
+        li $v0, 4001    # 4001 is __NR_exit defined in /usr/include/asm/unistd.h
+        syscall
 
-# data section
-.rdata
-hello: .asciiz "hello, world!\n"
-length: .word . - hello            # length = current address - the string address
-
-# text section
-.text
-.globl main
-main:
-    # if compiled with gcc-4.2.3 in 2.6.18-6-qemu the following three statements are needed
-
-    .set noreorder
-    .cpload $t9
-    .set reorder
-
-            # there is no need to include regdef.h in gcc-4.2.3 in 2.6.18-6-qemu
-            # but you should use $a0, not a0, of course, you can use $4 directly
-
-            # print "hello, world!" with the sys_write system call,
-            # -- ssize_t write(int fd, const void *buf, size_t count);
-    li $a0, 1    # first argumen: the standard output, 1
-    la $a1, hello    # second argument: the string addr
-    lw $a2, length  # third argument: the string length
-    li $v0, 4004    # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
-    syscall        # causes a system call trap.
-
-            # exit from this program via calling the sys_exit system call
-    move $a0, $0    # or "li $a0, 0", set the normal exit status as 0
-            # you can print the exit status with "echo $?" after executing this program
-    li $v0, 4001    # 4001 is __NR_exit defined in /usr/include/asm/unistd.h
-    syscall
-</pre>
 
 编译和链接：
 
@@ -315,56 +315,56 @@ main:
 
 #### ARM32
 
-<pre>.data
+    .data
+    
+    msg:
+        .ascii      "Hello, ARM!\n"
+    len = . - msg
+    
+    
+    .text
+    
+    .globl _start
+    _start:
+        /* syscall write(int fd, const void *buf, size_t count) */
+        mov     %r0, $1     /* fd -> stdout */
+        ldr     %r1, =msg   /* buf -> msg */
+        ldr     %r2, =len   /* count -> len(msg) */
+        mov     %r7, $4     /* write is syscall #4 */
+        swi     $0          /* invoke syscall */
+    
+        /* syscall exit(int status) */
+        mov     %r0, $0     /* status -> 0 */
+        mov     %r7, $1     /* exit is syscall #1 */
+        swi     $0          /* invoke syscall */
+    
+    
+    编译和链接：
+    
+        $ arm-linux-gnueabi-as -o arm-hello.o arm-hello.s
+        $ arm-linux-gnueabi-ld -o arm-hello arm-hello.o
+    
+    
+    #### ARM64
+    
+    .text //code section
+    .globl _start
+    _start:
+        mov x0, 0     // stdout has file descriptor 0
+        ldr x1, =msg  // buffer to write
+        mov x2, len   // size of buffer
+        mov x8, 64    // sys_write() is at index 64 in kernel functions table
+        svc #0        // generate kernel call sys_write(stdout, msg, len);
+    
+        mov x0, 123 // exit code
+        mov x8, 93  // sys_exit() is at index 93 in kernel functions table
+        svc #0      // generate kernel call sys_exit(123);
+    
+    .data //data section
+    msg:
+        .ascii      "Hello, ARM!\n"
+    len = . - msg
 
-msg:
-    .ascii      "Hello, ARM!\n"
-len = . - msg
-
-
-.text
-
-.globl _start
-_start:
-    /* syscall write(int fd, const void *buf, size_t count) */
-    mov     %r0, $1     /* fd -> stdout */
-    ldr     %r1, =msg   /* buf -> msg */
-    ldr     %r2, =len   /* count -> len(msg) */
-    mov     %r7, $4     /* write is syscall #4 */
-    swi     $0          /* invoke syscall */
-
-    /* syscall exit(int status) */
-    mov     %r0, $0     /* status -> 0 */
-    mov     %r7, $1     /* exit is syscall #1 */
-    swi     $0          /* invoke syscall */
-</pre>
-
-编译和链接：
-
-    $ arm-linux-gnueabi-as -o arm-hello.o arm-hello.s
-    $ arm-linux-gnueabi-ld -o arm-hello arm-hello.o
-
-
-#### ARM64
-
-<pre>.text //code section
-.globl _start
-_start:
-    mov x0, 0     // stdout has file descriptor 0
-    ldr x1, =msg  // buffer to write
-    mov x2, len   // size of buffer
-    mov x8, 64    // sys_write() is at index 64 in kernel functions table
-    svc #0        // generate kernel call sys_write(stdout, msg, len);
-
-    mov x0, 123 // exit code
-    mov x8, 93  // sys_exit() is at index 93 in kernel functions table
-    svc #0      // generate kernel call sys_exit(123);
-
-.data //data section
-msg:
-    .ascii      "Hello, ARM!\n"
-len = . - msg
-</pre>
 
 编译和链接：
 
@@ -376,26 +376,26 @@ len = . - msg
 
 #### PPC32
 
-<pre>.data                       # section declaration - variables only
-msg:
-    .string "Hello, world!\n"
-    len = . - msg       # length of our dear string
-.text                       # section declaration - begin code
-    .global _start
-_start:
-# write our string to stdout
-    li      0,4         # syscall number (sys_write)
-    li      3,1         # first argument: file descriptor (stdout)
-                        # second argument: pointer to message to write
-    lis     4,msg@ha    # load top 16 bits of &#038;msg
-    addi    4,4,msg@l   # load bottom 16 bits
-    li      5,len       # third argument: message length
-    sc                  # call kernel
-# and exit
-    li      0,1         # syscall number (sys_exit)
-    li      3,1         # first argument: exit code
-    sc                  # call kernel
-</pre>
+    .data                       # section declaration - variables only
+    msg:
+        .string "Hello, world!\n"
+        len = . - msg       # length of our dear string
+    .text                       # section declaration - begin code
+        .global _start
+    _start:
+    # write our string to stdout
+        li      0,4         # syscall number (sys_write)
+        li      3,1         # first argument: file descriptor (stdout)
+                            # second argument: pointer to message to write
+        lis     4,msg@ha    # load top 16 bits of &#038;msg
+        addi    4,4,msg@l   # load bottom 16 bits
+        li      5,len       # third argument: message length
+        sc                  # call kernel
+    # and exit
+        li      0,1         # syscall number (sys_exit)
+        li      3,1         # first argument: exit code
+        sc                  # call kernel
+
 
 编译和链接：
 
@@ -405,39 +405,39 @@ _start:
 
 #### PPC64
 
-<pre>.data                       # section declaration - variables only
-msg:
-    .string "Hello, world!\n"
-    len = . - msg       # length of our dear string
-.text                       # section declaration - begin code
-        .global _start
-        .section        ".opd","aw"
-        .align 3
-_start:
-        .quad   ._start,.TOC.@tocbase,0
-        .previous
-        .global  ._start
-._start:
-# write our string to stdout
-    li      0,4         # syscall number (sys_write)
-    li      3,1         # first argument: file descriptor (stdout)
-                        # second argument: pointer to message to write
-    # load the address of 'msg':
-                        # load high word into the low word of r4:
-    lis 4,msg@highest   # load msg bits 48-63 into r4 bits 16-31
-    ori 4,4,msg@higher  # load msg bits 32-47 into r4 bits  0-15
-    rldicr  4,4,32,31   # rotate r4's low word into r4's high word
-                        # load low word into the low word of r4:
-    oris    4,4,msg@h   # load msg bits 16-31 into r4 bits 16-31
-    ori     4,4,msg@l   # load msg bits  0-15 into r4 bits  0-15
-    # done loading the address of 'msg'
-    li      5,len       # third argument: message length
-    sc                  # call kernel
-# and exit
-    li      0,1         # syscall number (sys_exit)
-    li      3,1         # first argument: exit code
-    sc                  # call kernel
-</pre>
+    .data                       # section declaration - variables only
+    msg:
+        .string "Hello, world!\n"
+        len = . - msg       # length of our dear string
+    .text                       # section declaration - begin code
+            .global _start
+            .section        ".opd","aw"
+            .align 3
+    _start:
+            .quad   ._start,.TOC.@tocbase,0
+            .previous
+            .global  ._start
+    ._start:
+    # write our string to stdout
+        li      0,4         # syscall number (sys_write)
+        li      3,1         # first argument: file descriptor (stdout)
+                            # second argument: pointer to message to write
+        # load the address of 'msg':
+                            # load high word into the low word of r4:
+        lis 4,msg@highest   # load msg bits 48-63 into r4 bits 16-31
+        ori 4,4,msg@higher  # load msg bits 32-47 into r4 bits  0-15
+        rldicr  4,4,32,31   # rotate r4's low word into r4's high word
+                            # load low word into the low word of r4:
+        oris    4,4,msg@h   # load msg bits 16-31 into r4 bits 16-31
+        ori     4,4,msg@l   # load msg bits  0-15 into r4 bits  0-15
+        # done loading the address of 'msg'
+        li      5,len       # third argument: message length
+        sc                  # call kernel
+    # and exit
+        li      0,1         # syscall number (sys_exit)
+        li      3,1         # first argument: exit code
+        sc                  # call kernel
+ 
 
 编译和链接：
 

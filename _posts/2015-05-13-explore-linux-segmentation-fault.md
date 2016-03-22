@@ -45,145 +45,145 @@ categories:
 
 一个典型的例子是 `scanf` 参数使用错误：
 
-<pre>#include <stdio.h>
+        #include <stdio.h>
+        
+        int main(int argc, char *argv[])
+        {
+                int i;
+        
+                scanf("%d\n", i);
+        
+                return 0;
+        }
 
-int main(int argc, char *argv[])
-{
-        int i;
-
-        scanf("%d\n", i);
-
-        return 0;
-}
-</pre>
 
 文件保存为 `segfault-scanf.c`。其中 `&i` 写成了 `i`。
 
 ### 段错误信息
 
-<pre>$ make segfault-scanf
-$ ./segfault-scanf
-100
-Segmentation fault (core dumped)
-</pre>
+    $ make segfault-scanf
+    $ ./segfault-scanf
+    100
+    Segmentation fault (core dumped)
+
 
 ### 段错误分析
 
-<pre>$ catchsegv ./segfault-scanf
-100
-Segmentation fault (core dumped)
-*** Segmentation fault
-Register dump:
+    $ catchsegv ./segfault-scanf
+    100
+    Segmentation fault (core dumped)
+    *** Segmentation fault
+    Register dump:
+    
+     RAX: 0000000000000ca0   RBX: 0000000000000040   RCX: 0000000000000010
+     RDX: 0000000000000000   RSI: 0000000000000000   RDI: 1999999999999999
+     RBP: 00007fffdbdf1010   R8 : 00007fbb45330060   R9 : 0000000000000000
+     R10: 0000000000000ca0   R11: 0000000000000000   R12: 0000000000000004
+     R13: 0000000000000000   R14: 00007fbb45330640   R15: 000000000000000a
+     RSP: 00007fffdbdf0c20
+    
+     RIP: 00007fbb44fc761a   EFLAGS: 00010212
+    
+     CS: 0033   FS: 0000   GS: 0000
+    
+     Trap: 0000000e   Error: 00000006   OldMask: 00000000   CR2: 00000000
+    
+     FPUCW: 0000037f   FPUSW: 00000000   TAG: 00000000
+     RIP: 00000000   RDP: 00000000
+    
+     ST(0) 0000 0000000000000000   ST(1) 0000 0000000000000000
+     ST(2) 0000 0000000000000000   ST(3) 0000 0000000000000000
+     ST(4) 0000 0000000000000000   ST(5) 0000 0000000000000000
+     ST(6) 0000 0000000000000000   ST(7) 0000 0000000000000000
+     mxcsr: 1f80
+     XMM0:  00000000000000000000000000000000 XMM1:  00000000000000000000000000000000
+     XMM2:  00000000000000000000000000000000 XMM3:  00000000000000000000000000000000
+     XMM4:  00000000000000000000000000000000 XMM5:  00000000000000000000000000000000
+     XMM6:  00000000000000000000000000000000 XMM7:  00000000000000000000000000000000
+     XMM8:  00000000000000000000000000000000 XMM9:  00000000000000000000000000000000
+     XMM10: 00000000000000000000000000000000 XMM11: 00000000000000000000000000000000
+     XMM12: 00000000000000000000000000000000 XMM13: 00000000000000000000000000000000
+     XMM14: 00000000000000000000000000000000 XMM15: 00000000000000000000000000000000
+    
+    Backtrace:
+    /lib/x86_64-linux-gnu/libc.so.6(_IO_vfscanf+0x303a)[0x7fbb44fc761a]
+    /lib/x86_64-linux-gnu/libc.so.6(__isoc99_scanf+0x109)[0x7fbb44fce399]
+    ??:?(main)[0x400587]
+    /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5)[0x7fbb44f91ec5]
+    ??:?(_start)[0x400499]
+    
+    Memory map:
+    
+    00400000-00401000 r-xp 00000000 08:09 2903814 segfault-scanf
+    00600000-00601000 r--p 00000000 08:09 2903814 segfault-scanf
+    00601000-00602000 rw-p 00001000 08:09 2903814 segfault-scanf
+    01b98000-01bbd000 rw-p 00000000 00:00 0 [heap]
+    7fbb44d5a000-7fbb44d70000 r-xp 00000000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
+    7fbb44d70000-7fbb44f6f000 ---p 00016000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
+    7fbb44f6f000-7fbb44f70000 rw-p 00015000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
+    7fbb44f70000-7fbb4512b000 r-xp 00000000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
+    7fbb4512b000-7fbb4532b000 ---p 001bb000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
+    7fbb4532b000-7fbb4532f000 r--p 001bb000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
+    7fbb4532f000-7fbb45331000 rw-p 001bf000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
+    7fbb45331000-7fbb45336000 rw-p 00000000 00:00 0
+    7fbb45336000-7fbb4533a000 r-xp 00000000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
+    7fbb4533a000-7fbb45539000 ---p 00004000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
+    7fbb45539000-7fbb4553a000 r--p 00003000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
+    7fbb4553a000-7fbb4553b000 rw-p 00004000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
+    7fbb4553b000-7fbb4555e000 r-xp 00000000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
+    7fbb45729000-7fbb4572c000 rw-p 00000000 00:00 0
+    7fbb4575a000-7fbb4575d000 rw-p 00000000 00:00 0
+    7fbb4575d000-7fbb4575e000 r--p 00022000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
+    7fbb4575e000-7fbb4575f000 rw-p 00023000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
+    7fbb4575f000-7fbb45760000 rw-p 00000000 00:00 0
+    7fffdbdd2000-7fffdbdf3000 rw-p 00000000 00:00 0
+    7fffdbdfe000-7fffdbe00000 r-xp 00000000 00:00 0 [vdso]
+    ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0 [vsyscall]
 
- RAX: 0000000000000ca0   RBX: 0000000000000040   RCX: 0000000000000010
- RDX: 0000000000000000   RSI: 0000000000000000   RDI: 1999999999999999
- RBP: 00007fffdbdf1010   R8 : 00007fbb45330060   R9 : 0000000000000000
- R10: 0000000000000ca0   R11: 0000000000000000   R12: 0000000000000004
- R13: 0000000000000000   R14: 00007fbb45330640   R15: 000000000000000a
- RSP: 00007fffdbdf0c20
-
- RIP: 00007fbb44fc761a   EFLAGS: 00010212
-
- CS: 0033   FS: 0000   GS: 0000
-
- Trap: 0000000e   Error: 00000006   OldMask: 00000000   CR2: 00000000
-
- FPUCW: 0000037f   FPUSW: 00000000   TAG: 00000000
- RIP: 00000000   RDP: 00000000
-
- ST(0) 0000 0000000000000000   ST(1) 0000 0000000000000000
- ST(2) 0000 0000000000000000   ST(3) 0000 0000000000000000
- ST(4) 0000 0000000000000000   ST(5) 0000 0000000000000000
- ST(6) 0000 0000000000000000   ST(7) 0000 0000000000000000
- mxcsr: 1f80
- XMM0:  00000000000000000000000000000000 XMM1:  00000000000000000000000000000000
- XMM2:  00000000000000000000000000000000 XMM3:  00000000000000000000000000000000
- XMM4:  00000000000000000000000000000000 XMM5:  00000000000000000000000000000000
- XMM6:  00000000000000000000000000000000 XMM7:  00000000000000000000000000000000
- XMM8:  00000000000000000000000000000000 XMM9:  00000000000000000000000000000000
- XMM10: 00000000000000000000000000000000 XMM11: 00000000000000000000000000000000
- XMM12: 00000000000000000000000000000000 XMM13: 00000000000000000000000000000000
- XMM14: 00000000000000000000000000000000 XMM15: 00000000000000000000000000000000
-
-Backtrace:
-/lib/x86_64-linux-gnu/libc.so.6(_IO_vfscanf+0x303a)[0x7fbb44fc761a]
-/lib/x86_64-linux-gnu/libc.so.6(__isoc99_scanf+0x109)[0x7fbb44fce399]
-??:?(main)[0x400587]
-/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf5)[0x7fbb44f91ec5]
-??:?(_start)[0x400499]
-
-Memory map:
-
-00400000-00401000 r-xp 00000000 08:09 2903814 segfault-scanf
-00600000-00601000 r--p 00000000 08:09 2903814 segfault-scanf
-00601000-00602000 rw-p 00001000 08:09 2903814 segfault-scanf
-01b98000-01bbd000 rw-p 00000000 00:00 0 [heap]
-7fbb44d5a000-7fbb44d70000 r-xp 00000000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
-7fbb44d70000-7fbb44f6f000 ---p 00016000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
-7fbb44f6f000-7fbb44f70000 rw-p 00015000 08:02 1710807 /lib/x86_64-linux-gnu/libgcc_s.so.1
-7fbb44f70000-7fbb4512b000 r-xp 00000000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
-7fbb4512b000-7fbb4532b000 ---p 001bb000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
-7fbb4532b000-7fbb4532f000 r--p 001bb000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
-7fbb4532f000-7fbb45331000 rw-p 001bf000 08:02 1731685 /lib/x86_64-linux-gnu/libc-2.19.so
-7fbb45331000-7fbb45336000 rw-p 00000000 00:00 0
-7fbb45336000-7fbb4533a000 r-xp 00000000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
-7fbb4533a000-7fbb45539000 ---p 00004000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
-7fbb45539000-7fbb4553a000 r--p 00003000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
-7fbb4553a000-7fbb4553b000 rw-p 00004000 08:02 1731696 /lib/x86_64-linux-gnu/libSegFault.so
-7fbb4553b000-7fbb4555e000 r-xp 00000000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
-7fbb45729000-7fbb4572c000 rw-p 00000000 00:00 0
-7fbb4575a000-7fbb4575d000 rw-p 00000000 00:00 0
-7fbb4575d000-7fbb4575e000 r--p 00022000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
-7fbb4575e000-7fbb4575f000 rw-p 00023000 08:02 1731686 /lib/x86_64-linux-gnu/ld-2.19.so
-7fbb4575f000-7fbb45760000 rw-p 00000000 00:00 0
-7fffdbdd2000-7fffdbdf3000 rw-p 00000000 00:00 0
-7fffdbdfe000-7fffdbe00000 r-xp 00000000 00:00 0 [vdso]
-ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0 [vsyscall]
-</pre>
 
 上述日志包含了寄存器、回调以及内存映像信息。其中回调部分的 `_IO_vfscanf` 即指出了 `scanf` 的问题。不过咋一看不明显，可以用 `gdb` 单步跟踪进行确认。
 
 关于寄存器我们最关心的信息：
 
-<pre>Trap: 0000000e   Error: 00000006
-</pre>
+    Trap: 0000000e   Error: 00000006
+
 
 从 `arch/x86/include/asm/traps.h` 和 `arch/x86/kernel/traps.c` 找到 `SIGSEGV` 的类型有：
 
-<pre>/* Interrupts/Exceptions */
-enum {
-        ...
-        X86_TRAP_OF,            /*  4, Overflow */
-        X86_TRAP_BR,            /*  5, Bound Range Exceeded */
-        X86_TRAP_TS,            /* 10, Invalid TSS */
-        X86_TRAP_GP,            /* 13, General Protection Fault */
-        X86_TRAP_PF,            /* 14, Page Fault */
-        ...
-}
-</pre>
+    /* Interrupts/Exceptions */
+    enum {
+            ...
+            X86_TRAP_OF,            /*  4, Overflow */
+            X86_TRAP_BR,            /*  5, Bound Range Exceeded */
+            X86_TRAP_TS,            /* 10, Invalid TSS */
+            X86_TRAP_GP,            /* 13, General Protection Fault */
+            X86_TRAP_PF,            /* 14, Page Fault */
+            ...
+    }
+
 
 Trap 为 0xe，即 14，也就是 Page Fault。
 
 而 `arch/x86/mm/fault.c` 则详细解释了错误码（Error）：
 
-<pre>/*
- * Page fault error code bits:
- *
- *   bit 0 ==    0: no page found       1: protection fault
- *   bit 1 ==    0: read access         1: write access
- *   bit 2 ==    0: kernel-mode access  1: user-mode access
- *   bit 3 ==                           1: use of reserved bit detected
- *   bit 4 ==                           1: fault was an instruction fetch
- */
-enum x86_pf_error_code {
+    /*
+     * Page fault error code bits:
+     *
+     *   bit 0 ==    0: no page found       1: protection fault
+     *   bit 1 ==    0: read access         1: write access
+     *   bit 2 ==    0: kernel-mode access  1: user-mode access
+     *   bit 3 ==                           1: use of reserved bit detected
+     *   bit 4 ==                           1: fault was an instruction fetch
+     */
+    enum x86_pf_error_code {
+    
+            PF_PROT         =               1 << 0,
+            PF_WRITE        =               1 << 1,
+            PF_USER         =               1 << 2,
+            PF_RSVD         =               1 << 3,
+            PF_INSTR        =               1 << 4,
+    };
 
-        PF_PROT         =               1 << 0,
-        PF_WRITE        =               1 << 1,
-        PF_USER         =               1 << 2,
-        PF_RSVD         =               1 << 3,
-        PF_INSTR        =               1 << 4,
-};
-</pre>
 
 上面的错误码：6，二进制为 110 即：
 
@@ -265,11 +265,11 @@ enum x86_pf_error_code {
 
 分析方法除了最简便的 `catchsegv` 外，还有诸多办法，它们的应用场景各异。
 
-### <span id="catchsegv"><code>catchsegv</code> 原理</span>
+### catchsegv 原理
 
 该工具就是用来扑获段错误的，它通过动态加载器（ld-linux.so）的预加载机制（PRELOAD）把一个事先写好的库（/lib/libSegFault.so）加载上，用于捕捉断错误的出错信息。
 
-### <span id="gdb"><code>gdb</code> 调试</span>
+### gdb 调试
 
     gdb ./segfault-scanf
     ...
@@ -292,7 +292,7 @@ enum x86_pf_error_code {
     #2  0x0000000000400580 in main ()
 
 
-### <span id="coredump"><code>coredump</code> 分析</span>
+### coredump 分析
 
     $ ulimit -c 1024
     $ gdb segfault-scanf ./core
@@ -306,43 +306,43 @@ enum x86_pf_error_code {
     1857    vfscanf.c: No such file or directory.
 
 
-### <span id="_SIGSEGV_gdb">程序内捕获 <code>SIGSEGV</code> 信号并启动 <code>gdb</code></span>
+### 程序内捕获 SIGSEGV 信号并启动 gdb 
 
-<pre>#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <string.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <signal.h>
+    #include <string.h>
+    
+    void dump(int signo)
+    {
+            char buf[1024];
+            char cmd[1024];
+            FILE *fh;
+    
+            snprintf(buf, sizeof(buf), "/proc/%d/cmdline", getpid());
+            if(!(fh = fopen(buf, "r")))
+                    exit(0);
+            if(!fgets(buf, sizeof(buf), fh))
+                    exit(0);
+            fclose(fh);
+            if(buf[strlen(buf) - 1] == '\n')
+                    buf[strlen(buf) - 1] = '\0';
+            snprintf(cmd, sizeof(cmd), "gdb %s %d", buf, getpid());
+            system(cmd);
+    
+            exit(0);
+    }
+    
+    int main(int argc, char *argv[])
+    {
+            int i;
+    
+            signal(SIGSEGV, &dump);
+            scanf("%d\n", i);
+    
+            return 0;
+    }
 
-void dump(int signo)
-{
-        char buf[1024];
-        char cmd[1024];
-        FILE *fh;
-
-        snprintf(buf, sizeof(buf), "/proc/%d/cmdline", getpid());
-        if(!(fh = fopen(buf, "r")))
-                exit(0);
-        if(!fgets(buf, sizeof(buf), fh))
-                exit(0);
-        fclose(fh);
-        if(buf[strlen(buf) - 1] == '\n')
-                buf[strlen(buf) - 1] = '\0';
-        snprintf(cmd, sizeof(cmd), "gdb %s %d", buf, getpid());
-        system(cmd);
-
-        exit(0);
-}
-
-int main(int argc, char *argv[])
-{
-        int i;
-
-        signal(SIGSEGV, &dump);
-        scanf("%d\n", i);
-
-        return 0;
-}
-</pre>
 
 用法如下：
 
@@ -366,43 +366,43 @@ int main(int argc, char *argv[])
         at segfault-scanf.c:31
 
 
-### <span id="_SIGSEGV_backtrace">程序内捕获 <code>SIGSEGV</code> 信号并调用 <code>backtrace()</code> 获取回调</span>
+### 程序内捕获 SIGSEGV 信号并调用 backtrace 获取回调
 
-<pre>#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <string.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <signal.h>
+    #include <string.h>
+    
+    void dump(int signo)
+    {
+            void *array[10];
+            size_t size;
+            char **strings;
+            size_t i;
+    
+            size = backtrace (array, 10);
+            strings = backtrace_symbols (array, size);
+    
+            printf ("Obtained %zd stack frames.\n", size);
+    
+            for (i = 0; i < size; i++)
+                    printf ("%s\n", strings[i]);
+    
+            free (strings);
+    
+            exit(0);
+    }
+    
+    int main(int argc, char *argv[])
+    {
+            int i;
+    
+            signal(SIGSEGV, &dump);
+            scanf("%d\n", i);
+    
+            return 0;
+    }
 
-void dump(int signo)
-{
-        void *array[10];
-        size_t size;
-        char **strings;
-        size_t i;
-
-        size = backtrace (array, 10);
-        strings = backtrace_symbols (array, size);
-
-        printf ("Obtained %zd stack frames.\n", size);
-
-        for (i = 0; i < size; i++)
-                printf ("%s\n", strings[i]);
-
-        free (strings);
-
-        exit(0);
-}
-
-int main(int argc, char *argv[])
-{
-        int i;
-
-        signal(SIGSEGV, &dump);
-        scanf("%d\n", i);
-
-        return 0;
-}
-</pre>
 
 用法如下：
 

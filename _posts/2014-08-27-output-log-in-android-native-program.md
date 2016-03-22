@@ -35,47 +35,47 @@ Android 给 Native 层的程序提供一个 liblog 库，用来输出日志。�
 
 下面我们通过一个测试程序说明 liblog 的用法：
 
-<pre>#include <stdio.h>
-#include <cutils/log.h>
-#include <stdlib.h>
-#include <unistd.h>
+    #include <stdio.h>
+    #include <cutils/log.h>
+    #include <stdlib.h>
+    #include <unistd.h>
+    
+    #ifdef LOG_TAG
+    #undef LOG_TAG
+    #endif
+    #define LOG_TAG "mytest"
+    
+    static bool con = true;
+    
+    int main(int argc, char *argv[])
+    {
+        printf("this is a test log using printf");
+    
+        ALOGI("This is a test log using ALOGI");
+        ALOGD("This is a test log using ALOGD");
+        ALOGD_IF(con, "this is a test using log ALOGD_IF");
+    
+        return 0;
+    }
 
-#ifdef LOG_TAG
-#undef LOG_TAG
-#endif
-#define LOG_TAG "mytest"
-
-static bool con = true;
-
-int main(int argc, char *argv[])
-{
-    printf("this is a test log using printf");
-
-    ALOGI("This is a test log using ALOGI");
-    ALOGD("This is a test log using ALOGD");
-    ALOGD_IF(con, "this is a test using log ALOGD_IF");
-
-    return 0;
-}
-</pre>
 
 我们需要把这个程序编译成 Android 里的可执行文件，所以还需写一个 Android.mk:
 
-<pre>LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+    LOCAL_PATH:= $(call my-dir)
+    include $(CLEAR_VARS)
+    
+    LOCAL_CFLAGS += -Wall
+    LOCAL_LDLIBS := -L$(LOCAL_PATH)/lib -llog -g
+    LOCAL_C_INCLUDES := bionic
+    LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
+    LOCAL_SHARED_LIBRARIES += liblog libcutils
+    
+    LOCAL_SRC_FILES:= test.cpp
+    
+    LOCAL_MODULE := test
+    
+    include $(BUILD_EXECUTABLE)
 
-LOCAL_CFLAGS += -Wall
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/lib -llog -g
-LOCAL_C_INCLUDES := bionic
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
-LOCAL_SHARED_LIBRARIES += liblog libcutils
-
-LOCAL_SRC_FILES:= test.cpp
-
-LOCAL_MODULE := test
-
-include $(BUILD_EXECUTABLE)
-</pre>
 
 把这两个文件放到 Android 源码里的一个文件夹内，然后就可以通过 `mmm path/to/test` 来单独编译这个程序，最后用 `adb push` 命令把编译的测试程序复制到手机 / Android 模拟器里，这样就可以在 `adb shell` 里运行我们的程序了。
 
@@ -85,20 +85,20 @@ include $(BUILD_EXECUTABLE)
 
 由于 Android 的庞大，单纯运行 logcat 命令后，我们会被各个模块打印的 Log 给淹没掉。所以得过滤没用的 Log。logcat 工具就是干这个的，使用格式如下：
 
-<pre>$ adb logcat TAG1:PRIORITY TAG2:PRIORITY
-</pre>
+    $ adb logcat TAG1:PRIORITY TAG2:PRIORITY
+
 
 其中 TAG 就是程序中定义的 LOG_TAG，PRIORITY 就是要显示的最高 Log 级别。那么现在我们要 logcat 只显示 mytest 这个 TAG 打印的所有 Log，则可以这么写：
 
-<pre>$ adb logcat mytest:V *:S
-</pre>
+    $ adb logcat mytest:V *:S
+
 
 后面跟的 `*:S` 就是把其他模块打印的 LOG 全部屏蔽掉。
 
 如果需要把 printf 这样的标准打印函数也整合到 Android 日志缓存里，可以借助 logwrapper 工具。这里要注意的是所有通过 logwrapper 的日志，其 TAG 会变为程序名，而不是我们在程序里定义的 TAG。有的时候，我们需要在脚本向 Android Log 缓存中输出一些 Log，则可以借助 log 这个工具。例如：
 
-<pre>$ log -p v -t MYTEST "this is a test"
-</pre>
+    $ log -p v -t MYTEST "this is a test"
+
 
 其中 `-p` 就是指定 Log 等级 `(v, d, i, w, e)`，`-t` 是指定该 Log 的 TAG。
 
@@ -106,5 +106,4 @@ include $(BUILD_EXECUTABLE)
 
 
 
- [1]: &#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x77;&#101;&#110;g&#x70;&#x69;&#110;&#103;&#98;&#x6f;&#x40;&#x67;&#109;&#97;i&#x6c;&#x2e;&#99;&#111;&#109;
  [2]: http://tinylab.org

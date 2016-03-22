@@ -72,38 +72,36 @@ categories:
 
 源码中搜 original-package, PackageParser.java 中的 parsePackage() 方法对属性的处理：
 
-<pre>} else if (tagName.equals("original-package")) {
-    sa = res.obtainAttributes(attrs,
-        com.android.internal.R.styleable.AndroidManifestOriginalPackage);
-
-    String orig =sa.getNonConfigurationString(
-        com.android.internal.R.styleable.AndroidManifestOriginalPackage_name, 0);
-    if (!pkg.packageName.equals(orig)) {
-        if (pkg.mOriginalPackages == null) {
-            pkg.mOriginalPackages = new ArrayList<String>();
-            pkg.mRealPackage = pkg.packageName;
+    } else if (tagName.equals("original-package")) {
+        sa = res.obtainAttributes(attrs,
+            com.android.internal.R.styleable.AndroidManifestOriginalPackage);
+    
+        String orig =sa.getNonConfigurationString(
+            com.android.internal.R.styleable.AndroidManifestOriginalPackage_name, 0);
+        if (!pkg.packageName.equals(orig)) {
+            if (pkg.mOriginalPackages == null) {
+                pkg.mOriginalPackages = new ArrayList<String>();
+                pkg.mRealPackage = pkg.packageName;
+            }
+            pkg.mOriginalPackages.add(orig);
         }
-        pkg.mOriginalPackages.add(orig);
+    
+        sa.recycle();
+    
+        XmlUtils.skipCurrentTag(parser);
     }
-
-    sa.recycle();
-
-    XmlUtils.skipCurrentTag(parser);
-}
-</pre>
 
 查 AndroidManifestOriginalPackage 的定义，在 attrs_manifest.xml 文件中：
 
-<pre><!-- Private tag to declare the original package name that this package is
- based on.  Only used for packages installed in the system image.  If given, and different than the actual package name, and the given
- original package was previously installed on the device but the new one was not, then the data for the old one will be renamed to be for the new package.
- <p>This appears as a child tag of the root
- {@link #AndroidManifest manifest} tag. -->
-
-<declare-styleable name="AndroidManifestOriginalPackage" parent="AndroidManifest">
-    <attr name="name" />
-</declare-styleable>
-</pre>
+    Private tag to declare the original package name that this package is
+     based on.  Only used for packages installed in the system image.  If given, and different than the actual package name, and the given
+     original package was previously installed on the device but the new one was not, then the data for the old one will be renamed to be for the new package.
+     <p>This appears as a child tag of the root
+     {@link #AndroidManifest manifest} tag.
+    
+    <declare-styleable name="AndroidManifestOriginalPackage" parent="AndroidManifest">
+        <attr name="name" />
+    </declare-styleable>
 
 官方的解释很清楚了：之前安装的应用是系统应用，并且包名不同，之前应用的数据就会以新安装应用的名字保留下来。
 
@@ -115,20 +113,18 @@ categories:
 
 上面 parsePackage() 方法中的 mOriginalPackages，查源码可知对 mOriginalPackages 的其余处理只在 PackageManagerServerice 中了。mOriginalPackages 在 PackageManagerService 中出现的次数并不多，但要搞清流程，简单有效的方法就是打 log。 打 log 这里有个小技巧。当时因为是 FOTA 升级上来的，总不可能添加一些 log 就去做一次升级抓 log 吧，很麻烦并且不能保证有用的 log 没有被冲刷掉。所以当时直接拿版本 B 的手机做 dumpsys 操作，查找有没有相关 package 信息。果然是有的：
 
-<pre>Package warning messages:
-1/1/14 12:08 AM: No settings file; creating initial state
-1/1/14 12:06 AM: New package com.google.android.inputmethod.latin renamed to replace old package com.android.inputmethod.latin
-1/1/14 12:47 AM: System package com.android.inputmethod.latin signature changed; retaining data.
-1/1/14 12:51 AM: System package com.android.inputmethod.latin signature changed; retaining data.
-</pre>
+    Package warning messages:
+    1/1/14 12:08 AM: No settings file; creating initial state
+    1/1/14 12:06 AM: New package com.google.android.inputmethod.latin renamed to replace old package com.android.inputmethod.latin
+    1/1/14 12:47 AM: System package com.android.inputmethod.latin signature changed; retaining data.
+    1/1/14 12:51 AM: System package com.android.inputmethod.latin signature changed; retaining data.
 
 对应源码 scanPackageLI(pkg,&#8230;) 的代码：
 
-<pre>// File a report about this.
-String msg = "New package " + pkgSetting.realName
-        + " renamed to replace old package " + pkgSetting.name;
-reportSettingsProblem(Log.WARN, msg);
-</pre>
+    // File a report about this.
+    String msg = "New package " + pkgSetting.realName
+            + " renamed to replace old package " + pkgSetting.name;
+    reportSettingsProblem(Log.WARN, msg);
 
 reportSettingsProblem() 方法是既可以在 dumpsys 又可以在 logcat 中打印出来的，用此方法添加 log 发现 FOTA 升级上来走的流程是 if (pkg.mOriginalPackages.contains(renamed)) ,而 adb install 和 adb push 走的流程是它的 else 流程，是因为 renamed 为空，也就是 mSettings.mRenamedPackages 不包含 com.google.android.inputmethod.latin 。
 

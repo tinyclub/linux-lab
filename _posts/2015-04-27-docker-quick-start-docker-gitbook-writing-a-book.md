@@ -318,17 +318,17 @@ categories:
 
 ## 把普通用户加入 docker 用户组
 
-  * 如果还没有 docker group 就添加一个：
+* 如果还没有 docker group 就添加一个：
 
-    sudo groupadd docker
+        $ sudo groupadd docker
 
-  * 将用户加入该 group 内。然后退出并重新登录就生效啦。
+* 将用户加入该 group 内。然后退出并重新登录就生效啦。
 
-    sudo gpasswd -a ${USER} docker
+        $ sudo gpasswd -a ${USER} docker
 
-  * 重启 docker 服务
+* 重启 docker 服务
 
-    sudo service docker restart
+        $ sudo service docker restart
 
 ## 原因
 

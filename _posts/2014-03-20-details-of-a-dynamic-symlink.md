@@ -704,13 +704,13 @@ Linux下elf文件的动态链接器是`ld-linux.so`，即`/lib/ld-linux.so.2`。
 
 下面通过设置`LD_BIND_NOW`再运行一下got程序并查看结果，比较它与默认的动态链接方式(lazy mode)的异同。
 
-  * 设置LD\_BIND\_NOW环境变量的运行结果
+* 设置LD\_BIND\_NOW环境变量的运行结果
 
-    $ LD\_BIND\_NOW=1 ./got Hello World got2: 0&#215;0, got3: 0&#215;0, old\_addr: 0xb7e61a20, new\_addr: 0xb7e61a20
+      $ LD_BIND_NOW=1 ./got Hello World got2: 0×0, got3: 0×0, old_addr: 0xb7e61a20, new_addr: 0xb7e61a20
 
-  * 默认情况下的运行结果
+* 默认情况下的运行结果
 
-    $ ./got Hello World got2: 0xb7f806d8, got3: 0xb7f77f10, old\_addr: 0x80482da, new\_addr: 0xb7e62a20
+      $ ./got Hello World got2: 0xb7f806d8, got3: 0xb7f77f10, old_addr: 0x80482da, new_addr: 0xb7e62a20
 
 通过比较容易发现，在非lazy mode（设置`LD_BIND_NOW`后）下，程序运行之前符号的地址就已经被确定，即调用printf之前GOT表的最后一项已经被确定为了printf函数对应的地址，即0xb7e61a20，因此在程序运行之后，GOT表的第二项和第三项就保持为0，因为此时不再需要它们进行符号的重定位了。通过这样一个比较，就更容易理解lazy mode的特点了：在用到的时候才解析。
 

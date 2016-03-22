@@ -49,29 +49,29 @@ categories:
 
 ### clang
 
-<pre>$ sudo apt-get install clang
-$ clang -cc1 -ast-dump test.c 2>/dev/null | egrep "FunctionDecl|Function "
-|-FunctionDecl 0x2eb9350 <test.c:3:1, col:14> a 'int (void)'
-|-FunctionDecl 0x2eb94e0 <line:4:1, col:21> b 'int (int)'
-|       `-DeclRefExpr 0x2eb9588 <col:16> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
-|-FunctionDecl 0x2f027f0 <line:6:1, line:15:1> main 'int (void)'
-|   |   `-DeclRefExpr 0x2f02970 <col:9> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
-|   | | `-DeclRefExpr 0x2f029d8 <col:9> 'int (int)' Function 0x2eb94e0 'b' 'int (int)'
-|   | | `-DeclRefExpr 0x2f02cc0 <col:9> 'int (const char *restrict, ...)' Function 0x2f02b70 'scanf' 'int (const char *restrict, ...)'
-`-FunctionDecl 0x2f02b70 <line:12:9> scanf 'int (const char *restrict, ...)' extern
-</pre>
+        $ sudo apt-get install clang
+        $ clang -cc1 -ast-dump test.c 2>/dev/null | egrep "FunctionDecl|Function "
+        |-FunctionDecl 0x2eb9350 <test.c:3:1, col:14> a 'int (void)'
+        |-FunctionDecl 0x2eb94e0 <line:4:1, col:21> b 'int (int)'
+        |       `-DeclRefExpr 0x2eb9588 <col:16> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
+        |-FunctionDecl 0x2f027f0 <line:6:1, line:15:1> main 'int (void)'
+        |   |   `-DeclRefExpr 0x2f02970 <col:9> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
+        |   | | `-DeclRefExpr 0x2f029d8 <col:9> 'int (int)' Function 0x2eb94e0 'b' 'int (int)'
+        |   | | `-DeclRefExpr 0x2f02cc0 <col:9> 'int (const char *restrict, ...)' Function 0x2f02b70 'scanf' 'int (const char *restrict, ...)'
+        `-FunctionDecl 0x2f02b70 <line:12:9> scanf 'int (const char *restrict, ...)' extern
+
 
 ### gcc
 
 较新版本的 `gcc` 在编译过程中可以直接生成流程图，以之前用到 `fib.c` 为例：
 
-`$ gcc fib.c -fdump-tree-ssa-graph=fib`
+    $ gcc fib.c -fdump-tree-ssa-graph=fib
 
 上述命令会导出 `fib.dot`，处理后就是流程图，不过只是展示了函数内部的情况，函数间的关系未能体现。
 
 另外，需要补充的是，`-fdump-tree-cfg-graph` 有 BUG，生成的 `dot` 文件缺少文件头，转换下查看效果。
 
-`$ cat fib.dot | dot -Tsvg -o fib.svg`
+    $ cat fib.dot | dot -Tsvg -o fib.svg
 
 效果如下：
 
@@ -93,8 +93,8 @@ $ clang -cc1 -ast-dump test.c 2>/dev/null | egrep "FunctionDecl|Function "
 
 通过验证发现，`fdp` 针对 `tree2dotx` 的结果展示效果不错：
 
-`$ cd linux-0.11/
-$ cflow -b -m main init/main.c | tree2dotx | fdp -Tsvg -o linux-0.11-fdp.svg`
+    $ cd linux-0.11/
+    $ cflow -b -m main init/main.c | tree2dotx | fdp -Tsvg -o linux-0.11-fdp.svg
 
 效果如下：
 
@@ -106,13 +106,13 @@ $ cflow -b -m main init/main.c | tree2dotx | fdp -Tsvg -o linux-0.11-fdp.svg`
 
 先安装：
 
-`$ sudo perl -MCPAN -e 'install Graph::Easy'
-$ sudo perl -MCPAN -e 'install Graph::Easy::As_svg'`
+    $ sudo perl -MCPAN -e 'install Graph::Easy'
+    $ sudo perl -MCPAN -e 'install Graph::Easy::As_svg'
 
 用法：
 
-`$ cflow -b -m main init/main.c | tree2dotx | \
-        graph-easy --as=svg --output=linux-0.11-graph-easy.svg`
+    $ cflow -b -m main init/main.c | tree2dotx | \
+            graph-easy --as=svg --output=linux-0.11-graph-easy.svg
 
 可以看到 `graph-easy` 的输出结果又是另外一种风格：
 
@@ -124,9 +124,9 @@ $ sudo perl -MCPAN -e 'install Graph::Easy::As_svg'`
 
 刚把 `tree2dotx` 改造了一下，添加了 `-o [dot|flame]` 参数以便支持 `FlameGraph` 采用的 `Flame` 格式。
 
-&#8220;\` $ wget -c https://github.com/tinyclub/linux-0.11-lab/raw/master/tools/tree2dotx $ sudo cp tree2dotx /usr/local/bin/
-
-$ cflow -b -m main init/main.c | tree2dotx -o flame | flamegraph.pl > linux-0.11-flame.svg &#8220;\`
+    $ wget -c https://github.com/tinyclub/linux-0.11-lab/raw/master/tools/tree2dotx
+    $ sudo cp tree2dotx /usr/local/bin/
+    $ cflow -b -m main init/main.c | tree2dotx -o flame | flamegraph.pl > linux-0.11-flame.svg &#8220;\`
 
 效果如下：
 

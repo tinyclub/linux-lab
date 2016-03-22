@@ -33,7 +33,7 @@ categories:
 
 ## BogoMIPS 的由来
 
-BogoMIPS 是 Linus 本人的独创，Bogo 意思是“假的，伪造的”，MIPS 意思是“Millions of Instructions Per Second”，如果系统启动时，计算出 BogoMIPS 为 100，可记为 100万条伪指令每秒。 </br>
+BogoMIPS 是 Linus 本人的独创，Bogo 意思是“假的，伪造的”，MIPS 意思是“Millions of Instructions Per Second”，如果系统启动时，计算出 BogoMIPS 为 100，可记为 100万条伪指令每秒。 
 
 之所以叫伪指令，是因为在计算 BogoMIPS 的值时，CPU 一直在单一的执行 NOP （空操作），而不是随机执行指令集中的任意指令，所以不能以此作为 CPU 的性能指标。
 

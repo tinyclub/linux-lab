@@ -10,8 +10,7 @@ categories:
   - OS X
 ---
 
-[<img class="alignnone size-medium wp-image-588" src="https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine-600x356.png" alt="Time-Machine" />][1]
-
+![Image](https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine.png)
 
 ## 前言
 
@@ -38,7 +37,7 @@ categories:
 
 原理如下图：
 
-![Hard-Links-Example][2]
+![Hard-Links-Example](https://prettyxw.com/wp-content/uploads/2015/05/Hard-Links-Example-494x600.jpg)
 
 首先有文件 A 和文件 B，此时备份，A 和 B 都被复制。之后，文件 A 被删除，创建了文件 C，在进行备份时，只需要复制文件 C，然后创建文件 B 的硬链接即可。
 
@@ -46,27 +45,30 @@ categories:
 
 下面是一个小例子：
 
-<pre>// directory_link.c
+	// directory_link.c
 
-#include <unistd.h>
-#include <stdio.h>
+	#include <unistd.h>
+	#include <stdio.h>
 
-int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        fprintf(stderr,"Use: directory_link <source_dir> <target_dir>\n");
-        return 1;
-    }
-    int ret = link(argv[1],argv[2]);
-    if (ret != 0) {
-        fprintf(stderr, "Link failed!\n");
-    }
-    return ret;
-}</pre>
+	int main(int argc, char* argv[]) {
+	    if (argc != 3) {
+		fprintf(stderr,"Use: directory_link <source_dir> <target_dir>\n");
+		return 1;
+	    }
+	    int ret = link(argv[1],argv[2]);
+	    if (ret != 0) {
+		fprintf(stderr, "Link failed!\n");
+	    }
+	    return ret;
+	}
 
-<pre>$ clang directory_link.c -o directory_link
-$ mkdir test
-$ mkdir test_link
-$ ./directory_link test test_link/test</pre>
+编译并测试：
+
+
+	$ clang directory_link.c -o directory_link
+	$ mkdir test
+	$ mkdir test_link
+	$ ./directory_link test test_link/test
 
 ## 备份文件的组织结构
 
@@ -74,7 +76,7 @@ Time Machine 的备份文件会以目录的形式组织，其中包括每一个�
 
 以下图为例说明组织结构：
 
-![Time-Machine-Disk][4]
+![Time-Machine-Disk](https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine-Disk-600x219.png)
 
   * 在备份磁盘的根目录有名为 “Backups.backupdb” 的文件夹，所有的备份文件均放置于此
   * 每台 Mac 在 “Backups.backupdb” 目录下会有单独的文件夹来隔离存放数据

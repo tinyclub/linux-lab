@@ -31,7 +31,7 @@ categories:
         /*
          * Avoid nested stack-dumping if a panic occurs during oops processing
          */
-        if (!test_taint(TAINT_DIE) &#038;&#038; oops_in_progress &lt;= 1)
+        if (!test_taint(TAINT_DIE) && oops_in_progress <= 1)
             dump_stack();
       #endif
 
@@ -43,10 +43,10 @@ categories:
 
   `dump_backtrace()`会打印整个回调，例如：
 
-      [&lt;001360ac>] (unwind_backtrace+0x0/0xf8) from [&lt;00147b7c>] (warn_slowpath_common+0x50/0x60)
-      [&lt;00147b7c>] (warn_slowpath_common+0x50/0x60) from [&lt;00147c40>] (warn_slowpath_null+0x1c/0x24)
-      [&lt;00147c40>] (warn_slowpath_null+0x1c/0x24) from [&lt;0014de44>] (local_bh_enable_ip+0xa0/0xac)
-      [&lt;0014de44>] (local_bh_enable_ip+0xa0/0xac) from [&lt;0019594c>] (bdi_register+0xec/0x150)
+      [<001360ac>] (unwind_backtrace+0x0/0xf8) from [<00147b7c>] (warn_slowpath_common+0x50/0x60)
+      [<00147b7c>] (warn_slowpath_common+0x50/0x60) from [<00147c40>] (warn_slowpath_null+0x1c/0x24)
+      [<00147c40>] (warn_slowpath_null+0x1c/0x24) from [<0014de44>] (local_bh_enable_ip+0xa0/0xac)
+      [<0014de44>] (local_bh_enable_ip+0xa0/0xac) from [<0019594c>] (bdi_register+0xec/0x150)
 
 
   通常，上面的回调会打印出出错的地址。
@@ -136,7 +136,7 @@ categories:
 
   对于用户态来说，分析的方式类似。如果要在应用中获取Backtrace，可以参考[Generating backtraces][2]。其例子如下：
 
-      #include &lt;execinfo.h>
+      #include <execinfo.h>
       #define BACKTRACE_SIZ 64
       
       void show_backtrace (void)
@@ -148,7 +148,7 @@ categories:
             size = backtrace(array, BACKTRACE_SIZ);
             strings = backtrace_symbols(array, size);
       
-            for (i = 0; i &lt; size; i++) {
+            for (i = 0; i < size; i++) {
                 printf("%p : %s\n", array[i], strings[i]);
             }
       

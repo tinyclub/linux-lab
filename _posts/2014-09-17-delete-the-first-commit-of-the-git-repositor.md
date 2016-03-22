@@ -43,8 +43,8 @@ categories:
     那办法当然是，另辟蹊跷，那就是 **`--root`**：
 
         --root
-       Rebase all commits reachable from &lt;branch>, instead of limiting
-       them with an &lt;upstream>. This allows you to rebase the root
+       Rebase all commits reachable from <branch>, instead of limiting
+       them with an <upstream>. This allows you to rebase the root
        commit(s) on a branch.
 
 

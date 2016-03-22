@@ -26,7 +26,7 @@ Git已被广泛使用于各种项目，很多同学虽然用Git跟了很多项�
 假设有一个项目，叫gitflow。
 
 <pre>$ mkdir gitflow
-$ cat &lt;&lt;EOF > README.md
+$ cat <<EOF > README.md
 >
 >    gitflow
 >

@@ -55,7 +55,7 @@ BogoMIPS 是 Linus 本人的独创，Bogo 意思是“假的，伪造的”，MI
 <pre>cpu_data[cpu].udelay_val = loops_per_jiffy;
 </pre>
 
-**最后**，在文件`init/calibrate.c`中，我们能找到 loops&#95;per&#95;jiffy 的计算方式：
+**最后**，在文件`init/calibrate.c`中，我们能找到 loops_per_jiffy 的计算方式：
 
 <pre>#define LPS_PREC 8
 
@@ -65,7 +65,7 @@ static unsigned long calibrate_delay_converge(void)
     unsigned long lpj, lpj_base, ticks, loopadd, loopadd_base, chop_limit;
     int trials = 0, band = 0, trial_in_band = 0;
 
-    lpj = (1&lt;&lt;12);
+    lpj = (1<<12);
 
     /* wait for "start of" clock tick */
     /* 这里很聪明的选择了一个计算 loops 的起始时间，即，一个 tick 刚开始的时候 */
@@ -79,7 +79,7 @@ static unsigned long calibrate_delay_converge(void)
      * 最后累计 delay 了多少。loops_per_jiffy 就是多少了。
      */
     do {
-        if (++trial_in_band == (1&lt;&lt;band)) {
+        if (++trial_in_band == (1<<band)) {
             ++band;
             trial_in_band = 0;
         }
@@ -122,7 +122,7 @@ recalibrate:
      */
     if (lpj + loopadd * 2 == lpj_base + loopadd_base * 2) {
         lpj_base = lpj;
-        loopadd_base &lt;&lt;= 2;
+        loopadd_base <<= 2;
         goto recalibrate;
     }
 
@@ -130,12 +130,12 @@ recalibrate:
 }
 </pre>
 
-这下我们搞清楚了 loops&#95;per&#95;jiffy 的实质。详细计算方式，可以参考上面代码中给出的中文注释。
+这下我们搞清楚了 loops_per_jiffy 的实质。详细计算方式，可以参考上面代码中给出的中文注释。
 
 <pre>BogoMIPS = loops_per_jiffy ÷ (500000 / HZ)   --->   BogoMIPS = (loops_per_jiffy * HZ) ÷ 500000
 </pre>
 
-HZ 是什么，HZ 就是每秒的滴答数，即每秒的 jiffy 数。那么，loops&#95;per&#95;jiffy * HZ = loops&#95;per&#95;second
+HZ 是什么，HZ 就是每秒的滴答数，即每秒的 jiffy 数。那么，loops_per_jiffy * HZ = loops_per_second
 
 <pre>BogoMIPS = loops_per_second ÷ 500000  --->   BogoMIPS = (loops_per_second * 2) ÷ 1000000
 </pre>
@@ -146,7 +146,7 @@ HZ 是什么，HZ 就是每秒的滴答数，即每秒的 jiffy 数。那么，l
 
 看了上面 BogoMIPS 的计算方式，我们发现并没有一个直接的公式可以让 BogoMIPS 和 CPU 频率之间相互转换。但至少可以推断出**对于同一款处理器**：
 
-  * CPU 频率越快，loops&#95;per&#95;second 的值必然越大，那么 BogoMIPS 的值将会越大；
+  * CPU 频率越快，loops_per_second 的值必然越大，那么 BogoMIPS 的值将会越大；
   * CPU 频率越低，则 BogoMIPS 的值将越小；
   * CPU 变频的时候，BogoMIPS 会随着 CPU 频率升高而升高，降低而降低。
 

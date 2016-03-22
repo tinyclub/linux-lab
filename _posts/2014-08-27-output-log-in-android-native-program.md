@@ -35,10 +35,10 @@ Android 给 Native 层的程序提供一个 liblog 库，用来输出日志。�
 
 下面我们通过一个测试程序说明 liblog 的用法：
 
-<pre>#include &lt;stdio.h>
-#include &lt;cutils/log.h>
-#include &lt;stdlib.h>
-#include &lt;unistd.h>
+<pre>#include <stdio.h>
+#include <cutils/log.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #ifdef LOG_TAG
 #undef LOG_TAG

@@ -48,7 +48,7 @@ categories:
 
 ## Linux 下的 Timer 框架
 
-Linux 下的 Timer 框架和上面的例子大致相似，它把一个 Timer 拆分成两部分：Clocksource 和 Clock&#95;event&#95;device。Clocksource 主要包括 counter 等时钟源信息，Clock&#95;event&#95;device 主要包括：设置 comparer，触发中断，中断处理等任务。
+Linux 下的 Timer 框架和上面的例子大致相似，它把一个 Timer 拆分成两部分：Clocksource 和 Clock_event_device。Clocksource 主要包括 counter 等时钟源信息，Clock_event_device 主要包括：设置 comparer，触发中断，中断处理等任务。
 
 ![Liux Timer Framework][4]
 
@@ -56,14 +56,14 @@ Linux 下的 Timer 框架和上面的例子大致相似，它把一个 Timer 拆
 
 Clocksource 最重要的接口是 read counter func，通过此接口，内核可以读取 counter 中的值。完整的 Clocksource 接口定义见 include/linux/clocksource.h。
 
-### Clock&#95;event&#95;device
+### Clock_event_device
 
-Clock&#95;event&#95;device 部分需要实现如下接口
+Clock_event_device 部分需要实现如下接口
 
   * 通过 set\_next\_event 来设置下次时钟中断触发的条件。
   * 通过 irq && irq_action 来设置时钟中断触发后要做的事情。
 
-完整的 Clock&#95;event&#95;device 接口定义见 include/linux/clockchips.h
+完整的 Clock_event_device 接口定义见 include/linux/clockchips.h
 
 ## 实例展示
 
@@ -91,13 +91,13 @@ int __init init_r4k_clocksource(void)
     /* Calculate a somewhat reasonable rating value */
     clocksource_mips.rating = 200 + mips_hpt_frequency / 10000000;
 
-    clocksource_register_hz(&#038;clocksource_mips, mips_hpt_frequency);
+    clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
 
     return 0;
 }
 </pre>
 
-  * [Clock&#95;event&#95;device][6]
+  * [Clock_event_device][6]
 
 <pre>static int mips_next_event(unsigned long delta,
                struct clock_event_device *evt)
@@ -141,10 +141,10 @@ irqreturn_t c0_compare_interrupt(int irq, void *dev_id)
      * above we now know that the reason we got here must be a timer
      * interrupt.  Being the paranoiacs we are we check anyway.
      */
-    if (!r2 || (read_c0_cause() &#038; (1 &lt;&lt; 30))) {
+    if (!r2 || (read_c0_cause() & (1 << 30))) {
         /* Clear Count/Compare Interrupt */
         write_c0_compare(read_c0_compare());
-        cd = &#038;per_cpu(mips_clockevent_device, cpu);
+        cd = &per_cpu(mips_clockevent_device, cpu);
         cd->event_handler(cd);
     }
 
@@ -169,7 +169,7 @@ void mips_event_handler(struct clock_event_device *dev)
 static int c0_compare_int_pending(void)
 {
     /* When cpu_has_mips_r2, this checks Cause.TI instead of Cause.IP7 */
-    return (read_c0_cause() >> cp0_compare_irq_shift) &#038; (1ul &lt;&lt; CAUSEB_IP);
+    return (read_c0_cause() >> cp0_compare_irq_shift) & (1ul << CAUSEB_IP);
 }
 
 /*
@@ -195,27 +195,27 @@ int c0_compare_int_usable(void)
         cnt = read_c0_count();
         write_c0_compare(cnt);
         back_to_back_c0_hazard();
-        while (read_c0_count() &lt; (cnt  + COMPARE_INT_SEEN_TICKS))
+        while (read_c0_count() < (cnt  + COMPARE_INT_SEEN_TICKS))
             if (!c0_compare_int_pending())
                 break;
         if (c0_compare_int_pending())
             return 0;
     }
 
-    for (delta = 0x10; delta &lt;= 0x400000; delta &lt;&lt;= 1) {
+    for (delta = 0x10; delta <= 0x400000; delta <<= 1) {
         cnt = read_c0_count();
         cnt += delta;
         write_c0_compare(cnt);
         back_to_back_c0_hazard();
-        if ((int)(read_c0_count() - cnt) &lt; 0)
+        if ((int)(read_c0_count() - cnt) < 0)
             break;
         /* increase delta if the timer was already expired */
     }
 
-    while ((int)(read_c0_count() - cnt) &lt;= 0)
+    while ((int)(read_c0_count() - cnt) <= 0)
         ;   /* Wait for expiry  */
 
-    while (read_c0_count() &lt; (cnt + COMPARE_INT_SEEN_TICKS))
+    while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
         if (c0_compare_int_pending())
             break;
     if (!c0_compare_int_pending())
@@ -223,7 +223,7 @@ int c0_compare_int_usable(void)
     cnt = read_c0_count();
     write_c0_compare(cnt);
     back_to_back_c0_hazard();
-    while (read_c0_count() &lt; (cnt + COMPARE_INT_SEEN_TICKS))
+    while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
         if (!c0_compare_int_pending())
             break;
     if (c0_compare_int_pending())
@@ -256,7 +256,7 @@ int r4k_clockevent_init(void)
     if (get_c0_compare_int)
         irq = get_c0_compare_int();
 
-    cd = &#038;per_cpu(mips_clockevent_device, cpu);
+    cd = &per_cpu(mips_clockevent_device, cpu);
 
     cd->name        = "MIPS";
     cd->features        = CLOCK_EVT_FEAT_ONESHOT |
@@ -283,7 +283,7 @@ int r4k_clockevent_init(void)
 
     cp0_timer_irq_installed = 1;
 
-    setup_irq(irq, &#038;c0_compare_irqaction);
+    setup_irq(irq, &c0_compare_irqaction);
 
     return 0;
 }

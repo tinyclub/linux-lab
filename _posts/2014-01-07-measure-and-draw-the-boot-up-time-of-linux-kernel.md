@@ -68,14 +68,14 @@ index b78fca9..bd3f07c 100644
 +++ b/scripts/bootgraph.pl
 @@ -51,7 +51,7 @@ my %pidctr;
 
- while (&lt;>) {
+ while (<>) {
         my $line = $_;
 -       if ($line =~ /([0-9\.]+)\] calling  ([a-zA-Z0-9\_\.]+)\+/) {
 +       if ($line =~ /([0-9\.]+)\].*calling  ([a-zA-Z0-9\_\.]+)\+/) {
                 my $func = $2;
                 if ($done == 0) {
                         $start{$func} = $1;
-@@ -66,7 +66,7 @@ while (&lt;>) {
+@@ -66,7 +66,7 @@ while (<>) {
                 $count = $count + 1;
         }
 
@@ -84,7 +84,7 @@ index b78fca9..bd3f07c 100644
                 my $pid = $2;
                 my $func;
                 if (!defined($pidctr{$pid})) {
-@@ -87,14 +87,14 @@ while (&lt;>) {
+@@ -87,14 +87,14 @@ while (<>) {
                 $count = $count + 1;
         }
 
@@ -162,7 +162,7 @@ plot './boot-initcall.log' using 2:xticlabels(1)
 
 Third, draw with the above script:
 
-<pre>$ gnuplot &lt; linux-boot.gnuplot
+<pre>$ gnuplot < linux-boot.gnuplot
 </pre>
 
 After that, the [linux-boot-gnuplot.svg][8] is available.

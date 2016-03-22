@@ -36,7 +36,7 @@ echo "thIs iSS aa Test" | tr -cd "a-z\n\40"   # out: ths i aa est               
 
 好了，对 `tr` 命令有一番了解后，我们再回过头来看看，怎么剔除一个纯文本文件中的非字符字节。我使用的命令如下：
 
-<pre>tr -cd "\t\n\40-\176" &gt; /path/to/filename_new.log &lt; /path/to/filename.og
+<pre>tr -cd "\t\n\40-\176" > /path/to/filename_new.log < /path/to/filename.og
 </pre>
 
 怎么样，这条命令，你看懂了么？

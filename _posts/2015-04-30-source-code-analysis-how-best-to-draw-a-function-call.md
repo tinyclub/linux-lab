@@ -51,14 +51,14 @@ categories:
 
 <pre>$ sudo apt-get install clang
 $ clang -cc1 -ast-dump test.c 2>/dev/null | egrep "FunctionDecl|Function "
-|-FunctionDecl 0x2eb9350 &lt;test.c:3:1, col:14> a 'int (void)'
-|-FunctionDecl 0x2eb94e0 &lt;line:4:1, col:21> b 'int (int)'
-|       `-DeclRefExpr 0x2eb9588 &lt;col:16> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
-|-FunctionDecl 0x2f027f0 &lt;line:6:1, line:15:1> main 'int (void)'
-|   |   `-DeclRefExpr 0x2f02970 &lt;col:9> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
-|   | | `-DeclRefExpr 0x2f029d8 &lt;col:9> 'int (int)' Function 0x2eb94e0 'b' 'int (int)'
-|   | | `-DeclRefExpr 0x2f02cc0 &lt;col:9> 'int (const char *restrict, ...)' Function 0x2f02b70 'scanf' 'int (const char *restrict, ...)'
-`-FunctionDecl 0x2f02b70 &lt;line:12:9> scanf 'int (const char *restrict, ...)' extern
+|-FunctionDecl 0x2eb9350 <test.c:3:1, col:14> a 'int (void)'
+|-FunctionDecl 0x2eb94e0 <line:4:1, col:21> b 'int (int)'
+|       `-DeclRefExpr 0x2eb9588 <col:16> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
+|-FunctionDecl 0x2f027f0 <line:6:1, line:15:1> main 'int (void)'
+|   |   `-DeclRefExpr 0x2f02970 <col:9> 'int (void)' Function 0x2eb9350 'a' 'int (void)'
+|   | | `-DeclRefExpr 0x2f029d8 <col:9> 'int (int)' Function 0x2eb94e0 'b' 'int (int)'
+|   | | `-DeclRefExpr 0x2f02cc0 <col:9> 'int (const char *restrict, ...)' Function 0x2f02b70 'scanf' 'int (const char *restrict, ...)'
+`-FunctionDecl 0x2f02b70 <line:12:9> scanf 'int (const char *restrict, ...)' extern
 </pre>
 
 ### gcc

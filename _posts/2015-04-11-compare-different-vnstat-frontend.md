@@ -39,7 +39,7 @@ vnStat 首页推荐的四个前端有：
 
     ![vnStatSVG Demo][4]
 
-  * [jsvnstat][5] &#8211; interactive network traffic analysis
+  * [jsvnstat][5]：interactive network traffic analysis
 
     jsvnstat 是另外一款 Web 前端，基于 Javascript 可以实现简单的交互，不过它依赖 PHP 支持，而且不支持集群和嵌入式系统。
 
@@ -113,21 +113,21 @@ vnStat 首页推荐的四个前端有：
 配置大体如下：
 
 <pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-&lt;sidebar id="sidebar">
+<sidebar id="sidebar">
 <!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-&lt;iface>
-    &lt;name>eth0&lt;/name>
-    &lt;host>localhost&lt;/host>
-    &lt;description>Local Host&lt;/description>
-&lt;/iface>
-&lt;/sidebar>
+<iface>
+    <name>eth0</name>
+    <host>localhost</host>
+    <description>Local Host</description>
+</iface>
+</sidebar>
 </pre>
 
 更多模板请查看 `src/admin/sidebar.xml-template*`。
 
 之后，编辑 `sidebar.xml` 配置各类网络设备节点的信息：
 
-  * name: 网络设备节点名，默认为 eth0, eth1 &#8230;
+  * name: 网络设备节点名，默认为 eth0, eth1
   * host: 主机地址或者域名
   * protocol: XML 格式的流量数据获取协议，默认为 http
   * dump_tool: 默认为 shell 方式，即 `/cgi-bin/vnstat.sh`
@@ -140,19 +140,19 @@ vnStat 首页推荐的四个前端有：
 例如，如果要监控 `localhost` 和 泰晓科技（域名为 tinylab.org） 的数据，可以添加一份如下配置：
 
 <pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-&lt;sidebar id="sidebar">
+<sidebar id="sidebar">
 <!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-&lt;iface>
-    &lt;name>eth0&lt;/name>
-    &lt;host>localhost&lt;/host>
-    &lt;description>Local Host&lt;/description>
-&lt;/iface>
-&lt;iface>
-    &lt;name>eth1&lt;/name>
-    &lt;host>tinylab.org&lt;/host>
-    &lt;description>TinyLab.org&lt;/description>
-&lt;/iface>
-&lt;/sidebar>
+<iface>
+    <name>eth0</name>
+    <host>localhost</host>
+    <description>Local Host</description>
+</iface>
+<iface>
+    <name>eth1</name>
+    <host>tinylab.org</host>
+    <description>TinyLab.org</description>
+</iface>
+</sidebar>
 </pre>
 
 如果不想在其他机器上安装一份额外的 `vnStatSVG`，那么可以只安装 `vnstat`，但是需要有一种方式从其他主机上把数据拷贝到本地，例如，拷贝到本地的 `vnstat` 数据目录下 `/var/lib/vnstat`。
@@ -179,24 +179,24 @@ done
 可以在后台一直执行该脚本或者启动另外一个 `cron` 任务来执行该脚本。这样就可以用 `file` 虚拟协议，如下的 `sidebar.xml` 就可以实现同样的效果了。
 
 <pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-&lt;sidebar id="sidebar">
+<sidebar id="sidebar">
 <!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-&lt;iface>
-    &lt;name>eth0&lt;/name>
-    &lt;host>localhost&lt;/host>
-    &lt;description>Local Host&lt;/description>
-&lt;/iface>
-&lt;iface>
-    &lt;name>tinylab.org-eth0&lt;/name>
-    &lt;host>localhost&lt;/host>
-    &lt;description>TinyLab.org : eth0&lt;/description>
-&lt;/iface>
-&lt;iface>
-    &lt;name>tinylab.org-eth1&lt;/name>
-    &lt;host>localhost&lt;/host>
-    &lt;description>TinyLab.org : eth1&lt;/description>
-&lt;/iface>
-&lt;/sidebar>
+<iface>
+    <name>eth0</name>
+    <host>localhost</host>
+    <description>Local Host</description>
+</iface>
+<iface>
+    <name>tinylab.org-eth0</name>
+    <host>localhost</host>
+    <description>TinyLab.org : eth0</description>
+</iface>
+<iface>
+    <name>tinylab.org-eth1</name>
+    <host>localhost</host>
+    <description>TinyLab.org : eth1</description>
+</iface>
+</sidebar>
 </pre>
 
 ## 小结

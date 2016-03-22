@@ -106,7 +106,7 @@ $ file ../ramdisk
 ../ramdisk: ASCII cpio archive (pre-SVR4 or odc)
 </pre>
 
-&#8220;打包&#8221;（压缩）一下。
+打包（压缩）一下。
 
 <pre>$ sync
 $ cd ../
@@ -140,7 +140,7 @@ initrd.img-2.6.24-12-generic: ASCII cpio archive (SVR4 with no CRC)
 
 现在展开 cpio 档，并查看里头的内容。
 
-<pre>$ cpio -i &lt; ./initrd.img-2.6.24-12-generic
+<pre>$ cpio -i < ./initrd.img-2.6.24-12-generic
 $ ls
 bin  conf  etc  init  initrd.img-2.6.24-12-generic  lib  modules  sbin  scripts  usr  var
 </pre>

@@ -45,7 +45,7 @@ categories:
 
 一个典型的例子是 `scanf` 参数使用错误：
 
-<pre>#include &lt;stdio.h>
+<pre>#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -177,11 +177,11 @@ Trap 为 0xe，即 14，也就是 Page Fault。
  */
 enum x86_pf_error_code {
 
-        PF_PROT         =               1 &lt;&lt; 0,
-        PF_WRITE        =               1 &lt;&lt; 1,
-        PF_USER         =               1 &lt;&lt; 2,
-        PF_RSVD         =               1 &lt;&lt; 3,
-        PF_INSTR        =               1 &lt;&lt; 4,
+        PF_PROT         =               1 << 0,
+        PF_WRITE        =               1 << 1,
+        PF_USER         =               1 << 2,
+        PF_RSVD         =               1 << 3,
+        PF_INSTR        =               1 << 4,
 };
 </pre>
 
@@ -308,10 +308,10 @@ enum x86_pf_error_code {
 
 ### <span id="_SIGSEGV_gdb">程序内捕获 <code>SIGSEGV</code> 信号并启动 <code>gdb</code></span>
 
-<pre>#include &lt;stdio.h>
-#include &lt;stdlib.h>
-#include &lt;signal.h>
-#include &lt;string.h>
+<pre>#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
 
 void dump(int signo)
 {
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
 {
         int i;
 
-        signal(SIGSEGV, &#038;dump);
+        signal(SIGSEGV, &dump);
         scanf("%d\n", i);
 
         return 0;
@@ -368,10 +368,10 @@ int main(int argc, char *argv[])
 
 ### <span id="_SIGSEGV_backtrace">程序内捕获 <code>SIGSEGV</code> 信号并调用 <code>backtrace()</code> 获取回调</span>
 
-<pre>#include &lt;stdio.h>
-#include &lt;stdlib.h>
-#include &lt;signal.h>
-#include &lt;string.h>
+<pre>#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
 
 void dump(int signo)
 {
@@ -385,7 +385,7 @@ void dump(int signo)
 
         printf ("Obtained %zd stack frames.\n", size);
 
-        for (i = 0; i &lt; size; i++)
+        for (i = 0; i < size; i++)
                 printf ("%s\n", strings[i]);
 
         free (strings);
@@ -397,7 +397,7 @@ int main(int argc, char *argv[])
 {
         int i;
 
-        signal(SIGSEGV, &#038;dump);
+        signal(SIGSEGV, &dump);
         scanf("%d\n", i);
 
         return 0;

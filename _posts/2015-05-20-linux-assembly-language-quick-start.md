@@ -65,7 +65,7 @@ categories:
 
 先写一个 C 语言的 `hello.c`：
 
-<pre>#include &lt;stdio.h>
+<pre>#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -263,7 +263,7 @@ _start:
 ### MIPS
 
 <pre># File: hello.s -- "hello, world!" in MIPS Assembly Programming
-# by falcon &lt;wuzhangjin@gmail.com>, 2008/05/21
+# by falcon <wuzhangjin@gmail.com>, 2008/05/21
 # refer to:
 #    [*] http://www.tldp.org/HOWTO/Assembly-HOWTO/mips.html
 #    [*] MIPS Assembly Language Programmer’s Guide

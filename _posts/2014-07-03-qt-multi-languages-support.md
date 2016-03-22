@@ -32,7 +32,7 @@ categories:
 
   然后，依次：
 
-      New File or Project --&gt; Applications --&gt; Qt Gui Application --&gt; Next --&gt; Name: test --&gt; Class: test --&gt; Finis
+      New File or Project --> Applications --> Qt Gui Application --> Next --> Name: test --> Class: test --> Finis
 
   这样会创建一个默认的只支持英文的Qt程序。通过Build, Run启动后，发现标题是英文test。
 
@@ -43,9 +43,9 @@ categories:
       --- a/main.cpp
       +++ b/main.cpp
       @@ -1,9 +1,20 @@
-       #include &lt;QApplication>
-      +#include &lt;QTextCodec>
-      +#include &lt;QTranslator>
+       #include <QApplication>
+      +#include <QTextCodec>
+      +#include <QTranslator>
        #include "test.h"
       
        int main(int argc, char *argv[])
@@ -90,7 +90,7 @@ categories:
 
   翻译完成后，咱们重新编译并启动：
 
-      $ qmake &#038;&#038; make
+      $ qmake && make
       $ ./test
 
   会发现标题已经变成了“多国语言测试”。

@@ -80,7 +80,7 @@ categories:
         com.android.internal.R.styleable.AndroidManifestOriginalPackage_name, 0);
     if (!pkg.packageName.equals(orig)) {
         if (pkg.mOriginalPackages == null) {
-            pkg.mOriginalPackages = new ArrayList&lt;String>();
+            pkg.mOriginalPackages = new ArrayList<String>();
             pkg.mRealPackage = pkg.packageName;
         }
         pkg.mOriginalPackages.add(orig);
@@ -94,15 +94,15 @@ categories:
 
 查 AndroidManifestOriginalPackage 的定义，在 attrs_manifest.xml 文件中：
 
-<pre>&lt;!-- Private tag to declare the original package name that this package is
+<pre><!-- Private tag to declare the original package name that this package is
  based on.  Only used for packages installed in the system image.  If given, and different than the actual package name, and the given
  original package was previously installed on the device but the new one was not, then the data for the old one will be renamed to be for the new package.
- &lt;p&gt;This appears as a child tag of the root
- {@link #AndroidManifest manifest} tag. --&gt;
+ <p>This appears as a child tag of the root
+ {@link #AndroidManifest manifest} tag. -->
 
-&lt;declare-styleable name="AndroidManifestOriginalPackage" parent="AndroidManifest"&gt;
-    &lt;attr name="name" /&gt;
-&lt;/declare-styleable&gt;
+<declare-styleable name="AndroidManifestOriginalPackage" parent="AndroidManifest">
+    <attr name="name" />
+</declare-styleable>
 </pre>
 
 官方的解释很清楚了：之前安装的应用是系统应用，并且包名不同，之前应用的数据就会以新安装应用的名字保留下来。

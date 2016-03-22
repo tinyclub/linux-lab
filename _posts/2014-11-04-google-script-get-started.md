@@ -23,7 +23,7 @@ Google Script 是 Google 最近推出来的轻应用开发平台. 和 Google App
   var count = GmailApp.getInboxUnreadCount();
   Logger.log("count: %s", count);
   var threads = GmailApp.getInboxThreads(0, count);
-  for(var i = 0; i &lt; threads.length; i++) {
+  for(var i = 0; i < threads.length; i++) {
     var mesg = threads[i].getMessages();
     if(mesg[0].getTo() == "" && mesg[0].getCc() == "" && mesg[0].getBcc() == "") {
       Logger.log("spam message: %s", mesg[0].getSubject());

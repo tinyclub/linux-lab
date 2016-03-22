@@ -404,7 +404,7 @@ $ cp -r diretory_file directory_file_copy
 
 按行读一个文件
 
-<pre>$ while read LINE; do echo $LINE; done &lt; test.sh
+<pre>$ while read LINE; do echo $LINE; done < test.sh
 </pre>
 
 提示：如果要把包含重定向的字符串变量当作命令来执行，请使用 eval 命令，否则无法解释重定向。例如，

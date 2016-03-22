@@ -48,12 +48,12 @@ categories:
 
 <pre>// directory_link.c
 
-#include &lt;unistd.h&gt;
-#include &lt;stdio.h&gt;
+#include <unistd.h>
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        fprintf(stderr,"Use: directory_link &lt;source_dir&gt; &lt;target_dir&gt;\n");
+        fprintf(stderr,"Use: directory_link <source_dir> <target_dir>\n");
         return 1;
     }
     int ret = link(argv[1],argv[2]);

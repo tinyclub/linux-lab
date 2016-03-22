@@ -47,7 +47,7 @@ categories:
         #ifndef XXXX_H
         #define XXXX_H
         
-        #include &lt;include/uapi/path/to/header.h>
+        #include <include/uapi/path/to/header.h>
         
         [Kernel-space definitions]
         

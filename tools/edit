@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+	ls _posts/*$1* | xargs -i grep "^title:" {} | cut -d':' -f2- | cat -n
+	total=`ls _posts/*$1* | wc -l`
+        if [ $total -gt 1 ]; then
+		read -p "Select(1~$total): " post
+		if [ $post -le $total -a $post -ge 1 ]; then
+			post=`ls _posts/*os* | head -$post | tail -1`
+		fi
+	else
+		post=`ls _posts/*$1* | head -1`
+	fi
+	vim $post
+	exit 0
+fi
+
+vim _posts/`ls _posts/ | tail -1`

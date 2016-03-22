@@ -76,9 +76,10 @@ HotPot 当前已经支持 ARM 架构的 Beagle Board，只不过实际开发用�
 
 * 搭建环境
 
+      $ cd hot-pot-lab/lab
+
   对于 Ubuntu 14.04：
 
-      $ cd hot-pot-lab/lab
       $ sudo ./lab-env
 
   或自行安装 [docker-engine](https://docs.docker.com/engine/installation/linux/)，然后自助构建 docker 镜像：
@@ -87,7 +88,7 @@ HotPot 当前已经支持 ARM 架构的 Beagle Board，只不过实际开发用�
 
 * 启动环境
 
-      $ sudo ./lab-build
+      $ ./lab-build
       root@687031bd8f37:/hot-pot-lab# exit
       $ ./lab-start
       root@687031bd8f37:/hot-pot-lab#

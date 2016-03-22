@@ -32,7 +32,7 @@ categories:
 
       * 打开Chrome的调试终端
 
-        <pre>Tools -&gt; Developer Tools -&gt; Console</pre>
+        <pre>Tools > Developer Tools > Console</pre>
 
         根据错误提示，找到出错的文件和所在的行就可以很快定位到问题了。
 

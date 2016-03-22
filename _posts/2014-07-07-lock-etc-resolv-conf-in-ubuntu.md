@@ -29,5 +29,5 @@ categories:
       $ cp /etc/resolv.conf /tmp/resolv.conf
       $ rm /etc/resolv.conf
       $ mv /tmp/resolv.conf /etc/resolv.conf
-      $ echo "nameserver 8.8.8.8" &gt;&gt; /etc/resolv.conf
+      $ echo "nameserver 8.8.8.8" >> /etc/resolv.conf
       $ chattr +i /etc/resolv.conf

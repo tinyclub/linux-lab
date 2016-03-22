@@ -45,7 +45,7 @@ categories:
 
         ...
 
-        /* Empty out caches in the face of memory pressure. The callback may be NULL. Present in version &gt;= 8. */
+        /* Empty out caches in the face of memory pressure. The callback may be NULL. Present in version >= 8. */
         size_t  (*pressure_relief)(struct _malloc_zone_t *zone, size_t goal);
     } malloc_zone_t;
 

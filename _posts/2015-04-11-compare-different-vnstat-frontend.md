@@ -112,16 +112,14 @@ vnStat 首页推荐的四个前端有：
 
 配置大体如下：
 
-<pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-<sidebar id="sidebar">
-<!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-<iface>
-    <name>eth0</name>
-    <host>localhost</host>
-    <description>Local Host</description>
-</iface>
-</sidebar>
-</pre>
+    <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+    <sidebar id="sidebar">
+    <iface>
+        <name>eth0</name>
+        <host>localhost</host>
+        <description>Local Host</description>
+    </iface>
+    </sidebar>
 
 更多模板请查看 `src/admin/sidebar.xml-template*`。
 
@@ -139,65 +137,61 @@ vnStat 首页推荐的四个前端有：
 
 例如，如果要监控 `localhost` 和 泰晓科技（域名为 tinylab.org） 的数据，可以添加一份如下配置：
 
-<pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-<sidebar id="sidebar">
-<!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-<iface>
-    <name>eth0</name>
-    <host>localhost</host>
-    <description>Local Host</description>
-</iface>
-<iface>
-    <name>eth1</name>
-    <host>tinylab.org</host>
-    <description>TinyLab.org</description>
-</iface>
-</sidebar>
-</pre>
+    <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+    <sidebar id="sidebar">
+    <iface>
+        <name>eth0</name>
+        <host>localhost</host>
+        <description>Local Host</description>
+    </iface>
+    <iface>
+        <name>eth1</name>
+        <host>tinylab.org</host>
+        <description>TinyLab.org</description>
+    </iface>
+    </sidebar>
 
 如果不想在其他机器上安装一份额外的 `vnStatSVG`，那么可以只安装 `vnstat`，但是需要有一种方式从其他主机上把数据拷贝到本地，例如，拷贝到本地的 `vnstat` 数据目录下 `/var/lib/vnstat`。
 
 例如，可以用 ssh 协议（可以通过配置公钥免密登录）。
 
-<pre># collect-data.sh
-hosts="tinylab.org"
-ifaces="eth0 eth1"
-while :;
-do
-    for h in hosts
+    # collect-data.sh
+    hosts="tinylab.org"
+    ifaces="eth0 eth1"
+    while :;
     do
-                for i in $ifaces
-                do
-                    scp ${h}:/var/lib/vnstat/${i} /var/lib/vnstat/${h}-${i}
-                    scp ${h}:/proc/net/dev > /var/lib/vnstat/${h}-${i}-second
-                done
+        for h in hosts
+        do
+                    for i in $ifaces
+                    do
+                        scp ${h}:/var/lib/vnstat/${i} /var/lib/vnstat/${h}-${i}
+                        scp ${h}:/proc/net/dev > /var/lib/vnstat/${h}-${i}-second
+                    done
+        done
+        sleep 5
     done
-    sleep 5
-done
-</pre>
 
 可以在后台一直执行该脚本或者启动另外一个 `cron` 任务来执行该脚本。这样就可以用 `file` 虚拟协议，如下的 `sidebar.xml` 就可以实现同样的效果了。
 
-<pre><?xml version='1.0' encoding='UTF-8' standalone='no' ?>
-<sidebar id="sidebar">
-<!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
-<iface>
-    <name>eth0</name>
-    <host>localhost</host>
-    <description>Local Host</description>
-</iface>
-<iface>
-    <name>tinylab.org-eth0</name>
-    <host>localhost</host>
-    <description>TinyLab.org : eth0</description>
-</iface>
-<iface>
-    <name>tinylab.org-eth1</name>
-    <host>localhost</host>
-    <description>TinyLab.org : eth1</description>
-</iface>
-</sidebar>
-</pre>
+    <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+    <sidebar id="sidebar">
+    <!-- this configuration is for single host, the hosts and dump_tool field should be the same -->
+    <iface>
+        <name>eth0</name>
+        <host>localhost</host>
+        <description>Local Host</description>
+    </iface>
+    <iface>
+        <name>tinylab.org-eth0</name>
+        <host>localhost</host>
+        <description>TinyLab.org : eth0</description>
+    </iface>
+    <iface>
+        <name>tinylab.org-eth1</name>
+        <host>localhost</host>
+        <description>TinyLab.org : eth1</description>
+    </iface>
+    </sidebar>
 
 ## 小结
 

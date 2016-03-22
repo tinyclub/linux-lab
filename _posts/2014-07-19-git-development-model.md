@@ -25,36 +25,34 @@ Git已被广泛使用于各种项目，很多同学虽然用Git跟了很多项�
 
 假设有一个项目，叫gitflow。
 
-<pre>$ mkdir gitflow
-$ cat <<EOF > README.md
->
->    gitflow
->
-> #Introduction
->
-> This is a project aims to show a standard git flow.
->
-> #Client
->
-> #Server
->
-> #Development
->
-> #Review
->
-> #Upstream
->
-> #Release
-> EOF
-</pre>
+    $ mkdir gitflow
+    $ cat <<EOF > README.md
+    >
+    >    gitflow
+    >
+    > #Introduction
+    >
+    > This is a project aims to show a standard git flow.
+    >
+    > #Client
+    >
+    > #Server
+    >
+    > #Development
+    >
+    > #Review
+    >
+    > #Upstream
+    >
+    > #Release
+    > EOF
 
 一般情况下，项目管理人员或者团队Leader会整理初始代码和文档，然后创建一个初始的代码仓库：
 
-<pre>$ cd gitflow
-$ git init
-$ git add README.md
-$ git commit -s -m "Init the gitflow project"
-</pre>
+    $ cd gitflow
+    $ git init
+    $ git add README.md
+    $ git commit -s -m "Init the gitflow project"
 
 ### 初始化该项目的远程仓库
 
@@ -62,34 +60,31 @@ $ git commit -s -m "Init the gitflow project"
 
 接下来，创建一个不带工作目录的远程仓库，为了方便测试，咱们直接在本机上建立吧：
 
-<pre>$ cd ../
-$ mkdir remote-gitflow
-$ cd remote-gitflow
-$ git init --bare
-</pre>
+    $ cd ../
+    $ mkdir remote-gitflow
+    $ cd remote-gitflow
+    $ git init --bare
 
 然后，到本地仓库设置一下远程仓库地址（创建一个默认别名为origin）：
 
-<pre>$ cd ../gitflow/
-$ git remote add origin localhost:${PWD}/../remote-gitflow/
-</pre>
+    $ cd ../gitflow/
+    $ git remote add origin localhost:${PWD}/../remote-gitflow/
 
 上传本地仓库：
 
-<pre>$ git push origin master:master
-$ git branch -a
-* master
-  remotes/origin/master
-$ git remote show origin
-* remote origin
-  Fetch URL: localhost:/research/scm/examples/git-examples/gitflow/../remote-gitflow/
-  Push  URL: localhost:/research/scm/examples/git-examples/gitflow/../remote-gitflow/
-  HEAD branch: master
-  Remote branch:
-    master tracked
-  Local ref configured for 'git push':
-    master pushes to master (up to date)
-</pre>
+    $ git push origin master:master
+    $ git branch -a
+    * master
+      remotes/origin/master
+    $ git remote show origin
+    * remote origin
+      Fetch URL: localhost:/research/scm/examples/git-examples/gitflow/../remote-gitflow/
+      Push  URL: localhost:/research/scm/examples/git-examples/gitflow/../remote-gitflow/
+      HEAD branch: master
+      Remote branch:
+        master tracked
+      Local ref configured for 'git push':
+        master pushes to master (up to date)
 
 可以发现，多了一个远程分支。
 
@@ -107,40 +102,37 @@ $ git remote show origin
 
 假设某个成员负责camera部分，那么clone代码为gitflow-dev：
 
-<pre>$ cd ../
-$ git clone localhost:/research/scm/examples/git-examples/remote-gitflow/ gitflow-dev
-</pre>
+    $ cd ../
+    $ git clone localhost:/research/scm/examples/git-examples/remote-gitflow/ gitflow-dev
 
 并创建一个camera分支：
 
-<pre>$ cd gitflow-dev
-$ git checkout -b camera
-$ git branch -a
-* camera
-  master
-  remotes/origin/HEAD -> origin/master
-  remotes/origin/master
-</pre>
+    $ cd gitflow-dev
+    $ git checkout -b camera
+    $ git branch -a
+    * camera
+      master
+      remotes/origin/HEAD -> origin/master
+      remotes/origin/master
 
 做如下改动：
 
-<pre>$ git diff
-diff --git a/README.md b/README.md
-index 8851bb4..12ce03e 100644
---- a/README.md
-+++ b/README.md
-@@ -11,6 +11,8 @@ This is a project aims to show a standard git flow.
-
- #Development
-
-+Assume I'm a camera developer...
-+
- #Review
-
- #Upstream
-$ git add README.md
-$ git commit -s -m "Camera: Add a camera driver"
-</pre>
+    $ git diff
+    diff --git a/README.md b/README.md
+    index 8851bb4..12ce03e 100644
+    --- a/README.md
+    +++ b/README.md
+    @@ -11,6 +11,8 @@ This is a project aims to show a standard git flow.
+    
+     #Development
+    
+    +Assume I'm a camera developer...
+    +
+     #Review
+    
+     #Upstream
+    $ git add README.md
+    $ git commit -s -m "Camera: Add a camera driver"
 
 经过自己足够的测试和验证以后，发现驱动已经Ok，那么接下来就是发出去评审了。注意，写完代码千万不要直接提交到服务器，必要的代码交叉检查是强制性的，不要过于自信。
 
@@ -163,10 +155,9 @@ Gerrit是一个合集，集成了很多用户需要的功能，把评审做到�
 
 只需要把邮件发给Camera的Leader以及所有关联的开发人员即可：
 
-<pre>$ git format-patch -1
-0001-Camera-Add-a-camera-driver.patch
-$ git send-email --to="camera-reviewer@example.com" --cc="camera-app-dev@example.com" 0001-Camera-Add-a-camera-driver.patch
-</pre>
+    $ git format-patch -1
+    0001-Camera-Add-a-camera-driver.patch
+    $ git send-email --to="camera-reviewer@example.com" --cc="camera-app-dev@example.com" 0001-Camera-Add-a-camera-driver.patch
 
 之后Patchwork会自动收集好上面的Patch，评审人员可以直接回复邮件指出代码存在的各类问题，也可以通过pwclient工具从Patchwork服务器下载和打上Patch，并做其他的验证，如果要做自动化检查，可以通过配置远程仓库`.git/hooks/`下的钩子脚本来实现。
 
@@ -176,8 +167,7 @@ $ git send-email --to="camera-reviewer@example.com" --cc="camera-app-dev@example
 
 简单提交到refs/for/branch-name即可，这个并不会自动合并，而是先进入到Gerrit的评审页面：
 
-<pre>$ git push origin camera:refs/for/master
-</pre>
+    $ git push origin camera:refs/for/master
 
 之后，可以通过Gerrit界面添加Reviewers，比如camera-reviewer, camera-app-dev等，添加后会自动发送邮件给相关Reviewers登陆进来评审。另外，如果配置了Jenkins，会自动把代码提交到Jenkins服务器自动编译，有问题就会不通过Verify。
 
@@ -189,36 +179,31 @@ $ git send-email --to="camera-reviewer@example.com" --cc="camera-app-dev@example
 
 为了减少冲突，通常我们建议在最后提交时，确保相关修改是基于最新的远程主分支，通常会先更新主分支：
 
-<pre>$ git checkout master
-$ git pull
-</pre>
+    $ git checkout master
+    $ git pull
 
 如果修改很少，比如在1~3个，我们可以先基于master创建一个upstream分支，然后直接用`git cherry-pick`一个一个拿过来：
 
-<pre>$ git checkout -b upstream master
-$ git log --pretty=oneline camera
-5e07158b8e6cec00f802b0e114d4f36fa646f68f Camera: Add a camera driver
-9c5616269a90cd2a259dac53dd2352b919c9af2b Init the gitflow project
-$ git cherry-pick 5e07158b8e6cec00f802b0e114d4f36fa646f68f
-</pre>
+    $ git checkout -b upstream master
+    $ git log --pretty=oneline camera
+    5e07158b8e6cec00f802b0e114d4f36fa646f68f Camera: Add a camera driver
+    9c5616269a90cd2a259dac53dd2352b919c9af2b Init the gitflow project
+    $ git cherry-pick 5e07158b8e6cec00f802b0e114d4f36fa646f68f
 
 如果修改较多，则会基于camera创建一个upstream分支，rebase到master分支，解决冲突，然后上传：
 
-<pre>$ git checkout -b upstream camera
-$ git rebase --onto master --root
-</pre>
+    $ git checkout -b upstream camera
+    $ git rebase --onto master --root
 
 如果没有冲突就upstream的结果会是：把camera的所有变更追加到最新的master分支。
 
 如果有冲突，就需要解决`<<<<<HEAD`等标记出来的问题，可以用`git diff`查看，解决完冲突以后添加并提交，然后执行：
 
-<pre>$ git rebase --continue
-</pre>
+    $ git rebase --continue
 
 直到解决所有冲突以后再提交：
 
-<pre>$ git push origin upstream:master
-</pre>
+    $ git push origin upstream:master
 
 其实开源社区很多时候是不允许直接提交到最终仓库的，而是由各个系统的维护人员把解决冲突后的仓库以及分支准备好，告诉顶级维护人员merge。
 

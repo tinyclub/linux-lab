@@ -114,7 +114,7 @@ categories:
         struct dentry *power;
         int err = -ENOMEM;
 
-        power = debugfs_create_dir("clock", NULL);
+        power = debugfs_create_dir("power", NULL);
         if (!power)
                 return err;
 

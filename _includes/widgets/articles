@@ -64,7 +64,7 @@
 
     {% if article.addrs %}
      <i class="icon-fixed-width icon-at"></i> 
-     <a>{{ article.addrs }}</a>
+     <a>{{ article.addrs | join: ", " }}</a>
     {% endif %}
 
     </group>

@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "Linux upstream: 给 Linus 提点代码吧"
+title: "Linux upstream: 给 Linus 发个 patch 吧"
 permalink: /upstream-patches-to-linux-mainline/
 description: "本文介绍了几份关于如何往 Linux 社区提交代码的资料。"
 category:

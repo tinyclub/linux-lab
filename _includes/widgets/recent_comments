@@ -17,7 +17,7 @@
 </ul>
 
 <script type="text/javascript">
-var duoshuoQuery = {short_name:"tinylab"};
+var duoshuoQuery = {short_name:"{{ site.JB.comments.duoshuo.short_name }}"};
         (function() {
                 var ds = document.createElement('script');
                 ds.type = 'text/javascript';ds.async = true;

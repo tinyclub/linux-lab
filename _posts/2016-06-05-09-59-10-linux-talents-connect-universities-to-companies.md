@@ -34,10 +34,10 @@ tags:
 昨晚抽空搭建了这么一个 Github 平台：__Linux Talents -- 连接高校和企业 Linux 团队__。
 
 * 仓库地址：<https://github.com/linux-talents/linux-talents.github.io>
-* 网站地址：<http://linux-talents.github.io>
-* 投稿指南：<http://linux-talents.github.io/post>
+* 网站地址：<http://linux-talents.tinylab.org>
+* 投稿指南：<http://linux-talents.tinylab.org/post>
 
-目前已经提交了两份招聘信息和一份高校 Linux 团队信息，其他团队和个人可以参考提交稿件，投稿方法请参考[投稿指南](http://linux-talents.github.io/post)。
+目前已经提交了两份招聘信息和一份高校 Linux 团队信息，其他团队和个人可以参考提交稿件，投稿方法请参考[投稿指南](http://linux-talents.tinylab.org/post)。
 
 另外，__欢迎更多高校和企业 Linux 团队负责人联系我加入微信群__，联系方式：
 

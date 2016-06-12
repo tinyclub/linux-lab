@@ -360,7 +360,8 @@
       categories:
         - name: Linux 职位
         - name: Android 职位
-        - name: 机械仿真 职位
+        - name: 机械仿真职位
+        - name: 云计算职位
     - name: 求职
       categories:
         - name: Linux 简历

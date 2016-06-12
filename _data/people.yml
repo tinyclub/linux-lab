@@ -166,3 +166,37 @@ Lin Jinhui:
   article: true
   github: mintisan
   info: Linux 爱好者
+
+Shawn C:
+  name: Shawn
+  nickname: citypw
+  archive: true
+  article: true
+  site: hardenedlinux.org
+  email: citypw@gmail.com
+  github: citypw
+  info: 自由软件狂热分子，EFF/FSF/FSFE/SFC 支持者，BLUG/SHLUG/GZLUG/CDLUG 参与者，开源安全咨询，曾就职 Two devils of GNU/Linux 厂商 SUSE/RedHat :-)
+
+Jasine Chen:
+  name: Jasine
+  nickname: jasinechen
+  archive: true
+  article: true
+  site: about.me/jasine
+  github: jasine
+  weibo: jasne
+  wechat: jasine
+  email: jasinechen@gmail.com
+  info: 中国科学院开源软件协会 2016 届负责人
+
+Osier Yang:
+  name: Osier Yang
+  nickname: Osier
+  archive: true
+  article: true
+  site:
+  email: agedosier@gmail.com
+  github: osier
+  weibo: osieryang
+  wechat: Osier002
+  info: 1) 兰大开源社区成立者; 2) Red Hat Cloud BU 开发者，libvirt committer; 3) 青云QingCloud IaaS Core System Engineer; 4) 青云QingCloud 对象存储(QingStor)及青云QingCloud 分布式 NAS 的设计者，开发者，及架构师; 4) 青云QingCloud Kernel Team Leader.

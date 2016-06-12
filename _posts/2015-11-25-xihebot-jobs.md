@@ -7,7 +7,7 @@ permalink: /xinhebot-jobs/
 description: "芯合科技招聘软件研发和机械仿真工程师，含实习岗位。"
 category:
   - Android 职位
-  - 机械仿真 职位
+  - 机械仿真职位
 tags:
   - 机器人
   - 机械仿真

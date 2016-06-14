@@ -329,6 +329,7 @@
 
 - name: 行业观察
   categories:
+    - name: 开放服务
     - name: 开源社区
     - name: 版权协议
       categories:

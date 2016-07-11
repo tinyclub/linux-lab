@@ -1,0 +1,13 @@
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 8731fc6..8820fb9 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -217,7 +217,7 @@ endif
+ quiet_cmd_shipped = SHIPPED $@
+ cmd_shipped = cat $< > $@
+ 
+-$(obj)/%: $(src)/%_shipped
++$(obj)/%:: $(src)/%_shipped
+ 	$(call cmd,shipped)
+ 
+ # Commands useful for building a boot image

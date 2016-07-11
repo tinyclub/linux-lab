@@ -1,0 +1,4 @@
+rootfs
+rootfs.ext2
+rootfs.cpio
+rootfs.cpio.uboot

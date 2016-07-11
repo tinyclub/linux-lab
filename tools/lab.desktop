@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Linux Lab
+Comment=A Friendly Lab for Linux Learning
+Exec=/usr/bin/lxterminal --working-directory=/linux-lab/ -t "Linux Lab"
+Icon=/usr/share/pixmaps/lxterminal.xpm
+Type=Application

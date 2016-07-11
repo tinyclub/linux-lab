@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Help Page
+Comment=Project Home page
+Exec=/usr/bin/chromium-browser http://tinylab.org/linux-lab/
+Icon=/usr/share/pixmaps/chromium-browser.png
+Type=Application

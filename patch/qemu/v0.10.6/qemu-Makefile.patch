@@ -1,0 +1,13 @@
+diff --git a/Makefile.target b/Makefile.target
+index f33f762..e52be17 100644
+--- a/Makefile.target
++++ b/Makefile.target
+@@ -517,7 +517,7 @@ endif
+ OBJS+=block-raw-posix.o
+ endif
+ 
+-LIBS+=-lz
++LIBS+=-lz -lrt
+ ifdef CONFIG_ALSA
+ LIBS += -lasound
+ endif

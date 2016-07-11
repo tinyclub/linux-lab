@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# buildroot/output/target/etc/network/if-up.d/config_iface
+#
+
+eth=eth0
+route=`cat /proc/cmdline | sed -e "s/.*route=\([0-9.]*\).*/\1/g"`
+ip=`echo $route | sed -e 's/\.\([0-9]*\)$/.'$(($RANDOM%230+11))'/g'`
+
+echo $ip $route
+
+ifconfig $eth $ip up
+route add default gw $route $eth

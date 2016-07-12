@@ -61,17 +61,17 @@ tags:
 
 ## CDN 公共库
 
-  * [百度][1]
-  * [新浪][2]
-  * [360][3]
-  * [CDNJS][4]
-  * [Google][5]
+  * [百度][10001]
+  * [新浪][10002]
+  * [360][10003]
+  * [CDNJS][10004]
+  * [Google][10005]
 
-[1]: http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs
-[2]: http://lib.sinaapp.com/
-[3]: http://libs.useso.com/
-[4]: https://cdnjs.com/
-[5]: https://developers.google.com/speed/libraries/
+[10001]: http://developer.baidu.com/wiki/index.php?title=docs/cplat/libs
+[10002]: http://lib.sinaapp.com/
+[10003]: http://libs.useso.com/
+[10004]: https://cdnjs.com/
+[10005]: https://developers.google.com/speed/libraries/
 
 ## Docker 镜像站
 

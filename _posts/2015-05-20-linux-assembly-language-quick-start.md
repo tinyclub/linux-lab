@@ -1,4 +1,4 @@
----
+--
 title: Linux 汇编语言快速上手：4大架构一块学
 author: Wu Zhangjin
 layout: post
@@ -52,8 +52,11 @@ categories:
     echo deb http://www.emdebian.org/debian/ wheezy main >> /etc/apt/sources.list.d/emdebian.list
     apt-get install emdebian-archive-keyring
     apt-get update
+    wget -c http://archive.ubuntu.com/ubuntu/pool/universe/g/gmp4/libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
+    dpkg -i libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
     apt-get install gcc-4.3-mipsel-linux-gnu
 
+注：在 ubuntu 14.04 以后找不到 libgmp3c2 这个软件包，导致无法正常安装 emdebian 的工具链，所以上面主动下了一个。
 
 ## Hello World
 

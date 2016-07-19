@@ -1,5 +1,5 @@
 ---
-title: '基于 Qemu 的 Linux 内核开发环境'
+title: 'Linux 实验环境'
 tagline: '可快速构建，支持Docker/Qemu/Ubuntu/OS X/Windows/Web'
 author: Wu Zhangjin
 layout: page

@@ -69,6 +69,10 @@ tags:
 
     $ make help
 
+### 实验效果图
+
+![Linux Lab Demo](/wp-content/uploads/2016/06/docker-qemu-linux-lab.jpg)
+
 
  [2]: https://github.com/tinyclub/linux-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/linux-lab

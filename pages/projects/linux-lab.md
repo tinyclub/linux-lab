@@ -61,11 +61,11 @@ tags:
     $ cd /linux-lab
     $ make boot
 
-默认会启动一个 versatilepb 的板子。
+默认会启动一个 `versatilepb` 的 ARM 板子。
 
 ### 更多用法
 
-详细的用户这里就不罗嗦了，大家自行查看帮助。
+详细的用法这里就不罗嗦了，大家自行查看帮助。
 
     $ make help
 

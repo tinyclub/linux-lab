@@ -37,7 +37,7 @@ categories:
 
   > C 中动态内存分配malloc 函数的背后实现有诸派：dlmalloc 之于 bionic；ptmalloc 之于 glibc …… 以及 jemalloc 之于 FreeBSD/NetBSD/Firefox。
 
-* [<内存分配奥义·jemalloc(二)>][6]
+* [内存分配奥义·jemalloc(二)][6]
 
   > 我们疑惑 jemalloc 的层层缓冲会造成过多的内存占用，这对实时性要求较高，内存较为紧张的移动设备影响较大。对此，jemalloc 如何应对呢？还有，是否存在系统内存紧张时，减少缓冲的联动机制呢？
 

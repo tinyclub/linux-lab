@@ -51,8 +51,8 @@ Linux 0.11 很适合操作系统原理的学习，但是要搞嵌入式开发，
 
 有了这几个目标以后，最近两周终于下定决心把之前的脚本环境和进行 gc-section 开发时保留的内核配置文件等充分利用起来，然后快速构建了一个 Linux Lab 框架：
 
-    * [Linux Lab 代码仓库](https://github.com/tinyclub/linux-lab.git)
-    * [Linux Lab 项目首页](http://tinylab.org/linux-lab)
+* [Linux Lab 代码仓库](https://github.com/tinyclub/linux-lab.git)
+* [Linux Lab 项目首页](http://tinylab.org/linux-lab)
 
 通过两周的迭代，已经完成了 4 个常见架构（ARM、 X86、PowerPC、MIPS），支持 ram 和 nfs rootfs，支持串口和图形启动，内建网络支持…… 接下来，Android emulator 和调试的支持很快就会到位了。
 

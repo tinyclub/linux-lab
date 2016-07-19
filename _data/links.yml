@@ -9,3 +9,9 @@
   recommend: false
   description: Linux 内核官方首页。
   group: links
+
+- title: Linux Talents
+  permalink: http://linux-talents.tinylab.org
+  description: 连接高校和企业 Linux 团队。
+  group: links
+

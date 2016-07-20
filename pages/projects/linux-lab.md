@@ -20,7 +20,7 @@ tags:
   * 使用文档： [README.md][2]
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
-      * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。 
+      * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
       * 已内置支持 4 大架构：ARM, MIPS, PowerPC 和 X86。
@@ -45,14 +45,14 @@ tags:
 ### 下载
 
     git clone https://github.com/tinyclub/linux-lab.git
-    
+
 
 ### 安装
 
     $ sudo tools/install-docker-lab.sh
     $ tools/run-docker-lab-daemon.sh
     $ tools/open-docker-lab.sh
-    
+
 
 ### 快速尝鲜
 
@@ -62,7 +62,66 @@ tags:
     $ cd /linux-lab
     $ make boot
 
-默认会启动一个 `versatilepb` 的 ARM 板子。
+默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
+
+    $ make mach-list              # 查看支持的列表
+    $ make MACH=malta mach-config # 这里选择一块 MIPS 板子：malta
+    $ make boot
+
+### 下载更多源码
+
+    $ make source -j3             # 同时下载 linux-stable, qemu 和 buildroot
+
+### 配置
+
+    $ make root-defconfig         # 配置根文件系统
+    $ make kernel-defconfig       # 配置内核
+
+### 编译
+
+    $ make root         # 编译根文件系统
+    $ make kernel       # 编译内核
+
+### 启动新的根文件系统和内核
+
+需要打开 `machine/BOARD/Makefile` 屏蔽已经编译的 `KIMAG` 和 `ROOTFS`，此时会启动 `output/` 目录下刚编译的 rootfs 和内核：
+
+    $ vim machine/versatilepb/Makefile
+    #KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
+    #ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
+    $ make boot
+
+### 启动串口
+
+    $ make boot-ng
+
+### 选择 Rootfs 设备
+
+    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=/dev/ram
+
+### 扩展
+
+通过添加或者修改 `machine/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
+
+    $ make mach-list | grep Makefile
+    * [machine/pc/Makefile]
+    * [machine/versatilepb/Makefile]
+    * [machine/g3beige/Makefile]
+    * [machine/malta/Makefile]
+    $ cat machine/versatilepb/Makefile
+    ARCH=arm
+    XARCH=$(ARCH)
+    CPU=arm926t
+    MEM=128M
+    LINUX=2.6.35
+    NETDEV=smc91c111
+    SERIAL=ttyAMA0
+    ROOTDEV=/dev/nfs
+    ORIIMG=arch/$(ARCH)/boot/zImage
+    CCPRE=arm-linux-gnueabi-
+    KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
+    ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 
 ### 更多用法
 

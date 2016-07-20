@@ -101,6 +101,9 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
     $ make root-defconfig         # 配置根文件系统
     $ make kernel-defconfig       # 配置内核
 
+    $ make root-menuconfig         # 手动配置根文件系统
+    $ make kernel-menuconfig       # 手动配置内核
+
 ### 编译
 
     $ make root         # 编译根文件系统
@@ -146,6 +149,8 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
     CCPRE=arm-linux-gnueabi-
     KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
     ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
+
+默认的内核与Buildroot信息对应为 `machine/BOARD/linux_${LINUX}_defconfig` 和 `machine/BOARD/buildroot_${CPU}_defconfig`，如果要添加自己的配置，请注意跟 `machine/BOARD/Makefile` 里头的 CPU 和 Linux 配置一致。
 
 ### 更多用法
 

@@ -77,6 +77,9 @@ tags:
     $ make root-defconfig         # 配置根文件系统
     $ make kernel-defconfig       # 配置内核
 
+    $ make root-menuconfig         # 手动配置根文件系统
+    $ make kernel-menuconfig       # 手动配置内核
+
 ### 编译
 
     $ make root         # 编译根文件系统
@@ -102,7 +105,7 @@ tags:
 
 ### 扩展
 
-通过添加或者修改 `machine/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
+通过添加或者修改 `machine/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot 等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
 
     $ make mach-list | grep Makefile
     * [machine/pc/Makefile]
@@ -122,6 +125,8 @@ tags:
     CCPRE=arm-linux-gnueabi-
     KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
     ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
+
+默认的内核与Buildroot信息对应为 `machine/BOARD/linux_${LINUX}_defconfig` 和 `machine/BOARD/buildroot_${CPU}_defconfig`，如果要添加自己的配置，请注意跟 `machine/BOARD/Makefile` 里头的 CPU 和 Linux 配置一致。
 
 ### 更多用法
 

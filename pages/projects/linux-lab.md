@@ -82,8 +82,18 @@ tags:
 
 ### 编译
 
-    $ make root         # 编译根文件系统
-    $ make kernel       # 编译内核
+    $ make root         # 编译根文件系统，稍微有点慢，需要下载带 sysroot 的编译器
+    $ make kernel       # 编译内核，采用 Ubuntu 和 emdebian.org 提供的交叉编译器
+
+### 保存所有改动
+
+    $ make save         # 保存新的配置和新产生的镜像
+
+    $ make kconfig-save # 保存到 machine/BOARD/
+    $ make rconfig-save
+
+    $ make root-save    # 保存到 prebuilt/
+    $ make kernel-save
 
 ### 启动新的根文件系统和内核
 

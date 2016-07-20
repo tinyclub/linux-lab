@@ -17,7 +17,7 @@ tags:
 
 该项目致力于快速构建一个基于 Qemu 的 Linux 内核开发环境。
 
-  * 使用文档： [README.md][2]
+  * 使用文档：[README.md][2]
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。

@@ -17,7 +17,7 @@ tags:
 
 该项目致力于快速构建一个 Linux 0.11 实验环境，可配合[《Linux内核完全注释》][1] 一书使用。
 
-  * 使用文档： [README.md][2]
+  * 使用文档：[README.md][2]
   * 代码仓库：[https://github.com/tinyclub/linux-0.11-lab.git][3]
   * 基本特性： 
       * 包含所有可用的映像文件: ramfs/floppy/hard disk image。

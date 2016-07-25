@@ -1,5 +1,5 @@
 ---
-title: 'Linux 实验环境'
+title: 'Linux 内核实验环境'
 tagline: '可快速构建，支持Docker/Qemu/Ubuntu/OS X/Windows/Web'
 author: Wu Zhangjin
 layout: page
@@ -11,6 +11,9 @@ categories:
   - Linux
 tags:
   - 实验环境
+  - Lab
+  - Qemu
+  - Docker
 ---
 
 ## 项目描述
@@ -24,9 +27,10 @@ tags:
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
       * 已内置支持 4 大架构：ARM, MIPS, PowerPC 和 X86。
-      * 已内置支持从 Ramfs 或者 NFS rootfs 启动。
+      * 已内置支持从 Ramfs, Harddisk, NFS rootfs 启动。
       * 一键即可启动，支持串口和图形启动。
       * 已内建网络支持，可以直接 ping 到外网。
+      * 已内建 Uboot 支持，可以直接启动 Uboot，并加载内核和文件系统。
       * 预编译有 initrd 和内核镜像文件，可以快速体验实验效果。
       * 可灵活配置和扩展支持更多架构、虚拟开发板和内核版本。
       * 未来计划支持 Uboot，支持 Android emulator，支持在线调试。。。

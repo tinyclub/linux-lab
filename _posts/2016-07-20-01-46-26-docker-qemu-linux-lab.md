@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "基于 Docker/Qemu 快速构建 Linux 实验环境"
+title: "基于 Docker/Qemu 快速构建 Linux 内核实验环境"
 group: original
 permalink: /docker-qemu-linux-lab/
 description: "继 Linux 0.11 Lab 之后，本站放出 Linux Lab，另外一个可快速构建的 Linux 内核实验环境。"

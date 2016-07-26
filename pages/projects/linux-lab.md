@@ -14,6 +14,9 @@ tags:
   - Lab
   - Qemu
   - Docker
+  - Uboot
+  - 内核
+  - 嵌入式
 ---
 
 ## 项目描述

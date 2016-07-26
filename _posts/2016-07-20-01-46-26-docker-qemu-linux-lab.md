@@ -11,6 +11,9 @@ category:
 tags:
   - Docker
   - Qemu
+  - Uboot
+  - 内核
+  - 嵌入式
   - 实验环境
   - versatile
   - g3beige

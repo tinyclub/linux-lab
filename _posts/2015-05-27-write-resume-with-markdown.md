@@ -43,7 +43,8 @@ Markdown 彻底地让人回归内容创作本身，本站已经连续写了两�
 
 ### 下载仓库
 
-    git clone https://github.com/tinyclub/markdown-resume.git
+    git clone https://github.com/tinyclub/markdown-lab.git
+    cd markdown-lab/resume/
 
 
 ### 安装环境

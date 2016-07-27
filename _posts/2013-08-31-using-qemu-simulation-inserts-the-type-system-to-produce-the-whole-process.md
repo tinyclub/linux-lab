@@ -378,7 +378,7 @@ busybox 也是采用 Kconfig 来管理配置选项，所以配置和编译 busyb
 
 uboot 配置完之后，可以通过如下命令来编译 uboot: 
 
-    make versatilepb_config ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
+    make versatilepb_defconfig
     make -j12 ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabi-
 
 如果没什么错误，就会生成一个 u-boot 镜像，然后我们就可以通过 qemu 来加载它：

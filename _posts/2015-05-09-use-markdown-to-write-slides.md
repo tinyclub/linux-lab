@@ -154,7 +154,8 @@ categories:
 
   * 下载 Markdown 幻灯模板
 
-        $ git clone https://github.com/tinyclub/markdown-slides.git
+        $ git clone https://github.com/tinyclub/markdown-lab.git
+        $ cd markdown-lab/slides/
 
 
   * 编译成 pdf & html

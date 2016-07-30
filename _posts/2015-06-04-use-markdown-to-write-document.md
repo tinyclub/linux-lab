@@ -21,7 +21,8 @@ Markdown 让人回归内容创作本身，本站第四篇关于 Markdown 的文�
 
 ## 下载仓库
 
-    git clone https://github.com/tinyclub/markdown-article.git
+    git clone https://github.com/tinyclub/markdown-lab.git
+    cd markdown-lab/article/
 
 
 ## 安装环境
@@ -40,10 +41,9 @@ Markdown 让人回归内容创作本身，本站第四篇关于 Markdown 的文�
   * [Markdown基本语法][2]
   * [Pandoc&#8217;s Markdown语法][3]
 
-## 编译
+## 编译并查看
 
-    cd markdown-article/
-    make
+    make && make read
 
 
 编译完会生成一份 doc.pdf 文档。

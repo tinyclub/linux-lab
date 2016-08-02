@@ -91,7 +91,7 @@ Docker 安装：
     $ cd book/
     $ make
 
-字体配置可通过 `book.jason` 的 `fontFamily` 实现。
+字体配置可通过 `book.json` 的 `fontFamily` 实现。
 
 ## 相关文章
 

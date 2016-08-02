@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "借力 markdown-lab 沉浸式撰写 Markdown 文档"
+title: "借力 markdown-lab 沉浸式撰写文档"
 group: original
 permalink: /write-markdown-documents-with-markdown-lab/
 description: ""

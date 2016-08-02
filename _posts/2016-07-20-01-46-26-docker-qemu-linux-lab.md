@@ -26,7 +26,7 @@ tags:
 
 ## 缘起
 
-早在大学的时候，就尝试过，在学校报废的古老 i386 的机器上跑 User Mode Linux，为 [兰大开源社区][1] 的用户提供过在线 [Linux][9] 虚拟实验环境，目的就是希望为大家降低 Linux 学习准入的门槛。
+早在大学的时候，就尝试过，在学校报废的古老 i386 的机器上跑 [User Mode Linux][30]，为 [兰大开源社区][1] 的用户提供过在线 [Linux][9] 虚拟实验环境，目的就是希望为大家降低 Linux 学习准入的门槛。
 
 而比较近的尝试是 [Linux 0.11 Lab][2]，一个基于 [Docker][8]/[Qemu][7]，可以在 5 分钟内构建的 [Linux 0.11][10] 实验环境。
 
@@ -189,3 +189,4 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 [10]: http://www.oldlinux.org
 [11]: http://tinylab.org/tinylinux/
 [12]: https://github.com/tinyclub/linux-lab/blob/master/README.md
+[30]: http://user-mode-linux.sourceforge.net/

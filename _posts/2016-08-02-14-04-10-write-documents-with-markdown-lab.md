@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "借力 markdown-lab 沉浸式撰写文档"
 group: original
+album: Markdown 用法详解
 permalink: /write-documents-with-markdown-lab/
 description: "本文介绍了如何使用 markdown lab 快速搭建 markdown 文档编辑环境并进行各类文档撰写。"
 category:

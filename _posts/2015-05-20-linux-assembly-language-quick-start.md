@@ -342,13 +342,13 @@ categories:
         swi     $0          /* invoke syscall */
     
     
-    编译和链接：
+编译和链接：
     
-        $ arm-linux-gnueabi-as -o arm-hello.o arm-hello.s
-        $ arm-linux-gnueabi-ld -o arm-hello arm-hello.o
+    $ arm-linux-gnueabi-as -o arm-hello.o arm-hello.s
+    $ arm-linux-gnueabi-ld -o arm-hello arm-hello.o
     
     
-    #### ARM64
+#### ARM64
     
     .text //code section
     .globl _start

@@ -530,7 +530,7 @@ categories:
  [12]: http://www.ibm.com/developerworks/cn/linux/l-gas-nasm.html
  [13]: http://asm.sourceforge.net/resources.html
  [14]: http://www.cs.usfca.edu/~cruse/cs630f06/
- [15]: /cs630-qemu/
+ [15]: /cs630-qemu-lab/
  [16]: http://www.ibm.com/developerworks/cn/linux/sdk/assemble/inline/index.html
  [17]: /as-an-executable-file-to-slim-down/
  [18]: http://peterdn.com/post/e28098Hello-World!e28099-in-ARM-assembly.aspx

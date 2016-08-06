@@ -230,7 +230,7 @@ categories:
 
 下面来看看简化后的例子，例子全部摘自后文的参考资料。
 
-另外，最近已经把下面的所有例子上传到了 [Linux Lab][51] 的 `examples/assembly/` 目录下。
+另外，最近已经把下面的所有例子上传到了 [Linux Lab][51] 的 [examples/assembly/][52] 目录下。
 
 ### X86
 
@@ -629,3 +629,4 @@ categories:
  [34]: http://logos.cs.uic.edu/366/notes/MIPS%20Quick%20Tutorial.htm
  [50]: http://cs.lmu.edu/~ray/notes/gasexamples/
  [51]: http://github.com/tinyclub/linux-lab
+ [52]: https://github.com/tinyclub/linux-lab/tree/master/examples/assembly

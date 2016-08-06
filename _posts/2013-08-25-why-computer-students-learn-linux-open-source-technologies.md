@@ -71,6 +71,8 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 如果想看 Linux 0.11 的源代码，可以到 <http://oldlinux.org/> 下载开放的书籍和源代码，在 Ubuntu 下用 Qemu 做实验就好了。记得下载可以在 Ubuntu 下用最新编译器编译的 Linux 0.11 代码： [https://github.com/tinyclub/linux-0.11-lab.git][10] 以及这里的 [五分钟 Linux 0.11 实验环境使用指南][11] 。
 
+如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。使用它可以很快搭建一个集成了 Linux 内核的实验环境，通过 Qemu 支持上百款免费的开发板，集成了 Buildroot，Uboot 等关联的工具，可直接快速高效地做 Linux 内核的实验。
+
 ### 汇编语言
 
 估计学校还在用王老师的书吧，这个是我大二的时候有写的[《汇编语言 王爽著》课后实验参考答案][12]。
@@ -84,6 +86,8 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 如果想学 ARM 汇编：推荐《ARM System Developers Guide: Designing and Optimizing System Software 》，如果想学 MIPS 汇编 :  推荐《See MIPS Run Linux》
 
 如果想学 X86 汇编，不要错过那个 [CS630 课程][13] 以及 Allan B. Cruse 的 [个人主页][15] ，有蛮多相关的资料。
+
+如果要在 Linux 下快速上手四大架构的汇编语言，在下载 [Linux Lab](http://tinylab.org/linux-lab) 后，可以从 [examples/assembly](https://github.com/tinyclub/linux-lab/tree/master/examples/assembly) 找到 32 位和 64 位的汇编语言例子。这篇文章：[Linux 汇编语言快速上手：4大架构一块学](http://tinylab.org/linux-assembly-language-quick-start/) 对此进行了详细的介绍。
 
 ### C 语言
 

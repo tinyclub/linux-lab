@@ -69,11 +69,11 @@ categories:
 先写一个 C 语言的 `hello.c`：
 
         #include <stdio.h>
-        
+
         int main(int argc, char *argv[])
         {
                 printf("Hello World\n");
-        
+
                 return 0;
         }
 
@@ -137,9 +137,7 @@ categories:
   * MIPS
 
         mipsel-linux-gnu-gcc -o hello-mips hello-mips.s -static
-
-
-    <!--        mipsel-linux-gnu-gcc -mabi=64 -Wl,-melf64ltsmip -o hello-mips64 hello-mips64.s -static -->
+        mipsel-linux-gnu-gcc -mabi=64 -Wl,-melf64ltsmip -o hello-mips64 hello-mips64.s -static  # Not work ?
 
   * ARM
 
@@ -150,9 +148,7 @@ categories:
   * PowerPC
 
         powerpc-linux-gnu-gcc -o hello-powerpc hello-powerpc.s -static
-
-
-    <!--        powerpc64le-linux-gnu-gcc -o hello-powerpc64 hello-powerpc64.s -static -->
+        powerpc64le-linux-gnu-gcc -o hello-powerpc64 hello-powerpc64.s -static # Not work ?
 
 #### 动态编译
 
@@ -236,6 +232,8 @@ categories:
 
 ### X86
 
+#### X86 32Bit
+
     .data                   # section declaration
     msg:
         .string "Hello, world!\n"
@@ -259,11 +257,40 @@ categories:
 
 编译和链接：
 
-    $ as -o ia32-hello.o ia32-hello.s
-    $ ld -o ia32-hello ia32-hello.o
+    $ as --32 -o x86-hello.o x86-hello.s
+    $ ld -melf_i386 -o x86-hello x86-hello.o
+
+
+#### X86 64Bit
+
+    .global _start
+    .text
+    _start:
+        # write(1, message, 13)
+        mov     $1, %rax                # system call 1 is write
+        mov     $1, %rdi                # file handle 1 is stdout
+        mov     $msg, %rsi              # address of string to output
+        mov     $len, %rdx              # number of bytes
+        syscall                         # invoke operating system to do the write
+
+        # exit(0)
+        mov     $60, %rax               # system call 60 is exit
+        xor     %rdi, %rdi              # we want return code 0
+        syscall                         # invoke operating system to exit
+    .data
+    msg:
+        .ascii  "Hello, world\n"
+        len = . - msg   # length of our dear string
+
+编译和链接：
+
+    $ as -o x64-hello.o x64-hello.s
+    $ ld -o x64-hello x64-hello.o
 
 
 ### MIPS
+
+#### mipsel 32Bit
 
     # File: hello.s -- "hello, world!" in MIPS Assembly Programming
     # by falcon <wuzhangjin@gmail.com>, 2008/05/21
@@ -274,25 +301,25 @@ categories:
     # compile:
     #       $ as -o hello.o hello.s
     #       $ ld -e main -o hello hello.o
-    
+
     # data section
     .rdata
     hello: .asciiz "hello, world!\n"
     length: .word . - hello            # length = current address - the string address
-    
+
     # text section
     .text
     .globl main
     main:
         # if compiled with gcc-4.2.3 in 2.6.18-6-qemu the following three statements are needed
-    
+
         .set noreorder
         .cpload $t9
         .set reorder
-    
+
                 # there is no need to include regdef.h in gcc-4.2.3 in 2.6.18-6-qemu
                 # but you should use $a0, not a0, of course, you can use $4 directly
-    
+
                 # print "hello, world!" with the sys_write system call,
                 # -- ssize_t write(int fd, const void *buf, size_t count);
         li $a0, 1    # first argumen: the standard output, 1
@@ -300,33 +327,79 @@ categories:
         lw $a2, length  # third argument: the string length
         li $v0, 4004    # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
         syscall        # causes a system call trap.
-    
+
                 # exit from this program via calling the sys_exit system call
         move $a0, $0    # or "li $a0, 0", set the normal exit status as 0
                 # you can print the exit status with "echo $?" after executing this program
         li $v0, 4001    # 4001 is __NR_exit defined in /usr/include/asm/unistd.h
         syscall
 
-
 编译和链接：
 
     $ mipsel-linux-gnu-as -o mipsel-hello.o mipsel-hello.s
     $ mipsel-linux-gnu-ld -o mipsel-hello mipsel-hello.o
 
+#### mipsel 64Bit
+
+    # data section
+    .rdata
+    hello: .asciiz "hello, world!\n"
+    length: .word . - hello            # length = current address - the string address
+
+    # text section
+    .text
+    .globl __start
+    __start:
+        # If compiled with gcc-4.2.3 in 2.6.18-6-qemu the following three statements are needed
+        # in compiling relocatable code, to follow the PIC-ABI calling conventions and other protocols.
+        .set noreorder
+        .cpload $gp
+        .set reorder
+
+        # There is no need to include regdef.h in gcc-4.2.3 in 2.6.18-6-qemu
+        # but you should use $a0, not a0, of course, you can use $4 directly
+        # print "hello, world!" with the sys_write system call,
+        # -- ssize_t write(int fd, const void *buf, size_t count);
+
+        li $a0, 1       # first argument: the standard output, 1
+        dla $a1, hello   # second argument: the string addr
+        lw $a2, length  # third argument: the string length
+        li $v0, 5001    # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
+        syscall         # causes a system call trap.
+                        # exit from this program via calling the sys_exit system call
+        move $a0, $0    # or "li $a0, 0", set the normal exit status as 0
+                        # you can print the exit status with "echo $?" after executing this program
+        li $v0, 5058    # 4001 is __NR_exit defined in /usr/include/asm/unistd.h
+        syscall
+
+编译和链接：
+
+    $ mipsel-linux-gnu-as -mabi=64 -o mips64el-hello.o mips64el-hello.s
+    $ mipsel-linux-gnu-ld -m elf64ltsmip -o mips64el-hello mips64el-hello.o
+
+运行：
+
+    $ qemu-mips64el ./mips64el-hello
+
+备注：由于 qemu-mips64el 的 binfmt 默认并没有注册到 `/proc/sys/fs/binfmt_misc/`，所以生成的文件无法直接执行，需要额外注册如下：
+
+    $ sudo bash -c "echo ':mips64el:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-mips64el:' > /proc/sys/fs/binfmt_misc/register"
+
+具体可参考：[qemu-binfmt-conf](https://github.com/qemu/qemu/blob/master/scripts/qemu-binfmt-conf.sh) 和 [AnalyzingReversingAndEmulatingFirmware](http://magikh0e.ihtb.org/pubHardwareHacking/AnalyzingReversingAndEmulatingFirmware.html)。
 
 ### ARM
 
 #### ARM32
 
     .data
-    
+
     msg:
         .ascii      "Hello, ARM!\n"
     len = . - msg
-    
-    
+
+
     .text
-    
+
     .globl _start
     _start:
         /* syscall write(int fd, const void *buf, size_t count) */
@@ -335,21 +408,21 @@ categories:
         ldr     %r2, =len   /* count -> len(msg) */
         mov     %r7, $4     /* write is syscall #4 */
         swi     $0          /* invoke syscall */
-    
+
         /* syscall exit(int status) */
         mov     %r0, $0     /* status -> 0 */
         mov     %r7, $1     /* exit is syscall #1 */
         swi     $0          /* invoke syscall */
-    
-    
+
+
 编译和链接：
-    
+
     $ arm-linux-gnueabi-as -o arm-hello.o arm-hello.s
     $ arm-linux-gnueabi-ld -o arm-hello arm-hello.o
-    
-    
+
+
 #### ARM64
-    
+
     .text //code section
     .globl _start
     _start:
@@ -358,11 +431,11 @@ categories:
         mov x2, len   // size of buffer
         mov x8, 64    // sys_write() is at index 64 in kernel functions table
         svc #0        // generate kernel call sys_write(stdout, msg, len);
-    
+
         mov x0, 123 // exit code
         mov x8, 93  // sys_exit() is at index 93 in kernel functions table
         svc #0      // generate kernel call sys_exit(123);
-    
+
     .data //data section
     msg:
         .ascii      "Hello, ARM!\n"
@@ -440,7 +513,7 @@ categories:
         li      0,1         # syscall number (sys_exit)
         li      3,1         # first argument: exit code
         sc                  # call kernel
- 
+
 
 编译和链接：
 

@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Falcon wuzhangjin@gmail.com
 
-RUN sed -i -e "s/archive.ubuntu.com/mirrors.163.com/g" /etc/apt/sources.list
+RUN sed -i -e "s%/archive.ubuntu.com%/cn.archive.ubuntu.com%g" /etc/apt/sources.list
 
 RUN apt-get -y update
 
@@ -12,7 +12,7 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y ruby2.0
 RUN apt-get install -y ruby2.0-dev
 
-ADD tools/ruby-switch /
+ADD ruby-switch /
 RUN /ruby-switch 2.0
 
 RUN gem sources -r http://rubygems.org/
@@ -29,6 +29,6 @@ RUN ln -sf /jekyll/_site /usr/share/nginx/html
 
 EXPOSE 80
 
-ADD tools/jekyll-start /
+ADD jekyll-start /
 
 ENTRYPOINT ["/jekyll-start"]

@@ -23,24 +23,6 @@ categories:
 
 本文介绍如何快速构建一个独立于宿主机的 Linux 0.11 实验环境，该实验环境可以用于任何操作系统的宿主开发机，将非常方便各类学生学习 Linux 0.11，本文只介绍 Ubuntu。在 Windows 和 Mac 下可以用 VirtualBox + [Boot2Docker][3] 来启动。
 
-下文要求已经安装 git 和 docker，如果没有安装请首先安装：
-
-  * 安装 git
-
-        $ sudo apt-get install git
-
-
-  * 安装 docker
-
-        $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-        $ sudo -s
-        $ version=`sed -n -e "/main$/p" /etc/apt/sources.list | head -1 | cut -d' ' -f3`
-        $ echo "deb https://apt.dockerproject.org/repo ubuntu-$(version) main" > /etc/apt/sources.list.d/docker.list
-        $ exit
-        $ sudo apt-get -y update
-        $ sudo apt-get -y install docker-engine
-        $ sudo usermod -aG docker $USER
-
 ## 拉下 Linux 0.11 实验环境
 
     $ git clone https://github.com/tinyclub/linux-0.11-lab.git
@@ -49,36 +31,17 @@ categories:
 ## 通过 Docker 构建一个独立的实验环境
 
     $ cd linux-0.11-lab
-    $ docker build -t tinylab/linux-0.11-lab ./
+    $ tools/install-docker-lab.sh
 
 
 ## 启动装有实验环境的 Docker 容器
 
-    $ CONTAINER_ID=$(docker run -d -p 6080:6080 -v $PWD/:/linux-0.11-lab/ tinylab/linux-0.11-lab)
+    $ tools/run-docker-lab.sh
 
-
-## 获得实验环境的密码
-
-    $ docker logs $CONTAINER_ID | sed -n 1p
-    User: ubuntu Pass: ubuntu
-
-
-**注**：登录密码为 `Pass` 之后的字符串，这里为 `ubuntu`。
 
 ## 远程登录实验环境
 
-  * 在本地宿主机登录
-      * http://localhost:6080/vnc.html
-
-  * 远程登录
-
-      * 获得实验环境所属容器的 IP 地址
-
-            $ docker exec $CONTAINER_ID ifconfig eth0 | grep "inet addr:"
-            inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0
-
-
-      * 访问地址：`http://172.17.0.1:6080/vnc.html`
+通过浏览器打开 `http://localhost:6080/vnc.html` 并使用 `ubuntu` 作为密码登录。
 
 ## 简单使用
 
@@ -88,7 +51,7 @@ categories:
   * 进入实验环境所属目录：`cd /linux-0.11-lab`
   * 进行各种开发与调试动作
       * 例如：`make start-hd`
-      * 也可切换 bochs 启动，例如：`echo bochs > tools/vm.cfg; make start-fd`
+      * 也可切换 bochs 启动，例如：`make switch; make start-fd`
   * 更多用法请参考：`make help`
 
 效果如下：

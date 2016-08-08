@@ -92,7 +92,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
 
     $ make mach-list              # 查看支持的列表
-    $ make MACH=malta mach-config # 这里选择一块 MIPS 板子：malta
+    $ make MACH=malta             # 这里选择一块 MIPS 板子：malta
     $ make boot
 
 ### 下载更多源码

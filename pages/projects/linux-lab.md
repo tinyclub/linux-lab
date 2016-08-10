@@ -8,7 +8,7 @@ description: 基于 Qemu 的 Linux 内核开发环境，支持 Docker, 支持 Ub
 update: 2016-06-19
 categories:
   - 开源项目
-  - Linux
+  - Linux Lab
 tags:
   - 实验环境
   - Lab

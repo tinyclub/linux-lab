@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# start the linux 0.11 lab via docker with the shared source in $PWD/
+# start the env via docker with the shared source in $PWD/
 #
 
 TOP_DIR=$(dirname `readlink -f $0`)

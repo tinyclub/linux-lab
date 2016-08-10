@@ -1,4 +1,4 @@
-# open the web lab via a browser
+# open the web env via a browser
 
 browser=chromium-browser
 url=http://localhost

@@ -69,7 +69,7 @@ ELF是Linux支持的一种程序文件格式，本身包含重定位、执行、
 
 也可链接成动态链接库，不过一般不会把main函数链接成动态链接库，后面再介绍：
 
-    $ gcc -fpic -shared -W1,-soname,libtest.so.0 -o libtest.so.0.0 test.o
+    $ gcc -fpic -shared -Wl,-soname,libtest.so.0 -o libtest.so.0.0 test.o
     $ file libtest.so.0.0
     libtest.so.0.0: ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV), not stripped
 
@@ -414,7 +414,7 @@ Linux下elf文件的动态链接器是`ld-linux.so`，即`/lib/ld-linux.so.2`。
 演示：
 
     $ gcc -c myprintf.c
-    $ gcc -shared -W1,-soname,libmyprintf.so.0 -o libmyprintf.so.0.0 myprintf.o
+    $ gcc -shared -Wl,-soname,libmyprintf.so.0 -o libmyprintf.so.0.0 myprintf.o
     $ ln -sf libmyprintf.so.0.0 libmyprintf.so.0
     $ ln -fs libmyprintf.so.0 libmyprintf.so
     $ ls

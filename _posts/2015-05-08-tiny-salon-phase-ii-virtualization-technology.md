@@ -133,15 +133,15 @@ categories:
 
 ![Presentation about Docker + GitBook][48]
 
-  1. 平波 介绍 NameSpace
+  2. 平波 介绍 NameSpace
 
 ![Pingbo][49] ![Mount NameSpace][50]
 
-  1. 文军 介绍 Cgroup
+  3. 文军 介绍 Cgroup
 
 ![WenJun][51] ![VM v.s. Container][52]
 
-  1. Falcon 主持讨论各种虚拟化技术以及它们的应用场景
+  4. Falcon 主持讨论各种虚拟化技术以及它们的应用场景
 
 ![VM discussion][53]
 
@@ -190,3 +190,15 @@ categories:
  [39]: http://os.51cto.com/art/201305/396145.htm
  [40]: http://baike.baidu.com/link?url=e6LQfFrO-BMna0OW1sZMt_m3c5QodbpfAJeX0bYf6C1sk9ecqdjNiRjQ6EEimnsGs-N8iwPY4QCgvVA_mcTqX_
  [41]: http://www.zhihu.com/question/20475470
+ [42]: http://blog.itpub.net/21937342/viewspace-1120289/
+ [43]: http://m.blog.csdn.net/blog/shenlin2011/24668979
+ [44]: http://www.csdn.net/article/2015-03-31/2824362
+ [45]: http://www.csdn.net/article/2014-12-15/2823129
+ [46]: http://www.intel.com/content/dam/www/public/cn/zh/pdfs/teamsun-casestudy-cn.pdf
+ [47]: http://my.oschina.net/u/1431433/blog/384964
+ [48]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2tx5s3ij30p018gtbd.jpg
+ [49]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1erk2u4tyttj318g0wwdow.jpg
+ [50]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2u6k3bnj316616idn7.jpg
+ [51]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2u0mzckj318g0ww11p.jpg
+ [52]: http://ww4.sinaimg.cn/bmiddle/005wLCQdjw1erk2u2ztqsj318g0wwgqt.jpg
+ [53]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1erk2tytnhwj318g0wwk0b.jpg

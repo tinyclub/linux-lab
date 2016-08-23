@@ -442,6 +442,7 @@ categories:
 ## 参考资料
 
   * 《UNIX环境高级编程》
+  * [Computer Science from the Bottom Up][6]
 
 
 
@@ -451,3 +452,4 @@ categories:
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
  [5]: http://www.cppblog.com/cuijixin/archive/2008/03/14/44463.html
+ [6]: https://www.bottomupcs.com/

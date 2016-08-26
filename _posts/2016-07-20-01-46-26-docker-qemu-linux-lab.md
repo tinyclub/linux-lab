@@ -83,7 +83,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 启动
 
-打开 `http://localhost:6080/vnc.html` 并输入 `ubuntu` 密码登陆，之后打开一个控制台：
+执行 `tools/open-docker-lab.sh` 后会打开一个 VNC 网页，输入 `ubuntu` 密码登陆即可，之后打开一个控制台：
 
     $ sudo -s
     $ cd /linux-lab

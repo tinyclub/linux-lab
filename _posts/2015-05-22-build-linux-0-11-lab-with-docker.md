@@ -41,7 +41,9 @@ categories:
 
 ## 远程登录实验环境
 
-通过浏览器打开 `http://localhost:6080/vnc.html` 并使用 `ubuntu` 作为密码登录。
+上面的命令会打开一个 VNC 登陆界面，使用 `ubuntu` 作为密码登录即可。
+
+之后也可以直接通过 `tools/open-docker-lab.sh` 来启动 VNC 页面。
 
 ## 简单使用
 

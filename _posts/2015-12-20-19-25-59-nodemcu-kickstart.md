@@ -605,7 +605,7 @@ NodeMCU [发布](https://github.com/nodemcu/nodemcu-firmware/releases/)时是单
 
 实例演示：
 
-    $ cd ../example/blink/
+    $ cd ../examples/noduino/blink/
     $ make && make flash
 
 ## 使用 Arduino IDE

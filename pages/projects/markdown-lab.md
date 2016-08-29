@@ -104,6 +104,10 @@ Docker 安装：
 * [用 Markdown 高效地写幻灯片][6]
 * [Docker 快速上手：用 Docker + GitBook 写书][7]
 
+## Demo
+
+![Markdown Lab Demo](/wp-content/uploads/2016/08/30/markdown-lab-demo.jpg)
+
  [2]: https://github.com/tinyclub/markdown-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/markdown-lab
  [4]: http://tinylab.org/use-markdown-to-write-document/

@@ -10,6 +10,7 @@ tags:
   - 计算机学生
   - Linux
   - Linux 0.11
+  - Linux Lab
   - Qemu
   - Uboot
   - 开源
@@ -71,7 +72,7 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 如果想看 Linux 0.11 的源代码，可以到 <http://oldlinux.org/> 下载开放的书籍和源代码，在 Ubuntu 下用 Qemu 做实验就好了。记得下载可以在 Ubuntu 下用最新编译器编译的 Linux 0.11 代码： [https://github.com/tinyclub/linux-0.11-lab.git][10] 以及这里的 [五分钟 Linux 0.11 实验环境使用指南][11] 。
 
-如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。使用它可以很快搭建一个集成了 Linux 内核的实验环境，通过 Qemu 支持上百款免费的开发板，集成了 Buildroot，Uboot 等关联的工具，可直接快速高效地做 Linux 内核的实验。
+如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建一个集成的 Linux 内核的实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot，Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试，可通过 Web 远程访问。
 
 ### 汇编语言
 
@@ -143,6 +144,10 @@ Mysql, PostgreSQL, SQLite?  我在上学的时候，这些东西就很火，这�
 
 回到虚拟化，用 Qemu （当然，还有 VirtualBox 之类），理论上可以创建任意多台虚拟的计算机，搭建任意多种不同的网络服务，创建一个复杂的集群，想做网桥，还是想做 NAT 可以选……
 
+### 文档撰写
+
+各种学习总结过程中，离不开文档撰写，包括幻灯片、文章甚至图书出版，毕业后还可能涉及到简历制作。这些统统可以用目前最流程也是最简约的 Markdown 来完成，它允许我们彻底摒弃繁杂的格式限制，让我们能够更多地沉浸到内容的创作中。学会 Markdown 对于学习效率和专注力培养来说都会有好处。推荐大家使用 [Markdown Lab][24] 来快速搭建文档撰写环境，已经内置精美的幻灯、文章、图书和简历模板，都可转为 pdf。
+
 ### 其他
 
 几乎所有的课程，都可以找到开放的实践项目，看: [20 Source Code Hosting Sites You Should Know][23]
@@ -174,3 +179,4 @@ Mysql, PostgreSQL, SQLite?  我在上学的时候，这些东西就很火，这�
  [21]: /open-shell-book/
  [22]: http://bellard.org/tcc/
  [23]: http://www.brenelz.com/blog/20-source-code-hosting-sites-you-should-know/
+ [24]: http://tinylab.org/markdown-lab

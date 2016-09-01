@@ -36,7 +36,7 @@ tags:
 
   * 安装 qemu 和编译环境
 
-        sudo apt-get install qemu build-essential
+        sudo apt-get install qemu gcc gdb binutils
 
   * 下载汇编语言源码
     

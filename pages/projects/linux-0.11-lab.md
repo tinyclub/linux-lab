@@ -38,7 +38,7 @@ tags:
 
 以 Ubuntu 和 Qemu 为例, 对于 Mac OS X 和 Bochs 的用法，请参考 [README.md][2].
 
-    apt-get install vim cscope exuberant-ctags build-essential qemu
+    apt-get install vim cscope exuberant-ctags gcc gdb binutils qemu
     
 
 ### 下载

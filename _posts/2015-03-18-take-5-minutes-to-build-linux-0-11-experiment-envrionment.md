@@ -88,7 +88,7 @@ categories:
 
 先准备个电脑，XP 已死，建议用 Ubuntu 或者 OS X，这里主要介绍 Ubuntu，OS X 看 [README.md][7] 吧。
 
-    apt-get install vim cscope exuberant-ctags build-essential qemu
+    apt-get install vim cscope exuberant-ctags gcc gdb binutils qemu
 
 
 ### 下载

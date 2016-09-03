@@ -133,7 +133,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 启动串口
 
-    $ make boot-ng
+    $ make boot G=0
 
 ### 选择 Rootfs 设备
 

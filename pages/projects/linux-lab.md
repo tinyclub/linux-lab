@@ -113,7 +113,7 @@ tags:
 
 ### 启动串口
 
-    $ make boot-ng
+    $ make boot G=0
 
 ### 选择 Rootfs 设备
 

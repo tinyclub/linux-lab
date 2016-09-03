@@ -45,20 +45,11 @@ $(document).ready(function() {
   function findEntries(q) {
     var matches = [];
     var rq = new RegExp(q, 'im');
-    var rl = /\/([^\/]+)\/$/;
-    var rl_html = /\/([^\/]+)\.html$/;
     for (var i = 0; i < entries.length; i++) {
       var entry = entries[i];
       var title = $(entry.getElementsByTagName('title')[0]).text();
-      var link = $(entry.getElementsByTagName('link')[0]).attr('href');
-      var rl_link = rl.exec(link);
-      if (!rl_link) {
-        rl_link = rl_html.exec(link);
-        if (!rl_link)
-          continue;
-      }
-      var title_en = rl_link[1].replace(/-/g, ' ');
-      var summary = $(entry.getElementsByTagName('summary')[0]).text();
+      var title_en = $(entry.getElementsByTagName('id')[0]).text().replace(/-/g,' ');
+      var summary = $(entry.getElementsByTagName('summary')[0]).text().replace(/,/g, ' ');
       var content = $(entry.getElementsByTagName('content')[0]).text();          
       if (rq.test(title) || rq.test(title_en) || rq.test(summary) || rq.test(content)) {
         var updated = formatDate(xmlDateToJavascriptDate($(entry.getElementsByTagName('updated')[0]).text()));

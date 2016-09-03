@@ -48,6 +48,7 @@ $(document).ready(function() {
     for (var i = 0; i < entries.length; i++) {
       var entry = entries[i];
       var title = $(entry.getElementsByTagName('title')[0]).text();
+      var link = $(entry.getElementsByTagName('link')[0]).attr('href');
       var title_en = $(entry.getElementsByTagName('id')[0]).text().replace(/-/g,' ');
       var summary = $(entry.getElementsByTagName('summary')[0]).text().replace(/,/g, ' ');
       var content = $(entry.getElementsByTagName('content')[0]).text();          

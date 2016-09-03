@@ -1,5 +1,5 @@
 ---
-title: 'Shell 编程范例系列'
+title: 'Shell 编程范例'
 tagline: 一本介绍不同数据类型操作实例的开源 Shell 书籍
 author: Wu Zhangjin
 layout: page
@@ -34,7 +34,7 @@ tags:
 
 ## 写作计划
 
-写作计划请参考：[《Shell 编程范例系列》自由书籍计划][3]
+写作计划请参考：[《Shell 编程范例》自由书籍计划][3]
 
 ## 构建本书
 

@@ -23,7 +23,7 @@ title : Atom Feed
     <title>{% capture post_title %}{{ post.title | strip_html | xml_escape | strip }}{%endcapture%}{{post_title}}</title>
     <link href="{{ site.production_url }}{{ post.url }}"/>
     <updated>{{ post.date | date_to_xmlschema }}</updated>
-    <id>{{ site.production_url }}{{ post.id }}</id>
+    <id>{{ post.id }}</id>
 	{% capture summary %}{% assign tags = post.tags | join: "," %}{% assign addrs = post.addrs | join: "," %}{{ post.categories | join: "," | append: "," | append: post.keywords | append:"," | append:post.album | append:"," | append: tags | append: ',' | append: addrs | strip_html | xml_escape | downcase | remove:' ' | split:"," | sort | uniq | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{summary | prepend:"pLACeHoldER," | replace: ",,,":"," | replace: ",,":"," | remove:'pLACeHoldER,' }}</summary>{%endif%}
     {% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content type="html">{{content}}</content>{% endif %}
   </entry>
@@ -32,7 +32,7 @@ title : Atom Feed
     <title>{% capture page_title %}{{ page.title | strip_html | xml_escape | strip }}{%endcapture%}{{page_title}}</title>
     <link href="{{ site.production_url }}{{ page.url }}"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
-    <id>{{ site.production_url }}{{ page.url }}</id>
+    <id>{{ page.url }}</id>
 	{% capture summary %}{% assign tags = page.tags | join: "," %}{% assign addrs = post.addrs | join: "," %}{{ page.categories | join: "," | append: "," | append: page.keywords | append:"," | append:post.album | append:"," | append: tags | append: ',' | append: addrs | strip_html | xml_escape | downcase | remove:' ' | split:"," | sort | uniq | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{summary | prepend:"pLACeHoldER," | replace: ",,,":"," | replace: ",,":"," | remove:'pLACeHoldER,' }}</summary>{%endif%}
     {% capture content %}{{ page.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content type="html">{{content}}</content>{% endif %}
   </entry>

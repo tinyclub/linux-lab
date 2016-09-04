@@ -41,7 +41,11 @@ categories:
 
   > 我们疑惑 jemalloc 的层层缓冲会造成过多的内存占用，这对实时性要求较高，内存较为紧张的移动设备影响较大。对此，jemalloc 如何应对呢？还有，是否存在系统内存紧张时，减少缓冲的联动机制呢？
 
-* [内存分配奥义·malloc in OS X][7]
+* [jemalloc 之堆占用剖析·内部实现][7]
+
+  > jemalloc 也内建了堆占用的剖析功能，分析程序通过 malloc/new 分配出来空间。了解内部实现，便明了堆占用剖析所具有的力度与粒度，明了在面对现实问题时，能发挥什么样的作用。
+
+* [内存分配奥义·malloc in OS X][8]
 
   > 苹果的一切似乎都透着其背后的设计气息～苹果的代码也不例外，通常表现抽象的模型，通常直击清晰的场景，通常带着一些防呆编码来侦测客户代码中的错误。抽象的模型在不同代码间塑现，使得呈现出一种整体性；清晰的场景来垂直整合，使得呈现一种便利性&#8230;
 
@@ -55,4 +59,5 @@ categories:
  [4]: /buddy-actually-use-cma-and-cma-brochures-as-well-as-android-problem-improving/
  [5]: /memory-allocation-mystery-%c2%b7-jemalloc-a/
  [6]: /memory-allocation-mystery-%c2%b7-jemalloc-b/
- [7]: /memory-allocation-mystery-malloc-in-os-x-ios/
+ [7]: /the-builtin-heap-profiling-of-jemalloc/
+ [8]: /memory-allocation-mystery-malloc-in-os-x-ios/

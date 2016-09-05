@@ -63,10 +63,13 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 
     $ sudo tools/install-local-lab.sh
 
-Docker 安装：
+Docker 安装/启动：
 
     $ sudo tools/install-docker-lab.sh
-    $ tools/run-docker-lab-daemon.sh
+
+    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
+    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
+    $ tools/run-docker-lab.sh
 
 ### 使用
 

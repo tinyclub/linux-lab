@@ -32,15 +32,15 @@ tags:
 
   * 下载源码
 
-        git clone https://github.com/tinyclub/cs630-qemu-lab.git
+        $ git clone https://github.com/tinyclub/cs630-qemu-lab.git
 
   * 安装 qemu 和编译环境
 
-        sudo apt-get install qemu gcc gdb binutils
+        $ sudo apt-get install qemu gcc gdb binutils
 
   * 下载汇编语言源码
     
-        $ cd cs630-qemu
+        $ cd cs630-qemu-lab
         $ make update
     
     上述命令将从 CS630 课程网站 [CS 630: Advanced Microcomputer Programming (Fall 2006)][1] 下载最新的源码到 `res/`。

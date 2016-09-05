@@ -52,7 +52,10 @@ tags:
 Docker 安装：
 
     $ sudo tools/install-docker-lab.sh
-    $ tools/run-docker-lab-daemon.sh
+    
+    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
+    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
+    $ tools/run-docker-lab.sh
 
 通过 Docker 安装后，上述命令或者 `tools/open-docker-lab.sh` 会打开一个 VNC 页面，用 'ubuntu' 密码登陆后，会看到桌面的 "Markdown Lab" 图标，点击后即可进入操作终端。
 

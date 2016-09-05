@@ -18,3 +18,5 @@ _data/compress.yml
 pdfs/*
 
 .idea
+.jekyll-metadata
+.lab*

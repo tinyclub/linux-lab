@@ -1,0 +1,4 @@
+--cpuset-cpus=0
+--cpu-shares=512
+--memory=320M
+--memory-swap=320M

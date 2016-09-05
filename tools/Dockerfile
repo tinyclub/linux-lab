@@ -1,10 +1,13 @@
-FROM ubuntu:14.04
+FROM dorowu/ubuntu-desktop-lxde-vnc
 MAINTAINER Falcon wuzhangjin@gmail.com
 
 RUN sed -i -e "s%/archive.ubuntu.com%/cn.archive.ubuntu.com%g" /etc/apt/sources.list
 
 RUN apt-get -y update
 
+RUN apt-get install -y vim
+RUN apt-get install -y git
+RUN apt-get install -y ca-certificates
 RUN apt-get install -y nginx
 RUN apt-get install -y gcc
 RUN apt-get install -y make
@@ -23,12 +26,16 @@ RUN gem install iconv
 RUN gem install jekyll
 RUN gem install jekyll-paginate
 
-WORKDIR /jekyll/
-RUN rm -r /usr/share/nginx/html
-RUN ln -sf /jekyll/_site /usr/share/nginx/html
+ADD lab.desktop /
+ADD jekyll.desktop /
+ADD lab-name /
+ADD startup.sh /
 
-EXPOSE 80
+# Tune the screen size
+ADD supervisord.conf /etc/supervisor/conf.d/
 
-ADD jekyll-start /
+WORKDIR /tinylab.org/
 
-ENTRYPOINT ["/jekyll-start"]
+EXPOSE 6080
+
+ENTRYPOINT ["/startup.sh"]

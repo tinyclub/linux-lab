@@ -19,6 +19,10 @@ LAB_HOST_NAME=$LAB_TOOLS/.lab_host_name
 UNIX_UID=$(< $LAB_UNIX_UID)
 [ -z "$UNIX_UID" ] && UNIX_UID=1000 && echo $UNIX_UID > $LAB_UNIX_UID
 
+# Update locales
+locale-gen --purge en_US.utf8
+locale-gen --purge zh_CN.utf8
+
 # create an ubuntu user
 id -u ubuntu &>/dev/null || useradd --uid $UNIX_UID --create-home --shell /bin/bash --user-group --groups adm,sudo ubuntu
 
@@ -26,6 +30,7 @@ sudo mkdir $DESKTOP
 sudo cp /lab.desktop $DESKTOP/${LAB_NAME}.desktop
 sudo cp /demo.desktop $DESKTOP/
 sudo cp /help.desktop $DESKTOP/
+sudo cp $LAB_TOOLS/.bashrc $HOME/
 sudo chown ubuntu:ubuntu -R $HOME/
 
 UNIX_PASS=$(< $LAB_UNIX_PWD)

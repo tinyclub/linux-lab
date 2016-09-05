@@ -26,6 +26,14 @@ RUN gem install iconv
 RUN gem install jekyll
 RUN gem install jekyll-paginate
 
+# Chinese support
+RUN apt-get install -y ibus ibus-sunpinyin dbus-x11
+RUN apt-get install -y terminator
+# RUN apt-get install -y fonts-arphic-bkai00mp fonts-arphic-bsmi00lp
+# RUN apt-get install -y fonts-arphic-gbsn00lp fonts-arphic-gkai00mp
+# RUN apt-get install -y fonts-arphic-ukai fonts-arphic-uming
+
+ADD autostart /etc/xdg/lxsession/LXDE/autostart
 ADD lab.desktop /
 ADD demo.desktop /
 ADD help.desktop /

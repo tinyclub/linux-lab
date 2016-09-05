@@ -40,7 +40,7 @@ if [ -d ~/Desktop ]; then
     else
         icon=firefox.png
     fi
-    cat $TOP_DIR/lab.desktop | sed "s%Exec=.*%Exec=$WEB_BROWSER $url%g" | sed "s%lxterminal.xpm%$icon%g">> $LAB_DESKTOP_SHORTCUT
+    cat $TOP_DIR/lab.desktop | sed "s%Exec=.*%Exec=$WEB_BROWSER $url%g" | sed "s%terminator.png%$icon%g">> $LAB_DESKTOP_SHORTCUT
     chmod a+x $LAB_DESKTOP_SHORTCUT
 fi
 

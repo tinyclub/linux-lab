@@ -27,7 +27,8 @@ RUN gem install jekyll
 RUN gem install jekyll-paginate
 
 ADD lab.desktop /
-ADD jekyll.desktop /
+ADD demo.desktop /
+ADD help.desktop /
 ADD lab-name /
 ADD startup.sh /
 

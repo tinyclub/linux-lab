@@ -22,23 +22,19 @@ order: 30
 
       $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
 
-* 安装 jekyll 编译环境
+* 安装 Jekyll 编译环境
 
 Ubuntu 14.04 以上用户可直接执行：
 
-    $ sudo tools/jekyll-env
+      $ sudo tools/install-docker-lab.sh
 
 其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
 
-    $ docker build -t tinylab/tinylab.org ./
+* 启动 jekyll 环境，之后在容器内通过 <http://localhost> 访问站点
 
-安装后请重启 X，确保 docker 运行时无需 sudo
-
-    $ sudo pkill X
-
-* 启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最新的 5 篇
-
-      $ tools/jekyll-build
+      $ tools/update-lab-uid.sh         # Sync uid between host and container
+      $ tools/update-lab-identify.sh    # Disable password
+      $ tools/run-docker-lab.sh
 
 * 生成文章模板, slug 为链接，title 为标题
 
@@ -68,23 +64,15 @@ Ubuntu 14.04 以上用户可直接执行：
 
 #### 通过 Docker 搭建
 
-Ubuntu 14.04 以上用户，可通过 docker 快速搭建：
+Ubuntu 14.04 以上用户可直接执行：
 
-    $ sudo tools/install-docker-env.sh
+    $ sudo tools/install-docker-lab.sh
 
-其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
+其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境
 
-    $ docker build -t tinylab/tinylab.org ./
-
-安装后请重启 X，确保 docker 运行时无需 sudo
-
-    $ sudo pkill X
-
-最后，启动 jekyll 环境，之后即可通过 <http://localhost> 访问站点，默认只编译最近的 5 篇
-
-    $ tools/jekyll-build
-
-**注**：上述 docker 创建的 jekyll 环境使用了 80 端口，为了避免冲突，使用前请先停掉其他 http 服务，比如 nginx/apache 等。
+      $ tools/update-lab-uid.sh         # Sync uid between host and container
+      $ tools/update-lab-identify.sh    # Disable password
+      $ tools/run-docker-lab.sh
 
 #### 本地搭建
 

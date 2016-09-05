@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Help Page
+Comment=Post help page of http://tinylab.org
+Exec=/usr/bin/firefox http://tinylab.org/post/
+Icon=/usr/share/pixmaps/firefox.png
+Type=Application

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=TinyLab.org
-Comment=A Friendly Lab for jekyll website 
+Name=Demo Page
+Comment=Local site of http://tinylab.org
 Exec=/usr/bin/firefox http://localhost/
 Icon=/usr/share/pixmaps/firefox.png
 Type=Application

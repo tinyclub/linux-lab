@@ -33,6 +33,10 @@ RUN apt-get install -y terminator
 # RUN apt-get install -y fonts-arphic-gbsn00lp fonts-arphic-gkai00mp
 # RUN apt-get install -y fonts-arphic-ukai fonts-arphic-uming
 
+RUN gem install showterm
+
+RUN apt-get install -y chromium-browser
+
 ADD autostart /etc/xdg/lxsession/LXDE/autostart
 ADD lab.desktop /
 ADD demo.desktop /

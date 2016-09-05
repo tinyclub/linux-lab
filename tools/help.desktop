@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Name=Help Page
 Comment=Post help page of http://tinylab.org
-Exec=/usr/bin/firefox http://localhost/post/
-Icon=/usr/share/pixmaps/firefox.png
+Exec=/usr/bin/chromium-browser http://localhost/post/
+Icon=/usr/share/pixmaps/chromium-browser.png
 Type=Application

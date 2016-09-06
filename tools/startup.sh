@@ -29,6 +29,7 @@ id -u ubuntu &>/dev/null || useradd --uid $UNIX_UID --create-home --shell /bin/b
 sudo mkdir $DESKTOP
 sudo cp /lab.desktop $DESKTOP/${LAB_NAME}.desktop
 sudo cp /demo.desktop $DESKTOP/
+sudo cp /local.desktop $DESKTOP/
 sudo cp /help.desktop $DESKTOP/
 sudo cp $LAB_TOOLS/.bashrc $HOME/
 sudo chown ubuntu:ubuntu -R $HOME/

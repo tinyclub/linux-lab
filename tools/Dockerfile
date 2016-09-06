@@ -40,6 +40,7 @@ RUN apt-get install -y chromium-browser
 ADD autostart /etc/xdg/lxsession/LXDE/autostart
 ADD lab.desktop /
 ADD demo.desktop /
+ADD local.desktop /
 ADD help.desktop /
 ADD lab-name /
 ADD startup.sh /

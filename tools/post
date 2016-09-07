@@ -35,13 +35,18 @@ tags=""
 categories=""
 
 args=""
-[ -n "$tags" ] && args=args' tags="$tags"'
-[ -n "$categories" ] && args=args' categories="$categories"'
+[ -n "$tags" ] && args=$args" tags=\"$tags\""
+[ -n "$categories" ] && args=$args" categories=\"$categories\""
 
-[ -n "$tagline" ] && args=args' tagline="$tagline"'
-[ -n "$album" ] && args=args' album="$album"'
-[ -n "$group" ] && args=args' group="$group"'
+[ -n "$tagline" ] && args=$args" tagline=\"$tagline\""
+[ -n "$album" ] && args=$args" album=\"$album\""
+[ -n "$group" ] && args=$args" group=\"$group\""
 
-[ -n "$description" ] && args=args' description="$description"'
+[ -n "$description" ] && args=$args" description=\"$description\""
 
-rake post author="$author" nick="$nick" title="$title" slug="$slug" $args $@
+for i in "$@"
+do
+	args=$args" $(echo $i\" | sed -e 's/=/=\"/g')"
+done
+
+eval rake post author="\"$author\"" nick="\"$nick\"" title="\"$title\"" slug="\"$slug\"" $args

@@ -24,11 +24,11 @@ order: 30
 
 * 安装 Jekyll 编译环境
 
-Ubuntu 14.04 以上用户可直接执行：
+  Ubuntu 14.04 以上用户可直接执行：
 
       $ sudo tools/install-docker-lab.sh
 
-其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
+  其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
 
 * 启动 jekyll 环境，之后在容器内通过 <http://localhost> 访问站点
 

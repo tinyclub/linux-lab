@@ -51,5 +51,6 @@ ADD supervisord.conf /etc/supervisor/conf.d/
 WORKDIR /tinylab.org/
 
 EXPOSE 6080
+EXPOSE 80
 
 ENTRYPOINT ["/startup.sh"]

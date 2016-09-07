@@ -69,6 +69,12 @@ if [ -f $LAB_VNC_IDENTIFY ]; then
     fi
 fi
 
+# Configure the ip address for jekyll and desktop shortcut
+lab_host_ip=$(ip addr show eth0 | head -3 | tail -1 | sed -e "s%.*inet \(.*\)/16.*%\1%g")
+sed -i -e "s% -H HOST_IP% -H $lab_host_ip%g" /etc/supervisor/conf.d/supervisord.conf
+sudo -u ubuntu sed -i -e "s%localhost%$lab_host_ip%g" $DESKTOP/local.desktop
+echo "LOG: Jekyll Web Site Address: http://$lab_host_ip/"
+
 if [ -f /bin/tini ]; then
 	exec /bin/tini -- /usr/bin/supervisord -n
 else

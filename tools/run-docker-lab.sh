@@ -11,6 +11,8 @@ LAB_HOST_TOOL=$TOP_DIR/run-local-host.sh
 LAB_CAPS=$TOP_DIR/lab-caps
 LAB_DEVICES=$TOP_DIR/lab-devices
 LAB_LIMITS=$TOP_DIR/lab-limits
+LAB_PORTMAP=$TOP_DIR/lab-portmap
+LAB_VOLUMEMAP=$TOP_DIR/lab-volumemap
 
 lab_name=`basename ${IMAGE}`
 local_lab_dir=`dirname $TOP_DIR`
@@ -19,6 +21,7 @@ remote_lab_dir=/$lab_name/
 LAB_CONTAINER_NAME=$TOP_DIR/.lab_container_name
 LAB_CONTAINER_ID=$TOP_DIR/.lab_container_id
 LAB_LOCAL_PORT=$TOP_DIR/.lab_local_port
+LAB_HOST_NAME=$TOP_DIR/.lab_host_name
 LAB_UNIX_PWD=$TOP_DIR/.lab_unix_pwd
 LAB_VNC_PWD=$TOP_DIR/.lab_login_pwd
 
@@ -83,17 +86,34 @@ if [ -f $LAB_DEVICES  ]; then
   done
 fi
 
+lab_portmap="-p $local_port:$remote_port"
+
+if [ -f $LAB_PORTMAP  ]; then
+  for portmap in $(< $LAB_PORTMAP)
+  do
+    lab_portmap="$lab_portmap -p $portmap"
+  done
+fi
+
+lab_volumemap="-v $local_lab_dir:$remote_lab_dir"
+if [ -f $LAB_VOLUMEMAP  ]; then
+  for volumemap in $(< $LAB_VOLUMEMAP)
+  do
+    lab_volumemap="$lab_volumemap -v $volumemap"
+  done
+fi
+
 [ -f $LAB_LIMITS ] && lab_limits=$(< $LAB_LIMITS)
 
 container_name=${lab_name}-${local_port}
 
-CONTAINER_ID=$(docker run --privileged \
+CONTAINER_ID=$(docker run -d --privileged \
 		--name ${container_name} \
+                ${lab_portmap} \
                 ${lab_caps} \
                 ${lab_devices} \
                 ${lab_limits} \
-                -d -p $local_port:$remote_port \
-                -v $local_lab_dir:$remote_lab_dir \
+                ${lab_volumemap} \
                 $IMAGE)
 
 echo "LOG: Wait for lab launching..."
@@ -105,6 +125,16 @@ do
 done
 
 echo "LOG: Container: ${CONTAINER_ID:0:12} / $container_name $pwd"
+
+if [ -f $LAB_PORTMAP ]; then
+  grep -q 80 $LAB_PORTMAP
+  if [ $? -eq 0 ]; then
+    docker logs $CONTAINER_ID 2>/dev/null | grep Jekyll
+    lab_web_port=$(grep 80 $LAB_PORTMAP | cut -d':' -f1)
+    lab_host_name=$(< $LAB_HOST_NAME)
+    echo "LOG: Local Jekyll Web Address: http://$lab_host_name:$lab_web_port/"
+  fi
+fi
 
 unix_pwd=`echo $pwd | sed -e "s/.* Password: \([^ ]*\) .*/\1/g"`
 vnc_pwd=`echo $pwd | sed -e "s/.* VNC-Password: \(.*\)$/\1/g"`

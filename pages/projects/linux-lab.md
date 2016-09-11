@@ -19,6 +19,8 @@ tags:
   - 嵌入式
 ---
 
+<iframe src="http://showterm.io/6fb264246580281d372c6" style="align:center;width:100%;height:680px;"></iframe>
+
 ## 项目描述
 
 该项目致力于快速构建一个基于 Qemu 的 Linux 内核开发环境。

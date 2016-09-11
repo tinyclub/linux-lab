@@ -14,6 +14,8 @@ tags:
   - CS630
 ---
 
+<iframe src="http://showterm.io/547ccaae139df14c3deec" style="align:center;width:100%;height:680px;"></iframe>
+
 ## 简介
 
 该项目致力于通过 Qemu 学习旧金山大学的汇编语言课程 [CS630][1]。

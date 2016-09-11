@@ -13,6 +13,8 @@ tags:
   - 实验环境
 ---
 
+<iframe src="http://showterm.io/ffb67385a07fd3fcec182" width="640" height="480"></iframe>
+
 ## 项目描述
 
 该项目致力于快速构建一个 Linux 0.11 实验环境，可配合[《Linux内核完全注释》][1] 一书使用。

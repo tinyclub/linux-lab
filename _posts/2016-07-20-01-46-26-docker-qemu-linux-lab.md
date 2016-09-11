@@ -134,7 +134,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 启动串口
 
-    $ make boot G=0
+    $ make boot G=0	# 使用组合按键：`CTL+a x` 退出，或者另开控制台执行：`pkill qemu`
 
 ### 选择 Rootfs 设备
 

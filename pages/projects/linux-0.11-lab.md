@@ -13,7 +13,7 @@ tags:
   - 实验环境
 ---
 
-<iframe src="http://showterm.io/ffb67385a07fd3fcec182" width="640" height="480"></iframe>
+<iframe src="http://showterm.io/ffb67385a07fd3fcec182" style="align:center;width:100%;height:680px;"></iframe>
 
 ## 项目描述
 
@@ -102,6 +102,9 @@ See:
 
 ![Linux 0.11 Calltree][6]
 
+### 演示
+
+![Linux 0.11 Lab][7]
 
 
 
@@ -111,3 +114,4 @@ See:
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: /wp-content/uploads/2015/03/linux-0.11.jpg
+ [7]: /wp-content/uploads/2015/03/linux-0.11-lab.jpg

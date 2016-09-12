@@ -33,7 +33,7 @@ CONTAINER_ID=""
 if [ -n "$CONTAINER_ID" ]; then
     docker ps -f id=$CONTAINER_ID | grep -v PORTS
     if [ $? -eq 0 ]; then
-        echo "LOG: $CONTAINER_ID exist, remove $LAB_CONTAINER_ID before create new."
+        echo -e "\nLOG: $CONTAINER_ID exist, remove $LAB_CONTAINER_ID before create new.\n"
 	exit
     fi
 fi
@@ -108,7 +108,8 @@ fi
 container_name=${lab_name}-${local_port}
 
 # Remove the old one if exist
-docker rm -f ${container_name}
+container_matched=`docker ps -q -f name=${container_name} | wc -l`
+[ $container_matched -eq 1 ] && docker rm -f ${container_name}
 
 CONTAINER_ID=$(docker run -d --privileged \
 		--name ${container_name} \

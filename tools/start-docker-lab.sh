@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# kill-docker-lab.sh -- rm a docker lab
+# start-docker-lab.sh -- start a stopped docker lab
 #
 
 TOP_DIR=$(dirname `readlink -f $0`)
@@ -15,4 +15,4 @@ if [ -z "$CONTAINER_ID" ]; then
     fi
 fi
 
-docker rm -f $CONTAINER_ID 2>&1
+docker start $CONTAINER_ID 2>&1

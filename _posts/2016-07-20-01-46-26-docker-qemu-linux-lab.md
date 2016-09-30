@@ -103,6 +103,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 ### 配置
 
     $ make root-defconfig         # 配置根文件系统
+    $ make kernel-checkout        # 从代码仓库检出特定的内核版本（执行前请确保本地修改有备份）
     $ make kernel-defconfig       # 配置内核
 
     $ make root-menuconfig         # 手动配置根文件系统

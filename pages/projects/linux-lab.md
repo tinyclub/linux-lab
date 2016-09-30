@@ -86,6 +86,7 @@ tags:
 ### 配置
 
     $ make root-defconfig         # 配置根文件系统
+    $ make kernel-checkout        # 检出某个特定的分支（请确保做该操作前本地改动有备份）
     $ make kernel-defconfig       # 配置内核
 
     $ make root-menuconfig         # 手动配置根文件系统

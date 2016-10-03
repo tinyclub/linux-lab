@@ -160,7 +160,7 @@ task :post do
     post.puts "tags:#{tag_list}"
     post.puts "---"
     post.puts ""
-    post.puts "> By #{nick} of #{CONFIG['site']}"
+    post.puts "> By #{nick} of [#{CONFIG['site']}][1]"
     post.puts "> #{post_date}"
     post.puts ""
     post.puts "本模板为 泰晓科技 采用的文档模板与约定，为规范文章风格与质量，请在撰稿前务必仔细阅读！"

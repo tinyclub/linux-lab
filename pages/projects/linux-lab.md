@@ -42,6 +42,8 @@ tags:
 
 ## 相关文章
 
+  * [利用 Linux Lab 完成嵌入式系统开发全过程][7]
+  * [基于 Docker/Qemu 快速构建 Linux 内核实验环境][6]
   * [五分钟内搭建 Linux 0.11 的实验环境][4]
   * [基于 Docker 快速构建 Linux 0.11 实验环境][5]
 
@@ -165,3 +167,5 @@ tags:
  [3]: https://github.com/tinyclub/linux-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
+ [6]: http://tinylab.org/docker-qemu-linux-lab/
+ [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/

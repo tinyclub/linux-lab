@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "利用 Linux Lab 完成嵌入式系统开发全过程"
+title: "利用 Linux Lab 完成嵌入式系统软件开发全过程"
 permalink: /using-linux-lab-to-do-embedded-linux-development/
 description: "本文详细介绍了如何利用 Linux Lab 来搭建一个基于 ARM 的嵌入式 Linux 系统，并详细介绍了 U-boot, Linux Kernel, 根文件系统的相关操作，比如配置、编译、制作与引导。"
 category:

@@ -288,5 +288,7 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
 对于学生而言，Linux Lab 借助 Qemu 提供的大量免费开发板可以大大节省学习开支。
 
+在实际的嵌入式系统开发过程中，离不开一个很重要的环节，那就是ID、结构与硬件，涉及到 ID 设计、结构设计、原理图、PCB、电路板电源与信号完整性（PI/SI）、EMC（EMI/EMS）、ESD、散热等。而 Linux Lab 通过 Qemu 把硬件部分虚拟化了，开发者可以聚焦于软件部分。如果确实想研究硬件部分，那就需要购买或者自己设计一块真实的嵌入式开发板。
+
 [1]: http://tinylab.org/using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
 [2]: http://tinylab.org/linux-lab/

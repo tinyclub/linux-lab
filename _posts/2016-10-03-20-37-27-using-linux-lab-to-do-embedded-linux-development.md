@@ -16,7 +16,7 @@ tags:
   - 内核
 ---
 
-> By Falcon of [TinyLab.org][http://tinylab.org]
+> By Falcon of [TinyLab.org](http://tinylab.org)
 > 2016-10-03 20:37:27
 
 ## 简介

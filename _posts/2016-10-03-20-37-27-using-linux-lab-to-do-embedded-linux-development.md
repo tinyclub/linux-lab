@@ -276,7 +276,7 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
     $ make uboot
 
-通过 Uboot 引导内核：
+通过 Uboot 引导内核，`U=1` 使能 Uboot：
 
     $ make boot U=1
 

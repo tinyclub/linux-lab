@@ -242,9 +242,13 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
 正常启动 Linux 后，会看到上述信息，输入 `root` 用户名，按下回车即可进入。
 
-引入时可切换根文件系统类型，默认类型是 Ramdisk，例如换成磁盘镜像：
+引导时可切换根文件系统类型，默认类型是 Ramdisk，例如换成磁盘镜像：
 
     $ make boot ROOTDEV=/dev/sda
+
+例如，换成 `/dev/nfs`，Linux Lab 会自动配置根文件系统的 NFS 服务：
+
+    $ make boot ROOTDEV=/dev/nfs
 
 也可切换 Qemu 为串口输出模式，默认为 Framebuffer 输出：
 

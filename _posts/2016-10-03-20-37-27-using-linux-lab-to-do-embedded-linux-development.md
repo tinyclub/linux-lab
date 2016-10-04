@@ -14,6 +14,7 @@ tags:
   - Uboot
   - Linux
   - 内核
+  - 根文件系统
 ---
 
 > By Falcon of [TinyLab.org](http://tinylab.org)
@@ -204,7 +205,7 @@ Linux Lab 理论上支持所有 Qemu 内置的十几款处理器架构和几十�
 
     $ make kernel-save
 
-## 配置/编译 Buildroot 并制作成 Ramdisk
+## 配置/编译 Buildroot 并生成根文件系统
 
 用法跟上面几乎一致，使能默认配置文件：
 
@@ -233,6 +234,13 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 有了 Linux 内核镜像、DTB 和根文件系统，Linux Lab 就可以自动引导了。
 
     $ make boot
+    ...
+    Welcome to Linux Lab:
+    linux-lab login: root
+    # uname -a
+    Linux linux-lab 4.6.4 ...
+
+正常启动 Linux 后，会看到上述信息，输入 `root` 用户名，按下回车即可进入。
 
 引入时可切换根文件系统类型，默认类型是 Ramdisk，例如换成磁盘镜像：
 

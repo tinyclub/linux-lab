@@ -108,8 +108,9 @@ fi
 container_name=${lab_name}-${local_port}
 
 # Remove the old one if exist
-container_matched=`docker ps -q -f name=${container_name} | wc -l`
-[ $container_matched -eq 1 ] && docker rm -f ${container_name}
+docker ps -a | grep -q ${container_name}
+
+[ $? -eq 0 ] && docker rm -f ${container_name}
 
 CONTAINER_ID=$(docker run -d --privileged \
 		--name ${container_name} \

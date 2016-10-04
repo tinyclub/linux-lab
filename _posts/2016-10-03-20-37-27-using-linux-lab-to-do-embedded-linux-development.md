@@ -231,9 +231,9 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
 ## 加载 Linux Kernel 和根文件系统
 
-有了 Linux 内核镜像、DTB 和根文件系统，Linux Lab 就可以自动引导了。
+有了 Linux 内核镜像、DTB 和根文件系统，Linux Lab 就可以自动引导了，`U=0` 禁用 Uboot。
 
-    $ make boot
+    $ make boot U=0
     ...
     Welcome to Linux Lab:
     linux-lab login: root
@@ -249,6 +249,8 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 也可切换 Qemu 为串口输出模式，默认为 Framebuffer 输出：
 
     $ make boot G=0   # G 为 Graphic 缩写，G=0 会设置 -nographic
+
+对于串口输出模式，可通过另外一个控制台发送 `pkill qemu` 退出，也可以在当前控制台按下 “CTRL+a x” 组合键退出。
 
 ## 配置/编译 Uboot，加载 Linux Kernel
 
@@ -274,7 +276,14 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
     $ make boot U=1
 
-需要注意的是，如果这里引导时也要切换根文件系统类型，在配置时也需要相应传递 `ROOTDEV` 参数，并重新编译 Uboot。
+需要注意的是，由于不能简单地通过 qemu 传递参数给 Uboot，所有的 bootcmd 已经编译到了 Uboot 镜像中，如果这里引导时也要切换根文件系统类型，在配置时也需要相应传递 `ROOTDEV` 参数，并重新编译 Uboot。
+
+启动 Uboot 的过程中，在 `Hit any key to stop autoboot` 出现前，按住任何按键，可以进入 Uboot 命令行，键入 `print bootcmd` 可打印 `bootcmd`。
+
+    VersatilePB # print bootcmd
+    bootcmd=set ipaddr 10.66.33.70; set serverip 10.66.33.1; set bootargs 'router=10.66.33.1 console=tty0 console=ttyAMA0 root=/dev/ram0'; tftpboot 0x007fc0 uImage; tftpboot 0x907fc0 ramdisk; tftpboot 0x800000 dtb; bootm 0x007fc0 0x907fc0 0x800000
+
+为了方便调试，可调整 `bootcmd` 中的命令并逐条执行。
 
 如果要保存 Uboot 配置文件（存回 `machine/versatilepb/`），可执行：
 

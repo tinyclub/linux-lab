@@ -29,7 +29,7 @@
 
 - name: wechat
   icon: wechat
-  desc: 微信公众号
+  desc: 微信
 
 - name: sponsor
   icon: yen

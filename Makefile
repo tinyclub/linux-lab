@@ -373,7 +373,9 @@ ifeq ($(U),1)
 endif
 
 ifneq ($(ORIDTB),)
+ifneq ($(findstring v2.6.,$(LINUX)),v2.6.)
   DTBS=dtbs
+endif
 endif
 
 kernel: $(KERNEL_PATCH)

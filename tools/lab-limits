@@ -1,0 +1,4 @@
+--cpuset-cpus=1-3
+--cpu-shares=1024
+--memory=1024M
+--memory-swap=1024M

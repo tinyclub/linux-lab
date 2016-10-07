@@ -1,0 +1,3785 @@
+diff --git a/Documentation/kft.txt b/Documentation/kft.txt
+new file mode 100644
+index 0000000..e266e83
+--- /dev/null
++++ b/Documentation/kft.txt
+@@ -0,0 +1,388 @@
++                     Kernel Function Trace
++		 -- a kernel tracing system --
++
++Introduction
++============
++Kernel Function Trace (KFT) is a function tracing system, which uses
++the "-finstrument-functions" capability of the gcc compiler to add
++instrumentation callouts to every kernel function entry and exit.  The KFT system
++provides for capturing these callouts and generating a trace of events, with
++timing details.  This is about the most intrusive tracing mechanism
++imaginable, and WILL screw up timings of precise events and your overall
++performance.  Thus, KFT is NOT appropriate for use to debug race conditions,
++measure scheduler performance, etc.
++
++However, KFT is excellent at providing a good timing overview of straightline
++procedures, allowing you to see where time is spent in functions and
++sub-routines in the kernel.  This is similar to what oprofile is used for.
++However, the major differences between profiling and KFT are that 1) KFT is
++(IMNSHO) easier to set up and use (e.g. this version of KFT requires no
++special user-space program to be compiled for the target), and 2) KFT shows
++you exactly what happens on a particular run of the kernel, rather than giving
++you statistics of what happens on average during kernel operation.
++
++The main mode of operation with KFT is to use the system with a dynamic trace
++configuration. That is, you can set a trace configuration after kernel
++startup, using the /proc/kft interface, and retrieve trace data immediately.
++However, another (special) mode of operation is available, called STATIC_RUN
++mode, where the configuration for a KFT run is configured and compiled
++statically into the kernel.  This mode is useful for getting a trace of kernel
++operation during system bootup (before user space is running).
++
++The KFT configuration lets you specify how to automatically start and stop a
++trace, whether to include interrupts as part of the trace, and whether to
++filter the trace data by various criteria (for minimum function duration, only
++certain listed functions, etc.)  KFT trace data is retrieved by reading from
++/proc/kft_data after the trace is complete.
++
++Finally, tools are supplied to convert numeric trace data to kernel symbols,
++and to process and analyze the data in a KFT trace.
++
++Quick overview for using KFT in regular mode:
++ - compile your kernel with support for KFT
++ - boot the kernel
++ - write a configuration to /proc/kft
++ - start the trace
++ - read the trace data from /proc/kft_data
++ - process the data
++   - use scripts/addr2sym to convert addresses to function names
++   - use scripts/kd to analyze trace data
++
++Quick overview for using KFT in STATIC_RUN mode:
++ - edit the configuration in kernel/kftstatic.conf
++ - compile your kernel with support for KFT (and KFT_STATIC_RUN)
++ - boot the kernel (the run should be triggered during bootup)
++ - read the trace data from /proc/kft_data
++ - process the data
++   - use scripts/addr2sym to convert addresses to function names
++   - use scripts/kd to analyze trace data
++
++Compiling the kernel for using KFT
++==================================
++Set the following in your kernel .config:
++
++CONFIG_KFT=y
++CONFIG_KFT_STATIC_RUN=y
++
++Under 'make menuconfig' these options on are the "Kernel Hacking"
++menu.
++
++If you are doing a STATIC_RUN, edit the file kernel/kftstatic.conf (if
++desired) to change time filters, triggers, etc.
++
++Build the kernel, and install it to boot on your target machine.
++
++Save the System.map file from this build, as it will be
++used later to resolve function addresses to function names.
++
++Initiate a KFT run
++==================
++If you are running in STATIC_RUN mode, upon booting the
++kernel, the trace should be run (depending on the trigger
++and filter settings in kernel/kftstatic.conf).
++
++If you are running in normal mode, then boot the kernel,
++and initiate a run by writing a KFT configuration to
++/proc/kft.
++
++You can get the status of the current trace by reading /proc/kft
++
++Traces go through a state transition in order to actually
++start collecting data.  This is to allow trace collection to
++be separated from trace setup and preparation.  The trace
++configuration specifies a start trigger, which will initiate
++the collection of data.  When the configuration is written
++to KFT, it is not ready to run yet.  Making the trace ready
++to run is called "priming" it.
++
++Therefore, the normal sequence of events for a trace run is:
++ 1. the user writes the configuration to KFT (via /proc/kft)
++    * There is a helper script scripts/sym2addr, which
++    converts function names in the configuration file to
++    addresses.  This can be copied to the target, along
++    with the current System.map file, to make preparing
++    the configuration file easier.
++ 2. the user prepares for trace (if necessary) by setting
++    up programs to run, etc.
++ 3. the user primes the trace
++    * echo "prime" >/proc/kft
++ 4. a kernel event occurs which starts the trace (the start trigger fires)
++ 5. trace data is collected
++ 6. a kernel event (or buffer exhaustion) stops the trace (the stop trigger
++    fires, or the buffer runs out)
++
++It is possible to force the start or end of a trace using the /proc/kft
++interface. This overrides steps 4 or 6, which are normally performed by
++triggers in the trace configuration.
++ To manually start a trace: echo "start" >/proc/kft
++ To manually stop a trace: echo "stop" >/proc/kft
++
++To see the status of the currently configured trace:
++ * cat /proc/kft
++
++Read the KFT data
++=================
++When the trace is running, the trace data is accumulated in a buffer inside
++the kernel.  Once the trace data is collected, it is retrieved by reading
++/proc/kft_data.  Usually, you will want to save the data to a file for
++later analysis.
++
++ * cat /proc/kft_data > /tmp/kft.log
++
++Process the data
++================
++Copy the kft.log file from the target to your host development
++system (on which the kernel source resides), for example, into the
++/tmp directory.
++
++The raw kft.log file will only have numeric function addresses.
++To translate these addresses to symbols, use the System.map file
++from your previous kernel build.
++
++cd to your kernel source top-level directory and run scripts/addr2sym to
++translate addresses to symbols:
++
++$ scripts/addr2sym /tmp/kft.log -m System.map > /tmp/kft.lst
++
++An example fragment of output from addr2sym on a TI OMAP Innovator,
++Entry and Delta value are times in microseconds (time since boot and
++time spent between function entry and exit, respectively)...
++
++*************************
++ Entry      Delta      PID            Function                    Called At
++--------   --------   -----   -------------------------   --------------------------
++   23662       1333       0                    con_init   console_init+0x78
++   25375     209045       0             calibrate_delay   start_kernel+0xf0
++  234425     106067       0                    mem_init   start_kernel+0x130
++  234432     105278       0       free_all_bootmem_node   mem_init+0xc8
++  234435     105270       0       free_all_bootmem_core   free_all_bootmem_node+0x28
++  340498       4005       0       kmem_cache_sizes_init   start_kernel+0x134
++*************************
++
++In the above, calibrate_delay took about 209 msecs.
++
++mem_init took 106 msecs, the majority of which (105 msecs) was in
++free_all_bootmem_core (which is called by free_all_bootmem_node, which
++is called by mem_init).
++
++The large time consumers can often be pinpointed by looking for leaps
++in the entry times in the Entry column, as shown above.
++
++CPU-yielding functions like schedule_timeout, switch_to, kernel_thread,
++etc. can have large Delta values due intervening scheduling activity,
++but these can often be quickly filtered out by following the "leaps
++in the entry times in the Entry column" above.
++
++A sample of name-resolved kft output is provided with this
++distribution, in the file "kftsample.lst".
++
++Analyzing data with kd
++======================
++You can use the program "kd" to further process the data.  (It is very helpful
++at this point to have resolved the names of the functions in the log file, but
++it is not strictly necessary.) This function reads a KFT log file  and
++determines the time spent locally in a function versus the time spent in
++sub-routines.  It sorts the functions by the total time spent in the function,
++and can display various extra pieces of information about each function
++(number of times called, average call time, etc.)
++
++Use "./kd -h" for more usage help.
++
++As of this writing, KFT and kd do not correctly account for scheduling
++jumps.  The time reported by kft for function duration is just wall
++time from entry to exit.
++
++For examples of what kd can show, try the following commands
++on the sample kft output file:
++
++[show all functions sorted by time]
++$ ./kd kftsample.lst | less
++
++[show only 10 top time-consuming functions]
++$ ./kd -n 10 kftsample.lst
++
++[show only functions lasting longer than 100 milliseconds]
++$ ./kd -t 100000 kftsample.lst
++
++[show each function's most time-consuming child, and the number
++of times it was called. (You may want to make your terminal
++wider for this output.)]
++$ ./kd -f Fcatlmn kftsample.lst
++
++[show call traces]
++$ ./kd -c kftsample.lst
++
++[show call traces with timing data, and functions interlaced]
++$ ./kd -c -l -i kftsample.lst
++
++Note that the call trace mode may not produce accurate results
++if weird filtering was used in the trace config (routines that are
++part of the call tree may be missing, which will confuse kd).
++
++===========================================================
++
++KFT configuration language
++==========================
++This is the configuration language supported for kftstatic.conf, and
++by /proc/kft.
++
++NOTE that for <funcname> parameters, the function name may be used
++in a compile-time configuration (kftstatic.conf).  However, the
++/proc/kft interface requires that these be expressed as addresses.
++You can do this by looking up the address for the symbol in the
++System.map file for the current kernel.
++
++e.g. grep do_fork System.map
++c001d804 T do_fork
++
++In this case, you would put 0xc001d804 in place of the function
++name in the configuration file. (Note the leading '0x'.)
++
++The configuration for a single run is inside a block that starts with 'begin'
++and ends with 'end'.  Inside the block are triggers, filters, and
++miscellaneous entries.  When writing the configuration to /proc/kft,
++then the keyword "new" should appear before the block 'begin' keyword.
++
++triggers
++--------
++	either "start" or "stop", and then one of:
++		entry <funcname>
++		exit <funcname>
++		time <time-in-usecs>
++syntax:
++trigger start|stop entry|exit|time <arg>
++
++Start time is relative to booting.  Stop time is relative to
++trace start time.
++
++filters
++-------
++	maxtime <max-time>
++	mintime <min-time>
++	noints
++	onlyints
++	funclist <func1> <func2> fend
++
++syntax:
++filter noints|onlyints|maxtime|mintime|funclist <args> fend
++
++The funclist specifies a list of functions which will be traced.
++When a funclist is specified, only those functions are traced, and
++all other functions are ignored.
++
++When specifying a configuration via /proc/kft, the 'fend' keyword
++must be used to indicated the end of the function list.  When the
++configuration is specified via kftstatic.conf, no 'fend' keyword
++should be used.
++
++miscellaneous
++-------------
++logentries <num-entries>
++	specify the maximum number entries for the log for this run
++
++autorepeat
++	Repeat trace indefinitely.  That is, on trace trigger stop,
++	prime the trace to run again, but leave the data in the buffer.
++	The trace will start again when the start trigger is matched,
++	and stop again when the stop trigger is matched.  The trace
++	will stop autorepeating when the buffer becomes full.
++
++# Other options that may be supported in the future:
++# overwrite
++# Overwrite old data in the trace buffer.  This converts the trace buffer to
++# a circular buffer, and does not stop the trace when the buffer becomes full.
++# In overwrite mode, the end of the trace is available if the buffer is
++# not large enough to hold the entire trace.  In NOT overwrite mode (regular
++# mode) the beginning of the trace is available if the buffer is not large
++# enough to hold the entire trace.
++
++# untimed
++# Do not time function duration.  Normally, the log contains only function
++# entry events, with the start time and duration of the function.  In
++# untimed mode, the log contains entry AND exit events, with the start
++# time for each event.  Calculation of function duration must be done by
++# a log post-processing tool.
++
++# prime
++# Immediately prime the trace for execution.  "Priming" a trace means making
++# it ready to run.  A trace loaded without the "prime" command will not be
++# enabled until the user issues a separate "prime" command through the
++# /proc interface.
++
++# prime entry ??
++# primt exit ??
++# prime time ??
++
++Configuration Samples
++===============================================
++# record all functions longer that 500 microseconds, during bootup
++# don't worry about interrupts
++# kftstatic.conf version:
++begin
++   trigger start entry start_kernel
++   trigger stop exit to_userspace
++   filter mintime 500
++   filter maxtime 0
++   filter noints
++end
++
++# record all functions longer that 500 microseconds, for 5 seconds
++# after the next fork
++# don't worry about interrupts
++# Assuming 'do_fork' is at address 0xc001d804
++# /proc/kft version, assuming 'do_fork' is at address 0xc001d804:
++new
++begin
++   trigger start entry 0xc001d804
++   trigger stop time 5000000
++   filter mintime 500
++   filter maxtime 0
++   filter noints
++end
++
++# record short routines called by do_fork
++# use a small log
++new
++begin
++   trigger start entry do_fork
++   trigger stop exit do_fork
++   filter mintime 10
++   filter maxtime 400
++   filter noints
++   logentries 500
++end
++
++# record interrupts for 5 milliseconds, starting 5 seconds after booting
++new
++begin
++   trigger start time 5000000
++   trigger stop time 5000
++   filter onlyints
++end
++
++# record all calls to schedule after 10 seconds
++# Assuming schedule is at address
++# kftstatic.conf version:
++begin
++   trigger start time 10000000
++   filter funclist schedule fend
++end
++# /proc/kft version, assuming schedule is at c02cb754
++new
++begin
++   trigger start time 10000000
++   filter funclist 0xc02cb754 fend
++end
++
++To do list:
++ * should support TIMED or UNTIMED traces.
++	(current mode is equivalent to TIMED mode)
++	in untimed mode, you get both entry and exit events, and
++        only start time for each event - duration can be calculated in
++	postprocessing
++	 - also, in untimed mode, you cannot use a time filter
++	in timed mode, you only get entry events, with start time and duration
++   * add: tracetype timed|untimed
++   * modify kd to support untimed mode
++ * should support traces that auto-repeat until a secondary trigger
++   * good for catching calltraces from a single routine, multiple times
+diff --git a/Documentation/kft_kickstart.txt b/Documentation/kft_kickstart.txt
+new file mode 100644
+index 0000000..07d3da7
+--- /dev/null
++++ b/Documentation/kft_kickstart.txt
+@@ -0,0 +1,144 @@
++	kft kickstart
++
++		falcon <wuzhangjin@gmail.com>, <wuzj@lemote.com>
++		2009-03-09
++
++1. kft
++
++kft is short for kernel function tracing, which is a patch for linux kernel, it
++can be used to trace the kernel functions from the user
++space(dynamically/statically).
++
++be differ from ftrace in rt-preempt, it's not latency tracing, but kernel
++function executing time & calling relationship tracing. which can be used to
++find out the hotspots for performance optimization.
++
++please read Documentation/kft.txt or the source code of the patch to learn more
++about it.
++
++2. usage
++
++2.1 principle
++
++	apps					user functions			<-- cscope,calltree,gprof,gcov..
++
++				---------------system calls-----------
++
++	kernel					kernel functions		<-- kft,ftrace,kgcov...
++
++there are lots of tools to tracing user functions & kernel functions, which are
++listed above. but kft, which gives us the possibility "go through" user space
++to kernel space.
++
++when executing a user space application, we can use strace to trace the system
++calls used by this application, and then configure these system calls as the
++filter entries or exites in the configuration file of kft. after them, prime
++kft and start your application, the relative kernel functions called by the
++relative system calls will be traced, after that, we can try to pry into the
++internal of kernel, what have happen, irq, interrupts, kernel calling
++relatiionship, kernel executing time. and based on these results, we can do a
++lot of we want.
++
++2.2 use it
++
++* download the latest kft patch from ftp://dslab.lzu.edu.cn/pub/kft
++* patch kernel with the relative kft patch
++* configure it
++
++make sure these options are there:
++
++CONFIG_KALLSYMS=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_KALLSYMS_EXTRA_PASS=y
++CONFIG_KFT=y
++CONFIG_KFT_STATIC_RUN=y
++
++* compile it
++
++!!!NOTE: currently, kft only work with gcc 3.4.6 
++
++when enabling CONFIG_KFT_STATIC_RUN, please do this before compiling:
++
++chmod a+x scripts/mkkftrun.pl
++
++this tool is used to create a kernel/kftstatic.c from kernel/kftstatic.conf
++
++* reboot to the new kernel
++
++* dump the kernel sysmbols
++
++cat /proc/kallsyms > system.map
++
++* write a configuration file
++
++# file: config.sym
++new
++begin
++	trigger start entry sys_open
++	trigger stop exit sys_open
++end
++
++save this content to a file named config.sym
++
++this configuraiton are used to tracing the sys_open excuting procedure. please
++read the Documentation/kft.txt to learn about about the configuration language.
++
++* convert the symbols to address to make kernel comfortable
++
++chmod a+x scripts/sym2addr
++./scripts/sym2addr config.sym system.map > config.addr
++
++* feed the configuration file to kernel
++
++cat config.addr > /proc/kft
++
++* prime the kft
++
++echo prime > /proc/kft
++
++* start your program
++
++start your program, which will call the traced system call listed in
++configuration file.
++
++* trace the status of kft
++
++cat /proc/kft
++
++if you have found out a word like "completed", dump the data from
++/proc/kft_data
++
++* dump the data
++
++cat /proc/kft_data > log.addr
++
++* convert the address to make people comfortable
++
++chmod a+x scripts/addr2sym
++./scripts/addr2sym < log.addr -m system.map > log.sym
++
++* analyze it
++
++chmod a+x scripts/kd
++./scripts/kd -c -l -i log.sym
++
++2.3 use it via the autokft.sh
++
++there is a new tool named scripts/autokft.sh which can help you simplifing the
++procedure of tracing an indicated function.
++
++here are several steps to use it:
++
++* compile your kernel with KFT enabled
++* install this new kernel and reboot into it
++* enter into the directory of scripts/
++  or
++  copy the tools scripts/{kd,addr2sym,sym2addr,autokft.sh} to a directory,and enter into it
++* trace and indicated function, here we use sys_write as an example
++  $ ./autokft.sh sys_write ./   # this will be triggered by ourselves
++  or
++  $ ./autokft.sh sys_write ./ 1 # this will be triggered by external actions
++
++please learn more the kd usage from Documentation/kft.txt
++
++that is all, be happy to play with it.
+diff --git a/Makefile b/Makefile
+index d831b48..d26010f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -557,6 +557,10 @@ else
+ KBUILD_CFLAGS	+= -fomit-frame-pointer
+ endif
+ 
++ifdef CONFIG_KFT
++KBUILD_CFLAGS	+= -finstrument-functions
++endif
++
+ ifdef CONFIG_DEBUG_INFO
+ KBUILD_CFLAGS	+= -g
+ KBUILD_AFLAGS	+= -gdwarf-2
+diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+index 43dc279..76772d6 100644
+--- a/arch/mips/Kconfig.debug
++++ b/arch/mips/Kconfig.debug
+@@ -128,4 +128,45 @@ config SPINLOCK_TEST
+ 	help
+ 	  Add several files to the debugfs to test spinlock speed.
+ 
++config KFT
++	bool "Kernel Function Trace"
++	select PROC_FS
++	select DEBUG_KERNEL
++	select KALLSYMS
++	select KALLSYMS_ALL
++	help
++	  Say Y here to turn on kernel function tracing.
++	  This allows you to get a trace of kernel functions
++	  during kernel execution.  This can be helpful for
++	  debugging, but adds overhead to every kernel function
++	  invocation.  The overhead is small, but still present,
++	  even when tracing is not active.
++
++	  See the file Documentation/kft.txt for more information.
++          Say N here if you are unsure.
++
++config KFT_STATIC_RUN
++	bool "Static function tracing configuration"
++	depends on KFT
++	help
++	  Say Y here to compile the KFT configuration statically
++	  into the kernel.  This is needed if you plan to use KFT
++	  to get information about function timings on kernel bootup
++	  (prior to the kernel starting user space).  To do this, you
++	  need to create a valid kernel/kftstatic.conf file.
++
++config KFT_CLOCK_SCALE
++	int "Scaling factor for early initialization of KFT clock"
++	depends on KFT
++	default 0
++	help
++	  Enter the number used for clock scaling early in the machine
++	  bootup sequence.  This is required on many platforms in order
++	  for KFT to work correctly before time_init().  You need to investigate
++	  your kernel source to find out what data element or routine this
++	  number is used with, and experiment to find the correct value to
++	  use here.
++
++	  If unsure what to do, leave as 0!
++
+ endmenu
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 5042d51..de27be1 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -25,6 +25,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
+ 	-DKERNEL_ENTRY=0x$(shell $(NM) $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | grep " kernel_entry" | cut -f1 -d \ )
+ 
++ifdef CONFIG_KFT
++EXTRA_CFLAGS   := -fno-instrument-functions
++endif
++
+ targets := head.o decompress.o dbg.o uart-16550.o uart-alchemy.o
+ 
+ # decompressor objects (linked with vmlinuz)
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 0d629bb..33e0c1d 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -13,7 +13,7 @@
+ 
+ #include <linux/cpumask.h>
+ #include <linux/threads.h>
+-
++#include <linux/compiler.h>
+ #include <asm/cachectl.h>
+ #include <asm/cpu.h>
+ #include <asm/cpu-info.h>
+diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+index ea695d9..41dd61a 100644
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -195,7 +195,11 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
+ 	set_saved_sp	sp, t0, t1
+ 	PTR_SUBU	sp, 4 * SZREG		# init stack pointer
+ 
++#ifdef CONFIG_KFT
++	jal		start_kernel
++#else
+ 	j		start_kernel
++#endif
+ 	END(kernel_entry)
+ 
+ 	__CPUINIT
+diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
+index 7508508..bcc621c 100644
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -299,4 +299,40 @@ config DEBUG_STRICT_USER_COPY_CHECKS
+ 
+ 	  If unsure, or if you run an older (pre 4.4) gcc, say N.
+ 
++config KFT
++       bool "Kernel Function Trace"
++       help
++         Say Y here to turn on kernel function tracing.
++         This allows you to get a trace of kernel functions
++         during kernel execution.  This can be helpful for
++         debugging, but adds overhead to every kernel function
++         invocation.  The overhead is small, but still present,
++         even when tracing is not active.
++
++         See the file Documentation/kft.txt for more information.
++         Say N here if you are unsure.
++config KFT_STATIC_RUN
++       bool "Static function tracing configuration"
++       depends on KFT
++       help
++         Say Y here to compile the KFT configuration statically
++         into the kernel.  This is needed if you plan to use KFT
++         to get information about function timings on kernel bootup
++         (prior to the kernel starting user space).  To do this, you
++         need to create a valid kernel/kftstatic.conf file.
++
++config KFT_CLOCK_SCALE
++       int "Scaling factor for early initialization of KFT clock"
++       depends on KFT
++       default 0
++       help
++         Enter the number used for clock scaling early in the machine
++         bootup sequence.  This is required on many platforms in order
++         for KFT to work correctly before time_init().  You need to investigate
++         your kernel source to find out what data element or routine this
++         number is used with, and experiment to find the correct value to
++         use here.
++
++         If unsure what to do, leave as 0!
++
+ endmenu
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 0c22955..01db4da 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -19,6 +19,11 @@ KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
+ GCOV_PROFILE := n
+ 
+ LDFLAGS := -m elf_$(UTS_MACHINE)
++
++ifdef CONFIG_KFT
++EXTRA_CFLAGS   := -fno-instrument-functions
++endif
++
+ LDFLAGS_vmlinux := -T
+ 
+ hostprogs-y	:= mkpiggy
+diff --git a/include/linux/init.h b/include/linux/init.h
+index de99430..9b9eb68 100644
+--- a/include/linux/init.h
++++ b/include/linux/init.h
+@@ -321,6 +321,11 @@ void __init parse_early_options(char *cmdline);
+ #define __INITRODATA_OR_MODULE __INITRODATA
+ #endif /*CONFIG_MODULES*/
+ 
++#ifndef __ASSEMBLY__
++#define __instrument
++#define __noinstrument __attribute__ ((no_instrument_function))
++#endif
++
+ /* Functions marked as __devexit may be discarded at kernel link time, depending
+    on config options.  Newer versions of binutils detect references from
+    retained sections to discarded sections and flag an error.  Pointers to
+diff --git a/include/linux/kft.h b/include/linux/kft.h
+new file mode 100644
+index 0000000..fe4fc33
+--- /dev/null
++++ b/include/linux/kft.h
+@@ -0,0 +1,95 @@
++#ifndef _LINUX_KFT_H
++#define _LINUX_KFT_H
++
++#define KFT_MODE_TIMED 		0x01
++#define KFT_MODE_AUTO_REPEAT 	0x02
++#define KFT_MODE_STOP_ON_FULL 	0x04
++
++#define TIME_NOT_SET	0xffffffff
++
++typedef struct kft_entry {
++	void *va;            /* VA of instrumented function */
++	void *call_site;     /* where this func was called */
++	unsigned long time;  /* function entry time since trigger start time,
++				in usec */
++	unsigned long delta; /* delta time from entry to exit, in usec */
++	int           pid;
++#ifdef CONFIG_KFT_SAVE_ARGS
++	unsigned long fp;    /* frame pointer address */
++	unsigned long a1;    /* first argument passed */
++	unsigned long a2;    /* second argument passed */
++	unsigned long a3;    /* third argument passed */
++#endif /* CONFIG_KFT_SAVE_ARGS */
++} kft_entry_t;
++
++#define INTR_CONTEXT -1
++
++#define TRIGGER_START_ON_ENTRY	0x01
++#define TRIGGER_START_ON_EXIT	0x02
++#define TRIGGER_STOP_ON_ENTRY	0x04
++#define TRIGGER_STOP_ON_EXIT	0x08
++
++typedef enum kft_trigger_type {
++	TRIGGER_NONE = 0,
++	TRIGGER_TIME,
++	TRIGGER_FUNC_ENTRY,
++	TRIGGER_FUNC_EXIT,
++	TRIGGER_PROC,
++	TRIGGER_USER,
++	TRIGGER_LOG_FULL
++} kft_trigger_type_t;
++
++typedef struct kft_trigger {
++	enum kft_trigger_type type;
++	union {
++		unsigned long time; /*  time since boot, in usec */
++		void *func_addr;
++	};
++	unsigned long mark; /*  time at which this trigger occured */
++} kft_trigger_t;
++
++#define DEFAULT_RUN_LOG_ENTRIES 20000*5
++#define MAX_FUNC_LIST_ENTRIES 512
++
++typedef struct kft_filters {
++	unsigned long min_delta;
++	unsigned long max_delta;
++	int no_ints;
++	int only_ints;
++	void **func_list;
++	int func_list_size;
++	struct {
++		int delta;
++		int no_ints;
++		int only_ints;
++		int func_list;
++	} cnt;
++} kft_filters_t;
++
++typedef struct kft_run {
++	int primed;	/* is this run ready to start */
++	int triggered;	/* has this run started */
++	int complete;	/* has this run ended */
++	int flags;
++	/* int trigger_flag; */
++	struct kft_trigger start_trigger;
++	struct kft_trigger stop_trigger;
++	struct kft_filters filters;
++	struct kft_entry *log;
++	int log_is_kmem;
++	int num_entries;
++	int next_entry;
++	int id;
++	int notfound;
++} kft_run_t;
++
++#if CONFIG_KFT_CLOCK_SCALE
++extern void setup_early_kft_clock(void);
++#else
++#define setup_early_kft_clock()
++#endif
++
++extern const struct seq_operations kft_data_op;
++extern int kfi_dump_log(char *buf);
++
++#endif /* _LINUX_KFT_H */
+diff --git a/init/main.c b/init/main.c
+index 94ab488..98373d64 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -49,6 +49,7 @@
+ #include <linux/rmap.h>
+ #include <linux/mempolicy.h>
+ #include <linux/key.h>
++#include <linux/kft.h>
+ #include <linux/buffer_head.h>
+ #include <linux/page_cgroup.h>
+ #include <linux/debug_locks.h>
+@@ -96,6 +97,10 @@ static inline void mark_rodata_ro(void) { }
+ extern void tc_init(void);
+ #endif
+ 
++#ifdef CONFIG_KFT_STATIC_RUN
++extern void to_userspace(void);
++#endif /* CONFIG_KFT_STATIC_RUN */
++
+ enum system_states system_state __read_mostly;
+ EXPORT_SYMBOL(system_state);
+ 
+@@ -562,6 +567,7 @@ asmlinkage void __init start_kernel(void)
+  * Interrupts are still disabled. Do necessary setups, then
+  * enable them
+  */
++	setup_early_kft_clock();
+ 	tick_init();
+ 	boot_cpu_init();
+ 	page_address_init();
+@@ -831,6 +837,11 @@ static noinline int init_post(void)
+ 
+ 	current->signal->flags |= SIGNAL_UNKILLABLE;
+ 
++#ifdef CONFIG_KFT_STATIC_RUN
++      /* This is a stub function, for use as a stop trigger */
++      to_userspace();
++#endif /* CONFIG_KFT_STATIC_RUN */
++
+ 	if (ramdisk_execute_command) {
+ 		run_init_process(ramdisk_execute_command);
+ 		printk(KERN_WARNING "Failed to execute %s\n",
+@@ -857,6 +868,12 @@ static noinline int init_post(void)
+ 	      "See Linux Documentation/init.txt for guidance.");
+ }
+ 
++#ifdef CONFIG_KFT_STATIC_RUN
++void to_userspace(void)
++{
++}
++#endif /* CONFIG_KFT_STATIC_RUN */
++
+ static int __init kernel_init(void * unused)
+ {
+ 	/*
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 0b72d1a..8835fc4 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -114,6 +114,17 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
+ CFLAGS_sched.o := $(PROFILING) -fno-omit-frame-pointer
+ endif
+ 
++obj-$(CONFIG_KFT) += kft-core.o kft-proc.o
++obj-$(CONFIG_KFT_STATIC_RUN) += kftstatic.o
++
++
++# On ppc64, if instrumtation is turned on for kft.c, then kernel won't boot.
++# It's OK to turn off instrumentation for other arches, since we really don't
++# want any of the functions in kft.c traced anyway.
++CFLAGS_kft-core.o := -fno-instrument-functions
++CFLAGS_kft-proc.o := -fno-instrument-functions
++CFLAGS_kftstatic.o := -fno-instrument-functions
++
+ $(obj)/configs.o: $(obj)/config_data.h
+ 
+ # config_data.h contains the same information as ikconfig.h but gzipped.
+@@ -128,6 +139,14 @@ targets += config_data.h
+ $(obj)/config_data.h: $(obj)/config_data.gz FORCE
+ 	$(call if_changed,ikconfiggz)
+ 
++# Files generated that shall be removed upon make clean
++clean-files := kftstatic.c
++
++$(obj)/kftstatic.o: $(obj)/kftstatic.c
++
++$(obj)/kftstatic.c: $(src)/kftstatic.conf
++	perl $(srctree)/scripts/mkkftrun.pl $< > $@
++
+ $(obj)/time.o: $(obj)/timeconst.h
+ 
+ quiet_cmd_timeconst  = TIMEC   $@
+diff --git a/kernel/kft-core.c b/kernel/kft-core.c
+new file mode 100644
+index 0000000..5d3dd0f
+--- /dev/null
++++ b/kernel/kft-core.c
+@@ -0,0 +1,1471 @@
++/*
++ *  kernel/kft.c
++ *
++ *  Kernel Function Trace
++ *
++ *  Copyright (C) 2002  MontaVista Software
++ *      (when it was kfi.c)
++ *  Copyright 2005  Sony Corporation
++ *
++ *  Support for tracing function entry/exit in the Linux kernel,
++ *  using the function instrumentation feature of GCC (-finstrument-functions).
++ */
++
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/miscdevice.h>
++#include <linux/fcntl.h>
++#include <linux/poll.h>
++#include <linux/init.h>
++#include <linux/mm.h>
++#include <linux/spinlock.h>
++#include <linux/smp_lock.h>
++#include <linux/seq_file.h>
++#include <linux/proc_fs.h>
++#include <linux/kft.h>
++#include <linux/hardirq.h>
++#include <linux/vmalloc.h>
++#include <linux/kallsyms.h>
++
++#include <asm/atomic.h>
++#include <asm/uaccess.h>
++#include <asm/system.h>
++
++
++#define COMMAND_BUFFER_LEN	2048
++
++#ifdef CONFIG_KFT_STATIC_RUN
++extern struct kft_run kft_run0;
++static struct kft_run *run_curr = &kft_run0;
++#else
++int kft_run0;
++static struct kft_run *run_curr;
++#endif
++
++static int in_entry_exit[NR_CPUS];
++
++/* control whether a generic or custom clock routine is used */
++#if !defined(CONFIG_MIPS) && !defined(CONFIG_SH)
++#define GENERIC_KFTREADCLOCK 1
++#endif
++
++#ifdef GENERIC_KFTREADCLOCK
++/*
++ * Define a genefic kft_readclock routine.
++ * This should work well enough for platforms where sched_clock()
++ * gives good (sub-microsecond) precision.
++ *
++ * There are valid reasons to use other routines, including:
++ *  - when using kft for boot timings
++ *    - on most platforms, sched_clock() does not work correctly until
++ *    after time_init()
++ *  - reduced overhead for obtaining a microsecond value
++ *    (This may be incorrect, since at most this adds one
++ *    64-bit-by-32-bit divide, in addition to the shift that
++ *    is inside sched_clock(). KFT does enough other stuff
++ *    that this one divide is probably not a major factor
++ *    in KFT overhead.)
++ */
++static inline unsigned long __noinstrument kft_readclock(void)
++{
++	unsigned long long t;
++
++	t = sched_clock();
++	/* convert to microseconds */
++	do_div(t, 1000);
++	return (unsigned long)t;
++}
++
++static inline
++unsigned long __noinstrument kft_clock_to_usecs(unsigned long clock)
++{
++	return clock;
++}
++
++#endif /* GENERIC_KFTREADCLOCK - non-MIPS, non-SH */
++
++#ifndef GENERIC_KFTREADCLOCK
++/*
++ * Use arch-specific kft_readclock() and kft_clock_to_usecs() routines
++ *
++ * First - define some platform-specific constants
++ *
++ * !! If using a non-generic KFT readclock, you need
++ * to set the following constants for your machine!!
++ *
++ * CLOCK_FREQ is a hardcoded value for the frequency of
++ * whatever clock you are using for kft_readclock()
++ * It would be nice to use a probed clock freq (cpu_hz)
++ * here, but it  isn't set early enough for some boot
++ * measurements.
++ * Hint: for x86, boot once and look at /proc/cpuinfo
++ *
++ * CLOCK_SHIFT is used to bring the clock frequency into
++ * a manageable range.  For my 3 GHz machine, I decided
++ * to divide the cpu cycle clock by 8. This throws
++ * away some clock precision, but makes some of the
++ * other math faster and helps us stay in 32 bits.
++ */
++
++#ifdef CONFIG_X86_TSC
++/*  Tim's old laptop */
++/* #define CLOCK_FREQ 645206000ULL */
++/*  Tim's HP desktop */
++#define CLOCK_FREQ 2992332000ULL
++#define CLOCK_SHIFT	3
++#endif /* CONFIG_X86_TSC */
++
++#ifdef CONFIG_PPC32
++/*  Ebony board */
++#define CLOCK_FREQ 400000000ULL
++#define CLOCK_SHIFT	3
++#endif /* CONFIG_PPC32 */
++
++#ifdef CONFIG_CPU_SH4
++#define CLOCK_FREQ 15000000ULL	/* =P/4 */
++#define CLOCK_SHIFT	0
++#endif /* CONFIG_CPU_SH4 */
++
++#ifdef CONFIG_MIPS
++/* tx4938 */
++#define CLOCK_FREQ (300000000ULL / 2)
++#define CLOCK_SHIFT	3
++#endif /* CONFIG_MIPS */
++
++
++
++#ifdef CONFIG_X86_TSC
++#include <asm/time.h>	/* for rdtscll macro */
++static inline unsigned long __noinstrument kft_readclock(void)
++{
++	unsigned long long ticks;
++
++	rdtscll(ticks);
++	return (unsigned long)((ticks>>CLOCK_SHIFT) & 0xffffffff);
++}
++#endif /* CONFIG_X86_TSC */
++
++
++#ifdef CONFIG_PPC32
++#include <asm/time.h>	/* for get_tbu macro */
++/* copied from sched_clock for ppc */
++static inline unsigned long __noinstrument kft_readclock(void)
++{
++	unsigned long lo, hi, hi2;
++	unsigned long long ticks;
++
++	do {
++		hi = get_tbu();
++		lo = get_tbl();
++		hi2 = get_tbu();
++	} while (hi2 != hi);
++	ticks = ((unsigned long long) hi << 32) | lo;
++	return (unsigned long)((ticks>>CLOCK_SHIFT) & 0xffffffff);
++}
++#endif /* CONFIG_PPC32 */
++
++#ifdef CONFIG_CPU_SH4
++/*
++ * In advance, start Timer Unit4(TMU4)
++ * ex.
++ *  *TMU4_TCR = 0x0000;
++ *  *TMU4_TCOR = 0;
++ *  *TMU4_TCNT = 0;
++ *  *TMU_TSTR2 = (*TMU_TSTR2|0x02);
++ */
++#define TMU4_TCNT	((unsigned long *)0xFE100018)
++
++static inline unsigned long __noinstrument kft_readclock(void)
++{
++	return (-(*TMU4_TCNT))>>CLOCK_SHIFT;
++}
++#endif /* CONFIG_CPU_SH4 */
++
++#ifdef CONFIG_MIPS
++static inline unsigned long __noinstrument kft_readclock(void)
++{
++	return (unsigned long)read_c0_count();
++}
++#endif /* CONFIG_MIPS */
++
++/*
++ * Now define a generic routine to convert from clock tics to usecs.
++ *
++ * This weird scaling factor makes it possible to use shifts and a
++ * single 32-bit divide, instead of more expensive math,
++ * for the conversion to microseconds.
++ */
++#define CLOCK_SCALE ((((CLOCK_FREQ*1024*1024)/1000000))>>CLOCK_SHIFT)
++
++static inline
++unsigned long __noinstrument kft_clock_to_usecs(unsigned long clock)
++{
++	/* math to stay in 32 bits. Try to avoid over and underflows */
++	if (clock < 4096)
++		return (clock<<20)/CLOCK_SCALE;
++	if (clock < (4096<<5))
++		return (clock<<15)/(CLOCK_SCALE>>5);
++	if (clock < (4096<<10))
++		return (clock<<10)/(CLOCK_SCALE>>10);
++	if (clock < (4096<<15))
++		return (clock<<5)/(CLOCK_SCALE>>15);
++	else
++		return clock/(CLOCK_SCALE>>20);
++}
++
++#endif /* not GENERIC_KFT_READCLOCK */
++
++#if CONFIG_KFT_CLOCK_SCALE
++
++extern void set_cyc2ns_scale(unsigned long cpu_mhz);
++
++/*
++ * Do whatever is required to prepare for calling sched_clock very
++ * early in the boot sequence.
++ */
++extern void __noinstrument setup_early_kft_clock(void)
++{
++	set_cyc2ns_scale(CONFIG_KFT_CLOCK_SCALE);
++}
++#endif /* CONFIG_KFT_CLOCK_SCALE */
++
++#ifdef SMP
++static unsigned long usecs_since_boot[NR_CPUS];
++static unsigned long last_machine_cycles[NR_CPUS];
++
++static inline unsigned long __noinstrument update_usecs_since_boot(void)
++{
++	unsigned long machine_cycles, delta;
++	int cpu;
++
++	cpu = smp_processor_id();
++
++	machine_cycles = kft_readclock();
++	delta = machine_cycles - last_machine_cycles[cpu];
++	delta = kft_clock_to_usecs(delta);
++	/*
++	 * check for clock going backwards - this may happen
++	 * because the clock is reset during startup
++	 * initialization of the timer.
++	 * In this case, we lose the correct value for this
++	 * entry - but that's better than moving usecs_since_boot
++	 * backwards and causing negative durations in the log.
++	 */
++	if (delta > 0x8000000)
++		delta = 0;
++	usecs_since_boot[cpu] += delta;
++
++	last_machine_cycles[cpu] = machine_cycles;
++	return usecs_since_boot[cpu];
++}
++#else /* !CONFIG_SMP */
++static unsigned long usecs_since_boot;
++static unsigned long last_machine_cycles;
++
++static inline unsigned long __noinstrument update_usecs_since_boot(void)
++{
++	unsigned long machine_cycles, delta;
++
++	machine_cycles = kft_readclock();
++	delta = machine_cycles - last_machine_cycles;
++	delta = kft_clock_to_usecs(delta);
++	/*
++	 * check for clock going backwards - this may happen
++	 * because the clock is reset during startup
++	 * initialization of the timer.
++	 * In this case, we lose the correct value for this
++	 * entry - but that's better than moving usecs_since_boot
++	 * backwards and causing negative durations in the log.
++	 */
++	if (delta > 0x8000000)
++		delta = 0;
++	usecs_since_boot += delta;
++
++	last_machine_cycles = machine_cycles;
++	return usecs_since_boot;
++}
++#endif /* !CONFIG_SMP */
++
++static inline int __noinstrument in_func_list(struct kft_filters *filters,
++	void *func)
++{
++	int i = 0;
++
++	for (; i < filters->func_list_size; i++) {
++		if (filters->func_list[i] == func)
++			return 1;
++	}
++
++	return 0;
++}
++
++/*
++ * filter_out: return 1 if function should NOT be logged
++ * Can be because function is NOT on the filter list, or because
++ * of context (interrupt or not)
++ */
++static inline int __noinstrument filter_out(struct kft_filters *filters,
++	void *this_fn)
++{
++	int in_intr;
++
++	if (filters->func_list && !in_func_list(filters, this_fn)) {
++		filters->cnt.func_list++;
++		return 1;
++	}
++
++	in_intr = in_interrupt();
++
++	if (filters->no_ints && in_intr) {
++		filters->cnt.no_ints++;
++		return 1;
++	}
++
++	if (filters->only_ints && !in_intr) {
++		filters->cnt.only_ints++;
++		return 1;
++	}
++
++	return 0;
++}
++
++
++#define LOG_LOCKED	1
++#define LOG_UNLOCKED	0
++static unsigned int log_lock = LOG_UNLOCKED;
++
++atomic_t drop_count = ATOMIC_INIT(0);
++atomic_t lock_timeout_entry_count = ATOMIC_INIT(0);
++atomic_t lock_timeout_exit_count = ATOMIC_INIT(0);
++/* don't loop more than a million times waiting for the log lock */
++#define LOG_LOCK_SPIN_LIMIT	1000000
++
++static inline void __noinstrument do_func_entry(struct kft_run *run,
++				void *this_fn, void *call_site)
++{
++	struct kft_entry *entry;
++	int lock_held_count;
++
++#ifdef CONFIG_KFT_SAVE_ARGS
++	unsigned long *fp = __builtin_frame_address(1);
++#endif
++
++	/* check for log full */
++	if (run->next_entry >= run->num_entries) {
++		run->complete = 1;
++		run->stop_trigger.mark = update_usecs_since_boot();
++		run->stop_trigger.type = TRIGGER_LOG_FULL;
++		return;
++	}
++	/* acquire lock on trace log */
++	lock_held_count = 0;
++	while ((cmpxchg(&log_lock, LOG_UNLOCKED, LOG_LOCKED)) == LOG_LOCKED) {
++		lock_held_count++;
++		if (lock_held_count >= LOG_LOCK_SPIN_LIMIT) {
++			atomic_inc(&lock_timeout_entry_count);
++			return;
++		}
++	}
++	/* allocate space for the new entry */
++	entry = &run->log[run->next_entry];
++	run->next_entry++;
++
++	entry->va = this_fn;
++	entry->call_site = call_site;
++	entry->pid = in_interrupt() ? INTR_CONTEXT : current->pid;
++
++	entry->delta = TIME_NOT_SET;
++	entry->time = update_usecs_since_boot() - run->start_trigger.mark;
++#ifdef CONFIG_KFT_SAVE_ARGS
++	entry->fp = (unsigned long)fp;
++#ifdef CONFIG_PPC32
++	entry->a1 = fp[6]; /* from cwg.pdf ABI spec */
++	entry->a2 = fp[7]; /* from cwg.pdf ABI spec */
++	entry->a3 = fp[8]; /* from cwg.pdf ABI spec */
++#endif /* CONFIG_PPC32 */
++#endif /* CONFIG_KFT_SAVE_REGS */
++	log_lock = LOG_UNLOCKED;
++}
++
++static inline void __noinstrument do_func_exit(struct kft_run *run,
++				void *this_fn, void *call_site)
++{
++	struct kft_entry *entry;
++	unsigned long exittime;
++	unsigned long delta;
++	unsigned int pid;
++	int entry_i;
++	int lock_held_count;
++
++	int i;
++
++	pid = in_interrupt() ? INTR_CONTEXT : current->pid;
++
++	/* acquire lock on trace log */
++	lock_held_count = 0;
++	while ((cmpxchg(&log_lock, LOG_UNLOCKED, LOG_LOCKED)) == LOG_LOCKED) {
++		lock_held_count++;
++		if (lock_held_count >= LOG_LOCK_SPIN_LIMIT) {
++			atomic_inc(&lock_timeout_exit_count);
++			return;
++		}
++	}
++
++	/* find matching entry in log -
++	 * searching backwards from current log end */
++	/* FIXTHIS - need lock on next_entry here */
++	entry_i = -1;
++	for (i = run->next_entry-1; i >= 0; i--) {
++		entry = &run->log[i];
++		if (entry->va == this_fn &&
++		    entry->pid == pid &&
++		    entry->delta == TIME_NOT_SET) {
++			entry_i = i;
++			break;
++		}
++	}
++
++	if (entry_i == -1) {
++		run->notfound++;
++		log_lock = LOG_UNLOCKED;
++		return;
++	}
++
++	/* entry = &run->log[entry_i];  - it's already set from above loop */
++
++	/*  calc delta */
++	exittime = update_usecs_since_boot() - run->start_trigger.mark;
++	delta = exittime - entry->time;
++
++	if ((run->filters.min_delta && delta < run->filters.min_delta) ||
++	    (run->filters.max_delta && delta > run->filters.max_delta)) {
++		run->filters.cnt.delta++;
++		/* remove this entry by moving all succeeding entries down in
++		 * the log.  This is a potentially expensive operation.  Note
++		 * that on uniprocessor, it is rare to have to move anything
++		 * at all because the function being exited is usually the one
++		 * at the end of the log.
++		 */
++		run->next_entry--;
++		for (i = entry_i; i < run->next_entry; i++)
++			run->log[i] = run->log[i+1];
++	} else {
++		entry->delta = delta;
++#ifdef CONFIG_SMP
++		/* save CPU number in pid, bits 24-31 */
++		entry->pid &= ~(0xff<<24);
++		entry->pid |= (smp_processor_id() << 24);
++#endif
++	}
++	log_lock = LOG_UNLOCKED;
++}
++
++
++static inline int __noinstrument test_trigger(struct kft_run *run,
++		int start_trigger, int func_entry, void *func_addr)
++{
++	unsigned long time, base_time;
++	int ret = 0;
++	struct kft_trigger *t;
++
++	t = start_trigger ? &run->start_trigger : &run->stop_trigger;
++
++	switch (t->type) {
++	case TRIGGER_TIME:
++		time = update_usecs_since_boot();
++		if (start_trigger) {
++			/* trigger start time based from boot */
++			base_time = 0;
++		} else {
++			/* trigger stop time based from start trigger time */
++			base_time = run->start_trigger.mark;
++		}
++
++		if (time >= base_time + t->time) {
++			t->mark = time; /*  mark trigger time */
++			ret = 1;
++		}
++		break;
++	case TRIGGER_FUNC_ENTRY:
++		if (func_entry && func_addr == t->func_addr) {
++			time = update_usecs_since_boot();
++			t->mark = time; /*  mark trigger time */
++			ret = 1;
++		}
++		break;
++	case TRIGGER_FUNC_EXIT:
++		if (!func_entry && func_addr == t->func_addr) {
++			time = update_usecs_since_boot();
++			t->mark = time; /*  mark trigger time */
++			ret = 1;
++		}
++		break;
++	default:
++		break;
++	}
++
++	return ret;
++}
++
++
++static inline void __noinstrument func_entry_exit(void *this_fn,
++				void *call_site, int func_entry)
++{
++	unsigned long flags;
++	struct kft_run *run;
++	int cpu;
++
++	/* stave off interrupts on the current processor */
++	local_irq_save(flags);
++
++	/* only allow one thread through here per processor */
++	cpu = smp_processor_id();
++	if (in_entry_exit[cpu]) {
++		/* this should never happen (with ints disabled),
++		 * but we check for it anyway.
++		 */
++		atomic_inc(&drop_count);
++		local_irq_restore(flags);
++		return;
++	}
++	in_entry_exit[cpu] = 1;
++
++	update_usecs_since_boot();
++
++	run = run_curr;
++
++	if (!run || run->complete)
++		goto entry_exit_byebye;
++
++	if (!run->triggered) {
++		/* test for start trigger */
++		if (!run->primed)
++			goto entry_exit_byebye;
++
++		run->triggered = test_trigger(run, 1, func_entry, this_fn);
++		if (!run->triggered)
++			goto entry_exit_byebye;
++	}
++	if (!filter_out(&run->filters, this_fn)) {
++		if (func_entry)
++			do_func_entry(run, this_fn, call_site);
++		else
++			do_func_exit(run, this_fn, call_site);
++	}
++
++	if (!run->complete)
++		/* test for stop trigger */
++		run->complete = test_trigger(run, 0, func_entry, this_fn);
++
++	/* test for auto restart of trace */
++	if (run->complete && run->flags & KFT_MODE_AUTO_REPEAT &&
++		run->stop_trigger.type != TRIGGER_LOG_FULL) {
++		run->triggered = 0;
++		run->complete = 0;
++	}
++
++ entry_exit_byebye:
++	in_entry_exit[cpu] = 0;
++	local_irq_restore(flags);
++}
++
++
++void __noinstrument __cyg_profile_func_enter(void *this_fn, void *call_site)
++{
++	func_entry_exit(this_fn, call_site, 1);
++}
++EXPORT_SYMBOL(__cyg_profile_func_enter);
++
++void __noinstrument __cyg_profile_func_exit(void *this_fn, void *call_site)
++{
++	func_entry_exit(this_fn, call_site, 0);
++}
++EXPORT_SYMBOL(__cyg_profile_func_exit);
++
++#define dump_str(buf, len, fmt, arg...) do {\
++    if (buf)	\
++		len += sprintf(buf + len, fmt, ## arg); \
++    else	\
++		len += printk(KERN_EMERG fmt, ## arg); \
++} while (0)
++
++static int __noinstrument print_trigger(char* buf, int len,
++	struct kft_trigger *t, int start_trigger)
++{
++	char trigbuf[80];
++
++	switch (t->type) {
++	case TRIGGER_USER:
++		sprintf(trigbuf, "system call\n");
++		break;
++	case TRIGGER_TIME:
++		sprintf(trigbuf, "time at %lu usec from %s\n",
++		       t->time, start_trigger ? "boot" : "start trigger");
++		break;
++	case TRIGGER_FUNC_ENTRY:
++		sprintf(trigbuf, "entry to function 0x%08lx\n",
++			(unsigned long)t->func_addr);
++		break;
++	case TRIGGER_FUNC_EXIT:
++		sprintf(trigbuf, "exit from function 0x%08lx\n",
++			(unsigned long)t->func_addr);
++		break;
++	case TRIGGER_LOG_FULL:
++		sprintf(trigbuf, "log full\n");
++		break;
++	default:
++		sprintf(trigbuf, "?\n");
++		break;
++	}
++
++	dump_str(buf, len, "Logging %s at %lu usec by %s",
++		 (start_trigger ? "started" : "stopped"),
++		 t->mark, trigbuf);
++
++	return len;
++}
++
++static void __noinstrument print_trigger2(struct seq_file *m,
++	struct kft_trigger *t, int start_trigger)
++{
++	char trigbuf[80];
++
++	switch (t->type) {
++	case TRIGGER_USER:
++		sprintf(trigbuf, "user action\n");
++		break;
++	case TRIGGER_TIME:
++		sprintf(trigbuf, "time at %lu usec from %s\n",
++		       t->time, start_trigger ? "boot" : "start trigger");
++		break;
++	case TRIGGER_FUNC_ENTRY:
++		sprintf(trigbuf, "entry to function 0x%08lx\n",
++			(unsigned long)t->func_addr);
++		break;
++	case TRIGGER_FUNC_EXIT:
++		sprintf(trigbuf, "exit from function 0x%08lx\n",
++			(unsigned long)t->func_addr);
++		break;
++	case TRIGGER_LOG_FULL:
++		sprintf(trigbuf, "log full\n");
++		break;
++	default:
++		sprintf(trigbuf, "?\n");
++		break;
++	}
++
++	seq_printf(m, "Logging %s at %lu usec by %s",
++		 (start_trigger ? "started" : "stopped"),
++		 t->mark, trigbuf);
++	return;
++}
++
++int __noinstrument kft_dump_log(char* buf)
++{
++	int i, len = 0;
++	struct kft_run *run = run_curr;
++	struct kft_filters *filters = &run->filters;
++
++	if (!run) {
++		dump_str(buf, len, "\nNo logging run registered\n");
++		return len;
++	}
++
++	if (!run->triggered) {
++		dump_str(buf, len, "\nLogging not yet triggered\n");
++		return len;
++	}
++
++	if (!run->complete) {
++		dump_str(buf, len, "\nLogging is running\n");
++		return len;
++	}
++
++	dump_str(buf, len, "\nKernel Instrumentation Run ID %d\n\n",
++		 run->id);
++
++	dump_str(buf, len, "Filters:\n");
++	if (filters->func_list_size)
++		dump_str(buf, len, "\t%d-entry function list\n",
++			 filters->func_list_size);
++	if (filters->min_delta)
++		dump_str(buf, len, "\t%ld usecs minimum execution time\n",
++			 filters->min_delta);
++	if (filters->max_delta)
++		dump_str(buf, len, "\t%ld usecs maximum execution time\n",
++			 filters->max_delta);
++	if (filters->no_ints)
++		dump_str(buf, len, "\tno functions in interrupt context\n");
++	if (filters->only_ints)
++		dump_str(buf, len,
++			 "\tno functions NOT in interrupt context\n");
++	if (filters->func_list)
++		dump_str(buf, len, "\tfunction list\n");
++
++	dump_str(buf, len, "\nFilter Counters:\n");
++
++	if (filters->min_delta || filters->max_delta) {
++		dump_str(buf, len, "\nExecution time filter count = %d\n",
++			 filters->cnt.delta);
++	}
++	if (filters->no_ints) {
++		dump_str(buf, len,
++			 "No Interrupt functions filter count = %d\n",
++			 filters->cnt.no_ints);
++	}
++	if (filters->only_ints) {
++		dump_str(buf, len,
++			 "Only Interrupt functions filter count = %d\n",
++			 filters->cnt.only_ints);
++	}
++	if (filters->func_list_size) {
++		dump_str(buf, len, "Function List filter count = %d\n",
++			 filters->cnt.func_list);
++	}
++	dump_str(buf, len, "Total entries filtered = %d\n",
++		 filters->cnt.delta +
++		 filters->cnt.no_ints +
++		 filters->cnt.only_ints +
++		 filters->cnt.func_list);
++	dump_str(buf, len, "Entries not found = %d\n", run->notfound);
++	dump_str(buf, len, "\nNumber of entries after filters = %d\n\n",
++		 run->next_entry);
++
++	len += print_trigger(buf, len, &run->start_trigger, 1);
++	len += print_trigger(buf, len, &run->stop_trigger, 0);
++
++	/* print out header */
++	dump_str(buf, len, "\n");
++	dump_str(buf, len,
++		 " Entry      Delta       PID      Function    Caller\n");
++	dump_str(buf, len,
++		 "--------   --------   --------   --------   --------\n");
++
++	for (i = 0; i < run->next_entry; i++) {
++		dump_str(buf, len, "%8lu   %8lu   %7d%s   %08lx   %08lx\n",
++			 run->log[i].time,
++			 run->log[i].delta,
++			 run->log[i].pid,
++			 (run->log[i].pid == INTR_CONTEXT) ? "i" : " ",
++			 (unsigned long)run->log[i].va,
++			 (unsigned long)run->log[i].call_site);
++	}
++
++	return len;
++}
++
++/*
++ * start of /proc/kft control handler stuff
++ */
++
++static struct proc_dir_entry *kft_proc_file;
++
++#define tok_match(tok, str) (strncmp(tok, str, strlen(str)) == 0)
++
++/* move pos to next white space */
++static void __noinstrument skip_token(const char **pos)
++{
++	size_t non_white_count;
++
++	/* return pointer to next white space, or \0 */
++	if (*pos) {
++		non_white_count = strcspn(*pos, " \t\n");
++		*pos = *pos + non_white_count;
++	}
++}
++
++/*
++ * return pointer to next non-white-space,
++ * advancing position to next white space following that
++ */
++static const char __noinstrument *next_token(const char **pos)
++{
++	size_t white_count;
++	const char *tok;
++
++	/* return pointer to next non-white space, or \0 */
++	if (*pos) {
++		white_count = strspn(*pos, " \t\n");
++		*pos = *pos + white_count;
++	}
++	tok = *pos;
++	skip_token(pos);
++	return tok;
++
++}
++
++static int __noinstrument parse_func(const char **pos, void **func_addr)
++{
++	int ret;
++	char buffer[KSYM_NAME_LEN];
++
++	ret = sscanf(*pos, "%s", buffer);
++	*(unsigned long *)func_addr = kallsyms_lookup_name((const char *)buffer);
++
++	skip_token(pos);
++	if (ret != 1)
++		return -EINVAL;
++	else
++		return 0;
++}
++
++/*
++ * parse_trigger: syntax is: trigger start|stop entry|exit|time arg
++ * arg for time is decimal number (usecs)
++ * arg for entry or exit is hexadecimal (function address)
++ */
++static int __noinstrument parse_trigger(const char **pos, struct kft_run *run)
++{
++	const char *tok;
++	struct kft_trigger *trigger;
++	int ret, rcode = 0;
++
++	/* parse event-type (start or stop) */
++	tok = next_token(pos);
++	if (tok_match(tok, "start")) {
++		trigger = &run->start_trigger;
++	} else {
++		if (tok_match(tok, "stop")) {
++			trigger = &run->stop_trigger;
++		} else {
++			printk(KERN_ERR "Error: missing trigger event-type\n");
++			return -EINVAL;
++		}
++	}
++
++	/* parse type (entry, exit, time)*/
++	tok = next_token(pos);
++	if (tok_match(tok, "time")) {
++		trigger->type = TRIGGER_TIME;
++		tok = next_token(pos);
++		ret = sscanf(tok, "%lu", &trigger->time);
++		if (ret != 1) {
++			printk(KERN_ERR "Error: can't parse trigger time\n");
++			rcode = -EINVAL;
++		}
++	} else {
++		if (tok_match(tok, "entry")) {
++			trigger->type = TRIGGER_FUNC_ENTRY;
++			rcode = parse_func(pos, &trigger->func_addr);
++		} else {
++			if (tok_match(tok, "exit")) {
++				trigger->type = TRIGGER_FUNC_EXIT;
++				rcode = parse_func(pos, &trigger->func_addr);
++			}
++		}
++		if (rcode)
++			printk(KERN_ERR "Error: can't parse trigger function\n");
++	}
++	return rcode;
++}
++
++/*
++ * parse_filter:
++ * syntax is: filter mintime|maxtime|noints|onlyints|funclist [args]
++ *
++ * arg for time (mintime or maxtime) is decimal number (usecs)
++ * arg for funclist is list of function addresses, followed by "fend"
++ * e.g. filter funclist c0008000 c0008110 fend
++ */
++
++static int __noinstrument parse_filter(const char **pos, struct kft_run *run)
++{
++	const char *tok;
++	const char **pos_save;
++	int i, ret, rcode = 0;
++	int parsed = 0;
++
++	/* parse filter type */
++	tok = next_token(pos);
++	if (tok_match(tok, "noints")) {
++		run->filters.no_ints = 1;
++		parsed = 1;
++	}
++	if (tok_match(tok, "onlyints")) {
++		run->filters.only_ints = 1;
++		parsed = 1;
++	}
++	if (tok_match(tok, "mintime")) {
++		tok = next_token(pos);
++		ret = sscanf(tok, "%lu", &run->filters.min_delta);
++		if (ret != 1) {
++			printk(KERN_ERR "Error: can't parse filter mintime\n");
++			rcode = -EINVAL;
++		}
++		parsed = 1;
++	}
++	if (tok_match(tok, "maxtime")) {
++		tok = next_token(pos);
++		ret = sscanf(tok, "%lu", &run->filters.max_delta);
++		if (ret != 1) {
++			printk(KERN_ERR "Error: can't parse filter maxtime\n");
++			rcode = -EINVAL;
++		}
++		parsed = 1;
++	}
++	if (tok_match(tok, "funclist")) {
++		pos_save = pos;
++
++		/* count number of functions */
++		i = 0;
++		tok = next_token(pos);
++		while (*pos && !tok_match(tok, "fend")) {
++			i++;
++			skip_token(pos);
++			tok = next_token(pos);
++		}
++		if (!tok_match(tok, "fend")) {
++			printk(KERN_ERR "Error: missing \"fend\" in filter funclist\n");
++			return -EINVAL;
++		}
++		/* allocate space for functions */
++		run->filters.func_list =
++				kmalloc(sizeof(void *) * i, GFP_KERNEL);
++		run->filters.func_list_size = i;
++
++		/* parse functions */
++		pos = pos_save; /* rewind to beginning of funclist */
++		tok = next_token(pos);
++		i = 0;
++		while (**pos && !tok_match(tok, "fend")) {
++			rcode = parse_func(&tok, &run->filters.func_list[i]);
++			i++;
++			if (rcode) {
++				printk(KERN_ERR
++					"Error: can't parse function %d in "
++					"filter funclist\n", i+1);
++				break;
++			}
++			tok = next_token(pos);
++		}
++		parsed = 1;
++	}
++
++	if (!parsed) {
++		printk(KERN_ERR "Error: unknown filter type. (tok=%s)\n", tok);
++		rcode = -EINVAL;
++	}
++
++	return rcode;
++}
++
++
++static int __noinstrument kft_parse_config(const char *config,
++				struct kft_run *run)
++{
++	const char *tok;
++	int ret, rcode;
++	const char **pos;
++
++	pos = &config;
++	tok = next_token(pos);
++	while (**pos && !tok_match(tok, "end")) {
++		if (tok_match(tok, "trigger")) {
++			rcode = parse_trigger(pos, run);
++			if (rcode)
++				return rcode;
++		}
++		if (tok_match(tok, "filter")) {
++			rcode = parse_filter(pos, run);
++			if (rcode)
++				return rcode;
++		}
++		if (tok_match(tok, "logentries")) {
++			tok = next_token(pos);
++			ret = sscanf(tok, "%d", &run->num_entries);
++			if (ret != 1) {
++				printk(KERN_ERR "Error: bad logentries.\n");
++				return -EINVAL;
++			}
++		}
++		if (tok_match(tok, "autorepeat"))
++			run->flags |= KFT_MODE_AUTO_REPEAT;
++		tok = next_token(pos);
++	}
++	if (!tok_match(tok, "end")) {
++		printk(KERN_ERR "Error: missing \"end\" statement\n");
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int __noinstrument print_trigger_config(char *buf, int len,
++				char *ss, struct kft_trigger *t)
++{
++
++	char *ts = "  trigger";
++
++	switch (t->type) {
++	case TRIGGER_TIME:
++		dump_str(buf, len, "%s %s at time %lu\n", ts, ss, t->time);
++		break;
++	case TRIGGER_FUNC_ENTRY:
++		dump_str(buf, len, "%s %s entry %pf\n", ts, ss,
++			(void *)t->func_addr);
++		break;
++	case TRIGGER_FUNC_EXIT:
++		dump_str(buf, len, "%s %s exit %pf\n", ts, ss,
++			(void *)t->func_addr);
++		break;
++	case TRIGGER_NONE:
++		dump_str(buf, len, "%s %s not set\n", ts, ss);
++		break;
++	case TRIGGER_USER:
++		dump_str(buf, len, "%s %s by user action\n", ts, ss);
++		break;
++	case TRIGGER_LOG_FULL:
++		dump_str(buf, len, "%s %s by log full\n", ts, ss);
++		break;
++	default:
++		dump_str(buf, len, "%s %s ???\n", ts, ss);
++		break;
++	}
++	return len;
++}
++
++static int __noinstrument dump_config(char *buf, struct kft_run *run)
++{
++	int i, len = 0;
++
++	/* print status information */
++	dump_str(buf, len,
++		"status: run id %d, %sprimed, %striggered, %scomplete\n\n",
++		run->id, run->primed ? "" : "not ",
++		run->triggered ? "" : "not ",
++		run->complete ? "" : "not ");
++
++	/* run->flags = KFT_MODE_TIMED; */ /* and NOT KFT_MODE_OVERWRITE */
++	dump_str(buf, len, "config:\n");
++	dump_str(buf, len, "  mode %d\n", run->flags);
++
++	/* triggers */
++	len = print_trigger_config(buf, len, "start", &run->start_trigger);
++	len = print_trigger_config(buf, len, "stop", &run->stop_trigger);
++
++	/* filters */
++	dump_str(buf, len, "  filter mintime %lu\n", run->filters.min_delta);
++	dump_str(buf, len, "  filter maxtime %lu\n", run->filters.max_delta);
++	if (run->filters.no_ints)
++		dump_str(buf, len, "  filter noints\n");
++	if (run->filters.only_ints)
++		dump_str(buf, len, "  filter onlyints\n");
++	if (run->filters.func_list) {
++		dump_str(buf, len, "  filter funclist ");
++		for (i = 0; i < run->filters.func_list_size; i++)
++			dump_str(buf, len, "0x%08lX ",
++				(unsigned long)run->filters.func_list[i]);
++		dump_str(buf, len, "fend\n");
++	}
++
++	/* misc stuff */
++	dump_str(buf, len, "  logentries %d\n", run->num_entries);
++	return len;
++}
++
++
++static int __noinstrument kft_new_run(const char *run_config_str)
++{
++	unsigned long flags;
++	int rcode;
++	int req_entries;
++
++	struct kft_run *run;
++
++	run = (struct kft_run *)
++			kmalloc(sizeof(struct kft_run), GFP_KERNEL);
++	if (!run) {
++		printk(KERN_ERR "Error allocating space for new kft_run struct\n");
++		return -ENOMEM;
++	}
++
++	/* set up a new run by parsing config_str */
++	/* set default configuration to handle any un-set entries */
++	run->primed = run->triggered = run->complete = 0;
++	run->flags = KFT_MODE_TIMED; /* and NOT KFT_MODE_OVERWRITE */
++	run->start_trigger.type = TRIGGER_NONE;
++	run->start_trigger.func_addr = NULL;
++	run->stop_trigger.type = TRIGGER_NONE;
++	run->stop_trigger.func_addr = NULL;
++	run->filters.min_delta = 0;
++	run->filters.max_delta = 0;
++	run->filters.no_ints = 0;
++	run->filters.only_ints = 0;
++	run->filters.func_list = NULL;
++	run->filters.func_list_size = 0;
++	run->num_entries = DEFAULT_RUN_LOG_ENTRIES;
++	run->next_entry = 0;
++
++	rcode = kft_parse_config(run_config_str, run);
++	if (rcode) {
++		kfree(run);
++		printk(KERN_INFO "KFT: Could not configure new kft run");
++		return rcode;
++	}
++
++	/* FIXTHIS - should sanity check some of the values before continuing */
++
++	/* reset stat counters */
++	memset(&run->filters.cnt, 0, sizeof(run->filters.cnt));
++	run->notfound = 0;
++
++	/* allocate log */
++	/* try kmalloc first.If that fails,try vmalloc and reducing the size */
++	req_entries = run->num_entries;
++	run->log = (struct kft_entry *)
++		kmalloc(sizeof(struct kft_entry)
++						* run->num_entries, GFP_KERNEL);
++	run->log_is_kmem = 1;
++	while (run->log == NULL && run->num_entries > 100) {
++		run->log = (struct kft_entry *)
++			vmalloc(sizeof(struct kft_entry) * run->num_entries);
++		run->log_is_kmem = 0;
++		if (run->log == NULL)
++			run->num_entries /= 2;
++	}
++	if (run->log == NULL) {
++		printk(KERN_INFO "KFT: Could not allocate %u bytes for kft log.\n",
++		(unsigned int)(sizeof(struct kft_entry) * run->num_entries));
++		rcode = -ENOMEM;
++		goto free_stuff_out;
++	}
++	/* report if the log shrunk from what was requested */
++	if (run->num_entries != req_entries) {
++		printk(KERN_INFO "Allocated %d log entries (%d were requested).\n",
++			run->num_entries, req_entries);
++	}
++
++	/* printk(KERN_INFO "log=%p\n", run->log); */
++	memset(run->log, 0, sizeof(struct kft_entry) * run->num_entries);
++
++	/* set the run id */
++	if (!run_curr)
++		run->id = 0;
++	else
++		run->id = run_curr->id + 1;
++
++	dump_config(NULL, run);
++
++	/* install then new run as current run */
++	local_irq_save(flags);
++	if (run_curr && run_curr != (struct kft_run *)&kft_run0) {
++		/* free the old run, if it wasn't a static run */
++		kfree(run_curr->filters.func_list);
++		if (run_curr->log_is_kmem)
++			kfree(run_curr->log);
++		else
++			vfree(run_curr->log);
++		kfree(run_curr);
++	}
++	run_curr = run;
++	local_irq_restore(flags);
++	printk(KERN_INFO "KFT: new kft run installed\n");
++	return 0;
++
++free_stuff_out:
++	kfree(run->filters.func_list);
++	if (run->log_is_kmem)
++		kfree(run->log);
++	else
++		vfree(run->log);
++	kfree(run);
++	return rcode;
++}
++
++/*
++ * start the current run
++ */
++static int __noinstrument kft_start(void)
++{
++	unsigned long flags;
++	struct kft_run *run;
++
++	local_irq_save(flags);
++	run = run_curr;
++	/* missing, done, or already started? */
++	if (!run || run->complete || run->triggered) {
++		local_irq_restore(flags);
++		return -EINVAL;
++	}
++	run->triggered = 1;
++	run->start_trigger.mark = update_usecs_since_boot();
++	run->start_trigger.type = TRIGGER_USER;
++	local_irq_restore(flags);
++	return 0;
++}
++
++static int __noinstrument kft_prime(void)
++{
++	unsigned long flags;
++	struct kft_run *run;
++
++	local_irq_save(flags);
++	run = run_curr;
++	/* missing, or currently running? */
++	if (!run || (run->triggered && !run->complete)) {
++		local_irq_restore(flags);
++		return -EINVAL;
++	}
++	run->primed = 1;
++	local_irq_restore(flags);
++	return 0;
++}
++
++/*
++ * stop the current run
++ */
++static int __noinstrument kft_stop(void)
++{
++	unsigned long flags;
++	struct kft_run *run;
++
++	local_irq_save(flags);
++	run = run_curr;
++	/* missing or already done? */
++	if (!run || run->complete) {
++		local_irq_restore(flags);
++		return -EINVAL;
++	}
++	run->complete = 1;
++	run->stop_trigger.mark = update_usecs_since_boot();
++	run->stop_trigger.type = TRIGGER_USER;
++	local_irq_restore(flags);
++	return 0;
++}
++
++static int __noinstrument proc_read_kft(char *page, char **start, off_t off,
++		int count, int *eof, void *data)
++{
++	int len;
++	struct kft_run *run = run_curr;
++
++	if (!run) {
++		len = 0;
++		dump_str(page, len, "No logging run registered\n");
++	} else {
++		len = dump_config(page, run);
++	}
++
++	/* uncomment the next few lines to debug the synchronization
++	 * mechanisms
++	 */
++	/*
++	dump_str(page, len, "drop_count=%d\n", atomic_read(&drop_count));
++	dump_str(page, len, "entry timeout count=%d\n",
++	atomic_read(&lock_timeout_entry_count));
++	dump_str(page, len, "exit
++		timeout count=%d\n", atomic_read(&lock_timeout_exit_count));
++	*/
++	return len;
++}
++
++static int __noinstrument proc_write_kft(struct file *file, const char *buffer,
++	unsigned long count, void *data)
++{
++	int rcode = 0;
++	static char cmd_buffer[COMMAND_BUFFER_LEN];
++
++	if (count > COMMAND_BUFFER_LEN)
++		return -EINVAL;
++
++	/* FIXTHIS - do I need a verify_area() here? */
++	if (copy_from_user(cmd_buffer, buffer, count))
++		return -EFAULT;
++	cmd_buffer[count] = '\0';
++
++	if (strncmp(cmd_buffer, "prime", 5) == 0)
++		rcode = kft_prime();
++
++	if (strncmp(cmd_buffer, "start", 5) == 0)
++		rcode = kft_start();
++
++	if (strncmp(cmd_buffer, "stop", 4) == 0)
++		rcode = kft_stop();
++
++	if (strncmp(cmd_buffer, "new", 3) == 0)
++		rcode = kft_new_run(cmd_buffer+3);
++
++	if (rcode)
++		return rcode;
++	else
++		return count;
++}
++
++/*
++ * stuff for /proc/kft_data
++ */
++static DECLARE_MUTEX(kft_run_mutex);
++
++static void * __noinstrument k_start(struct seq_file *m, loff_t *pos)
++{
++	loff_t n = *pos;
++	struct kft_run *run = run_curr;
++	struct kft_filters *filters = &run->filters;
++
++	down(&kft_run_mutex);
++	/*
++	 * if the file is being newly read, stop any current trace
++	 */
++	if (!n) {
++		/*  FIXTHIS - stop trace */
++	}
++
++	if (!n) {
++		/* print out header */
++		if (!run) {
++			seq_printf(m, "No logging run registered\n");
++			return NULL;
++		}
++
++		seq_printf(m, "\nKernel Instrumentation Run ID %d\n\n",
++			run->id);
++
++		print_trigger2(m, &run->start_trigger, 1);
++		print_trigger2(m, &run->stop_trigger, 0);
++
++		seq_puts(m, "\nFilter Counters:\n");
++
++		if (filters->min_delta || filters->max_delta) {
++			seq_printf(m, "\nExecution time filter count = %d\n",
++				 filters->cnt.delta);
++		}
++		if (filters->no_ints) {
++			seq_printf(m,
++				"No Interrupt functions filter count = %d\n",
++				filters->cnt.no_ints);
++		}
++		if (filters->only_ints) {
++				seq_printf(m,
++				"Only Interrupt functions filter count = %d\n",
++				filters->cnt.only_ints);
++		}
++		if (filters->func_list_size) {
++			seq_printf(m, "Function List filter count = %d\n",
++				filters->cnt.func_list);
++		}
++		seq_printf(m, "Total entries filtered = %d\n",
++			 filters->cnt.delta + filters->cnt.no_ints +
++			 filters->cnt.only_ints + filters->cnt.func_list);
++		seq_printf(m, "Entries not found = %d\n", run->notfound);
++
++		seq_printf(m, "\nNumber of entries after filters = %d\n\n",
++			 run->next_entry);
++
++		seq_puts(m,
++		"\n Entry    Delta     PID        Function                        Caller");
++#ifdef CONFIG_KFT_SAVE_ARGS
++		seq_puts(m,
++		"                          Frame ptr     Arg 1       Arg 2       Arg 3");
++#endif
++
++		seq_puts(m,
++		"\n-------- -------- -------- ----------------                 ------------");
++#ifdef CONFIG_KFT_SAVE_ARGS
++		seq_puts(m,
++		"                       ----------  ----------  ----------  ----------");
++#endif
++		seq_puts(m, "\n");
++
++	}
++	if (n >= run->next_entry)
++		return NULL;
++	return run->log + n;
++}
++
++static void * __noinstrument k_next(struct seq_file *m, void *p, loff_t *pos)
++{
++	struct kft_run *run = run_curr;
++
++	if (++*pos >= run->next_entry)
++		return NULL;
++	return run->log + *pos;
++}
++
++static void __noinstrument k_stop(struct seq_file *m, void *p)
++{
++	up(&kft_run_mutex);
++}
++
++static int __noinstrument k_show(struct seq_file *m, void *p)
++{
++	struct kft_entry *entry;
++	long delta;
++	char cpu_str[3];
++	int pid;
++
++	entry = p;
++	if (entry->delta == TIME_NOT_SET)
++		delta = -1;
++	else
++		delta = (long)entry->delta;
++	pid = entry->pid;
++#ifdef CONFIG_SMP
++	int cpu;
++
++	/* cpu is encoded in pid in bits 24-31 */
++	cpu_str[0] = '.';
++	/* this single-digit trick only works up to 8-way */
++	cpu = (pid >> 24) & 0xff;
++	if (cpu == 0xff)
++		cpu = 9; /* unknown */
++	cpu_str[1] = '0' + cpu;
++	if ((pid | (0xff<<24)) == INTR_CONTEXT)
++		pid = INTR_CONTEXT;
++	else
++		pid &= 0xffffff;
++	cpu_str[2] = 0;
++#else
++	cpu_str[0] = ' ';
++	cpu_str[1] = 0;
++#endif
++
++	seq_printf(m, "%8lu %8ld %6d%s %-32pf %pf",
++			 entry->time, delta, pid, cpu_str,
++			 (void *)entry->va,
++			 (void *)entry->call_site);
++#ifdef CONFIG_KFT_SAVE_ARGS
++	seq_printf(m,
++		"                         0x%08x  0x%08x  0x%08x  0x%08x",
++		(unsigned int)entry->fp,
++		(unsigned int)entry->a1, (unsigned int)entry->a2,
++		(unsigned int)entry->a3);
++#endif
++	seq_printf(m, "\n");
++	return 0;
++}
++
++const struct seq_operations kft_data_op = {
++	.start	= k_start,
++	.next	= k_next,
++	.stop	= k_stop,
++	.show	= k_show
++};
++
++/*
++ * end of stuff for /proc/kft_data
++ */
++
++static int __init __noinstrument kft_init(void)
++{
++	int rcode = 0;
++
++	kft_proc_file = create_proc_entry("kft", 0644, NULL);
++	if (kft_proc_file == NULL) {
++		rcode = -ENOMEM;
++		goto out;
++	}
++
++	kft_proc_file->data = NULL;
++	kft_proc_file->read_proc = proc_read_kft;
++	kft_proc_file->write_proc = proc_write_kft;
++out:
++	return rcode;
++}
++
++static void __exit __noinstrument kft_exit(void)
++{
++	remove_proc_entry("kft", NULL);
++}
++
++module_init(kft_init);
++module_exit(kft_exit);
++
+diff --git a/kernel/kft-proc.c b/kernel/kft-proc.c
+new file mode 100644
+index 0000000..50bbfee
+--- /dev/null
++++ b/kernel/kft-proc.c
+@@ -0,0 +1,28 @@
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kft.h>
++#include <linux/irqnr.h>
++#include <linux/proc_fs.h>
++#include <linux/seq_file.h>
++
++/*
++ * /proc/kft_data
++ */
++
++static int kft_data_open(struct inode *inode, struct file *file)
++{
++       return seq_open(file, &kft_data_op);
++}
++static const struct file_operations kft_data_operations = {
++       .open           = kft_data_open,
++       .read           = seq_read,
++       .llseek         = seq_lseek,
++       .release        = seq_release,
++};
++
++static int __init kft_data_init(void)
++{
++	proc_create("kft_data", 0, NULL, &kft_data_operations);
++	return 0;
++}
++module_init(kft_data_init);
+diff --git a/kernel/kftstatic.conf b/kernel/kftstatic.conf
+new file mode 100644
+index 0000000..959f64f
+--- /dev/null
++++ b/kernel/kftstatic.conf
+@@ -0,0 +1,41 @@
++# record all functions longer that 500 microseconds, during bootup
++# don't worry about interrupts
++begin
++   trigger start entry start_kernel
++   trigger stop entry to_userspace
++   filter mintime 500
++   filter maxtime 0
++#   filter noints
++#   logentries 40000
++end
++
++# get a full trace of time_init (ignoring interrupts)
++#begin
++#   trigger start entry time_init
++#   trigger stop exit time_init
++#   filter noints
++#end
++
++# record short routines called by do_fork
++# use a small log
++#begin
++#   trigger start entry do_fork
++#   trigger stop exit do_fork
++#   filter mintime 10
++#   filter maxtime 400
++#   filter noints
++#   logentries 500
++#end
++
++# record interrupts for .5 milliseconds, 20 seconds after booting
++#begin
++#   trigger start time 5000000
++#   trigger stop time 500
++#   filter onlyints
++#end
++
++# record all schedules after 10 seconds
++#begin
++#   trigger start time 10000000
++#   filter funclist schedule
++#end
+diff --git a/kernel/sched.c b/kernel/sched.c
+index 92c5b60..a82924b 100644
+--- a/kernel/sched.c
++++ b/kernel/sched.c
+@@ -3726,7 +3726,7 @@ notrace unsigned long get_parent_ip(unsigned long addr)
+ #if defined(CONFIG_PREEMPT) && (defined(CONFIG_DEBUG_PREEMPT) || \
+ 				defined(CONFIG_PREEMPT_TRACER))
+ 
+-void __kprobes add_preempt_count(int val)
++void fastcall __noinstrument add_preempt_count(int val)
+ {
+ #ifdef CONFIG_DEBUG_PREEMPT
+ 	/*
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 07b4f1b..8b69347 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -294,7 +294,7 @@ void irq_enter(void)
+ /*
+  * Exit an interrupt context. Process softirqs if needed and possible:
+  */
+-void irq_exit(void)
++void __noinstrument irq_exit(void)
+ {
+ 	account_system_vtime(current);
+ 	trace_hardirq_exit();
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 66136ca..4594070 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -47,6 +47,10 @@
+ #include <asm/io.h>
+ #include <asm/unistd.h>
+ 
++#ifdef CONFIG_KFT_DUMP
++#include <linux/kft.h>
++#endif
++
+ #ifndef SET_UNALIGN_CTL
+ # define SET_UNALIGN_CTL(a,b)	(-EINVAL)
+ #endif
+@@ -308,6 +312,10 @@ void kernel_restart_prepare(char *cmd)
+ void kernel_restart(char *cmd)
+ {
+ 	kernel_restart_prepare(cmd);
++#ifdef CONFIG_KFT_DUMP
++       kft_dump_log(NULL);
++#endif
++
+ 	if (!cmd)
+ 		printk(KERN_EMERG "Restarting system.\n");
+ 	else
+diff --git a/lib/Makefile b/lib/Makefile
+index e6a3763..eb9a1a4 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -1,6 +1,12 @@
+ #
+ # Makefile for some libs needed in the kernel.
+ #
++# something in the /lib directory blows up when instrumented, on PPC64 - TODO:check - hofrat
++ifdef CONFIG_PPC64
++ifdef CONFIG_KFT
++CFLAGS += -fno-instrument-functions
++endif
++endif
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+ ORIG_CFLAGS := $(KBUILD_CFLAGS)
+diff --git a/scripts/addr2sym b/scripts/addr2sym
+new file mode 100644
+index 0000000..b43e05c
+--- /dev/null
++++ b/scripts/addr2sym
+@@ -0,0 +1,173 @@
++#!/usr/bin/python
++
++# addr2sym.py - resolve addresses to symbols, using a map file
++# Reads a log file, and map file, and substitutes function
++# names and offsets for numeric values in the log.
++# The re-written log file is sent to standard out.
++#
++# A normal usage looks like:
++# cat boot.log | addr2sym -m linux-2.6.7/System.map >boot.lst
++#
++import sys
++import fileinput
++import string
++import re
++
++MAX_FUNCS_PER_LINE = 2
++
++def startswith(str, pattern):
++	if string.find(str, pattern)==0:
++		return 1
++	else:
++		return 0
++
++def print_error(str):
++	sys.stderr.write(str+"\n");
++	sys.stderr.flush()
++
++# returns function map (key=addr, value=funcname) and
++# a list of function tuples (addr, funcname)
++def read_map(filename):
++	global map_low, map_high
++	funcmap = {}
++	funclist = []
++	try:
++		f = open(filename)
++	except:
++		print_error("Error: Cannot read map file: %s" % filename)
++		usage()
++
++	for line in f.readlines():
++		(addr_str, symtype, funcname) = string.split(line, None, 3)
++		funcmap["0x"+addr_str] = funcname
++		addr = eval("0x"+addr_str+"L")
++		funclist.append((addr, funcname))
++
++	return (funcmap, funclist)
++
++callsite_cache = {}
++
++# return string with function and offset for a given address
++def lookup_sym(funcmap, funclist, addr_str):
++	global callsite_cache
++
++	try:
++		return funcmap[addr_str]
++	except:
++		pass
++
++	# no exact match found, now do binary search for closest function
++
++	# convert address from string to number
++	addr = eval(addr_str+"L")
++
++	# if address is outside range of addresses in the
++	# map file, just return the address without converting it
++	if addr < funclist[0][0] or addr > funclist[-1][0]:
++		return addr_str
++
++	if callsite_cache.has_key(addr):
++		return callsite_cache[addr]
++
++	# do a binary search in funclist for the function
++	# use a collapsing range to find the closest addr
++	lower = 0
++	upper = len(funclist)-1
++	while (lower != upper-1):
++		guess_index = lower + (upper-lower)/2
++		guess_addr = funclist[guess_index][0]
++		if addr < guess_addr:
++			upper = guess_index
++		if addr >= guess_addr:
++			lower = guess_index
++
++	offset = addr-funclist[lower][0]
++	name = funclist[lower][1]
++	if startswith(name, "."):
++		name = name[1:]
++	func_str = "%s+0x%x" % (name, offset)
++	callsite_cache[addr] = func_str
++	return func_str
++
++def usage():
++	print "Usage: addr2sym <infile -m mapfile >outfile"
++	print "\nexample:"
++	print "addr2sym <boot.log -m linux-2.6.7/System.map >boot.lst"
++	sys.exit(1)
++
++def main():
++	# user must have "-m mapfile" at a minimum
++	if len(sys.argv)<3:
++		print_error("Error: no map file specified")
++		usage()
++
++	mapfilename = ""
++	i = 0
++	while i < len(sys.argv):
++		if sys.argv[i]=="-m":
++			try:
++				mapfilename = sys.argv[i+1]
++				# remove the args from the argument list
++				sys.argv[i:i+2]=[]
++			except:
++				pass
++		i = i+1
++
++	if not mapfilename:
++		print_error("Error: missing map file name")
++		usage()
++
++	# read function names and addresses from map file
++	(funcmap, funclist) = read_map(mapfilename)
++
++	for line in fileinput.input():
++		# strip trailing \n, if present
++		if line[-1]=='\n':
++			line = line[:-1]
++
++		# convert all hex numbers to symbols plus offsets
++		# try to preserve column spacing in the output
++		tmp = line
++		new_line = ""
++		m = re.match(r".*?(0x[0-9abcdef]+)(\s*)", tmp)
++		i_sym = 0
++		while m:
++			#print "m.groups=<%s>" % str(m.groups())
++
++			# You can comment out the next line to allow unlimited
++			# function-name conversions per line
++			i_sym = i_sym + 1
++
++			# addr is match for re group 1, look it up
++			addr_str = tmp[m.start(1): m.end(1)]
++
++			# only convert the first hex numbers found
++			# rest are arguments
++			if i_sym <= MAX_FUNCS_PER_LINE:
++				func = lookup_sym(funcmap, funclist, addr_str)
++			else:
++				func = addr_str
++
++			# add function name to line, in place of address
++			new_line = new_line + tmp[:m.start(1)] + func
++			end = m.end(1)
++
++			# pad line to keep columns the same
++			# whitespace might match or not.  If it does, it's
++			# group 2 from the regex above.
++			if len(m.groups())>1: # if we also matched whitespace
++				end = m.end(2)
++				pad_count = (m.end(2)-m.start(1))-len(func)
++				if pad_count < 1: pad_count=1
++				new_line = new_line + " "*pad_count
++
++			# scan remainder of line
++			tmp = tmp[end:]
++			m = re.match(r".*?(0x[0-9abcdef]+)(\s*)", tmp)
++
++		if new_line:
++			line = new_line
++		print line
++
++if __name__=="__main__":
++	main()
+diff --git a/scripts/autokft.sh b/scripts/autokft.sh
+new file mode 100644
+index 0000000..446374d0
+--- /dev/null
++++ b/scripts/autokft.sh
+@@ -0,0 +1,86 @@
++#!/bin/bash
++# autokft.sh -- trace an indicated function automatically
++# author: falcon <wuzhangjin@gmail.com>
++# update: 2009-08-06
++# usage:
++#      $ ./autokft.sh [function_name] [script_path] [1|0]
++# if you have copied the tools: scripts/{kd,sym2addr,addr2sym} to current directory, try this:
++# i.e. $ ./autokft.sh sys_write ./ 1
++
++function error_report
++{
++	echo "usage: "
++	echo "    $ ./autokft.sh [function_name] [script_path] [1|0]"
++	echo "    note: you can copy the tools: scripts/{kd,sym2addr,addr2sym} from the linux kernel source code to current directory, and then try this"
++	echo "    $ ./autokft.sh sys_write ./    # trigger it ourselves"
++	echo "    or"
++	echo "    $ ./autokft.sh sys_write ./ 1  # trigger by external actions"
++	exit
++}
++
++# get the function need to tace from user
++[ -z "$1" ] && echo "please input the function need to be traced" && error_report
++
++trac_func=$1
++
++# get the path of the path of the tools: scripts/{sym2addr,addr2sym,kd}
++script_path=  #/path/to/kernel/usr/src/scripts/
++
++[ -n "$2" ] && script_path=$2
++
++if [ -z "$script_path" ]; then
++	echo "please configure the path of scripts as script_path" && error_report
++fi
++
++# start it manually or automatically
++auto=0		# if you want to trace it by external trigger, change it to 1
++
++[ -n "$3" ] && auto=$3
++
++# generate the latest system.map from /proc/kallsyms 
++if [ ! -f system.map ]; then
++	cat /proc/kallsyms > system.map
++fi
++
++# generate a default configuration file for kft
++cat <<EOF > config.sym
++new
++begin
++	trigger start entry $trac_func
++	trigger stop exit $trac_func
++end
++EOF
++
++# convert the symbols to address via the system.map
++$script_path/sym2addr config.sym system.map > config.addr
++
++# config kft
++cat config.addr > /proc/kft
++
++# prime it
++echo prime > /proc/kft
++
++sleep 1 
++
++# start it
++
++if [ "$auto" -eq 1 ];then
++	grep -q "not complete" /proc/kft
++	while [ $? -eq 0 ]
++	do
++		echo "please do something in the other console or terminal to trigger me"
++		sleep 1
++	done
++else
++	echo start > /proc/kft
++fi
++sleep 1
++
++# get the data
++cat /proc/kft_data > log.addr
++
++# convert the address to symbols
++$script_path/addr2sym < log.addr -m system.map > log.sym
++
++# generate a readable log
++$script_path/kd -c -l -i log.sym
+diff --git a/scripts/kd b/scripts/kd
+new file mode 100644
+index 0000000..c9cff66
+--- /dev/null
++++ b/scripts/kd
+@@ -0,0 +1,671 @@
++#!/usr/bin/env python
++#
++# kd (kft-dump):
++# Read data from an kft dump, and format various ways.
++#
++# ToDo:
++# - show function call tree
++#
++
++MAJOR_VERSION = 1
++MINOR_VERSION = 1
++
++import sys
++import string
++import time
++
++UNDEFINED=-1
++
++def usage():
++	print """usage: kd [<options>] <filename>
++
++This program parses the output from a set of kft message lines
++
++Options:
++  -h, --help    Show this usage help.
++  -V, --version Show version information.
++
++<< Cumulative summary mode >>
++  -n <num>	Only show the <num> most time-consuming functions
++  -t <time>     Only show functions with time greater than <time>
++  -f <format>   Show columns indicated by <format> string.  Column IDs
++                are single characters, with the following meaning:
++                  F = Function name
++		  c = Count (number of times function was called)
++		  t = Time (total time spent in this function)
++                  a = Average (average time per function call)
++                  r = Range (minimum and maximum times for a single call)
++                  s = Sub-time (time spent in sub-routines)
++                  l = Local time (time not spent in sub-routines)
++                  m = Max sub-routine (name of sub-routine with max time)
++                  n = Max sub-routine count (# of times max sub-routine
++                      was called)
++		  u = Sub-routine list (this feature is experimental)
++		The default column format string is "Fctal"
++  -l            Show long listing (default format string is "Fctalsmn")
++  -s <col-ID>   Sort by the column with the specified ID.  Can be one
++                of: F,c,t,a,s,l.  Default is to sort by total time, 't'.
++
++<< Call trace mode >>
++  -c            Format data as a call tree.  Sub-routines are displayed in
++		time-sequential order.
++  -f <format>   Show columns indicated by <format> string.  Following are
++		available:
++                  e = entry time
++                  t = duration time
++                  l = local time
++                  p = pid
++  -l            Show long listing (default format string is "etlp")
++  -i            Display traces in "interlaced" mode, with multiple threads
++                intermingled according to actual entry time.  Otherwise, each
++		calltree is shown separately.
++  -r		Show calltree at parse time
++  -d		Specify max function call depth (default is 20)
++  -m		Specify max function name length (default is 40)
++"""
++	sys.exit(1)
++
++class func_node:
++	sort_order = "t"
++	def __init__(self, name, called_at, pid, duration, a1, a2, a3):
++		self.name = name
++		self.callers = [(called_at, pid, duration, a1, a2, a3)]
++		d = int(duration)
++		self.total_time = d
++		self.min = d
++		self.max = d
++		self.subs = []
++		self.sub_time = 0
++		self.sub_list = {}
++
++	def get_name(self):
++		return self.name
++
++	def add_call(self, called_at, pid, duration, a1, a2, a3):
++		self.callers.append((called_at, pid, duration, a1, a2, a3))
++		d = int(duration)
++		self.total_time += d
++		if d < self.min:
++			self.min = d
++		if d > self.max:
++			self.max = d
++
++	def add_sub(self, name, pid, duration, a1, a2, a3):
++		self.subs.append((name, pid, duration, a1, a2, a3))
++		self.sub_list[name] = 1
++		d = int(duration)
++		# if subr has valid duration, add to my sub_time
++		if d!=-1:
++			self.sub_time += int(duration)
++
++	def time(self):
++		return self.total_time
++
++	def call_count(self):
++		return len(self.callers)
++
++	def avg_time(self):
++		count = len(self.callers)
++		if self.total_time==-1:
++			return -1
++		else:
++			return self.total_time/count
++
++	def time_range(self):
++		if self.call_count > 1:
++			return "(%d-%d)" % (self.min, self.max)
++		else:
++			return ""
++
++	def sub_time(self):
++		return self.sub_time
++
++	def local_time(self):
++		if self.total_time!=-1:
++			return self.total_time - self.sub_time
++		else:
++			return -1
++
++	def sub_list(self):
++		return str(self.sub_list.keys())
++
++	def __cmp__(self, other):
++		if self.sort_order == "t":
++			return cmp(self.total_time, other.total_time)
++		if self.sort_order == "F":
++			return cmp(self.name, other.name)
++		if self.sort_order == "c":
++			return cmp(self.call_count(), other.call_count())
++		if self.sort_order == "a":
++			return cmp(self.avg_time(), other.avg_time())
++		if self.sort_order == "s":
++			return cmp(self.sub_time, other.sub_time)
++		if self.sort_order == "l":
++			return cmp(self.local_time(), other.local_time())
++		# huh? no match, sort by total time
++		return cmp(self.total_time, other.total_time)
++
++def max_sub(parent_func):
++	global funcs_for_max_sub
++
++	# stupid kludge for passing funcs here through a global
++	funcs = funcs_for_max_sub
++	max_sub = None
++	max_time = 0
++	for (name, pid, duration, a1, a2, a3) in parent_func.subs:
++		if funcs.has_key(name):
++			sub_func = funcs[name]
++			if not max_sub:
++				max_sub = sub_func
++			else:
++				if sub_func.time() > max_sub.time():
++					max_sub = sub_func
++	if max_sub:
++		return max_sub.get_name()
++	else:
++		return ""
++
++def max_sub_count(parent_func):
++	global funcs_for_max_sub
++
++	# stupid kludge for passing funcs here through a global
++	funcs = funcs_for_max_sub
++	max_sub = None
++	max_time = 0
++	for (name, pid, duration, a1, a2, a3) in parent_func.subs:
++		if funcs.has_key(name):
++			sub_func = funcs[name]
++			if not max_sub:
++				max_sub = sub_func
++			else:
++				if sub_func.time() > max_sub.time():
++					max_sub = sub_func
++	if max_sub:
++		ms_name = max_sub.get_name()
++		ms_count = 0
++		for (name, pid, duration, a1, a2, a3) in parent_func.subs:
++			if funcs.has_key(name):
++				if name == ms_name:
++					ms_count = ms_count + 1
++		return ms_count
++	else:
++		return 0
++
++class display_flags:
++	pass
++
++thread_chars = []
++thread_char_list = ["|","!","@","[","#",";","(","$","/","{","%","]","*",")","&",
++	":","\\","}"]
++next_char = 0
++
++class tree_node:
++	def __init__(self, name, entry, duration, pid, called_at, a1, a2, a3):
++		self.name = name
++		self.entry_time = int(entry)
++		self.pid = pid
++		self.duration = int(duration)
++		if self.duration==-1:
++			self.exit_time = self.entry_time + 9999999
++		else:
++			self.exit_time = self.entry_time + self.duration
++		self.children = []
++		self.parent = None
++		self.local_time = self.duration
++		self.thread_char = None
++		self.depth = UNDEFINED
++		if a1 or a2 or a3:
++			self.args = a1 + " " + a2 + " " + a3
++		else:
++			self.args = ""
++
++	def is_active(self, time):
++		if self.entry_time <= time and time <= self.exit_time:
++			return True
++		else:
++			return False
++
++	def add_child(self, node):
++		self.children.append(node)
++		self.local_time -= node.duration
++		if self.local_time < 0:
++			self.local_time = 0
++
++	def add_parent(self, node):
++		self.parent = node
++
++	def set_thread_char(self):
++		global thread_char_list
++		global next_char
++		global dflags
++
++		# if already set, do nothing
++		if self.thread_char:
++			return
++
++		if not dflags.intermingle_threads:
++			self.thread_char = "|"
++			return
++
++		if self.parent:
++			self.thread_char = self.parent.thread_char
++		else:
++			# take next one from list
++			self.thread_char = thread_char_list[next_char]
++			next_char += 1
++
++			# wrap on overflow
++			if next_char >= len(thread_char_list):
++				next_char = 0
++
++	def get_indents(self):
++		global dflags
++
++		indent = ""
++		arg_indent = ""
++		if dflags.show_times:
++			indent += "%10d " % self.entry_time
++
++		if dflags.show_duration:
++			indent += "%10d " % self.duration
++
++		if dflags.show_local_time:
++			indent += "%10d " % self.local_time
++
++		if dflags.show_pid:
++			indent += "%7s " % self.pid
++
++		# define thread_char for this thread
++		self.set_thread_char()
++
++		# set depth, if unknown
++		if self.depth==UNDEFINED:
++			if self.parent:
++				self.depth = self.parent.depth+1
++			else:
++				self.depth = 0
++
++		# following works for self.depth==0 also
++		indent += ("%s  " % self.thread_char)*self.depth
++
++		# set arg_indent to compensate for length of indent
++		arg_indent = ""
++		if self.args:
++			arg_indent += ("   ")*(dflags.max_depth-self.depth)
++			arg_indent += (" ")*(dflags.max_funclen - len(self.name))
++		else:
++			arg_indent = ""
++
++		return (indent, arg_indent)
++
++	def show_rt_node(self):
++		global dflags
++
++		(indent, arg_indent) = self.get_indents()
++		print "%s%s%s%s" % (indent, self.name, arg_indent, self.args)
++
++	def show_threads(self):
++		global dflags
++		global roots_remaining
++
++		# check for another thread start
++		if dflags.intermingle_threads:
++			if roots_remaining:
++				next_root = roots_remaining[0]
++				while next_root and next_root.entry_time < self.entry_time:
++					del(roots_remaining[0])
++					next_root.set_thread_char()
++					print "----------- %s start --------------" % (next_root.thread_char * 4)
++					next_root.show_threads()
++					print "----------- %s end ----------------" % (next_root.thread_char * 4)
++					if roots_remaining:
++						next_root = roots_remaining[0]
++					else:
++						next_root = None
++
++		(indent, arg_indent) = self.get_indents()
++		print "%s%s%s%s" % (indent, self.name, arg_indent, self.args)
++
++		for child in self.children:
++			child.show_threads()
++
++def show_call_tree_titles():
++	global dflags
++
++	title = ""
++	tline = ""
++	if dflags.show_times:
++		title += " Entry     "
++		tline += "---------- "
++	if dflags.show_duration:
++		title += " Duration  "
++		tline += "---------- "
++	if dflags.show_local_time:
++		title += " Local     "
++		tline += "---------- "
++	if dflags.show_pid:
++		title += "  Pid   "
++		tline += "------- "
++
++	title += " Trace "
++	tline += "---------------------------------"
++	print title
++	print tline
++
++# parse lines from the KFT output
++# each line consists of:
++# entry time, delta, pid, function, caller location
++# pid of -1 is executing in interrupt context
++
++def parse_lines(lines, do_call_tree, do_rt_tree):
++	funcs = {}
++	root_list = []
++	tree_stack = []
++	first_active_node = None
++
++	# tree_stack has a list of functions still in duration scope
++
++	# find start line:
++	in_lines = 0
++	for line in lines:
++		if string.find(line, "--------")==0:
++			in_lines = 1
++			continue
++		if not in_lines:
++			continue
++		tuple = string.split(line)
++		# possible line formats are:
++		# entry, delta, pid, func_name, called_at
++		# entry, no, exit, pid, func_name, called_at
++		# entry, delta, pid, func_name, called_at, framepointer, a1, a2, a3
++		# entry, no, exit, pid, func_name, called_at, framepointer, a1, a2, a3
++		entry = tuple[0]
++
++		offset = 0
++		if string.find(line, "no exit")==-1:
++			delta = tuple[1]
++		else:
++			delta = 0
++			offset = 1
++
++		pid = tuple[2+offset]
++		func_name = tuple[3+offset]
++		called_at = tuple[4+offset]
++		if len(tuple)>5+offset:
++			framepointer = tuple[5+offset]
++			a1 = tuple[6+offset]
++			a2 = tuple[7+offset]
++			a3 = tuple[8+offset]
++		else:
++			framepointer = ""
++			a1 = ""
++			a2 = ""
++			a3 = ""
++
++		# add this call to the function map
++		if funcs.has_key(func_name):
++			funcs[func_name].add_call(called_at, pid, delta, a1, a2, a3)
++		else:
++			funcs[func_name] = func_node(func_name, called_at, pid, delta, a1, a2, a3)
++
++		# add to the caller's function data
++		if string.find(called_at, '+')!=-1:
++			(caller, addr) = string.split(called_at, '+')
++		else:
++			caller = called_at
++		if funcs.has_key(caller):
++			funcs[caller].add_sub(func_name, pid, delta, a1, a2, a3)
++
++		if do_call_tree:
++			# add to tree
++			new_node = tree_node(func_name, entry, delta, pid, called_at, a1, a2, a3)
++
++			# remove any functions now out of duration scope
++			# add them to replacement stack
++			new_tree_stack = []
++			for node in tree_stack:
++				if node.is_active(int(entry)):
++					new_tree_stack.append(node)
++			tree_stack = new_tree_stack
++
++			# find the bottom-most caller from the tree stack
++			parent = None
++			index = len(tree_stack)-1
++			while index>=0:
++				node = tree_stack[index]
++				if caller==node.name:
++					parent = node
++					break
++				index -= 1
++
++			if parent:
++				parent.add_child(new_node)
++				new_node.add_parent(parent)
++			else:
++				# no parent, add to root_list
++				root_list.append(new_node)
++
++			# There's a problem with build-up of nodes
++			# in the tree_stack with infinite duration (no exit seen
++			# in the trace).  They accumulate and slow down the
++			# algorithm.  With a 50,000-line trace log, with about
++			# 1100 such nodes, the parse time goes up to about
++			# 145 seconds.  With the code below, it drops to 8 seconds.
++
++			# find extraneous duplicates and remove them
++			# only remove duplicates with infinite duration
++			# FIXTHIS - the following, although great in theory,
++			# just DOES NOT WORK!
++			"""new_tree_stack = []
++			dup_count = 0
++			max_dups = 10
++			index = len(tree_stack)-1
++			while index>=0:
++				node = tree_stack[index]
++				if node.name==new_node.name and node.duration==-1:
++					dup_count += 1
++					if dup_count >= max_dups:
++						# omit node from list
++						# print "Dropping %s %s" % (self.entry, self.name)
++						break
++				new_tree_stack.append(node)
++				index -= 1
++			tree_stack = new_tree_stack
++			# NOTE: It's faster to append the nodes on the end
++			# and then reverse the list, than to insert the nodes
++			# at the head of the list.
++			tree_stack.reverse()
++			"""
++
++			# add node to tree_stack
++			tree_stack.append(new_node)
++			if do_rt_tree:
++				#print real time
++				new_node.show_rt_node()
++
++	return (funcs, root_list)
++
++class column:
++	def __init__(self, id, name, len, format, data_func):
++		self.id = id
++		self.name = name
++		self.format = format
++		self.tlen = len
++		self.data_func = data_func
++	def show_title(self):
++		format = "%-"+"%ss" % self.tlen
++		print format % self.name,
++	def show_underline(self):
++		print "-"*self.tlen,
++	def show_data(self, arg):
++		print self.format % self.data_func(arg),
++
++def init_columns():
++	global columns
++
++	columns = {}
++	columns['F'] = column('F', "Function", 35, "%-35s", func_node.get_name)
++	columns['c'] = column('c', "Count", 5, "%5d", func_node.call_count)
++	columns['t'] = column('t', "Time", 8, "%8d", func_node.time)
++	columns['a'] = column('a', "Average", 8, "%8d", func_node.avg_time)
++	columns['r'] = column('r', "Range", 12, "%12s", func_node.time_range)
++	columns['s'] = column('s', "Sub-time", 8, "%8d", func_node.sub_time)
++	columns['l'] = column('l', "Local", 8, "%8d", func_node.local_time)
++	columns['m'] = column('m', "Max-sub", 35, "%35s", max_sub)
++	columns['n'] = column('n', "Ms count", 8, "%8d", max_sub_count)
++	columns['u'] = column('u', "Sub list", 20, "%s", func_node.sub_list)
++
++
++def show_func_list(funcs, show_count, show_time, col_list):
++	global columns, funcs_for_max_sub
++
++	funcs_for_max_sub = funcs
++	funclist = funcs.values()
++	funclist.sort()
++	funclist.reverse()
++
++	if not col_list:
++		col_list = "Fctal"
++
++	# filter the col_list to only valid columns
++	col_list_old = col_list
++	col_list = ""
++	for col_id in col_list_old:
++		if not columns.has_key(col_id):
++			print "Invalid column id: %s" % col_id
++		else:
++			col_list = col_list + col_id
++
++	# show titles
++	for col_id in col_list:
++		col = columns[col_id]
++		col.show_title()
++	print
++
++	# show underlines
++	for col_id in col_list:
++		col = columns[col_id]
++		col.show_underline()
++	print
++
++	# show data
++	i = 0
++	for func in funclist:
++		if show_time and func.total_time < show_time:
++			continue
++		if show_count:
++			i = i+1
++			if i>show_count:
++				continue
++		for col_id in col_list:
++			col = columns[col_id]
++			col.show_data(func)
++		print
++
++def show_call_tree(root_list):
++	global dflags
++	global roots_remaining
++
++	show_call_tree_titles()
++	roots_remaining = root_list[:]
++	while roots_remaining:
++		root = roots_remaining[0]
++		del(roots_remaining[0])
++		root.show_threads()
++
++def main():
++	global dflags
++
++	filein = ""
++	show_count = 0
++	show_time = 0
++	col_list = ""
++	sort_order = "t"
++	call_tree = 0
++	interlace = 0
++	rt_tree = 0
++	max_depth = 20
++	max_funclen = 40
++	for arg in sys.argv[1:]:
++		if arg=="-h" or arg=="--help":
++			usage()
++		if arg=="-V" or arg=="--version":
++			print "KFT dump - kd version %s.%s" % (MAJOR_VERSION, MINOR_VERSION)
++			sys.exit(0)
++		elif arg=="-l":
++			col_list = "Fctalsmn"
++		elif arg=="-i":
++			interlace = 1
++		elif arg=="-n":
++			show_count = int(sys.argv[sys.argv.index("-n")+1])
++		elif arg=="-t":
++			show_time = int(sys.argv[sys.argv.index("-t")+1])
++		elif arg=="-f":
++			col_list = sys.argv[sys.argv.index("-f")+1]
++		elif arg=="-s":
++			sort_order = sys.argv[sys.argv.index("-s")+1]
++			if sort_order not in ["F", "c", "t", "a", "s", "l"]:
++				print "Invalid sort order. See usage for help. (Use -h)"
++				sys.exit(1)
++		elif arg=="-c":
++			call_tree = 1
++		elif arg=="-r":
++			rt_tree = 1
++		elif arg=="-d":
++			max_depth = sys.argv[sys.argv.index("-d")+1]
++		elif arg=="-m":
++			max_funclen = sys.argv[sys.argv.index("-m")+1]
++		else:
++			filein = arg
++
++	if not filein:
++		print "No filename specified. See usage for help. (Use -h)"
++		sys.exit(1)
++
++	try:
++		lines = open(filein,"r").readlines()
++	except:
++		print "Problem opening file: %s" % filein
++		sys.exit(1)
++
++	# convert display arguments to calltree mode
++	dflags = display_flags()
++	dflags.intermingle_threads = 0
++	dflags.show_times = 0
++	dflags.show_duration = 0
++	dflags.show_local_time = 0
++	dflags.show_pid = 0
++
++	if call_tree:
++		if col_list == "Fctalsmn":
++			col_list = "etlp"
++
++		if col_list.find("e")!=-1:
++			dflags.show_times = 1
++		if col_list.find("t")!=-1:
++			dflags.show_duration = 1
++		if col_list.find("l")!=-1:
++			dflags.show_local_time = 1
++		if col_list.find("p")!=-1:
++			dflags.show_pid = 1
++
++		dflags.intermingle_threads = interlace
++		dflags.max_depth = max_depth
++		dflags.max_funclen = max_funclen
++
++	if call_tree and rt_tree:
++		show_call_tree_titles()
++
++	(funcs, root_list) = parse_lines(lines, call_tree, rt_tree)
++
++	if rt_tree:
++		sys.exit(0)
++	if call_tree:
++		show_call_tree(root_list)
++	else:
++		init_columns()
++		func_node.sort_order = sort_order
++		show_func_list(funcs, show_count, show_time, col_list)
++
++if __name__ == "__main__":
++	main()
+diff --git a/scripts/mkkftrun.pl b/scripts/mkkftrun.pl
+new file mode 100644
+index 0000000..bb9ee3f
+--- /dev/null
++++ b/scripts/mkkftrun.pl
+@@ -0,0 +1,249 @@
++#!/usr/bin/perl
++#
++# BRIEF MODULE DESCRIPTION
++#    Parses a Kernel Function Trace config file. The output
++#    is C code representing the KFT logging run parameters listed in
++#    in the config file.
++#
++# Copyright 2002 MontaVista Software Inc.
++# Author: MontaVista Software, Inc.
++#		stevel@mvista.com or source@mvista.com
++# Copyright 2005 Sony Electronics, Inc.
++#
++#  This program is free software; you can redistribute	 it and/or modify it
++#  under  the terms of	 the GNU General  Public License as published by the
++#  Free Software Foundation;  either version 2 of the	License, or (at your
++#  option) any later version.
++#
++#  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
++#  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++#  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
++#  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++#  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
++#  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++#  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
++#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++#  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++#
++#  You should have received a copy of the  GNU General Public License along
++#  with this program; if not, write  to the Free Software Foundation, Inc.,
++#  675 Mass Ave, Cambridge, MA 02139, USA.
++#
++
++sub parse_args {
++    local($argstr) = $_[0];
++    local(@arglist);
++    local($i) = 0;
++
++    for (;;) {
++	while ($argstr =~ /^\s*$/ || $argstr =~ /^\s*\#/) {
++	    $argstr = <RUNFILE>;
++	}
++
++	while ($argstr =~ s/^\s*(\w+)\s*(.*)/\2/) {
++	    $arglist[$i++] = $1;
++	    if (!($argstr =~ s/^\,(.*)/\1/)) {
++		return @arglist;
++	    }
++	}
++    }
++}
++
++sub parse_run {
++    local($thisrun, $nextrun) = @_;
++    local($start_type) = "TRIGGER_NONE";
++    local($stop_type) = "TRIGGER_NONE";
++    local($flags) = 0;
++
++    local($filter_noint) = 0;
++    local($filter_onlyint) = 0;
++    local(@filter_func_list) = (0);
++    local($filter_func_list_size) = 0;
++    local($filter_mintime) = 0;
++    local($filter_maxtime) = 0;
++    local($logentries) = "DEFAULT_RUN_LOG_ENTRIES";
++
++    while (<RUNFILE>) {
++
++	last if /^\s*end\b/;
++
++	if ( /^\s*trigger\s+(\w+)\s+(\w+)\b\s*([\w\,\s]*)/ ) {
++
++	    $trigwhich = $1;
++	    $trigtype = $2;
++	    @trigargs = &parse_args($3);
++
++	    if ($trigwhich eq "start") {
++		if ($trigtype eq "entry") {
++		    $start_type = "TRIGGER_FUNC_ENTRY";
++		} elsif ($trigtype eq "exit") {
++		    $start_type = "TRIGGER_FUNC_EXIT";
++		} elsif ($trigtype eq "time") {
++		    $start_type = "TRIGGER_TIME";
++		} else {
++		    die "#### PARSE ERROR: invalid trigger type ####\n";
++		    }
++		@start_args = @trigargs;
++	    } elsif ($trigwhich eq "stop") {
++		if ($trigtype eq "entry") {
++		    $stop_type = "TRIGGER_FUNC_ENTRY";
++		} elsif ($trigtype eq "exit") {
++		    $stop_type = "TRIGGER_FUNC_EXIT";
++		} elsif ($trigtype eq "time") {
++		    $stop_type = "TRIGGER_TIME";
++		} else {
++		    die "#### PARSE ERROR: invalid trigger type ####\n";
++		    }
++		@stop_args = @trigargs;
++	    } else {
++		die "#### PARSE ERROR: invalid trigger ####\n";
++		}
++
++	} elsif ( /^\s*filter\s+(\w+)\b\s*([\w\,?\s]*)/ ) {
++
++	    $filtertype = $1;
++
++	    if ($filtertype eq "mintime") {
++		$filter_mintime = $2;
++	    } elsif ($filtertype eq "maxtime") {
++		$filter_maxtime = $2;
++	    } elsif ($filtertype eq "noints") {
++		$filter_noint = 1;
++	    } elsif ($filtertype eq "onlyints") {
++		$filter_onlyint = 1;
++	    } elsif ($filtertype eq "funclist") {
++		@filter_func_list = &parse_args($2);
++		$filter_func_list_size = $#filter_func_list + 1;
++	    } else {
++		die "#### PARSE ERROR: invalid filter ####\n";
++		}
++
++	} elsif ( /^\s*logentries\s+(\d+)/ ) {
++	    $logentries = $1;
++	}
++    }
++
++    # done parsing this run, now spit out the C code
++
++    # print forward reference to next run
++    if ($nextrun != 0) {
++	printf("kft_run_t kft_run%d;\n", $nextrun);
++    }
++
++    if ($start_type eq "TRIGGER_FUNC_ENTRY" ||
++	$start_type eq "TRIGGER_FUNC_EXIT") {
++	printf("extern void %s(void);\n\n", $start_args[0]);
++    }
++
++    if ($stop_type eq "TRIGGER_FUNC_ENTRY" ||
++	$stop_type eq "TRIGGER_FUNC_EXIT") {
++	printf("extern void %s(void);\n\n", $stop_args[0]);
++    }
++
++    if ($filter_func_list_size) {
++	$funclist_name = sprintf("run%d_func_list", $thisrun);
++
++	for ($i = 0; $i < $filter_func_list_size; $i++) {
++	    print "extern void $filter_func_list[$i](void);\n"
++		if (!($filter_func_list[$i] =~ /^[0-9]/));
++	}
++
++	printf("\nstatic void* %s[] = {\n", $funclist_name);
++
++	for ($i = 0; $i < $filter_func_list_size; $i++) {
++	    printf("\t(void*)%s,\n", $filter_func_list[$i]);
++	}
++	printf("};\n\n");
++    } else {
++	$funclist_name = "NULL";
++    }
++
++    printf("static kft_entry_t run%d_log[%s];\n\n", $thisrun, $logentries);
++
++    printf("kft_run_t kft_run%d = {\n", $thisrun);
++
++    printf("\t1, 0, 0, 0,\n"); # primed, triggered, complete and  flags
++
++    # start trigger struct
++    if ($start_type eq "TRIGGER_FUNC_ENTRY" ||
++	$start_type eq "TRIGGER_FUNC_EXIT") {
++	printf("\t{ %s, { func_addr: (void*)%s } },\n",
++	       $start_type, $start_args[0]);
++    } elsif ($start_type eq "TRIGGER_TIME") {
++	printf("\t{ %s, { time: %d } },\n", $start_type, $start_args[0]);
++    } else {
++	printf("\t{ %s, {0} },\n", $start_type);
++    }
++
++    # stop trigger struct
++    if ($stop_type eq "TRIGGER_FUNC_ENTRY" ||
++	$stop_type eq "TRIGGER_FUNC_EXIT") {
++	printf("\t{ %s, { func_addr: (void*)%s } },\n",
++	       $stop_type, $stop_args[0]);
++    } elsif ($stop_type eq "TRIGGER_TIME") {
++	printf("\t{ %s, { time: %d } },\n", $stop_type, $stop_args[0]);
++    } else {
++	printf("\t{ %s, {0} },\n", $stop_type);
++    }
++
++    # filters struct
++    printf("\t{ %d, %d, %d, %d, %s, %d, {0} },\n",
++	   $filter_mintime, $filter_maxtime,
++	   $filter_noint, $filter_onlyint,
++	   $funclist_name, $filter_func_list_size);
++
++    if ($nextrun != 0) {
++	#printf("\trun%d_log, %s, 0, %d, &kft_run%d,\n",
++	#       $thisrun, $logentries, $thisrun, $nextrun);
++	printf("\trun%d_log, 1, %s, 0, %d, 0,\n",
++	       $thisrun, $logentries, $thisrun);
++    } else {
++	#printf("\trun%d_log, %s, 0, %d, NULL,\n",
++	#       $thisrun, $logentries, $thisrun);
++	printf("\trun%d_log, 1, %s, 0, %d, 0,\n",
++	       $thisrun, $logentries, $thisrun);
++    }
++
++    printf("};\n\n");
++}
++
++
++$numrun = 0;
++
++open(RUNFILE, $ARGV[0]) || die "Can't open KFT run config file";
++
++# first pass get number of run configs listed
++while (<RUNFILE>) {
++    if ( /^\s*begin\b/ ) {
++	$numrun++;
++    }
++}
++
++$numrun != 0 || die "No run listed???\n";
++
++close(RUNFILE);
++open(RUNFILE, "$ARGV[0]");
++
++# print warning
++print "/* DO NOT EDIT! It was automatically generated by mkkftrun.pl */\n\n";
++
++# print needed headers
++print "#include <linux/types.h>\n";
++print "#include <linux/kft.h>\n\n";
++
++$runindex = 0;
++while (<RUNFILE>) {
++    if ( /^\s*begin\b/ ) {
++	if ($runindex == $numrun-1) {
++	    &parse_run($runindex, 0);
++	} else {
++	    &parse_run($runindex, $runindex+1);
++	}
++	$runindex++;
++    }
++}
++
++printf("const int kft_num_runs = %d;\n", $numrun);
++printf("kft_run_t* kft_first_run = &kft_run0;\n");
++printf("kft_run_t* kft_last_run = &kft_run%d;\n", $numrun-1);
+diff --git a/scripts/sym2addr b/scripts/sym2addr
+new file mode 100644
+index 0000000..860ddd8
+--- /dev/null
++++ b/scripts/sym2addr
+@@ -0,0 +1,25 @@
++#/bin/sh
++
++if [ -z $2 ]; then
++	echo "Usage: sym2addr <file> <mapfile>"
++	echo "Reads <file> and replaces function names with addresses, for any"
++        echo " word that matches a symbol in <mapfile>."
++	echo "The result is sent to standard out."
++	exit 1
++fi
++
++infile=$1
++mapfile=$2
++for word in `cat $infile` ; do
++	case $word in
++		new|begin|trigger|start|stop|entry|exit|time|filter|mintime|maxtime|noints|onlyints|0|funclist|fend)
++			;;
++		*)
++			addr=`grep " ${word}$" $mapfile | cut -d ' ' -f1`
++			if [ -n "$addr" ]; then
++				word="0x$addr"
++			fi
++			;;
++	esac
++	echo -n "$word "
++done

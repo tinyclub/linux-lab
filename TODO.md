@@ -17,3 +17,4 @@
 12. Make everything work with minimal root permission for specific binaries with 'sudo'+nopasswd
 13. Add user demostration with showterm.io and lxsession record
 14. Add https support? or at least add ssl support for x11vnc or novnc itself.
+15. Allow to set GCC version for different kernel version

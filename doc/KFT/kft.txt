@@ -1,0 +1,388 @@
+                     Kernel Function Trace
+		 -- a kernel tracing system --
+
+Introduction
+============
+Kernel Function Trace (KFT) is a function tracing system, which uses
+the "-finstrument-functions" capability of the gcc compiler to add
+instrumentation callouts to every kernel function entry and exit.  The KFT system
+provides for capturing these callouts and generating a trace of events, with
+timing details.  This is about the most intrusive tracing mechanism
+imaginable, and WILL screw up timings of precise events and your overall
+performance.  Thus, KFT is NOT appropriate for use to debug race conditions,
+measure scheduler performance, etc.
+
+However, KFT is excellent at providing a good timing overview of straightline
+procedures, allowing you to see where time is spent in functions and
+sub-routines in the kernel.  This is similar to what oprofile is used for.
+However, the major differences between profiling and KFT are that 1) KFT is
+(IMNSHO) easier to set up and use (e.g. this version of KFT requires no
+special user-space program to be compiled for the target), and 2) KFT shows
+you exactly what happens on a particular run of the kernel, rather than giving
+you statistics of what happens on average during kernel operation.
+
+The main mode of operation with KFT is to use the system with a dynamic trace
+configuration. That is, you can set a trace configuration after kernel
+startup, using the /proc/kft interface, and retrieve trace data immediately.
+However, another (special) mode of operation is available, called STATIC_RUN
+mode, where the configuration for a KFT run is configured and compiled
+statically into the kernel.  This mode is useful for getting a trace of kernel
+operation during system bootup (before user space is running).
+
+The KFT configuration lets you specify how to automatically start and stop a
+trace, whether to include interrupts as part of the trace, and whether to
+filter the trace data by various criteria (for minimum function duration, only
+certain listed functions, etc.)  KFT trace data is retrieved by reading from
+/proc/kft_data after the trace is complete.
+
+Finally, tools are supplied to convert numeric trace data to kernel symbols,
+and to process and analyze the data in a KFT trace.
+
+Quick overview for using KFT in regular mode:
+ - compile your kernel with support for KFT
+ - boot the kernel
+ - write a configuration to /proc/kft
+ - start the trace
+ - read the trace data from /proc/kft_data
+ - process the data
+   - use scripts/addr2sym to convert addresses to function names
+   - use scripts/kd to analyze trace data
+
+Quick overview for using KFT in STATIC_RUN mode:
+ - edit the configuration in kernel/kftstatic.conf
+ - compile your kernel with support for KFT (and KFT_STATIC_RUN)
+ - boot the kernel (the run should be triggered during bootup)
+ - read the trace data from /proc/kft_data
+ - process the data
+   - use scripts/addr2sym to convert addresses to function names
+   - use scripts/kd to analyze trace data
+
+Compiling the kernel for using KFT
+==================================
+Set the following in your kernel .config:
+
+CONFIG_KFT=y
+CONFIG_KFT_STATIC_RUN=y
+
+Under 'make menuconfig' these options on are the "Kernel Hacking"
+menu.
+
+If you are doing a STATIC_RUN, edit the file kernel/kftstatic.conf (if
+desired) to change time filters, triggers, etc.
+
+Build the kernel, and install it to boot on your target machine.
+
+Save the System.map file from this build, as it will be
+used later to resolve function addresses to function names.
+
+Initiate a KFT run
+==================
+If you are running in STATIC_RUN mode, upon booting the
+kernel, the trace should be run (depending on the trigger
+and filter settings in kernel/kftstatic.conf).
+
+If you are running in normal mode, then boot the kernel,
+and initiate a run by writing a KFT configuration to
+/proc/kft.
+
+You can get the status of the current trace by reading /proc/kft
+
+Traces go through a state transition in order to actually
+start collecting data.  This is to allow trace collection to
+be separated from trace setup and preparation.  The trace
+configuration specifies a start trigger, which will initiate
+the collection of data.  When the configuration is written
+to KFT, it is not ready to run yet.  Making the trace ready
+to run is called "priming" it.
+
+Therefore, the normal sequence of events for a trace run is:
+ 1. the user writes the configuration to KFT (via /proc/kft)
+    * There is a helper script scripts/sym2addr, which
+    converts function names in the configuration file to
+    addresses.  This can be copied to the target, along
+    with the current System.map file, to make preparing
+    the configuration file easier.
+ 2. the user prepares for trace (if necessary) by setting
+    up programs to run, etc.
+ 3. the user primes the trace
+    * echo "prime" >/proc/kft
+ 4. a kernel event occurs which starts the trace (the start trigger fires)
+ 5. trace data is collected
+ 6. a kernel event (or buffer exhaustion) stops the trace (the stop trigger
+    fires, or the buffer runs out)
+
+It is possible to force the start or end of a trace using the /proc/kft
+interface. This overrides steps 4 or 6, which are normally performed by
+triggers in the trace configuration.
+ To manually start a trace: echo "start" >/proc/kft
+ To manually stop a trace: echo "stop" >/proc/kft
+
+To see the status of the currently configured trace:
+ * cat /proc/kft
+
+Read the KFT data
+=================
+When the trace is running, the trace data is accumulated in a buffer inside
+the kernel.  Once the trace data is collected, it is retrieved by reading
+/proc/kft_data.  Usually, you will want to save the data to a file for
+later analysis.
+
+ * cat /proc/kft_data > /tmp/kft.log
+
+Process the data
+================
+Copy the kft.log file from the target to your host development
+system (on which the kernel source resides), for example, into the
+/tmp directory.
+
+The raw kft.log file will only have numeric function addresses.
+To translate these addresses to symbols, use the System.map file
+from your previous kernel build.
+
+cd to your kernel source top-level directory and run scripts/addr2sym to
+translate addresses to symbols:
+
+$ scripts/addr2sym /tmp/kft.log -m System.map > /tmp/kft.lst
+
+An example fragment of output from addr2sym on a TI OMAP Innovator,
+Entry and Delta value are times in microseconds (time since boot and
+time spent between function entry and exit, respectively)...
+
+*************************
+ Entry      Delta      PID            Function                    Called At
+--------   --------   -----   -------------------------   --------------------------
+   23662       1333       0                    con_init   console_init+0x78
+   25375     209045       0             calibrate_delay   start_kernel+0xf0
+  234425     106067       0                    mem_init   start_kernel+0x130
+  234432     105278       0       free_all_bootmem_node   mem_init+0xc8
+  234435     105270       0       free_all_bootmem_core   free_all_bootmem_node+0x28
+  340498       4005       0       kmem_cache_sizes_init   start_kernel+0x134
+*************************
+
+In the above, calibrate_delay took about 209 msecs.
+
+mem_init took 106 msecs, the majority of which (105 msecs) was in
+free_all_bootmem_core (which is called by free_all_bootmem_node, which
+is called by mem_init).
+
+The large time consumers can often be pinpointed by looking for leaps
+in the entry times in the Entry column, as shown above.
+
+CPU-yielding functions like schedule_timeout, switch_to, kernel_thread,
+etc. can have large Delta values due intervening scheduling activity,
+but these can often be quickly filtered out by following the "leaps
+in the entry times in the Entry column" above.
+
+A sample of name-resolved kft output is provided with this
+distribution, in the file "kftsample.lst".
+
+Analyzing data with kd
+======================
+You can use the program "kd" to further process the data.  (It is very helpful
+at this point to have resolved the names of the functions in the log file, but
+it is not strictly necessary.) This function reads a KFT log file  and
+determines the time spent locally in a function versus the time spent in
+sub-routines.  It sorts the functions by the total time spent in the function,
+and can display various extra pieces of information about each function
+(number of times called, average call time, etc.)
+
+Use "./kd -h" for more usage help.
+
+As of this writing, KFT and kd do not correctly account for scheduling
+jumps.  The time reported by kft for function duration is just wall
+time from entry to exit.
+
+For examples of what kd can show, try the following commands
+on the sample kft output file:
+
+[show all functions sorted by time]
+$ ./kd kftsample.lst | less
+
+[show only 10 top time-consuming functions]
+$ ./kd -n 10 kftsample.lst
+
+[show only functions lasting longer than 100 milliseconds]
+$ ./kd -t 100000 kftsample.lst
+
+[show each function's most time-consuming child, and the number
+of times it was called. (You may want to make your terminal
+wider for this output.)]
+$ ./kd -f Fcatlmn kftsample.lst
+
+[show call traces]
+$ ./kd -c kftsample.lst
+
+[show call traces with timing data, and functions interlaced]
+$ ./kd -c -l -i kftsample.lst
+
+Note that the call trace mode may not produce accurate results
+if weird filtering was used in the trace config (routines that are
+part of the call tree may be missing, which will confuse kd).
+
+===========================================================
+
+KFT configuration language
+==========================
+This is the configuration language supported for kftstatic.conf, and
+by /proc/kft.
+
+NOTE that for <funcname> parameters, the function name may be used
+in a compile-time configuration (kftstatic.conf).  However, the
+/proc/kft interface requires that these be expressed as addresses.
+You can do this by looking up the address for the symbol in the
+System.map file for the current kernel.
+
+e.g. grep do_fork System.map
+c001d804 T do_fork
+
+In this case, you would put 0xc001d804 in place of the function
+name in the configuration file. (Note the leading '0x'.)
+
+The configuration for a single run is inside a block that starts with 'begin'
+and ends with 'end'.  Inside the block are triggers, filters, and
+miscellaneous entries.  When writing the configuration to /proc/kft,
+then the keyword "new" should appear before the block 'begin' keyword.
+
+triggers
+--------
+	either "start" or "stop", and then one of:
+		entry <funcname>
+		exit <funcname>
+		time <time-in-usecs>
+syntax:
+trigger start|stop entry|exit|time <arg>
+
+Start time is relative to booting.  Stop time is relative to
+trace start time.
+
+filters
+-------
+	maxtime <max-time>
+	mintime <min-time>
+	noints
+	onlyints
+	funclist <func1> <func2> fend
+
+syntax:
+filter noints|onlyints|maxtime|mintime|funclist <args> fend
+
+The funclist specifies a list of functions which will be traced.
+When a funclist is specified, only those functions are traced, and
+all other functions are ignored.
+
+When specifying a configuration via /proc/kft, the 'fend' keyword
+must be used to indicated the end of the function list.  When the
+configuration is specified via kftstatic.conf, no 'fend' keyword
+should be used.
+
+miscellaneous
+-------------
+logentries <num-entries>
+	specify the maximum number entries for the log for this run
+
+autorepeat
+	Repeat trace indefinitely.  That is, on trace trigger stop,
+	prime the trace to run again, but leave the data in the buffer.
+	The trace will start again when the start trigger is matched,
+	and stop again when the stop trigger is matched.  The trace
+	will stop autorepeating when the buffer becomes full.
+
+# Other options that may be supported in the future:
+# overwrite
+# Overwrite old data in the trace buffer.  This converts the trace buffer to
+# a circular buffer, and does not stop the trace when the buffer becomes full.
+# In overwrite mode, the end of the trace is available if the buffer is
+# not large enough to hold the entire trace.  In NOT overwrite mode (regular
+# mode) the beginning of the trace is available if the buffer is not large
+# enough to hold the entire trace.
+
+# untimed
+# Do not time function duration.  Normally, the log contains only function
+# entry events, with the start time and duration of the function.  In
+# untimed mode, the log contains entry AND exit events, with the start
+# time for each event.  Calculation of function duration must be done by
+# a log post-processing tool.
+
+# prime
+# Immediately prime the trace for execution.  "Priming" a trace means making
+# it ready to run.  A trace loaded without the "prime" command will not be
+# enabled until the user issues a separate "prime" command through the
+# /proc interface.
+
+# prime entry ??
+# primt exit ??
+# prime time ??
+
+Configuration Samples
+===============================================
+# record all functions longer that 500 microseconds, during bootup
+# don't worry about interrupts
+# kftstatic.conf version:
+begin
+   trigger start entry start_kernel
+   trigger stop exit to_userspace
+   filter mintime 500
+   filter maxtime 0
+   filter noints
+end
+
+# record all functions longer that 500 microseconds, for 5 seconds
+# after the next fork
+# don't worry about interrupts
+# Assuming 'do_fork' is at address 0xc001d804
+# /proc/kft version, assuming 'do_fork' is at address 0xc001d804:
+new
+begin
+   trigger start entry 0xc001d804
+   trigger stop time 5000000
+   filter mintime 500
+   filter maxtime 0
+   filter noints
+end
+
+# record short routines called by do_fork
+# use a small log
+new
+begin
+   trigger start entry do_fork
+   trigger stop exit do_fork
+   filter mintime 10
+   filter maxtime 400
+   filter noints
+   logentries 500
+end
+
+# record interrupts for 5 milliseconds, starting 5 seconds after booting
+new
+begin
+   trigger start time 5000000
+   trigger stop time 5000
+   filter onlyints
+end
+
+# record all calls to schedule after 10 seconds
+# Assuming schedule is at address
+# kftstatic.conf version:
+begin
+   trigger start time 10000000
+   filter funclist schedule fend
+end
+# /proc/kft version, assuming schedule is at c02cb754
+new
+begin
+   trigger start time 10000000
+   filter funclist 0xc02cb754 fend
+end
+
+To do list:
+ * should support TIMED or UNTIMED traces.
+	(current mode is equivalent to TIMED mode)
+	in untimed mode, you get both entry and exit events, and
+        only start time for each event - duration can be calculated in
+	postprocessing
+	 - also, in untimed mode, you cannot use a time filter
+	in timed mode, you only get entry events, with start time and duration
+   * add: tracetype timed|untimed
+   * modify kd to support untimed mode
+ * should support traces that auto-repeat until a secondary trigger
+   * good for catching calltraces from a single routine, multiple times

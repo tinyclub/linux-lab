@@ -106,7 +106,7 @@ tags:
 
 Linux Lab 理论上支持所有 Qemu 内置的十几款处理器架构和几十款开发板，目前已实际加入了 4 个架构（ARM、MIPS、PPC、X86），5 个开发板（versatilepb, vexpress-a9, malta, g3beige, pc）：
 
-    $ make list-short
+    $ make list
     [ pc ]:
           ARCH     = x86
           CPU     ?= i686

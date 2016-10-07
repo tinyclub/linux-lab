@@ -77,7 +77,7 @@ tags:
 
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
 
-    $ make mach-list              # 查看支持的列表
+    $ make list                   # 查看支持的列表
     $ make MACH=malta             # 这里选择一块 MIPS 板子：malta
     $ make boot
 
@@ -131,11 +131,6 @@ tags:
 
 通过添加或者修改 `machine/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot 等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
 
-    $ make mach-list | grep Makefile
-    * [machine/pc/Makefile]
-    * [machine/versatilepb/Makefile]
-    * [machine/g3beige/Makefile]
-    * [machine/malta/Makefile]
     $ cat machine/versatilepb/Makefile
     ARCH=arm
     XARCH=$(ARCH)

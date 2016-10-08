@@ -125,7 +125,7 @@ BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
 PREBUILT_ROOTDIR = $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
 PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/
-PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/
+PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)
 
 ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
   PBR ?= 0
@@ -432,10 +432,13 @@ ifeq ($(U),1)
   IMAGE=uImage
 endif
 
-ifneq ($(ORIDTB),)
-ifneq ($(findstring v2.6.,$(LINUX)),v2.6.)
-  DTBS=dtbs
+# 2.6 kernel doesn't support DTB?
+ifeq ($(findstring v2.6.,$(LINUX)),v2.6.)
+  ORIDTB=
 endif
+
+ifneq ($(ORIDTB),)
+  DTBS=dtbs
 endif
 
 KTARGET ?= $(IMAGE) $(DTBS)

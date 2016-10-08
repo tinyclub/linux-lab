@@ -41,7 +41,7 @@ kernel executing time. And based on these results, we can do a lot of we want.
 
 2.2 Use it
 
-Use MIPS as an example:
+Use MIPS as an example,
 
 * Swith to gcc 4.3
 
@@ -49,8 +49,9 @@ Use MIPS as an example:
 
 * Enable the KFT feature
 
-	$ LINUX=v2.6.36 make kernel-checkout
-	$ LINUX=v2.6.36 make kernel-defconfig
+	$ LINUX=v2.6.36 make env-save
+	$ make kernel-checkout
+	$ make kernel-defconfig
 	$ FEATURE=KFT make kernel-feature
 	$ make kernel-menuconfig
 	$ make kernel

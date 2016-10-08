@@ -1,12 +1,18 @@
-From ece5f3e49e40481be8742687809fb8fdd714bcf8 Mon Sep 17 00:00:00 2001
-From: Wu Zhangjin <wuzhangjin@gmail.com>
-Date: Sat, 8 Oct 2016 04:53:33 +0800
-Subject: [PATCH] Add KFT support
+From 7ef199b604eec50411f1f7ec3597b19d01d58bf7 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <falcon@meizu.com>
+Date: Sat, 8 Oct 2016 12:04:59 +0800
+Subject: [PATCH] FEATURE: ADD KFT support
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+QEMU emulator version 2.0.0 (Debian 2.0.0+dfsg-2ubuntu1.27), Copyright (c) 2003-2008 Fabrice Bellard
+
+mipsel-linux-gnu-gcc (Debian 4.3.5-4) 4.3.5
+
+Linux kernel v2.6.36
+
+Signed-off-by: Wu Zhangjin <falcon@meizu.com>
 ---
  Documentation/kft.txt              |  388 ++++++++++
- Documentation/kft_kickstart.txt    |  107 +++
+ Documentation/kft_kickstart.txt    |  108 +++
  Makefile                           |    4 +
  arch/mips/Kbuild                   |    2 +-
  arch/mips/Kconfig.debug            |   41 +
@@ -29,7 +35,7 @@ Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
  scripts/autokft.sh                 |   80 ++
  scripts/kd                         |  671 ++++++++++++++++
  scripts/mkkftrun.pl                |  249 ++++++
- 24 files changed, 3283 insertions(+), 4 deletions(-)
+ 24 files changed, 3284 insertions(+), 4 deletions(-)
  create mode 100644 Documentation/kft.txt
  create mode 100644 Documentation/kft_kickstart.txt
  create mode 100644 include/linux/kft.h
@@ -436,10 +442,10 @@ index 0000000..e266e83
 +   * good for catching calltraces from a single routine, multiple times
 diff --git a/Documentation/kft_kickstart.txt b/Documentation/kft_kickstart.txt
 new file mode 100644
-index 0000000..bf8cca6
+index 0000000..3c6af2f
 --- /dev/null
 +++ b/Documentation/kft_kickstart.txt
-@@ -0,0 +1,107 @@
+@@ -0,0 +1,108 @@
 +	KFT Kickstart
 +
 +	Falcon <wuzhangjin@gmail.com>
@@ -483,7 +489,7 @@ index 0000000..bf8cca6
 +
 +2.2 Use it
 +
-+Use MIPS as an example:
++Use MIPS as an example,
 +
 +* Swith to gcc 4.3
 +
@@ -491,8 +497,9 @@ index 0000000..bf8cca6
 +
 +* Enable the KFT feature
 +
-+	$ LINUX=v2.6.36 make kernel-checkout
-+	$ LINUX=v2.6.36 make kernel-defconfig
++	$ LINUX=v2.6.36 make env-save
++	$ make kernel-checkout
++	$ make kernel-defconfig
 +	$ FEATURE=KFT make kernel-feature
 +	$ make kernel-menuconfig
 +	$ make kernel

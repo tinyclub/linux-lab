@@ -14,6 +14,7 @@ else
   MACH = $(CONFIG)
 endif
 
+TOOL_DIR = $(TOP_DIR)/tools/
 MACH_DIR = $(TOP_DIR)/machine/$(MACH)/
 TFTPBOOT = $(TOP_DIR)/tftpboot/
 
@@ -296,8 +297,8 @@ root-menuconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
 
 # Build Buildroot
-ROOT_INSTALL_TOOL = $(TOP_DIR)/tools/rootfs/install.sh
-ROOT_FILEMAP = $(TOP_DIR)/tools/rootfs/file_map
+ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
+ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
 root:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
@@ -458,7 +459,7 @@ ifeq ($(ORIDTB),)
   DTB_ADDR = -
 endif
 
-UBOOT_CONFIG_TOOL = $(TOP_DIR)/tools/uboot/config.sh
+UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
@@ -625,7 +626,7 @@ endif
 UBOOT_IMGS = uboot-imgs
 endif
 
-ROOT_MKFS_TOOL = $(TOP_DIR)/tools/rootfs/mkfs.sh
+ROOT_MKFS_TOOL = $(TOOL_DIR)/rootfs/mkfs.sh
 
 root-fs:
 ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
@@ -686,6 +687,11 @@ env:
 	@echo [ $(MACH) ]:
 	@echo -n " "
 	-@echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
+
+ENV_SAVE_TOOL = $(TOOL_DIR)/save-env.sh
+
+env-save:
+	@$(ENV_SAVE_TOOL) $(MACH_DIR)/Makefile "$(VARS)"
 
 help:
 	@cat $(TOP_DIR)/README.md

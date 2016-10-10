@@ -376,7 +376,7 @@ KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
 
 KP ?= 1
 kernel-patch:
-	$(KERNEL_PATCH_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
+	-$(KERNEL_PATCH_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
 
 ifeq ($(KP),1)
   KERNEL_PATCH = kernel-patch
@@ -385,7 +385,7 @@ endif
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
 kernel-feature:
-	$(KERNEL_FEATURE_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+	-$(KERNEL_FEATURE_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
 IMAGE = $(shell basename $(ORIIMG))
 

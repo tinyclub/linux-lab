@@ -29,4 +29,3 @@ do
         [ -f "$d/$f/config" ] && cat $d/$f/config >> ${KERNEL_OUTPUT}/.config
     done
 done
-

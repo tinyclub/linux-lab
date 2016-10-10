@@ -22,11 +22,10 @@ KFD=${TOP_DIR}/patch/linux/${LINUX}/
 
 for d in $KFD_MACH_BASE $KFD_MACH $KFD_BASE $KFD_BASE $KFD
 do
-    echo $d
     [ ! -d $d ] && continue
+
     for p in `ls $d`
     do
-        echo $p
         [ -f "$d/$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $d/$p
     done
 done

@@ -47,12 +47,12 @@ Use MIPS as an example,
 
 	$ tools/gcc/switch.sh mipsel 4.3
 
-* Enable the KFT feature
+* Enable the kft feature
 
 	$ LINUX=v2.6.36 make env-save
 	$ make kernel-checkout
 	$ make kernel-defconfig
-	$ FEATURE=KFT make kernel-feature
+	$ FEATURE=kft make kernel-feature
 	$ make kernel-menuconfig
 	$ make kernel
 	$ make boot

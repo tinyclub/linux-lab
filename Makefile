@@ -689,6 +689,12 @@ uboot-distclean:
 kernel-distclean:
 	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
 
+GCC_SWITCH_TOOL = $(TOP_DIR)/tools/gcc/switch.sh
+gcc:
+ifneq ($(GCC),)
+	$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
+endif
+
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
 
 # Show the variables 

@@ -93,7 +93,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
 
     $ make list                   # 查看支持的列表
-    $ make MACH=malta             # 这里选择一块 MIPS 板子：malta
+    $ make BOARD=malta             # 这里选择一块 MIPS 板子：malta
     $ make boot
 
 ### 下载更多源码
@@ -118,7 +118,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
     $ make save         # 保存新的配置和新产生的镜像
 
-    $ make kconfig-save # 保存到 machine/BOARD/
+    $ make kconfig-save # 保存到 boards/BOARD/
     $ make rconfig-save
 
     $ make root-save    # 保存到 prebuilt/
@@ -126,10 +126,10 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 启动新的根文件系统和内核
 
-需要打开 `machine/BOARD/Makefile` 屏蔽已经编译的 `KIMAG` 和 `ROOTFS`，此时会启动 `output/` 目录下刚编译的 rootfs 和内核：
+需要打开 `boards/BOARD/Makefile` 屏蔽已经编译的 `KIMAG` 和 `ROOTFS`，此时会启动 `output/` 目录下刚编译的 rootfs 和内核：
 
-    $ vim machine/versatilepb/Makefile
-    #KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
+    $ vim boards/versatilepb/Makefile
+    #KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/zImage
     #ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
     $ make boot
 
@@ -144,9 +144,9 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 扩展
 
-通过添加或者修改 `machine/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
+通过添加或者修改 `boards/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
 
-    $ cat machine/versatilepb/Makefile
+    $ cat boards/versatilepb/Makefile
     ARCH=arm
     XARCH=$(ARCH)
     CPU=arm926t
@@ -157,10 +157,10 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
     ROOTDEV=/dev/nfs
     ORIIMG=arch/$(ARCH)/boot/zImage
     CCPRE=arm-linux-gnueabi-
-    KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
+    KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/zImage
     ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 
-默认的内核与Buildroot信息对应为 `machine/BOARD/linux_${LINUX}_defconfig` 和 `machine/BOARD/buildroot_${CPU}_defconfig`，如果要添加自己的配置，请注意跟 `machine/BOARD/Makefile` 里头的 CPU 和 Linux 配置一致。
+默认的内核与Buildroot信息对应为 `boards/BOARD/linux_${LINUX}_defconfig` 和 `boards/BOARD/buildroot_${CPU}_defconfig`，如果要添加自己的配置，请注意跟 `boards/BOARD/Makefile` 里头的 CPU 和 Linux 配置一致。
 
 ### 更多用法
 

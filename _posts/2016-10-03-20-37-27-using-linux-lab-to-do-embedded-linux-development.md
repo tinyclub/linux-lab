@@ -98,7 +98,7 @@ tags:
 说明：
 
 * buildroot 内含 Busybox 等大量嵌入式系统所需的软件包，用它可以大大简化根文件系统的制作。
-* 也可从其他源自行拉取所需源码，可使用默认目录：u-boot, linux-stable 和 buildroot，也可更新 Makefile 中对应的配置：`BOOTLOADER_SRC`, `KERNEL_SRC` 和 `BUILDROOT_SRC`。
+* 也可从其他源自行拉取所需源码，可使用默认目录：u-boot, linux-stable 和 buildroot，也可更新 Makefile 中对应的配置：`UBOOT_SRC`, `KERNEL_SRC` 和 `ROOT_SRC`。
 
 ## 选择或者添加一款虚拟开发板
 
@@ -135,15 +135,15 @@ Linux Lab 理论上支持所有 Qemu 内置的十几款处理器架构和几十�
 
 可以这样选择一款已经添加的板子，类似那篇 [利用 qemu 模拟嵌入式系统制作全过程][1]，本文也以 versatilepb 为例：
 
-    $ make MACH=versatilepb
+    $ make BOARD=versatilepb
 
 ### 添加一款新板子
 
-如果要添加一款板子，可对照现有板子中的一个，复制一份 `machine/BOARD/` 并做相应配置即可。
+如果要添加一款板子，可对照现有板子中的一个，复制一份 `boards/BOARD/` 并做相应配置即可。
 
 先来看看现在的板子，以 versatilepb 为例：
 
-    $ ls machine/versatilepb/
+    $ ls boards/versatilepb/
 
 * 板子配置：Makefile（TODO：部分变量名有待优化）
     * ARCH：处理器架构
@@ -197,7 +197,7 @@ Linux Lab 理论上支持所有 Qemu 内置的十几款处理器架构和几十�
 
 如果支持 DTB，也会自动生成 DTB 文件。
 
-如果要保存内核配置文件（存回 `machine/versatilepb/`），可执行：
+如果要保存内核配置文件（存回 `boards/versatilepb/`），可执行：
 
     $ make kconfig-save
 
@@ -221,7 +221,7 @@ Linux Lab 理论上支持所有 Qemu 内置的十几款处理器架构和几十�
 
 Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramdisk 生成所需格式的磁盘镜像文件，Linux Lab 会依据 `ROOTDEV` 自动搞定所有根文件系统的转换。
 
-如果要保存 Buildroot 配置文件（存回 `machine/versatilepb/`），可执行：
+如果要保存 Buildroot 配置文件（存回 `boards/versatilepb/`），可执行：
 
     $ make rconfig-save
 
@@ -289,7 +289,7 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
 为了方便调试，可调整 `bootcmd` 中的命令并逐条执行。
 
-如果要保存 Uboot 配置文件（存回 `machine/versatilepb/`），可执行：
+如果要保存 Uboot 配置文件（存回 `boards/versatilepb/`），可执行：
 
     $ make uconfig-save
 

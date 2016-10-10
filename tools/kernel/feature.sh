@@ -25,7 +25,9 @@ for d in $KFD_CORE $KFD_MACH_BASE $KFD_MACH $KFD_BASE $KFD_BASE $KFD
 do
     for f in $FEATURE
     do
+        f=$(echo $f | tr 'A-Z' 'a-z')
         [ -f "$d/$f/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $d/$f/patch
         [ -f "$d/$f/config" ] && cat $d/$f/config >> ${KERNEL_OUTPUT}/.config
+        [ -f "$d/$f/config.$(MACH)" ] && cat $d/$f/config.$(MACH) >> ${KERNEL_OUTPUT}/.config
     done
 done

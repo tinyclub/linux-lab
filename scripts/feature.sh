@@ -15,16 +15,21 @@ function usage
 [ -z "$MACH" ] && usage
 [ -z "$LINUX" ] && usage
 
-for feature in $FEATURE
-do
-	FEATURE_ENV=${TOP_DIR}/feature/core/${feature}/env.${MACH}
-	[ -f $FEATURE_ENV ] && source $FEATURE_ENV
+CORE_DIR=${TOP_DIR}/feature/linux/core/
+LINUX_DIR=${TOP_DIR}/feature/linux/$LINUX/
 
-	FEATURE_ENV=${TOP_DIR}/feature/linux/${LINUX}/${feature}/env.${MACH}
-	[ -f $FEATURE_ENV ] && source $FEATURE_ENV
+for f in $FEATURE
+do
+    f=$(echo $f | tr 'A-Z' 'a-z')
+
+    for f_env in $CORE_DIR/$f/env $CORE_DIR/$f/env.$MACH $LINUX_DIR/$f/env $LINUX_DIR/$f/env.$MACH
+    do
+	echo $f_env
+        [ -f $f_env ] && export $(< $f_env)
+    done
 done
 
-export MACH=$MACH LINUX=$LINUX FEATURE="$FEATURE" GCC=$GCC
+export MACH=$MACH LINUX=$LINUX FEATURE="$FEATURE"
 
 make gcc
 

@@ -698,7 +698,7 @@ endif
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
 
 # Show the variables 
-VARS = $(shell cat $(TOP_DIR)/machine/$(MACH)/Makefile | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS = $(shell cat $(TOP_DIR)/machine/$(MACH)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_FILEMAP ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT

@@ -17,11 +17,7 @@ function usage
 
 FEATURE_ENV=${TOP_DIR}/feature/linux/${LINUX}/${FEATURE}/env.${MACH}
 
-if [ -f $FEATURE_ENV ]; then
-	source $FEATURE_ENV
-else
-	echo "ERROR: $FEATURE not supported on this $MACH currently."
-fi
+[ -f $FEATURE_ENV ] && source $FEATURE_ENV
 
 export MACH=$MACH LINUX=$LINUX FEATURE=$FEATURE GCC=$GCC
 

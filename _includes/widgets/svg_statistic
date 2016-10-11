@@ -53,11 +53,11 @@
       {% assign cur_y_height = cur_y_height | times: size %}
       {% assign y_pos = y_base | minus: cur_y_height %}
 
-      <text class="anc1 fnt1" style="text-anchor: start" x="{{ x_text_pos }}" y="{{ x_label_pos }}" transform="rotate(40 {{x_text_pos}},{{x_label_pos}})">
+      <text class="anc2 fnt1" x="{{ x_text_pos }}" y="{{ x_label_pos }}" transform="rotate(40 {{x_text_pos}},{{x_label_pos}})">
         {{ title }}
       </text>
 
-      <text class="anc1 fnt1" x="{{ x_number_pos }}" y="{{ x_label_pos | minus: cur_y_height | minus: y_end }}">
+      <text class="anc1 fnt1" x="{{ x_number_pos }}" y="{{ x_label_pos | minus: cur_y_height | minus: y_end | plus: 15 }}">
         {{ size }}
       </text>
 

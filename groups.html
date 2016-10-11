@@ -13,15 +13,23 @@ comments: false
 {% assign y_label = '数目' %}
 
 {% assign list = nil %}
+{% assign group_size = 0 %}
 
 {% for group in posts_by_group %}
-  {% if group.name == empty %}
-    {% assign group_name = site.data.groups['original'] %}
-  {% else %}
-    {% assign group_name = site.data.groups[group.name] %}
+  {% if group.name == 'original' %}
+    {% assign group_size = group.items.size %}
+    {% continue %}
   {% endif %}
 
-   {% assign list0 = group.items.size | append:',' | append: group_name %}
+  {% assign group_name = site.data.groups[group.name] %}
+
+  {% if group.name == empty %}
+    {% assign group_size = group.items.size | plus: group_size %}
+    {% assign list0 = group_size | append:',' | append: site.data.groups['original'] %}
+  {% else %}
+    {% assign list0 = group.items.size | append:',' | append: group_name %}
+  {% endif %}
+
    {% if list == nil %}
      {% assign list = list0 %}
    {% else %}

@@ -17,21 +17,21 @@
 
     {% assign x_base = 45 %}
     {% assign x_width = 450 %}
-    {% assign y_base = 235 %}
-    {% assign y_height = 200 %}
+    {% assign y_base = 195 %}
+    {% assign y_height = 160 %}
 
     {% assign x_total = 10 %}
     {% assign x_step = x_width | minus: x_base | divided_by: x_total %}
     {% assign x_rect_step = x_width | divided_by: x_total | divided_by: 2 %}
 
     {% assign y_end = y_base | minus: y_height %}
-    {% assign x_label_pos = y_base | plus: 30 %}
+    {% assign x_label_pos = y_base | plus: 15 %}
     {% assign y_label_pos = x_base | minus: 25 %}
 
     <rect class="fil0 str0 rect0" x="0" y="0" width="100%" height="100%" />
     <line class="str0" x1="{{ x_base }}" y1="{{ y_base }}" x2="{{ x_width }}" y2="{{ y_base }}" />
     <line class="str0" x1="{{ x_base }}" y1="{{ y_base }}" x2="{{ x_base }}" y2="{{ y_end }}" />
-    <text class="anc0 fnt0" x="{{ x_width | plus:30 }}" y="{{ x_label_pos }}">{{ x_label }}</text>
+    <text class="anc0 fnt0" x="{{ x_width | plus:45 }}" y="{{ x_label_pos | minus: 10 }}">{{ x_label }}</text>
     <text class="anc1 fnt0" x="{{ x_base }}" y="{{ y_label_pos }}">{{ y_label }}</text>
 
     {% assign cnt = 1 %}
@@ -46,17 +46,18 @@
       {% assign cur_x_step = x_step | times: forloop.index0 %}
       {% assign x_pos = x_base | plus:cur_x_step %}
       {% assign x_offset = x_rect_step | divided_by: 2 %}
-      {% assign x_text_pos = x_base | plus:cur_x_step | plus: x_offset %}
+      {% assign x_number_pos = x_base | plus:cur_x_step | plus: x_offset %}
+      {% assign x_text_pos = x_base | plus:cur_x_step  %}
 
       {% assign cur_y_height = y_height | divided_by: max %}
       {% assign cur_y_height = cur_y_height | times: size %}
       {% assign y_pos = y_base | minus: cur_y_height %}
 
-      <text class="anc1 fnt1" x="{{ x_text_pos }}" y="{{ x_label_pos }}" transform="rotate(45 {{x_text_pos}},{{x_label_pos}})">
+      <text class="anc1 fnt1" style="text-anchor: start" x="{{ x_text_pos }}" y="{{ x_label_pos }}" transform="rotate(40 {{x_text_pos}},{{x_label_pos}})">
         {{ title }}
       </text>
 
-      <text class="anc1 fnt1" x="{{ x_text_pos }}" y="{{ x_label_pos | minus: cur_y_height | minus: y_end }}">
+      <text class="anc1 fnt1" x="{{ x_number_pos }}" y="{{ x_label_pos | minus: cur_y_height | minus: y_end }}">
         {{ size }}
       </text>
 

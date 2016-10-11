@@ -1,0 +1,4 @@
+
+http://www.qemu.org
+
+http://qemu.weilnetz.de/qemu-doc.html

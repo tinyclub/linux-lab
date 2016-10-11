@@ -60,12 +60,18 @@ tags:
 
 ### 安装
 
-    $ sudo tools/install-docker-lab.sh
+    $ cd linux-lab
+
+    $ sudo tools/install-docker-lab.sh  # 同时安装 docker 和 Linux Lab
+
+    or
+
+    $ sudo tools/install-docker.sh      # 安装 docker 并从 docker hub 拉下已经编译好的 Linux Lab
+    $ sudo docker pull tinylab/linux-lab
 
     $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
     $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
-    $ tools/run-docker-lab.sh
-
+    $ tools/run-docker-lab.sh         # 加载镜像，拉起一个 Linux Lab 容器
 
 ### 快速尝鲜
 

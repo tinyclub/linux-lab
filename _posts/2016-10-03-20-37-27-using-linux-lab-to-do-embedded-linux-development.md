@@ -47,11 +47,18 @@ tags:
 由于 Linux Lab 把所有的环境 docker 容器化了，只需要一条命令即可构建，以 Ubuntu 为例：
 
     $ cd linux-lab
-    $ sudo tools/install-docker-lab.sh
-    $ tools/update-lab-uid.sh   # 同步本地和容器内的用户 id，确保文件属主一致
-    $ tools/update-lab-identify.sh  # 禁用登录密码，避免每次输入密码麻烦
 
-接着就可以启动该环境：
+    $ sudo tools/install-docker-lab.sh  # 同时安装 docker 和 Linux Lab
+
+    or
+
+    $ sudo tools/install-docker.sh      # 安装 docker 并从 docker hub 拉下已经编译好的 Linux Lab
+    $ sudo docker pull tinylab/linux-lab
+
+    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
+    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
+
+接着就可以启动该环境，加载镜像，拉起一个 Linux Lab 容器：
 
     $ tools/run-docker-lab.sh
 

@@ -31,11 +31,18 @@ categories:
 ## 通过 Docker 构建一个独立的实验环境
 
     $ cd linux-0.11-lab
-    $ tools/install-docker-lab.sh
+    $ sudo tools/install-docker-lab.sh
+
+    or
+
+    $ sudo tools/install-docker.sh
+    $ sudo docker pull tinylab/linux-0.11-lab
 
 
 ## 启动装有实验环境的 Docker 容器
 
+    $ tools/update-lab-uid.sh    # 同步主机和容器的用户 ID，保证权限ok
+    $ tools/update-lab-identify.sh  # 关闭 VNC 的登陆密码，方便本地快捷登陆
     $ tools/run-docker-lab.sh
 
 

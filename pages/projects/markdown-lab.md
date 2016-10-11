@@ -54,6 +54,12 @@ tags:
 Docker 安装：
 
     $ sudo tools/install-docker-lab.sh
+
+    or
+
+    $ sudo tools/install-docker.sh
+    $ sudo docker pull tinylab/markdown-lab
+
     
     $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
     $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆

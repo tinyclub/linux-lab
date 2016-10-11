@@ -28,6 +28,11 @@ order: 30
 
       $ sudo tools/install-docker-lab.sh
 
+      or
+
+      $ sudo tools/install-docker.sh
+      $ sudo docker pull tinylab/tinylab.org
+
   其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
 
 * 启动 jekyll 环境，之后在容器内通过 <http://localhost> 访问站点

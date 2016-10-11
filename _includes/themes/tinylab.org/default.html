@@ -14,7 +14,7 @@
 {% endcapture %}
 {% endcapture %}{% assign tmpcache = nil %}
 
-  {% capture keywords %}{% assign keywords = page.keywords %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append: page.keywords | append:"," | append: tags | append:',' | append: keywords | append:',' | append:page.album | strip_html | xml_escape | downcase | remove:' ' | split:"," | sort | uniq | join:"," }}{% endcapture %}
+  {% capture keywords %}{% assign keywords = page.keywords %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append:"," | append: tags | append:',' | append: keywords | append:',' | append:page.album | strip_html | xml_escape | downcase | remove:' ' | split:"," | sort | uniq | join:"," }}{% endcapture %}
 
   {% assign keywords = keywords | prepend:"pLACeHoldER," | replace: ",,,":"," | replace: ",,":"," | remove:'pLACeHoldER,' %}
 

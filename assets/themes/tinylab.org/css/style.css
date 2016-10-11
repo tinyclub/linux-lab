@@ -1108,7 +1108,7 @@ short_prev_next {
 
 .author-box-wrap {
     overflow: hidden;
-    display: none;
+    display: block;
     text-align: center;
     width: 230px;
     margin-left: 20px;

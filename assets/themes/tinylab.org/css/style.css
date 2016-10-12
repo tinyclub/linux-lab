@@ -1108,7 +1108,7 @@ short_prev_next {
 
 .author-box-wrap {
     overflow: hidden;
-    display: block;
+    display: none;
     text-align: center;
     width: 230px;
     margin-left: 20px;
@@ -1209,6 +1209,7 @@ short_prev_next {
         color: #357
     }
     .author-box-wrap {
+        display: block;
         margin-left: 50px
     }
     #comments {

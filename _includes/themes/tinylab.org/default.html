@@ -14,9 +14,9 @@
 {% endcapture %}
 {% endcapture %}{% assign tmpcache = nil %}
 
-  {% capture keywords %}{% assign keywords = page.keywords %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append:"," | append: tags | append:',' | append: keywords | replace:", ":"," | replace:"  ":" " | replace:"  ":" " | append:',' | append:page.album | strip_html | xml_escape | downcase | split:"," | sort | uniq | join:"," }}{% endcapture %}
+  {% capture keywords %}{% assign keywords = page.keywords %}{% assign tags = page.tags | join: "," %}{{ page.categories | join: "," | append: "," | append:"," | append: tags | append:',' | append: keywords | replace:", ","," | replace:"  "," " | replace:"  "," " | append:',' | append:page.album | strip_html | xml_escape | downcase | split:"," | sort | uniq | join:"," }}{% endcapture %}
 
-  {% assign keywords = keywords | prepend:"pLACeHoldER," | replace: ",,,":"," | replace: ",,":"," | remove:'pLACeHoldER,' %}
+  {% assign keywords = keywords | prepend:"pLACeHoldER," | replace: ",,,","," | replace: ",,","," | remove:'pLACeHoldER,' %}
 
   {% if keywords %}
     <meta name="keywords" content="{{ keywords }}">

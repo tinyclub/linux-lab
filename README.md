@@ -20,7 +20,8 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux
 
 ## Build the Lab
 
-    $ sudo tools/install-docker-lab.sh
+    $ sudo tools/install-docker-lab.sh # Install docker and pull the lab
+
     $ tools/update-lab-uid.sh
     $ tools/update-lab-identify.sh  # Disable VNC login password
     $ tools/run-docker-lab.sh
@@ -32,11 +33,12 @@ For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will
 
 ## Quickstart
 
-Login the VNC page via `tools/open-docker-lab.sh` with 'ubuntu' password, and then open a terminal:
+Login the VNC page via `tools/open-docker-lab.sh` with the password printed in
+the console, and then open the 'Linux Lab' desktop shortcut on the desktop to
+launch into the Lab, and issue the following command to boot the prebuilt
+kernel and rootfs on the default versatilepb board:
 
-    $ sudo -s
-    # cd /linux-lab
-    # make boot U=0
+    $ make boot
 
 **Notes**
 

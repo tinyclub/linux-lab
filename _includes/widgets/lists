@@ -12,11 +12,11 @@
   {% for item in list %}
     {% if condition %}
       {% if condition == 'path' %}
-        {% unless item[{{condition}}] contains {{value}} %}
+        {% unless item[condition] contains value %}
           {% continue %}
         {%endunless%}
       {% else %}
-        {% if item[{{condition}}] != {{value}} %}
+        {% if item[condition] != value %}
           {% continue %}
         {% endif %}
       {% endif %}

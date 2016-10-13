@@ -31,11 +31,11 @@
        {% endif %}
 
        {% if condition %}
-         {% if item[{{condition}}] == {{value}} %}
+         {% if item[condition] == value %}
            {% assign size = 1 %}
            {% break %}
          {% endif %}
-         {% if condition == 'path' and item[{{condition}}] contains {{value}} %}
+         {% if condition == 'path' and item[condition] contains value %}
            {% assign size = 1 %}
            {% break %}
          {% endif %}

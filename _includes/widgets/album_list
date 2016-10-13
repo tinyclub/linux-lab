@@ -17,7 +17,7 @@
   {% continue %}
 {% endif %}
 
-{% if item[{{condition}}] == {{value}} %}
+{% if item[condition] == value %}
  {% assign size = 1 %}
  {% break %}
 {% endif %}

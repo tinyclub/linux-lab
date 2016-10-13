@@ -31,7 +31,4 @@ groups $USER | grep -q docker
 [ $docker_without_sudo -eq 1 ] && exit 0
 
 sudo usermod -aG docker $USER
-
-sure='n'
-read -p 'LOG: Restart X to let docker work without sudo (Y/n): ' sure
-[ "$sure" = 'Y' -o "$sure" = 'y' ] && sudo pkill X
+echo 'LOG: Please restart X or system to let docker work without sudo'

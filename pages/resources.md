@@ -39,11 +39,11 @@ order: 100
      {% endif %}
      {% for article in articles %}
        {% if condition %}
-         {% if article[{{condition}}] == {{value}} %}
+         {% if article[condition] == value %}
            {% assign size = 1 %}
            {% break %}
          {% endif %}
-         {% if condition == 'path' and article[{{condition}}] contains {{value}} %}
+         {% if condition == 'path' and article[condition] contains value %}
            {% assign size = 1 %}
            {% break %}
          {% endif %}
@@ -84,11 +84,11 @@ order: 100
 
         {% if condition %}
           {% if condition != 'path' %}
-            {% if article[{{condition}}] != {{value}} %}
+            {% if article[condition] != value %}
               {% continue %}
             {% endif %}
           {% else %}
-            {% unless article[{{condition}}] contains {{value}} %}
+            {% unless article[condition] contains value %}
               {% continue %}
             {%endunless%}
           {% endif %}

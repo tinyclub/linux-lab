@@ -3,7 +3,7 @@
 # open-docker-lab.sh -- open the docker lab via a browser
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 IMAGE=$(< $TOP_DIR/lab-name)
 

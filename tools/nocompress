@@ -1,6 +1,6 @@
 # Cancel css/js/html compress via_data/compress.yml
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 compress_yml=$TOP_DIR/../_data/compress.yml
 

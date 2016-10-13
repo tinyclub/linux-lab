@@ -3,7 +3,7 @@
 # update-lab-uid.sh
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 LAB_VNC_IDENTIFY=$TOP_DIR/.lab_identify_method
 

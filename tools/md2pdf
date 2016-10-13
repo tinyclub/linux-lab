@@ -25,7 +25,7 @@ file_name=${file_name%.*}
 [ "$file_type" != "md" ] && echo "ERROR: $1 is not suffixed with .md" && exit 3
 
 # Convert to a tmp markdown
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 DATA_DIR=$TOP_DIR/../
 PDF_DIR=$TOP_DIR/../pdfs/
 MD_DIR=$TOP_DIR/../_posts/

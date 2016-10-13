@@ -1,6 +1,6 @@
 # Minify all of the css/js/html files and enable them via _data/compress.yml
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 theme=tinylab.org
 compress_yml=$TOP_DIR/../_data/compress.yml

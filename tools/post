@@ -3,7 +3,7 @@
 # post.sh -- Write a post with the default Markdown template
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 # Necessary
 

@@ -77,13 +77,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 ### 安装
 
     $ cd linux-lab
-
     $ sudo tools/install-docker-lab.sh  # 同时安装 docker 和 Linux Lab
-
-    or
-
-    $ sudo tools/install-docker.sh      # 安装 docker 并从 docker hub 拉下已经编译好的 Linux Lab
-    $ sudo docker pull tinylab/linux-lab
 
     $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
     $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
@@ -91,10 +85,8 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 启动
 
-执行 `tools/open-docker-lab.sh` 后会打开一个 VNC 网页，输入 `ubuntu` 密码登陆即可，之后打开一个控制台：
+执行 `tools/open-docker-lab.sh` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
 
-    $ sudo -s
-    $ cd /linux-lab
     $ make boot
 
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：

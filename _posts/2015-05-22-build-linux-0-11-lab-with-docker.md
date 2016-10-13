@@ -33,12 +33,6 @@ categories:
     $ cd linux-0.11-lab
     $ sudo tools/install-docker-lab.sh
 
-    or
-
-    $ sudo tools/install-docker.sh
-    $ sudo docker pull tinylab/linux-0.11-lab
-
-
 ## 启动装有实验环境的 Docker 容器
 
     $ tools/update-lab-uid.sh    # 同步主机和容器的用户 ID，保证权限ok

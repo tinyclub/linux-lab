@@ -136,7 +136,8 @@ if [ -f $LAB_PORTMAP ]; then
   if [ $? -eq 0 ]; then
     docker logs $CONTAINER_ID 2>/dev/null | grep Jekyll
     lab_web_port=$(grep 80 $LAB_PORTMAP | cut -d':' -f1)
-    lab_host_name=$(< $LAB_HOST_NAME)
+    lab_host_name="localhost"
+    [ -f $LAB_HOST_NAME ] && lab_host_name=$(< $LAB_HOST_NAME)
     echo "LOG: Local Jekyll Web Address: http://$lab_host_name:$lab_web_port/"
   fi
 fi

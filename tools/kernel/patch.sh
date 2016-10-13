@@ -8,7 +8,7 @@ LINUX=$2
 KERNEL_SRC=$3
 KERNEL_OUTPUT=$4
 
-TOP_DIR=$(dirname `readlink -f $0`)/../../
+TOP_DIR=$(cd $(dirname $0) && pwd)/../../
 
 KFD_CORE=${TOP_DIR}/patch/linux/core/
 

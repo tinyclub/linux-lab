@@ -9,7 +9,7 @@ KERNEL_SRC=$3
 KERNEL_OUTPUT=$4
 FEATURE="$5"
 
-TOP_DIR=$(dirname `readlink -f $0`)/../../
+TOP_DIR=$(cd $(dirname $0) && pwd)/../../
 
 KFD_CORE=${TOP_DIR}/feature/linux/core/
 

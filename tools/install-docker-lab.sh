@@ -5,7 +5,7 @@
 # ref: https://docs.docker.com/engine/installation/linux/ubuntulinux/
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 IMAGE=$(< $TOP_DIR/lab-name)
 

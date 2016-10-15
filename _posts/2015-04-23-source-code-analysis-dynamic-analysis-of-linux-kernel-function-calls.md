@@ -8,7 +8,7 @@ tags:
   - 函数调用
   - 源码分析
 categories:
-  - C
+  - C 语言
   - 源码分析 
   - FlameGraph
   - Ftrace

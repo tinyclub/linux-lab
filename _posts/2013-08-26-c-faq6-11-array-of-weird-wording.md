@@ -8,7 +8,7 @@ tags:
   - faq
   - 数组
 categories:
-  - C
+  - C 语言
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

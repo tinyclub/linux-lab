@@ -40,7 +40,7 @@
 - name: 编程语言
   categories:
     - name: 汇编
-    - name: C
+    - name: C 语言
     - name: Shell
     - name: Python
     - name: C++

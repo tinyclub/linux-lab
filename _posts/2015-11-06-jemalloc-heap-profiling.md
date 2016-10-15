@@ -10,7 +10,7 @@ tags:
   - heap profiling
   - jeprof
 categories:
-  - C
+  - C 语言
 ---
 
 <!-- jemalloc 之堆占用剖析·内部实现 -->

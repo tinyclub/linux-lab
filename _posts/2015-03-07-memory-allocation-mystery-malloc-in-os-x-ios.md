@@ -14,7 +14,7 @@ tags:
   - scalable malloc
 categories:
   - OS X
-  - C
+  - C 语言
 ---
 
 <!-- title: 内存分配奥义·malloc in OS X -->

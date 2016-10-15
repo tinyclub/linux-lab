@@ -9,7 +9,7 @@ tags:
   - 优化
   - 测试
 categories:
-  - C
+  - C 语言
   - 调试技巧
 ---
 

@@ -15,7 +15,7 @@ tags:
   - 动态链接
   - 汇编
 categories:
-  - C
+  - C 语言
   - Gcc
   - X86
 ---

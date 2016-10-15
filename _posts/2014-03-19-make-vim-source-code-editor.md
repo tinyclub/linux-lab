@@ -10,7 +10,7 @@ tags:
   - editor
   - Vim
 categories:
-  - C
+  - C 语言
   - Vim
 ---
 

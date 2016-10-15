@@ -8,7 +8,7 @@ tags:
   - Linux
   - Uboot
 categories:
-  - C
+  - C 语言
   - 系统裁剪
 ---
 

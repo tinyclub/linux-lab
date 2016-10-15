@@ -9,7 +9,7 @@ tags:
   - init
   - inittab
 categories:
-  - C
+  - C 语言
   - X86
   - 程序执行
 ---

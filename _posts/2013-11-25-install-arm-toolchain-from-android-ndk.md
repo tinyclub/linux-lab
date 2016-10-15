@@ -8,7 +8,7 @@ tags:
   - Cross compiler
 categories:
   - Android NDK
-  - C
+  - C 语言
 ---
 
 > by falcon <wuzhangjin@gmail.com> of [TinyLab.org][1]

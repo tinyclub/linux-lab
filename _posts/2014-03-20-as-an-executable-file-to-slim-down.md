@@ -12,7 +12,7 @@ tags:
   - strip
   - 可执行文件裁剪
 categories:
-  - C
+  - C 语言
   - X86
   - 系统裁剪
 ---

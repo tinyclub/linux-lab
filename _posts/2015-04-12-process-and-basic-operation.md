@@ -5,11 +5,11 @@ album: C 语言编程透视
 layout: post
 permalink: /process-and-basic-operation/
 tags:
-  - C
+  - C 语言
   - 运行时
   - 进程
 categories:
-  - C
+  - C 语言
   - 进程管理
 ---
 

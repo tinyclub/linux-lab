@@ -8,7 +8,7 @@ tags:
   - 进程
   - 内存映像
 categories:
-  - C
+  - C 语言
   - 进程管理
 ---
 

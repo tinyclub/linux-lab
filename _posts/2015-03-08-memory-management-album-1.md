@@ -13,7 +13,7 @@ tags:
   - OS X
   - SSDAlloc
 categories:
-  - C
+  - C 语言
 ---
 
 > by 主编 of [泰晓科技 | TinyLab.org][1]

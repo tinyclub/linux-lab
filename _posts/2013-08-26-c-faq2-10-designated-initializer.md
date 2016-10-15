@@ -8,7 +8,7 @@ tags:
   - faq
   - initializer
 categories:
-  - C
+  - C 语言
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

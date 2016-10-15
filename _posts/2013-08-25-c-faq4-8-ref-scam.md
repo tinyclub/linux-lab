@@ -8,7 +8,7 @@ tags:
   - faq
   - 参数传递
 categories:
-  - C
+  - C 语言
 ---
 
 > by Pingbo Wen of [TinyLab.org][1]

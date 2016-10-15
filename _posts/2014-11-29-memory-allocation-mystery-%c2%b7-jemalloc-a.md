@@ -10,7 +10,7 @@ tags:
   - jemalloc
   - malloc
 categories:
-  - C
+  - C 语言
 ---
 
 <!-- title: 内存分配奥义·jemalloc(一) -->

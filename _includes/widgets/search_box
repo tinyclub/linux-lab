@@ -51,8 +51,11 @@ $(document).ready(function() {
       var link = $(entry.getElementsByTagName('link')[0]).attr('href');
       var title_en = $(entry.getElementsByTagName('id')[0]).text().replace(/-/g,' ');
       var summary = $(entry.getElementsByTagName('summary')[0]).text().replace(/,/g, ' ');
-      var content = $(entry.getElementsByTagName('content')[0]).text();          
-      if (rq.test(title) || rq.test(title_en) || rq.test(summary) || rq.test(content)) {
+      var content = $(entry.getElementsByTagName('content')[0]).text();
+      var summary1 = summary.replace(' ','');
+      var content1 = content.replace(' ','');
+      var title1 = title.replace(' ','');
+      if (rq.test(title) || rq.test(title_en) || rq.test(summary) || rq.test(content) || rq.test(summary1) || rq.test(content1) || rq.test(title1)) {
         var updated = formatDate(xmlDateToJavascriptDate($(entry.getElementsByTagName('updated')[0]).text()));
         matches.push({'title': title, 'link': link, 'date': updated, 'content': content});
       }

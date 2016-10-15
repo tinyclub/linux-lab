@@ -11,7 +11,7 @@ tags:
   - 最小
   - Linux
 categories:
-  - C
+  - C 语言
   - 系统裁剪
 ---
  

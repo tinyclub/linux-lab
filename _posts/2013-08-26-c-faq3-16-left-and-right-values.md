@@ -8,7 +8,7 @@ tags:
   - lvalue
   - rvalue
 categories:
-  - C
+  - C 语言
 ---
 
 > by Pingbo Wen of TinyLab.org

@@ -8,7 +8,7 @@ tags:
   - faq
   - 函数原型
 categories:
-  - C
+  - C 语言
 ---
 
 > by PingboWen of [TinyLab.org](http://tinylab.org)

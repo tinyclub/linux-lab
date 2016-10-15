@@ -11,7 +11,7 @@ tags:
   - JNI
   - NDK
 categories:
-  - C
+  - C 语言
   - Android NDK
 ---
 

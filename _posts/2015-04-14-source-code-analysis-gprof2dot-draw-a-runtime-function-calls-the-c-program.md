@@ -11,7 +11,7 @@ tags:
   - Kcachegrind
   - Valgrind
 categories:
-  - C
+  - C 语言
   - 源码分析
   - Gprof
   - Valgrind

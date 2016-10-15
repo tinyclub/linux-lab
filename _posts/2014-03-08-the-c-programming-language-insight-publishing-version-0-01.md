@@ -12,7 +12,7 @@ tags:
   - Markdown
 categories:
   - 开源书籍
-  - C
+  - C 语言
 ---
 
 > by falcon of [TinyLab.org][1]

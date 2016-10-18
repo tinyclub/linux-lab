@@ -5,4 +5,11 @@
 
 TOP_DIR=$(cd $(dirname $0) && pwd)
 
-cat ${TOP_DIR}/Dockerfile  | grep "^RUN " | cut -d' ' -f2- | sudo bash
+#Detect OS type
+source $TOP_DIR/os-detection.sh
+
+if [ "$OS_TYPE" = "Linux" ]; then
+	cat ${TOP_DIR}/Dockerfile  | grep "^RUN " | cut -d' ' -f2- | sudo bash
+else
+	echo "This script can only run on Linux"
+fi

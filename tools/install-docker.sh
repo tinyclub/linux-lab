@@ -22,13 +22,13 @@ if [ "$OS_TYPE" = "Linux" ]; then
 	# The --bip works like https://gist.github.com/ismell/6689836
 	sudo sed -i -e "/DOCKER HACK START 578327498237/,/DOCKER HACK END 789527394722/d" /etc/default/docker
 	sudo bash -c 'cat <<EOF >> /etc/default/docker
-	# DOCKER HACK START 578327498237
-	DOCKER_OPTS="\$DOCKER_OPTS --insecure-registry=registry.mirrors.aliyuncs.com"
-	DOCKER_OPTS="\$DOCKER_OPTS --dns 8.8.8.8 --dns 8.8.4.4"
-	DOCKER_OPTS="\$DOCKER_OPTS --bip=10.66.33.10/24"
-	DOCKER_OPTS="\$DOCKER_OPTS --storage-opt dm.basesize=2G"
-	# DOCKER HACK END 789527394722
-	EOF'
+# DOCKER HACK START 578327498237
+DOCKER_OPTS="\$DOCKER_OPTS --insecure-registry=registry.mirrors.aliyuncs.com"
+DOCKER_OPTS="\$DOCKER_OPTS --dns 8.8.8.8 --dns 8.8.4.4"
+DOCKER_OPTS="\$DOCKER_OPTS --bip=10.66.33.10/24"
+DOCKER_OPTS="\$DOCKER_OPTS --storage-opt dm.basesize=2G"
+# DOCKER HACK END 789527394722
+EOF'
 	# Restart to make sure the above opts work
 	sudo brctl delbr docker0
 	sudo service docker restart

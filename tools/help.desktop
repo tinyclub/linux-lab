@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Help Page
-Comment=Post help page of http://tinylab.org
-Exec=/usr/bin/chromium-browser http://localhost/post/
-Icon=/usr/share/pixmaps/chromium-browser.png
-Type=Application

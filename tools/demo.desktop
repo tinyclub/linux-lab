@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Demo Page
-Comment=Demonstrate how to write a post
-Exec=/usr/bin/chromium-browser http://showterm.io/77c13ecbfe82b963029d7
-Icon=/usr/share/pixmaps/chromium-browser.png
-Type=Application

@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Jekyll Lab
-Comment=A Friendly Lab for jekyll website 
-Exec=/usr/bin/terminator --working-directory=/tinylab.org/ -T "Jekyll Lab"
-Icon=/usr/share/pixmaps/terminator.png
-Type=Application

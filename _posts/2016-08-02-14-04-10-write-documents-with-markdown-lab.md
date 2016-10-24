@@ -54,22 +54,20 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/markdown-lab.git
-    $ cd markdown-lab/
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab/ && tools/docker/choose markdown-lab
 
 ### 安装
 
-本地安装：
-
-    $ sudo tools/install-local-lab.sh
-
 Docker 安装/启动：
 
-    $ sudo tools/install-docker-lab.sh
+    $ tools/docker/pull         # Pull from docker hub
+    or
+    $ tools/docker/build        # Build from source
 
-    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
-    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
-    $ tools/run-docker-lab.sh
+    $ tools/docker/uid         # 确保 uid 一致，两边都可操作
+    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
+    $ tools/docker/run
 
 ### 使用
 

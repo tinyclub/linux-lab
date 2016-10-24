@@ -42,30 +42,31 @@ tags:
 
 首先把 Linux Lab 下载下来：
 
-    $ git clone https://github.com/tinyclub/linux-lab.git
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab && tools/docker/choose linux-lab
 
 由于 Linux Lab 把所有的环境 docker 容器化了，只需要一条命令即可构建，以 Ubuntu 为例：
 
-    $ cd linux-lab
+    $ tools/docker/pull   # Pull from docker hub
+    or
+    $ tools/docker/build  # Build from source
 
-    $ sudo tools/install-docker-lab.sh  # 同时安装 docker 和 Linux Lab
-
-    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
-    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
+    $ tools/docker/uid         # 确保 uid 一致，两边都可操作
+    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
 
 接着就可以启动该环境，加载镜像，拉起一个 Linux Lab 容器：
 
-    $ tools/run-docker-lab.sh
+    $ tools/docker/run
 
 上述命令启动容器并运行浏览器，浏览器打开后可点击页面右上角的 Connect 即可进入开发环境，退出浏览器后可用如下命令再次登录：
 
-    $ tools/open-docker-lab.sh
+    $ tools/docker/open
 
 关机后可以通如下命令快速恢复：
 
-    $ tools/start-docker-lab.sh
+    $ tools/docker/start
 
-也可先调用 `tools/kill-docker-lab.sh` 删除该容器后再通过 `tools/run-docker-lab.sh` 重构。
+也可先调用 `tools/docker/rm` 删除该容器后再通过 `tools/docker/run` 重构。
 
 登进 Linux Lab 后，可在桌面看到三个快捷图标：
 

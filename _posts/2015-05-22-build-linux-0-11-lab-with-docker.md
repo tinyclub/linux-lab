@@ -25,26 +25,27 @@ categories:
 
 ## 拉下 Linux 0.11 实验环境
 
-    $ git clone https://github.com/tinyclub/linux-0.11-lab.git
-
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab && tools/docker/choose linux-0.11-lab
 
 ## 通过 Docker 构建一个独立的实验环境
 
-    $ cd linux-0.11-lab
-    $ sudo tools/install-docker-lab.sh
+    $ tools/docker/pull         # Pull from docker hub
+    or
+    $ tools/docker/build        # Build from source
 
 ## 启动装有实验环境的 Docker 容器
 
-    $ tools/update-lab-uid.sh    # 同步主机和容器的用户 ID，保证权限ok
-    $ tools/update-lab-identify.sh  # 关闭 VNC 的登陆密码，方便本地快捷登陆
-    $ tools/run-docker-lab.sh
+    $ tools/docker/uid          # 同步主机和容器的用户 ID，保证权限ok
+    $ tools/docker/identify     # 关闭 VNC 的登陆密码，方便本地快捷登陆
+    $ tools/docker/run
 
 
 ## 远程登录实验环境
 
 上面的命令会打开一个 VNC 登陆界面，使用 `ubuntu` 作为密码登录即可。
 
-之后也可以直接通过 `tools/open-docker-lab.sh` 来启动 VNC 页面。
+之后也可以直接通过 `tools/docker/open` 来启动 VNC 页面。
 
 ## 简单使用
 

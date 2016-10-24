@@ -71,21 +71,23 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/linux-lab.git
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab && tools/docker/choose linux-lab
 
 
 ### 安装
 
-    $ cd linux-lab
-    $ sudo tools/install-docker-lab.sh  # 同时安装 docker 和 Linux Lab
+    $ tools/docker/pull        # Pull from docker hub
+    or
+    $ tools/docker/build       # Build from source
 
-    $ tools/update-lab-uid.sh         # 确保 uid 一致，两边都可操作
-    $ tools/update-lab-identify.sh    # 关闭登陆密码，允许无密登陆
-    $ tools/run-docker-lab.sh	      # 加载镜像，拉起一个 Linux Lab 容器
+    $ tools/docker/uid         # 确保 uid 一致，两边都可操作
+    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
+    $ tools/docker/run	       # 加载镜像，拉起一个 Linux Lab 容器
 
 ### 启动
 
-执行 `tools/open-docker-lab.sh` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
+执行 `tools/docker/open` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
 
     $ make boot
 

@@ -20,155 +20,67 @@ order: 30
 
 * 下载博客仓库
 
-      $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
+      $ git clone https://github.com/tinyclub/cloud-lab.git
+      $ cd cloud-lab/ && tools/docker/choose tinylab.org
 
 * 安装 Jekyll 编译环境
 
   Ubuntu 14.04 以上用户可直接执行：
 
-      $ sudo tools/install-docker-lab.sh
+      $ tools/docker/pull        # Pull from docker hub
+      or
+      $ tools/docker/build       # Build ourselves
 
   其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
 
-* 启动 jekyll 环境，之后在容器内通过 <http://localhost> 访问站点
+* 启动 Jekyll 环境
 
-      $ tools/update-lab-uid.sh         # Sync uid between host and container
-      $ tools/update-lab-identify.sh    # Disable password
-      $ tools/run-docker-lab.sh
+      $ tools/docker/uid         # Sync uid between host and container
+      $ tools/docker/identify    # Disable password
+      $ tools/docker/run
 
-* 生成文章模板, slug 为链接，title 为标题
+  之后可通过浏览器登陆并通过桌面快捷方式进入 `tinylab.org` 工作目录。
+
+  Jekyll 环境默认已经支持中文，但是输入法要通过设置手动添加一下 `ibus-sunpinyin`，并配置下中英文的快捷切换方式为 `ALT+s`，以避免跟本地的中英文切换快捷方式冲突。
+
+* 撰写稿件
+
+  首先生成文章模板, slug 为链接，title 为标题。
 
       $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
 
-* 参照模板编辑文章
+  接着，参照模板编辑文章。
 
       $ vim _posts/*the-first-post-slug*
 
-* 投稿
+  Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
 
-  写完后可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com 或者按照后面的 “[递送稿件](#section-7)” 过程通过 github 提交（推荐）。如果有图片等资料请一并发送到邮件，通过 github 提交则记得存放并上传到 `wp-content/uploads/年/月/`。
+  如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
 
-**注**：推荐遵循下述完整投稿过程，因为所有过程可通过 github 管控，包括评审等流程，非常便利。
+  如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
 
-## 完整投稿过程
+  *注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
 
-### Fork / Star / Clone 文章仓库
+      $ cd tools
+      $ ln -s post falcon.post
 
-我们的文章仓库托管在 [Github][1] 上，可这样下载：
+  把 `falcon` 替换为你自己的昵称即可。
 
-    $ git clone https://github.com/tinyclub/tinylab.org.git && cd tinylab.org
+* 编译和浏览文稿
 
-打开 [在线仓库][1]，并 [Fork](https://github.com/tinyclub/tinylab.org#fork-destination-box) / Star，之后就可持续参与/关注我们的原创进程。
+  Jekyll 环境由 docker 搭建，文章会被自动编译，可实时通过桌面快捷方式 `Local Page` 查看编译效果。
 
-### 搭建 Jekyll 工作环境
+* 递送稿件
 
-#### 通过 Docker 搭建
+  测试完无误后即可通过 Github 发送 Pull Request 进行投稿。也可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com。
 
-Ubuntu 14.04 以上用户可直接执行：
+  这一步要求事先做如下准备：
 
-    $ sudo tools/install-docker-lab.sh
+  * 在 Github Fork 上述 [文章仓库][1]
+  * 您在本地修改后先提交到刚 Fork 的仓库
+  * 然后再进入自己仓库，选择合并到我们的 master 分支
 
-其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境
-
-      $ tools/update-lab-uid.sh         # Sync uid between host and container
-      $ tools/update-lab-identify.sh    # Disable password
-      $ tools/run-docker-lab.sh
-
-#### 本地搭建
-
-    $ sudo apt-get install gcc make ruby ruby-dev rake nodejs
-
-    // 新版 jekyll 依赖 ruby >=2.0，以 2.0 为例
-    $ sudo apt-get install ruby2.0 ruby2.0-dev ruby2.0-doc
-    $ tools/ruby-switch 2.0
-
-    $ sudo gem sources -r http://rubygems.org/
-    $ sudo gem sources -r https://rubygems.org/
-    $ sudo gem sources -a https://ruby.taobao.org/
-    $ sudo gem install iconv
-    $ sudo gem install jekyll
-    $ sudo gem install jekyll-paginate
-
-### 撰写稿件
-
-通过如下命令创建一份文章模板，然后采用 Markdown 撰写。
-
-    $ rake post
-
-或者
-
-    $ tools/post
-
-后者是前者的封装，可以简化命令行的输入。
-
-或者直接把文件名和短地址设置好：
-
-    $ tools/post slug=the-first-post-slug
-
-当然，也可以同时把其他参数都默认设置好，比如标题：
-
-    $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
-
-更多参数请参考：
-
-    author='Author'
-    nick="Nick Name"
-    title="A Title"
-    tags="[tag1,tag2]"
-    categories="[category1,category2]"
-    group='Article Group'
-    album='Article Series'
-    tagline='subtitle'
-    description="summary"
-    slug='URL with English characeters'
-
-Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
-
-如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
-
-如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
-
-*注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
-
-    $ cd tools
-    $ ln -s post falcon.post
-
-把 `falcon` 替换为你自己的昵称即可。
-
-### 编译和浏览文稿
-
-如果 jekyll 环境由 docker 搭建，文章会被自动编译，可实时通过 <http://localhost> 查看编译效果，因此无需下述两步。
-
-#### 编译文稿
-
-    $ jekyll s --limit_posts 1
-
-或者
-
-    $ tools/start
-
-**注**
-
-* `--limit_posts 1` 只编译最新一篇，会大大加快编译和测试效率。
-* `tools/start` 默认编译最近 5 篇，并自动启动浏览器（默认为 `chromium-browser`）访问，另外，IP 地址为自动获取到的 `br0` 或者 `eth0` 的地址，可在本地局域网访问。可修改 `tools/start` 进行配置。
-
-#### 浏览文稿
-
-如果使用 `jekyll s` 而且没有通过 `-H` 指定 IP 地址，那么默认 IP 地址为 `127.0.0.1` 或者域名 `localhost`，可以通过浏览器打开：<http://localhost:4000> 进行查看。
-
-而 `tools/start` 使用了 `-H` 自动获取 IP 地址并主动启动浏览器打开，所以不需要自己输入地址，执行完 `tools/start` 后即可看到浏览器窗口，如果没有及时打开，可以点击 `Reload` 重新加载。
-
-### 递送稿件
-
-测试完无误后即可通过 Github 发送 Pull Request 进行投稿。
-
-这一步要求事先做如下准备：
-
-* 在 Github Fork 上述 [文章仓库][1]
-* 您在本地修改后先提交到刚 Fork 的仓库
-* 然后再进入自己仓库，选择合并到我们的 master 分支
-
-提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布到网站。
+  提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布到网站。
 
 ## 文章模板说明
 
@@ -244,27 +156,6 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 |sponsor-qrcode| true                  | 图片请存到 `images/sponsor` 并设该项为 true
 |info          | ...                   | 建议介绍专业、兴趣、特长等，如较多，请用 `;` 分割，以便自动分段展示
 |--------------|-----------------------|----------------|
-
-## 作者福利
-
-为鼓励更多一线工程师参与交流和分享，我们针对所有 泰晓原创作者 推出了各种福利。福利包括：
-
-* 读者打赏，`_data/people.yml`中加入微信收款码即可
-* 免费赠送专业书籍、开发板等
-* 或者为大家争取到较低的折扣
-
-已经争取到的福利有：
-
-* 一批《[Linux 设备驱动开发详解](http://tinylab.org/book-welfare-for-tinylab-contributors/)》
-* 双十一 [半价购开源硬件 pcDuino8 和 NodeMCU](http://tinylab.org/board-welfare-for-tinylab-users/)
-
-另外，我们还在不断争取其他的福利，这些福利将直接导入 [泰晓开源小店](http://weidian.com/?userid=335178200)，允许大家以最低低到成本价的折扣拍到。
-
-如果没有特别声明，基本的折扣政策如下：
-
-* 最近一个月有贡献，一率 8 折
-* 连续一个季度有贡献，前 2 件一率 5 折
-* 一次性购买 5 件以上一率 7 折
 
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: http://wowubuntu.com/markdown/

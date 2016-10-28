@@ -48,22 +48,18 @@ tags:
 
 * Ftrace: `gcc -pg`
 
-```
-    $ echo 'main(){}' | \
+      $ echo 'main(){}' | \
       mipsel-linux-gnu-gcc -x c -S -o - - -pg | grep mcount
 	subu	$sp,$sp,8		# _mcount pops 2 words from  stack
 	jal	_mcount
-```
 
 * KFT: `gcc -finstrument-functions`
 
-```
-    $ echo 'main(){}' | \
+      $ echo 'main(){}' | \
       mipsel-linux-gnu-gcc -x c -S -o - - \
       -finstrument-functions | egrep "enter\)|exit\)"
 	lw	$25,%call16(__cyg_profile_func_enter)($28)
 	lw	$25,%call16(__cyg_profile_func_exit)($28)
-```
 
 ### Dynamic function tracing
 
@@ -98,28 +94,43 @@ tags:
     * 无锁，直接读硬件计数器，X86：`rdtsc/rdtscll`，MIPS: `read_c0_count()`
     * `Cycles` 转 `ns` 算法优化：`arch/x86/include/asm/timer.h`
 * 不能溢出
-    * 32 位转 64 位：`include/linux/cnt32_to_63.h: cnt32_to_63()`
+    * 32 位转 64 位
+
+          include/linux/cnt32_to_63.h: cnt32_to_63()
+
 * 稳定性
     * 计数频率要求稳定，如果 clock 跟处理器频率关联，需要关闭 cpufreq
 * notrace: `__attribute__((no_instrument_function))`
     * 不能跟踪，否则会死循环
-    * `_mcount() -> sched_clock() -> _mcount()`
+
+          _mcount() -> sched_clock() -> _mcount()
 
 ### User space tracing
 
 * 可通过 `trace_marker` 模拟实现用户态函数跟踪
 * Systrace 实现
-    * Java: `Trace.traceBegin(tag, name)/Trace.traceEnd(tag)`
-    * Native: `ATRACE_BEGIN(name)/ATRACE_END()`
+    * Java
+
+          Trace.traceBegin(tag, name)/Trace.traceEnd(tag)
+
+    * Native
+
+          ATRACE_BEGIN(name)/ATRACE_END()
+
 * 实现原理
     * atrace_init_once()
-        * `atrace_marker_fd = open("/sys/kernel/debug/tracing/trace_marker", O_WRONLY);`
+
+          atrace_marker_fd = open("/sys/kernel/debug/tracing/trace_marker", O_WRONLY);
+
     * `ATRACE_BEGIN(name)`
-        * `snprintf(buf, ATRACE_MESSAGE_LENGTH, "B|%d|%s", getpid(), name);`
-        * `write(atrace_marker_fd, buf, len);`
+
+          snprintf(buf, ATRACE_MESSAGE_LENGTH, "B|%d|%s", getpid(), name);
+          write(atrace_marker_fd, buf, len);
+
     * `ATRACE_END()`
-        * `char c = 'E';`
-        * `write(atrace_marker_fd, &c, 1);`
+
+          char c = 'E';
+          write(atrace_marker_fd, &c, 1);
 
 ### More
 
@@ -135,15 +146,16 @@ tags:
 * 问题：F2FS 某个符号链接偶尔创建异常导致系统启动失败
     * 符号链接文件存在，但是指向为空
 * 排查：排查是所有链接异常还是单一情况
-    * 通过 `trace_printk` 跟踪并经 `/sys/kernel/debug/tracing/trace` 查看
+    * 通过 `trace_printk` 跟踪
+    * 经 `/sys/kernel/debug/tracing/trace` 查看结果
     * fs/f2fs/namei.c:
-```
-    err = f2fs_add_link(dentry, inode);
-    if (err)
-        goto out;
-    trace_printk("dir ino %ld, target name %s, sym name %s.\n", dir->i_ino, dentry->d_name.name, symname);
-    f2fs_unlock_op(sbi);
-```
+
+          err = f2fs_add_link(dentry, inode);
+          if (err)
+              goto out;
+          trace_printk("dir ino %ld, target name %s, sym name %s.\n", dir->i_ino, dentry->d_name.name, symname);
+          f2fs_unlock_op(sbi);
+
 * 结论：发现其他符号链接创建正常
 * 根源：异常掉电导致符号链接创建不完整并且无 f2fsck 无覆盖此类情况
 
@@ -152,7 +164,8 @@ tags:
 * Latency tracing
     * cyclictest：长时间跑+后台负载，测试latency
     * irqsoff tracer：用于跟踪引起延迟的原因
-    * `echo irqsoff > /sys/kernel/debug/tracing/current_tracer`
+
+          echo irqsoff > /sys/kernel/debug/tracing/current_tracer
 
 * Max Latency：+10ms
     * 主要延迟在 USB driver: `dwc3_interrupt()` 中
@@ -177,10 +190,10 @@ tags:
 * top: process level
 * perf top: function level
 * Ftrace workqueue event tracer: workqueue function level
-```
-$ echo workqueue:workqueue_queue_work > /sys/kernel/debug/tracing/set_event
-$ cat /sys/kernel/debug/tracing/trace
-```
+
+      $ echo workqueue:workqueue_queue_work > /sys/kernel/debug/tracing/set_event
+      $ cat /sys/kernel/debug/tracing/trace
+
 * 实时渲染数据流 + 快捷捕获后台执行环境
     * 软件示波器：[oscilloscope](https://github.com/tinyclub/tinydraw/raw/master/oscope/oscilloscope.py)
     * 快捷按键捕获后台数据
@@ -194,17 +207,13 @@ $ cat /sys/kernel/debug/tracing/trace
 
 * 从应用层加跟踪点
 
-```
-     + Trace.traceBegin(Trace.TRACE_TAG_VIEW, "performaTraversals");
+      + Trace.traceBegin(Trace.TRACE_TAG_VIEW, "performaTraversals");
       performTraversals();
-    + Trace.traceEnd(Trace.TRACE_TAG_VIEW);
-```
+      + Trace.traceEnd(Trace.TRACE_TAG_VIEW);
 
 * 通过 Systrace 启动跟踪
 
-```
-    $ systrace.py --time=10 -o trace.html gfx sched view wm
-```
+      $ systrace.py --time=10 -o trace.html gfx sched view wm
 
 * 分析跟踪结果
     * 通过 Chrome 浏览器解析 `trace.html`
@@ -221,56 +230,51 @@ $ cat /sys/kernel/debug/tracing/trace
 
 * 从内核中定义跟踪点（tracepoints）
     * `include/trace/events/thermal.h`
-```
-      TRACE_EVENT(thermal_temperature,
-      ...
-      TP_printk("thermal_zone=%s id=%d temp_prev=%d temp=%d",
-      __get_str(thermal_zone), __entry->id, __entry->temp_prev,
-      __entry->temp));
-```
+
+          TRACE_EVENT(thermal_temperature,
+          ...
+          TP_printk("thermal_zone=%s id=%d temp_prev=%d temp=%d",
+          __get_str(thermal_zone), __entry->id, __entry->temp_prev,
+          __entry->temp));
 
 * 从内核中调用跟踪点
-    * `driver/thermal/thermal_core.c: update_temperature()`
-```
+    
+      driver/thermal/thermal_core.c: update_temperature():
+
       trace_thermal_temperature(tz);
-```
 
 * Systrace 工作目标
 
-```   
-    $ systrace.py --time=10 -o trace.html temp sched gfx
-```
+      $ systrace.py --time=10 -o trace.html temp sched gfx
 
 ### Thermal tracing (Cont.)
 
 * 在 atrace 中启用该事件
     * `frameworks/native/cmds/atrace/atrace.cpp: k_categories`
-```
-      {"temp","Thermal temperature",0,{
-      {REQ,"/sys/kernel/debug/tracing/events/thermal/thermal_temperature/enable" },}},
-```
+
+          {"temp","Thermal temperature",0,{
+          {REQ,"/sys/kernel/debug/tracing/events/thermal/thermal_temperature/enable" },}},
 
 * 在 Systrace 中解析
     * 需要增加专门的解析代码
         * 或修改 `script.js`
         * 或添加独立的解析文件 `thermal_parser.html` 并追加到 `ftrace_importer.html`
-        * `thermalTemperatureEvent: function()`:`
-```
-    // js 正则表达式提取 ftrace thermal 相关数据
-    var event = /thermal_zone=(.+) id=(\d) temp_prev=(\d+) temp=(\d+)/.exec(eventBase.details);
-    // 拿到 thermal zone 名字
-    var name = event[1];
-    // 拿到温度
-    var thermalTemperature = parseInt(event[4]);
-    // 调用 Systrace 框架提供的显示函数画出温度曲线；
-    this.thermalTemperatureSlice(ts, name, thermalTemperature);
-```
+        * `thermalTemperatureEvent: function()`:
+
+              // js 正则表达式提取 ftrace thermal 相关数据
+              var event = /thermal_zone=(.+) id=(\d) temp_prev=(\d+) temp=(\d+)/.exec(eventBase.details);
+              // 拿到 thermal zone 名字
+              var name = event[1];
+              // 拿到温度
+              var thermalTemperature = parseInt(event[4]);
+              // 调用 Systrace 框架提供的显示函数画出温度曲线；
+              this.thermalTemperatureSlice(ts, name, thermalTemperature);
+
     * 并绑定上述事件到解析代码
         * `function ThermalParser(importer)`
-```
-      importer.registerEventHandler('thermal_temperature',
-      ThermalParser.prototype.thermalTemperatureEvent.bind(this));
-```
+
+              importer.registerEventHandler('thermal_temperature',
+              ThermalParser.prototype.thermalTemperatureEvent.bind(this));
 
 ### Thermal tracing (Cont.)
 
@@ -302,26 +306,22 @@ $ cat /sys/kernel/debug/tracing/trace
 
 * Linux Lab Host
 
-```
-    $ make list             # List supported boards
-    $ make BOARD=malta boot
-```
+      $ make list             # List supported boards
+      $ make BOARD=malta boot
 
 * Qemu Malta Board
 
-```
-    # tools/trace.sh function_graph "ls -l"
-    # head -15 trace.log
-
-    # tracer: function_graph
-    #
-    # CPU  DURATION                  FUNCTION CALLS
-    # |     |   |                     |   |   |   |
-     0)               |          unlock_page() {
-     0)   0.541 us    |            page_waitqueue();
-     0)   0.584 us    |            __wake_up_bit();
-     0) + 16.333 us   |          }
-```
+      # tools/trace.sh function_graph "ls -l"
+      # head -15 trace.log
+  
+      # tracer: function_graph
+      #
+      # CPU  DURATION                  FUNCTION CALLS
+      # |     |   |                     |   |   |   |
+       0)               |          unlock_page() {
+       0)   0.541 us    |            page_waitqueue();
+       0)   0.584 us    |            __wake_up_bit();
+       0) + 16.333 us   |          }
 
 ### Online KFT Demo
 
@@ -330,28 +330,23 @@ $ cat /sys/kernel/debug/tracing/trace
 
 * Linux Lab Host
 
-```
-    $ scripts/feature.sh kft v2.6.36 malta
-```
+      $ scripts/feature.sh kft v2.6.36 malta
 
 * Qemu Malta Board
 
-```
-    # cat /proc/kft
-    status: run id 0, primed, triggered, complete
+      # cat /proc/kft
+      status: run id 0, primed, triggered, complete
 
-    config:
-      mode 0
-      trigger start entry start_kernel
-      trigger stop entry to_userspace
-      filter mintime 500
-      filter maxtime 0
-      logentries 100000
-```
+      config:
+        mode 0
+        trigger start entry start_kernel
+        trigger stop entry to_userspace
+        filter mintime 500
+        filter maxtime 0
+        logentries 100000
 
 ### Online KFT Demo (Cont.)
 
-```
     # cat /proc/kft_data
      Entry    Delta     PID        Function                        Caller
     -------- -------- -------- ----------------                 ------------
@@ -368,7 +363,6 @@ $ cat /sys/kernel/debug/tracing/trace
        11855     2007      0.0 decode_configs                   cpu_probe
        11889     1066      0.0 decode_configs                   cpu_probe
        14418     1851      0.0 cpu_probe                        setup_arch
-```
 
 ## 相关参考资料
 

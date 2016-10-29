@@ -35,7 +35,6 @@ order: 30
 
 * 启动 Jekyll 环境
 
-      $ tools/docker/uid         # Sync uid between host and container
       $ tools/docker/identify    # Disable password
       $ tools/docker/run
 

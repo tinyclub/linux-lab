@@ -64,7 +64,6 @@ tags:
     or
     $ tools/docker/build          # Build from source code
 
-    $ tools/docker/uid            # 确保 uid 一致，两边都可操作
     $ tools/docker/identify       # 关闭登陆密码，允许无密登陆
     $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器
 

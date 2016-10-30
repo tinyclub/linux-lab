@@ -29,6 +29,7 @@ title : Sitemap
 
 {% for page in site.pages %}
 {% if page.layout != null and page.layout != 'feed' %}
+{% if page.url contains ".html" %}{% continue %}{% endif %}
 	<url>
 	<loc>{{site.production_url}}{{ page.url | remove: 'index.html' }}</loc>
 	{% if page.last_updated %}

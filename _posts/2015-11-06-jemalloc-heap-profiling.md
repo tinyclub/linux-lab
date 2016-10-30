@@ -3,7 +3,7 @@ title: jemalloc 之堆占用剖析·内部实现
 author: Chen Jie
 layout: post
 album: 内存管理
-permalink: /the-builtin-heap-profiling-of-jemalloc
+permalink: /the-builtin-heap-profiling-of-jemalloc/
 tags:
   - jemalloc
   - malloc

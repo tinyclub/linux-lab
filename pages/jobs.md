@@ -1,6 +1,5 @@
 ---
 layout: page
-group: navigation
 toc: false
 title: Jobs
 tagline: 由各企业一线工程师发布的工作机会

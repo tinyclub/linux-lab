@@ -6,7 +6,6 @@ title : Sitemap
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 {% assign site_url = site.production_url | append:'/' %}
-
 <url>
 	<loc>{{ site_url }}</loc>
 	<lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
@@ -17,34 +16,24 @@ title : Sitemap
 {% for post in site.posts %}
 <url>
 	<loc>{{site.production_url}}{{ post.url }}</loc>
-	{% if post.last_updated %}
-	<lastmod>{{ post.last_updated | date_to_xmlschema }}</lastmod>
-	{% elsif post.date %}
-	<lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-	{% else %}
-	<lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-	{% endif %}
+	{% if post.last_updated %}<lastmod>{{ post.last_updated | date_to_xmlschema }}</lastmod>
+	{% elsif post.date %}<lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+	{% else %}<lastmod>{{ site.time | date_to_xmlschema }}</lastmod>{% endif %}
 	<changefreq>monthly</changefreq>
         <priority>0.6</priority>
 </url>
 {% endfor %}
 
 {% for page in site.pages %}
-{% if page.layout != null and page.layout != 'feed' and page.url != "/" %}
-{% if page.url contains ".html" %}{% continue %}{% endif %}
-	<url>
+{% if page.layout != null and page.layout != 'feed' and page.url != "/" %}{% if page.url contains ".html" %}{% continue %}{% endif %}
+<url>
 	<loc>{{site.production_url}}{{ page.url | remove: 'index.html' }}</loc>
-	{% if page.last_updated %}
-	<lastmod>{{ page.last_updated | date_to_xmlschema }}</lastmod>
-	{% elsif page.date %}
-	<lastmod>{{ page.date | date_to_xmlschema }}</lastmod>
-	{% else %}
-	<lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-	{% endif %}
+	{% if page.last_updated %}<lastmod>{{ page.last_updated | date_to_xmlschema }}</lastmod>
+	{% elsif page.date %}<lastmod>{{ page.date | date_to_xmlschema }}</lastmod>
+	{% else %}<lastmod>{{ site.time | date_to_xmlschema }}</lastmod>{% endif %}
 	<changefreq>monthly</changefreq>
-        <priority>0.6</priority>
-	</url>
-{% endif %}
-{% endfor %}
+        <priority>0.5</priority>
+</url>
+{% endif %}{% endfor %}
 
 </urlset>

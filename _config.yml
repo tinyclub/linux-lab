@@ -1,6 +1,6 @@
 # This is the default format.
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
-permalink: /:title
+permalink: /:title/
 
 baseurl: /
 encoding: utf-8
@@ -23,7 +23,7 @@ title : 泰晓科技
 tagline: 聚焦嵌入式 Linux - 追本溯源，见微知著！
 start: 2010
 
-production_url : http://tinylab.org
+production_url: http://tinylab.org
 
 compress_html:
   clippings: all
@@ -45,14 +45,14 @@ JB :
   
   theme_name: tinylab.org
 
-  archive_path: /archive.html
-  authors_path: /authors.html
-  categories_path : /categories.html
-  tags_path : /tags.html
+  archive_path: /archive/
+  authors_path: /authors/
+  categories_path : /categories/
+  tags_path : /tags/
+  albums_path: /albums/
+  groups_path: /groups/
   atom_path : /atom.xml
   rss_path : /rss.xml
-  albums_path: /albums/
-  groups_path: /groups.html
 
   posts:
     title_length: 25

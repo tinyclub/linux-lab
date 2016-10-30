@@ -1,18 +1,18 @@
 
 - title: 分类
-  permalink: /categories.html
+  permalink: /categories/
   description: 按分类排列文章
 
 - title: 存档
-  permalink: /archive.html
+  permalink: /archive/
   description: 按发表时间排列文章
 
 - title: 标签
-  permalink: /tags.html
+  permalink: /tags/
   description: 按标签排列文章
 
 - title: 作者
-  permalink: /authors.html
+  permalink: /authors/
   description: 按作者排列文章
 
 - title: 专辑
@@ -20,5 +20,5 @@
   description: 文章专辑
 
 - title: 分组
-  permalink: /groups.html
+  permalink: /groups/
   description: 文章按原创、资讯、招聘、人才等类型分组

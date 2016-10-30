@@ -3,8 +3,8 @@
   return: file_exists_result = true
   
   examples:
-    {% include JB/file_exists file="/404.html" %}
-    {% if file_exists_result %}Found "/404.html"!{% else %}Did not find "/404.html".{% endif %}
+    {% include JB/file_exists file="/404/" %}
+    {% if file_exists_result %}Found "/404/"!{% else %}Did not find "/404/".{% endif %}
 
     {% assign filename = "/405.html" %}
     {% include JB/file_exists file=filename %}

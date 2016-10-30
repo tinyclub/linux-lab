@@ -41,8 +41,8 @@ addrs:
 * 薪资：面谈
 
 * 联系：
-  * 微信：Phoebe@QingCloud，请说明『青云QingCloud』
-  * 邮箱：phoebe@yunify.com
+  * 微信：jen1991626，请说明『青云QingCloud』
+  * 邮箱：Jane@yunify.com
 
 ## Cloud Core System Engineer （若干）
 

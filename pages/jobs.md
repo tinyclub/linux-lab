@@ -1,10 +1,11 @@
 ---
 layout: page
 toc: false
-title: Jobs
+group: navigation
+title: 机会
 tagline: 由各企业一线工程师发布的工作机会
 permalink: /jobs/
-keywords: Android, Linux, 工作机会
+keywords: Android, Linux, Jobs, 工作机会
 description: 这里所有的工作机会都由企业一线员工发布，定位清晰，目标明确。
 order: 10
 ---

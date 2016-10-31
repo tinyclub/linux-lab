@@ -54,7 +54,7 @@
         {% break %}
       {% endif %}
      {% assign downcase_name = category | downcase %}
-      <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看所有 {{category}} 文章">{{ category | capitalize }} <sup>{{ site.categories[downcase_name].size}}</sup></a> 
+      <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category | downcase | replace: ' ','-' | replace:'/','-' }}-ref" title="查看所有 {{category}} 文章">{{ category | capitalize }} <sup>{{ site.categories[category].size}}</sup></a> 
     {% endfor %}
 
     {% if article.album %}

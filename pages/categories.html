@@ -18,7 +18,7 @@ comments: false
 {% for category in site.data.categories %}
   {% assign name = category.name %}
   {% assign downcase_name = name | downcase %}
-  {% assign categories = site.categories[downcase_name] %}
+  {% assign categories = site.categories[name] %}
   {% assign size = categories.size %}
   <h2 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h2>
 
@@ -42,7 +42,7 @@ comments: false
     {% for child in category.categories %}
       {% assign name = child.name %}
       {% assign downcase_name = name | downcase %}
-      {% assign child_categories = site.categories[downcase_name] %}
+      {% assign child_categories = site.categories[name] %}
       {% assign size = child_categories.size %}
       <h3 id ="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if child_size %} <sup>({{ size }})</sup>{% endif %}</h3>
 
@@ -67,7 +67,7 @@ comments: false
 
             {% assign name = g.name %}
             {% assign downcase_name = name | downcase %}
-            {% assign g_categories = site.categories[downcase_name] %}
+            {% assign g_categories = site.categories[name] %}
             {% assign size = g_categories.size %}
             <h4 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h4>
             {% if size %}
@@ -92,7 +92,7 @@ comments: false
 
                     {% assign name = gg.name %}
                     {% assign downcase_name = name | downcase %}
-                    {% assign gg_categories = site.categories[downcase_name] %}
+                    {% assign gg_categories = site.categories[name] %}
                     {% assign size = gg_categories.size %}
                     <h5 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name }}{% if size %} <sup>({{ size }})</sup>{% endif %}</h5>
 

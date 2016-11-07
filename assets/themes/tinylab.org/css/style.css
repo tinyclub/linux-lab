@@ -1330,4 +1330,7 @@ short_prev_next {
     .pagination {
         display: none
     }
+    .author-box-wrap {
+        display: none
+    }
 }

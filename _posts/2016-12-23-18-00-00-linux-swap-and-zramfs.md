@@ -1,10 +1,10 @@
 ---
 layout: post
 author: 'Zhizhou Tian'
-title: "内存交换系统与Zram"
+title: "Linux Swap 与 Zramfs 详解"
 group: original
-permalink: /swap-and-zram/
-description: "内存管理中的常见概念：内存回收、交换子系统、Zram交换技术"
+permalink: /linux-swap-and-zramfs/
+description: "本文详细介绍了内存管理中的常见概念，内存回收，交换子系统以及Zramfs交换技术。"
 categories:
   - 内存管理
 tags:
@@ -12,17 +12,22 @@ tags:
   - Swap
   - Android
   - Zram
+  - Zramfs
+  - Linux
 ---
 
 > By ZhizhouTian of [TinyLab.org][1]
 > 2016-12-23 18:04:30
 
+## 简介
 
-## 内存回收
+Zramfs 是 Linux 内核中采用时间换空间的一种技术。它通过压缩内存（Zram）来作为交换分区，通过压缩比来获取更多可利用的内存空间。该技术目前在各类内存受限的嵌入式系统中，尤其是 Android 手机、电视等设备上广泛采用，本文对此进行了详细介绍。
 
-### 内存管理中的常见概念
+为了更好地理解，首先我们介绍了内存管理基本概念，内存回收以及内存交换技术。
 
-#### 内存管理区struct zone
+## 内存管理基本概念
+
+### 内存管理区 struct zone
 
 `struct zone`表示一个内存管理区，用于跟踪page用量、空闲区域、锁等统计信息，内部含有`page_high`、`page_low`、`page_min`三个水位线。
 
@@ -33,11 +38,11 @@ tags:
 
 `normal zone`管理 `1024-128 = 896M` 以下的内存，high zone管理896M以上的内存。注意，ARM32 架构下，Linux-v3.2之后的版本中，对此进行了修改，请参考[mail list](http://lists.infradead.org/pipermail/linux-arm-kernel/2011-September/065382.html)。在这一提交中，将属于内核的1G空间的最后264M划作三个部分：第一个8M用于隔离，第二部分的240M用于vmalloc，最后16M用于连续DMA。也就是说normal zone位于`1024-264=760M`之下了（同时也是`high_memory`的值）。
 
-#### PFN（page frame number）
+### PFN（page frame number）
 
 PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，从`0x8000_0000/PAGE_SHIFT`开始。内存管理区的（start, end）使用的就是PFN的值。
 
-#### 页 struct page
+### 页 struct page
 
 该结构体用于表示一个页框，在 ARM32 架构中，可以通过`mem_map`数组与PFN进行对应。该结构体中与页框回收比较相关的成员包括：
 
@@ -62,7 +67,7 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
   许多page的属性在zram中另有定义。比如lru用于链接zspage所属的所有页。详细见zram的介绍。
 
-#### PTE与VMA
+### PTE 与 VMA
 
 - Page Table Entry表示进程的Page Table中的一项，即最低级的页表项，一般为4K大小。
 
@@ -72,11 +77,11 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
 - VMA与PTE的关系：每个VMA的虚拟地址被划分为多个页，这些页可以通过2级映射（ARM32 ）或者3级映射（ARM64），通过缺页中断，内核将这些页映射到真实的物理页上，对应page table中的一个pte，所以每个VMA对应0至多个PTE。
 
-### 内存回收
+## 内存回收
 
 当系统内存紧张时即会进行内存回收。回收的办法，或者是对文件页进行写回，或者是对匿名页进行交换。
 
-#### Anon Page与File Cache
+### File Cache 与 Anon Page
 
 可以被回收的页可划分为两种：
 
@@ -88,13 +93,13 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
   其特征是，内容不来自于外部存储设备，`page->mapping`末位为1，例如为用户进程进程中的malloc系统调用分配的页即属于匿名页。在内存回收时，匿名页将会被交换到交换区而保存起来。交换之后页将被释放。
 
-  除了一些特殊的页面分配方法（比如在映射时即进行页面分配，以提高性能）之外，大多用户进程的页（无论是文件页还是匿名页）都是通过page fault进行分配的。这些属于用户进程的页中，除了`PG_unevictable`修饰（不可回收）的页面都是可以进行回收的（关于这个部分的介绍请见[这里](https://lwn.net/Articles/286485/)，比如ramfs所属页、`mlock()`的页等）。当页面通过page fault被分配的时候，file page cache 被加入到非活动链表中(inactive list)， 匿名页(anonymous page)被加入到活动链表中(active list)。
+除了一些特殊的页面分配方法（比如在映射时即进行页面分配，以提高性能）之外，大多用户进程的页（无论是文件页还是匿名页）都是通过page fault进行分配的。这些属于用户进程的页中，除了`PG_unevictable`修饰（不可回收）的页面都是可以进行回收的（关于这个部分的介绍请见[这里](https://lwn.net/Articles/286485/)，比如ramfs所属页、`mlock()`的页等）。当页面通过page fault被分配的时候，file page cache 被加入到非活动链表中(inactive list)， 匿名页(anonymous page)被加入到活动链表中(active list)。
 
-### LRU算法
+### LRU 算法
 
-  在内存回收时，系统会对页加以选择：如果选择经常被用到的页，即便回收了，马上又要被用到，这样不仅不能降低内存紧张的情形，反而会增加系统的负担。所以应当选择不太常用的页（或最近没有被用到的页）来回收。采用的主要算法就是LRU算法。
+在内存回收时，系统会对页加以选择：如果选择经常被用到的页，即便回收了，马上又要被用到，这样不仅不能降低内存紧张的情形，反而会增加系统的负担。所以应当选择不太常用的页（或最近没有被用到的页）来回收。采用的主要算法就是LRU算法。
 
-  Linux为了实现该算法，给每个zone都提供了5个LRU链表：
+Linux为了实现该算法，给每个zone都提供了5个LRU链表：
 
 - Active Anon Page，活跃的匿名页，`page->flags`带有PG_active
 - Inactive Anon Page，不活跃的匿名页，`page->flags`不带有PG_active
@@ -111,21 +116,21 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
 而inactive list尾部的页，将在内存回收时优先被回收（写回或者交换）。
 
-#### lru缓存
+#### lru 缓存
 
-  每个zone都有一套lru链表，而zone使用一个spinlock对于LRU链表的访问进行保护。在SMP系统上，各个CPU频繁的访问和更新lru链表将造成大量的竞争。因此，针对lru的四种操作，每个CPU都有四个percpu的`struct page*`数组，将进行需要进行相应操作的页先缓存在这个数组中。当数组满或者内存回收时，则将数组中的页更新到相应的lru上。
+每个zone都有一套lru链表，而zone使用一个spinlock对于LRU链表的访问进行保护。在SMP系统上，各个CPU频繁的访问和更新lru链表将造成大量的竞争。因此，针对lru的四种操作，每个CPU都有四个percpu的`struct page*`数组，将进行需要进行相应操作的页先缓存在这个数组中。当数组满或者内存回收时，则将数组中的页更新到相应的lru上。
 
-  举个例子：当CPU0从normal zone上分配了一个页之后，即将这个页放到操作1的数组中。当数组满了之后，则将数组中的页逐个的加入到对应的zone所属的inactive page list或者inactive anon list（根据page可以得到对应的zone信息和该page是一个文件页还是匿名页的信息。新页首次加入lru链表，默认状态为inactive）。
+举个例子：当CPU0从normal zone上分配了一个页之后，即将这个页放到操作1的数组中。当数组满了之后，则将数组中的页逐个的加入到对应的zone所属的inactive page list或者inactive anon list（根据page可以得到对应的zone信息和该page是一个文件页还是匿名页的信息。新页首次加入lru链表，默认状态为inactive）。
 
-#### lru list的更新
+#### lru list 的更新
 
 除非进行页面回收，否则内存页在挂到lru list上之后是不移动的。对于匿名页和文件页，lru有着不同的更新策略：
 
-**对于匿名页链表的更新：**
+- 对于匿名页链表的更新
 
   系统要求inactive anon lru的总量不能低于某个值。该值是一个经验值。对于1G的系统，要求inactive anon lru上挂的内存页总量不低于250M。当内存回收启动时发现inactive anon不足时，则从active anon lru list尾部拿一些page（一般为32个），将他们的PTE中的ACCESSD标记清0（每次访问这个页面，硬件会将该位置1），放在inactive list的链表头。然后遍历inactive lru的链表尾部，如果此时ACCESSD的标记为1（说明最近被访问过），则重新放到active list中，否则将交换出去。
 
-**对于文件页链表的更新：**
+- 对于文件页链表的更新
 
   系统要求inactive file-cache lru上页的总量不低于active file-cache lru上页的总量即可。当内存回收启动时发现不满足上述情况，则从active file-cache lru链表的尾部拿一些page，清空ACCESSED标记，保持`PG_referenced`，放到inactive的头部。然后扫描inactive的尾部，并进行以下处理：
 
@@ -133,17 +138,13 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
   如果映射了该文件页的进程的PTE中有ACCESSED标记为1，则放到active file-cache lru的头。否则，则写回并释放。
 
-  那么，为什么相对匿名页，文件页会使用一个`PG_referenced`呢？这是因为一个文件页，常常是被多个进程映射的。对这个标记的设置，在read/write等系统调用中。
-
-  该图所涉及的函数主要有：`shrink_active_list`，`make_page_accessed`等。
-
-  当inactive链表上的页数不够的时候，会调用`shrink_active_list`，该函数会将active链表上的页move到inactive链表上。`shrink_page_list`处理处于inactive状态的页面。分以下几种情况：
+那么，为什么相对匿名页，文件页会使用一个`PG_referenced`呢？这是因为一个文件页，常常是被多个进程映射的。对这个标记的设置，在read/write等系统调用中。
 
 ### 文件页与匿名页的回收比例
 
-  内存回收时，会按照一定的比例对匿名页与文件缓存的回收，而swapiness就是这个比值。可以通过`/proc/sys/vm/swappiness`进行设置。当这个值为0时，则表示仅以释放文件页来回收内存，设置为100的时候，则一半来自文件页，一半来自匿名页。
+内存回收时，会按照一定的比例对匿名页与文件缓存的回收，而swapiness就是这个比值。可以通过`/proc/sys/vm/swappiness`进行设置。当这个值为0时，则表示仅以释放文件页来回收内存，设置为100的时候，则一半来自文件页，一半来自匿名页。
 
-#### 调用内存回收接口的两条路径
+### 调用内存回收接口的两条路径
 
 有两条路径会调用内存回收接口：
 
@@ -152,12 +153,12 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
 是时候祭出这张图了：
 
-![](http://people.linaro.org/~zhizhou.tian/SwapToZramOrFile.png)
+![Swap to Zram or File](/wp-content/uploads/2016/12/swap2zramorfile.png)
 
 两条路径都会调用shrink_zones()，而该函数会对每个zone的inactive lru list进行回收。
-对于文件页的处理，这里不作讨论。接下来讨论对匿名页的处理 - 交换
+对于文件页的处理，这里不作讨论。接下来讨论对匿名页的处理，即交换。
 
-### 匿名页的内存回收 - 交换
+## 匿名页的内存回收 - 交换
 
 交换用来为匿名页提供备份，可以分为三类：
 
@@ -182,28 +183,26 @@ PFN是在系统初始化时，以4K为单位对所有可用内存进行编号，
 
 每个交换区都由一组页槽（page slot）组成，每个页槽大小一页。交换区的第一个页槽永久存放有关交换区的信息：
 
-<pre>
-union swap_header {
-	struct {
-		char reserved[PAGE_SIZE - 10];
-		char magic[10]; /* SWAP-SPACE or SWAPSPACE2，用于标记分区或文件为交换区 */
-	} magic;
-	struct {
-		char		bootbits[1024]; /* Space for disklabel etc.包含分区数据、磁盘标签等 */
-		__u32		version;  /* 交换算法的版本 */
-		__u32		last_page;   /* 可有效使用的最后一个槽 */
-		__u32		nr_badpages;/* 有缺陷的页槽的个数 */
-		unsigned char	sws_uuid[16];
-		unsigned char	sws_volume[16];
-		__u32		padding[117];/* 用于填充的字节 */
-		__u32		badpages[1]; /* 用来指定有缺陷的页槽的位置 */
-	} info;
-};
-</pre>
+    union swap_header {
+    	struct {
+    		char reserved[PAGE_SIZE - 10];
+    		char magic[10]; /* SWAP-SPACE or SWAPSPACE2，用于标记分区或文件为交换区 */
+    	} magic;
+    	struct {
+    		char		bootbits[1024]; /* Space for disklabel etc.包含分区数据、磁盘标签等 */
+    		__u32		version;  /* 交换算法的版本 */
+    		__u32		last_page;   /* 可有效使用的最后一个槽 */
+    		__u32		nr_badpages;/* 有缺陷的页槽的个数 */
+    		unsigned char	sws_uuid[16];
+    		unsigned char	sws_volume[16];
+    		__u32		padding[117];/* 用于填充的字节 */
+    		__u32		badpages[1]; /* 用来指定有缺陷的页槽的位置 */
+    	} info;
+    };
 
 ### 创建与激活交换区
 
-通过`mkswap`可以将某个分区设置成交换区，初始化union swap\_header，检查所有页槽并确定有缺陷页槽的位置。交换区由交换子区组成，子区由页槽组成，由`swap_extent`来表示，包含页首索引、子区页数及起始磁盘扇区号。当激活交换区时，组成交换区的所有子区的链表将创建。存放在磁盘分区中的交换区只有一个子区，但是存放在文件中的交换区可能有多个子区，这是因为文件系统可能没有把该文件全部分配在磁盘的一组连续块中。
+通过`mkswap`可以将某个分区设置成交换区，初始化 `union swap_header`，检查所有页槽并确定有缺陷页槽的位置。交换区由交换子区组成，子区由页槽组成，由`swap_extent`来表示，包含页首索引、子区页数及起始磁盘扇区号。当激活交换区时，组成交换区的所有子区的链表将创建。存放在磁盘分区中的交换区只有一个子区，但是存放在文件中的交换区可能有多个子区，这是因为文件系统可能没有把该文件全部分配在磁盘的一组连续块中。
 
 ### 交换区优先级
 
@@ -213,52 +212,50 @@ union swap_header {
 
 每个活动的交换区都有自己的`swap_info_struct`：
 
-<pre>
-struct swap_info_struct {
-	unsigned long	flags;		/* SWP_USED etc: see above，交换区标志 */
-	signed short	prio;		/* swap priority of this type，交换区优先级 */
-	struct plist_node list; 	/* entry in swap_active_head */
-	struct plist_node avail_list;	/* entry in swap_avail_head */
-	signed char	type;		/* strange name for an index */
-	unsigned int	max;		/* extent of the swap_map，最大页槽数 */
-	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
-	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
-	struct swap_cluster_info free_cluster_head; /* free cluster list head */
-	struct swap_cluster_info free_cluster_tail; /* free cluster list tail */
-	unsigned int lowest_bit;	/* index of first free in swap_map */
-	unsigned int highest_bit;	/* index of last free in swap_map */
-	unsigned int pages;		/* total of usable pages of swap */
-	unsigned int inuse_pages;	/* number of those currently in use */
-	unsigned int cluster_next;	/* likely index for next allocation */
-	unsigned int cluster_nr;	/* countdown to next cluster search */
-	struct percpu_cluster __percpu *percpu_cluster; /* per cpu's swap location */
-	struct swap_extent *curr_swap_extent;  /* 指向最近使用的子区描述符 */
-	struct swap_extent first_swap_extent;/* 第一个交换子区。由于是块设备所以仅有一个交换子区 */
-	struct block_device *bdev;	/* swap device or bdev of swap file */
-	struct file *swap_file; 	/* seldom referenced */
-	unsigned int old_block_size;	/* seldom referenced */
-	unsigned long *frontswap_map;	/* frontswap in-use, one bit per page */
-	atomic_t frontswap_pages;	/* frontswap pages in-use counter */
-	spinlock_t lock;		/*
-					 * protect map scan related fields like
-					 * swap_map, lowest_bit, highest_bit,
-					 * inuse_pages, cluster_next,
-					 * cluster_nr, lowest_alloc,
-					 * highest_alloc, free/discard cluster
-					 * list. other fields are only changed
-					 * at swapon/swapoff, so are protected
-					 * by swap_lock. changing flags need
-					 * hold this lock and swap_lock. If
-					 * both locks need hold, hold swap_lock
-					 * first.
-					 */
-	struct work_struct discard_work; /* discard worker */
-	struct swap_cluster_info discard_cluster_head; /* list head of discard clusters */
-	struct swap_cluster_info discard_cluster_tail; /* list tail of discard clusters */
-};
-</pre>
+    struct swap_info_struct {
+    	unsigned long	flags;		/* SWP_USED etc: see above，交换区标志 */
+    	signed short	prio;		/* swap priority of this type，交换区优先级 */
+    	struct plist_node list; 	/* entry in swap_active_head */
+    	struct plist_node avail_list;	/* entry in swap_avail_head */
+    	signed char	type;		/* strange name for an index */
+    	unsigned int	max;		/* extent of the swap_map，最大页槽数 */
+    	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
+    	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
+    	struct swap_cluster_info free_cluster_head; /* free cluster list head */
+    	struct swap_cluster_info free_cluster_tail; /* free cluster list tail */
+    	unsigned int lowest_bit;	/* index of first free in swap_map */
+    	unsigned int highest_bit;	/* index of last free in swap_map */
+    	unsigned int pages;		/* total of usable pages of swap */
+    	unsigned int inuse_pages;	/* number of those currently in use */
+    	unsigned int cluster_next;	/* likely index for next allocation */
+    	unsigned int cluster_nr;	/* countdown to next cluster search */
+    	struct percpu_cluster __percpu *percpu_cluster; /* per cpu's swap location */
+    	struct swap_extent *curr_swap_extent;  /* 指向最近使用的子区描述符 */
+    	struct swap_extent first_swap_extent;/* 第一个交换子区。由于是块设备所以仅有一个交换子区 */
+    	struct block_device *bdev;	/* swap device or bdev of swap file */
+    	struct file *swap_file; 	/* seldom referenced */
+    	unsigned int old_block_size;	/* seldom referenced */
+    	unsigned long *frontswap_map;	/* frontswap in-use, one bit per page */
+    	atomic_t frontswap_pages;	/* frontswap pages in-use counter */
+    	spinlock_t lock;		/*
+    					 * protect map scan related fields like
+    					 * swap_map, lowest_bit, highest_bit,
+    					 * inuse_pages, cluster_next,
+    					 * cluster_nr, lowest_alloc,
+    					 * highest_alloc, free/discard cluster
+    					 * list. other fields are only changed
+    					 * at swapon/swapoff, so are protected
+    					 * by swap_lock. changing flags need
+    					 * hold this lock and swap_lock. If
+    					 * both locks need hold, hold swap_lock
+    					 * first.
+    					 */
+    	struct work_struct discard_work; /* discard worker */
+    	struct swap_cluster_info discard_cluster_head; /* list head of discard clusters */
+    	struct swap_cluster_info discard_cluster_tail; /* list tail of discard clusters */
+    };
 
-**`flags`字段**：包含的位的含义为：
+** `flags` 字段**：包含的位的含义为：
 
     enum {
 	SWP_USED	= (1 << 0),	/* is slot in swap_info[] used?指示该交换区是否是活动的 */
@@ -280,14 +277,17 @@ struct swap_info_struct {
     #define SWAP_MAP_MAX	0x3e	/* Max duplication count, in first swap_map */
     #define SWAP_MAP_BAD	0x3f	/* Note pageblock is bad, in first swap_map */
     #define SWAP_HAS_CACHE	0x40	/* Flag page is cached, in first swap_map，表示页被缓存了？ */
+
 由于一个页可以属于几个进程的地址空间，所以它可能从一个进程的地址空间被换出，但仍然保留在ram中。因此可能把同一个页换出多次。一个页在物理上仅被换出并存储一次，但是后来每次换出该页都会增加swap_map计数（同时`_mapcount`会减小吗？）。其实现逻辑为`swap_duplicate()`：
 
 1. 使用`swap_type(swap_entry_t)`提取所在分区及offset，通过`swap_info[]`获得`struct swap_info_struct *`，通过`struct swap_info_struct->swap_map[]`获得页槽计数值。
+
 2. 使用`swap_count(unsigned char)`来查看页槽计数值是不是`SWAP_MAP_BAD`
+
 3. 增加页槽计数值
-	1. 如果参数为`SWAP_HAS_CACHE`，则是原有值加上它（表示当前页被缓存了?）
-	2. 如果参数为1，则判断是否超出`SWAP_MAP_MAX`，不超出则增加1
-	3. 如果计数值包含COUNT_CONTINUED，则可能是用来处理vmalloc page的？
+    - 如果参数为`SWAP_HAS_CACHE`，则是原有值加上它（表示当前页被缓存了?）
+    - 如果参数为1，则判断是否超出`SWAP_MAP_MAX`，不超出则增加1
+    - 如果计数值包含COUNT_CONTINUED，则可能是用来处理vmalloc page的？
 
 需要注意的是，首次分配页槽时（也就是`get_swap_page`调用`scan_swap_map`），会将`SWAP_HAS_CACHE`传递给页槽计数
 
@@ -301,101 +301,116 @@ struct swap_info_struct {
 
 **`swap_info`**：`struct swap_info_struct swap_info[]`表示所有的交换区，数组长度`MAX_SWAPFILES`，用`nr_swapfiles - 1`来表示数组中最后一个已经激活的交换区的index。
 
-##### 3.5 换出页标识符
+### 换出页标识符
+
 pte共有三种状态：
 
 - 当页不属于进程的地址空间（进程页表下），或者页框还没有分配给进程时，此时是空项
 - 最后一位为0，表示该页被换出。此时pte表示为换出页标识符。
 - 最后一位为1，页在ram中。
 
-在换出状态下，pte被称为swap_entry_t（换出页标识符）。
-`typedef struct {   unsigned long val; } swp_entry_t;`
+在换出状态下，pte被称为swap_entry_t（换出页标识符）：`typedef struct {   unsigned long val; } swp_entry_t;`
 
 该标识符由三个部分充满一个long：最高5bit表示来自哪个swap分区，2bit表示是否来自于shmem/tempfs，24bit表示在页槽中的offset，交换区最多有2^24个页槽（64GB）。最后一位为0表示该页已经换出。
 
-##### 3.6 激活与禁止交换区
+### 激活与禁止交换区
+
 <font color='red'>需要注意的是，交换分区的大小设置必须在交换分区尚未激活的状态下。</font>
+
+#### swapon
 
 `swapon`：激活交换分区（以/dev/zram0为例）。
 
 函数原型：`SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)`
 
-在使用gdb调试时，需要断点sys_swapon才能断点到该函数。下面是该函数的具体逻辑
+在使用gdb调试时，需要断点 `sys_swapon` 才能断点到该函数。下面是该函数的具体逻辑
 
 1. `struct swap_info_struct *p = alloc_swap_info()`分配一个si
+
 2. `struct file *swap_file = file_open_name("/dev/zram0");`打开设备节点，获得文件描述符。之前一直以为在kernel里不能打开文件，这里看来并非如此。
+
 3. `struct inode *inode = swap_file->f_mapping->host;` 通过`f_mapping`可以获得`struct file`的`struct address_space`，再通过`->host`来获得所属于的`inode`。
+
 4. `claim_swapfile(p, inode)`：声明/dev/zram0被p独占
-	1. 通过`S_ISBLK`来判断当前inode是否是块设备
-	2. 通过`blkdev_get(p->bdev, O_EXCL, p)`来以独占模式打开`p->bdev`，并说明独占者为p
-	3. 通过`set_blocksize(p->bdev, PAGE_SIZE)`将设备的块大小设置为一页
+    - 通过`S_ISBLK`来判断当前inode是否是块设备
+    - 通过`blkdev_get(p->bdev, O_EXCL, p)`来以独占模式打开`p->bdev`，并说明独占者为p
+    - 通过`set_blocksize(p->bdev, PAGE_SIZE)`将设备的块大小设置为一页
+
 5. 操作`swap_header`
-	1. `page = read_mapping_page()`，读取swap的第一个页；
-	2. `union swap_header *swap_header = kmap(page);`获得swap的头
-	3. `unsigned long maxpages = read_swap_header(p, swap_header)`返回可以分配的总页数。取决于两点，`swap_entry_t`中swap offset的bit数，以及pte在不同架构下的长度。
+    - `page = read_mapping_page()`，读取swap的第一个页；
+    - `union swap_header *swap_header = kmap(page);`获得swap的头
+    - `unsigned long maxpages = read_swap_header(p, swap_header)`返回可以分配的总页数。取决于两点，`swap_entry_t`中swap offset的bit数，以及pte在不同架构下的长度。
+
 6. `unsinged char *swap_map = vzalloc(maxpages)`，调用vzalloc来对每一个页槽分配计数值
+
 7. `p->cluster_next = prandom_u32() % p->highest_bit`，将cluster_next设置为一个随机页槽位置
+
 8. `cluster_info = vzalloc(maxpages/SWAP_CLUSTER*sizeof(*cluster_info))`：以`SWAP_CLUSTER`为单位，为所有的页槽分组。
+
 9. `p->percpu_cluster = alloc_percpu(struct percpu_cluster)`
+
 10. `setup_swap_map_and_extents`
-	1. 遍历`swap_header->info.nr_badpages`，为0，掠过
-	2. 遍历所有cluster，`i = maxpages不小于所有cluster的`，掠过
-	3. 将第0个`struct swap_cluster_info->data`自增1，表示usage counter自增1
-	4. `setup_swap_extents`创建交换子区(swap extents)，由于满足S_ISBLK（块设备），仅有一个交换子区
-	5. 遍历全部的cluster，并通过cluster->data将它们串起来
-		1. 由于`p->cluster_next`是随机的，所以cluster的index也是随机的。这个cluster被赋值给`p->free_cluster_head`。
-		2. 从`free_cluster_head`所在的cluster开始，每个cluster的`struct swap_cluster_info->data`都等于下一个cluster的index。如果已经是最后一个cluster了则会绕到第0个
-		3. 如果是第0个则跳过（第0个cluster不被使用吗？）
+    - 遍历`swap_header->info.nr_badpages`，为0，掠过
+    - 遍历所有cluster，`i = maxpages不小于所有cluster的`，掠过
+    - 将第0个`struct swap_cluster_info->data`自增1，表示usage counter自增1
+    - `setup_swap_extents`创建交换子区(swap extents)，由于满足S_ISBLK（块设备），仅有一个交换子区
+    - 遍历全部的cluster，并通过cluster->data将它们串起来
+        * 由于`p->cluster_next`是随机的，所以cluster的index也是随机的。这个cluster被赋值给`p->free_cluster_head`。
+        * 从`free_cluster_head`所在的cluster开始，每个cluster的`struct swap_cluster_info->data`都等于下一个cluster的index。如果已经是最后一个cluster了则会绕到第0个
+        * 如果是第0个则跳过（第0个cluster不被使用吗？）
+
 11. 调用`enable_swap_info`，将当前的`swap_info_struct`按照prio加入到`swap_avail_head`。在该函数中，`total_swap_pages += p->pages`，也就是说该变量等于所有交换分区的页槽数之和。
+
 12. 成功返回
 
-`swapoff`(TODO)
+#### `swapoff`(TODO)
 
-`try_to_unuse()`(TODO)
+#### `try_to_unuse()`(TODO)
 
+### 分配与释放页槽
 
-##### 3.7 分配与释放页槽
-<pre>
-struct swap_cluster_info {
-	unsigned int data:24; /* 如果下一个cluster是空闲的则存储在这里 */
-	unsigned int flags:8;  /* 参考下面的define */
-};
-#define CLUSTER_FLAG_FREE 1 /* This cluster is free */
-#define CLUSTER_FLAG_NEXT_NULL 2 /* This cluster has no next cluster */
-struct percpu_cluster {
-	struct swap_cluster_info index; /* Current cluster index */
-	unsigned int next; /* Likely next allocation offset */
-};
-</pre>
-
+    struct swap_cluster_info {
+    	unsigned int data:24; /* 如果下一个cluster是空闲的则存储在这里 */
+    	unsigned int flags:8;  /* 参考下面的define */
+    };
+    #define CLUSTER_FLAG_FREE 1 /* This cluster is free */
+    #define CLUSTER_FLAG_NEXT_NULL 2 /* This cluster has no next cluster */
+    struct percpu_cluster {
+    	struct swap_cluster_info index; /* Current cluster index */
+    	unsigned int next; /* Likely next allocation offset */
+    };
+    
 一个cluster就是`SWAPFILE_CLUSTER`（256）个page slot组合在一起的块，所有空闲的cluster将组织在一个链表中。在SSD页槽搜索算法中，为每一个CPU都分配了一个cluster，所以每个cpu都能从它自己的cluster中分配页槽并顺序的swapout，以便增加swapout的吞吐量。
 
 **搜索页槽**的函数路径为：
-<pre>
-kswapd --> balance_pgdat --> kswapd_shrink_zone --> shrink_zone --> shrink_lruvec --> shrink_list --> shrink_inactive_list --> shrink_page_list --> pageout --> shmem_writepage --> get_swap_page --> scan_swap_map
-</pre>
+
+    kswapd --> balance_pgdat --> kswapd_shrink_zone --> shrink_zone --> shrink_lruvec --> shrink_list --> shrink_inactive_list --> shrink_page_list --> pageout --> shmem_writepage --> get_swap_page --> scan_swap_map
+
 `get_swap_page`：在该函数中，它会以`plist_for_each_entry_safe`来遍历`swap_avail_head`。若仅有一个交换分区，则该list仅有一个元素，所以该函数除了一些合理性判断外，作用就是调用了`scan_swap_map`：
 
 1. 若`scan_swap_map`返回非0，则`get_swap_page`返回对应的swap entry：`swp_entry(si->type, offset)`
 2. 若返回0，则遍历其他交换分区。由于此处仅有一个交换分区，因此直接返回0。
 
 `scan_swap_map`，原型为：
+
 `static unsigned long scan_swap_map(struct swap_info_struct *si, unsigned char usage)`，执行逻辑：
 
 1. 由于采用了SSD页槽搜索算法，因此会直接跳入`scan_swap_map_try_ssd_cluster`，为当前CPU分配cluster：	`percpu_cluster->index = si->free_cluster_head`，`percpu_cluster->next = cluster_next(&si->free_cluster_head)`，最终通过参数返回`offset = si->cluster_next`，进入check状态
-2. `checks`状态，对得到的页槽(offset)进行检查，在这里执行的逻辑有：
-	1. 如果offset所在页槽已经有人用了（`si->swap_map[offset] != 0`），则`goto scan`，进入扫描状态
-	2. `si->inuse_pages++`
-	3. 如果`si->inuse_pages == si->pages`，说明已经全部用光，此时将当前si从`swap_avail_head`中删除，`get_swap_page`就不会遍历到这个交换分区了
-	4. `si->swap_map[offset] = usage`，此处usage为传入参数`SWAP_HAS_CACHE`
-	5. `si->cluster_next = offset + 1`，这样下次分配时即可从当前cluster的下一个页槽分配了。
-	6. `si->flags -= SWP_SCANNING`，退出分配页槽的状态，返回offset
-3. `scan`状态：从当前offset开始遍历整个交换分区
-	1. 从当前offset开始，遍历到`si->highest_bit`，如果有空闲页槽则进入`check`状态
-	2. 否则会绕到`si->lowest_bit`，遍历到刚刚offset的位置，如果有空闲页槽就进入`check`状态
-	3. 如果根本找不到空闲页槽，则退出分配页槽状态，返回0
 
-##### 3.8 交换高速缓存
+2. `checks`状态，对得到的页槽(offset)进行检查，在这里执行的逻辑有：
+    - 如果offset所在页槽已经有人用了（`si->swap_map[offset] != 0`），则`goto scan`，进入扫描状态
+    - `si->inuse_pages++`
+    - 如果`si->inuse_pages == si->pages`，说明已经全部用光，此时将当前si从`swap_avail_head`中删除，`get_swap_page`就不会遍历到这个交换分区了
+    - `si->swap_map[offset] = usage`，此处usage为传入参数`SWAP_HAS_CACHE`
+    - `si->cluster_next = offset + 1`，这样下次分配时即可从当前cluster的下一个页槽分配了。
+    - `si->flags -= SWP_SCANNING`，退出分配页槽的状态，返回offset
+
+3. `scan`状态：从当前offset开始遍历整个交换分区
+    - 从当前offset开始，遍历到`si->highest_bit`，如果有空闲页槽则进入`check`状态
+    - 否则会绕到`si->lowest_bit`，遍历到刚刚offset的位置，如果有空闲页槽就进入`check`状态
+    - 如果根本找不到空闲页槽，则退出分配页槽状态，返回0
+
+### 交换高速缓存
 
 向交换区来回传送页会引发很多竞争条件，具体的说，交换子系统必须仔细处理下面的情形：
 
@@ -412,9 +427,10 @@ kswapd --> balance_pgdat --> kswapd_shrink_zone --> shrink_zone --> shrink_lruve
 
 **交换高速缓存的实现：**
 
-![](http://people.linaro.org/~zhizhou.tian/swap_cache.png)
+![Swap Cache](/wp-content/uploads/2016/12/swap_cache.png)
 
 交换高速缓存由页高速缓存数据结构和过程实现。页高速缓存的核心就是一组基数树，基数树算法可以从`address_space`对象地址（即该页的拥有者）和偏移量值推算出页描述符的地址。
+
 在交换高速缓存中页的存放方式是隔页存放，并有如下特征：
 
 - 页描述符的mapping字段为null
@@ -433,7 +449,8 @@ kswapd --> balance_pgdat --> kswapd_shrink_zone --> shrink_zone --> shrink_lruve
 4. 调用`swap_address_space()`从上面的`swapper_spaces`中获得`address_space`。
 5. 调用`radix_tree_insert()`将页插入到基数树中（`address_space->page_tree`）
 
-##### 3.9 页换出
+### 页换出
+
 第一步，准备交换高速缓存。如果`shrink_page_list()`函数确认某页为匿名页(`PageAnon()`函数返回1)而且交换高速缓存中没有相应的页框(页描述符的`PG_swapcache`标志为0)，内核就调用`add_to_swap()`函数。该函数会在交换区分配一个页槽，并把一个页框（其页描述符作为参数传递进来）插入交换高速缓存。函数主要执行步骤如下：
 
 1. 调用`get_swap_page()`分配一个新的页槽，如果失败则返回0
@@ -450,96 +467,105 @@ kswapd --> balance_pgdat --> kswapd_shrink_zone --> shrink_zone --> shrink_lruve
 第三步，将数据写入交换区。在这一步里会检查页是否是脏页（`PG_dirty`是否置位，<font color='red'>为什么仅针对脏页？是因为没写的也可以直接被释放吗？</font>）。如果是，则`pageout()`将会被执行。其具体逻辑为：
 
 1. 调用`is_page_cache_freeable()`判断该页的引用数，除了调用者、基数树（即swapcache）之外，还可能有某些buffer在引用该页（此时page的`PG_private`或`PG_private2`必定有置位）。如果并非如此就退出`pageout()`
-2. 如果页的mapping为空则，要么退出`pageout()`，要么该页属于buffer。通过`page_has_private()`来判断是否如此。如果是的话，则通过`try_to_free_buffer()`来释放缓冲区（这个缓冲区是文件系统缓冲，<font color='red'>具体逻辑还需要研究</font>）
-3. 清零`PG_dirty`，`pageout()`回调`page->mapping->a_ops->writepage()`，而page的mapping指向全局变量`swapper_spaces`数组中某元素（任一元素都相同），从而调用`swap_writepage`，具体逻辑为：
-	1. 在`try_to_free_swap()`中调用`page_swapcount()`检查是否至少有一个用户态进程引用该页。<font color='green'>有趣的是，这里并不检查`page->_mapcount`，而是检查对应的页槽的引用计数。</font>如果引用数为0，则将swapcache删除（从基数树中删除页框索引）
-	2. 调用`__swap_writepage`，传入`bio_end_io_t`类型的回调函数`end_swap_bio_write()`
-		1. 首先检查交换分区有无`SWP_FILE`，即是否正常开启并运行中。zram交换分区标志为0x53，并无此标志。（具体见`swap_info_struct->flags`的描述）
-		2. 调用`bdev_write_page()`，向块设备中写入指定页。参数有：`struct swap_info_struct->bdev`（在zram中，`zram_rwpage`等函数都注册在这个block device的opts中）、page所对应的sector、要交换的page。进入该函数时，页被锁住且`PG_writeback`不置位，退出时状态相反。期间通过`bdev->bd_disk->fops->rw_page`回调`zram_rw_page`。
 
+2. 如果页的mapping为空则，要么退出`pageout()`，要么该页属于buffer。通过`page_has_private()`来判断是否如此。如果是的话，则通过`try_to_free_buffer()`来释放缓冲区（这个缓冲区是文件系统缓冲，<font color='red'>具体逻辑还需要研究</font>）
+
+3. 清零`PG_dirty`，`pageout()`回调`page->mapping->a_ops->writepage()`，而page的mapping指向全局变量`swapper_spaces`数组中某元素（任一元素都相同），从而调用`swap_writepage`，具体逻辑为：
+    - 在`try_to_free_swap()`中调用`page_swapcount()`检查是否至少有一个用户态进程引用该页。<font color='green'>有趣的是，这里并不检查`page->_mapcount`，而是检查对应的页槽的引用计数。</font>如果引用数为0，则将swapcache删除（从基数树中删除页框索引）
+    - 调用`__swap_writepage`，传入`bio_end_io_t`类型的回调函数`end_swap_bio_write()`
+        * 首先检查交换分区有无`SWP_FILE`，即是否正常开启并运行中。zram交换分区标志为0x53，并无此标志。（具体见`swap_info_struct->flags`的描述）
+        * 调用`bdev_write_page()`，向块设备中写入指定页。参数有：`struct swap_info_struct->bdev`（在zram中，`zram_rwpage`等函数都注册在这个block device的opts中）、page所对应的sector、要交换的page。进入该函数时，页被锁住且`PG_writeback`不置位，退出时状态相反。期间通过`bdev->bd_disk->fops->rw_page`回调`zram_rw_page`。
+ 
 第四步，将page释放。取消`PG_locked`。并将`page->lru`加入到`free_pages`。最后，数组`free_pages`会被`free_hot_cold_page_list()`释放，而交换不成功的页则要被putback
 
-##### 3.10 页换入
+### 页换入
+
 当进程试图对一个已被换出的页进行寻址时，必然会发生页的换入。在以下条件全满足时，缺页异常处理程序会触发一个换入操作，关于这个部分的详细说明，在进程地址空间的寻址中有详细说明：
 
 - 引起异常的地址所在的页是一个有效的页，也就是说，它属于当前进程的一个线性区
 - 页不在内存中，也就是页表项的Present标志被清除
 - 与页有关的页表项不为空，但是`PG_dirty`位被清零，意味着页表项乃是一个换出页标识符
 
+## Zram 交换技术
 
-
-### 4 Zram交换技术
 zram即是上文提及的交换区的一种实现，与传统交换区实现的不同之处在于，传统交换区是将内存中的页交换到磁盘中暂时保存起来，发生缺页的时候，从磁盘中读取出来换入。而zram则是将内存页进行压缩，仍然存放在内存中，发生缺页的时候，进行解压缩后换入。根据经验，LZO压缩算法一般可以将内存页中的数据压缩至1/3，相当于原本三个页的数据现在一个页就能存下了，赚到了两个页，从而使可用内存感觉起来变多了。
 
-##### 4.1 Zram的基本操作：
-<pre>
-/* 对zram的设置，必须在交换区未激活的状态下执行 */
-echo 3 > /sys/block/zram0/max_comp_streams
-echo $((400*1024*1024)) > /sys/block/zram0/disksize
+### Zram 基本操作：
 
-/* 创建交换区，详细见mkswap */
-mkswap /dev/block/zram0
-/* 激活交换区 */
-swapon /dev/block/zram0
-/* 关闭交换区 */
-swapoff /dev/zram0
-</pre>
+对zram的设置，必须在交换区未激活的状态下执行：
 
-##### 4.2 Zram中主要的数据结构
+    echo 3 > /sys/block/zram0/max_comp_streams
+    echo $((400*1024*1024)) > /sys/block/zram0/disksize
+    
+创建交换区，详细见mkswap：
+
+    mkswap /dev/block/zram0
+
+激活交换区：
+
+    swapon /dev/block/zram0
+
+关闭交换区：
+
+    swapoff /dev/zram0
+
+### Zram 中主要的数据结构
+
 **struct size_class及struct zspage：**
 
-![](http://people.linaro.org/~zhizhou.tian/zs_page.JPG)
+![zs_page](/wp-content/uploads/2016/12/zs_page.jpg)
 
-zram使用了`__alloc_page()`接口来整页整页的获取内存。一般情况下，我们会将页再次划分，以保证其内存被充分的使用尽量少的产生内存碎片。但是，由于来自用户的页被压缩后，其大小在[0, 4096]范围内是随机的。那么将页分配为多大都不合适。<br>
-因此，zram将内存页进行了不同大小的划分，大小的范围是[32byte, 4096byte]，间隔8byte，也就是32byte、40byte、48byte直到4096byte。对于压缩后不足32byte的也使用32byte单位的页来存储。zram使用了`struct size_class`类型来表示它们。其定义为：
-<pre>
-struct size_class {
-	spinlock_t lock;
-	struct page *fullness_list[_ZS_NR_FULLNESS_GROUPS];
-	/*
-	 * Size of objects stored in this class. Must be multiple
-	 * of ZS_ALIGN.
-	 */
-	int size;
-	unsigned int index;
+Zram 使用了`__alloc_page()`接口来整页整页的获取内存。一般情况下，我们会将页再次划分，以保证其内存被充分的使用尽量少的产生内存碎片。但是，由于来自用户的页被压缩后，其大小在[0, 4096]范围内是随机的。那么将页分配为多大都不合适。
 
-	/* Number of PAGE_SIZE sized pages to combine to form a 'zspage' */
-	int pages_per_zspage;
-	struct zs_size_stat stats;
+因此，Zram将内存页进行了不同大小的划分，大小的范围是`[32byte, 4096byte]`，间隔8byte，也就是32byte、40byte、48byte直到4096byte。对于压缩后不足32byte的也使用32byte单位的页来存储。Zram使用了`struct size_class`类型来表示它们。其定义为：
 
-	/* huge object: pages_per_zspage == 1 && maxobj_per_zspage == 1 */
-	bool huge;
-};
-</pre>
+    struct size_class {
+    	spinlock_t lock;
+    	struct page *fullness_list[_ZS_NR_FULLNESS_GROUPS];
+    	/*
+    	 * Size of objects stored in this class. Must be multiple
+    	 * of ZS_ALIGN.
+    	 */
+    	int size;
+    	unsigned int index;
+    
+    	/* Number of PAGE_SIZE sized pages to combine to form a 'zspage' */
+    	int pages_per_zspage;
+    	struct zs_size_stat stats;
+    
+    	/* huge object: pages_per_zspage == 1 && maxobj_per_zspage == 1 */
+    	bool huge;
+    };
+
 可是这种办法还是有一个缺陷：每个页最末尾的，不足一个单位大小的内存被浪费了。此时选择的办法是，将几个页联合起来（最多四个页），选择浪费最少的方案：
-<pre>
-struct zs_pool *zs_create_pool(const char *name, gfp_t flags) {
-	for (i = zs_size_classes - 1; i >= 0; i--) {
-		size = ZS_MIN_ALLOC_SIZE + i * ZS_SIZE_CLASS_DELTA;
-		pages_per_zspage = get_pages_per_zspage(size);
-		class->pages_per_zspage = pages_per_zspage;
-	}
-	...
-}
 
-static int get_pages_per_zspage(int class_size) {
-	for (i = 1; i <= ZS_MAX_PAGES_PER_ZSPAGE; i++) {
-		int zspage_size;
-		int waste, usedpc;
+    struct zs_pool *zs_create_pool(const char *name, gfp_t flags) {
+    	for (i = zs_size_classes - 1; i >= 0; i--) {
+    		size = ZS_MIN_ALLOC_SIZE + i * ZS_SIZE_CLASS_DELTA;
+    		pages_per_zspage = get_pages_per_zspage(size);
+    		class->pages_per_zspage = pages_per_zspage;
+    	}
+    	...
+    }
+    
+    static int get_pages_per_zspage(int class_size) {
+    	for (i = 1; i <= ZS_MAX_PAGES_PER_ZSPAGE; i++) {
+    		int zspage_size;
+    		int waste, usedpc;
+    
+    		zspage_size = i * PAGE_SIZE;
+    		waste = zspage_size % class_size;
+    		usedpc = (zspage_size - waste) * 100 / zspage_size;
+    
+    		if (usedpc > max_usedpc) {
+    			max_usedpc = usedpc;
+    			max_usedpc_order = i;
+    		}
+    	}
+    
+    	return max_usedpc_order;
+    }
 
-		zspage_size = i * PAGE_SIZE;
-		waste = zspage_size % class_size;
-		usedpc = (zspage_size - waste) * 100 / zspage_size;
-
-		if (usedpc > max_usedpc) {
-			max_usedpc = usedpc;
-			max_usedpc_order = i;
-		}
-	}
-
-	return max_usedpc_order;
-}
-</pre>
 这几个联合起来的page，被称为zspage。在一个zspage中，至少包含一个page，最多有4个page。
 他们的特征是：
 
@@ -552,23 +578,24 @@ static int get_pages_per_zspage(int class_size) {
 
 **zspage的内存存储结构与zs_object**
 
-![](http://people.linaro.org/~zhizhou.tian/zs_object.JPG)
-zram会将zspage按照固定大小进行分割，而每一个单元就被称为一个`zs_object`。一个`zs_object`分为两个部分，第一个部分是一个头，其内容是一个指向某个slab对象的指针handle；第二部分则是实际上的压缩数据。上图所示的，是一个`zs_object`与pte之间的关系：<br />
+![zs_object](/wp-content/uploads/2016/12/zs_object.jpg)
+
+Zram会将zspage按照固定大小进行分割，而每一个单元就被称为一个`zs_object`。一个`zs_object`分为两个部分，第一个部分是一个头，其内容是一个指向某个slab对象的指针handle；第二部分则是实际上的压缩数据。上图所示的，是一个`zs_object`与pte之间的关系：
+
 pte通过`交换分区+页槽值`可以找到当前这个pte被存储到了哪个页槽上。通过页槽值及`swap_map`数组找到在zram内存存储的位置。其位置为某个页的pfn+页内的`zs_object`的index。
 
 ### 换出到Zram交换分区
 
-<pre>
-static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index, int offset)
-{
-	struct page *page = bvec->bv_page;
-	zcomp_compress(zram->comp, zstrm, uncmem, &clen);
-	zs_malloc(meta->mem_pool, clen);
-	zs_get_total_pages(meta->mem_pool);
-	unsigned char * cmem = zs_map_object(meta->mem_pool, handle, ZS_MM_WO);
-	copy_page(cmem, src);
-}
-</pre>
+    static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index, int offset)
+    {
+    	struct page *page = bvec->bv_page;
+    	zcomp_compress(zram->comp, zstrm, uncmem, &clen);
+    	zs_malloc(meta->mem_pool, clen);
+    	zs_get_total_pages(meta->mem_pool);
+    	unsigned char * cmem = zs_map_object(meta->mem_pool, handle, ZS_MM_WO);
+    	copy_page(cmem, src);
+    }
+
 `zram_bvec_write()`主要过程为：
 
 1. 调用`zcomp_compress`将源数据压缩
@@ -581,23 +608,21 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index, i
 
 该函数的作用是根据调用者提供的大小，分配出合适大小的zs_object以便存储压缩数据。
 
-<pre>
-unsigned long zs_malloc(struct zs_pool *pool, size_t size) {
-	first_page = find_get_zspage(class);
-	if (!first_page) {
-		first_page = alloc_zspage(class, pool->flags);
-		set_zspage_mapping(first_page, class->index, ZS_EMPTY);
-	}
-	obj = obj_malloc(first_page, class, handle);
-}
-</pre>
+    unsigned long zs_malloc(struct zs_pool *pool, size_t size) {
+    	first_page = find_get_zspage(class);
+    	if (!first_page) {
+    		first_page = alloc_zspage(class, pool->flags);
+    		set_zspage_mapping(first_page, class->index, ZS_EMPTY);
+    	}
+    	obj = obj_malloc(first_page, class, handle);
+    }
 
 具体流程如下：
 
 1. 调用`find_get_zspage`找到基本满或者基本空的zspage
 2. 如果没有找到，则分配新的zspage
-	1. 将这个zspage以指定大小划分，每个单位的头部为i++
-	2. 将几个page连起来
+    - 将这个zspage以指定大小划分，每个单位的头部为i++
+    - 将几个page连起来
 3. 从zspage中获得第一个没有被使用的`zs_object`并返回
 
 [1]: http://tinylab.org

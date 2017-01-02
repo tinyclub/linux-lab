@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Zhizhou Tian'
-title: "Linux Swap 与 Zramfs 详解"
+title: "Linux Swap 与 Zram 详解"
 group: original
 permalink: /linux-swap-and-zramfs/
 description: "本文详细介绍了内存管理中的常见概念，内存回收，交换子系统以及Zramfs交换技术。"
@@ -21,7 +21,7 @@ tags:
 
 ## 简介
 
-Zramfs 是 Linux 内核中采用时间换空间的一种技术。它通过压缩内存（Zram）来作为交换分区，通过压缩比来获取更多可利用的内存空间。该技术目前在各类内存受限的嵌入式系统中，尤其是 Android 手机、电视等设备上广泛采用，本文对此进行了详细介绍。
+Zram Swap 是 Linux 内核中采用时间换空间的一种技术。它通过压缩内存（Zram）来作为交换分区，通过压缩比来获取更多可利用的内存空间。该技术目前在各类内存受限的嵌入式系统中，尤其是 Android 手机、电视等设备上广泛采用，本文对此进行了详细介绍。
 
 为了更好地理解，首先我们介绍了内存管理基本概念，内存回收以及内存交换技术。
 

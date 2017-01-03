@@ -25,22 +25,22 @@ tags:
 
 为便利计算机课程的学习，泰晓科技在快速构建实验环境方面做了一系列渐进的努力，
 
-1. 创建了一系列实验环境：Labs
+* 创建了一系列实验环境：Labs
     * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言
     * [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
 
-2. 通过 Docker 容器化实验环境：Cloud Lab
-   * 为各实验环境添加了 Dockerfile，通过 Docker 加速环境的安装和可重复构建性
-   * 创建了 Docker 镜像库：`tinylab/xxx`，方便直接下载实验环境
-   * 添加了一系列便利化的管理脚本，方便环境的使用和部署
-   * 拆分出 Cloud Lab 项目，解耦实验环境和实验代码本身，提高了环境管理脚本的可维护性
-   * 添加了基于 novnc 和 gateone 的浏览器直接访问支持，进一步加速实验环境的易用性
+* 通过 Docker 容器化实验环境：Cloud Lab
+    * 为各实验环境添加了 Dockerfile，通过 Docker 加速环境的安装和可重复构建性
+    * 创建了 Docker 镜像库：`tinylab/xxx`，方便直接下载实验环境
+    * 添加了一系列便利化的管理脚本，方便环境的使用和部署
+    * 拆分出 Cloud Lab 项目，解耦实验环境和实验代码本身，提高了环境管理脚本的可维护性
+    * 添加了基于 novnc 和 gateone 的浏览器直接访问支持，进一步加速实验环境的易用性
 
-3. 提高可扩展性，创建基础云镜像：Cloud Ubuntu
-   * 拆分出 Cloud Ubuntu 项目，专门管理各类基础镜像，比如编译环境、虚拟化支持、中文支持、嵌入式开发支持等
-   * 为提高跨网络访问体验，在 Cloud Ubuntu 添加了代理和反向代理支持，方便外网访问内网的实验服务
-   * 为节省包括端口在内的资源，拆分出了 novnc 和 gateone 的代理功能，并添加了自登陆功能
+* 提高可扩展性，创建基础云镜像：Cloud Ubuntu
+    * 拆分出 Cloud Ubuntu 项目，专门管理各类基础镜像，比如编译环境、虚拟化支持、中文支持、嵌入式开发支持等
+    * 为提高跨网络访问体验，在 Cloud Ubuntu 添加了代理和反向代理支持，方便外网访问内网的实验服务
+    * 为节省包括端口在内的资源，拆分出了 novnc 和 gateone 的代理功能，并添加了自登陆功能
 
 截止到目前，形成了三个层次的云实验环境抽象：Cloud Ubuntu、Cloud Lab 和 Labs。
 
@@ -52,9 +52,9 @@ Cloud Ubuntu 不仅实现了一系列基础镜像，而且提供了进一步快�
 
 Cloud Ubuntu 极易扩展，要添加一个新的镜像，以 `xxx` 为例，步骤很简单：
 
-1. 在 `dockerfiles/` 下增加一个 `Dockerfile.xxx`。可在 Dockerfile 开头使用 "From tinylab/cloud-ubuntu" 之类来引用现有的基础镜像。
-2. 在 `system/` 目录下增加 `xxx/`，然后参照 Linux 标准目录结构放置目录和文件即可。其中，`etc/startup.aux/` 下可以放置新工具的配置脚本，`etc/supervisor/conf.d/` 下放置新工具的 supervisord 配置文件，supervisord 类似 init，能够 respawn 因为各种原因退出的服务。如确实有必要，也可以进一步客制化镜像的启动入口 `startup.sh`。
-3. 为了方便管理，可以在 `scripts/` 下增加一个管理脚本，用于传递环境变量之类的给 `etc/startup.aux/` 下的脚本。
+* 在 `dockerfiles/` 下增加一个 `Dockerfile.xxx`。可在 Dockerfile 开头使用 "From tinylab/cloud-ubuntu" 之类来引用现有的基础镜像。
+* 在 `system/` 目录下增加 `xxx/`，然后参照 Linux 标准目录结构放置目录和文件即可。其中，`etc/startup.aux/` 下可以放置新工具的配置脚本，`etc/supervisor/conf.d/` 下放置新工具的 supervisord 配置文件，supervisord 类似 init，能够 respawn 因故退出的服务。如确实有必要，也可以进一步客制化镜像的启动入口 `startup.sh`。
+* 为了方便管理，可以在 `scripts/` 下增加一个管理脚本，用于传递环境变量之类的给 `etc/startup.aux/` 下的脚本。
 
 在扩展之后，可以使用现有的工具来管理镜像：
 
@@ -91,8 +91,8 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
 如果要集成一个新的 `xxx Lab` 进来，可以依次：
 
-1. 在 Cloud Ubuntu 中添加基础镜像 `xxx`
-2. 在 Cloud Lab 中添加 `configs/xxx` 并在 `labs/` 目录下通过 `git submodule add` 命令导入 `xxx Lab` 的代码仓库。
+* 在 Cloud Ubuntu 中添加基础镜像 `xxx`
+* 在 Cloud Lab 中添加 `configs/xxx` 并在 `labs/` 目录下通过 `git submodule add` 命令导入 `xxx Lab` 的代码仓库。
 
 ## 用法演示
 

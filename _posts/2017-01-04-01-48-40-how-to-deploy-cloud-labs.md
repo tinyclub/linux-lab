@@ -133,6 +133,7 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
   创建后可以通过如下命令查看实验环境的访问地址、帐号和密码等：
 
+      $ echo example.com > .host_name
       $ tools/deploy/release
 
 ## 在线体验

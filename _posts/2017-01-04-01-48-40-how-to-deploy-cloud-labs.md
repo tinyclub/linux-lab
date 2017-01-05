@@ -44,6 +44,10 @@ tags:
 
 截止到目前，形成了三个层次的云实验环境抽象：Cloud Ubuntu、Cloud Lab 和 Labs。
 
+* Cloud Ubuntu: <https://github.com/tinyclub/cloud-ubuntu.git>
+* Cloud Lab: <https://github.com/tinyclub/cloud-lab.git>
+* Labs: <https://github.com/tinyclub>
+
 ## Cloud Ubuntu：实验环境
 
 Cloud Ubuntu 不仅实现了一系列基础镜像，而且提供了进一步快速扩展其他镜像的框架。
@@ -96,11 +100,15 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
 ## 用法演示
 
+首先下载 `Cloud Lab`：
+
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab/
+
 接下来参照 Cloud Lab 中的 README.md 简单介绍如何使用一个现有的 Lab。
 
 * 安装 Docker
 
-      $ cd /path/to/cloud-lab/
       $ tools/docker/install
 
   安装以后，可根据实际情况自行配置 `/etc/default/docker`，包括 `--registry-mirror`，`--dns`，`--bip`，`dm.basesize` 等。修改后需要重启服务：

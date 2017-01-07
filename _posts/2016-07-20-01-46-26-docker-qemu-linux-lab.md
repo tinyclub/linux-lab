@@ -81,7 +81,6 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
     or
     $ tools/docker/build       # Build from source
 
-    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
     $ tools/docker/run	       # 加载镜像，拉起一个 Linux Lab 容器
 
 ### 启动

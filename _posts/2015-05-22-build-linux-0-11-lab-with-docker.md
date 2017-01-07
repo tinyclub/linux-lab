@@ -36,7 +36,6 @@ categories:
 
 ## 启动装有实验环境的 Docker 容器
 
-    $ tools/docker/identify     # 关闭 VNC 的登陆密码，方便本地快捷登陆
     $ tools/docker/run
 
 

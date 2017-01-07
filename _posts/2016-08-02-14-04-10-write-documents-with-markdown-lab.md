@@ -65,7 +65,6 @@ Docker 安装/启动：
     or
     $ tools/docker/build        # Build from source
 
-    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
     $ tools/docker/run
 
 ### 使用

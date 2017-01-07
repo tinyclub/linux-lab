@@ -51,7 +51,6 @@ tags:
     or
     $ tools/docker/build  # Build from source
 
-    $ tools/docker/identify    # 关闭登陆密码，允许无密登陆
 
 接着就可以启动该环境，加载镜像，拉起一个 Linux Lab 容器：
 

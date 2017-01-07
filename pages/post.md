@@ -35,7 +35,6 @@ order: 30
 
 * 启动 Jekyll 环境
 
-      $ tools/docker/identify    # Disable password
       $ tools/docker/run
 
   之后可通过浏览器登陆并通过桌面快捷方式进入 `tinylab.org` 工作目录。

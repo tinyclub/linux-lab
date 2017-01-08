@@ -51,4 +51,4 @@ order: 50
 
 ## 打赏
 
-{% include widgets/sponsor %}
+<!-- {% include widgets/sponsor %} -->

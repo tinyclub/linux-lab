@@ -68,7 +68,7 @@ tags:
 
 ### 快速尝鲜
 
-执行 `tools/docker/open` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
+执行 `tools/docker/vnc` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
 
     $ make boot
 

@@ -56,7 +56,7 @@ Docker 安装：
     
     $ tools/docker/run
 
-通过 Docker 安装后，上述命令或者 `tools/docker/open` 会打开一个 VNC 页面，从控制台日志中获取密码并登陆后，会看到桌面的 "Markdown Lab" 图标，点击后即可进入操作终端。
+通过 Docker 安装后，上述命令或者 `tools/docker/vnc` 会打开一个 VNC 页面，从控制台日志中获取密码并登陆后，会看到桌面的 "Markdown Lab" 图标，点击后即可进入操作终端。
 
 ### 使用
 

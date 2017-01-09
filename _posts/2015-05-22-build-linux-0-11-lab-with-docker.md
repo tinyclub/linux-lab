@@ -43,7 +43,7 @@ categories:
 
 上面的命令会打开一个 VNC 登陆界面，从控制台的日志中获取密码并登录即可。
 
-之后也可以直接通过 `tools/docker/open` 来启动 VNC 页面。
+之后也可以直接通过 `tools/docker/vnc` 来启动 VNC 页面。
 
 ## 简单使用
 

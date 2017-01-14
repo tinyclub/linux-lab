@@ -204,7 +204,7 @@ categories:
       * 获取容器挂载路径
       * 通过本地 cp 命令直接拷贝进去
 
-            $ fullid=`sudo docker inspect -f "{ {.Id} }" cf5925e`
+            $ fullid=`sudo docker inspect -f '{{ "{{ .Id " }}}}' cf5925e`
             $ gitbook=/var/lib/docker/aufs/mnt/$fullid/gitbook/
             $ ls $gitbook
             understand_linux_process

@@ -46,17 +46,9 @@ categories:
     sudo apt-get install gcc-powerpc-linux-gnu gcc-powerpc64le-linux-gnu
 
 
-因为 Ubuntu 自带的交叉编译工具不全，可以从 emdebian 项目安装更多交叉编译工具。
+因为 Ubuntu 自带的交叉编译工具不支持 Mips 平台，所以需要额外安装。但是 emdebian.org 从 2014 年以后不再维护，已经无法直接安装。
 
-    sudo -s
-    echo deb http://www.emdebian.org/debian/ wheezy main >> /etc/apt/sources.list.d/emdebian.list
-    apt-get install emdebian-archive-keyring
-    apt-get update
-    wget -c http://archive.ubuntu.com/ubuntu/pool/universe/g/gmp4/libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
-    dpkg -i libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
-    apt-get install gcc-4.3-mipsel-linux-gnu
-
-注：在 ubuntu 14.04 以后找不到 libgmp3c2 这个软件包，导致无法正常安装 emdebian 的工具链，所以上面主动下了一个。
+如果要完整地做完后续实验，强烈推荐使用泰晓科技的 [Linux Lab 实验环境][51]，该环境自带了本文所需的交叉编译工具。下面的所有例子都上传到了该环境的 [examples/assembly/][52] 目录下。
 
 ## Hello World
 
@@ -229,8 +221,6 @@ categories:
 所以，在 MIPS 上，系统调用号为 4004，具体看后面的例子。
 
 下面来看看简化后的例子，例子全部摘自后文的参考资料。
-
-另外，最近已经把下面的所有例子上传到了 [Linux Lab][51] 的 [examples/assembly/][52] 目录下。
 
 ### X86
 
@@ -628,5 +618,5 @@ categories:
 
  [34]: http://logos.cs.uic.edu/366/notes/MIPS%20Quick%20Tutorial.htm
  [50]: http://cs.lmu.edu/~ray/notes/gasexamples/
- [51]: http://github.com/tinyclub/linux-lab
+ [51]: http://tinylab.org/linux-lab
  [52]: https://github.com/tinyclub/linux-lab/tree/master/examples/assembly

@@ -964,7 +964,7 @@ categories:
  [4]: http://weibo.com/tinylaborg
  [5]: http://www.muppetlabs.com/~breadbox/software/tiny/teensy.html
  [6]: http://blog.chinaunix.net/u/19881/showart_215242.html
- [7]: http://www.x86.org/ftp/manuals/tools/elf.pdf
+ [7]: http://refspecs.linuxbase.org/elf/elf.pdf
  [8]: http://www.ibm.com/developerworks/cn/linux/l-assembly/index.html
  [9]: http://www.gexin.com.cn/UploadFile/document2008119102415.pdf
  [10]: http://sourceforge.net/projects/libraryopt

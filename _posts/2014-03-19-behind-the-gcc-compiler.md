@@ -960,7 +960,7 @@ categories:
  [15]: http://www.linuxforums.org/forum/linux-kernel/51790-process-viewing-its-own-proc-pid-map-information.html
  [16]: http://www.linuxforums.org/misc/understanding_elf_using_readelf_and_objdump.html
  [17]: http://netwinder.osuosl.org/users/p/patb/public_html/elf_relocs.html
- [18]: http://www.x86.org/ftp/manuals/tools/elf.pdf
+ [18]: http://refspecs.linuxbase.org/elf/elf.pdf
  [19]: http://www.muppetlabs.com/~breadbox/software/ELF.txt
  [20]: http://www.gccsummit.org/2005/2005-GCC-Summit-Proceedings.pdf
  [21]: http://www.gccsummit.org/2006/2006-GCC-Summit-Proceedings.pdf

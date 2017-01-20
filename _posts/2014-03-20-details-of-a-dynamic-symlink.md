@@ -769,5 +769,5 @@ Linux下elf文件的动态链接器是`ld-linux.so`，即`/lib/ld-linux.so.2`。
  [17]: http://www.ibm.com/developerworks/cn/linux/l-overflow/index.html
  [18]: http://www.ibm.com/developerworks/cn/linux/l-elf/part1/index.html
  [19]: http://www.ibm.com/developerworks/cn/linux/l-elf/part2/index.html
- [20]: http://www.x86.org/ftp/manuals/tools/elf.pdf
+ [20]: http://refspecs.linuxbase.org/elf/elf.pdf
  [21]: http://www.muppetlabs.com/~breadbox/software/ELF.txt

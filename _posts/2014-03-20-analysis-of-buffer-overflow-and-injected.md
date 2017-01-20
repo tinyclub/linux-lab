@@ -1628,11 +1628,11 @@ callshellcode栈的初始分布：
  [2]: http://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
- [5]: http://www.x86.org/intel.doc/386manuals.htm
+ [5]: http://www.rcollins.org/intel.doc/386Manuals.html
  [6]: http://www.faqs.org/faqs/assembly-language/x86/general/part1/
  [7]: http://www.faqs.org/faqs/assembly-language/x86/general/part2/
  [8]: http://www.faqs.org/faqs/assembly-language/x86/general/part3/
- [9]: http://www.x86.org/ftp/manuals/tools/elf.pdf
+ [9]: http://refspecs.linuxbase.org/elf/elf.pdf
  [10]: http://www.xfocus.net/articles/200105/174.html
  [11]: http://www.muppetlabs.com/~breadbox/software/tiny/teensy.html
  [12]: http://www.muppetlabs.com/~breadbox/software/elfkickers.html

@@ -19,13 +19,14 @@ tags:
   - 嵌入式
 ---
 
-<iframe src="http://showterm.io/6fb264246580281d372c6" style="align:center;width:100%;height:680px;"></iframe>
-
 ## 项目描述
 
 该项目致力于快速构建一个基于 Qemu 的 Linux 内核开发环境。
 
   * 使用文档：[README.md][2]
+  * 在线演示
+      * 命令行：<http://showterm.io/6fb264246580281d372c6>
+      * 视频：<http://121.201.68.247:6081/play.html?data=linux-lab>
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。

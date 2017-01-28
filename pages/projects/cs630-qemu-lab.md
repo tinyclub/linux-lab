@@ -14,8 +14,6 @@ tags:
   - CS630
 ---
 
-<iframe src="http://showterm.io/547ccaae139df14c3deec" style="align:center;width:100%;height:680px;"></iframe>
-
 ## 简介
 
 该项目致力于通过 Qemu 学习旧金山大学的汇编语言课程 [CS630][1]。
@@ -25,6 +23,8 @@ tags:
 [CS 630: Advanced Microcomputer Programming (Fall 2008)][1] 是我学过的最好的汇编语言课程，该课程针对 x86 架构, 为了更方便实验，我写了一系列脚本以便这些代码可以跑在 [Qemu][2] 上。
 
 有了这些脚本，学生就可以很方便地在当前开发主机上实验，从而免去了不必要的重启，也避免了烧坏自己主机的风险。
+
+这里为在线演示地址：<http://showterm.io/547ccaae139df14c3deec>。
 
 ## 代码仓库
 

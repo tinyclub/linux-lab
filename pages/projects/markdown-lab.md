@@ -21,13 +21,12 @@ tags:
   - 书籍
 ---
 
-<iframe src="http://showterm.io/1809186b57f904d51aeff" style="align:center;width:100%;height:680px;"></iframe>
-
 ## 项目描述
 
 该项目致力于快速构建一个基于 Docker 的 Markdown 文档编辑环境。
 
   * 使用文档：[README.md][2]
+  * 在线演示：<http://showterm.io/1809186b57f904d51aeff>
   * 代码仓库：[https://github.com/tinyclub/markdown-lab.git][3]
   * 基本特性：
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。

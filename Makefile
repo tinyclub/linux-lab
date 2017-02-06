@@ -338,7 +338,7 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 # Kernel modules
 
-MODULES_EN=$(shell grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
+MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
 # Enable LDT: Linux Driver Template
 ifeq ($(LDT), 1)

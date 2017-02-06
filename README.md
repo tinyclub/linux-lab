@@ -22,7 +22,6 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux
     or
     $ tools/docker/pull # Pull from docker hub
 
-    $ tools/docker/uid
     $ tools/docker/identify
     $ tools/docker/run
 

@@ -6,8 +6,10 @@
 TOP_DIR=$(cd $(dirname $0) && pwd)/../../
 
 # The rootdir
-ROOTDIR=$1
-FILEMAP=$2
+#ROOTDIR=$1
+#FILEMAP=$2
+#echo $ROOTDIR
+#echo $FILEMAP
 
 while read local target
 do

@@ -298,64 +298,70 @@ root-menuconfig:
 
 # Build Buildroot
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
+ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
 ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
 # Install kernel modules?
 KM ?= 1
 
-root:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
-	$(ROOT_INSTALL_TOOL) $(ROOT_OUTPUT)/target $(ROOT_FILEMAP)
-
-ifeq ($(KM),1)
-	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
-	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
-		make kernel KTARGET=modules; \
-	    fi; \
-	    make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
-	fi
+ifeq ($(KM), 1)
+  KERNEL_MODULES = kernel-modules
+  KERNEL_MODULES_INSTALL = kernel-modules-install
 endif
 
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
+root-build:
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
+
+root-filemap:
+	ROOTDIR=$(ROOTDIR) FILEMAP=$(ROOT_FILEMAP) $(ROOT_INSTALL_TOOL)
+
+root-fixup:
 	chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
+
+root-uboot:
 ifeq ($(U),1)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
 	make $(BUILDROOT_UROOTFS)
   endif
 endif
 
+# New building rootfs
+
+root: root-build root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-build root-fixup root-uboot
+
+# Prebuilt rootfs
+
 ifeq ($(PBR), 0)
   ROOT = root
 endif
 
-root-patch: $(ROOT) $(ROOT_DIR)
-ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-	$(ROOT_INSTALL_TOOL) $(ROOTDIR) $(ROOT_FILEMAP)
+root-rebuild:
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
 
-ifeq ($(KM),1)
-	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
-	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
-		make kernel KTARGET=modules; \
-	    fi;				\
-	    make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
-	fi
+root-patch: $(ROOT) $(ROOT_DIR) root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-rebuild
+
+# Kernel modules
+
+MODULES_EN=$(shell grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
+
+kernel-modules:
+ifeq ($(MODULES_EN), 0)
+	make kernel KTARGET=modules
 endif
 
-	cd $(ROOTDIR)/ && find . | sudo cpio -R $(USER):$(USER) -H newc -o | gzip -9 > ../rootfs.cpio.gz && cd $(TOP_DIR)
+kernel-modules-install: $(ROOT) $(ROOT_DIR)
+ifeq ($(MODULES_EN), 0)
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
 endif
 
 # External kernel driver modules
 MODULES ?= $(TOP_DIR)/examples/ldt/
 
 modules:
-	make kernel M=$(MODULES) KTARGET=modules
+	make kernel-modules M=$(MODULES)
 
-modules-install: $(ROOT) $(ROOT_DIR)
-ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-	make kernel M=$(MODULES) KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
-
-	cd $(ROOTDIR)/ && find . | sudo cpio -R $(USER):$(USER) -H newc -o | gzip -9 > ../rootfs.cpio.gz && cd $(TOP_DIR)
-endif
+modules-install:
+	make kernel-modules-install M=$(MODULES)
 
 # Configure Kernel
 kernel-checkout:
@@ -418,7 +424,7 @@ endif
 KTARGET ?= $(IMAGE) $(DTBS)
 
 kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
-	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET) M=$(M)
+	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Configure Uboot
 uboot-checkout:

@@ -9,7 +9,8 @@ IMAGE=$(< $TOP_DIR/lab-name)
 
 LAB_HOST_NAME=$TOP_DIR/.lab_host_name
 
-lab_host=$(< $LAB_HOST_NAME)
+lab_host="localhost"
+[ -f $LAB_HOST_NAME ] && lab_host=$(< $LAB_HOST_NAME)
 lab_name=`basename $IMAGE`
 
 LAB_LOCAL_PORT=$TOP_DIR/.lab_local_port

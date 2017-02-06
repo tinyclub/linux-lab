@@ -468,7 +468,7 @@ uboot:
 	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
 # Checkout kernel and Rootfs
-checkout: kernel-checkout
+checkout: kernel-checkout root-checkout
 
 # Config Kernel and Rootfs
 config: root-defconfig kernel-defconfig

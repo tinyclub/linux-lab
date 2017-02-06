@@ -187,7 +187,7 @@ default:
 
     Host:
 
-        $ ifconfig docker0
+        $ ifconfig br0
         inet addr:172.17.0.3  Bcast:172.17.255.255  Mask:255.255.0.0
         $ cd tftpboot/
         $ ls tftpboot

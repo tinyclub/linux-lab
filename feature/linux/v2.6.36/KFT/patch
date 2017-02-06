@@ -1,6 +1,6 @@
-From 186059811e7403c7e660beb98e1b8799c6aa56a6 Mon Sep 17 00:00:00 2001
-From: Wu Zhangjin <falcon@meizu.com>
-Date: Sat, 8 Oct 2016 17:36:32 +0800
+From 9e0fa7e564d7e3df9f0790b6fc960268037e0a80 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Mon, 10 Oct 2016 12:16:59 +0800
 Subject: [PATCH] feature: Add KFT support
 
 QEMU emulator version 2.0.0 (Debian 2.0.0+dfsg-2ubuntu1.27), Copyright (c) 2003-2008 Fabrice Bellard
@@ -12,43 +12,7 @@ ARCHS/Boards:
     * X86 / qemu-system-i386 -M pc / gcc (Ubuntu/Linaro 4.4.7-8ubuntu1) 4.4.7
     * MIPS / qemu-system-mipsel -M malta / mipsel-linux-gnu-gcc (Debian 4.3.5-4) 4.3.5
 
-Signed-off-by: Wu Zhangjin <falcon@meizu.com>
----
- Documentation/kft.txt              |  388 ++++++++++
- Documentation/kft_kickstart.txt    |  108 +++
- Makefile                           |    4 +
- arch/mips/Kbuild                   |    2 +-
- arch/mips/Kconfig.debug            |   41 +
- arch/mips/boot/compressed/Makefile |    4 +
- arch/mips/include/asm/processor.h  |    2 +-
- arch/mips/kernel/head.S            |    4 +
- arch/x86/Kconfig.debug             |   37 +
- arch/x86/boot/compressed/Makefile  |    5 +
- arch/x86/kernel/Makefile           |    7 +
- include/linux/init.h               |    5 +
- include/linux/kft.h                |   95 +++
- init/main.c                        |   16 +
- kernel/Makefile                    |   19 +
- kernel/kft-core.c                  | 1471 ++++++++++++++++++++++++++++++++++++
- kernel/kft-proc.c                  |   28 +
- kernel/kftstatic.conf              |   41 +
- kernel/sched.c                     |    2 +-
- kernel/softirq.c                   |    2 +-
- kernel/sys.c                       |    8 +
- lib/Makefile                       |   16 +
- scripts/autokft.sh                 |   80 ++
- scripts/kd                         |  671 ++++++++++++++++
- scripts/mkkftrun.pl                |  249 ++++++
- 25 files changed, 3301 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/kft.txt
- create mode 100644 Documentation/kft_kickstart.txt
- create mode 100644 include/linux/kft.h
- create mode 100644 kernel/kft-core.c
- create mode 100644 kernel/kft-proc.c
- create mode 100644 kernel/kftstatic.conf
- create mode 100644 scripts/autokft.sh
- create mode 100644 scripts/kd
- create mode 100644 scripts/mkkftrun.pl
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 
 diff --git a/Documentation/kft.txt b/Documentation/kft.txt
 new file mode 100644
@@ -961,7 +925,7 @@ index 0b72d1a..8835fc4 100644
  quiet_cmd_timeconst  = TIMEC   $@
 diff --git a/kernel/kft-core.c b/kernel/kft-core.c
 new file mode 100644
-index 0000000..5d3dd0f
+index 0000000..a5941e9
 --- /dev/null
 +++ b/kernel/kft-core.c
 @@ -0,0 +1,1471 @@
@@ -2260,7 +2224,7 @@ index 0000000..5d3dd0f
 +/*
 + * stuff for /proc/kft_data
 + */
-+static DECLARE_MUTEX(kft_run_mutex);
++static DEFINE_SEMAPHORE(kft_run_mutex);
 +
 +static void * __noinstrument k_start(struct seq_file *m, loff_t *pos)
 +{

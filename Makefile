@@ -559,8 +559,8 @@ rconfig-save:
 
 save: root-save kernel-save rconfig-save kconfig-save
 
-# Graphic output
-G ?= 1
+# Graphic output? we prefer Serial port ;-)
+G ?= 0
 
 # Launch Qemu, prefer our own instead of the prebuilt one
 BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) -M $(MACH) -m $(MEM) $(NET) -kernel $(KIMAGE)

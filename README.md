@@ -189,14 +189,14 @@ default:
         inet addr:172.17.0.3  Bcast:172.17.255.255  Mask:255.255.0.0
         $ cd tftpboot/
         $ ls tftpboot
-        kft.patch test.log
+        kft.patch kft.log
 
     Qemu Board:
 
         $ ls
         kft_data.log
         $ tftp -g -r kft.patch 172.17.0.3
-        $ tftp -p -r test.log -l kft_data.log 172.17.0.3
+        $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
     Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 

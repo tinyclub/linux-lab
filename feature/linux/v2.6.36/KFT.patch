@@ -1,3 +1,45 @@
+From ece5f3e49e40481be8742687809fb8fdd714bcf8 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Sat, 8 Oct 2016 04:53:33 +0800
+Subject: [PATCH] Add KFT support
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ Documentation/kft.txt              |  388 ++++++++++
+ Documentation/kft_kickstart.txt    |  107 +++
+ Makefile                           |    4 +
+ arch/mips/Kbuild                   |    2 +-
+ arch/mips/Kconfig.debug            |   41 +
+ arch/mips/boot/compressed/Makefile |    4 +
+ arch/mips/include/asm/processor.h  |    2 +-
+ arch/mips/kernel/head.S            |    4 +
+ arch/x86/Kconfig.debug             |   36 +
+ arch/x86/boot/compressed/Makefile  |    5 +
+ include/linux/init.h               |    5 +
+ include/linux/kft.h                |   95 +++
+ init/main.c                        |   17 +
+ kernel/Makefile                    |   19 +
+ kernel/kft-core.c                  | 1471 ++++++++++++++++++++++++++++++++++++
+ kernel/kft-proc.c                  |   28 +
+ kernel/kftstatic.conf              |   41 +
+ kernel/sched.c                     |    2 +-
+ kernel/softirq.c                   |    2 +-
+ kernel/sys.c                       |    8 +
+ lib/Makefile                       |    6 +
+ scripts/autokft.sh                 |   80 ++
+ scripts/kd                         |  671 ++++++++++++++++
+ scripts/mkkftrun.pl                |  249 ++++++
+ 24 files changed, 3283 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/kft.txt
+ create mode 100644 Documentation/kft_kickstart.txt
+ create mode 100644 include/linux/kft.h
+ create mode 100644 kernel/kft-core.c
+ create mode 100644 kernel/kft-proc.c
+ create mode 100644 kernel/kftstatic.conf
+ create mode 100644 scripts/autokft.sh
+ create mode 100644 scripts/kd
+ create mode 100644 scripts/mkkftrun.pl
+
 diff --git a/Documentation/kft.txt b/Documentation/kft.txt
 new file mode 100644
 index 0000000..e266e83
@@ -394,156 +436,119 @@ index 0000000..e266e83
 +   * good for catching calltraces from a single routine, multiple times
 diff --git a/Documentation/kft_kickstart.txt b/Documentation/kft_kickstart.txt
 new file mode 100644
-index 0000000..07d3da7
+index 0000000..bf8cca6
 --- /dev/null
 +++ b/Documentation/kft_kickstart.txt
-@@ -0,0 +1,144 @@
-+	kft kickstart
+@@ -0,0 +1,107 @@
++	KFT Kickstart
 +
-+		falcon <wuzhangjin@gmail.com>, <wuzj@lemote.com>
-+		2009-03-09
++	Falcon <wuzhangjin@gmail.com>
++	2009-03-09, 2016-10-07
 +
-+1. kft
++1. KFT
 +
-+kft is short for kernel function tracing, which is a patch for linux kernel, it
-+can be used to trace the kernel functions from the user
-+space(dynamically/statically).
++KFT is short for kernel function tracing, it is a patch for Linux kernel.
 +
-+be differ from ftrace in rt-preempt, it's not latency tracing, but kernel
-+function executing time & calling relationship tracing. which can be used to
-+find out the hotspots for performance optimization.
++It can be used to trace the kernel functions from the user space (dynamically /
++statically).
 +
-+please read Documentation/kft.txt or the source code of the patch to learn more
++Differ from Ftrace in RT-preempt, it's not latency tracing, but kernel function
++executing time & calling relationship tracing. which can be used to find out
++the hotspots for performance optimization.
++
++Please read Documentation/kft.txt or the source code of the patch to learn more
 +about it.
 +
-+2. usage
++2. Usage
 +
-+2.1 principle
++2.1 Principle
 +
-+	apps					user functions			<-- cscope,calltree,gprof,gcov..
++apps		user functions		<-- cscope,calltree,gprof,gcov,ltrace...
 +
-+				---------------system calls-----------
++	---------system calls----------	<-- strace
 +
-+	kernel					kernel functions		<-- kft,ftrace,kgcov...
++kernel		kernel functions	<-- kft,ftrace,kgcov...
 +
-+there are lots of tools to tracing user functions & kernel functions, which are
-+listed above. but kft, which gives us the possibility "go through" user space
-+to kernel space.
++There are lots of tools for tracing of user functions & kernel functions, which
++are listed above. but KFT gives us the possibility "go through" user space to
++kernel space.
 +
-+when executing a user space application, we can use strace to trace the system
++When executing a user space application, we can use strace to trace the system
 +calls used by this application, and then configure these system calls as the
-+filter entries or exites in the configuration file of kft. after them, prime
-+kft and start your application, the relative kernel functions called by the
-+relative system calls will be traced, after that, we can try to pry into the
-+internal of kernel, what have happen, irq, interrupts, kernel calling
-+relatiionship, kernel executing time. and based on these results, we can do a
-+lot of we want.
++filter entries or exites in the configuration file of KFT. After that, `prime`
++kft and start your application, the related kernel functions called by the
++according system calls will be traced, and then, we can try pry into the
++internal of kernel, what have happen, interrupts, kernel calling relatiionship,
++kernel executing time. And based on these results, we can do a lot of we want.
 +
-+2.2 use it
++2.2 Use it
 +
-+* download the latest kft patch from ftp://dslab.lzu.edu.cn/pub/kft
-+* patch kernel with the relative kft patch
-+* configure it
++Use MIPS as an example:
 +
-+make sure these options are there:
++* Swith to gcc 4.3
 +
-+CONFIG_KALLSYMS=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_KALLSYMS_EXTRA_PASS=y
-+CONFIG_KFT=y
-+CONFIG_KFT_STATIC_RUN=y
++	$ tools/gcc/switch.sh mipsel 4.3
 +
-+* compile it
++* Enable the KFT feature
 +
-+!!!NOTE: currently, kft only work with gcc 3.4.6 
++	$ LINUX=v2.6.36 make kernel-checkout
++	$ LINUX=v2.6.36 make kernel-defconfig
++	$ FEATURE=KFT make kernel-feature
++	$ make kernel-menuconfig
++	$ make kernel
++	$ make boot
 +
-+when enabling CONFIG_KFT_STATIC_RUN, please do this before compiling:
++* Write a configuration file
 +
-+chmod a+x scripts/mkkftrun.pl
++	$ cat config.sym
++	new
++	begin
++		trigger start entry sys_open
++		trigger stop exit sys_open
++	end
 +
-+this tool is used to create a kernel/kftstatic.c from kernel/kftstatic.conf
++  This configuraiton are used to trace the sys_open excuting procedure.
++  please read the Documentation/kft.txt to learn about about the configuration
++  language. NOTE: no need to convert the symbol <--> addr with our new KFT.
 +
-+* reboot to the new kernel
++* Feed the configuration file to kernel
 +
-+* dump the kernel sysmbols
++	$ cat config.sym > /proc/kft
 +
-+cat /proc/kallsyms > system.map
++* Prime the kft
 +
-+* write a configuration file
++	$ echo prime > /proc/kft
 +
-+# file: config.sym
-+new
-+begin
-+	trigger start entry sys_open
-+	trigger stop exit sys_open
-+end
++* Start your program
 +
-+save this content to a file named config.sym
++  Start your program to trigger the system call listed in
++  configuration file.
 +
-+this configuraiton are used to tracing the sys_open excuting procedure. please
-+read the Documentation/kft.txt to learn about about the configuration language.
++* Track the status of KFT
 +
-+* convert the symbols to address to make kernel comfortable
++	$ cat /proc/kft
 +
-+chmod a+x scripts/sym2addr
-+./scripts/sym2addr config.sym system.map > config.addr
++   If have found out a word like "completed", dump the data from
++   /proc/kft_data
 +
-+* feed the configuration file to kernel
++* Dump the data
 +
-+cat config.addr > /proc/kft
++	$ cat /proc/kft_data > log.sym
 +
-+* prime the kft
++* Analyze it
 +
-+echo prime > /proc/kft
++	$ chmod a+x scripts/kd
++	$ ./scripts/kd -c -l -i log.sym
 +
-+* start your program
++2.3 Use it via autokft.sh
 +
-+start your program, which will call the traced system call listed in
-+configuration file.
++A new tool named scripts/autokft.sh can help you to automate the tracing procedure.
 +
-+* trace the status of kft
++Please learn more the `kd` usage from Documentation/kft.txt
 +
-+cat /proc/kft
-+
-+if you have found out a word like "completed", dump the data from
-+/proc/kft_data
-+
-+* dump the data
-+
-+cat /proc/kft_data > log.addr
-+
-+* convert the address to make people comfortable
-+
-+chmod a+x scripts/addr2sym
-+./scripts/addr2sym < log.addr -m system.map > log.sym
-+
-+* analyze it
-+
-+chmod a+x scripts/kd
-+./scripts/kd -c -l -i log.sym
-+
-+2.3 use it via the autokft.sh
-+
-+there is a new tool named scripts/autokft.sh which can help you simplifing the
-+procedure of tracing an indicated function.
-+
-+here are several steps to use it:
-+
-+* compile your kernel with KFT enabled
-+* install this new kernel and reboot into it
-+* enter into the directory of scripts/
-+  or
-+  copy the tools scripts/{kd,addr2sym,sym2addr,autokft.sh} to a directory,and enter into it
-+* trace and indicated function, here we use sys_write as an example
-+  $ ./autokft.sh sys_write ./   # this will be triggered by ourselves
-+  or
-+  $ ./autokft.sh sys_write ./ 1 # this will be triggered by external actions
-+
-+please learn more the kd usage from Documentation/kft.txt
-+
-+that is all, be happy to play with it.
++that is all, Enjoy! 
 diff --git a/Makefile b/Makefile
-index d831b48..d26010f 100644
+index 860c26a..4c6639f 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -557,6 +557,10 @@ else
@@ -557,6 +562,19 @@ index d831b48..d26010f 100644
  ifdef CONFIG_DEBUG_INFO
  KBUILD_CFLAGS	+= -g
  KBUILD_AFLAGS	+= -gdwarf-2
+diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
+index 7dd65cf..e7ef477 100644
+--- a/arch/mips/Kbuild
++++ b/arch/mips/Kbuild
+@@ -1,7 +1,7 @@
+ # Fail on warnings - also for files referenced in subdirs
+ # -Werror can be disabled for specific files using:
+ # CFLAGS_<file.o> := -Wno-error
+-subdir-ccflags-y := -Werror
++# subdir-ccflags-y := -Werror
+ 
+ # platform specific definitions
+ include arch/mips/Kbuild.platforms
 diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
 index 43dc279..76772d6 100644
 --- a/arch/mips/Kconfig.debug
@@ -2481,10 +2499,10 @@ index 0000000..959f64f
 +#   filter funclist schedule
 +#end
 diff --git a/kernel/sched.c b/kernel/sched.c
-index 92c5b60..a82924b 100644
+index dc85ceb..9cfe371 100644
 --- a/kernel/sched.c
 +++ b/kernel/sched.c
-@@ -3726,7 +3726,7 @@ notrace unsigned long get_parent_ip(unsigned long addr)
+@@ -3605,7 +3605,7 @@ notrace unsigned long get_parent_ip(unsigned long addr)
  #if defined(CONFIG_PREEMPT) && (defined(CONFIG_DEBUG_PREEMPT) || \
  				defined(CONFIG_PREEMPT_TRACER))
  
@@ -2507,7 +2525,7 @@ index 07b4f1b..8b69347 100644
  	account_system_vtime(current);
  	trace_hardirq_exit();
 diff --git a/kernel/sys.c b/kernel/sys.c
-index 66136ca..4594070 100644
+index 7f5a0cd..bdf67f1 100644
 --- a/kernel/sys.c
 +++ b/kernel/sys.c
 @@ -47,6 +47,10 @@
@@ -2549,236 +2567,57 @@ index e6a3763..eb9a1a4 100644
  
  ifdef CONFIG_FUNCTION_TRACER
  ORIG_CFLAGS := $(KBUILD_CFLAGS)
-diff --git a/scripts/addr2sym b/scripts/addr2sym
-new file mode 100644
-index 0000000..b43e05c
---- /dev/null
-+++ b/scripts/addr2sym
-@@ -0,0 +1,173 @@
-+#!/usr/bin/python
-+
-+# addr2sym.py - resolve addresses to symbols, using a map file
-+# Reads a log file, and map file, and substitutes function
-+# names and offsets for numeric values in the log.
-+# The re-written log file is sent to standard out.
-+#
-+# A normal usage looks like:
-+# cat boot.log | addr2sym -m linux-2.6.7/System.map >boot.lst
-+#
-+import sys
-+import fileinput
-+import string
-+import re
-+
-+MAX_FUNCS_PER_LINE = 2
-+
-+def startswith(str, pattern):
-+	if string.find(str, pattern)==0:
-+		return 1
-+	else:
-+		return 0
-+
-+def print_error(str):
-+	sys.stderr.write(str+"\n");
-+	sys.stderr.flush()
-+
-+# returns function map (key=addr, value=funcname) and
-+# a list of function tuples (addr, funcname)
-+def read_map(filename):
-+	global map_low, map_high
-+	funcmap = {}
-+	funclist = []
-+	try:
-+		f = open(filename)
-+	except:
-+		print_error("Error: Cannot read map file: %s" % filename)
-+		usage()
-+
-+	for line in f.readlines():
-+		(addr_str, symtype, funcname) = string.split(line, None, 3)
-+		funcmap["0x"+addr_str] = funcname
-+		addr = eval("0x"+addr_str+"L")
-+		funclist.append((addr, funcname))
-+
-+	return (funcmap, funclist)
-+
-+callsite_cache = {}
-+
-+# return string with function and offset for a given address
-+def lookup_sym(funcmap, funclist, addr_str):
-+	global callsite_cache
-+
-+	try:
-+		return funcmap[addr_str]
-+	except:
-+		pass
-+
-+	# no exact match found, now do binary search for closest function
-+
-+	# convert address from string to number
-+	addr = eval(addr_str+"L")
-+
-+	# if address is outside range of addresses in the
-+	# map file, just return the address without converting it
-+	if addr < funclist[0][0] or addr > funclist[-1][0]:
-+		return addr_str
-+
-+	if callsite_cache.has_key(addr):
-+		return callsite_cache[addr]
-+
-+	# do a binary search in funclist for the function
-+	# use a collapsing range to find the closest addr
-+	lower = 0
-+	upper = len(funclist)-1
-+	while (lower != upper-1):
-+		guess_index = lower + (upper-lower)/2
-+		guess_addr = funclist[guess_index][0]
-+		if addr < guess_addr:
-+			upper = guess_index
-+		if addr >= guess_addr:
-+			lower = guess_index
-+
-+	offset = addr-funclist[lower][0]
-+	name = funclist[lower][1]
-+	if startswith(name, "."):
-+		name = name[1:]
-+	func_str = "%s+0x%x" % (name, offset)
-+	callsite_cache[addr] = func_str
-+	return func_str
-+
-+def usage():
-+	print "Usage: addr2sym <infile -m mapfile >outfile"
-+	print "\nexample:"
-+	print "addr2sym <boot.log -m linux-2.6.7/System.map >boot.lst"
-+	sys.exit(1)
-+
-+def main():
-+	# user must have "-m mapfile" at a minimum
-+	if len(sys.argv)<3:
-+		print_error("Error: no map file specified")
-+		usage()
-+
-+	mapfilename = ""
-+	i = 0
-+	while i < len(sys.argv):
-+		if sys.argv[i]=="-m":
-+			try:
-+				mapfilename = sys.argv[i+1]
-+				# remove the args from the argument list
-+				sys.argv[i:i+2]=[]
-+			except:
-+				pass
-+		i = i+1
-+
-+	if not mapfilename:
-+		print_error("Error: missing map file name")
-+		usage()
-+
-+	# read function names and addresses from map file
-+	(funcmap, funclist) = read_map(mapfilename)
-+
-+	for line in fileinput.input():
-+		# strip trailing \n, if present
-+		if line[-1]=='\n':
-+			line = line[:-1]
-+
-+		# convert all hex numbers to symbols plus offsets
-+		# try to preserve column spacing in the output
-+		tmp = line
-+		new_line = ""
-+		m = re.match(r".*?(0x[0-9abcdef]+)(\s*)", tmp)
-+		i_sym = 0
-+		while m:
-+			#print "m.groups=<%s>" % str(m.groups())
-+
-+			# You can comment out the next line to allow unlimited
-+			# function-name conversions per line
-+			i_sym = i_sym + 1
-+
-+			# addr is match for re group 1, look it up
-+			addr_str = tmp[m.start(1): m.end(1)]
-+
-+			# only convert the first hex numbers found
-+			# rest are arguments
-+			if i_sym <= MAX_FUNCS_PER_LINE:
-+				func = lookup_sym(funcmap, funclist, addr_str)
-+			else:
-+				func = addr_str
-+
-+			# add function name to line, in place of address
-+			new_line = new_line + tmp[:m.start(1)] + func
-+			end = m.end(1)
-+
-+			# pad line to keep columns the same
-+			# whitespace might match or not.  If it does, it's
-+			# group 2 from the regex above.
-+			if len(m.groups())>1: # if we also matched whitespace
-+				end = m.end(2)
-+				pad_count = (m.end(2)-m.start(1))-len(func)
-+				if pad_count < 1: pad_count=1
-+				new_line = new_line + " "*pad_count
-+
-+			# scan remainder of line
-+			tmp = tmp[end:]
-+			m = re.match(r".*?(0x[0-9abcdef]+)(\s*)", tmp)
-+
-+		if new_line:
-+			line = new_line
-+		print line
-+
-+if __name__=="__main__":
-+	main()
 diff --git a/scripts/autokft.sh b/scripts/autokft.sh
 new file mode 100644
-index 0000000..446374d0
+index 0000000..cceb0cf
 --- /dev/null
 +++ b/scripts/autokft.sh
-@@ -0,0 +1,86 @@
+@@ -0,0 +1,80 @@
 +#!/bin/bash
-+# autokft.sh -- trace an indicated function automatically
-+# author: falcon <wuzhangjin@gmail.com>
-+# update: 2009-08-06
-+# usage:
++#
++# autokft.sh -- Trace a function automatically
++#
++# Author: falcon <wuzhangjin@gmail.com>
++# Update: 2009-08-06, 2016-10-07
++# Usage:
++#
 +#      $ ./autokft.sh [function_name] [script_path] [1|0]
-+# if you have copied the tools: scripts/{kd,sym2addr,addr2sym} to current directory, try this:
-+# i.e. $ ./autokft.sh sys_write ./ 1
++#
++# E.x. $ ./autokft.sh sys_write ./ 1
 +
 +function error_report
 +{
-+	echo "usage: "
++	echo "Usage: "
 +	echo "    $ ./autokft.sh [function_name] [script_path] [1|0]"
-+	echo "    note: you can copy the tools: scripts/{kd,sym2addr,addr2sym} from the linux kernel source code to current directory, and then try this"
-+	echo "    $ ./autokft.sh sys_write ./    # trigger it ourselves"
++	echo ""
++	echo "    Note: Copy `kd` to the same and then try this"
++	echo ""
++	echo "    $ ./autokft.sh sys_write ./    # Trigger it ourselves"
 +	echo "    or"
-+	echo "    $ ./autokft.sh sys_write ./ 1  # trigger by external actions"
++	echo "    $ ./autokft.sh sys_write ./ 1  # Trigger by external actions"
 +	exit
 +}
 +
-+# get the function need to tace from user
-+[ -z "$1" ] && echo "please input the function need to be traced" && error_report
++# Get the function need to tace from user
++[ -z "$1" ] && echo "Please input the function need to be traced" && error_report
 +
 +trac_func=$1
 +
-+# get the path of the path of the tools: scripts/{sym2addr,addr2sym,kd}
-+script_path=  #/path/to/kernel/usr/src/scripts/
++# Get the path of the path of the tool: `kd`
++script_path=  # /path/to/kernel/usr/src/scripts/
 +
 +[ -n "$2" ] && script_path=$2
 +
 +if [ -z "$script_path" ]; then
-+	echo "please configure the path of scripts as script_path" && error_report
++	echo "Please configure the path of `kd`" && error_report
 +fi
 +
-+# start it manually or automatically
-+auto=0		# if you want to trace it by external trigger, change it to 1
++# Start it manually or automatically
++auto=0		# If want to trace it by external trigger, change it to 1
 +
 +[ -n "$3" ] && auto=$3
 +
-+# generate the latest system.map from /proc/kallsyms 
-+if [ ! -f system.map ]; then
-+	cat /proc/kallsyms > system.map
-+fi
-+
-+# generate a default configuration file for kft
++# Generate a default configuration file for KFT
 +cat <<EOF > config.sym
 +new
 +begin
@@ -2787,18 +2626,15 @@ index 0000000..446374d0
 +end
 +EOF
 +
-+# convert the symbols to address via the system.map
-+$script_path/sym2addr config.sym system.map > config.addr
++# config KFT
++cat config.sym > /proc/kft
 +
-+# config kft
-+cat config.addr > /proc/kft
-+
-+# prime it
++# Prime it
 +echo prime > /proc/kft
 +
 +sleep 1 
 +
-+# start it
++# Start it
 +
 +if [ "$auto" -eq 1 ];then
 +	grep -q "not complete" /proc/kft
@@ -2812,13 +2648,10 @@ index 0000000..446374d0
 +fi
 +sleep 1
 +
-+# get the data
-+cat /proc/kft_data > log.addr
++# Get the data
++cat /proc/kft_data > log.sym
 +
-+# convert the address to symbols
-+$script_path/addr2sym < log.addr -m system.map > log.sym
-+
-+# generate a readable log
++# Generate a readable log
 +$script_path/kd -c -l -i log.sym
 diff --git a/scripts/kd b/scripts/kd
 new file mode 100644
@@ -3752,34 +3585,6 @@ index 0000000..bb9ee3f
 +printf("const int kft_num_runs = %d;\n", $numrun);
 +printf("kft_run_t* kft_first_run = &kft_run0;\n");
 +printf("kft_run_t* kft_last_run = &kft_run%d;\n", $numrun-1);
-diff --git a/scripts/sym2addr b/scripts/sym2addr
-new file mode 100644
-index 0000000..860ddd8
---- /dev/null
-+++ b/scripts/sym2addr
-@@ -0,0 +1,25 @@
-+#/bin/sh
-+
-+if [ -z $2 ]; then
-+	echo "Usage: sym2addr <file> <mapfile>"
-+	echo "Reads <file> and replaces function names with addresses, for any"
-+        echo " word that matches a symbol in <mapfile>."
-+	echo "The result is sent to standard out."
-+	exit 1
-+fi
-+
-+infile=$1
-+mapfile=$2
-+for word in `cat $infile` ; do
-+	case $word in
-+		new|begin|trigger|start|stop|entry|exit|time|filter|mintime|maxtime|noints|onlyints|0|funclist|fend)
-+			;;
-+		*)
-+			addr=`grep " ${word}$" $mapfile | cut -d ' ' -f1`
-+			if [ -n "$addr" ]; then
-+				word="0x$addr"
-+			fi
-+			;;
-+	esac
-+	echo -n "$word "
-+done
+-- 
+1.9.1
+

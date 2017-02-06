@@ -1,0 +1,107 @@
+	KFT Kickstart
+
+	Falcon <wuzhangjin@gmail.com>
+	2009-03-09, 2016-10-07
+
+1. KFT
+
+KFT is short for kernel function tracing, it is a patch for Linux kernel.
+
+It can be used to trace the kernel functions from the user space (dynamically /
+statically).
+
+Differ from Ftrace in RT-preempt, it's not latency tracing, but kernel function
+executing time & calling relationship tracing. which can be used to find out
+the hotspots for performance optimization.
+
+Please read Documentation/kft.txt or the source code of the patch to learn more
+about it.
+
+2. Usage
+
+2.1 Principle
+
+apps		user functions		<-- cscope,calltree,gprof,gcov,ltrace...
+
+	---------system calls----------	<-- strace
+
+kernel		kernel functions	<-- kft,ftrace,kgcov...
+
+There are lots of tools for tracing of user functions & kernel functions, which
+are listed above. but KFT gives us the possibility "go through" user space to
+kernel space.
+
+When executing a user space application, we can use strace to trace the system
+calls used by this application, and then configure these system calls as the
+filter entries or exites in the configuration file of KFT. After that, `prime`
+kft and start your application, the related kernel functions called by the
+according system calls will be traced, and then, we can try pry into the
+internal of kernel, what have happen, interrupts, kernel calling relatiionship,
+kernel executing time. And based on these results, we can do a lot of we want.
+
+2.2 Use it
+
+Use MIPS as an example:
+
+* Swith to gcc 4.3
+
+	$ tools/gcc/switch.sh mipsel 4.3
+
+* Enable the KFT feature
+
+	$ LINUX=v2.6.36 make kernel-checkout
+	$ LINUX=v2.6.36 make kernel-defconfig
+	$ FEATURE=KFT make kernel-feature
+	$ make kernel-menuconfig
+	$ make kernel
+	$ make boot
+
+* Write a configuration file
+
+	$ cat config.sym
+	new
+	begin
+		trigger start entry sys_open
+		trigger stop exit sys_open
+	end
+
+  This configuraiton are used to trace the sys_open excuting procedure.
+  please read the Documentation/kft.txt to learn about about the configuration
+  language. NOTE: no need to convert the symbol <--> addr with our new KFT.
+
+* Feed the configuration file to kernel
+
+	$ cat config.sym > /proc/kft
+
+* Prime the kft
+
+	$ echo prime > /proc/kft
+
+* Start your program
+
+  Start your program to trigger the system call listed in
+  configuration file.
+
+* Track the status of KFT
+
+	$ cat /proc/kft
+
+   If have found out a word like "completed", dump the data from
+   /proc/kft_data
+
+* Dump the data
+
+	$ cat /proc/kft_data > log.sym
+
+* Analyze it
+
+	$ chmod a+x scripts/kd
+	$ ./scripts/kd -c -l -i log.sym
+
+2.3 Use it via autokft.sh
+
+A new tool named scripts/autokft.sh can help you to automate the tracing procedure.
+
+Please learn more the `kd` usage from Documentation/kft.txt
+
+that is all, Enjoy! 

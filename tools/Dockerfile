@@ -56,7 +56,9 @@ RUN apt-get install -y gcc-powerpc-linux-gnu gcc-powerpc64le-linux-gnu openbios-
 
 RUN apt-get install -y gcc-arm-linux-gnueabi gcc-aarch64-linux-gnu
 
-# Install mips toolchain
+RUN apt-get install -y gcc-4.4
+
+# Install more toolchains
 
 RUN apt-get install -y emdebian-archive-keyring
 ADD cross/libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb /
@@ -65,9 +67,25 @@ RUN dpkg -i /libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
 RUN dpkg -i /libmpc2_0.9-4_amd64.deb
 RUN rm /libgmp3c2_4.3.2+dfsg-2ubuntu1_amd64.deb
 RUN rm /libmpc2_0.9-4_amd64.deb
-#RUN apt-get install -y --force-yes gcc-4.3-mipsel-linux-gnu
+
+RUN apt-get install -y --force-yes gcc-4.3-arm-linux-gnueabi
+RUN apt-get install -y --force-yes gcc-4.3-powerpc-linux-gnu
+RUN apt-get install -y --force-yes gcc-4.3-mipsel-linux-gnu
 RUN apt-get install -y --force-yes gcc-4.7-mipsel-linux-gnu
-RUN update-alternatives --install /usr/bin/mipsel-linux-gnu-gcc gcc /usr/bin/mipsel-linux-gnu-gcc-4.7 50
+
+# Install for alternatives
+RUN update-alternatives --install /usr/bin/mipsel-linux-gnu-gcc mipsel-linux-gnu-gcc /usr/bin/mipsel-linux-gnu-gcc-4.7 45
+RUN update-alternatives --install /usr/bin/mipsel-linux-gnu-gcc mipsel-linux-gnu-gcc /usr/bin/mipsel-linux-gnu-gcc-4.3 41
+RUN update-alternatives --install /usr/bin/arm-linux-gnueabi-gcc arm-linux-gnueabi-gcc /usr/bin/arm-linux-gnueabi-gcc-4.7 45
+RUN update-alternatives --install /usr/bin/arm-linux-gnueabi-gcc arm-linux-gnueabi-gcc /usr/bin/arm-linux-gnueabi-gcc-4.3 41
+RUN update-alternatives --install /usr/bin/powerpc-linux-gnu-gcc powerpc-linux-gnu-gcc /usr/bin/powerpc-linux-gnu-gcc-4.8 45
+RUN update-alternatives --install /usr/bin/powerpc-linux-gnu-gcc powerpc-linux-gnu-gcc /usr/bin/powerpc-linux-gnu-gcc-4.3 41
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 45
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.4 41
+
+# Allow update-alternative works with permission
+RUN chmod a+rw /etc/alternatives/
+RUN chmod a+rw /var/lib/dpkg/alternatives/
 
 # For cross gdb
 RUN apt-get install -y software-properties-common

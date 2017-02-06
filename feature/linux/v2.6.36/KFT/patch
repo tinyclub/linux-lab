@@ -1,13 +1,16 @@
-From 7ef199b604eec50411f1f7ec3597b19d01d58bf7 Mon Sep 17 00:00:00 2001
+From 186059811e7403c7e660beb98e1b8799c6aa56a6 Mon Sep 17 00:00:00 2001
 From: Wu Zhangjin <falcon@meizu.com>
-Date: Sat, 8 Oct 2016 12:04:59 +0800
-Subject: [PATCH] FEATURE: ADD KFT support
+Date: Sat, 8 Oct 2016 17:36:32 +0800
+Subject: [PATCH] feature: Add KFT support
 
 QEMU emulator version 2.0.0 (Debian 2.0.0+dfsg-2ubuntu1.27), Copyright (c) 2003-2008 Fabrice Bellard
 
-mipsel-linux-gnu-gcc (Debian 4.3.5-4) 4.3.5
-
 Linux kernel v2.6.36
+
+ARCHS/Boards:
+
+    * X86 / qemu-system-i386 -M pc / gcc (Ubuntu/Linaro 4.4.7-8ubuntu1) 4.4.7
+    * MIPS / qemu-system-mipsel -M malta / mipsel-linux-gnu-gcc (Debian 4.3.5-4) 4.3.5
 
 Signed-off-by: Wu Zhangjin <falcon@meizu.com>
 ---
@@ -19,11 +22,12 @@ Signed-off-by: Wu Zhangjin <falcon@meizu.com>
  arch/mips/boot/compressed/Makefile |    4 +
  arch/mips/include/asm/processor.h  |    2 +-
  arch/mips/kernel/head.S            |    4 +
- arch/x86/Kconfig.debug             |   36 +
+ arch/x86/Kconfig.debug             |   37 +
  arch/x86/boot/compressed/Makefile  |    5 +
+ arch/x86/kernel/Makefile           |    7 +
  include/linux/init.h               |    5 +
  include/linux/kft.h                |   95 +++
- init/main.c                        |   17 +
+ init/main.c                        |   16 +
  kernel/Makefile                    |   19 +
  kernel/kft-core.c                  | 1471 ++++++++++++++++++++++++++++++++++++
  kernel/kft-proc.c                  |   28 +
@@ -31,11 +35,11 @@ Signed-off-by: Wu Zhangjin <falcon@meizu.com>
  kernel/sched.c                     |    2 +-
  kernel/softirq.c                   |    2 +-
  kernel/sys.c                       |    8 +
- lib/Makefile                       |    6 +
+ lib/Makefile                       |   16 +
  scripts/autokft.sh                 |   80 ++
  scripts/kd                         |  671 ++++++++++++++++
  scripts/mkkftrun.pl                |  249 ++++++
- 24 files changed, 3284 insertions(+), 4 deletions(-)
+ 25 files changed, 3301 insertions(+), 4 deletions(-)
  create mode 100644 Documentation/kft.txt
  create mode 100644 Documentation/kft_kickstart.txt
  create mode 100644 include/linux/kft.h
@@ -677,10 +681,10 @@ index ea695d9..41dd61a 100644
  
  	__CPUINIT
 diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index 7508508..bcc621c 100644
+index 7508508..e4afcb3 100644
 --- a/arch/x86/Kconfig.debug
 +++ b/arch/x86/Kconfig.debug
-@@ -299,4 +299,40 @@ config DEBUG_STRICT_USER_COPY_CHECKS
+@@ -299,4 +299,41 @@ config DEBUG_STRICT_USER_COPY_CHECKS
  
  	  If unsure, or if you run an older (pre 4.4) gcc, say N.
  
@@ -696,6 +700,7 @@ index 7508508..bcc621c 100644
 +
 +         See the file Documentation/kft.txt for more information.
 +         Say N here if you are unsure.
++
 +config KFT_STATIC_RUN
 +       bool "Static function tracing configuration"
 +       depends on KFT
@@ -737,6 +742,21 @@ index 0c22955..01db4da 100644
  LDFLAGS_vmlinux := -T
  
  hostprogs-y	:= mkpiggy
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index fedf32a..bca0384 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -132,3 +132,10 @@ ifeq ($(CONFIG_X86_64),y)
+ 	obj-$(CONFIG_PCI_MMCONFIG)	+= mmconf-fam10h_64.o
+ 	obj-y				+= vsmp_64.o
+ endif
++
++ifdef CONFIG_KFT
++CFLAGS_vsyscall_64.o	:= -fno-instrument-functions
++CFLAGS_hpet.o		:= -fno-instrument-functions
++CFLAGS_tsc.o		:= -fno-instrument-functions
++CFLAGS_paravirt.o	:= -fno-instrument-functions
++endif
 diff --git a/include/linux/init.h b/include/linux/init.h
 index de99430..9b9eb68 100644
 --- a/include/linux/init.h
@@ -755,7 +775,7 @@ index de99430..9b9eb68 100644
     retained sections to discarded sections and flag an error.  Pointers to
 diff --git a/include/linux/kft.h b/include/linux/kft.h
 new file mode 100644
-index 0000000..fe4fc33
+index 0000000..3e167e5
 --- /dev/null
 +++ b/include/linux/kft.h
 @@ -0,0 +1,95 @@
@@ -809,7 +829,7 @@ index 0000000..fe4fc33
 +	unsigned long mark; /*  time at which this trigger occured */
 +} kft_trigger_t;
 +
-+#define DEFAULT_RUN_LOG_ENTRIES 20000*5
++#define DEFAULT_RUN_LOG_ENTRIES (20000 * 5)
 +#define MAX_FUNC_LIST_ENTRIES 512
 +
 +typedef struct kft_filters {
@@ -855,7 +875,7 @@ index 0000000..fe4fc33
 +
 +#endif /* _LINUX_KFT_H */
 diff --git a/init/main.c b/init/main.c
-index 94ab488..98373d64 100644
+index 94ab488..be2398e 100644
 --- a/init/main.c
 +++ b/init/main.c
 @@ -49,6 +49,7 @@
@@ -877,15 +897,7 @@ index 94ab488..98373d64 100644
  enum system_states system_state __read_mostly;
  EXPORT_SYMBOL(system_state);
  
-@@ -562,6 +567,7 @@ asmlinkage void __init start_kernel(void)
-  * Interrupts are still disabled. Do necessary setups, then
-  * enable them
-  */
-+	setup_early_kft_clock();
- 	tick_init();
- 	boot_cpu_init();
- 	page_address_init();
-@@ -831,6 +837,11 @@ static noinline int init_post(void)
+@@ -831,6 +836,11 @@ static noinline int init_post(void)
  
  	current->signal->flags |= SIGNAL_UNKILLABLE;
  
@@ -897,7 +909,7 @@ index 94ab488..98373d64 100644
  	if (ramdisk_execute_command) {
  		run_init_process(ramdisk_execute_command);
  		printk(KERN_WARNING "Failed to execute %s\n",
-@@ -857,6 +868,12 @@ static noinline int init_post(void)
+@@ -857,6 +867,12 @@ static noinline int init_post(void)
  	      "See Linux Documentation/init.txt for guidance.");
  }
  
@@ -2558,18 +2570,28 @@ index 7f5a0cd..bdf67f1 100644
  		printk(KERN_EMERG "Restarting system.\n");
  	else
 diff --git a/lib/Makefile b/lib/Makefile
-index e6a3763..eb9a1a4 100644
+index e6a3763..5443fab 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -1,6 +1,12 @@
+@@ -1,6 +1,22 @@
  #
  # Makefile for some libs needed in the kernel.
  #
 +# something in the /lib directory blows up when instrumented, on PPC64 - TODO:check - hofrat
-+ifdef CONFIG_PPC64
++
 +ifdef CONFIG_KFT
-+CFLAGS += -fno-instrument-functions
++
++ifdef CONFIG_PPC64
++EXTRA_CFLAGS := -fno-instrument-functions
 +endif
++
++# cpumask_weight() broken found while num_online_cpus() becomes ZERO but if *cpu_online_mask is 1.
++# TODO: Check why?
++
++ifdef CONFIG_X86
++EXTRA_CFLAGS := -fno-instrument-functions
++endif
++
 +endif
  
  ifdef CONFIG_FUNCTION_TRACER

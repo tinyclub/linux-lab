@@ -241,10 +241,16 @@ endif
 emulator-checkout:
 	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fd && cd $(TOP_DIR)
 
+QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
+
+QPD_BASE=$(TOP_DIR)/patch/qemu/$(QEMU_BASE)/
 QPD=$(TOP_DIR)/patch/qemu/$(QEMU)/
 QP ?= 1
 
 emulator-patch: $(EMULATOR_CHECKOUT)
+ifeq ($(QPD_BASE),$(wildcard $(QPD_BASE)))
+	-$(foreach p,$(shell ls $(QPD_BASE)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD_BASE)/$p\;))
+endif
 ifeq ($(QPD),$(wildcard $(QPD)))
 	-$(foreach p,$(shell ls $(QPD)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD)/$p\;))
 endif
@@ -349,14 +355,23 @@ kernel-menuconfig:
 
 # Build Kernel
 
+LINUX_BASE=$(shell bash -c 'V=${LINUX}; echo $${V%.*}')
+
+KPD_MACH_BASE=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX_BASE)/
 KPD_MACH=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX)/
+KPD_BASE=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX_BASE)/
 KPD=$(TOP_DIR)/patch/linux/$(LINUX)/
 
 KP ?= 1
 kernel-patch:
-	# Kernel 2.6.x need include/linux/compiler-gcc5.h
+ifeq ($(KPD_MACH_BASE),$(wildcard $(KPD_MACH_BASE)))
+	-$(foreach p,$(shell ls $(KPD_MACH_BASE)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_MACH_BASE)/$p\;))
+endif
 ifeq ($(KPD_MACH),$(wildcard $(KPD_MACH)))
 	-$(foreach p,$(shell ls $(KPD_MACH)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_MACH)/$p\;))
+endif
+ifeq ($(KPD_BASE),$(wildcard $(KPD_BASE)))
+	-$(foreach p,$(shell ls $(KPD_BASE)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_BASE)/$p\;))
 endif
 ifeq ($(KPD),$(wildcard $(KPD)))
 	-$(foreach p,$(shell ls $(KPD)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD)/$p\;))

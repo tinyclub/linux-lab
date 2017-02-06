@@ -344,6 +344,19 @@ endif
 	cd $(ROOTDIR)/ && find . | sudo cpio -R $(USER):$(USER) -H newc -o | gzip -9 > ../rootfs.cpio.gz && cd $(TOP_DIR)
 endif
 
+# External kernel driver modules
+MODULES ?= $(TOP_DIR)/examples/ldt/
+
+modules:
+	make kernel M=$(MODULES) KTARGET=modules
+
+modules-install: $(ROOT) $(ROOT_DIR)
+ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
+	make kernel M=$(MODULES) KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
+
+	cd $(ROOTDIR)/ && find . | sudo cpio -R $(USER):$(USER) -H newc -o | gzip -9 > ../rootfs.cpio.gz && cd $(TOP_DIR)
+endif
+
 # Configure Kernel
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fdX && cd $(TOP_DIR)
@@ -405,7 +418,7 @@ endif
 KTARGET ?= $(IMAGE) $(DTBS)
 
 kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
-	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET)
+	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET) M=$(M)
 
 # Configure Uboot
 uboot-checkout:

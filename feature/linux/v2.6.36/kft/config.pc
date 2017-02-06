@@ -1,0 +1,3 @@
+# For X86, TODO: Check?
+CONFIG_HUGETLBFS=y
+CONFIG_SWAP=y

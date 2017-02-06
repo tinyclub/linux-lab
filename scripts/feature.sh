@@ -8,7 +8,7 @@ TOP_DIR=$(dirname `readlink -f $0`)/../
 
 function usage
 {
-	echo -e "Usage: $0 FEATURE LINUX MACH\n\n e.g. scripts/feature.sh KFT v2.6.36 malta" && exit 0
+	echo -e "Usage: $0 FEATURE LINUX MACH\n\n e.g. scripts/feature.sh kft v2.6.36 malta" && exit 0
 }
 
 [ -z "$FEATURE" ] && usage

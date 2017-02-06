@@ -9,13 +9,13 @@ USER ?= $(shell whoami)
 CONFIG = $(shell cat $(TOP_DIR)/.config 2>/dev/null)
 
 ifeq ($(CONFIG),)
-  MACH = versatilepb
+  BOARD = versatilepb
 else
-  MACH ?= $(CONFIG)
+  BOARD ?= $(CONFIG)
 endif
 
 TOOL_DIR = $(TOP_DIR)/tools/
-MACH_DIR = $(TOP_DIR)/machine/$(MACH)/
+BOARD_DIR = $(TOP_DIR)/boards/$(BOARD)/
 TFTPBOOT = $(TOP_DIR)/tftpboot/
 
 PREBUILT_DIR = $(TOP_DIR)/prebuilt/
@@ -25,8 +25,8 @@ PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel/
 PREBUILT_BIOS = $(PREBUILT_DIR)/bios/
 PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot/
 
-ifneq ($(MACH),)
-  include $(MACH_DIR)/Makefile
+ifneq ($(BOARD),)
+  include $(BOARD_DIR)/Makefile
 endif
 
 QEMU_GIT ?= https://github.com/qemu/qemu.git
@@ -44,8 +44,8 @@ ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= $(TOP_DIR)/buildroot/
 
 QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu/
-UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)/
-KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)/
+UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)/
+KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)/
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)/
 
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin/
@@ -124,8 +124,8 @@ BUILDROOT_HROOTFS = $(ROOT_OUTPUT)/images/rootfs.$(FSTYPE)
 BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
 PREBUILT_ROOTDIR = $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
-PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/
-PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)
+PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
+PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 
 ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
   PBR ?= 0
@@ -194,20 +194,20 @@ ifeq ($(ROOTDEV),/dev/nfs)
 endif
 
 # For debug
-mach:
-	@find $(TOP_DIR)/machine/$(MACH) -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
-		| sed -e "s%$(TOP_DIR)/machine/\(.*\)/Makefile%\1%g" \
+board:
+	@find $(TOP_DIR)/boards/$(BOARD) -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
+		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep "$(FILTER)"
-ifneq ($(MACH),)
-	@echo $(MACH) > $(TOP_DIR)/.config
+ifneq ($(BOARD),)
+	@echo $(BOARD) > $(TOP_DIR)/.config
 endif
 
 list:
-	@make -s mach MACH= FILTER="^ *ARCH |[a-z0-9]* \]:|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
+	@make -s board BOARD= FILTER="^ *ARCH |[a-z0-9]* \]:|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
 
 list-full:
-	@make mach MACH=
+	@make board BOARD=
 
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
@@ -286,7 +286,7 @@ root-checkout:
 	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fd && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
-ROOT_CONFIG_PATH = $(MACH_DIR)/$(ROOT_CONFIG_FILE)
+ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
 
 root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
 	mkdir -p $(ROOT_OUTPUT)
@@ -355,7 +355,7 @@ ifeq ($(KCO),1)
 endif
 
 KERNEL_CONFIG_FILE = linux_$(LINUX)_defconfig
-KERNEL_CONFIG_PATH = $(MACH_DIR)/$(KERNEL_CONFIG_FILE)
+KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT)
@@ -376,7 +376,7 @@ KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
 
 KP ?= 1
 kernel-patch:
-	-$(KERNEL_PATCH_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
+	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
 
 ifeq ($(KP),1)
   KERNEL_PATCH = kernel-patch
@@ -385,7 +385,7 @@ endif
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
 kernel-feature:
-	-$(KERNEL_FEATURE_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+	-$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
 IMAGE = $(shell basename $(ORIIMG))
 
@@ -417,7 +417,7 @@ ifeq ($(BCO),1)
   UBOOT_CHECKOUT = uboot-checkout
 endif
 
-UPD_MACH=$(TOP_DIR)/machine/$(MACH)/patch/uboot/$(UBOOT)/
+UPD_BOARD=$(TOP_DIR)/boards/$(BOARD)/patch/uboot/$(UBOOT)/
 UPD=$(TOP_DIR)/patch/uboot/$(UBOOT)/
 
 UP ?= 1
@@ -441,8 +441,8 @@ uboot-patch:
 ifneq ($(UCONFIG),)
 	$(UBOOT_CONFIG_TOOL) $(IP) $(ROUTE) $(ROOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
 endif
-ifeq ($(UPD_MACH),$(wildcard $(UPD_MACH)))
-	cp -r $(UPD_MACH)/* $(UPD)/
+ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
+	cp -r $(UPD_BOARD)/* $(UPD)/
 endif
 ifeq ($(UPD),$(wildcard $(UPD)))
 	-$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
@@ -453,7 +453,7 @@ ifeq ($(UP),1)
 endif
 
 UBOOT_CONFIG_FILE = uboot_$(UBOOT)_defconfig
-UBOOT_CONFIG_PATH = $(MACH_DIR)/$(UBOOT_CONFIG_FILE)
+UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
 
 uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	mkdir -p $(UBOOT_OUTPUT)
@@ -500,8 +500,8 @@ uboot-saveconfig: uconfig-save
 uconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
-	then cp $(UBOOT_OUTPUT)/defconfig $(MACH_DIR)/uboot_$(UBOOT)_defconfig; \
-	else cp $(UBOOT_OUTPUT)/.config $(MACH_DIR)/uboot_$(UBOOT)_defconfig; fi
+	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
+	else cp $(UBOOT_OUTPUT)/.config $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
@@ -509,16 +509,16 @@ kernel-saveconfig: kconfig-save
 kconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
-	then cp $(KERNEL_OUTPUT)/defconfig $(MACH_DIR)/linux_$(LINUX)_defconfig; \
-	else cp $(KERNEL_OUTPUT)/.config $(MACH_DIR)/linux_$(LINUX)_defconfig; fi
+	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
+	else cp $(KERNEL_OUTPUT)/.config $(BOARD_DIR)/linux_$(LINUX)_defconfig; fi
 
 root-saveconfig: rconfig-save
 
 rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
 	if [ -f $(ROOT_OUTPUT)/defconfig ]; \
-	then cp $(ROOT_OUTPUT)/defconfig $(MACH_DIR)/buildroot_$(CPU)_defconfig; \
-	else cp $(ROOT_OUTPUT)/.config $(MACH_DIR)/buildroot_$(CPU)_defconfig; fi
+	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
+	else cp $(ROOT_OUTPUT)/.config $(BOARD_DIR)/buildroot_$(CPU)_defconfig; fi
 
 
 save: root-save kernel-save rconfig-save kconfig-save
@@ -527,7 +527,7 @@ save: root-save kernel-save rconfig-save kconfig-save
 G ?= 0
 
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) -M $(MACH) -m $(MEM) $(NET) -kernel $(KIMAGE)
+BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) -M $(BOARD) -m $(MEM) $(NET) -kernel $(KIMAGE)
 ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)
@@ -658,7 +658,7 @@ endif
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
 
 # Show the variables 
-VARS = $(shell cat $(TOP_DIR)/machine/$(MACH)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS = $(shell cat $(TOP_DIR)/boards/$(BOARD)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_FILEMAP ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
@@ -666,14 +666,14 @@ VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 
 env:
-	@echo [ $(MACH) ]:
+	@echo [ $(BOARD) ]:
 	@echo -n " "
 	-@echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
 
 ENV_SAVE_TOOL = $(TOOL_DIR)/save-env.sh
 
 env-save:
-	@$(ENV_SAVE_TOOL) $(MACH_DIR)/Makefile "$(VARS)"
+	@$(ENV_SAVE_TOOL) $(BOARD_DIR)/Makefile "$(VARS)"
 
 help:
 	@cat $(TOP_DIR)/README.md

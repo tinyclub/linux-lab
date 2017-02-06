@@ -44,7 +44,7 @@ If the screen size doesn't fit your display, set the scaling mode via the settin
 
 ## Usage
 
-Check supported machines:
+Check supported boards:
 
     $ make list
     [ pc ]:
@@ -73,9 +73,9 @@ Check supported machines:
           LINUX   ?= 4.6
           ROOTDEV ?= /dev/ram0
 
-Check the machine specifci configuration:
+Check the board specific configuration:
 
-    $ cat machine/versatilepb/Makefile
+    $ cat boards/versatilepb/Makefile
 
 Download the sources:
 
@@ -130,7 +130,7 @@ Debug it:
 
     Compile the kernel with CONFIG_DEBUG_INFO=y and boot it:
 
-    $ make MACH=malta boot DEBUG=1
+    $ make BOARD=malta boot DEBUG=1
 
     Open a new terminal:
 
@@ -145,7 +145,7 @@ Save your changes:
 
     $ make save         # Save all of the configs and rootfs/kernel/dtb images
 
-    $ make kconfig-save # Save configs to machine/BOARD/, kernel config
+    $ make kconfig-save # Save configs to boards/BOARD/, kernel config
     $ make rconfig-save # rootfs config
 
     $ make root-save    # Save images to prebuilt/
@@ -156,10 +156,10 @@ kernel and if issue still exists, then try to fix up it:
 
     $ tools/restart-net-servers.sh
 
-By default, the default machine: 'versatilepb' is used, we can configure, build
-and boot for a specific machine with 'MACH', for example:
+By default, the default board: 'versatilepb' is used, we can configure, build
+and boot for a specific board with 'BOARD', for example:
 
-    $ make MACH=malta
+    $ make BOARD=malta
     $ make root-defconfig
     $ make root
     $ make kernel-checkout

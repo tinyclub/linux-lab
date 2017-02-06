@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo insmod  ./ldt_plat_drv.ko 
+sudo insmod  ./ldt_plat_dev.ko 
+dmesg 
+sudo rmmod ldt_plat_dev ldt_plat_drv
+

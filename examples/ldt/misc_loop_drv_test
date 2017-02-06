@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# The script is intended to be run from user root
+
+RED="\\033[0;31m"
+NOCOLOR="\\033[0;39m"
+GREEN="\\033[0;32m"
+
+dmesg -c > /dev/null # clear log buffer
+# It's supposed you computer doesn't use floppy device.
+# misc_loop_drv uses IRQ 6 of floppy device demonstrate IRQ usage.
+rmmod floppy 2> /dev/null
+rmmod misc_loop_drv 2> /dev/null
+insmod  ./misc_loop_drv.ko
+
+data=123rw
+cat /dev/misc_loop_drv > R.tmp &
+sleep 0.1; echo $data > /dev/misc_loop_drv;
+sleep 0.5
+kill %1; wait %1 2> /dev/null || true
+received=`cat R.tmp`
+rm -f R.tmp
+
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}misc_loop_drv blocking read/write test passed$NOCOLOR"
+else
+echo -e "${RED}misc_loop_drv blocking read/write test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+data=123nb
+echo -n $data > /dev/misc_loop_drv
+sleep 0.5
+received=`dd iflag=nonblock if=/dev/misc_loop_drv 2> /dev/null `
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}misc_loop_drv nonblocking read/write test passed$NOCOLOR"
+else
+echo -e "${RED}misc_loop_drv nonblock read/write test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+rmmod misc_loop_drv.ko
+dmesg --notime --show-delta --read-clear 2>/dev/null > kernel.log || \
+dmesg -c > kernel.log && echo kernel.log saved

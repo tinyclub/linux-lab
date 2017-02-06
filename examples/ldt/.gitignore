@@ -1,0 +1,7 @@
+*.o
+*.so
+*.a
+all.txt
+trace
+*.ko
+dio

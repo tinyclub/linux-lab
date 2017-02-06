@@ -1,0 +1,132 @@
+#!/bin/bash
+
+#
+#	LDT - Linux Driver Template
+#
+#	Test script for driver LDT
+#
+#	Copyright (C) 2012 Constantine Shulyupin  http://www.makelinux.net/
+#
+#	Licensed under the GPLv2.
+#
+
+RED="\\033[0;31m"
+NOCOLOR="\\033[0;39m"
+GREEN="\\033[0;32m"
+
+set -o errtrace
+debugfs=`grep debugfs /proc/mounts | awk '{ print $2; }'`
+tracing=$debugfs/tracing
+
+tracing()
+{
+	sudo sh -c "cd $tracing; $1" || true
+}
+
+tracing_start()
+{
+	tracing "echo :mod:ldt > set_ftrace_filter"
+	tracing "echo function > current_tracer" # need for draw_functrace.py
+	tracing "echo 1 > function_profile_enabled"
+}
+
+tracing_stop()
+{
+	( echo Profiling data per CPU
+	tracing "cat trace_stat/function*" )> trace_stat.log && echo trace_stat.log saved
+	tracing "echo 0 > function_profile_enabled"
+	sudo cp $tracing/trace ftrace.log && echo ftrace.log saved
+	sudo dd iflag=nonblock if=$tracing/trace_pipe 2> /dev/null > trace_pipe.log || true && echo trace_pipe.log saved
+	tracing "echo nop > current_tracer"
+	#export PYTHONPATH=/usr/src/linux-headers-$(uname -r)/scripts/tracing/
+	# draw_functrace.py needs function tracer
+	python /usr/src/linux-headers-$(uname -r)/scripts/tracing/draw_functrace.py \
+		< trace_pipe.log > functrace.log && echo functrace.log saved || true
+}
+
+sudo dmesg -n 7
+sudo rmmod ldt 2> /dev/null
+sudo dmesg -c > /dev/null
+
+# configure UART because it is used for demostration of the driver
+stty -F /dev/ttyS0 115200
+set -o errexit
+
+#
+# Check for presence looback on /dev/ttyS0.
+# If loopback is not present, switch loopback on in the driver
+#
+
+data='loopback?'
+received=`echo $data | ./dio  --ignore_eof --loops 2 --delay 10 /dev/ttyS0 2> /dev/null`
+if [ "$data" == "$received" ]; then
+echo -e "Loopback on /dev/ttyS0 detected"
+loopback=0
+else
+echo -e "No loopback behind /dev/ttyS0 detected, running ldt driver with UART in loopback mode"
+loopback=1
+fi
+
+# clean data
+echo | ./dio  --ignore_eof --loops 10 --delay 10 /dev/ttyS0 2> /dev/null > /dev/null
+
+sudo insmod ldt.ko loopback=$loopback
+
+tracing_start || true
+#. /sys/class/misc/ldt/uevent 2> /dev/null || true # get $MAJOR $MINOR
+#. /sys/class/ldt/ldt/uevent 2> /dev/null || true # get $MAJOR $MINOR
+#sudo sh -c "rm /dev/ldt;sudo mknod /dev/ldt c $MAJOR $MINOR; chmod o+rw /dev/ldt"
+sudo sh -c "chmod go+rw /dev/ldt*"
+data=123rw
+echo $data > /dev/ldt
+sleep 0.5
+received=`dd iflag=nonblock if=/dev/ldt 2> /dev/null || true`
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}LDT nonblocking read/write test passed$NOCOLOR"
+else
+echo -e "${RED}LDT nonblock read/write test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+data=123bl
+cat /dev/ldt > R.tmp &
+sleep 0.5; echo $data > /dev/ldt;
+sleep 0.5
+kill %1; wait %1 2> /dev/null || true
+received=`cat R.tmp`
+rm -f R.tmp
+
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}LDT blocking read/write test passed$NOCOLOR"
+else
+echo -e "${RED}LDT blocking read/write test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+data=123mmap
+received=`sudo echo $data | ./dio --mmap /dev/ldt`
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}LDT mmap test passed$NOCOLOR"
+else
+echo -e "${RED}LDT mmap test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+data=123ioctl
+received=`sudo echo $data | ./dio --ioctl /dev/ldt`
+if [ "$data" == "$received" ]; then
+echo -e "${GREEN}LDT ioctl test passed$NOCOLOR"
+else
+echo -e "${RED}LDT ioctl test failed$NOCOLOR"
+echo expected $data
+echo received $received
+fi
+
+sudo ls -l /sys/kernel/debug/ldt
+
+tracing_stop || true
+sudo dmesg --notime --show-delta --read-clear 2>/dev/null > kernel.log || \
+sudo dmesg -c > kernel.log && echo kernel.log saved

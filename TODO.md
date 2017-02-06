@@ -18,3 +18,7 @@
 13. Add user demostration with showterm.io and lxsession record
 14. Add https support? or at least add ssl support for x11vnc or novnc itself.
 15. Allow to set GCC version for different kernel version
+16. Add more features: BFS, UKSM, KGTP, RT-preempt ...
+17. Add more examples and utilities
+18. Add testsuites, benchmarks and test automation support
+19. Add Android emulator support?

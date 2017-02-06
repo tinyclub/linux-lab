@@ -4,7 +4,7 @@
 #
 
 ENV_FILE=$1
-ENV_VARS=$2
+ENV_VARS="$2"
 
 env_list=`env`
 

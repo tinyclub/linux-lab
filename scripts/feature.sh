@@ -3,6 +3,7 @@
 FEATURE="$1"
 LINUX=$2
 BOARD=$3
+V=$4
 
 TOP_DIR=$(dirname `readlink -f $0`)/../
 
@@ -41,6 +42,6 @@ make kernel-feature
 
 make kernel-oldconfig
 
-make kernel
+make kernel V=$V
 
 make boot U=0

@@ -109,6 +109,14 @@ Build them:
 
     $ make kernel KP=0  # Disable kernel patch action
 
+    $ make kernel-modules # Build internel kernel modules, Must ensure CONFIG_MODULES=y
+    $ make kernel-modules-install
+    $ make root-rebuild && make boot
+
+    $ make modules MODULES=/path/to/kernel/modules  # Extern kernel modules, By default, examples/ldt/
+    $ make modules-install
+    $ make root-rebuild && make boot
+
 Boot it:
 
     $ make boot     # Boot with graphic

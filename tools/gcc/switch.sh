@@ -16,6 +16,7 @@ version=$2
 if [ ${arch} != "x86" ]; then
     name=${arch}-linux-gnu-gcc
     [ "$arch" == "arm" ] && name=${arch}-linux-gnueabi-gcc
+    [ "$arch" == "mips" ] && name=mipsel-linux-gnu-gcc
 else
     name=gcc
 fi

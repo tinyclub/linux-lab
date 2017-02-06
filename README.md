@@ -165,6 +165,7 @@ and boot for a specific board with 'BOARD', for example:
     $ make kernel-checkout
     $ make kernel-defconfig
     $ make kernel
+    $ make root-patch      # Build and install kernel modules
     $ make boot U=0
 
 To transfer files between Qemu Board and Host, two methods are supported by

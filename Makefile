@@ -303,7 +303,6 @@ ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
 # Install kernel modules?
  KM ?= 1
-XKM ?= 0
 
 ifeq ($(KM), 1)
   KERNEL_MODULES_INSTALL = kernel-modules-install
@@ -341,8 +340,8 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 MODULES_EN=$(shell grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
-# External kernel driver modules, disable it with XKM=0
-ifeq ($(XKM), 1)
+# Enable LDT: Linux Driver Template
+ifeq ($(LDT), 1)
   M ?= $(TOP_DIR)/examples/ldt/
 endif
 

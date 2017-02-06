@@ -395,20 +395,20 @@ ifneq ($(FEATURE),)
 endif
 kernel-feature:
 ifeq ($(KFD_MACH_BASE),$(wildcard $(KFD_MACH_BASE)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH_BASE)/$(f).patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH_BASE)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH_BASE)/$(f)/patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH_BASE)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
 endif
 ifeq ($(KFD_BASE),$(wildcard $(KFD_BASE)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_BASE)/$(f).patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_BASE)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_BASE)/$(f)/patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_BASE)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
 endif
 ifeq ($(KFD_MACH),$(wildcard $(KFD_MACH)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH)/$(f).patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH)/$(f)/patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
 endif
 ifeq ($(KFD),$(wildcard $(KFD)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD)/$(f).patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD)/$(f)/patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
 endif
 
 ifeq ($(KF),1)

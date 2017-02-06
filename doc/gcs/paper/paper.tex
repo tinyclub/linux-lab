@@ -1,0 +1,1160 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% paper.tex = template for Real Time Linux Workshop papers
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt,a4paper]{article}
+\usepackage[english]{babel}
+\usepackage{multicol}
+\usepackage{framed}
+\usepackage{graphics}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{listings}
+
+\setlength{\paperheight}{297mm}
+\setlength{\paperwidth}{210mm}
+\setlength{\voffset}{-12mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headsep}{8mm}
+\setlength{\headheight}{10mm}
+\setlength{\textheight}{235mm}
+\setlength{\hoffset}{-4mm}
+\setlength{\textwidth}{166mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\marginparwidth}{0mm}
+\setlength{\marginparpush}{0mm}
+\setlength{\columnsep}{6mm}
+\setlength{\parindent}{6mm}
+\setlength{\parskip}{2mm}
+
+%% insert eps pictures
+%% use as \epsin{epsfile}{width_in_mm}{label}{caption}
+\usepackage{epsfig}
+\newcounter{figcounter}
+\def\epsin #1#2#3#4{
+\refstepcounter{figcounter} \label{#3}
+\[
+\mbox{
+  \epsfxsize=#2mm
+  \epsffile{#1.eps}
+}
+\]
+%\vspace{0mm}
+\begin{center}
+  \parbox{7cm}{{\bf FIGURE \arabic{figcounter}:}\quad {\it #4 } } \\
+\end{center}
+}
+
+%% insert table
+%% use as \tabin{size_in_mm}{label}{caption}{table_data}
+\newcounter{tabcounter}
+\def\tabin #1#2#3#4{
+\refstepcounter{tabcounter} \label{#2}
+\[ \makebox[#1mm][c]{#4} \]
+%\vspace{0mm}
+\begin{center}
+  \parbox{7cm}{{\bf TABLE \arabic{tabcounter}:}\quad {\it #3 } } \\
+\end{center}
+}
+
+\title{\LARGE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE OF PAPER (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Tiny Linux Kernel Project: Section Garbage Collection Patchset
+}
+
+\author{\large
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AUTHOR (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\bf Wu Zhangjin}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AFFILIATION (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Tiny Lab - Embedded Geeks\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% STREET ADDRESS (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+http://tinylab.org\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% E-MAIL (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+wuzhangjin$@$gmail.com \\
+		\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AUTHOR (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\bf Sheng Yong}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AFFILIATION (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Distributed \& Embedded System Lab, SISE, Lanzhou University, China\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% STREET ADDRESS (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Tianshui South Road 222, Lanzhou, P.R.China\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% E-MAIL (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{8mm}
+shengy07$@$lzu.edu.cn\\
+}
+\date{}
+
+\newcommand{\codesize}{\fontsize{6pt}{\baselineskip}\selectfont}
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ABSTRACT (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+Linux is widely used in embedded systems which always have storage limitation
+and hence require size optimization. In order to reduce the kernel size, based
+on the previous work of the ``Section Garbage Collection Patchset", this paper
+focuses on details of its principle, presents some new ideas, documents the
+porting steps, reports the testing results on the top 4 popular architectures:
+ARM, MIPS, PowerPC, X86 and at last proposes future works which may enhance or
+derive from this patchset.
+
+\end{abstract}
+
+\vspace{10mm}
+
+\begin{multicols}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+The size of Linux kernel source code increases rapidly, while the memory and
+storage are limited in embedded systems (e.g. in-vehicle driving safety
+systems, data acquisition equipments etc.). This requires small or even tiny
+kernel to lighten or even eliminate the limitation and eventually expand the
+potential applications.
+
+{\em Tiny Lab} estimated the conventional tailoring methods and found that the
+old Tiny-linux project is far from being finished and requires more work and
+hence submitted a project proposal to CELF: ``Work on Tiny Linux Kernel'' to
+improve the previous work and explore more ideas[1, 9].
+
+``Section garbage collection patchset(gc-sections)'' is a subproject of
+Tiny-linux, the initial work is from Denys Vlasenko[9]. The existing patchset
+did make the basic support of section garbage collection work on X86 platforms,
+but is still outside of the mainline for the limitation of the old GNU
+toolchains and for there are some works to be done(e.g. compatibility of the
+other kernel features).
+
+Our gc-sections subproject focuses on analyzes its working mechanism, improves
+the patchset(e.g. unique user defined sections), applies the ideas for more
+architectures, tests them and explores potential enhancement and derivation.
+The following sections will present them respectively.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NEXT SECTION (OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Link time dead code removing using section garbage collection}
+
+Compiler puts all executable code produced by compiling C codes into section
+called .text, r/o data into section called .rodata, r/w data into .data, and
+uninitialized data into .bss[2, 3]. Linker does not know which parts of
+sections are referenced and which ones are not referenced. As a result,
+unused(or `dead') function or data cannot be removed. In order to solve this
+issue, each function or data should has its own section.
+
+{\em gcc} provides {\small {\tt -ffunction-sections}} or {\small {\tt
+-fdata-sections}} option to put each function or data to its own section, for
+instance, there is a function called unused\_func(), it goes to
+.text.unused\_func section. Then, {\em ld} provides the {\small {\tt
+--gc-sections}} option to check the references and determine which
+function or data should be removed, and the {\small {\tt --print-gc-sections}}
+option of {\em ld} can print the the function or data being removed, which is
+helpful to debugging.
+
+The following two figures demonstrates the differences between the typical
+object and the one with {\small {\tt -ffunction-sections}}:
+
+%% the figure will be in file rt-tux.eps and will occupy 75mm on the page
+\epsin{typical}{80}{fig1:f1}{Typical Object}
+\epsin{gc}{80}{fig1:f2}{Object with -ffunction-sections}
+
+To learn more about the principle of section garbage collection, the basic
+compiling, assebmling and linking procedure should be explained at first (Since
+the handling of data is similar to function, will mainly present function below).
+
+\subsection{Compile: Translate source code from C to assembly}
+
+If no {\small {\tt -ffunction-sections}} for {\em gcc}, all functions are put into
+.text section (indicated by the .text instruction of assembly):
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' | gcc -S -x c -o - - \
+  | grep .text
+	.text
+\end{lstlisting}
+
+Or else, each function has its own section (indicated by the .section
+instruction of assembly):
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' \
+ | gcc -ffunction-sections -S -x c -o - - | grep .text
+	.section	.text.unused,"ax",@progbits
+	.section	.text.main,"ax",@progbits
+\end{lstlisting}
+
+As we can see, the prefix is the same .text, the suffix is function name, this
+is the default section naming rule of {\em gcc}.
+
+Expect {\small {\tt -ffunction-sections}}, the section attribute instruction of
+{\em gcc} can also indicate where should a section of the funcion or data be put in,
+and if it is used together with {\small {\tt -ffunction-sections}}, it has
+higher priority, for example:
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo '__attribute__ ((__section__(".text.test"))) unused(){} \
+  main(){}' | gcc -ffunction-sections -S -x c -o - - | grep .text
+	.section	.text.test,"ax",@progbits
+	.section	.text.main,"ax",@progbits
+\end{lstlisting}
+
+.text.test is indicated instead of the default .text.unused. In order to avoid
+function redefinition, the function name in a source code file should be
+unique, and if only with {\small {\tt -ffunction-sections}}, every function has
+its own unique section, but if the same section attribute applies on different
+functions, different functions may share the same section:
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo '__attribute__ ((__section__(".text.test"))) unused(){} \
+  __attribute__ ((__section__(".text.test"))) main(){}' \
+  | gcc -ffunction-sections -S -x c -o - - | grep .text
+	.section	.text.test,"ax",@progbits
+\end{lstlisting}
+
+Only one section is reserved, this breaks the core rule of section garbage
+collection: {\em before linking, each function or data should has its own
+section}. But sometimes, for example, if want to call some functions at the
+same time, section attribute instruction is required to put these functions to
+the same section and call them one by one, but how to meet these two
+requirements? Use the section attribute instruction to put the functions to the
+section named with the same prefix but unique suffix, and at the linking stage,
+merge the section which has the same prefix to the same section, so, to linker,
+the sections are unique and hence better for dead code elimination, but still
+be able to link the functions to the same section. The implementation will be
+explained in the coming sections.
+
+Based on the same rule, the usage of section attribute instruction should also
+follow the other two rules:
+
+\begin{enumerate}
+
+	\item The section for function should be named with .text prefix, then,
+	the linker may be able to merge all of the .text sections. Or else, it
+	will not be able to or not conveniently merge the sections and at last
+	instead may increase the size of executable for the accumulation of
+	the section alignment.
+
+	\item The section name for function should be prefixed with .text.
+	instead of the default .text prefix used by {\em gcc} and break the core rule.
+
+\end{enumerate}
+
+And we must notice that: `You will not be able to use ``gprof" on all systems if
+you specify this option and you may have problems with debugging if you specify
+both this option and -g.' (gcc man page)
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' | \
+  gcc -ffunction-sections -p -x c -o test -
+<stdin>:1:0: warning: -ffunction-sections disabled; \
+	it makes profiling impossible
+\end{lstlisting}
+
+\subsection{Assemble: Translate assembly files to binary objects}
+
+In assembly file, it is still be possible to put the function or data to an
+indicated section with the .section instruction (.text equals .section
+``.text"). Since {\small {\tt -ffunction-sections}} and {\small {\tt
+-fdata-sections}} don't work for assembly files and they have no way to determine
+the function or data items, therefore, for the assembly files written from
+scratch (not translated from C language), .section instruction is required to
+added before the function or data item manually, or else the function or data
+will be put into the same .text or .data section and the section name indicated
+should also be unique to follow the core rule of section garbage collection.
+
+The following commands change the section name of the `unused' function in the
+assembly file and show that it does work.
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' \
+  | gcc -ffunction-sections -S -x c -o - - \
+  | sed -e "s/unused/test/g" \
+  | gcc -c -xassembler - -o test
+$ objdump -d test | grep .section
+Disassembly of section .text.test:
+Disassembly of section .text.main:
+\end{lstlisting}
+
+\subsection{Link: Link binary objects to target executable}
+
+At the linking stage, based on a linker script, the linker should be able to
+determine which sections should be merged and included to the last executables[4].
+When linking, the {\small {\tt -T}} option of {\em ld} can be used to indicate the
+path of the linker script, if no such option is used, a default linker script
+is called and can be printed with {\small {\tt ld --verbose}}.
+
+Here is a basic linker script:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+OUTPUT_FORMAT("elf32-i386", "elf32-i386",
+              "elf32-i386")
+OUTPUT_ARCH(i386)
+ENTRY(_start)
+SECTIONS
+{
+  .text          :
+  {
+    *(.text .stub .text.* .gnu.linkonce.t.*)
+    ...
+  }
+  .data           :
+  {
+    *(.data .data.* .gnu.linkonce.d.*)
+    ...
+  }
+  /DISCARD/ : { *(.note.GNU-stack) *(.gnu.lto_*) }
+}
+\end{lstlisting}
+
+The first two commands tell the target architecture and the ABI, the ENTRY
+command indicates the entry of the executable and the SECTIONS command deals
+with sections.
+
+The entry (above is \_start, the standard C entry, defined in crt1.o) is the
+root of the whole executable, all of the other symbols (function or data)
+referenced (directly or indirectly) by the the entry must be kept in the
+executable to make ensure the executable run without failure.  Besides, the
+undefined symbols (defined in shared libraries) may also need to be kept with
+the EXTERN command. Note, the {\small {\tt --entry}} and {\small {\tt
+--undefined}} options of {\em ld} functions as the same to the ENTRY and EXTERN
+commands of linker script respectively.
+
+{\small {\tt --gc-sections}} will follow the above rule to determine which
+sections should be reserved and then pass them to the SECTIONS command to do
+left merging and including. The above linker script merges all section prefixed
+by .text, .stub and .gnu.linkonce.t to the last .text section, the .data
+section merging is similar. The left sections will not be merged and kept as
+their own sections, some of them can be removed by the /DISCARD/ instruction.
+
+Let's see how {\small {\tt --gc-section}} work, firstly, without it:
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' | gcc -x c -o test -
+$ size test
+   text	   data	    bss	    dec	    hex	filename
+    800	    252	      8	   1060	    424	test
+\end{lstlisting}
+
+Second, With {\small {\tt --gc-sections}} (passed to {\em ld} with -Wl option of
+{\em gcc}):
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' | gcc -ffunction-sections \
+  -Wl,--gc-sections -x c -o test -
+$ size test
+   text	   data	    bss	    dec	    hex	filename
+    794	    244	      8	   1046	    416	test
+\end{lstlisting}
+
+It shows, the size of the .text section is reduced and {\small {\tt
+--print-gc-sections}} proves the dead `unused' function is really removed:
+
+\noindent{\codesize {\tt
+\$ echo 'unused()\{\} main()\{\}' | gcc -ffunction-sections $\backslash$\\
+  -Wl,--gc-sections,--print-gc-sections -x c -o test -\\
+/usr/bin/ld: Removing unused section '.rodata' in file '.../crt1.o'\\
+/usr/bin/ld: Removing unused section '.data' in file '.../crt1.o'\\
+/usr/bin/ld: Removing unused section '.data' in file '.../crtbegin.o'\\
+/usr/bin/ld: Removing unused section '.text.unused' in file '/tmp/cclR3Mgp.o'
+}}
+
+The above output also proves why the size of the .data section is also reduced.
+
+But if a section is not referenced (directly or indirectly) by the entry, for
+instance, if want to put a file into the executable for late accessing, the
+file can be compressed and put into a .image section like this:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+...
+SECTIONS
+{
+  ...
+  .data           :
+  {
+    __image_start = .;
+    *(.image)
+    __image_end = .;
+    ...
+  }
+}
+\end{lstlisting}
+
+The file can be accessed through the pointers: \_\_image\_start and
+\_\_image\_end, but the .image section itself is not referenced by anybody, then,
+{\small {\tt --gc-sections}} has no way to know the fact that .image section is
+used and hence removes .image and as a result, the executable runs without
+expected. In order to solve this issue, another KEEP instruction of the linker
+script can give a help[4].
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+...
+SECTIONS
+{
+  ...
+  .data           :
+  {
+    __image_start = .;
+    KEEP(*(.image))
+    image_end = .;
+    ...
+  }
+}
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NEXT SECTION (OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Section garbage collection patchset for Linux}
+
+The previous section garbage collection patchset is for the -rc version of
+2.6.35, which did add the core support of section garbage collection for Linux
+but it still has some limitations.
+
+Now, let's analyze the basic support of section garbage collection patchset for
+Linux and then list the existing limitations.
+
+\subsection{Basic support of gc-sections patchset for Linux}
+
+The basic support of gc-sections patchset for Linux includes:
+
+\begin{itemize}
+
+\item Avoid naming duplication between the magic sections defined by section
+attribute instruction and {\small {\tt -ffunction-sections}} or {\small {\tt
+	-fdata-sections}}
+
+The kernel has already defined some sections with the section attribute
+instruction of {\em gcc}, the naming method is prefixing the sections with .text., as
+we have discussed in the above section, the name of the sections may be the
+same as the ones used by {\small {\tt -ffunction-sections}} or {\small {\tt
+-fdata-sections}} and hence break the core rule of section garbage collections.
+
+Therefore, several patches have been upstreamed to rename the magic sections
+from \{.text.X, .data.X, .bss.X, .rodata.X\} to \{.text..X, .data..X, .bss..X,
+     .rodata..X\} and from \{.text.X.Y, .data.X.Y, .bss.X.Y, .rodata.X.Y\} to
+     \{.text..X..Y, .data..X..Y, .bss..X..Y, .rodata..X..Y\}, accordingly, the
+     related headers files, c files, assembly files, linker scripts which
+     reference the sections should be changed to use the new section names.
+
+As a result, the duplication between the section attribute instruction and
+{\small {\tt -ffunction-sections}}/{\small {\tt -fdata-sections}} is
+eliminated.
+
+\item Allow linker scripts to merge the sections generated by {\small {\tt
+	-ffunction-sections}} or {\small {\tt -fdata-sections}} and prevent
+	them from merging the magic sections
+
+In order to link the function or data sections generated by {\small {\tt -ffunction-sections}}
+or {\small {\tt -fdata-sections}} to the last \{.text,
+.data, .bss, .rodata\}, the related linker scripts should be changed to merge the
+corresponding \{.text.*, .data.*, .bss.*, .rodata.*\} and to prevent the linker
+from merging the magic sections(e.g. .data..page\_aligned), more restrictive
+patterns like the following is preferred:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+*(.text.[A-Za-z0-9_$^]*)
+\end{lstlisting}
+
+A better pattern may be the following:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+*(.text.[^.]*)
+\end{lstlisting}
+
+Note, both of the above patterns are only supported by the latest {\em ld}, please
+use the versions newer than 2.21.0.20110327 or else, they don't work and will
+on the contrary to generate bigger kernel image for ever such section will be
+linked to its own section in the last executable and the size will be increased
+heavily for the required alignment of every section.
+
+\item Support objects with more than 64k sections
+
+The variant type of section number(the e\_shnum member of elf\{32,64\}\_hdr) is
+\_u16, the max number is 65535, the old {\em modpost} tool (used to postprocess
+module symbol) can only handle an object which only has small than 64k sections
+and hence may fail to handle the kernel image compiled with huge kernel builds
+(allyesconfig, for example) with -ffunction-sections. Therefore, the modpost
+tool is fixed to support objects with more than 64k sections by the document
+``IA-64 gABI Proposal 74: Section Indexes'':
+http://www.codesourcery.com/public/cxx-abi/abi/prop-74-sindex.html.
+
+\item Invocation of {\small {\tt -ffunction-sections}}/{\small {\tt
+	-fdata-sections}} and {\small {\tt --gc-sections}}
+
+In order to have a working kernel with {\small {\tt -ffunction-sections}} and
+{\small {\tt -fdata-sections}}:
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ make KCFLAGS="-ffunction-sections -fdata-sections"
+\end{lstlisting}
+
+Then, in order to also garbage-collect the sections, added
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+LDFLAGS_vmlinux += --gc-sections
+\end{lstlisting}
+
+in the top-level Makefile.
+
+\end{itemize}
+
+The above support did make a working kernel with section garbage collection on
+X86 platforms, but still has the following limitations:
+
+\begin{enumerate}
+
+\item Lack of test, and is not fully compatible with some main kernel features,
+such as Ftrace, Kgcov
+
+\item The current usage of section attribute instruction itself still breaks
+the core rule of section garbage collections for lots of functions or data may
+be put into the same sections(e.g. \_\_init), which need to be fixed
+
+\item Didn't take care of assembly carefully and therefore, the dead sections
+in assembly may also be reserved in the last kernel image
+
+\item Didn't focus on the support of compressed kernel images, the dead
+sections in them may also be reserved in the last compressed kernel image
+
+\item The invocation of the gc-sections requires to pass the {\em gcc} options to
+`make' through the environment variables, which is not convenient
+
+\item Didn't pay enough attention to the the kernel modules, the kernel modules
+may also include dead symbols which should be removed
+
+\item Only for X86 platform, not enough for the other popular embedded
+platforms, such as ARM, MIPS and PowerPC
+
+\end{enumerate}
+
+In order to break through the above limitations, improvement has been added in
+our gc-sections project, see below section.
+
+\subsection{Improvement of the previous gc-sections patchset}
+
+Our gc-sections project is also based on mainline 2.6.35(exactly 2.6.35.13),
+it brings us with the following improvement:
+
+\begin{enumerate}
+
+\item Ensure the other kernel features work with gc-sections
+
+Ftrace requires the \_\_mcount\_loc section to store the mcount calling
+sites; Kgcov requires the .ctors section to do gcov initialization. These two
+sections are not referenced directly and will be removed by {\small {\tt
+--gc-sections}} and hence should be kept by the KEEP instruction explicitly.
+Besides, more sections listed in include/asm-generic/vmlinux.lds.h or the other
+arch specific header files have the similar situation and should be kept
+explicitly too.
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+/* include/asm-generic/vmlinux.lds.h */
+...
+-	*(__mcount_loc)		\
++	KEEP(*(__mcount_loc))	\
+...
+-	*(.ctors)		\
++	KEEP(*(.ctors))		\
+...
+\end{lstlisting}
+
+\item The section name defined by section attribute instruction should be
+unique
+
+The symbol name should be globally unique (or else gcc will report symbol
+redefinition), in order to keep every section name unique, it is possible to
+code the section name with the symbol name. {\small {\tt \_\_FUNCTION\_\_}} (or
+{\small {\tt \_\_func\_\_}} in Linux) is available to get function name, but
+there is no way to get the variable name, which means there is no general
+method to get the symbol name, so instead, another method should be used, that
+is coding the section name with line number and a file global counter. the
+combination of these two will minimize the duplication of the section name (but
+may also exist duplication) and also reduces total size cost of the section
+names.
+
+{\em gcc} provides {\small {\tt \_\_LINE\_\_}} and {\small \tt{\_\_COUNTER\_\_}} to
+get the line number and counter respectively, so, the previous \_\_section()
+macro can be changed from:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+#define __section(S) \
+  __attribute__ ((__section__(#S)))
+\end{lstlisting}
+
+to the following one:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+#define __concat(a, b) a##b
+#define __unique_impl(a, b) __concat(a, b)
+#define __ui(a, b) __unique_impl(a, b)
+#define __unique_counter(a) \
+  __ui(a, __COUNTER__)
+#define __uc(a) __unique_counter(a)
+#define __unique_line(a) __ui(a, __LINE__)
+#define __ul(a) __unique_line(a)
+#define __unique(a) __uc(__ui(__ul(a),l_c))
+#define __unique_string(a) \
+  __stringify(__unique(a))
+#define __us(a) __unique_string(a)
+
+#define __section(S) \
+  __attribute__ ((__section__(__us(S.))))
+\end{lstlisting}
+
+Let's use the \_\_init for an example to see the effect. Before, the section
+name is .init.text, all of the functions marked with \_\_init will be put into
+that section. With the above change, every function will be put into a unique
+section like .text.init.13l\_c16 and make the linker be able to determine which
+one should be removed.
+
+Similarly, the other macros used the section attribute instruction should be
+revisited, e.g. \_\_sched.
+
+In order to make the linker link the functions marked with \_\_init to the last
+.init.text section, the linker scripts must be changed to merge .init.text.* to
+.init.text. The same change need to be applied to the other sections.
+
+\item Ensure every section name indicated in assembly is unique
+
+{\small {\tt -ffunction-sections}} and {\small {\tt -fdata-sections}} only
+works for C files, for assembly files, the .section instruction is used
+explicitly. By default, the kernel uses the instruction like this: {\small {\tt
+.section .text}}, which will break the core rule of section garbage collection
+tool, therefore, every assembly file should be revisited.
+
+For the macros, like {\small {\tt LEAF}} and {\small {\tt NESTED}} used by
+MIPS, the section name can be uniqued with symbol name:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+#define LEAF(symbol)	\
+-	.section	.text;		 \
++	.section	.text.asm.symbol;\
+\end{lstlisting}
+
+But the other directly used .section instructions require a better solution,
+fortunately, we can use the same method proposed above, that is:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+#define __asm_section(S) \
+  .section __us(S.)
+\end{lstlisting}
+
+Then, every .section instruction used in the assembly files should be changed
+as following:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+/* include/linux/init.h */
+-#define __HEAD	.section	".head.text","ax"
++#define __HEAD	__asm_section(.head.text), "ax"
+\end{lstlisting}
+
+\item Simplify the invocation of the gc-sections
+
+In order to avoid passing {\small {\tt -ffunction-sectoins}}, {\small {\tt
+-fdata-sections}} to `make' in every compiling, both of these two options
+should be added to the top-level Makefile or the arch specific Makefile
+directly, and we also need to disable {\small {\tt -ffunction-sectoins}}
+explicitly when Ftrace is enabled for Ftrace requires the {\small {\tt -p}}
+option, which is not compatible with {\small {\tt -ffunction-sectoins}}.
+
+Adding them to the Makefile directly may also be better to fix the other
+potential compatiabilities, for example, {\small {\tt -fdata-sections}} doesn't
+work on 32bit kernel, which can be fixed as following:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/mips/Makefile
+ifndef CONFIG_FUNCTION_TRACER
+  cflags-y := -ffunction-sections
+endif
+# FIXME: 32bit doesn't work with -fdata-sections
+ifdef CONFIG_64BIT
+  cflags-y += -fdata-sections
+endif
+\end{lstlisting}
+
+Note, some architectures may prefer {\small {\tt KBUILD\_CFLAGS}} than
+cflags-y, it depends.
+
+Besides, the {\small {\tt --print-gc-sections}} option should be added for
+debugging, which can help to show the effect of gc-sections or when the kernel
+doesn't boot with gc-sections, it can help to find out which sections are
+wrongly removed and hence keep them explicitly.
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# Makefile
+ifeq ($(KBUILD_VERBOSE),1)
+LDFLAGS_vmlinux += --print-gc-sections
+endif
+\end{lstlisting}
+
+Then, {\small {\tt make V=1}} can invocate the linker to print which symbols
+are removed from the last executables.
+
+In the future, in order to make the whole gc-sections configurable, 4 new
+kernel config options may be required to reflect the selection of
+{\small {\tt -ffunction-sections}}, {\small {\tt -fdata-sections}}, {\small
+{\tt --gc-sections}} and {\small {\tt --print-gc-sections}}.
+
+\item Support compressed kernel image
+
+The compressed kernel image often include a compressed vmlinux and an extra
+bootstraper. The bootstraper decompresses the compressed kernel image
+and boots it. the bootstraper may also include dead code, but for its Makefile
+does not inherit the make rules from either the top level Makefile or the
+Makefile of a specific architecture, therefore, this should be taken care of
+independently.
+
+Just like we mentioned in section 2.3, the section stored the kernel image must
+be kept with the KEEP instruction, and the {\small {\tt -ffunction-sectoins}},
+{\small {\tt -fdata-sections}}, {\small {\tt --gc-sections}} and {\small {\tt
+--print-gc-sections}} options should also be added for the compiling and
+linking of the bootstraper.
+
+\item Take care of the kernel modules
+
+Currently, all of the kernel modules share a common linker script:
+scripts/module-common.lds, which is not friendly to {\small {\tt
+--gc-sections}} for some architectures may require to discard some specific
+sections. Therefore, an arch specific module linker script should be added to
+arch/ARCH/ and the following lines should be added to the top-level Makefile:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# Makefile
++ LDS_MODULE      = \
+  -T $(srctree)/arch/$(SRCARCH)/module.lds
++ LDFLAGS_MODULE  = \
+  $(if $(wildcard arch/$(SRCARCH)/module.lds),\
+	$(LDS_MODULE))
+LDFLAGS_MODULE  += \
+  -T $(srctree)/scripts/module-common.lds
+\end{lstlisting}
+
+Then, every architecture can add the architecture specific parts to its own
+module linker script, for example:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/mips/module.lds
+SECTIONS {
+  /DISCARD/ : {
+    *(.MIPS.options)
+    ...
+  }
+}
+\end{lstlisting}
+
+In order to remove the dead code in the kernel modules, it may require to
+enhance the common module linker script to keep the functions called by
+module\_init() and module\_exit(), for these two are the init and exit entries of
+the modules. Besides, the other specific sections (e.g. .modinfo, \_\_version)
+may need to be kept explicitly. This idea is not implemented in our
+gc-sections project yet.
+
+\item Port to the other architectures based platforms
+
+Our gc-sections have added the gc-sections support for the top 4 architectures
+(ARM, MIPS, PowerPC and X86) based platforms and all of them have been tested.
+
+The architecture and platform specific parts are small but need to follow some
+basic steps to minimize the time cost, the porting steps to a new platform will
+be covered in the next section.
+
+\end{enumerate}
+
+\subsection{The steps of porting gc-sections patchset to a new platform}
+
+In order to make gc-sections work on a new platform, the following steps should
+be followed (use ARM as an example).
+
+\begin{enumerate}
+
+\item Prepare the development and testing environment, including real
+machine(e.g. dev board) or emulator(e.g. qemu), cross-compiler, file system
+etc.
+
+For ARM, we choose {\em qemu} 0.14.50 as the emulator and versatilepb as the test
+platform, the corss-compiler ({\em gcc} 4.5.2, {\em ld} 2.21.0.20110327) is provided by
+ubuntu 11.04 and the filesystem is installed by debootstrap, the ramfs is
+available from http://d-i.debian.org/daily-images/armel/.
+
+\item Check whether the GNU toolchains support {\small {\tt
+-ffunction-sections}}, {\small {\tt -fdata-sections}} and {\small {\tt
+--gc-sections}}. If not, add the toolchains support at first.
+
+The following command shows the GNU toolchains of ARM does support gc-sections,
+or else, there will be failure.
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ echo 'unused(){} main(){}' | arm-linux-gnueabi-gcc \
+  -ffunction-sections -Wl,--gc-sections \
+  -S -x c -o - - | grep .section
+	.section	.text.unused,"ax",%progbits
+	.section	.text.main,"ax",%progbits
+\end{lstlisting}
+
+\item Add {\small {\tt -ffunction-sections}}, {\small {\tt -fdata-sections}},
+at proper place in arch or platform specific Makefile
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/Makefile
+ifndef CONFIG_FUNCTION_TRACER
+KBUILD_CFLAGS   += -ffunction-sections
+endif
+KBUILD_CFLAGS   += -fdata-sections
+\end{lstlisting}
+
+\item Fix the potential compatibility problem (e.g. disable {\small {\tt
+-ffunction-sections}} while requires Ftrace)
+
+The Ftrace compatiability problem is fixed above, no other compatibility has
+been found up to now.
+
+\item Check if there are sections which are unreferenced but used, keep them
+
+The following three sections are kept for ARM:
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/kernel/vmlinux.lds.S
+	...
+	KEEP(*(.proc.info.init*))
+	...
+	KEEP(*(.arch.info.init*))
+	...
+	KEEP(*(.taglist.init*))
+\end{lstlisting}
+
+\item Do basic build and boot test. If a boot failure happens, use {\small {\tt
+make V=1}} to find out the wrongly removed sections and keep them
+explicitly with the KEEP instruction
+
+\begin{lstlisting}[language=bash,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ qemu-system-arm -M versatilepb -m 128M \
+  -kernel vmlinux -initrd initrd.gz    \
+  -append "root=/dev/ram init=/bin/sh" \
+\end{lstlisting}
+
+If the required sections can not be determined in the above step, it will be
+found at this step for {\small {\tt make V=1}} will tell you which sections may
+be related to the boot failure.
+
+\item Add support for assembly files with the \_\_asm\_section() macro
+
+Using grep command to find out every .section place and replace it with the
+\_\_asm\_section() macro, for example:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/mm/proc-arm926.S
+-       .section ".rodata"
++       __asm_section(.rodata)
+\end{lstlisting}
+
+\item Follow the above steps to add support for compressed kernel
+
+Enable gc-sections in the Makefile of compressed kernel:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/boot/compressed/Makefile
+EXTRA_CFLAGS+=-ffunction-sections -fdata-sections
+...
+LDFLAGS_vmlinux := --gc-sections
+ifeq ($(KBUILD_VERBOSE),1)
+LDFLAGS_vmlinux += --print-gc-sections
+endif
+...
+\end{lstlisting}
+
+And then, keep the required sections in the linker script of the compressed
+kernel:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/boot/compressed/vmlinux.lds.in
+KEEP(*(.start))
+KEEP(*(.text))
+KEEP(*(.text.call_kernel))
+\end{lstlisting}
+
+\item Make sure the main kernel features (e.g. Ftrace, Kgcov, Perf and
+Oprofile) work normally with gc-sections
+
+Validated Ftrace, Kgcov, Perf and Oprofile on ARM platform and found they
+worked well.
+
+\item Add architecture or platform specific module.lds to remove unwanted
+sections for the kernel modules
+
+In order to eliminate the unneeded sections(e.g. .fixup, \_\_ex\_table) for
+modules while no CONFIG\_MMU, a new module.lds.S is added for ARM:
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+# arch/arm/module.lds.S
+...
+SECTIONS {
+        /DISCARD/ : {
+#ifndef CONFIG_MMU
+                *(.fixup)
+                *(__ex_table)
+#endif
+        }
+}
+# arch/arm/Makefile
+extra-y := module.lds
+\end{lstlisting}
+
+\item Do full test: test build, boot with NFS root filesystem, the modules and
+so forth.
+
+Enable the network bridge support between qemu and your host machine, open the
+NFS server on your host, config smc91c111 kernel driver, dhcp and NFS root
+client, then, boot your kernel with NFS root filesystem to do a full test.
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+$ qemu-system-arm -kernel /path/to/zImage \
+  -append "init=/bin/bash root=/dev/nfs \
+  nfsroot=$nfs_server:/path/to/rootfs ip=dhcp" \
+  -M versatilepb -m 128M -net \
+  nic,model=smc91c111 -net tap
+\end{lstlisting}
+
+\end{enumerate}
+
+\section{Testing results}
+
+Test has been run on all of the top 4 architectures, including basic boot with
+ramfs, full boot with NFS root filesystem and the main kernel features (e.g.
+Ftrace, Kgcov, Perf and Oprofile).
+
+The host machine is thinkpad SL400 with Intel(R) Core(TM)2 Duo CPU T5670, the
+host sytem is ubuntu 11.04.
+
+The qemu version and the cross compiler for ARM is the same as above section,
+the cross compiler for MIPS is compiled from buildroot, the cross compiler for
+PowerPC is downloaded from emdebian.org/debian/, the details are below:
+
+\tabin{75}{tbl:t1}{Testing environment}{
+ \begin{tabular}{lllll}
+ \hline
+ arch & board & net & gcc & ld  \\
+ \hline
+ ARM & {\tiny versatilepb} & {\tiny smc91c111} & 4.5.2 & {\tiny 2.21.0.20110327} \\
+ MIPS & malta & pcnet & 4.5.2 & 2.21 \\
+ PPC & g3beige & pcnet & 4.4.5 & {\tiny 2.20.1.20100303 } \\
+ X86 & pc-0.14 & {\tiny ne2k\_pci} & 4.5.2 & {\tiny 2.21.0.20110327}\\
+ \hline
+ \end{tabular}
+}
+
+Note:
+
+\begin{itemize}
+
+\item In order to boot qemu-system-ppc on ubuntu 11.04, the openbios-ppc must
+be downloaded from debian repository and installed, then use the -bios option
+of qemu-system-ppc to indicate the path of the openbios.
+
+\item Due to the regular experssion pattern bug of {\em ld} \textless 2.20 described in
+section 3, in order to make the gc-sections features work with {\tiny
+2.20.1.20100303}, the linker script of powerpc is changed through using the
+pattern .text.*, .data.*, .bss.*, .sbss.*, but to avoid wrongly merging the
+kernel magic sections (e.g. .data..page\_aligned) to the .data section, the
+magic sections are moved before the merging of .data, then it works well
+because of the the .data..page\_aligned will be linked at first, then, it will
+not match .data.* and then it will not go to the .data section. Due to the
+unconvenience of this method, the real solution will be forcing the users to use
+{\em ld} \textgreater= 2.21, or else, will disable this gc-sections feature to avoid generating
+bigger kernel image.
+
+\begin{lstlisting}[language=c,
+                  commentstyle=\fontsize{7}{8}\selectfont,
+                  basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+SECTIONS
+{
+	...
+	.data..page_aligned : ... {
+		PAGE_ALIGNED_DATA(PAGE_SIZE)
+	}
+	...
+	.data : AT(ADDR(.data) - LOAD_OFFSET) {
+		DATA_DATA
+		*(.data.*)
+		...
+		*(.sdata.*)
+		...
+	}
+	...
+}
+\end{lstlisting}
+
+\end{itemize}
+
+The following table shows the size information of the vanilla kernel
+image(vmlinux) and the kernel with gc-sections, both of them are
+stripped through {\small {\tt strip -x}} (or even {\small {\tt strip s}})
+because gc-sections may introduce more symbols (especially, non-global
+symbols) which are not required for running on the embedded platforms.
+
+The kernel config is gc\_sections\_defconfig placed under arch/ARCH/configs/,
+it is based on the versatile\_defconfig, malta\_defconfig, pmac32\_defconfig
+and i386\_defconfig respectively, extra config options only include the DHCP,
+net driver, NFS client and NFS root file system.
+
+\tabin{75}{tbl:t1}{Testing results}{
+ \begin{tabular}{llllll}
+ \hline
+ arch & text & data & bss & total & save  \\
+ \hline
+ ARM & 3062975 & 137504 & 198940 & 3650762 & \\
+     & 3034990 & 137120 & 198688 & 3608866 & -1.14\% \\
+ MIPS & 3952132 & 220664 & 134400  & 4610028 & \\
+     & 3899224 & 217560 & 123224 & 4545436 & -1.40\% \\
+ PPC & 5945289 & 310362 & 153188 & 6671729 & \\
+     & 5849879 & 309326 & 152920 & 6560912 & -1.66\% \\
+ X86 & 2320279 & 317220 & 1086632 & 3668580 & \\
+     & 2206804 & 311292 & 498916 & 3572700 & -2.61\% \\
+ \hline
+ \end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NEXT SECTION (OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusions}
+
+The testing result shows that gc-sections does eliminate some dead code and
+reduces the size of the kernel image by about 1\~{}3\%, which is useful to some
+size critical embedded applications.
+
+Besides, this brings Linux kernel with link time dead code elimination, more
+dead code can be further eliminated in some specific applications (e.g. only
+parts of the kernel system calls are required by the target system, finding out
+the system calls really not used may guide the kernel to eliminate those system
+calls and their callees), and for safety critical systems, dead code
+elimination may help to reduce the code validations and reduce the possibinity
+of execution on unexpected code. And also, it may be possible to scan the
+kernel modules(`make export\_report' does help this) and determine which
+exported kernel symbols are really required, keep them and recompile the kernel
+may help to only export the required symbols.
+
+Next step is working on the above ideas and firstly will work on application
+guide system call optimization, which is based on this project and maybe
+eliminate more dead code.
+
+And at the same time, do more test, clean up the existing patchset, rebase it
+to the latest stable kernel, then, upstream them.
+
+Everything in this work is open and free, the homepage is {\small
+tinylab.org/index.php/projects/tinylinux}, the project repository is
+{\small gitorious.org/tinylab/tinylinux}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REFERENCES (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{8}%use this if you have <=9 bib refs
+%\begin{thebibliography}{99}%use this if you have >9 bib refs
+\bibitem {link1}{\it Tiny Lab, http://www.tinylab.org }
+\bibitem {book1}{\it Link time dead code and data elimination using GNU toolchain, http://elinux.org/images/2/2d/ELC2010-gc-sections\_Denys\_Vlasenko.pdf}, {\sc Denys Vlasenko}
+\bibitem {book2}{\it Executable and Linkable Format, http://www.skyfree.org/linux/references/\\ELF\_Format.pdf}
+\bibitem {link2}{\it GNU Linker ld, http://sourceware.org/binutils/docs-2.19/ld/}
+\bibitem {book3}{\it A Whirlwind Tutorial on Creating Really Teensy ELF Executables for Linux, http://www.muppetlabs.com/\~breadbox/software/\\tiny/teensy.html}
+\bibitem {book4}{\it Understanding ELF using readelf and objdump, http://www.linuxforums.org/articles/ understanding-elf-using-readelf-and-objdump\_125.html}
+\bibitem {book5}{\it ELF: From The Programmer’s Perspective, http://www.ru.j-npcs.org/usoft/WWW/www\_debian.org/\\Documentation/elf/elf.html}
+\bibitem {link3}{\it Section garbage collection patchset, https://patchwork.kernel.org/project/linux-parisc/list/?submitter=Denys+Vlasenko}, {\sc Denys Vlasenko}
+\bibitem {link4}{\it Work on Tiny Linux Kernel, http://elinux.org/Work\_on\_Tiny\_Linux\_Kernel}, {\sc Wu Zhangjin}
+
+\end{thebibliography}
+
+\end{multicols}
+\end{document}

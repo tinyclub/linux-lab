@@ -1,0 +1,2 @@
+
+https://github.com/tinyclub/tinylinux.git 2.6.35/dev/gc-sections

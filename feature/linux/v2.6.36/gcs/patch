@@ -1,0 +1,4152 @@
+From 1df7f4d30389fdb1e6c5bc952c9080300aa221ef Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Tue, 11 Oct 2016 14:16:12 +0800
+Subject: [PATCH] feature: Add GCS support for unused data/func remove
+
+GCS = garbage collection sections
+
+QEMU emulator version 2.0.0 (Debian 2.0.0+dfsg-2ubuntu1.27), Copyright (c) 2003-2008 Fabrice Bellard
+
+Linux kernel v2.6.36
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ Makefile                                     |  23 +-
+ arch/alpha/boot/bootloader.lds               |   6 +-
+ arch/arm/Makefile                            |   3 +
+ arch/arm/boot/bootp/bootp.lds                |   1 +
+ arch/arm/boot/compressed/Makefile            |   5 +-
+ arch/arm/boot/compressed/vmlinux.lds.in      |   5 +-
+ arch/arm/include/asm/mach/arch.h             |   2 +-
+ arch/arm/include/asm/setup.h                 |   2 +-
+ arch/arm/kernel/vmlinux.lds.S                |  29 +-
+ arch/arm/mm/proc-arm926.S                    |   2 +-
+ arch/arm/module.lds.S                        |  18 +
+ arch/cris/boot/compressed/decompress_v10.lds |   3 +
+ arch/cris/boot/compressed/decompress_v32.lds |   3 +
+ arch/cris/boot/rescue/rescue_v10.lds         |   2 +
+ arch/cris/boot/rescue/rescue_v32.lds         |   7 +-
+ arch/cris/kernel/vmlinux.lds.S               |   4 +-
+ arch/frv/kernel/vmlinux.lds.S                |   1 -
+ arch/h8300/boot/compressed/vmlinux.lds       |   2 +
+ arch/h8300/boot/compressed/vmlinux.scr       |   1 +
+ arch/h8300/kernel/vmlinux.lds.S              |   2 +-
+ arch/ia64/hp/sim/boot/bootloader.lds         |   6 +-
+ arch/ia64/scripts/check-segrel.lds           |   4 +-
+ arch/m32r/boot/compressed/vmlinux.lds.S      |   6 +-
+ arch/m32r/boot/compressed/vmlinux.scr        |   1 +
+ arch/m68knommu/kernel/vmlinux.lds.S          |   9 +-
+ arch/microblaze/kernel/vmlinux.lds.S         |   2 +-
+ arch/mips/Makefile                           |   6 +-
+ arch/mips/boot/.gitignore                    |   1 +
+ arch/mips/boot/compressed/Makefile           |  13 +-
+ arch/mips/boot/compressed/decompress.c       |   5 +
+ arch/mips/boot/compressed/head.S             |   7 +-
+ arch/mips/boot/compressed/vmlinuz.lds.S      |  52 +++
+ arch/mips/include/asm/asm.h                  |   4 +
+ arch/mips/include/asm/cache.h                |   2 -
+ arch/mips/include/asm/fcntl.h                |   1 +
+ arch/mips/include/asm/page.h                 |   1 -
+ arch/mips/kernel/vmlinux.lds.S               |   6 +-
+ arch/mips/lasat/image/romscript.normal       |   1 +
+ arch/mips/module.lds                         |  19 ++
+ arch/mn10300/boot/compressed/vmlinux.lds     |   1 +
+ arch/mn10300/kernel/vmlinux.lds.S            |   6 +-
+ arch/parisc/kernel/vmlinux.lds.S             |   1 +
+ arch/powerpc/Makefile                        |   1 +
+ arch/powerpc/boot/Makefile                   |   6 +-
+ arch/powerpc/boot/wrapper                    |   6 +-
+ arch/powerpc/boot/zImage.coff.lds.S          |  24 +-
+ arch/powerpc/boot/zImage.lds.S               |  24 +-
+ arch/powerpc/boot/zImage.ps3.lds.S           |  24 +-
+ arch/powerpc/include/asm/cache.h             |   2 +-
+ arch/powerpc/include/asm/machdep.h           |  38 +--
+ arch/powerpc/include/asm/ppc_asm.h           |   4 +-
+ arch/powerpc/kernel/btext.c                  |   2 +-
+ arch/powerpc/kernel/vmlinux.lds.S            |  50 +--
+ arch/powerpc/platforms/iseries/lpardata.c    |   8 +-
+ arch/powerpc/platforms/iseries/lpevents.c    |   2 +-
+ arch/sh/boot/compressed/vmlinux.scr          |   1 +
+ arch/sh/kernel/vsyscall/vsyscall.lds.S       |   2 +-
+ arch/um/include/asm/common.lds.S             |   4 +-
+ arch/x86/boot/.gitignore                     |   1 +
+ arch/x86/boot/Makefile                       |   9 +-
+ arch/x86/boot/compressed/Makefile            |   6 +-
+ arch/x86/boot/compressed/relocs.c            |   1 +
+ arch/x86/boot/compressed/vmlinux.lds.S       |  12 +-
+ arch/x86/boot/setup.ld                       |  64 ----
+ arch/x86/boot/setup.lds.S                    |  69 ++++
+ arch/x86/include/asm/cache.h                 |   2 +-
+ arch/x86/include/asm/vsyscall.h              |  13 +-
+ arch/x86/kernel/acpi/realmode/wakeup.lds.S   |   1 +
+ arch/x86/kernel/acpi/wakeup_rm.S             |   5 +-
+ arch/x86/kernel/cpu/cpu.h                    |   2 +-
+ arch/x86/kernel/entry_32.S                   |   4 +-
+ arch/x86/kernel/entry_64.S                   |   2 +-
+ arch/x86/kernel/head_64.S                    |   4 +-
+ arch/x86/kernel/trampoline_64.S              |   2 +-
+ arch/x86/kernel/vmlinux.lds.S                |  74 ++--
+ arch/x86/kernel/vsyscall_64.c                |   3 +-
+ arch/x86/lguest/i386_head.S                  |   2 +-
+ arch/x86/module.lds                          |  10 +
+ arch/x86/vdso/vdso-layout.lds.S              |   4 +-
+ arch/x86/vdso/vdso32/int80.S                 |   2 +-
+ arch/x86/vdso/vdso32/syscall.S               |   2 +-
+ arch/xtensa/boot/boot-elf/boot.lds.S         |   5 +-
+ arch/xtensa/boot/boot-redboot/boot.ld        |   5 +-
+ drivers/misc/lkdtm.c                         |   4 +-
+ include/asm-generic/vmlinux.lds.h            | 490 ++++++++++++++++-----------
+ include/linux/cache.h                        |   4 +-
+ include/linux/compiler.h                     |  76 ++++-
+ include/linux/dynamic_debug.h                |   8 +-
+ include/linux/ftrace.h                       |   2 +-
+ include/linux/ftrace_event.h                 |   2 +-
+ include/linux/init.h                         |  74 ++--
+ include/linux/init_task.h                    |   2 +-
+ include/linux/jiffies.h                      |   2 +-
+ include/linux/kernel.h                       |   4 +-
+ include/linux/kprobes.h                      |   2 +-
+ include/linux/linkage.h                      |   4 +-
+ include/linux/moduleparam.h                  |   2 +-
+ include/linux/mtd/xip.h                      |   2 +-
+ include/linux/pci.h                          |   2 +-
+ include/linux/percpu-defs.h                  |   2 +-
+ include/linux/sched.h                        |   2 +-
+ include/linux/spinlock.h                     |   2 +-
+ include/linux/syscalls.h                     |   8 +-
+ include/linux/tracepoint.h                   |   4 +-
+ include/trace/ftrace.h                       |   6 +-
+ init/Kconfig                                 |  37 ++
+ kernel/module.c                              |   6 +
+ kernel/sys_ni.c                              |   1 +
+ lib/Kconfig.debug                            |   1 +
+ scripts/Kbuild.include                       |   8 +
+ scripts/Makefile                             |   1 +
+ scripts/Makefile.lib                         |  41 +++
+ scripts/cleansyscall.sh                      |  41 +++
+ scripts/ld-version.sh                        |  53 +++
+ scripts/mod/modpost.c                        |   5 +
+ scripts/module-common.lds                    |   8 -
+ scripts/module-common.lds.S                  |  55 +++
+ 117 files changed, 1161 insertions(+), 577 deletions(-)
+ create mode 100644 arch/arm/module.lds.S
+ create mode 100644 arch/mips/boot/compressed/vmlinuz.lds.S
+ create mode 100644 arch/mips/module.lds
+ delete mode 100644 arch/x86/boot/setup.ld
+ create mode 100644 arch/x86/boot/setup.lds.S
+ create mode 100644 arch/x86/module.lds
+ create mode 100644 scripts/cleansyscall.sh
+ create mode 100644 scripts/ld-version.sh
+ delete mode 100644 scripts/module-common.lds
+ create mode 100644 scripts/module-common.lds.S
+
+diff --git a/Makefile b/Makefile
+index 860c26a..4e722e5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -333,11 +333,25 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
+ 		  -Wbitwise -Wno-return-void $(CF)
+ CFLAGS_MODULE   =
+ AFLAGS_MODULE   =
+-LDFLAGS_MODULE  =
++LDS_MODULE      = -T $(objtree)/arch/$(SRCARCH)/module.lds
++LDFLAGS_MODULE  = $(if $(wildcard $(objtree)/arch/$(SRCARCH)/module.lds), $(LDS_MODULE))
++LDFLAGS_MODULE += -T $(objtree)/scripts/module-common.lds
+ CFLAGS_KERNEL	=
+ AFLAGS_KERNEL	=
+ CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
+ 
++# Only ld >= 0221 can merge sections through *(.text.[A-Za-z0-9_$^]*) or
++# *(.text.[^.]*), therefore, disable the -ffunction-sections, -fdata-sections
++# and the 'unique' version of the macros: __section*, __asm_section*
++# Otherwise, it will generate bigger kernel image
++
++# Even ld supports, the sections can also be disabled by CONFIG_SECTIONS
++KBUILD_LD_SUPPORT_SECTIONS := $(call ld-ifversion, -ge, 0221, y)
++CFLAGS_SECTIONS := -ffunction-sections -fdata-sections
++LDFLAGS_GCS	:= --gc-sections
++ifeq ($(KBUILD_VERBOSE),1)
++LDFLAGS_GCS	+= --print-gc-sections
++endif
+ 
+ # Use LINUXINCLUDE when you must reference the include/ directory.
+ # Needed to be compatible with the O= option
+@@ -357,7 +371,7 @@ KBUILD_CFLAGS_KERNEL :=
+ KBUILD_AFLAGS   := -D__ASSEMBLY__
+ KBUILD_AFLAGS_MODULE  := -DMODULE
+ KBUILD_CFLAGS_MODULE  := -DMODULE
+-KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
++KBUILD_LDFLAGS_MODULE := -T $(objtree)/scripts/module-common.lds
+ 
+ # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+ KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
+@@ -371,6 +385,7 @@ export HOSTCXX HOSTCXXFLAGS LDFLAGS_MODULE CHECK CHECKFLAGS
+ 
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS LDFLAGS
+ export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE CFLAGS_GCOV
++export KBUILD_LD_SUPPORT_SECTIONS CFLAGS_SECTIONS LDFLAGS_GCS
+ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+ export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
+@@ -619,6 +634,8 @@ ifeq ($(CONFIG_STRIP_ASM_SYMS),y)
+ LDFLAGS_vmlinux	+= $(call ld-option, -X,)
+ endif
+ 
++LDFLAGS_vmlinux += $(LDFLAGS_GCS)
++
+ # Default kernel image to build when no specific target is given.
+ # KBUILD_IMAGE may be overruled on the command line or
+ # set in the environment
+@@ -714,7 +731,7 @@ export KBUILD_VMLINUX_OBJS := $(vmlinux-all)
+ # Rule to link vmlinux - also used during CONFIG_KALLSYMS
+ # May be overridden by arch/$(ARCH)/Makefile
+ quiet_cmd_vmlinux__ ?= LD      $@
+-      cmd_vmlinux__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_vmlinux) -o $@ \
++      cmd_vmlinux__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_vmlinux) -o $@ -Map $@.ldmap \
+       -T $(vmlinux-lds) $(vmlinux-init)                          \
+       --start-group $(vmlinux-main) --end-group                  \
+       $(filter-out $(vmlinux-lds) $(vmlinux-init) $(vmlinux-main) vmlinux.o FORCE ,$^)
+diff --git a/arch/alpha/boot/bootloader.lds b/arch/alpha/boot/bootloader.lds
+index 31c081c..ff5374d 100644
+--- a/arch/alpha/boot/bootloader.lds
++++ b/arch/alpha/boot/bootloader.lds
+@@ -4,17 +4,17 @@ printk = srm_printk;
+ SECTIONS
+ {
+   . = 0x20000000;
+-  .text : { *(.text) }
++  .text : { *(.text) *(.text.*) }
+   _etext = .;
+   PROVIDE (etext = .);
+   .rodata : { *(.rodata) *(.rodata.*) }
+-  .data : { *(.data) CONSTRUCTORS }
++  .data : { *(.data) *(.data.*) CONSTRUCTORS }
+   .got : { *(.got) }
+   .sdata : { *(.sdata) }
+   _edata = .;
+   PROVIDE (edata = .);
+   .sbss : { *(.sbss) *(.scommon) }
+-  .bss : { *(.bss) *(COMMON) }
++  .bss : { *(.bss) *(.bss.*) *(COMMON) }
+   _end = . ;
+   PROVIDE (end = .);
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 59c1ce8..7ff6e54 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -17,6 +17,7 @@ endif
+ 
+ OBJCOPYFLAGS	:=-O binary -R .note -R .note.gnu.build-id -R .comment -S
+ GZFLAGS		:=-9
++
+ #KBUILD_CFLAGS	+=-pipe
+ # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
+ KBUILD_CFLAGS	+=$(call cc-option,-marm,)
+@@ -301,3 +302,5 @@ define archhelp
+   echo  '                  (distribution) /sbin/$(INSTALLKERNEL) or'
+   echo  '                  install to $$(INSTALL_PATH) and run lilo'
+ endef
++
++extra-y := module.lds
+diff --git a/arch/arm/boot/bootp/bootp.lds b/arch/arm/boot/bootp/bootp.lds
+index fc54394..14be7ff 100644
+--- a/arch/arm/boot/bootp/bootp.lds
++++ b/arch/arm/boot/bootp/bootp.lds
+@@ -16,6 +16,7 @@ SECTIONS
+    _stext = .;
+    *(.start)
+    *(.text)
++   *(.text.*)
+    initrd_size = initrd_end - initrd_start;
+    _etext = .;
+   }
+diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
+index 65a7c1c..021e0ea 100644
+--- a/arch/arm/boot/compressed/Makefile
++++ b/arch/arm/boot/compressed/Makefile
+@@ -77,11 +77,14 @@ KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
+ endif
+ 
+ EXTRA_CFLAGS  := -fpic -fno-builtin
++EXTRA_CFLAGS  += $(KBUILD_CFLAGS_SECTIONS)
+ EXTRA_AFLAGS  := -Wa,-march=all
+ 
++LDFLAGS_vmlinux := $(LDFLAGS_GCS)
++
+ # Supply ZRELADDR to the decompressor via a linker symbol.
+ ifneq ($(CONFIG_AUTO_ZRELADDR),y)
+-LDFLAGS_vmlinux := --defsym zreladdr=$(ZRELADDR)
++LDFLAGS_vmlinux += --defsym zreladdr=$(ZRELADDR)
+ endif
+ ifeq ($(CONFIG_CPU_ENDIAN_BE8),y)
+ LDFLAGS_vmlinux += --be8
+diff --git a/arch/arm/boot/compressed/vmlinux.lds.in b/arch/arm/boot/compressed/vmlinux.lds.in
+index d081689..4511a7d 100644
+--- a/arch/arm/boot/compressed/vmlinux.lds.in
++++ b/arch/arm/boot/compressed/vmlinux.lds.in
+@@ -28,9 +28,10 @@ SECTIONS
+ 
+   .text : {
+     _start = .;
+-    *(.start)
+-    *(.text)
++    KEEP(*(.start))
++    KEEP(*(.text))
+     *(.text.*)
++    KEEP(*(.text.call_kernel))
+     *(.fixup)
+     *(.gnu.warning)
+     *(.rodata)
+diff --git a/arch/arm/include/asm/mach/arch.h b/arch/arm/include/asm/mach/arch.h
+index 8a0dd18..015fb26 100644
+--- a/arch/arm/include/asm/mach/arch.h
++++ b/arch/arm/include/asm/mach/arch.h
+@@ -52,7 +52,7 @@ struct machine_desc {
+ #define MACHINE_START(_type,_name)			\
+ static const struct machine_desc __mach_desc_##_type	\
+  __used							\
+- __attribute__((__section__(".arch.info.init"))) = {	\
++ __section(.arch.info.init) = {	\
+ 	.nr		= MACH_TYPE_##_type,		\
+ 	.name		= _name,
+ 
+diff --git a/arch/arm/include/asm/setup.h b/arch/arm/include/asm/setup.h
+index f1e5a9b..bfb9f47 100644
+--- a/arch/arm/include/asm/setup.h
++++ b/arch/arm/include/asm/setup.h
+@@ -185,7 +185,7 @@ struct tagtable {
+ 
+ #ifdef __KERNEL__
+ 
+-#define __tag __used __attribute__((__section__(".taglist.init")))
++#define __tag __used __section(.taglist.init)
+ #define __tagtable(tag, fn) \
+ static struct tagtable __tagtable_##fn __tag = { tag, fn }
+ 
+diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
+index b16c079..ace79f9 100644
+--- a/arch/arm/kernel/vmlinux.lds.S
++++ b/arch/arm/kernel/vmlinux.lds.S
+@@ -32,13 +32,13 @@ SECTIONS
+ 			INIT_TEXT
+ 		_einittext = .;
+ 		__proc_info_begin = .;
+-			*(.proc.info.init)
++			KEEP_ALL(.proc.info.init)
+ 		__proc_info_end = .;
+ 		__arch_info_begin = .;
+-			*(.arch.info.init)
++			KEEP_ALL(.arch.info.init)
+ 		__arch_info_end = .;
+ 		__tagtable_begin = .;
+-			*(.taglist.init)
++			KEEP_ALL(.taglist.init)
+ 		__tagtable_end = .;
+ 
+ 		INIT_SETUP(16)
+@@ -66,15 +66,15 @@ SECTIONS
+ 	 * unwind sections get included.
+ 	 */
+ 	/DISCARD/ : {
+-		*(.ARM.exidx.exit.text)
+-		*(.ARM.extab.exit.text)
++		*(.ARM.exidx.exit.text*)
++		*(.ARM.extab.exit.text*)
+ #ifndef CONFIG_HOTPLUG_CPU
+-		*(.ARM.exidx.cpuexit.text)
+-		*(.ARM.extab.cpuexit.text)
++		*(.ARM.exidx.cpuexit.text*)
++		*(.ARM.extab.cpuexit.text*)
+ #endif
+ #ifndef CONFIG_HOTPLUG
+-		*(.ARM.exidx.devexit.text)
+-		*(.ARM.extab.devexit.text)
++		*(.ARM.exidx.devexit.text*)
++		*(.ARM.extab.devexit.text*)
+ #endif
+ #ifndef CONFIG_MMU
+ 		*(.fixup)
+@@ -95,8 +95,7 @@ SECTIONS
+ 			*(.fixup)
+ #endif
+ 			*(.gnu.warning)
+-			*(.rodata)
+-			*(.rodata.*)
++			ALL(.rodata)
+ 			*(.glue_7)
+ 			*(.glue_7t)
+ 		*(.got)			/* Global offset table		*/
+@@ -158,7 +157,7 @@ SECTIONS
+ 		. = ALIGN(32);
+ 		__start___ex_table = .;
+ #ifdef CONFIG_MMU
+-		*(__ex_table)
++		KEEP(*(__ex_table))
+ #endif
+ 		__stop___ex_table = .;
+ 
+@@ -193,8 +192,8 @@ SECTIONS
+ 	.text_itcm ITCM_OFFSET : AT(__itcm_start)
+ 	{
+ 		__sitcm_text = .;
+-		*(.tcm.text)
+-		*(.tcm.rodata)
++		*(.tcm.text*)
++		*(.tcm.rodata*)
+ 		. = ALIGN(4);
+ 		__eitcm_text = .;
+ 	}
+@@ -214,7 +213,7 @@ SECTIONS
+ 	{
+ 		. = ALIGN(4);
+ 		__sdtcm_data = .;
+-		*(.tcm.data)
++		*(.tcm.data*)
+ 		. = ALIGN(4);
+ 		__edtcm_data = .;
+ 	}
+diff --git a/arch/arm/mm/proc-arm926.S b/arch/arm/mm/proc-arm926.S
+index 73f1f3c..eac4c58 100644
+--- a/arch/arm/mm/proc-arm926.S
++++ b/arch/arm/mm/proc-arm926.S
+@@ -446,7 +446,7 @@ arm926_processor_functions:
+ 	.word	cpu_arm926_set_pte_ext
+ 	.size	arm926_processor_functions, . - arm926_processor_functions
+ 
+-	.section ".rodata"
++	__asm_section(.rodata)
+ 
+ 	.type	cpu_arch_name, #object
+ cpu_arch_name:
+diff --git a/arch/arm/module.lds.S b/arch/arm/module.lds.S
+new file mode 100644
+index 0000000..c88a9e4
+--- /dev/null
++++ b/arch/arm/module.lds.S
+@@ -0,0 +1,18 @@
++/*
++ * ARM Specific module linker script, this will be merged to the
++ * common linker script in scripts/module-common.lds
++ */
++
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/thread_info.h>
++#include <asm/memory.h>
++#include <asm/page.h>
++
++SECTIONS {
++	/DISCARD/ : {
++#ifndef CONFIG_MMU
++		*(.fixup)
++		*(__ex_table)
++#endif
++	}
++}
+diff --git a/arch/cris/boot/compressed/decompress_v10.lds b/arch/cris/boot/compressed/decompress_v10.lds
+index e80f459..d6022d9 100644
+--- a/arch/cris/boot/compressed/decompress_v10.lds
++++ b/arch/cris/boot/compressed/decompress_v10.lds
+@@ -13,6 +13,7 @@ SECTIONS
+ 	{
+ 		_stext = . ;
+ 		*(.text)
++		*(.text.*)
+ 		*(.rodata)
+ 		*(.rodata.*)
+ 		_etext = . ;
+@@ -20,11 +21,13 @@ SECTIONS
+ 	.data :
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		_edata = . ;
+ 	} > dram
+ 	.bss :
+ 	{
+ 		*(.bss)
++		*(.bss.*)
+ 		_end = ALIGN( 0x10 ) ;
+ 	} > dram
+ }
+diff --git a/arch/cris/boot/compressed/decompress_v32.lds b/arch/cris/boot/compressed/decompress_v32.lds
+index 3c837fe..b5cfeb4 100644
+--- a/arch/cris/boot/compressed/decompress_v32.lds
++++ b/arch/cris/boot/compressed/decompress_v32.lds
+@@ -13,6 +13,7 @@ SECTIONS
+ 	{
+ 		_stext = . ;
+ 		*(.text)
++		*(.text.*)
+ 		*(.rodata)
+ 		*(.rodata.*)
+ 		_etext = . ;
+@@ -20,11 +21,13 @@ SECTIONS
+ 	.data :
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		_edata = . ;
+ 	} > dram
+ 	.bss :
+ 	{
+ 		*(.bss)
++		*(.bss.*)
+ 		_end = ALIGN( 0x10 ) ;
+ 	} > dram
+ }
+diff --git a/arch/cris/boot/rescue/rescue_v10.lds b/arch/cris/boot/rescue/rescue_v10.lds
+index 0b52a94..42b03a3 100644
+--- a/arch/cris/boot/rescue/rescue_v10.lds
++++ b/arch/cris/boot/rescue/rescue_v10.lds
+@@ -10,11 +10,13 @@ SECTIONS
+ 	{
+ 		stext = . ;
+ 		*(.text)
++		*(.text.*)
+ 		etext = . ;
+ 	} > flash
+ 	.data :
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		edata = . ;
+ 	} > flash
+ }
+diff --git a/arch/cris/boot/rescue/rescue_v32.lds b/arch/cris/boot/rescue/rescue_v32.lds
+index 8ac646b..7dc3a90 100644
+--- a/arch/cris/boot/rescue/rescue_v32.lds
++++ b/arch/cris/boot/rescue/rescue_v32.lds
+@@ -17,6 +17,7 @@ SECTIONS
+ 	{
+ 		_stext = . ;
+ 		*(.text)
++		*(.text.*)
+ 		*(.init.text)
+ 		*(.rodata)
+ 		*(.rodata.*)
+@@ -25,19 +26,21 @@ SECTIONS
+ 	.data :
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		_edata = . ;
+ 	} > bootblk
+ 	.bss :
+ 	{
+ 		_bss = . ;
+ 		*(.bss)
++		*(.bss.*)
+ 		_end = ALIGN( 0x10 ) ;
+ 	} > intmem
+ 
+ 	/* Get rid of stuff from EXPORT_SYMBOL(foo). */
+ 	/DISCARD/ :
+ 	{
+-	        *(__ksymtab_strings)
+-	        *(__ksymtab)
++		KEEP(*(__ksymtab_strings))
++		*(__ksymtab)
+ 	}
+ }
+diff --git a/arch/cris/kernel/vmlinux.lds.S b/arch/cris/kernel/vmlinux.lds.S
+index 4422189..20e796c 100644
+--- a/arch/cris/kernel/vmlinux.lds.S
++++ b/arch/cris/kernel/vmlinux.lds.S
+@@ -74,7 +74,7 @@ SECTIONS
+ 	.init.setup : { INIT_SETUP(16) }
+ #ifdef CONFIG_ETRAX_ARCH_V32
+ 	__start___param = .;
+-	__param : { *(__param) }
++	__param : { KEEP(*(__param)) }
+ 	__stop___param = .;
+ #endif
+ 	.initcall.init : {
+@@ -100,7 +100,7 @@ SECTIONS
+ #ifdef CONFIG_BLK_DEV_INITRD
+ 	.init.ramfs : {
+ 		__initramfs_start = .;
+-		*(.init.ramfs)
++		KEEP(*(.init.ramfs))
+ 		__initramfs_end = .;
+ 	}
+ #endif
+diff --git a/arch/frv/kernel/vmlinux.lds.S b/arch/frv/kernel/vmlinux.lds.S
+index 8b973f3..9949f1a 100644
+--- a/arch/frv/kernel/vmlinux.lds.S
++++ b/arch/frv/kernel/vmlinux.lds.S
+@@ -114,7 +114,6 @@ SECTIONS
+ 
+   .sbss		: { *(.sbss .sbss.*) }
+   .bss		: { *(.bss .bss.*) }
+-  .bss..stack	: { *(.bss) }
+ 
+   __bss_stop = .;
+   _end = . ;
+diff --git a/arch/h8300/boot/compressed/vmlinux.lds b/arch/h8300/boot/compressed/vmlinux.lds
+index a0a3a0e..6896c9a 100644
+--- a/arch/h8300/boot/compressed/vmlinux.lds
++++ b/arch/h8300/boot/compressed/vmlinux.lds
+@@ -6,12 +6,14 @@ SECTIONS
+ 	__text = .;
+ 	       *(.text..startup)
+ 	       *(.text)
++	       *(.text.*)
+         __etext = . ;
+         }
+ 
+ 	.rodata :
+ 	{
+ 		*(.rodata)
++		*(.rodata.*)
+ 	}
+         .data :
+ 
+diff --git a/arch/h8300/boot/compressed/vmlinux.scr b/arch/h8300/boot/compressed/vmlinux.scr
+index a0f6962..f4cfb3f 100644
+--- a/arch/h8300/boot/compressed/vmlinux.scr
++++ b/arch/h8300/boot/compressed/vmlinux.scr
+@@ -4,6 +4,7 @@ SECTIONS
+ 	_input_len = .;
+ 	LONG(_input_data_end - _input_data) _input_data = .;
+ 	*(.data)
++	*(.data.*)
+ 	_input_data_end = .;
+ 	}
+ }
+diff --git a/arch/h8300/kernel/vmlinux.lds.S b/arch/h8300/kernel/vmlinux.lds.S
+index 03d356d..9faa250 100644
+--- a/arch/h8300/kernel/vmlinux.lds.S
++++ b/arch/h8300/kernel/vmlinux.lds.S
+@@ -112,7 +112,7 @@ SECTIONS
+ 	. = ALIGN(0x4) ;
+ 	INIT_SETUP(0x4)
+ 	___setup_start = .;
+-		*(.init.setup)
++		KEEP(*(.init.setup))
+ 	. = ALIGN(0x4) ;
+ 	___setup_end = .;
+ 	INIT_CALLS
+diff --git a/arch/ia64/hp/sim/boot/bootloader.lds b/arch/ia64/hp/sim/boot/bootloader.lds
+index 3977f25..56bf12c 100644
+--- a/arch/ia64/hp/sim/boot/bootloader.lds
++++ b/arch/ia64/hp/sim/boot/bootloader.lds
+@@ -7,13 +7,13 @@ SECTIONS
+   . = 0x100000;
+ 
+   _text = .;
+-  .text : { *(__ivt_section) *(.text) }
++  .text : { *(__ivt_section) *(.text) *(.text.*) }
+   _etext = .;
+ 
+   /* Global data */
+   _data = .;
+   .rodata : { *(.rodata) *(.rodata.*) }
+-  .data    : { *(.data) *(.gnu.linkonce.d*) CONSTRUCTORS }
++  .data    : { *(.data) *(.data.*) *(.gnu.linkonce.d*) CONSTRUCTORS }
+   __gp = ALIGN (8) + 0x200000;
+   .got           : { *(.got.plt) *(.got) }
+   /* We want the small data sections together, so single-instruction offsets
+@@ -24,7 +24,7 @@ SECTIONS
+ 
+   __bss_start = .;
+   .sbss      : { *(.sbss) *(.scommon) }
+-  .bss       : { *(.bss) *(COMMON) }
++  .bss       : { *(.bss) *(.bss.*) *(COMMON) }
+   . = ALIGN(64 / 8);
+   __bss_stop = .;
+   _end = . ;
+diff --git a/arch/ia64/scripts/check-segrel.lds b/arch/ia64/scripts/check-segrel.lds
+index 85a0d54..1e23df4 100644
+--- a/arch/ia64/scripts/check-segrel.lds
++++ b/arch/ia64/scripts/check-segrel.lds
+@@ -1,9 +1,9 @@
+ SECTIONS {
+ 	. = SIZEOF_HEADERS;
+-	.rodata : { *(.rodata) } :ro
++	.rodata : { *(.rodata) *(.rodata.*) } :ro
+ 	.note : { *(.note*) }
+ 	. = 0xa0000;
+-	.data : { *(.data) } :dat
++	.data : { *(.data) *(.data.*) } :dat
+ 	/DISCARD/ : { *(*) }
+ }
+ PHDRS {
+diff --git a/arch/m32r/boot/compressed/vmlinux.lds.S b/arch/m32r/boot/compressed/vmlinux.lds.S
+index dd11963..d51580e 100644
+--- a/arch/m32r/boot/compressed/vmlinux.lds.S
++++ b/arch/m32r/boot/compressed/vmlinux.lds.S
+@@ -6,12 +6,12 @@ SECTIONS
+   . = CONFIG_MEMORY_START + 0x00400000;
+ 
+   _text = .;
+-  .text : { *(.text) } = 0
++  .text : { *(.text) *(.text.*) } = 0
+   .rodata : { *(.rodata) *(.rodata.*) }
+   _etext = .;
+ 
+   . = ALIGN(32 / 8);
+-  .data : { *(.data) }
++  .data : { *(.data) *(.data.*) }
+   . = ALIGN(32 / 8);
+   _got = .;
+   .got  : { *(.got) _egot = .; *(.got.*) }
+@@ -19,7 +19,7 @@ SECTIONS
+ 
+   . = ALIGN(32 / 8);
+   __bss_start = .;
+-  .bss : { *(.bss) *(.sbss) }
++  .bss : { *(.bss) *(.bss.*) *(.sbss) }
+   . = ALIGN(32 / 8);
+   _ebss = .;
+   . = ALIGN(4096);
+diff --git a/arch/m32r/boot/compressed/vmlinux.scr b/arch/m32r/boot/compressed/vmlinux.scr
+index 924c799..253eff1 100644
+--- a/arch/m32r/boot/compressed/vmlinux.scr
++++ b/arch/m32r/boot/compressed/vmlinux.scr
+@@ -3,6 +3,7 @@ SECTIONS
+   .data : {
+ 	zimage_data = .;
+ 	*(.data)
++	*(.data.*)
+ 	zimage_data_end = .;
+ 	}
+   zimage_len = zimage_data_end - zimage_data;
+diff --git a/arch/m68knommu/kernel/vmlinux.lds.S b/arch/m68knommu/kernel/vmlinux.lds.S
+index ef33213..f620765 100644
+--- a/arch/m68knommu/kernel/vmlinux.lds.S
++++ b/arch/m68knommu/kernel/vmlinux.lds.S
+@@ -72,7 +72,7 @@ SECTIONS {
+ 
+ 		. = ALIGN(16);          /* Exception table              */
+ 		__start___ex_table = .;
+-		*(__ex_table)
++		KEEP(*(__ex_table))
+ 		__stop___ex_table = .;
+ 
+ 		*(.rodata) *(.rodata.*)
+@@ -129,16 +129,16 @@ SECTIONS {
+ 
+ 		/* Kernel symbol table: GPL-future symbols */
+ 		__start___kcrctab_gpl_future = .;
+-		*(__kcrctab_gpl_future)
++		KEEP(*(__kcrctab_gpl_future))
+ 		__stop___kcrctab_gpl_future = .;
+ 
+ 		/* Kernel symbol table: strings */
+-		*(__ksymtab_strings)
++		KEEP(*(__ksymtab_strings))
+ 
+ 		/* Built-in module parameters */
+ 		. = ALIGN(4) ;
+ 		__start___param = .;
+-		*(__param)
++		KEEP(*(__param))
+ 		__stop___param = .;
+ 
+ 		. = ALIGN(4) ;
+@@ -171,6 +171,7 @@ SECTIONS {
+ 		. = ALIGN(4);
+ 		_sbss = . ;
+ 		*(.bss)
++		*(.bss.*)
+ 		*(COMMON)
+ 		. = ALIGN(4) ;
+ 		_ebss = . ;
+diff --git a/arch/microblaze/kernel/vmlinux.lds.S b/arch/microblaze/kernel/vmlinux.lds.S
+index a09f296..28f5611 100644
+--- a/arch/microblaze/kernel/vmlinux.lds.S
++++ b/arch/microblaze/kernel/vmlinux.lds.S
+@@ -122,7 +122,7 @@ SECTIONS {
+ 
+ 	.init.ramfs ALIGN(PAGE_SIZE) : AT(ADDR(.init.ramfs) - LOAD_OFFSET) {
+ 		__initramfs_start = .;
+-		*(.init.ramfs)
++		KEEP(*(.init.ramfs))
+ 		__initramfs_end = .;
+ 		. = ALIGN(4);
+ 		LONG(0);
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index f4a4b66..a364001 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -48,8 +48,10 @@ ifneq ($(SUBARCH),$(ARCH))
+   endif
+ endif
+ 
+-ifndef CONFIG_FUNCTION_TRACER
+-cflags-y := -ffunction-sections
++# 32bit has observed not work well with -fdata-sections, a failure has happen
++# on YeeLoong with framebuffer broken.
++ifdef CONFIG_32BIT
++  DATA_SECTIONS := n
+ endif
+ ifdef CONFIG_FUNCTION_GRAPH_TRACER
+   ifndef KBUILD_MCOUNT_RA_ADDRESS
+diff --git a/arch/mips/boot/.gitignore b/arch/mips/boot/.gitignore
+index f210b09..964687f 100644
+--- a/arch/mips/boot/.gitignore
++++ b/arch/mips/boot/.gitignore
+@@ -1,6 +1,7 @@
+ mkboot
+ elf2ecoff
+ vmlinux.*
++vmlinuz.lds
+ zImage
+ zImage.tmp
+ calc_vmlinuz_load_addr
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 5042d51..08f6d16 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -21,6 +21,8 @@ KBUILD_CFLAGS := $(shell echo $(KBUILD_CFLAGS) | sed -e "s/-pg//")
+ KBUILD_CFLAGS := $(LINUXINCLUDE) $(KBUILD_CFLAGS) -D__KERNEL__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) -D"VMLINUX_LOAD_ADDRESS_ULL=$(VMLINUX_LOAD_ADDRESS)ull"
+ 
++KBUILD_CFLAGS += $(KBUILD_CFLAGS_SECTIONS)
++
+ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
+ 	-DKERNEL_ENTRY=0x$(shell $(NM) $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | grep " kernel_entry" | cut -f1 -d \ )
+@@ -28,9 +30,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+ targets := head.o decompress.o dbg.o uart-16550.o uart-alchemy.o
+ 
+ # decompressor objects (linked with vmlinuz)
+-vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
++vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o
+ 
+ ifdef CONFIG_DEBUG_ZBOOT
++vmlinuzobjs-y					   += $(obj)/dbg.o
+ vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+ vmlinuzobjs-$(CONFIG_MIPS_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ endif
+@@ -64,10 +67,10 @@ VMLINUZ_LOAD_ADDRESS = $(shell $(obj)/calc_vmlinuz_load_addr \
+ vmlinuzobjs-y += $(obj)/piggy.o
+ 
+ quiet_cmd_zld = LD      $@
+-      cmd_zld = $(LD) $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T $< $(vmlinuzobjs-y) -o $@
++      cmd_zld = $(LD) $(LDFALGS_GCS) $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T $< $(vmlinuzobjs-y) -o $@
+ quiet_cmd_strip = STRIP   $@
+       cmd_strip = $(STRIP) -s $@
+-vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
++vmlinuz: $(src)/vmlinuz.lds $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
+ 	$(call cmd,zld)
+ 	$(call cmd,strip)
+ 
+@@ -105,4 +108,6 @@ OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFLAGS) -S -O srec
+ vmlinuz.srec: vmlinuz
+ 	$(call cmd,objcopy)
+ 
+-clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec}
++clean-files := $(objtree)/vmlinuz $(objtree)/vmlinuz.{32,ecoff,bin,srec,lds}
++
++extra-y := vmlinuz.lds
+diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+index 5cad0fa..c9cbff5 100644
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -27,8 +27,13 @@ unsigned long free_mem_end_ptr;
+ extern unsigned char __image_begin, __image_end;
+ 
+ /* debug interfaces  */
++#ifdef CONFIG_DEBUG_ZBOOT
+ extern void puts(const char *s);
+ extern void puthex(unsigned long long val);
++#else
++#define puts(s) do {} while (0)
++#define puthex(val) do {} while (0)
++#endif
+ 
+ void error(char *x)
+ {
+diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
+index 4e65a84..577e444 100644
+--- a/arch/mips/boot/compressed/head.S
++++ b/arch/mips/boot/compressed/head.S
+@@ -17,8 +17,7 @@
+ 
+ 	.set noreorder
+ 	.cprestore
+-	LEAF(start)
+-start:
++LEAF(start)
+ 	/* Save boot rom start args */
+ 	move	s0, a0
+ 	move	s1, a1
+@@ -26,8 +25,8 @@ start:
+ 	move	s3, a3
+ 
+ 	/* Clear BSS */
+-	PTR_LA	a0, _edata
+-	PTR_LA	a2, _end
++	PTR_LA	a0, __bss_begin
++	PTR_LA	a2, __bss_end
+ 1:	sw	zero, 0(a0)
+ 	bne	a2, a0, 1b
+ 	 addiu	a0, a0, 4
+diff --git a/arch/mips/boot/compressed/vmlinuz.lds.S b/arch/mips/boot/compressed/vmlinuz.lds.S
+new file mode 100644
+index 0000000..9710a39
+--- /dev/null
++++ b/arch/mips/boot/compressed/vmlinuz.lds.S
+@@ -0,0 +1,52 @@
++/*
++ * ld.script for compressed kernel support of MIPS
++ *
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin <wuzhanjing@gmail.com>
++ * Copyright (C) 2010 "Wu Zhangjin" <wuzhanjing@gmail.com>
++ */
++
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++OUTPUT_ARCH(mips)
++ENTRY(start)
++SECTIONS
++{
++	/* Text and read-only data */
++	/* . = VMLINUZ_LOAD_ADDRESS; */
++	.text : {
++		ALL(.text.start)
++		/* Put the compressed image here */
++		__image_begin = .;
++		KEEP(*(.image))
++		__image_end = .;
++		ALL(.text)
++		ALL(.rodata)
++	}
++	. = ALIGN(16);
++	_edata = .;
++	/* End of data section */
++
++	/* BSS */
++	.bss : {
++		__bss_begin = .;
++		ALL(.bss)
++		__bss_end = .;
++	}
++	. = ALIGN(16);
++	_end = .;
++
++	/* Sections to be discarded */
++	/DISCARD/ : {
++		*(.MIPS.options)
++		*(.options)
++		*(.pdr)
++		*(.reginfo)
++		*(.comment)
++		*(.note)
++		*(.gnu.attributes)
++		*(.data)
++	}
++}
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 608cfcf..736633f 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -17,6 +17,8 @@
+ #ifndef __ASM_ASM_H
+ #define __ASM_ASM_H
+ 
++#include <linux/init.h>
++
+ #include <asm/sgidefs.h>
+ 
+ #ifndef CAT
+@@ -49,6 +51,7 @@
+  * LEAF - declare leaf routine
+  */
+ #define	LEAF(symbol)                                    \
++		__asm_section(.text);			\
+ 		.globl	symbol;                         \
+ 		.align	2;                              \
+ 		.type	symbol, @function;              \
+@@ -59,6 +62,7 @@ symbol:		.frame	sp, 0, ra
+  * NESTED - declare nested routine entry point
+  */
+ #define	NESTED(symbol, framesize, rpc)                  \
++		__asm_section(.text);			\
+ 		.globl	symbol;                         \
+ 		.align	2;                              \
+ 		.type	symbol, @function;              \
+diff --git a/arch/mips/include/asm/cache.h b/arch/mips/include/asm/cache.h
+index 37f175c..f9327f3 100644
+--- a/arch/mips/include/asm/cache.h
++++ b/arch/mips/include/asm/cache.h
+@@ -9,8 +9,6 @@
+ #ifndef _ASM_CACHE_H
+ #define _ASM_CACHE_H
+ 
+-#include <kmalloc.h>
+-
+ #define L1_CACHE_SHIFT		CONFIG_MIPS_L1_CACHE_SHIFT
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+ 
+diff --git a/arch/mips/include/asm/fcntl.h b/arch/mips/include/asm/fcntl.h
+index 75edded..f6755d7 100644
+--- a/arch/mips/include/asm/fcntl.h
++++ b/arch/mips/include/asm/fcntl.h
+@@ -8,6 +8,7 @@
+ #ifndef _ASM_FCNTL_H
+ #define _ASM_FCNTL_H
+ 
++#include <linux/types.h>
+ 
+ #define O_APPEND	0x0008
+ #define O_DSYNC		0x0010	/* used to be O_SYNC, see below */
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index e59cd1a..33160df 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -9,7 +9,6 @@
+ #ifndef _ASM_PAGE_H
+ #define _ASM_PAGE_H
+ 
+-#include <spaces.h>
+ #include <linux/const.h>
+ 
+ /*
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index f25df73..2fe49e4 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -47,7 +47,6 @@ SECTIONS
+ 		LOCK_TEXT
+ 		KPROBES_TEXT
+ 		IRQENTRY_TEXT
+-		*(.text.*)
+ 		*(.fixup)
+ 		*(.gnu.warning)
+ 	} :text = 0
+@@ -67,6 +66,8 @@ SECTIONS
+ 
+ 	RODATA
+ 
++	PERCPU(PAGE_SIZE)
++
+ 	/* writeable */
+ 	.data : {	/* Data */
+ 		. = . + DATAOFFSET;		/* for CONFIG_MAPPED_KERNEL */
+@@ -88,7 +89,7 @@ SECTIONS
+ 	   can access them all, and initialized data all before uninitialized, so
+ 	   we can shorten the on-disk segment size.  */
+ 	.sdata : {
+-		*(.sdata)
++		ALL(.sdata)
+ 	}
+ 	_edata =  .;			/* End of data section */
+ 
+@@ -108,7 +109,6 @@ SECTIONS
+ 		EXIT_DATA
+ 	}
+ 
+-	PERCPU(PAGE_SIZE)
+ 	. = ALIGN(PAGE_SIZE);
+ 	__init_end = .;
+ 	/* freed after init ends here */
+diff --git a/arch/mips/lasat/image/romscript.normal b/arch/mips/lasat/image/romscript.normal
+index 0864c96..408e5ad 100644
+--- a/arch/mips/lasat/image/romscript.normal
++++ b/arch/mips/lasat/image/romscript.normal
+@@ -12,6 +12,7 @@ SECTIONS
+   .data ALIGN(0x10) :
+   {
+     *(.data)
++    *(.data.*)
+   }
+   _image_start = ADDR(.data);
+   _image_size = SIZEOF(.data);
+diff --git a/arch/mips/module.lds b/arch/mips/module.lds
+new file mode 100644
+index 0000000..3423e32
+--- /dev/null
++++ b/arch/mips/module.lds
+@@ -0,0 +1,19 @@
++
++/*
++ * MIPS Specific module linker script, this will be merged to the
++ * common linker script in scripts/module-common.lds
++ */
++
++SECTIONS {
++
++	/DISCARD/ : {
++		/* ABI crap starts here */
++		*(.MIPS.options)
++		*(.options)
++		*(.pdr)
++		*(.reginfo)
++		*(.comment)
++		*(.mdebug.*)
++		*(.gnu.attributes)
++	}
++}
+diff --git a/arch/mn10300/boot/compressed/vmlinux.lds b/arch/mn10300/boot/compressed/vmlinux.lds
+index a0849036..3e3e043 100644
+--- a/arch/mn10300/boot/compressed/vmlinux.lds
++++ b/arch/mn10300/boot/compressed/vmlinux.lds
+@@ -4,6 +4,7 @@ SECTIONS
+ 	input_len = .;
+ 	LONG(input_data_end - input_data) input_data = .;
+ 	*(.data)
++	*(.data.*)
+ 	input_data_end = .;
+ 	}
+ }
+diff --git a/arch/mn10300/kernel/vmlinux.lds.S b/arch/mn10300/kernel/vmlinux.lds.S
+index 10549dc..cb22532 100644
+--- a/arch/mn10300/kernel/vmlinux.lds.S
++++ b/arch/mn10300/kernel/vmlinux.lds.S
+@@ -51,7 +51,7 @@ SECTIONS
+   . = ALIGN(PAGE_SIZE);
+   .smp_locks : AT(ADDR(.smp_locks) - LOAD_OFFSET) {
+   	__smp_locks = .;
+-	*(.smp_locks)
++	KEEP(*(.smp_locks))
+ 	__smp_locks_end = .;
+   }
+ 
+@@ -62,9 +62,9 @@ SECTIONS
+   INIT_DATA_SECTION(16)
+   . = ALIGN(4);
+   __alt_instructions = .;
+-  .altinstructions : { *(.altinstructions) }
++  .altinstructions : { KEEP(*(.altinstructions)) }
+   __alt_instructions_end = .;
+- .altinstr_replacement : { *(.altinstr_replacement) }
++ .altinstr_replacement : { KEEP(*(.altinstr_replacement)) }
+   /* .exit.text is discard at runtime, not link time, to deal with references
+      from .altinstructions and .eh_frame */
+ 	.exit.text : { EXIT_TEXT; }
+diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux.lds.S
+index d64a6bb..56d472c 100644
+--- a/arch/parisc/kernel/vmlinux.lds.S
++++ b/arch/parisc/kernel/vmlinux.lds.S
+@@ -112,6 +112,7 @@ SECTIONS
+ 	}
+ 	.bss : {
+ 		*(.bss)
++		*(.bss.*)
+ 		*(COMMON)
+ 	}
+ 	__bss_stop = .;
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index b7212b6..51b8e40 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -72,6 +72,7 @@ CFLAGS-$(CONFIG_PPC32)	:= -ffixed-r2 -mmultiple
+ KBUILD_CPPFLAGS	+= -Iarch/$(ARCH)
+ KBUILD_AFLAGS	+= -Iarch/$(ARCH)
+ KBUILD_CFLAGS	+= -msoft-float -pipe -Iarch/$(ARCH) $(CFLAGS-y)
++
+ CPP		= $(CC) -E $(KBUILD_CFLAGS)
+ 
+ CHECKFLAGS	+= -m$(CONFIG_WORD_SIZE) -D__powerpc__ -D__powerpc$(CONFIG_WORD_SIZE)__
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index fae8192c..2ad7655 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -22,7 +22,9 @@ all: $(obj)/zImage
+ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		 -fno-strict-aliasing -Os -msoft-float -pipe \
+ 		 -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+-		 -isystem $(shell $(CROSS32CC) -print-file-name=include)
++		 -isystem $(shell $(CROSS32CC) -print-file-name=include) \
++		 $(KBUILD_CFLAGS_SECTIONS)
++
+ BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -traditional -nostdinc
+ 
+ ifdef CONFIG_DEBUG_INFO
+@@ -114,7 +116,7 @@ $(obj)/empty.c:
+ 	@touch $@
+ 
+ $(obj)/zImage.lds $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds: $(obj)/%: $(srctree)/$(src)/%.S
+-	@cp $< $@
++	$(call cmd,cpp_lds_S)
+ 
+ clean-files := $(zlib) $(zlibheader) $(zliblinuxheader) \
+ 		$(libfdt) $(libfdtheader) \
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index cb97e75..caad328 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -29,6 +29,10 @@ if [ "$V" = 1 ]; then
+     set -x
+ fi
+ 
++if [ "x$LDFLAGS_GCS" != "x" ]; then
++    ldflags="$LDFLAGS_GCS"
++fi
++
+ # defaults
+ kernel=
+ ofile=zImage
+@@ -312,7 +316,7 @@ if [ "$platform" != "miboot" ]; then
+     if [ -n "$link_address" ] ; then
+         text_start="-Ttext $link_address --defsym _start=$link_address"
+     fi
+-    ${CROSS}ld -m elf32ppc -T $lds $text_start -o "$ofile" \
++    ${CROSS}ld $ldflags -m elf32ppc -T $lds $text_start -o "$ofile" \
+ 	$platformo $tmp $object/wrapper.a
+     rm $tmp
+ fi
+diff --git a/arch/powerpc/boot/zImage.coff.lds.S b/arch/powerpc/boot/zImage.coff.lds.S
+index 856dc78..f5f1642 100644
+--- a/arch/powerpc/boot/zImage.coff.lds.S
++++ b/arch/powerpc/boot/zImage.coff.lds.S
+@@ -1,3 +1,9 @@
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++#undef powerpc
++
+ OUTPUT_ARCH(powerpc:common)
+ ENTRY(_zimage_start_opd)
+ EXTERN(_zimage_start_opd)
+@@ -6,31 +12,31 @@ SECTIONS
+   _start = .;
+   .text      :
+   {
+-    *(.text)
++    ALL(.text)
+     *(.fixup)
+   }
+   _etext = .;
+   . = ALIGN(4096);
+   .data    :
+   {
+-    *(.rodata*)
+-    *(.data*)
++    ALL(.rodata)
++    ALL(.data)
+     *(__builtin_*)
+-    *(.sdata*)
++    ALL(.sdata)
+     __got2_start = .;
+     *(.got2)
+     __got2_end = .;
+ 
+     _dtb_start = .;
+-    *(.kernel:dtb)
++    KEEP(*(.kernel:dtb))
+     _dtb_end = .;
+ 
+     _vmlinux_start =  .;
+-    *(.kernel:vmlinux.strip)
++    KEEP(*(.kernel:vmlinux.strip))
+     _vmlinux_end =  .;
+ 
+     _initrd_start =  .;
+-    *(.kernel:initrd)
++    KEEP(*(.kernel:initrd))
+     _initrd_end =  .;
+   }
+ 
+@@ -39,8 +45,8 @@ SECTIONS
+   __bss_start = .;
+   .bss       :
+   {
+-   *(.sbss)
+-   *(.bss)
++   ALL(.sbss)
++   ALL(.bss)
+   }
+   _end = . ;
+ 
+diff --git a/arch/powerpc/boot/zImage.lds.S b/arch/powerpc/boot/zImage.lds.S
+index 0962d62..a8dc0fc 100644
+--- a/arch/powerpc/boot/zImage.lds.S
++++ b/arch/powerpc/boot/zImage.lds.S
+@@ -1,3 +1,9 @@
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++#undef powerpc
++
+ OUTPUT_ARCH(powerpc:common)
+ ENTRY(_zimage_start)
+ EXTERN(_zimage_start)
+@@ -6,16 +12,16 @@ SECTIONS
+   _start = .;
+   .text      :
+   {
+-    *(.text)
++    ALL(.text)
+     *(.fixup)
+   }
+   _etext = .;
+   . = ALIGN(4096);
+   .data    :
+   {
+-    *(.rodata*)
+-    *(.data*)
+-    *(.sdata*)
++    ALL(.rodata)
++    ALL(.data)
++    ALL(.sdata)
+     __got2_start = .;
+     *(.got2)
+     __got2_end = .;
+@@ -23,17 +29,17 @@ SECTIONS
+ 
+   . = ALIGN(8);
+   _dtb_start = .;
+-  .kernel:dtb : { *(.kernel:dtb) }
++  .kernel:dtb : { KEEP(*(.kernel:dtb)) }
+   _dtb_end = .;
+ 
+   . = ALIGN(4096);
+   _vmlinux_start =  .;
+-  .kernel:vmlinux.strip : { *(.kernel:vmlinux.strip) }
++  .kernel:vmlinux.strip : { KEEP(*(.kernel:vmlinux.strip)) }
+   _vmlinux_end =  .;
+ 
+   . = ALIGN(4096);
+   _initrd_start =  .;
+-  .kernel:initrd : { *(.kernel:initrd) }
++  .kernel:initrd : { KEEP(*(.kernel:initrd)) }
+   _initrd_end =  .;
+ 
+   . = ALIGN(4096);
+@@ -43,8 +49,8 @@ SECTIONS
+   __bss_start = .;
+   .bss       :
+   {
+-   *(.sbss)
+-   *(.bss)
++   ALL(.sbss)
++   ALL(.bss)
+   }
+   . = ALIGN(4096);
+   _end = . ;
+diff --git a/arch/powerpc/boot/zImage.ps3.lds.S b/arch/powerpc/boot/zImage.ps3.lds.S
+index aaa469c..6ca9529 100644
+--- a/arch/powerpc/boot/zImage.ps3.lds.S
++++ b/arch/powerpc/boot/zImage.ps3.lds.S
+@@ -1,35 +1,41 @@
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++#undef powerpc
++
+ OUTPUT_ARCH(powerpc:common)
+ ENTRY(_zimage_start)
+ EXTERN(_zimage_start)
+ SECTIONS
+ {
+   _vmlinux_start =  .;
+-  .kernel:vmlinux.bin : { *(.kernel:vmlinux.bin) }
++  .kernel:vmlinux.bin : { KEEP(*(.kernel:vmlinux.bin)) }
+   _vmlinux_end =  .;
+ 
+   . = ALIGN(4096);
+   _dtb_start = .;
+-  .kernel:dtb : { *(.kernel:dtb) }
++  .kernel:dtb : { KEEP(*(.kernel:dtb)) }
+   _dtb_end = .;
+ 
+   . = ALIGN(4096);
+   _initrd_start =  .;
+-  .kernel:initrd : { *(.kernel:initrd) }
++  .kernel:initrd : { KEEP(*(.kernel:initrd)) }
+   _initrd_end =  .;
+ 
+   _start = .;
+   .text      :
+   {
+-    *(.text)
++    ALL(.text)
+     *(.fixup)
+   }
+   _etext = .;
+   . = ALIGN(4096);
+   .data    :
+   {
+-    *(.rodata*)
+-    *(.data*)
+-    *(.sdata*)
++    ALL(.rodata)
++    ALL(.data)
++    ALL(.sdata)
+     __got2_start = .;
+     *(.got2)
+     __got2_end = .;
+@@ -42,8 +48,8 @@ SECTIONS
+   __bss_start = .;
+   .bss       :
+   {
+-   *(.sbss)
+-   *(.bss)
++   ALL(.sbss)
++   ALL(.bss)
+   }
+   . = ALIGN(4096);
+   _end = . ;
+diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
+index 4b50941..10bd416 100644
+--- a/arch/powerpc/include/asm/cache.h
++++ b/arch/powerpc/include/asm/cache.h
+@@ -42,7 +42,7 @@ extern struct ppc64_caches ppc64_caches;
+ #endif /* __powerpc64__ && ! __ASSEMBLY__ */
+ 
+ #if !defined(__ASSEMBLY__)
+-#define __read_mostly __attribute__((__section__(".data..read_mostly")))
++#define __read_mostly __section(.data..read_mostly)
+ #endif
+ 
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index adc8e6c..764cf93 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -288,7 +288,7 @@ extern void book3e_idle(void);
+ extern struct machdep_calls ppc_md;
+ extern struct machdep_calls *machine_id;
+ 
+-#define __machine_desc __attribute__ ((__section__ (".machine.desc")))
++#define __machine_desc __section(.machine.desc)
+ 
+ #define define_machine(name)					\
+ 	extern struct machdep_calls mach_##name;		\
+@@ -345,28 +345,28 @@ static inline void log_error(char *buf, unsigned int err_type, int fatal)
+ 		ppc_md.log_error(buf, err_type, fatal);
+ }
+ 
+-#define __define_machine_initcall(mach,level,fn,id) \
++#define __define_machine_initcall(mach,fn,id) \
+ 	static int __init __machine_initcall_##mach##_##fn(void) { \
+ 		if (machine_is(mach)) return fn(); \
+ 		return 0; \
+ 	} \
+-	__define_initcall(level,__machine_initcall_##mach##_##fn,id);
+-
+-#define machine_core_initcall(mach,fn)		__define_machine_initcall(mach,"1",fn,1)
+-#define machine_core_initcall_sync(mach,fn)	__define_machine_initcall(mach,"1s",fn,1s)
+-#define machine_postcore_initcall(mach,fn)	__define_machine_initcall(mach,"2",fn,2)
+-#define machine_postcore_initcall_sync(mach,fn)	__define_machine_initcall(mach,"2s",fn,2s)
+-#define machine_arch_initcall(mach,fn)		__define_machine_initcall(mach,"3",fn,3)
+-#define machine_arch_initcall_sync(mach,fn)	__define_machine_initcall(mach,"3s",fn,3s)
+-#define machine_subsys_initcall(mach,fn)	__define_machine_initcall(mach,"4",fn,4)
+-#define machine_subsys_initcall_sync(mach,fn)	__define_machine_initcall(mach,"4s",fn,4s)
+-#define machine_fs_initcall(mach,fn)		__define_machine_initcall(mach,"5",fn,5)
+-#define machine_fs_initcall_sync(mach,fn)	__define_machine_initcall(mach,"5s",fn,5s)
+-#define machine_rootfs_initcall(mach,fn)	__define_machine_initcall(mach,"rootfs",fn,rootfs)
+-#define machine_device_initcall(mach,fn)	__define_machine_initcall(mach,"6",fn,6)
+-#define machine_device_initcall_sync(mach,fn)	__define_machine_initcall(mach,"6s",fn,6s)
+-#define machine_late_initcall(mach,fn)		__define_machine_initcall(mach,"7",fn,7)
+-#define machine_late_initcall_sync(mach,fn)	__define_machine_initcall(mach,"7s",fn,7s)
++	__define_initcall(__machine_initcall_##mach##_##fn,id);
++
++#define machine_core_initcall(mach,fn)		__define_machine_initcall(mach,fn,1)
++#define machine_core_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,1s)
++#define machine_postcore_initcall(mach,fn)	__define_machine_initcall(mach,fn,2)
++#define machine_postcore_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,2s)
++#define machine_arch_initcall(mach,fn)		__define_machine_initcall(mach,fn,3)
++#define machine_arch_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,3s)
++#define machine_subsys_initcall(mach,fn)	__define_machine_initcall(mach,fn,4)
++#define machine_subsys_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,4s)
++#define machine_fs_initcall(mach,fn)		__define_machine_initcall(mach,fn,5)
++#define machine_fs_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,5s)
++#define machine_rootfs_initcall(mach,fn)	__define_machine_initcall(mach,fn,rootfs)
++#define machine_device_initcall(mach,fn)	__define_machine_initcall(mach,fn,6)
++#define machine_device_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,6s)
++#define machine_late_initcall(mach,fn)		__define_machine_initcall(mach,fn,7)
++#define machine_late_initcall_sync(mach,fn)	__define_machine_initcall(mach,fn,7s)
+ 
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_MACHDEP_H */
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 498fe09..191db12 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -166,7 +166,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_PURR);					\
+ #define GLUE(a,b) XGLUE(a,b)
+ 
+ #define _GLOBAL(name) \
+-	.section ".text"; \
++	.section ".text.asm.name"; \
+ 	.align 2 ; \
+ 	.globl name; \
+ 	.globl GLUE(.,name); \
+@@ -208,7 +208,7 @@ name: \
+ GLUE(.,name):
+ 
+ #define _STATIC(name) \
+-	.section ".text"; \
++	.section ".text.asm.name"; \
+ 	.align 2 ; \
+ 	.section ".opd","aw"; \
+ name: \
+diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
+index 625942a..0f2e1e7 100644
+--- a/arch/powerpc/kernel/btext.c
++++ b/arch/powerpc/kernel/btext.c
+@@ -30,7 +30,7 @@ static void draw_byte_32(unsigned char *bits, unsigned int *base, int rb);
+ static void draw_byte_16(unsigned char *bits, unsigned int *base, int rb);
+ static void draw_byte_8(unsigned char *bits, unsigned int *base, int rb);
+ 
+-#define __force_data __attribute__((__section__(".data")))
++#define __force_data __section(.data)
+ 
+ static int g_loc_X __force_data;
+ static int g_loc_Y __force_data;
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 8a0deef..3283b52 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -52,8 +52,7 @@ SECTIONS
+ 		ALIGN_FUNCTION();
+ 		HEAD_TEXT
+ 		_text = .;
+-		/* careful! __ftr_alt_* sections need to be close to .text */
+-		*(.text .fixup __ftr_alt_* .ref.text)
++		TEXT_TEXT_SECTION(*(.fixup __ftr_alt_*))
+ 		SCHED_TEXT
+ 		LOCK_TEXT
+ 		KPROBES_TEXT
+@@ -133,13 +132,13 @@ SECTIONS
+ 	. = ALIGN(8);
+ 	__ftr_fixup : AT(ADDR(__ftr_fixup) - LOAD_OFFSET) {
+ 		__start___ftr_fixup = .;
+-		*(__ftr_fixup)
++		KEEP(*(__ftr_fixup))
+ 		__stop___ftr_fixup = .;
+ 	}
+ 	. = ALIGN(8);
+ 	__mmu_ftr_fixup : AT(ADDR(__mmu_ftr_fixup) - LOAD_OFFSET) {
+ 		__start___mmu_ftr_fixup = .;
+-		*(__mmu_ftr_fixup)
++		KEEP(*(__mmu_ftr_fixup))
+ 		__stop___mmu_ftr_fixup = .;
+ 	}
+ 	. = ALIGN(8);
+@@ -165,7 +164,7 @@ SECTIONS
+ 	. = ALIGN(8);
+ 	.machine.desc : AT(ADDR(.machine.desc) - LOAD_OFFSET) {
+ 		__machine_desc_start = . ;
+-		*(.machine.desc)
++		*(.machine.desc*)
+ 		__machine_desc_end = . ;
+ 	}
+ #ifdef CONFIG_RELOCATABLE
+@@ -190,6 +189,26 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	__init_end = .;
+ 
++	/* The initial task and kernel stack */
++	INIT_TASK_DATA_SECTION(THREAD_SIZE)
++
++	.data..page_aligned : AT(ADDR(.data..page_aligned) - LOAD_OFFSET) {
++		PAGE_ALIGNED_DATA(PAGE_SIZE)
++	}
++
++	.data..cacheline_aligned : AT(ADDR(.data..cacheline_aligned) - LOAD_OFFSET) {
++		CACHELINE_ALIGNED_DATA(L1_CACHE_BYTES)
++	}
++
++	.data..read_mostly : AT(ADDR(.data..read_mostly) - LOAD_OFFSET) {
++		READ_MOSTLY_DATA(L1_CACHE_BYTES)
++	}
++
++	. = ALIGN(PAGE_SIZE);
++	.data_nosave : AT(ADDR(.data_nosave) - LOAD_OFFSET) {
++		NOSAVE_DATA
++	}
++
+ /*
+  * And now the various read/write data
+  */
+@@ -200,7 +219,7 @@ SECTIONS
+ #ifdef CONFIG_PPC32
+ 	.data : AT(ADDR(.data) - LOAD_OFFSET) {
+ 		DATA_DATA
+-		*(.sdata)
++		ALL(.sdata)
+ 		*(.got.plt) *(.got)
+ 	}
+ #else
+@@ -222,25 +241,6 @@ SECTIONS
+ 	}
+ #endif
+ 
+-	/* The initial task and kernel stack */
+-	INIT_TASK_DATA_SECTION(THREAD_SIZE)
+-
+-	.data..page_aligned : AT(ADDR(.data..page_aligned) - LOAD_OFFSET) {
+-		PAGE_ALIGNED_DATA(PAGE_SIZE)
+-	}
+-
+-	.data..cacheline_aligned : AT(ADDR(.data..cacheline_aligned) - LOAD_OFFSET) {
+-		CACHELINE_ALIGNED_DATA(L1_CACHE_BYTES)
+-	}
+-
+-	.data..read_mostly : AT(ADDR(.data..read_mostly) - LOAD_OFFSET) {
+-		READ_MOSTLY_DATA(L1_CACHE_BYTES)
+-	}
+-
+-	. = ALIGN(PAGE_SIZE);
+-	.data_nosave : AT(ADDR(.data_nosave) - LOAD_OFFSET) {
+-		NOSAVE_DATA
+-	}
+ 
+ 	. = ALIGN(PAGE_SIZE);
+ 	_edata  =  .;
+diff --git a/arch/powerpc/platforms/iseries/lpardata.c b/arch/powerpc/platforms/iseries/lpardata.c
+index 98bd2d3..039769a 100644
+--- a/arch/powerpc/platforms/iseries/lpardata.c
++++ b/arch/powerpc/platforms/iseries/lpardata.c
+@@ -186,10 +186,10 @@ struct ItLpNaca itLpNaca = {
+ };
+ 
+ /* May be filled in by the hypervisor so cannot end up in the BSS */
+-static struct ItIplParmsReal xItIplParmsReal __attribute__((__section__(".data")));
++static struct ItIplParmsReal xItIplParmsReal __section(.data);
+ 
+ /* May be filled in by the hypervisor so cannot end up in the BSS */
+-struct ItExtVpdPanel xItExtVpdPanel __attribute__((__section__(".data")));
++struct ItExtVpdPanel xItExtVpdPanel __section(.data);
+ 
+ #define maxPhysicalProcessors 32
+ 
+@@ -205,11 +205,11 @@ struct IoHriProcessorVpd xIoHriProcessorVpd[maxPhysicalProcessors] = {
+ 
+ /* Space for Main Store Vpd 27,200 bytes */
+ /* May be filled in by the hypervisor so cannot end up in the BSS */
+-u64    xMsVpd[3400] __attribute__((__section__(".data")));
++u64    xMsVpd[3400] __section(.data);
+ 
+ /* Space for Recovery Log Buffer */
+ /* May be filled in by the hypervisor so cannot end up in the BSS */
+-static u64    xRecoveryLogBuffer[32] __attribute__((__section__(".data")));
++static u64    xRecoveryLogBuffer[32] __section(.data);
+ 
+ static const struct SpCommArea xSpCommArea = {
+ 	.xDesc = 0xE2D7C3C2,
+diff --git a/arch/powerpc/platforms/iseries/lpevents.c b/arch/powerpc/platforms/iseries/lpevents.c
+index b0f8a857..5d5398c 100644
+--- a/arch/powerpc/platforms/iseries/lpevents.c
++++ b/arch/powerpc/platforms/iseries/lpevents.c
+@@ -29,7 +29,7 @@
+  *
+  * It is written to by the hypervisor so cannot end up in the BSS.
+  */
+-struct hvlpevent_queue hvlpevent_queue __attribute__((__section__(".data")));
++struct hvlpevent_queue hvlpevent_queue __section(.data);
+ 
+ DEFINE_PER_CPU(unsigned long[HvLpEvent_Type_NumTypes], hvlpevent_counts);
+ 
+diff --git a/arch/sh/boot/compressed/vmlinux.scr b/arch/sh/boot/compressed/vmlinux.scr
+index 862d748..e7d733f 100644
+--- a/arch/sh/boot/compressed/vmlinux.scr
++++ b/arch/sh/boot/compressed/vmlinux.scr
+@@ -4,6 +4,7 @@ SECTIONS
+ 	input_len = .;
+ 	LONG(input_data_end - input_data) input_data = .;
+ 	*(.data)
++	*(.data.*)
+ 	output_len = . - 4;
+ 	input_data_end = .;
+ 	}
+diff --git a/arch/sh/kernel/vsyscall/vsyscall.lds.S b/arch/sh/kernel/vsyscall/vsyscall.lds.S
+index 6d59ee7..19ee0cb 100644
+--- a/arch/sh/kernel/vsyscall/vsyscall.lds.S
++++ b/arch/sh/kernel/vsyscall/vsyscall.lds.S
+@@ -35,7 +35,7 @@ SECTIONS
+ 	 */
+ 	. = 0x400;
+ 
+-	.text		: { *(.text) } 			:text	=0x90909090
++	.text		: { *(.text) *(.text.*) }	:text	=0x90909090
+ 	.note		: { *(.note.*) }		:text	:note
+ 	.eh_frame_hdr	: { *(.eh_frame_hdr ) }		:text	:eh_frame_hdr
+ 	.eh_frame	: {
+diff --git a/arch/um/include/asm/common.lds.S b/arch/um/include/asm/common.lds.S
+index ac55b9e..156c2a6 100644
+--- a/arch/um/include/asm/common.lds.S
++++ b/arch/um/include/asm/common.lds.S
+@@ -76,10 +76,10 @@
+   . = ALIGN(4);
+   .altinstructions : {
+ 	__alt_instructions = .;
+-	*(.altinstructions)
++	KEEP(*(.altinstructions))
+ 	__alt_instructions_end = .;
+   }
+-  .altinstr_replacement : { *(.altinstr_replacement) }
++  .altinstr_replacement : { KEEP(*(.altinstr_replacement)) }
+   /* .exit.text is discard at runtime, not link time, to deal with references
+      from .altinstructions and .eh_frame */
+   .exit.text : { *(.exit.text) }
+diff --git a/arch/x86/boot/.gitignore b/arch/x86/boot/.gitignore
+index 851fe93..59dd928 100644
+--- a/arch/x86/boot/.gitignore
++++ b/arch/x86/boot/.gitignore
+@@ -8,3 +8,4 @@ zoffset.h
+ setup
+ setup.bin
+ setup.elf
++setup.lds
+diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+index f7cb086..1ff7694 100644
+--- a/arch/x86/boot/Makefile
++++ b/arch/x86/boot/Makefile
+@@ -69,6 +69,7 @@ KBUILD_CFLAGS	:= $(LINUXINCLUDE) -g -Os -D_SETUP -D__KERNEL__ \
+ 		   $(call cc-option, -fno-stack-protector) \
+ 		   $(call cc-option, -mpreferred-stack-boundary=2)
+ KBUILD_CFLAGS	+= $(call cc-option, -m32)
++KBUILD_CFLAGS	+= $(KBUILD_CFLAGS_SECTIONS)
+ KBUILD_AFLAGS	:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
+ GCOV_PROFILE := n
+ 
+@@ -110,8 +111,10 @@ $(obj)/zoffset.h: $(obj)/compressed/vmlinux FORCE
+ AFLAGS_header.o += -I$(obj)
+ $(obj)/header.o: $(obj)/voffset.h $(obj)/zoffset.h
+ 
+-LDFLAGS_setup.elf	:= -T
+-$(obj)/setup.elf: $(src)/setup.ld $(SETUP_OBJS) FORCE
++LDFLAGS_setup.elf := $(LDFLAGS_GCS)
++
++LDFLAGS_setup.elf	+= -T
++$(obj)/setup.elf: $(src)/setup.lds $(SETUP_OBJS) FORCE
+ 	$(call if_changed,ld)
+ 
+ OBJCOPYFLAGS_setup.bin	:= -O binary
+@@ -198,3 +201,5 @@ bzlilo: $(obj)/bzImage
+ install:
+ 	sh $(srctree)/$(src)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
+ 		System.map "$(INSTALL_PATH)"
++
++extra-y := setup.lds
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 0c22955..3ceb4e7 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -8,6 +8,7 @@ targets := vmlinux.lds vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinu
+ 
+ KBUILD_CFLAGS := -m$(BITS) -D__KERNEL__ $(LINUX_INCLUDE) -O2
+ KBUILD_CFLAGS += -fno-strict-aliasing -fPIC
++KBUILD_CFLAGS += $(KBUILD_CFLAGS_SECTIONS)
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ cflags-$(CONFIG_X86_32) := -march=i386
+ cflags-$(CONFIG_X86_64) := -mcmodel=small
+@@ -19,7 +20,10 @@ KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
+ GCOV_PROFILE := n
+ 
+ LDFLAGS := -m elf_$(UTS_MACHINE)
+-LDFLAGS_vmlinux := -T
++
++LDFLAGS_vmlinux := $(LDFLAGS_GCS)
++
++LDFLAGS_vmlinux += -T
+ 
+ hostprogs-y	:= mkpiggy
+ 
+diff --git a/arch/x86/boot/compressed/relocs.c b/arch/x86/boot/compressed/relocs.c
+index 89bbf4e..72985aa 100644
+--- a/arch/x86/boot/compressed/relocs.c
++++ b/arch/x86/boot/compressed/relocs.c
+@@ -37,6 +37,7 @@ static const char abs_sym_regex[] =
+ 	"^(xen_irq_disable_direct_reloc$|"
+ 	"xen_save_fl_direct_reloc$|"
+ 	"VDSO|"
++	"jiffies|"
+ 	"__crc_)";
+ static regex_t abs_sym_regex_c;
+ static int is_abs_reloc(const char *sym_name)
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 34d047c..0f64e61 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -31,14 +31,12 @@ SECTIONS
+ 	}
+ 	.text :	{
+ 		_text = .; 	/* Text */
+-		*(.text)
+-		*(.text.*)
++		ALL(.text)
+ 		_etext = . ;
+ 	}
+ 	.rodata : {
+ 		_rodata = . ;
+-		*(.rodata)	 /* read-only data */
+-		*(.rodata.*)
++		ALL(.rodata)	 /* read-only data */
+ 		_erodata = . ;
+ 	}
+ 	.got : {
+@@ -49,15 +47,13 @@ SECTIONS
+ 	}
+ 	.data :	{
+ 		_data = . ;
+-		*(.data)
+-		*(.data.*)
++		ALL(.data)
+ 		_edata = . ;
+ 	}
+ 	. = ALIGN(L1_CACHE_BYTES);
+ 	.bss : {
+ 		_bss = . ;
+-		*(.bss)
+-		*(.bss.*)
++		ALL(.bss)
+ 		*(COMMON)
+ 		. = ALIGN(8);	/* For convenience during zeroing */
+ 		_ebss = .;
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+deleted file mode 100644
+index 03c0683..0000000
+--- a/arch/x86/boot/setup.ld
++++ /dev/null
+@@ -1,64 +0,0 @@
+-/*
+- * setup.ld
+- *
+- * Linker script for the i386 setup code
+- */
+-OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
+-OUTPUT_ARCH(i386)
+-ENTRY(_start)
+-
+-SECTIONS
+-{
+-	. = 0;
+-	.bstext		: { *(.bstext) }
+-	.bsdata		: { *(.bsdata) }
+-
+-	. = 497;
+-	.header		: { *(.header) }
+-	.entrytext	: { *(.entrytext) }
+-	.inittext	: { *(.inittext) }
+-	.initdata	: { *(.initdata) }
+-	__end_init = .;
+-
+-	.text		: { *(.text) }
+-	.text32		: { *(.text32) }
+-
+-	. = ALIGN(16);
+-	.rodata		: { *(.rodata*) }
+-
+-	.videocards	: {
+-		video_cards = .;
+-		*(.videocards)
+-		video_cards_end = .;
+-	}
+-
+-	. = ALIGN(16);
+-	.data		: { *(.data*) }
+-
+-	.signature	: {
+-		setup_sig = .;
+-		LONG(0x5a5aaa55)
+-	}
+-
+-
+-	. = ALIGN(16);
+-	.bss		:
+-	{
+-		__bss_start = .;
+-		*(.bss)
+-		__bss_end = .;
+-	}
+-	. = ALIGN(16);
+-	_end = .;
+-
+-	/DISCARD/ : { *(.note*) }
+-
+-	/*
+-	 * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
+-	 */
+-	. = ASSERT(_end <= 0x8000, "Setup too big!");
+-	. = ASSERT(hdr == 0x1f1, "The setup header has the wrong offset!");
+-	/* Necessary for the very-old-loader check to work... */
+-	. = ASSERT(__end_init <= 5*512, "init sections too big!");
+-
+-}
+diff --git a/arch/x86/boot/setup.lds.S b/arch/x86/boot/setup.lds.S
+new file mode 100644
+index 0000000..57a7bb2
+--- /dev/null
++++ b/arch/x86/boot/setup.lds.S
+@@ -0,0 +1,69 @@
++/*
++ * Linker script for the i386 setup code
++ */
++
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++#undef i386
++
++OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
++OUTPUT_ARCH(i386)
++ENTRY(_start)
++
++SECTIONS
++{
++	. = 0;
++	.bstext		: { *(.bstext) }
++	.bsdata		: { KEEP(*(.bsdata)) }
++
++	. = 497;
++	.header		: { *(.header) }
++	.entrytext	: { *(.entrytext) }
++	.inittext	: { *(.inittext) }
++	.initdata	: { *(.initdata) }
++	__end_init = .;
++
++	.text		: { *(.text) KEEP(*(.text.*)) }
++	.text32		: { *(.text32) }
++
++	. = ALIGN(16);
++	.rodata		: { ALL(.rodata) }
++
++	.videocards	: {
++		video_cards = .;
++		*(.videocards)
++		video_cards_end = .;
++	}
++
++	. = ALIGN(16);
++	.data		: { ALL(.data) }
++
++	.signature	: {
++		setup_sig = .;
++		LONG(0x5a5aaa55)
++	}
++
++
++	. = ALIGN(16);
++	.bss		:
++	{
++		__bss_start = .;
++		ALL(.bss)
++		__bss_end = .;
++	}
++	. = ALIGN(16);
++	_end = .;
++
++	/DISCARD/ : { ALL(.note) }
++
++	/*
++	 * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
++	 */
++	. = ASSERT(_end <= 0x8000, "Setup too big!");
++	. = ASSERT(hdr == 0x1f1, "The setup header has the wrong offset!");
++	/* Necessary for the very-old-loader check to work... */
++	. = ASSERT(__end_init <= 5*512, "init sections too big!");
++
++}
+diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
+index 48f99f1..75b0393 100644
+--- a/arch/x86/include/asm/cache.h
++++ b/arch/x86/include/asm/cache.h
+@@ -7,7 +7,7 @@
+ #define L1_CACHE_SHIFT	(CONFIG_X86_L1_CACHE_SHIFT)
+ #define L1_CACHE_BYTES	(1 << L1_CACHE_SHIFT)
+ 
+-#define __read_mostly __attribute__((__section__(".data..read_mostly")))
++#define __read_mostly __section(.data..read_mostly)
+ 
+ #define INTERNODE_CACHE_SHIFT CONFIG_X86_INTERNODE_CACHE_SHIFT
+ #define INTERNODE_CACHE_BYTES (1 << INTERNODE_CACHE_SHIFT)
+diff --git a/arch/x86/include/asm/vsyscall.h b/arch/x86/include/asm/vsyscall.h
+index d0983d2..d512946 100644
+--- a/arch/x86/include/asm/vsyscall.h
++++ b/arch/x86/include/asm/vsyscall.h
+@@ -16,16 +16,13 @@ enum vsyscall_num {
+ #ifdef __KERNEL__
+ #include <linux/seqlock.h>
+ 
+-#define __section_vgetcpu_mode __attribute__ ((unused, __section__ (".vgetcpu_mode"), aligned(16)))
+-#define __section_jiffies __attribute__ ((unused, __section__ (".jiffies"), aligned(16)))
++#define __section_vgetcpu_mode __section_unused_aligned(.vgetcpu_mode, 16)
++#define __section_jiffies __section_aligned(.jiffies, 16)
+ 
+ /* Definitions for CONFIG_GENERIC_TIME definitions */
+-#define __section_vsyscall_gtod_data __attribute__ \
+-	((unused, __section__ (".vsyscall_gtod_data"),aligned(16)))
+-#define __section_vsyscall_clock __attribute__ \
+-	((unused, __section__ (".vsyscall_clock"),aligned(16)))
+-#define __vsyscall_fn \
+-	__attribute__ ((unused, __section__(".vsyscall_fn"))) notrace
++#define __section_vsyscall_gtod_data __section_unused_aligned(.vsyscall_gtod_data, 16)
++#define __section_vsyscall_clock __section_unused_aligned(.vsyscall_clock, 16)
++#define __vsyscall_fn __section_unused(.vsyscall_fn) notrace
+ 
+ #define VGETCPU_RDTSCP	1
+ #define VGETCPU_LSL	2
+diff --git a/arch/x86/kernel/acpi/realmode/wakeup.lds.S b/arch/x86/kernel/acpi/realmode/wakeup.lds.S
+index 060fff8..38f18e8 100644
+--- a/arch/x86/kernel/acpi/realmode/wakeup.lds.S
++++ b/arch/x86/kernel/acpi/realmode/wakeup.lds.S
+@@ -42,6 +42,7 @@ SECTIONS
+ 	.bss :	{
+ 		__bss_start = .;
+ 		*(.bss)
++		*(.bss.*)
+ 		__bss_end = .;
+ 	}
+ 
+diff --git a/arch/x86/kernel/acpi/wakeup_rm.S b/arch/x86/kernel/acpi/wakeup_rm.S
+index 6ff3b57..a414ce0 100644
+--- a/arch/x86/kernel/acpi/wakeup_rm.S
++++ b/arch/x86/kernel/acpi/wakeup_rm.S
+@@ -2,7 +2,10 @@
+  * Wrapper script for the realmode binary as a transport object
+  * before copying to low memory.
+  */
+-	.section ".rodata","a"
++
++#include <linux/compiler.h>
++
++	__asm_section(.rodata),"a"
+ 	.globl	wakeup_code_start, wakeup_code_end
+ wakeup_code_start:
+ 	.incbin	"arch/x86/kernel/acpi/realmode/wakeup.bin"
+diff --git a/arch/x86/kernel/cpu/cpu.h b/arch/x86/kernel/cpu/cpu.h
+index f668bb1..0447a07 100644
+--- a/arch/x86/kernel/cpu/cpu.h
++++ b/arch/x86/kernel/cpu/cpu.h
+@@ -26,7 +26,7 @@ struct cpu_dev {
+ 
+ #define cpu_dev_register(cpu_devX) \
+ 	static const struct cpu_dev *const __cpu_dev_##cpu_devX __used \
+-	__attribute__((__section__(".x86_cpu_dev.init"))) = \
++	__section(.x86_cpu_dev.init) = \
+ 	&cpu_devX;
+ 
+ extern const struct cpu_dev *const __x86_cpu_dev_start[],
+diff --git a/arch/x86/kernel/entry_32.S b/arch/x86/kernel/entry_32.S
+index 227d009..2abc8f2 100644
+--- a/arch/x86/kernel/entry_32.S
++++ b/arch/x86/kernel/entry_32.S
+@@ -820,7 +820,7 @@ ptregs_clone:
+  * We pack 7 stubs into a single 32-byte chunk, which will fit in a
+  * single cache line on all modern x86 implementations.
+  */
+-.section .init.rodata,"a"
++__asm_section(.init.rodata),"a"
+ ENTRY(interrupt)
+ .text
+ 	.p2align 5
+@@ -1275,7 +1275,7 @@ return_to_handler:
+ 	jmp *%ecx
+ #endif
+ 
+-.section .rodata,"a"
++__asm_section(.rodata),"a"
+ #include "syscall_table_32.S"
+ 
+ syscall_table_size=(.-sys_call_table)
+diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
+index 17be5ec..b493545 100644
+--- a/arch/x86/kernel/entry_64.S
++++ b/arch/x86/kernel/entry_64.S
+@@ -751,7 +751,7 @@ END(stub_rt_sigreturn)
+  * We pack 7 stubs into a single 32-byte chunk, which will fit in a
+  * single cache line on all modern x86 implementations.
+  */
+-	.section .init.rodata,"a"
++	__asm_section(.init.rodata),"a"
+ ENTRY(interrupt)
+ 	.text
+ 	.p2align 5
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index 239046b..e28cbe7 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -270,7 +270,7 @@ ENTRY(secondary_startup_64)
+ bad_address:
+ 	jmp bad_address
+ 
+-	.section ".init.text","ax"
++	__asm_section(.init.text),"ax"
+ #ifdef CONFIG_EARLY_PRINTK
+ 	.globl early_idt_handlers
+ early_idt_handlers:
+@@ -413,7 +413,7 @@ ENTRY(phys_base)
+ 
+ #include "../../x86/xen/xen-head.S"
+ 	
+-	.section .bss, "aw", @nobits
++	__asm_section(.bss), "aw", @nobits
+ 	.align L1_CACHE_BYTES
+ ENTRY(idt_table)
+ 	.skip IDT_ENTRIES * 16
+diff --git a/arch/x86/kernel/trampoline_64.S b/arch/x86/kernel/trampoline_64.S
+index 3af2dff..817009d 100644
+--- a/arch/x86/kernel/trampoline_64.S
++++ b/arch/x86/kernel/trampoline_64.S
+@@ -33,7 +33,7 @@
+ #include <asm/processor-flags.h>
+ 
+ #ifdef CONFIG_ACPI_SLEEP
+-.section .rodata, "a", @progbits
++__asm_section(.rodata), "a", @progbits
+ #else
+ /* We can free up the trampoline after bootup if cpu hotplug is not supported. */
+ __CPUINITRODATA
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index d0bb522..777ae81 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -96,8 +96,7 @@ SECTIONS
+ 		/* bootstrapping code */
+ 		HEAD_TEXT
+ #ifdef CONFIG_X86_32
+-		. = ALIGN(PAGE_SIZE);
+-		*(.text..page_aligned)
++		PAGE_ALIGNED_TEXT(PAGE_SIZE)
+ #endif
+ 		. = ALIGN(8);
+ 		_stext = .;
+@@ -120,6 +119,22 @@ SECTIONS
+ 	RO_DATA(PAGE_SIZE)
+ 	X64_ALIGN_DEBUG_RODATA_END
+ 
++#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
++	/*
++	 * percpu offsets are zero-based on SMP.  PERCPU_VADDR() changes the
++	 * output PHDR, so the next output section - .init.text - should
++	 * start another segment - init.
++	 */
++	PERCPU_VADDR(0, :percpu)
++#else /* !defined(CONFIG_X86_64) || !defined(CONFIG_SMP) */
++	PERCPU(PAGE_SIZE)
++#endif
++
++#ifdef CONFIG_X86_64
++	.data_nosave : AT(ADDR(.data_nosave) - LOAD_OFFSET) {
++		NOSAVE_DATA
++	}
++#endif
+ 	/* Data */
+ 	.data : AT(ADDR(.data) - LOAD_OFFSET) {
+ 		/* Start of data section */
+@@ -137,12 +152,12 @@ SECTIONS
+ 
+ 		CACHELINE_ALIGNED_DATA(L1_CACHE_BYTES)
+ 
+-		DATA_DATA
+-		CONSTRUCTORS
+-
+ 		/* rarely changed data like cpu maps */
+ 		READ_MOSTLY_DATA(INTERNODE_CACHE_BYTES)
+ 
++		DATA_DATA
++		CONSTRUCTORS
++
+ 		/* End of data section */
+ 		_edata = .;
+ 	} :data
+@@ -162,46 +177,46 @@ SECTIONS
+ 
+ 	. = VSYSCALL_ADDR;
+ 	.vsyscall_0 : AT(VLOAD(.vsyscall_0)) {
+-		*(.vsyscall_0)
++		ALL(.vsyscall_0)
+ 	} :user
+ 
+ 	. = ALIGN(L1_CACHE_BYTES);
+ 	.vsyscall_fn : AT(VLOAD(.vsyscall_fn)) {
+-		*(.vsyscall_fn)
++		ALL(.vsyscall_fn)
+ 	}
+ 
+ 	. = ALIGN(L1_CACHE_BYTES);
+ 	.vsyscall_gtod_data : AT(VLOAD(.vsyscall_gtod_data)) {
+-		*(.vsyscall_gtod_data)
++		ALL(.vsyscall_gtod_data)
+ 	}
+ 
+ 	vsyscall_gtod_data = VVIRT(.vsyscall_gtod_data);
+ 	.vsyscall_clock : AT(VLOAD(.vsyscall_clock)) {
+-		*(.vsyscall_clock)
++		ALL(.vsyscall_clock)
+ 	}
+ 	vsyscall_clock = VVIRT(.vsyscall_clock);
+ 
+ 
+ 	.vsyscall_1 ADDR(.vsyscall_0) + 1024: AT(VLOAD(.vsyscall_1)) {
+-		*(.vsyscall_1)
++		ALL(.vsyscall_1)
+ 	}
+ 	.vsyscall_2 ADDR(.vsyscall_0) + 2048: AT(VLOAD(.vsyscall_2)) {
+-		*(.vsyscall_2)
++		ALL(.vsyscall_2)
+ 	}
+ 
+ 	.vgetcpu_mode : AT(VLOAD(.vgetcpu_mode)) {
+-		*(.vgetcpu_mode)
++		ALL(.vgetcpu_mode)
+ 	}
+ 	vgetcpu_mode = VVIRT(.vgetcpu_mode);
+ 
+ 	. = ALIGN(L1_CACHE_BYTES);
+ 	.jiffies : AT(VLOAD(.jiffies)) {
+-		*(.jiffies)
++		ALL(.jiffies)
+ 	}
+ 	jiffies = VVIRT(.jiffies);
+ 
+ 	.vsyscall_3 ADDR(.vsyscall_0) + 3072: AT(VLOAD(.vsyscall_3)) {
+-		*(.vsyscall_3)
++		ALL(.vsyscall_3)
+ 	}
+ 
+ 	. = __vsyscall_0 + PAGE_SIZE;
+@@ -220,15 +235,6 @@ SECTIONS
+ 		__init_begin = .; /* paired with __init_end */
+ 	}
+ 
+-#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
+-	/*
+-	 * percpu offsets are zero-based on SMP.  PERCPU_VADDR() changes the
+-	 * output PHDR, so the next output section - .init.text - should
+-	 * start another segment - init.
+-	 */
+-	PERCPU_VADDR(0, :percpu)
+-#endif
+-
+ 	INIT_TEXT_SECTION(PAGE_SIZE)
+ #ifdef CONFIG_X86_64
+ 	:init
+@@ -238,7 +244,7 @@ SECTIONS
+ 
+ 	.x86_cpu_dev.init : AT(ADDR(.x86_cpu_dev.init) - LOAD_OFFSET) {
+ 		__x86_cpu_dev_start = .;
+-		*(.x86_cpu_dev.init)
++		ALL(.x86_cpu_dev.init)
+ 		__x86_cpu_dev_end = .;
+ 	}
+ 
+@@ -252,12 +258,12 @@ SECTIONS
+ 	. = ALIGN(8);
+ 	.altinstructions : AT(ADDR(.altinstructions) - LOAD_OFFSET) {
+ 		__alt_instructions = .;
+-		*(.altinstructions)
++		KEEP(*(.altinstructions))
+ 		__alt_instructions_end = .;
+ 	}
+ 
+ 	.altinstr_replacement : AT(ADDR(.altinstr_replacement) - LOAD_OFFSET) {
+-		*(.altinstr_replacement)
++		KEEP(*(.altinstr_replacement))
+ 	}
+ 
+ 	/*
+@@ -272,10 +278,6 @@ SECTIONS
+ 		EXIT_DATA
+ 	}
+ 
+-#if !defined(CONFIG_X86_64) || !defined(CONFIG_SMP)
+-	PERCPU(PAGE_SIZE)
+-#endif
+-
+ 	. = ALIGN(PAGE_SIZE);
+ 
+ 	/* freed after init ends here */
+@@ -290,23 +292,17 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	.smp_locks : AT(ADDR(.smp_locks) - LOAD_OFFSET) {
+ 		__smp_locks = .;
+-		*(.smp_locks)
++		KEEP(*(.smp_locks))
+ 		. = ALIGN(PAGE_SIZE);
+ 		__smp_locks_end = .;
+ 	}
+ 
+-#ifdef CONFIG_X86_64
+-	.data_nosave : AT(ADDR(.data_nosave) - LOAD_OFFSET) {
+-		NOSAVE_DATA
+-	}
+-#endif
+-
+ 	/* BSS */
+ 	. = ALIGN(PAGE_SIZE);
+ 	.bss : AT(ADDR(.bss) - LOAD_OFFSET) {
+ 		__bss_start = .;
+-		*(.bss..page_aligned)
+-		*(.bss)
++		ALL(.bss..page_aligned)
++		ALL(.bss)
+ 		. = ALIGN(4);
+ 		__bss_stop = .;
+ 	}
+diff --git a/arch/x86/kernel/vsyscall_64.c b/arch/x86/kernel/vsyscall_64.c
+index dcbb28c..9e30865 100644
+--- a/arch/x86/kernel/vsyscall_64.c
++++ b/arch/x86/kernel/vsyscall_64.c
+@@ -45,8 +45,7 @@
+ #include <asm/topology.h>
+ #include <asm/vgtod.h>
+ 
+-#define __vsyscall(nr) \
+-		__attribute__ ((unused, __section__(".vsyscall_" #nr))) notrace
++#define __vsyscall(nr) __section_unused_str(".vsyscall_" #nr) notrace
+ #define __syscall_clobber "r11","cx","memory"
+ 
+ /*
+diff --git a/arch/x86/lguest/i386_head.S b/arch/x86/lguest/i386_head.S
+index 4f420c2f..52ce85d 100644
+--- a/arch/x86/lguest/i386_head.S
++++ b/arch/x86/lguest/i386_head.S
+@@ -24,7 +24,7 @@
+  * The .section line puts this code in .init.text so it will be discarded after
+  * boot.
+  */
+-.section .init.text, "ax", @progbits
++__asm_section(.init.text), "ax", @progbits
+ ENTRY(lguest_entry)
+ 	/*
+ 	 * We make the "initialization" hypercall now to tell the Host about
+diff --git a/arch/x86/module.lds b/arch/x86/module.lds
+new file mode 100644
+index 0000000..822734f
+--- /dev/null
++++ b/arch/x86/module.lds
+@@ -0,0 +1,10 @@
++/*
++ * X86 Specific module linker script, this will be merged to the
++ * common linker script in scripts/module-common.lds
++ */
++
++SECTIONS {
++	/DISCARD/ : {
++		*(.eh_frame)
++	}
++}
+diff --git a/arch/x86/vdso/vdso-layout.lds.S b/arch/x86/vdso/vdso-layout.lds.S
+index 634a2cf..9477e74 100644
+--- a/arch/x86/vdso/vdso-layout.lds.S
++++ b/arch/x86/vdso/vdso-layout.lds.S
+@@ -34,8 +34,8 @@ SECTIONS
+ 	      *(.gnu.linkonce.b.*)
+ 	}
+ 
+-	.altinstructions	: { *(.altinstructions) }
+-	.altinstr_replacement	: { *(.altinstr_replacement) }
++	.altinstructions	: { KEEP(*(.altinstructions)) }
++	.altinstr_replacement	: { KEEP(*(.altinstr_replacement)) }
+ 
+ 	/*
+ 	 * Align the actual code well away from the non-instruction data.
+diff --git a/arch/x86/vdso/vdso32/int80.S b/arch/x86/vdso/vdso32/int80.S
+index b15b7c0..5192a2c 100644
+--- a/arch/x86/vdso/vdso32/int80.S
++++ b/arch/x86/vdso/vdso32/int80.S
+@@ -51,6 +51,6 @@ __kernel_vsyscall:
+ 	 * Pad out the segment to match the size of the sysenter.S version.
+ 	 */
+ VDSO32_vsyscall_eh_frame_size = 0x40
+-	.section .data,"aw",@progbits
++	__asm_section(.data),"aw",@progbits
+ 	.space VDSO32_vsyscall_eh_frame_size-(.LENDFDEDLSI-.LSTARTFRAMEDLSI), 0
+ 	.previous
+diff --git a/arch/x86/vdso/vdso32/syscall.S b/arch/x86/vdso/vdso32/syscall.S
+index 5415b56..345c343 100644
+--- a/arch/x86/vdso/vdso32/syscall.S
++++ b/arch/x86/vdso/vdso32/syscall.S
+@@ -72,6 +72,6 @@ __kernel_vsyscall:
+ 	 * Pad out the segment to match the size of the sysenter.S version.
+ 	 */
+ VDSO32_vsyscall_eh_frame_size = 0x40
+-	.section .data,"aw",@progbits
++	__asm_section(.data),"aw",@progbits
+ 	.space VDSO32_vsyscall_eh_frame_size-(.LENDFDE1-.LSTARTFRAME), 0
+ 	.previous
+diff --git a/arch/xtensa/boot/boot-elf/boot.lds.S b/arch/xtensa/boot/boot-elf/boot.lds.S
+index 4e53b74..368d766 100644
+--- a/arch/xtensa/boot/boot-elf/boot.lds.S
++++ b/arch/xtensa/boot/boot-elf/boot.lds.S
+@@ -10,19 +10,21 @@ SECTIONS
+ 	{
+ 		__reloc_start = . ;
+ 		_text_start = . ;
+-		*(.literal .text.literal .text)
++		*(.literal .text.literal .text .text.*)
+ 		_text_end = . ;
+ 	}
+ 
+ 	.rodata ALIGN(0x04):
+ 	{
+ 		*(.rodata)
++		*(.rodata.*)
+ 		*(.rodata1)
+ 	}
+ 
+ 	.data ALIGN(0x04):
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		*(.data1)
+ 		*(.sdata)
+ 		*(.sdata2)
+@@ -58,6 +60,7 @@ SECTIONS
+ 		*(.scommon)
+ 		*(.dynbss)
+ 		*(.bss)
++		*(.bss.*)
+ 		__bss_end = .;
+ 	}
+ 	_end = .;
+diff --git a/arch/xtensa/boot/boot-redboot/boot.ld b/arch/xtensa/boot/boot-redboot/boot.ld
+index 774db20..8747b68 100644
+--- a/arch/xtensa/boot/boot-redboot/boot.ld
++++ b/arch/xtensa/boot/boot-redboot/boot.ld
+@@ -8,19 +8,21 @@ SECTIONS
+ 	{
+ 		__reloc_start = . ;
+ 		_text_start = . ;
+-		*(.literal .text.literal .text)
++		*(.literal .text.literal .text .text.*)
+ 		_text_end = . ;
+ 	}
+ 
+ 	.rodata ALIGN(0x04):
+ 	{
+ 		*(.rodata)
++		*(.rodata.*)
+ 		*(.rodata1)
+ 	}
+ 
+ 	.data ALIGN(0x04):
+ 	{
+ 		*(.data)
++		*(.data.*)
+ 		*(.data1)
+ 		*(.sdata)
+ 		*(.sdata2)
+@@ -56,6 +58,7 @@ SECTIONS
+ 		*(.scommon)
+ 		*(.dynbss)
+ 		*(.bss)
++		*(.bss.*)
+ 		__bss_end = .;
+ 	}
+ 	_end = .;
+diff --git a/drivers/misc/lkdtm.c b/drivers/misc/lkdtm.c
+index ef34de7..b439cc6 100644
+--- a/drivers/misc/lkdtm.c
++++ b/drivers/misc/lkdtm.c
+@@ -67,7 +67,7 @@ enum cname {
+ enum ctype {
+ 	NONE,
+ 	PANIC,
+-	BUG,
++	BUG1,
+ 	EXCEPTION,
+ 	LOOP,
+ 	OVERFLOW,
+@@ -277,7 +277,7 @@ static void lkdtm_do_action(enum ctype which)
+ 	case PANIC:
+ 		panic("dumptest");
+ 		break;
+-	case BUG:
++	case BUG1:
+ 		BUG();
+ 		break;
+ 	case EXCEPTION:
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 8a92a17..91546c2 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -48,6 +48,17 @@
+  *               [__nosave_begin, __nosave_end] for the nosave data
+  */
+ 
++#ifdef KBUILD_LD_SUPPORT_SECTIONS
++# define __all(s)	s.[A-Za-z0-9_$^]*
++#elif defined(CONFIG_FIXED_SECTIONS)
++# define __all(s)	s.*
++#else	/* Don't enable sections support */
++# define __all(s)
++#endif
++
++#define ALL(s)	*(s __all(s))
++#define KEEP_ALL(s)	KEEP(ALL(s))
++
+ #ifndef LOAD_OFFSET
+ #define LOAD_OFFSET 0
+ #endif
+@@ -100,7 +111,7 @@
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ #define MCOUNT_REC()	. = ALIGN(8);				\
+ 			VMLINUX_SYMBOL(__start_mcount_loc) = .; \
+-			*(__mcount_loc)				\
++			ALL(__mcount_loc)			\
+ 			VMLINUX_SYMBOL(__stop_mcount_loc) = .;
+ #else
+ #define MCOUNT_REC()
+@@ -108,7 +119,7 @@
+ 
+ #ifdef CONFIG_TRACE_BRANCH_PROFILING
+ #define LIKELY_PROFILE()	VMLINUX_SYMBOL(__start_annotated_branch_profile) = .; \
+-				*(_ftrace_annotated_branch)			      \
++				ALL(_ftrace_annotated_branch)			      \
+ 				VMLINUX_SYMBOL(__stop_annotated_branch_profile) = .;
+ #else
+ #define LIKELY_PROFILE()
+@@ -116,7 +127,7 @@
+ 
+ #ifdef CONFIG_PROFILE_ALL_BRANCHES
+ #define BRANCH_PROFILE()	VMLINUX_SYMBOL(__start_branch_profile) = .;   \
+-				*(_ftrace_branch)			      \
++				ALL(_ftrace_branch)			      \
+ 				VMLINUX_SYMBOL(__stop_branch_profile) = .;
+ #else
+ #define BRANCH_PROFILE()
+@@ -124,7 +135,7 @@
+ 
+ #ifdef CONFIG_EVENT_TRACING
+ #define FTRACE_EVENTS()	VMLINUX_SYMBOL(__start_ftrace_events) = .;	\
+-			*(_ftrace_events)				\
++			ALL(_ftrace_events)				\
+ 			VMLINUX_SYMBOL(__stop_ftrace_events) = .;
+ #else
+ #define FTRACE_EVENTS()
+@@ -132,7 +143,7 @@
+ 
+ #ifdef CONFIG_TRACING
+ #define TRACE_PRINTKS() VMLINUX_SYMBOL(__start___trace_bprintk_fmt) = .;      \
+-			 *(__trace_printk_fmt) /* Trace_printk fmt' pointer */ \
++			 ALL(__trace_printk_fmt) /* Trace_printk fmt' pointer */ \
+ 			 VMLINUX_SYMBOL(__stop___trace_bprintk_fmt) = .;
+ #else
+ #define TRACE_PRINTKS()
+@@ -140,31 +151,65 @@
+ 
+ #ifdef CONFIG_FTRACE_SYSCALLS
+ #define TRACE_SYSCALLS() VMLINUX_SYMBOL(__start_syscalls_metadata) = .;	\
+-			 *(__syscalls_metadata)				\
++			 ALL(__syscalls_metadata)				\
+ 			 VMLINUX_SYMBOL(__stop_syscalls_metadata) = .;
+ #else
+ #define TRACE_SYSCALLS()
+ #endif
+ 
++#ifdef CONFIG_TRACEPOINTS
++#define TRACEPOINTS()							\
++	VMLINUX_SYMBOL(__start___tracepoints) = .;			\
++	ALL(__tracepoints)						\
++	VMLINUX_SYMBOL(__stop___tracepoints) = .;
++#define TRACEPOINTS_STRINGS()						\
++	ALL(__tracepoints_strings)
++#else
++#define TRACEPOINTS()
++#define TRACEPOINTS_STRINGS()
++#endif
++
++#ifdef CONFIG_DYNAMIC_DEBUG
++#define DEBUG_VERBOSE()							\
++	VMLINUX_SYMBOL(__start___verbose) = .;				\
++	ALL(__verbose)							\
++	VMLINUX_SYMBOL(__stop___verbose) = .;
++#else
++#define DEBUG_VERBOSE()
++#endif
++
++/* Text section helpers */
++#define PAGE_ALIGNED_TEXT(page_align)					\
++	. = ALIGN(page_align);						\
++	ALL(.text..page_aligned)
++
++/* .data.foo are generated by gcc itself with -fdata-sections,
++ * whereas double-dot sections (like .data..percpu) are generated
++ * by kernel's magic macros.
++ *
++ * arch/.../vmlinux.lds.S decides where to place various double-dot sections
++ * as needed by its arch, here DATA_DATA needs to be careful and collect
++ * only .data and .data.foo sections, skipping .data..foo
++ *
++ * Same goes for .text, .bss and .rodata. In case of .rodata, various
++ * .rodata.foo sections are generated by gcc even without -fdata-sections
++ */
++
+ /* .data section */
+ #define DATA_DATA							\
+-	*(.data)							\
+-	*(.ref.data)							\
+-	DEV_KEEP(init.data)						\
+-	DEV_KEEP(exit.data)						\
+-	CPU_KEEP(init.data)						\
+-	CPU_KEEP(exit.data)						\
+-	MEM_KEEP(init.data)						\
+-	MEM_KEEP(exit.data)						\
++	ALL(.data)							\
++	ALL(.ref.data)							\
++	DEV_KEEP(init.data*)						\
++	DEV_KEEP(exit.data*)						\
++	CPU_KEEP(init.data*)						\
++	CPU_KEEP(exit.data*)						\
++	MEM_KEEP(init.data*)						\
++	MEM_KEEP(exit.data*)						\
+ 	. = ALIGN(32);							\
+-	VMLINUX_SYMBOL(__start___tracepoints) = .;			\
+-	*(__tracepoints)						\
+-	VMLINUX_SYMBOL(__stop___tracepoints) = .;			\
++	TRACEPOINTS()							\
+ 	/* implement dynamic printk debug */				\
+ 	. = ALIGN(8);							\
+-	VMLINUX_SYMBOL(__start___verbose) = .;                          \
+-	*(__verbose)                                                    \
+-	VMLINUX_SYMBOL(__stop___verbose) = .;				\
++	DEBUG_VERBOSE()                                                 \
+ 	LIKELY_PROFILE()		       				\
+ 	BRANCH_PROFILE()						\
+ 	TRACE_PRINTKS()							\
+@@ -181,176 +226,216 @@
+ #define NOSAVE_DATA							\
+ 	. = ALIGN(PAGE_SIZE);						\
+ 	VMLINUX_SYMBOL(__nosave_begin) = .;				\
+-	*(.data..nosave)						\
++	ALL(.data..nosave)						\
+ 	. = ALIGN(PAGE_SIZE);						\
+ 	VMLINUX_SYMBOL(__nosave_end) = .;
+ 
+ #define PAGE_ALIGNED_DATA(page_align)					\
+ 	. = ALIGN(page_align);						\
+-	*(.data..page_aligned)
++	ALL(.data..page_aligned)
+ 
+ #define READ_MOSTLY_DATA(align)						\
+ 	. = ALIGN(align);						\
+-	*(.data..read_mostly)
++	ALL(.data..read_mostly)
+ 
+ #define CACHELINE_ALIGNED_DATA(align)					\
+ 	. = ALIGN(align);						\
+-	*(.data..cacheline_aligned)
++	ALL(.data..cacheline_aligned)
+ 
+ #define INIT_TASK_DATA(align)						\
+ 	. = ALIGN(align);						\
+-	*(.data..init_task)
++	ALL(.data..init_task)
+ 
+-/*
+- * Read only Data
+- */
+-#define RO_DATA_SECTION(align)						\
+-	. = ALIGN((align));						\
+-	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+-		VMLINUX_SYMBOL(__start_rodata) = .;			\
+-		*(.rodata) *(.rodata.*)					\
+-		*(__vermagic)		/* Kernel version magic */	\
+-		*(__markers_strings)	/* Markers: strings */		\
+-		*(__tracepoints_strings)/* Tracepoints: strings */	\
+-	}								\
+-									\
+-	.rodata1          : AT(ADDR(.rodata1) - LOAD_OFFSET) {		\
+-		*(.rodata1)						\
++#ifdef CONFIG_MODULES
++#ifdef CONFIG_MODVERSIONS
++#define KCRC_DATA							\
++	/* Kernel symbol table: Normal symbols */			\
++	__kcrctab         : AT(ADDR(__kcrctab) - LOAD_OFFSET) {		\
++		VMLINUX_SYMBOL(__start___kcrctab) = .;			\
++		KEEP_ALL(__kcrctab)					\
++		VMLINUX_SYMBOL(__stop___kcrctab) = .;			\
+ 	}								\
+ 									\
+-	BUG_TABLE							\
+-									\
+-	/* PCI quirks */						\
+-	.pci_fixup        : AT(ADDR(.pci_fixup) - LOAD_OFFSET) {	\
+-		VMLINUX_SYMBOL(__start_pci_fixups_early) = .;		\
+-		*(.pci_fixup_early)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_early) = .;		\
+-		VMLINUX_SYMBOL(__start_pci_fixups_header) = .;		\
+-		*(.pci_fixup_header)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_header) = .;		\
+-		VMLINUX_SYMBOL(__start_pci_fixups_final) = .;		\
+-		*(.pci_fixup_final)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_final) = .;		\
+-		VMLINUX_SYMBOL(__start_pci_fixups_enable) = .;		\
+-		*(.pci_fixup_enable)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_enable) = .;		\
+-		VMLINUX_SYMBOL(__start_pci_fixups_resume) = .;		\
+-		*(.pci_fixup_resume)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_resume) = .;		\
+-		VMLINUX_SYMBOL(__start_pci_fixups_resume_early) = .;	\
+-		*(.pci_fixup_resume_early)				\
+-		VMLINUX_SYMBOL(__end_pci_fixups_resume_early) = .;	\
+-		VMLINUX_SYMBOL(__start_pci_fixups_suspend) = .;		\
+-		*(.pci_fixup_suspend)					\
+-		VMLINUX_SYMBOL(__end_pci_fixups_suspend) = .;		\
++	/* Kernel symbol table: GPL-only symbols */			\
++	__kcrctab_gpl     : AT(ADDR(__kcrctab_gpl) - LOAD_OFFSET) {	\
++		VMLINUX_SYMBOL(__start___kcrctab_gpl) = .;		\
++		KEEP_ALL(__kcrctab_gpl)					\
++		VMLINUX_SYMBOL(__stop___kcrctab_gpl) = .;		\
+ 	}								\
+ 									\
+-	/* Built-in firmware blobs */					\
+-	.builtin_fw        : AT(ADDR(.builtin_fw) - LOAD_OFFSET) {	\
+-		VMLINUX_SYMBOL(__start_builtin_fw) = .;			\
+-		*(.builtin_fw)						\
+-		VMLINUX_SYMBOL(__end_builtin_fw) = .;			\
++	/* Kernel symbol table: Normal unused symbols */		\
++	__kcrctab_unused  : AT(ADDR(__kcrctab_unused) - LOAD_OFFSET) {	\
++		VMLINUX_SYMBOL(__start___kcrctab_unused) = .;		\
++		ALL(__kcrctab_unused)					\
++		VMLINUX_SYMBOL(__stop___kcrctab_unused) = .;		\
+ 	}								\
+ 									\
+-	/* RapidIO route ops */						\
+-	.rio_ops        : AT(ADDR(.rio_ops) - LOAD_OFFSET) {		\
+-		VMLINUX_SYMBOL(__start_rio_switch_ops) = .;		\
+-		*(.rio_switch_ops)					\
+-		VMLINUX_SYMBOL(__end_rio_switch_ops) = .;		\
++	/* Kernel symbol table: GPL-only unused symbols */		\
++	__kcrctab_unused_gpl : AT(ADDR(__kcrctab_unused_gpl) - LOAD_OFFSET) { \
++		VMLINUX_SYMBOL(__start___kcrctab_unused_gpl) = .;	\
++		ALL(__kcrctab_unused_gpl)				\
++		VMLINUX_SYMBOL(__stop___kcrctab_unused_gpl) = .;	\
+ 	}								\
+ 									\
+-	TRACEDATA							\
+-									\
++	/* Kernel symbol table: GPL-future-only symbols */		\
++	__kcrctab_gpl_future : AT(ADDR(__kcrctab_gpl_future) - LOAD_OFFSET) { \
++		VMLINUX_SYMBOL(__start___kcrctab_gpl_future) = .;	\
++		ALL(__kcrctab_gpl_future)				\
++		VMLINUX_SYMBOL(__stop___kcrctab_gpl_future) = .;	\
++	}
++#else /* CONFIG_MODVERSIONS */
++#define KCRC_DATA
++#endif
++
++#define KSYM_DATA							\
+ 	/* Kernel symbol table: Normal symbols */			\
+ 	__ksymtab         : AT(ADDR(__ksymtab) - LOAD_OFFSET) {		\
+ 		VMLINUX_SYMBOL(__start___ksymtab) = .;			\
+-		*(__ksymtab)						\
++		KEEP_ALL(__ksymtab)					\
+ 		VMLINUX_SYMBOL(__stop___ksymtab) = .;			\
+ 	}								\
+ 									\
+ 	/* Kernel symbol table: GPL-only symbols */			\
+ 	__ksymtab_gpl     : AT(ADDR(__ksymtab_gpl) - LOAD_OFFSET) {	\
+ 		VMLINUX_SYMBOL(__start___ksymtab_gpl) = .;		\
+-		*(__ksymtab_gpl)					\
++		KEEP_ALL(__ksymtab_gpl)					\
+ 		VMLINUX_SYMBOL(__stop___ksymtab_gpl) = .;		\
+ 	}								\
+ 									\
+ 	/* Kernel symbol table: Normal unused symbols */		\
+ 	__ksymtab_unused  : AT(ADDR(__ksymtab_unused) - LOAD_OFFSET) {	\
+ 		VMLINUX_SYMBOL(__start___ksymtab_unused) = .;		\
+-		*(__ksymtab_unused)					\
++		ALL(__ksymtab_unused)					\
+ 		VMLINUX_SYMBOL(__stop___ksymtab_unused) = .;		\
+ 	}								\
+ 									\
+ 	/* Kernel symbol table: GPL-only unused symbols */		\
+ 	__ksymtab_unused_gpl : AT(ADDR(__ksymtab_unused_gpl) - LOAD_OFFSET) { \
+ 		VMLINUX_SYMBOL(__start___ksymtab_unused_gpl) = .;	\
+-		*(__ksymtab_unused_gpl)					\
++		ALL(__ksymtab_unused_gpl)				\
+ 		VMLINUX_SYMBOL(__stop___ksymtab_unused_gpl) = .;	\
+ 	}								\
+ 									\
+ 	/* Kernel symbol table: GPL-future-only symbols */		\
+ 	__ksymtab_gpl_future : AT(ADDR(__ksymtab_gpl_future) - LOAD_OFFSET) { \
+ 		VMLINUX_SYMBOL(__start___ksymtab_gpl_future) = .;	\
+-		*(__ksymtab_gpl_future)					\
++		ALL(__ksymtab_gpl_future)				\
+ 		VMLINUX_SYMBOL(__stop___ksymtab_gpl_future) = .;	\
+ 	}								\
+ 									\
+-	/* Kernel symbol table: Normal symbols */			\
+-	__kcrctab         : AT(ADDR(__kcrctab) - LOAD_OFFSET) {		\
+-		VMLINUX_SYMBOL(__start___kcrctab) = .;			\
+-		*(__kcrctab)						\
+-		VMLINUX_SYMBOL(__stop___kcrctab) = .;			\
++	/* Kernel symbol table: strings */				\
++        __ksymtab_strings : AT(ADDR(__ksymtab_strings) - LOAD_OFFSET) {	\
++		ALL(__ksymtab_strings)					\
+ 	}								\
+-									\
+-	/* Kernel symbol table: GPL-only symbols */			\
+-	__kcrctab_gpl     : AT(ADDR(__kcrctab_gpl) - LOAD_OFFSET) {	\
+-		VMLINUX_SYMBOL(__start___kcrctab_gpl) = .;		\
+-		*(__kcrctab_gpl)					\
+-		VMLINUX_SYMBOL(__stop___kcrctab_gpl) = .;		\
++	KCRC_DATA
++
++#ifdef CONFIG_FIXED_SECTIONS
++#define MOD_MAGIC_TEXT							\
++	.text..page_aligned 0 : AT(0) {	ALL(.text..page_aligned) }
++
++#define MOD_MAGIC_DATA							\
++	.data..percpu 0: AT(0) {					\
++		ALL(.data..percpu..first)				\
++		ALL(.data..percpu..page_aligned)			\
++		ALL(.data..percpu..shared_aligned)			\
++		ALL(.data..percpu)					\
+ 	}								\
+-									\
+-	/* Kernel symbol table: Normal unused symbols */		\
+-	__kcrctab_unused  : AT(ADDR(__kcrctab_unused) - LOAD_OFFSET) {	\
+-		VMLINUX_SYMBOL(__start___kcrctab_unused) = .;		\
+-		*(__kcrctab_unused)					\
+-		VMLINUX_SYMBOL(__stop___kcrctab_unused) = .;		\
++	.data..nosave 0: AT(0) { ALL(.data..nosave) }			\
++	.data..page_aligned 0: AT(0) { ALL(.data..page_aligned) }	\
++	.data..cacheline_aligned 0: AT(0) { ALL(.data..cacheline_aligned)}\
++	.data..read_mostly 0: AT(0) { ALL(.data..read_mostly) }
++#else
++#define MOD_MAGIC_TEXT
++#define MOD_MAGIC_DATA
++#endif
++
++#else /* !CONFIG_MODULES */
++#define KSYM_DATA
++#endif
++
++#ifdef CONFIG_PCI_QUIRKS
++#define PCI_QUIRKS							\
++	/* PCI quirks */						\
++	.pci_fixup        : AT(ADDR(.pci_fixup) - LOAD_OFFSET) {	\
++		VMLINUX_SYMBOL(__start_pci_fixups_early) = .;		\
++		KEEP_ALL(.pci_fixup_early)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_early) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_header) = .;		\
++		KEEP_ALL(.pci_fixup_header)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_header) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_final) = .;		\
++		KEEP_ALL(.pci_fixup_final)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_final) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_enable) = .;		\
++		KEEP_ALL(.pci_fixup_enable)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_enable) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_resume) = .;		\
++		KEEP_ALL(.pci_fixup_resume)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_resume) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_resume_early) = .;	\
++		KEEP_ALL(.pci_fixup_resume_early)			\
++		VMLINUX_SYMBOL(__end_pci_fixups_resume_early) = .;	\
++		VMLINUX_SYMBOL(__start_pci_fixups_suspend) = .;		\
++		KEEP_ALL(.pci_fixup_suspend)				\
++		VMLINUX_SYMBOL(__end_pci_fixups_suspend) = .;		\
++	}
++#else /* !CONFIG_PCI_QUIRKS */
++#define PCI_QUIRKS
++#endif
++
++/*
++ * Read only Data
++ */
++#define RO_DATA_SECTION(align)						\
++	. = ALIGN((align));						\
++	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
++		VMLINUX_SYMBOL(__start_rodata) = .;			\
++		ALL(.rodata)						\
++		*(__vermagic)		/* Kernel version magic */	\
++		TRACEPOINTS_STRINGS()	/* Tracepoints: strings */	\
+ 	}								\
+ 									\
+-	/* Kernel symbol table: GPL-only unused symbols */		\
+-	__kcrctab_unused_gpl : AT(ADDR(__kcrctab_unused_gpl) - LOAD_OFFSET) { \
+-		VMLINUX_SYMBOL(__start___kcrctab_unused_gpl) = .;	\
+-		*(__kcrctab_unused_gpl)					\
+-		VMLINUX_SYMBOL(__stop___kcrctab_unused_gpl) = .;	\
++	.rodata1          : AT(ADDR(.rodata1) - LOAD_OFFSET) {		\
++		ALL(.rodata1)						\
+ 	}								\
+ 									\
+-	/* Kernel symbol table: GPL-future-only symbols */		\
+-	__kcrctab_gpl_future : AT(ADDR(__kcrctab_gpl_future) - LOAD_OFFSET) { \
+-		VMLINUX_SYMBOL(__start___kcrctab_gpl_future) = .;	\
+-		*(__kcrctab_gpl_future)					\
+-		VMLINUX_SYMBOL(__stop___kcrctab_gpl_future) = .;	\
++	BUG_TABLE							\
++									\
++	PCI_QUIRKS							\
++									\
++	/* Built-in firmware blobs */					\
++	.builtin_fw        : AT(ADDR(.builtin_fw) - LOAD_OFFSET) {	\
++		VMLINUX_SYMBOL(__start_builtin_fw) = .;			\
++		ALL(.builtin_fw)					\
++		VMLINUX_SYMBOL(__end_builtin_fw) = .;			\
+ 	}								\
+ 									\
+-	/* Kernel symbol table: strings */				\
+-        __ksymtab_strings : AT(ADDR(__ksymtab_strings) - LOAD_OFFSET) {	\
+-		*(__ksymtab_strings)					\
++	/* RapidIO route ops */						\
++	.rio_ops        : AT(ADDR(.rio_ops) - LOAD_OFFSET) {		\
++		VMLINUX_SYMBOL(__start_rio_switch_ops) = .;		\
++		ALL(.rio_switch_ops)					\
++		VMLINUX_SYMBOL(__end_rio_switch_ops) = .;		\
+ 	}								\
+ 									\
++	TRACEDATA							\
++									\
++	KSYM_DATA							\
++									\
+ 	/* __*init sections */						\
+ 	__init_rodata : AT(ADDR(__init_rodata) - LOAD_OFFSET) {		\
+-		*(.ref.rodata)						\
+-		DEV_KEEP(init.rodata)					\
+-		DEV_KEEP(exit.rodata)					\
+-		CPU_KEEP(init.rodata)					\
+-		CPU_KEEP(exit.rodata)					\
+-		MEM_KEEP(init.rodata)					\
+-		MEM_KEEP(exit.rodata)					\
++		ALL(.ref.rodata)					\
++		DEV_KEEP(init.rodata*)					\
++		DEV_KEEP(exit.rodata*)					\
++		CPU_KEEP(init.rodata*)					\
++		CPU_KEEP(exit.rodata*)					\
++		MEM_KEEP(init.rodata*)					\
++		MEM_KEEP(exit.rodata*)					\
+ 	}								\
+ 									\
+ 	/* Built-in module parameters. */				\
+ 	__param : AT(ADDR(__param) - LOAD_OFFSET) {			\
+ 		VMLINUX_SYMBOL(__start___param) = .;			\
+-		*(__param)						\
++		KEEP_ALL(__param)					\
+ 		VMLINUX_SYMBOL(__stop___param) = .;			\
+ 		. = ALIGN((align));					\
+ 		VMLINUX_SYMBOL(__end_rodata) = .;			\
+@@ -365,32 +450,34 @@
+ #define SECURITY_INIT							\
+ 	.security_initcall.init : AT(ADDR(.security_initcall.init) - LOAD_OFFSET) { \
+ 		VMLINUX_SYMBOL(__security_initcall_start) = .;		\
+-		*(.security_initcall.init) 				\
++		ALL(.security_initcall.init)				\
+ 		VMLINUX_SYMBOL(__security_initcall_end) = .;		\
+ 	}
+ 
+ /* .text section. Map to function alignment to avoid address changes
+  * during second ld run in second ld pass when generating System.map */
+-#define TEXT_TEXT							\
++#define TEXT_TEXT_SECTION(section)					\
+ 		ALIGN_FUNCTION();					\
+ 		*(.text.hot)						\
+-		*(.text)						\
+-		*(.ref.text)						\
+-	DEV_KEEP(init.text)						\
+-	DEV_KEEP(exit.text)						\
+-	CPU_KEEP(init.text)						\
+-	CPU_KEEP(exit.text)						\
+-	MEM_KEEP(init.text)						\
+-	MEM_KEEP(exit.text)						\
+-		*(.text.unlikely)
+-
++		section							\
++		ALL(.text)						\
++		ALL(.ref.text)						\
++	DEV_KEEP(init.text*)					\
++	DEV_KEEP(exit.text*)					\
++	CPU_KEEP(init.text*)					\
++	CPU_KEEP(exit.text*)					\
++	MEM_KEEP(init.text*)					\
++	MEM_KEEP(exit.text*)					\
++		ALL(.text.unlikely)
++
++#define TEXT_TEXT TEXT_TEXT_SECTION()
+ 
+ /* sched.text is aling to function alignment to secure we have same
+  * address even at second ld pass when generating System.map */
+ #define SCHED_TEXT							\
+ 		ALIGN_FUNCTION();					\
+ 		VMLINUX_SYMBOL(__sched_text_start) = .;			\
+-		*(.sched.text)						\
++		ALL(.sched.text)					\
+ 		VMLINUX_SYMBOL(__sched_text_end) = .;
+ 
+ /* spinlock.text is aling to function alignment to secure we have same
+@@ -398,29 +485,29 @@
+ #define LOCK_TEXT							\
+ 		ALIGN_FUNCTION();					\
+ 		VMLINUX_SYMBOL(__lock_text_start) = .;			\
+-		*(.spinlock.text)					\
++		ALL(.spinlock.text)					\
+ 		VMLINUX_SYMBOL(__lock_text_end) = .;
+ 
+ #define KPROBES_TEXT							\
+ 		ALIGN_FUNCTION();					\
+ 		VMLINUX_SYMBOL(__kprobes_text_start) = .;		\
+-		*(.kprobes.text)					\
++		ALL(.kprobes.text)					\
+ 		VMLINUX_SYMBOL(__kprobes_text_end) = .;
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ #define IRQENTRY_TEXT							\
+ 		ALIGN_FUNCTION();					\
+ 		VMLINUX_SYMBOL(__irqentry_text_start) = .;		\
+-		*(.irqentry.text)					\
++		ALL(.irqentry.text)					\
+ 		VMLINUX_SYMBOL(__irqentry_text_end) = .;
+ #else
+ #define IRQENTRY_TEXT
+ #endif
+ 
+ /* Section used for early init (in .S files) */
+-#define HEAD_TEXT  *(.head.text)
++#define HEAD_TEXT KEEP_ALL(.head.text)
+ 
+-#define HEAD_TEXT_SECTION							\
++#define HEAD_TEXT_SECTION						\
+ 	.head.text : AT(ADDR(.head.text) - LOAD_OFFSET) {		\
+ 		HEAD_TEXT						\
+ 	}
+@@ -432,7 +519,7 @@
+ 	. = ALIGN(align);						\
+ 	__ex_table : AT(ADDR(__ex_table) - LOAD_OFFSET) {		\
+ 		VMLINUX_SYMBOL(__start___ex_table) = .;			\
+-		*(__ex_table)						\
++		KEEP(*(__ex_table*))					\
+ 		VMLINUX_SYMBOL(__stop___ex_table) = .;			\
+ 	}
+ 
+@@ -448,7 +535,7 @@
+ #ifdef CONFIG_CONSTRUCTORS
+ #define KERNEL_CTORS()	. = ALIGN(8);			   \
+ 			VMLINUX_SYMBOL(__ctors_start) = .; \
+-			*(.ctors)			   \
++			KEEP(*(.ctors))			   \
+ 			VMLINUX_SYMBOL(__ctors_end) = .;
+ #else
+ #define KERNEL_CTORS()
+@@ -456,40 +543,40 @@
+ 
+ /* init and exit section handling */
+ #define INIT_DATA							\
+-	*(.init.data)							\
+-	DEV_DISCARD(init.data)						\
+-	CPU_DISCARD(init.data)						\
+-	MEM_DISCARD(init.data)						\
++	ALL(.init.data)							\
++	DEV_DISCARD(init.data*)						\
++	CPU_DISCARD(init.data*)						\
++	MEM_DISCARD(init.data*)						\
+ 	KERNEL_CTORS()							\
+-	*(.init.rodata)							\
++	ALL(.init.rodata)						\
+ 	MCOUNT_REC()							\
+-	DEV_DISCARD(init.rodata)					\
+-	CPU_DISCARD(init.rodata)					\
+-	MEM_DISCARD(init.rodata)
++	DEV_DISCARD(init.rodata*)					\
++	CPU_DISCARD(init.rodata*)					\
++	MEM_DISCARD(init.rodata*)
+ 
+ #define INIT_TEXT							\
+-	*(.init.text)							\
+-	DEV_DISCARD(init.text)						\
+-	CPU_DISCARD(init.text)						\
+-	MEM_DISCARD(init.text)
++	ALL(.init.text)							\
++	DEV_DISCARD(init.text*)						\
++	CPU_DISCARD(init.text*)						\
++	MEM_DISCARD(init.text*)
+ 
+ #define EXIT_DATA							\
+-	*(.exit.data)							\
+-	DEV_DISCARD(exit.data)						\
+-	DEV_DISCARD(exit.rodata)					\
+-	CPU_DISCARD(exit.data)						\
+-	CPU_DISCARD(exit.rodata)					\
+-	MEM_DISCARD(exit.data)						\
+-	MEM_DISCARD(exit.rodata)
++	ALL(.exit.data)							\
++	DEV_DISCARD(exit.data*)						\
++	DEV_DISCARD(exit.rodata*)					\
++	CPU_DISCARD(exit.data*)						\
++	CPU_DISCARD(exit.rodata*)					\
++	MEM_DISCARD(exit.data*)						\
++	MEM_DISCARD(exit.rodata*)
+ 
+ #define EXIT_TEXT							\
+-	*(.exit.text)							\
+-	DEV_DISCARD(exit.text)						\
+-	CPU_DISCARD(exit.text)						\
+-	MEM_DISCARD(exit.text)
++	ALL(.exit.text)							\
++	DEV_DISCARD(exit.text*)						\
++	CPU_DISCARD(exit.text*)						\
++	MEM_DISCARD(exit.text*)
+ 
+ #define EXIT_CALL							\
+-	*(.exitcall.exit)
++	ALL(.exitcall.exit)
+ 
+ /*
+  * bss (Block Started by Symbol) - uninitialized data
+@@ -498,16 +585,16 @@
+ #define SBSS(sbss_align)						\
+ 	. = ALIGN(sbss_align);						\
+ 	.sbss : AT(ADDR(.sbss) - LOAD_OFFSET) {				\
+-		*(.sbss)						\
++		ALL(.sbss)						\
+ 		*(.scommon)						\
+ 	}
+ 
+ #define BSS(bss_align)							\
+ 	. = ALIGN(bss_align);						\
+ 	.bss : AT(ADDR(.bss) - LOAD_OFFSET) {				\
+-		*(.bss..page_aligned)					\
++		ALL(.bss..page_aligned)					\
+ 		*(.dynbss)						\
+-		*(.bss)							\
++		ALL(.bss)						\
+ 		*(COMMON)						\
+ 	}
+ 
+@@ -556,7 +643,7 @@
+ 	. = ALIGN(8);							\
+ 	__bug_table : AT(ADDR(__bug_table) - LOAD_OFFSET) {		\
+ 		VMLINUX_SYMBOL(__start___bug_table) = .;		\
+-		*(__bug_table)						\
++		ALL(__bug_table)					\
+ 		VMLINUX_SYMBOL(__stop___bug_table) = .;			\
+ 	}
+ #else
+@@ -568,7 +655,7 @@
+ 	. = ALIGN(4);							\
+ 	.tracedata : AT(ADDR(.tracedata) - LOAD_OFFSET) {		\
+ 		VMLINUX_SYMBOL(__tracedata_start) = .;			\
+-		*(.tracedata)						\
++		ALL(.tracedata)						\
+ 		VMLINUX_SYMBOL(__tracedata_end) = .;			\
+ 	}
+ #else
+@@ -578,36 +665,36 @@
+ #define NOTES								\
+ 	.notes : AT(ADDR(.notes) - LOAD_OFFSET) {			\
+ 		VMLINUX_SYMBOL(__start_notes) = .;			\
+-		*(.note.*)						\
++		ALL(.note)						\
+ 		VMLINUX_SYMBOL(__stop_notes) = .;			\
+ 	}
+ 
+ #define INIT_SETUP(initsetup_align)					\
+ 		. = ALIGN(initsetup_align);				\
+ 		VMLINUX_SYMBOL(__setup_start) = .;			\
+-		*(.init.setup)						\
++		KEEP_ALL(.init.setup)					\
+ 		VMLINUX_SYMBOL(__setup_end) = .;
+ 
+ #define INITCALLS							\
+-	*(.initcallearly.init)						\
++	KEEP_ALL(.initcallearly.init)					\
+ 	VMLINUX_SYMBOL(__early_initcall_end) = .;			\
+-  	*(.initcall0.init)						\
+-  	*(.initcall0s.init)						\
+-  	*(.initcall1.init)						\
+-  	*(.initcall1s.init)						\
+-  	*(.initcall2.init)						\
+-  	*(.initcall2s.init)						\
+-  	*(.initcall3.init)						\
+-  	*(.initcall3s.init)						\
+-  	*(.initcall4.init)						\
+-  	*(.initcall4s.init)						\
+-  	*(.initcall5.init)						\
+-  	*(.initcall5s.init)						\
+-	*(.initcallrootfs.init)						\
+-  	*(.initcall6.init)						\
+-  	*(.initcall6s.init)						\
+-  	*(.initcall7.init)						\
+-  	*(.initcall7s.init)
++	KEEP_ALL(.initcall0.init)					\
++	KEEP_ALL(.initcall0s.init)					\
++	KEEP_ALL(.initcall1.init)					\
++	KEEP_ALL(.initcall1s.init)					\
++	KEEP_ALL(.initcall2.init)					\
++	KEEP_ALL(.initcall2s.init)					\
++	KEEP_ALL(.initcall3.init)					\
++	KEEP_ALL(.initcall3s.init)					\
++	KEEP_ALL(.initcall4.init)					\
++	KEEP_ALL(.initcall4s.init)					\
++	KEEP_ALL(.initcall5.init)					\
++	KEEP_ALL(.initcall5s.init)					\
++	KEEP_ALL(.initcallrootfs.init)					\
++	KEEP_ALL(.initcall6.init)					\
++	KEEP_ALL(.initcall6s.init)					\
++	KEEP_ALL(.initcall7.init)					\
++	KEEP_ALL(.initcall7s.init)
+ 
+ #define INIT_CALLS							\
+ 		VMLINUX_SYMBOL(__initcall_start) = .;			\
+@@ -616,19 +703,19 @@
+ 
+ #define CON_INITCALL							\
+ 		VMLINUX_SYMBOL(__con_initcall_start) = .;		\
+-		*(.con_initcall.init)					\
++		KEEP_ALL(.con_initcall.init)				\
+ 		VMLINUX_SYMBOL(__con_initcall_end) = .;
+ 
+ #define SECURITY_INITCALL						\
+ 		VMLINUX_SYMBOL(__security_initcall_start) = .;		\
+-		*(.security_initcall.init)				\
++		ALL(.security_initcall.init)				\
+ 		VMLINUX_SYMBOL(__security_initcall_end) = .;
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+ #define INIT_RAM_FS							\
+ 	. = ALIGN(PAGE_SIZE);						\
+ 	VMLINUX_SYMBOL(__initramfs_start) = .;				\
+-	*(.init.ramfs)							\
++	KEEP(*(.init.ramfs))						\
+ 	VMLINUX_SYMBOL(__initramfs_end) = .;
+ #else
+ #define INIT_RAM_FS
+@@ -648,8 +735,7 @@
+ 	EXIT_TEXT							\
+ 	EXIT_DATA							\
+ 	EXIT_CALL							\
+-	*(.discard)							\
+-	*(.discard.*)							\
++	ALL(.discard)							\
+ 	}
+ 
+ /**
+@@ -676,10 +762,10 @@
+ 	.data..percpu vaddr : AT(VMLINUX_SYMBOL(__per_cpu_load)		\
+ 				- LOAD_OFFSET) {			\
+ 		VMLINUX_SYMBOL(__per_cpu_start) = .;			\
+-		*(.data..percpu..first)					\
+-		*(.data..percpu..page_aligned)				\
+-		*(.data..percpu)					\
+-		*(.data..percpu..shared_aligned)			\
++		ALL(.data..percpu..first)				\
++		ALL(.data..percpu..page_aligned)			\
++		ALL(.data..percpu..shared_aligned)			\
++		ALL(.data..percpu)					\
+ 		VMLINUX_SYMBOL(__per_cpu_end) = .;			\
+ 	} phdr								\
+ 	. = VMLINUX_SYMBOL(__per_cpu_load) + SIZEOF(.data..percpu);
+@@ -702,10 +788,10 @@
+ 	.data..percpu	: AT(ADDR(.data..percpu) - LOAD_OFFSET) {	\
+ 		VMLINUX_SYMBOL(__per_cpu_load) = .;			\
+ 		VMLINUX_SYMBOL(__per_cpu_start) = .;			\
+-		*(.data..percpu..first)					\
+-		*(.data..percpu..page_aligned)				\
+-		*(.data..percpu)					\
+-		*(.data..percpu..shared_aligned)			\
++		ALL(.data..percpu..first)				\
++		ALL(.data..percpu..page_aligned)			\
++		ALL(.data..percpu..shared_aligned)			\
++		ALL(.data..percpu)					\
+ 		VMLINUX_SYMBOL(__per_cpu_end) = .;			\
+ 	}
+ 
+diff --git a/include/linux/cache.h b/include/linux/cache.h
+index 4c57065..11df0c1 100644
+--- a/include/linux/cache.h
++++ b/include/linux/cache.h
+@@ -29,9 +29,7 @@
+ #endif
+ 
+ #ifndef __cacheline_aligned
+-#define __cacheline_aligned					\
+-  __attribute__((__aligned__(SMP_CACHE_BYTES),			\
+-		 __section__(".data..cacheline_aligned")))
++#define __cacheline_aligned __section_aligned(.data..cacheline_aligned, SMP_CACHE_BYTES)
+ #endif /* __cacheline_aligned */
+ 
+ #ifndef __cacheline_aligned_in_smp
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index c1a62c5..90e2552 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -1,6 +1,24 @@
+ #ifndef __LINUX_COMPILER_H
+ #define __LINUX_COMPILER_H
+ 
++/* __unique() are provided to define unique variables and strings */
++
++#include <linux/stringify.h>
++
++#define __concat(a, b) a##b
++#define __c2(a, b) __concat(a, b)
++#define __c3(a, b, c) __c2(__c2(a, b), c)
++
++#define __concat_counter(a) __c2(a, __COUNTER__)
++#define __concat_line(a) __c2(a, __LINE__)
++#define __cc(a) __concat_counter(a)
++#define __cl(a) __concat_line(a)
++/* contact __LINE__ and __COUNTER as suffix, e.g.: .init.data.142l_c0 */
++#define __unique(a) __cc(__c2(__cl(a),l_c))
++#define __unique_string(a) __stringify(__unique(a))
++#define __u(a) __unique(a)
++#define __us(a) __unique_string(a)
++
+ #ifndef __ASSEMBLY__
+ 
+ #ifdef __CHECKER__
+@@ -90,8 +108,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ #define __branch_check__(x, expect) ({					\
+ 			int ______r;					\
+ 			static struct ftrace_branch_data		\
+-				__attribute__((__aligned__(4)))		\
+-				__attribute__((section("_ftrace_annotated_branch"))) \
++				__section_aligned(_ftrace_annotated_branch, 4)\
+ 				______f = {				\
+ 				.func = __func__,			\
+ 				.file = __FILE__,			\
+@@ -125,8 +142,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ 	({								\
+ 		int ______r;						\
+ 		static struct ftrace_branch_data			\
+-			__attribute__((__aligned__(4)))			\
+-			__attribute__((section("_ftrace_branch")))	\
++			__section_aligned(_ftrace_branch, 4)		\
+ 			______f = {					\
+ 				.func = __func__,			\
+ 				.file = __FILE__,			\
+@@ -269,9 +285,59 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
+ #define __cold
+ #endif
+ 
++#ifdef KBUILD_ENABLE_SECTIONS
++# define __usym(S) __us(S.)
++# define __ustr(s) s __us(.)
++#else
++# define __usym(S) #S
++# define __ustr(s) s
++#endif
++
+ /* Simple shorthand for a section definition */
+ #ifndef __section
+-# define __section(S) __attribute__ ((__section__(#S)))
++# define __section(S) __attribute__ ((__section__(__usym(S))))
++#endif
++
++#ifndef __section_str
++# define __section_str(s) __attribute__ ((__section__(__ustr(s))))
++#endif
++
++#ifndef __section_aligned
++# define __section_aligned(S, n) \
++        __attribute__ ((__aligned__(n), __section__(__usym(S))))
++#endif
++
++#ifndef __section_aligned_str
++# define __section_aligned_str(s, n) \
++        __attribute__ ((__aligned__(n), __section__(__ustr(s))))
++#endif
++
++#ifndef __section_unused_aligned
++# define __section_unused_aligned(S, n) \
++        __attribute__ ((unused, __aligned__(n), __section__(__usym(S))))
++#endif
++
++#ifndef __section_unused_aligned_str
++# define __section_unused_aligned_str(s, n) \
++        __attribute__ ((unused, __aligned__(n), __section__(__ustr(s))))
++#endif
++
++#ifndef __section_unused
++# define __section_unused(S) \
++        __attribute__ ((unused, __section__(__usym(S))))
++#endif
++
++#ifndef __section_unused_str
++# define __section_unused_str(s) \
++        __attribute__ ((unused, __section__(__ustr(s))))
++#endif
++
++#ifndef __asm_section
++# define __asm_section(S)	.section __usym(S)
++#endif
++
++#ifndef __asm_section_str
++# define __asm_section_str(s)	.section __ustr(s)
+ #endif
+ 
+ /* Are two types/vars the same type (ignoring qualifiers)? */
+diff --git a/include/linux/dynamic_debug.h b/include/linux/dynamic_debug.h
+index 52c0da4..a5f7beb 100644
+--- a/include/linux/dynamic_debug.h
++++ b/include/linux/dynamic_debug.h
+@@ -53,8 +53,8 @@ extern int ddebug_remove_module(const char *mod_name);
+ #define dynamic_pr_debug(fmt, ...) do {					\
+ 	static struct _ddebug descriptor				\
+ 	__used								\
+-	__attribute__((section("__verbose"), aligned(8))) =		\
+-	{ KBUILD_MODNAME, __func__, __FILE__, fmt, DEBUG_HASH,	\
++	__section_aligned(__verbose, 8) =				\
++	{ KBUILD_MODNAME, __func__, __FILE__, fmt, DEBUG_HASH,		\
+ 		DEBUG_HASH2, __LINE__, _DPRINTK_FLAGS_DEFAULT };	\
+ 	if (__dynamic_dbg_enabled(descriptor))				\
+ 		printk(KERN_DEBUG pr_fmt(fmt),	##__VA_ARGS__);		\
+@@ -64,8 +64,8 @@ extern int ddebug_remove_module(const char *mod_name);
+ #define dynamic_dev_dbg(dev, fmt, ...) do {				\
+ 	static struct _ddebug descriptor				\
+ 	__used								\
+-	__attribute__((section("__verbose"), aligned(8))) =		\
+-	{ KBUILD_MODNAME, __func__, __FILE__, fmt, DEBUG_HASH,	\
++	__section_aligned(__verbose, 8) =				\
++	{ KBUILD_MODNAME, __func__, __FILE__, fmt, DEBUG_HASH,		\
+ 		DEBUG_HASH2, __LINE__, _DPRINTK_FLAGS_DEFAULT };	\
+ 	if (__dynamic_dbg_enabled(descriptor))				\
+ 		dev_printk(KERN_DEBUG, dev, fmt, ##__VA_ARGS__);	\
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index dcd6a7c..221f4ba 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -407,7 +407,7 @@ ftrace_push_return_trace(unsigned long ret, unsigned long func, int *depth,
+  * We want to which function is an entrypoint of a hardirq.
+  * That will help us to put a signal on output.
+  */
+-#define __irq_entry		 __attribute__((__section__(".irqentry.text")))
++#define __irq_entry		 __section(.irqentry.text)
+ 
+ /* Limits of hardirq entrypoints */
+ extern char __irqentry_text_start[];
+diff --git a/include/linux/ftrace_event.h b/include/linux/ftrace_event.h
+index 02b8b24..941caec 100644
+--- a/include/linux/ftrace_event.h
++++ b/include/linux/ftrace_event.h
+@@ -237,7 +237,7 @@ do {									\
+ 	tracing_record_cmdline(current);				\
+ 	if (__builtin_constant_p(fmt)) {				\
+ 		static const char *trace_printk_fmt			\
+-		  __attribute__((section("__trace_printk_fmt"))) =	\
++		  	__section(__trace_printk_fmt) =	\
+ 			__builtin_constant_p(fmt) ? fmt : NULL;		\
+ 									\
+ 		__trace_bprintk(ip, trace_printk_fmt, ##args);		\
+diff --git a/include/linux/init.h b/include/linux/init.h
+index de99430..9475e23 100644
+--- a/include/linux/init.h
++++ b/include/linux/init.h
+@@ -99,30 +99,30 @@
+ #define __memexitconst   __section(.memexit.rodata)
+ 
+ /* For assembly routines */
+-#define __HEAD		.section	".head.text","ax"
+-#define __INIT		.section	".init.text","ax"
++#define __HEAD		__asm_section(.head.text), "ax"
++#define __INIT		__asm_section(.init.text), "ax"
+ #define __FINIT		.previous
+ 
+-#define __INITDATA	.section	".init.data","aw",%progbits
+-#define __INITRODATA	.section	".init.rodata","a",%progbits
++#define __INITDATA	__asm_section(.init.data), "aw",%progbits
++#define __INITRODATA	__asm_section(.init.rodata), "a",%progbits
+ #define __FINITDATA	.previous
+ 
+-#define __DEVINIT        .section	".devinit.text", "ax"
+-#define __DEVINITDATA    .section	".devinit.data", "aw"
+-#define __DEVINITRODATA  .section	".devinit.rodata", "a"
++#define __DEVINIT        __asm_section(.devinit.text), "ax"
++#define __DEVINITDATA    __asm_section(.devinit.data), "aw"
++#define __DEVINITRODATA  __asm_section(.devinit.rodata), "a"
+ 
+-#define __CPUINIT        .section	".cpuinit.text", "ax"
+-#define __CPUINITDATA    .section	".cpuinit.data", "aw"
+-#define __CPUINITRODATA  .section	".cpuinit.rodata", "a"
++#define __CPUINIT        __asm_section(.cpuinit.text), "ax"
++#define __CPUINITDATA    __asm_section(.cpuinit.data), "aw"
++#define __CPUINITRODATA  __asm_section(.cpuinit.rodata), "a"
+ 
+-#define __MEMINIT        .section	".meminit.text", "ax"
+-#define __MEMINITDATA    .section	".meminit.data", "aw"
+-#define __MEMINITRODATA  .section	".meminit.rodata", "a"
++#define __MEMINIT        __asm_section(.meminit.text), "ax"
++#define __MEMINITDATA    __asm_section(.meminit.data), "aw"
++#define __MEMINITRODATA  __asm_section(.meminit.rodata), "a"
+ 
+ /* silence warnings when references are OK */
+-#define __REF            .section       ".ref.text", "ax"
+-#define __REFDATA        .section       ".ref.data", "aw"
+-#define __REFCONST       .section       ".ref.rodata", "a"
++#define __REF            __asm_section(.ref.text), "ax"
++#define __REFDATA        __asm_section(.ref.data), "aw"
++#define __REFCONST       __asm_section(.ref.rodata), "a"
+ 
+ #ifndef __ASSEMBLY__
+ /*
+@@ -167,16 +167,16 @@ extern int initcall_debug;
+  * can point at the same handler without causing duplicate-symbol build errors.
+  */
+ 
+-#define __define_initcall(level,fn,id) \
++#define __define_initcall(fn,id) \
+ 	static initcall_t __initcall_##fn##id __used \
+-	__attribute__((__section__(".initcall" level ".init"))) = fn
++	__section_str(".initcall" __stringify(id) ".init") = fn
+ 
+ /*
+  * Early initcalls run before initializing SMP.
+  *
+  * Only for built-in code, not modules.
+  */
+-#define early_initcall(fn)		__define_initcall("early",fn,early)
++#define early_initcall(fn)		__define_initcall(fn,early)
+ 
+ /*
+  * A "pure" initcall has no dependencies on anything else, and purely
+@@ -184,23 +184,23 @@ extern int initcall_debug;
+  *
+  * This only exists for built-in code, not for modules.
+  */
+-#define pure_initcall(fn)		__define_initcall("0",fn,0)
+-
+-#define core_initcall(fn)		__define_initcall("1",fn,1)
+-#define core_initcall_sync(fn)		__define_initcall("1s",fn,1s)
+-#define postcore_initcall(fn)		__define_initcall("2",fn,2)
+-#define postcore_initcall_sync(fn)	__define_initcall("2s",fn,2s)
+-#define arch_initcall(fn)		__define_initcall("3",fn,3)
+-#define arch_initcall_sync(fn)		__define_initcall("3s",fn,3s)
+-#define subsys_initcall(fn)		__define_initcall("4",fn,4)
+-#define subsys_initcall_sync(fn)	__define_initcall("4s",fn,4s)
+-#define fs_initcall(fn)			__define_initcall("5",fn,5)
+-#define fs_initcall_sync(fn)		__define_initcall("5s",fn,5s)
+-#define rootfs_initcall(fn)		__define_initcall("rootfs",fn,rootfs)
+-#define device_initcall(fn)		__define_initcall("6",fn,6)
+-#define device_initcall_sync(fn)	__define_initcall("6s",fn,6s)
+-#define late_initcall(fn)		__define_initcall("7",fn,7)
+-#define late_initcall_sync(fn)		__define_initcall("7s",fn,7s)
++#define pure_initcall(fn)		__define_initcall(fn,0)
++
++#define core_initcall(fn)		__define_initcall(fn,1)
++#define core_initcall_sync(fn)		__define_initcall(fn,1s)
++#define postcore_initcall(fn)		__define_initcall(fn,2)
++#define postcore_initcall_sync(fn)	__define_initcall(fn,2s)
++#define arch_initcall(fn)		__define_initcall(fn,3)
++#define arch_initcall_sync(fn)		__define_initcall(fn,3s)
++#define subsys_initcall(fn)		__define_initcall(fn,4)
++#define subsys_initcall_sync(fn)	__define_initcall(fn,4s)
++#define fs_initcall(fn)			__define_initcall(fn,5)
++#define fs_initcall_sync(fn)		__define_initcall(fn,5s)
++#define rootfs_initcall(fn)		__define_initcall(fn,rootfs)
++#define device_initcall(fn)		__define_initcall(fn,6)
++#define device_initcall_sync(fn)	__define_initcall(fn,6s)
++#define late_initcall(fn)		__define_initcall(fn,7)
++#define late_initcall_sync(fn)		__define_initcall(fn,7s)
+ 
+ #define __initcall(fn) device_initcall(fn)
+ 
+@@ -311,7 +311,7 @@ void __init parse_early_options(char *cmdline);
+ #define __initconst_or_module
+ #define __INIT_OR_MODULE	.text
+ #define __INITDATA_OR_MODULE	.data
+-#define __INITRODATA_OR_MODULE	.section ".rodata","a",%progbits
++#define __INITRODATA_OR_MODULE	__asm_section(.rodata),"a",%progbits
+ #else
+ #define __init_or_module __init
+ #define __initdata_or_module __initdata
+diff --git a/include/linux/init_task.h b/include/linux/init_task.h
+index 1f43fa5..d389a28 100644
+--- a/include/linux/init_task.h
++++ b/include/linux/init_task.h
+@@ -183,7 +183,7 @@ extern struct cred init_cred;
+ }
+ 
+ /* Attach to the init_task data structure for proper alignment */
+-#define __init_task_data __attribute__((__section__(".data..init_task")))
++#define __init_task_data __section(.data..init_task)
+ 
+ 
+ #endif
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index 6811f4b..2130779 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -71,7 +71,7 @@
+  * but that can only take up to, say, 4-byte variables. jiffies being part of
+  * an 8-byte variable may not be correctly accessed unless we force the issue
+  */
+-#define __jiffy_data  __attribute__((section(".data")))
++#define __jiffy_data  __section(.data)
+ 
+ /*
+  * The 64-bit value is not atomic - you MUST NOT read it
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 2b0a35e..e27a872 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -560,7 +560,7 @@ do {									\
+ 	__trace_printk_check_format(fmt, ##args);			\
+ 	if (__builtin_constant_p(fmt)) {				\
+ 		static const char *trace_printk_fmt			\
+-		  __attribute__((section("__trace_printk_fmt"))) =	\
++		  __section(__trace_printk_fmt) =	\
+ 			__builtin_constant_p(fmt) ? fmt : NULL;		\
+ 									\
+ 		__trace_bprintk(_THIS_IP_, trace_printk_fmt, ##args);	\
+@@ -587,7 +587,7 @@ extern void trace_dump_stack(void);
+ do {									\
+ 	if (__builtin_constant_p(fmt)) {				\
+ 		static const char *trace_printk_fmt			\
+-		  __attribute__((section("__trace_printk_fmt"))) =	\
++		  __section(__trace_printk_fmt) =	\
+ 			__builtin_constant_p(fmt) ? fmt : NULL;		\
+ 									\
+ 		__ftrace_vbprintk(_THIS_IP_, trace_printk_fmt, vargs);	\
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+index e7d1b2e..b2cdf3d 100644
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -48,7 +48,7 @@
+ #define KPROBE_HIT_SSDONE	0x00000008
+ 
+ /* Attach to insert probes on any functions which should be ignored*/
+-#define __kprobes	__attribute__((__section__(".kprobes.text")))
++#define __kprobes	__section(.kprobes.text)
+ #else /* CONFIG_KPROBES */
+ typedef int kprobe_opcode_t;
+ struct arch_specific_insn {
+diff --git a/include/linux/linkage.h b/include/linux/linkage.h
+index 7135ebc..438eeb4 100644
+--- a/include/linux/linkage.h
++++ b/include/linux/linkage.h
+@@ -27,8 +27,8 @@
+  * Note when using these that you must specify the appropriate
+  * alignment directives yourself
+  */
+-#define __PAGE_ALIGNED_DATA	.section ".data..page_aligned", "aw"
+-#define __PAGE_ALIGNED_BSS	.section ".bss..page_aligned", "aw"
++#define __PAGE_ALIGNED_DATA	__asm_section(.data..page_aligned), "aw"
++#define __PAGE_ALIGNED_BSS	__asm_section(.bss..page_aligned), "aw"
+ 
+ /*
+  * This is used by architectures to keep arguments on the stack
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 9d2f183..e655b9e 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -147,7 +147,7 @@ struct kparam_array
+ 	static const char __param_str_##name[] = prefix #name;		\
+ 	static struct kernel_param __moduleparam_const __param_##name	\
+ 	__used								\
+-    __attribute__ ((unused,__section__ ("__param"),aligned(sizeof(void *)))) \
++	__section_unused_aligned(__param, (sizeof(void *)))		\
+ 	= { __param_str_##name, ops, perm, isbool ? KPARAM_ISBOOL : 0,	\
+ 	    { arg } }
+ 
+diff --git a/include/linux/mtd/xip.h b/include/linux/mtd/xip.h
+index 36efcba..72d7f7d 100644
+--- a/include/linux/mtd/xip.h
++++ b/include/linux/mtd/xip.h
+@@ -30,7 +30,7 @@
+  * obviously not be running from flash.  The __xipram is therefore marking
+  * those functions so they get relocated to ram.
+  */
+-#define __xipram noinline __attribute__ ((__section__ (".data")))
++#define __xipram noinline __section(.data)
+ 
+ /*
+  * Each architecture has to provide the following macros.  They must access
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index c8d95e3..8136083 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1305,7 +1305,7 @@ enum pci_fixup_pass {
+ /* Anonymous variables would be nice... */
+ #define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, hook)	\
+ 	static const struct pci_fixup __pci_fixup_##name __used		\
+-	__attribute__((__section__(#section))) = { vendor, device, hook };
++	__section(section) = { vendor, device, hook };
+ #define DECLARE_PCI_FIXUP_EARLY(vendor, device, hook)			\
+ 	DECLARE_PCI_FIXUP_SECTION(.pci_fixup_early,			\
+ 			vendor##device##hook, vendor, device, hook)
+diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.h
+index ce2dc65..e3219bc 100644
+--- a/include/linux/percpu-defs.h
++++ b/include/linux/percpu-defs.h
+@@ -12,7 +12,7 @@
+  * that section.
+  */
+ #define __PCPU_ATTRS(sec)						\
+-	__percpu __attribute__((section(PER_CPU_BASE_SECTION sec)))	\
++	__percpu __section_str(PER_CPU_BASE_SECTION sec)		\
+ 	PER_CPU_ATTRIBUTES
+ 
+ #define __PCPU_DUMMY_ATTRS						\
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 1e2a6db..12fbcd6 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -339,7 +339,7 @@ extern int proc_dohung_task_timeout_secs(struct ctl_table *table, int write,
+ #endif
+ 
+ /* Attach to any functions which should be ignored in wchan output. */
+-#define __sched		__attribute__((__section__(".sched.text")))
++#define __sched		__section(.sched.text)
+ 
+ /* Linker adds these: start and end of __sched functions */
+ extern char __sched_text_start[], __sched_text_end[];
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index f885465..c41c56f 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -72,7 +72,7 @@
+ #define LOCK_SECTION_END                        \
+         ".previous\n\t"
+ 
+-#define __lockfunc __attribute__((section(".spinlock.text")))
++#define __lockfunc __section(.spinlock.text)
+ 
+ /*
+  * Pull the arch_spinlock_t and arch_rwlock_t definitions:
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index e6319d1..1311ceb 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -131,7 +131,7 @@ extern struct trace_event_functions exit_syscall_print_funcs;
+ 	__attribute__((__aligned__(4))) event_enter_##sname;		\
+ 	static struct ftrace_event_call __used				\
+ 	  __attribute__((__aligned__(4)))				\
+-	  __attribute__((section("_ftrace_events")))			\
++	  __section(_ftrace_events)			\
+ 	  event_enter_##sname = {					\
+ 		.name                   = "sys_enter"#sname,		\
+ 		.class			= &event_class_syscall_enter,	\
+@@ -146,7 +146,7 @@ extern struct trace_event_functions exit_syscall_print_funcs;
+ 	__attribute__((__aligned__(4))) event_exit_##sname;		\
+ 	static struct ftrace_event_call __used				\
+ 	  __attribute__((__aligned__(4)))				\
+-	  __attribute__((section("_ftrace_events")))			\
++	  __section(_ftrace_events)			\
+ 	  event_exit_##sname = {					\
+ 		.name                   = "sys_exit"#sname,		\
+ 		.class			= &event_class_syscall_exit,	\
+@@ -159,7 +159,7 @@ extern struct trace_event_functions exit_syscall_print_funcs;
+ 	SYSCALL_TRACE_EXIT_EVENT(sname);			\
+ 	static struct syscall_metadata __used			\
+ 	  __attribute__((__aligned__(4)))			\
+-	  __attribute__((section("__syscalls_metadata")))	\
++	  __section(__syscalls_metadata)	\
+ 	  __syscall_meta_##sname = {				\
+ 		.name 		= "sys"#sname,			\
+ 		.nb_args 	= nb,				\
+@@ -175,7 +175,7 @@ extern struct trace_event_functions exit_syscall_print_funcs;
+ 	SYSCALL_TRACE_EXIT_EVENT(_##sname);			\
+ 	static struct syscall_metadata __used			\
+ 	  __attribute__((__aligned__(4)))			\
+-	  __attribute__((section("__syscalls_metadata")))	\
++	  __section(__syscalls_metadata)	\
+ 	  __syscall_meta__##sname = {				\
+ 		.name 		= "sys_"#sname,			\
+ 		.nb_args 	= 0,				\
+diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+index 103d1b6..813119b 100644
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -169,9 +169,9 @@ static inline void tracepoint_update_probe_range(struct tracepoint *begin,
+ 
+ #define DEFINE_TRACE_FN(name, reg, unreg)				\
+ 	static const char __tpstrtab_##name[]				\
+-	__attribute__((section("__tracepoints_strings"))) = #name;	\
++	__section(__tracepoints_strings) = #name;	\
+ 	struct tracepoint __tracepoint_##name				\
+-	__attribute__((section("__tracepoints"), aligned(32))) =	\
++	__section_aligned(__tracepoints, 32) =	\
+ 		{ __tpstrtab_##name, 0, reg, unreg, NULL }
+ 
+ #define DEFINE_TRACE(name)						\
+diff --git a/include/trace/ftrace.h b/include/trace/ftrace.h
+index a9377c0..418f2db 100644
+--- a/include/trace/ftrace.h
++++ b/include/trace/ftrace.h
+@@ -567,8 +567,7 @@ static struct ftrace_event_class __used event_class_##call = {		\
+ #define DEFINE_EVENT(template, call, proto, args)			\
+ 									\
+ static struct ftrace_event_call __used					\
+-__attribute__((__aligned__(4)))						\
+-__attribute__((section("_ftrace_events"))) event_##call = {		\
++	__section_aligned(_ftrace_events, 4) event_##call = {		\
+ 	.name			= #call,				\
+ 	.class			= &event_class_##template,		\
+ 	.event.funcs		= &ftrace_event_type_funcs_##template,	\
+@@ -581,8 +580,7 @@ __attribute__((section("_ftrace_events"))) event_##call = {		\
+ static const char print_fmt_##call[] = print;				\
+ 									\
+ static struct ftrace_event_call __used					\
+-__attribute__((__aligned__(4)))						\
+-__attribute__((section("_ftrace_events"))) event_##call = {		\
++	__section_aligned(_ftrace_events, 4) event_##call = {		\
+ 	.name			= #call,				\
+ 	.class			= &event_class_##template,		\
+ 	.event.funcs		= &ftrace_event_type_funcs_##call,	\
+diff --git a/init/Kconfig b/init/Kconfig
+index 2de5b1c..35907ad 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -798,6 +798,43 @@ menuconfig EMBEDDED
+           environments which can tolerate a "non-standard" kernel.
+           Only use this if you really know what you are doing.
+ 
++config SECTIONS
++	bool "Configure support of -ffunction-sections or -fdata-sections"
++	default y
++	help
++	  This option enables the -ffunction-sections and -fdata-sections,
++	  Which puts every symbol into its own section, which helps
++	  --gc-sections of ld to eliminate the dead symbols automatically.
++
++	  This also enables the 'unique' version of __section* and
++	  __asm_section* macros, these sections make sure every section
++	  defined by the section attribute instruction of gcc be unique.
++
++	  Note: Due to a bug of the old ld (<2.21), this feature may generate
++	  bigger kernel image, therefore, this feature will only be
++	  enabled if the ld version is >= 2.21.
++
++config FUNC_SECTIONS
++	bool "Configure -ffunction-sections"
++	depends on SECTIONS
++	default y
++	help
++	  This allows to configure -ffunction-sections individually, this
++	  conflicts with -p (required by Ftrace), hence, it will be disabled
++	  if Ftrace is using.
++
++config DATA_SECTIONS
++	bool "Configure -fdata-sections"
++	depends on SECTIONS
++	depends on !FUNCTION_TRACER
++	default y
++	help
++	  This allows to configure -fdata-sections
++
++config FIXED_SECTIONS
++	bool
++	default y if X86 || PPC || MIPS || ARM
++
+ config UID16
+ 	bool "Enable 16-bit UID system calls" if EMBEDDED
+ 	depends on ARM || BLACKFIN || CRIS || FRV || H8300 || X86_32 || M68K || (S390 && !64BIT) || SUPERH || SPARC32 || (SPARC64 && COMPAT) || UML || (X86_64 && IA32_EMULATION)
+diff --git a/kernel/module.c b/kernel/module.c
+index ccd6419..b6a8c45 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -195,9 +195,15 @@ extern const struct kernel_symbol __start___ksymtab_gpl[];
+ extern const struct kernel_symbol __stop___ksymtab_gpl[];
+ extern const struct kernel_symbol __start___ksymtab_gpl_future[];
+ extern const struct kernel_symbol __stop___ksymtab_gpl_future[];
++#ifdef CONFIG_MODVERSIONS
+ extern const unsigned long __start___kcrctab[];
+ extern const unsigned long __start___kcrctab_gpl[];
+ extern const unsigned long __start___kcrctab_gpl_future[];
++#else
++#define __start___kcrctab NULL
++#define __start___kcrctab_gpl NULL
++#define __start___kcrctab_gpl_future NULL
++#endif
+ #ifdef CONFIG_UNUSED_SYMBOLS
+ extern const struct kernel_symbol __start___ksymtab_unused[];
+ extern const struct kernel_symbol __stop___ksymtab_unused[];
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index bad369e..c782fe9 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -50,6 +50,7 @@ cond_syscall(compat_sys_sendmsg);
+ cond_syscall(sys_recvmsg);
+ cond_syscall(sys_recvmmsg);
+ cond_syscall(compat_sys_recvmsg);
++cond_syscall(compat_sys_recv);
+ cond_syscall(compat_sys_recvfrom);
+ cond_syscall(compat_sys_recvmmsg);
+ cond_syscall(sys_socketcall);
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 1b4afd2..08a3712 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1145,6 +1145,7 @@ config DMA_API_DEBUG
+ 
+ config ATOMIC64_SELFTEST
+ 	bool "Perform an atomic64_t self-test at boot"
++	depends on GENERIC_ATOMIC64
+ 	help
+ 	  Enable this option to test the atomic64_t functions at boot.
+ 
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index ed2773e..eda795d 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -136,6 +136,14 @@ cc-ifversion = $(shell [ $(call cc-version, $(CC)) $(1) $(2) ] && echo $(3))
+ cc-ldoption = $(call try-run,\
+ 	$(CC) $(1) -nostdlib -xc /dev/null -o "$$TMP",$(1),$(2))
+ 
++# ld-version
++# Usage ld-ver := $(call ld-version)
++ld-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/ld-version.sh $(LD))
++
++# ld-ifversion
++# Usage: LD_BROKEN_VEC := $(call ld-ifversion, -lt, 0221, y)
++ld-ifversion = $(shell [ $(call ld-version, $(CC)) $(1) $(2) ] && echo $(3))
++
+ # ld-option
+ # Usage: LDFLAGS += $(call ld-option, -X)
+ ld-option = $(call try-run,\
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 842dbc2..c616c80 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -24,3 +24,4 @@ subdir-$(CONFIG_DTC)         += dtc
+ 
+ # Let clean descend into subdirs
+ subdir-	+= basic kconfig package selinux
++extra-y := module-common.lds
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 54fd1b7..ad90e88 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -127,6 +127,47 @@ _c_flags += $(if $(patsubst n%,, \
+ 		$(CFLAGS_GCOV))
+ endif
+ 
++#
++# Enable function/data sections support for a file, directory or for all files depending
++# on variables DATA_SECTIONS_obj.o, FUNC_SECTIONS_obj.o, DATA_SECTIONS, FUNC_SECTIONS
++# SECTIONS_obj.o, SECTIONS, CONFIG_SECTIONS and KBUILD_LD_SUPPORT_SECTIONS (by ld version) or
++# CONFIG_FIXED_SECTIONS (by linker script)
++#
++
++# Ensure ld can link the sections like .data..page_aligned and .data.*
++# respectively, this depends on the support of *(.text.[A-Za-z0-9_$^]*)
++# or the explict change of the linker script to avoid merging
++# .data..page_aligned being wrongly merged into .data by the pattern .data.*
++# Currently, only X86, PPC fixed this, more archs can be appended to
++# the dependency of the FIXED_SECTIONS config option in init/Kconfig
++
++ifeq ($(KBUILD_LD_SUPPORT_SECTIONS),y)
++_cpp_flags += -DKBUILD_LD_SUPPORT_SECTIONS
++KBUILD_SUPPORT_SECTIONS := y
++endif
++ifeq ($(CONFIG_FIXED_SECTIONS),y)
++KBUILD_SUPPORT_SECTIONS := y
++endif
++
++ifeq ($(KBUILD_SUPPORT_SECTIONS),y)
++  ifeq ($(CONFIG_SECTIONS),y)
++    _c_flags += -DKBUILD_ENABLE_SECTIONS
++    KBUILD_ENABLE_SECTIONS := y
++    # For compressed kernel image
++    export KBUILD_CFLAGS_SECTIONS := $(CFLAGS_SECTIONS)
++  endif
++endif
++
++ifeq ($(KBUILD_ENABLE_SECTIONS),y)
++_c_flags += $(if $(patsubst n%,, \
++		$(FUNC_SECTIONS_$(basetarget).o)$(FUNC_SECTIONS)$(SECTIONS_$(basetarget).o)$(SECTIONS)$(CONFIG_FUNC_SECTIONS)), \
++		-ffunction-sections)
++
++_c_flags += $(if $(patsubst n%,, \
++		$(DATA_SECTIONS_$(basetarget).o)$(DATA_SECTIONS)$(SECTIONS_$(basetarget).o)$(SECTIONS)$(CONFIG_DATA_SECTIONS)), \
++		-fdata-sections)
++endif
++
+ ifdef CONFIG_SYMBOL_PREFIX
+ _cpp_flags += -DSYMBOL_PREFIX=$(patsubst "%",%,$(CONFIG_SYMBOL_PREFIX))
+ endif
+diff --git a/scripts/cleansyscall.sh b/scripts/cleansyscall.sh
+new file mode 100644
+index 0000000..bf13f42
+--- /dev/null
++++ b/scripts/cleansyscall.sh
+@@ -0,0 +1,41 @@
++#!/bin/bash
++# author: falcon <wuzhangjin@gmail.com>
++# update: Sat Jun 11 15:04:49 CST 2011
++# TODO:
++
++#      Scan the whole system including the kernel itself to check which system
++#      calls are not used, if not used, replace them by sys_ni_syscall.  Then,
++#      the un-called system calls will be removed by gc-sections.
++#
++#      In order to scan the used system calls, we can simply grep the sys_*
++#      symbol of the objdump result or nm result, or even grep the system call
++#      instructions of the binaries. the former is simpler, the later needs to
++#      map the system call number back to the symbols.
++
++# Config
++arch=mips
++
++# Unused system calls
++# System calls defined in kernel/sys_ni.c
++
++unused_scalls="$(nm vmlinux | grep "W" | egrep " compat_|sys_|sys32_" | cut -d' ' -f3)"
++
++# System call file list
++
++case $arch in
++	mips)
++		scall_flist="$(ls arch/mips/kernel/scall*.o | sed -e 's/.o$/.S/g')"
++		;;
++	*)
++		echo "Please fill the arch specific system call file list here."
++		echo "They should be under arch/$arch/kernel/"
++		;;
++esac
++
++for scall_file in $scall_flist
++do
++	for scall in $unused_scalls
++	do
++		sed -i -e "s/$scall\([[:space:]]\)/sys_ni_syscall\1/g" $scall_file
++	done
++done
+diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+new file mode 100644
+index 0000000..3e1f332
+--- /dev/null
++++ b/scripts/ld-version.sh
+@@ -0,0 +1,53 @@
++#!/bin/sh
++#
++# ld-version [-p|-d|-a] ld-command
++#
++# Prints the ld version of `ld-command' in a canonical 4-digit form
++# such as `0295' for ld-2.95, `0303' for ld-3.3, etc.
++#
++# With the -p option, prints the patchlevel as well, for example `029503' for
++# ld-2.95.3, `030301' for ld-3.3.1, etc.
++#
++# With the -d option, prints the release date as well, for example `20100303'
++# for ld-2.20.1.20100303, etc.
++#
++# With the -a option, prints all of the above information, etc.
++#
++
++if [ "$1" = "-p" ] ; then
++	with_patchlevel=1;
++	shift;
++elif [ "$1" = "-d" ] ; then
++	with_date=1;
++	shift;
++elif [ "$1" = "-a" ] ; then
++	with_all=1
++	shift;
++fi
++
++linker="$*"
++
++if [ ${#linker} -eq 0 ]; then
++	echo "Error: No linker specified."
++	printf "Usage:\n\t$0 <ld-command>\n"
++	exit 1
++fi
++
++VERSION=$($linker -v | tr ' ' '\n' | tail -n 1)
++MAJOR=$(echo $VERSION | tr '.' '\n' | head -n 1)
++MINOR=$(echo $VERSION | tr '.' '\n' | head -n 2 | tail -n 1)
++if [ "x$with_patchlevel" != "x" ] ; then
++	PATCHLEVEL=$(echo $VERSION | tr '.' '\n' | head -n 3 | tail -n 1)
++	printf "%02d%02d%02d\\n" $MAJOR $MINOR $PATCHLEVEL
++elif [ "x$with_date" != "x" ] ; then
++	RELEASEDATE=$(echo $VERSION | tr '.' '\n' | head -n 4 | tail -n 1)
++	printf "%02d%02d%08d\\n" $MAJOR $MINOR $RELEASEDATE
++elif [ "x$with_all" != "x" ] ; then
++	PATCHLEVEL=$(echo $VERSION | tr '.' '\n' | head -n 3 | tail -n 1)
++	RELEASEDATE=$(echo $VERSION | tr '.' '\n' | head -n 4 | tail -n 1)
++	printf "%02d%02d%02d%08d\\n" $MAJOR $MINOR $PATCHLEVEL $RELEASEDATE
++else
++	printf "%02d%02d\\n" $MAJOR $MINOR
++fi
++
++
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 1ec7158..a6a70bc 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -518,10 +518,15 @@ static int parse_elf(struct elf_info *info, const char *filename)
+ 		Elf32_Word *p;
+ 		if (symtab_idx !=
+ 		    shndx2secindex(sechdrs[symtab_shndx_idx].sh_link))
++#ifdef CONFIG_ARM
++			;
++			#warning "SYMTAB_SHNDX has bad sh_link!"
++#else
+ 			fatal("%s: SYMTAB_SHNDX has bad sh_link: %u!=%u\n",
+ 			      filename,
+ 			      shndx2secindex(sechdrs[symtab_shndx_idx].sh_link),
+ 			      symtab_idx);
++#endif
+ 		/* Fix endianness */
+ 		for (p = info->symtab_shndx_start; p < info->symtab_shndx_stop;
+ 		     p++)
+diff --git a/scripts/module-common.lds b/scripts/module-common.lds
+deleted file mode 100644
+index 47a1f9a..0000000
+--- a/scripts/module-common.lds
++++ /dev/null
+@@ -1,8 +0,0 @@
+-/*
+- * Common module linker script, always used when linking a module.
+- * Archs are free to supply their own linker scripts.  ld will
+- * combine them automatically.
+- */
+-SECTIONS {
+-	/DISCARD/ : { *(.discard) }
+-}
+diff --git a/scripts/module-common.lds.S b/scripts/module-common.lds.S
+new file mode 100644
+index 0000000..2570a71
+--- /dev/null
++++ b/scripts/module-common.lds.S
+@@ -0,0 +1,55 @@
++/*
++ * Common module linker script, always used when linking a module.
++ * Archs are free to supply their own linker scripts.  ld will
++ * combine them automatically.
++ */
++
++/* .data.foo are generated by gcc itself with -fdata-sections,
++ * whereas double-dot sections (like .data..percpu) are generated
++ * by kernel's magic macros.
++ *
++ * Since this script does not specify what to do with double-dot sections,
++ * ld -r will coalesce all .data..foo input sections into one .data..foo
++ * output section, all .data..bar input sections into one .data..bar
++ * output section and so on. This is exactly what we want.
++ *
++ * Same goes for .text, .bss and .rodata. In case of .rodata, various
++ * .rodata.foo sections are generated by gcc even without -fdata-sections
++ */
++
++#include <asm/page.h>
++#include <asm-generic/vmlinux.lds.h>
++#include <asm/cache.h>
++
++SECTIONS {
++	/* Put magic .text..foo sections */
++	MOD_MAGIC_TEXT
++
++	/* Coalesce sections produced by gcc -ffunction-sections */
++	.text 0 : AT(0) {
++		ALL(.init.text)
++		ALL(.text)
++		ALL(.exit.text)
++	}
++
++	/* Coalesce sections produced by gcc -fdata-sections */
++	.rodata 0 : AT(0) {
++		ALL(.rodata)
++	}
++
++	/* Put magic .data..foo sections */
++	MOD_MAGIC_DATA
++
++	.data 0 : AT(0) {
++		ALL(.data)
++	}
++	.bss 0 : AT(0) {
++		ALL(.sbss)
++		ALL(.bss..page_aligned)
++		ALL(.bss)
++	}
++
++	NOTES
++
++	/DISCARD/ : { ALL(.discard) }
++}
+-- 
+1.9.1
+

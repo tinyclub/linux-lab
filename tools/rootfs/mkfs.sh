@@ -20,6 +20,7 @@ else
   ROOTFS_SIZE=$((${ROOTFS_SIZE} * 2))
 fi
 
+ROOTFS_SIZE=$(( (${ROOTFS_SIZE} / 1024 + 1) * 1024 ))
 echo $ROOTFS_SIZE
 
 dd if=/dev/zero of=${ROOTFS} bs=1024 count=$ROOTFS_SIZE

@@ -1,12 +1,12 @@
 [submodule "qemu"]
 	path = qemu
-	url = https://github.com/qemu/qemu.git
+	url = http://git.qemu.org/git/qemu.git
 [submodule "buildroot"]
 	path = buildroot
-	url = https://github.com/buildroot/buildroot
+	url = https://git.busybox.net/buildroot
 [submodule "linux-stable"]
 	path = linux-stable
-	url = https://github.com/tinyclub/linux-stable.git
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 [submodule "u-boot"]
 	path = u-boot
-	url = https://github.com/u-boot/u-boot.git
+	url = http://git.denx.de/u-boot.git

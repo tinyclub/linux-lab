@@ -11,7 +11,7 @@ CONFIG = $(shell cat $(TOP_DIR)/.config 2>/dev/null)
 ifeq ($(CONFIG),)
   MACH = versatilepb
 else
-  MACH = $(CONFIG)
+  MACH ?= $(CONFIG)
 endif
 
 TOOL_DIR = $(TOP_DIR)/tools/

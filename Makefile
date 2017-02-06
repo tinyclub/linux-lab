@@ -315,30 +315,26 @@ root-build:
 root-filemap:
 	ROOTDIR=$(ROOTDIR) FILEMAP=$(ROOT_FILEMAP) $(ROOT_INSTALL_TOOL)
 
-root-fixup:
+root-rebuild:
+ifeq ($(PBR), 1)
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
+else
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
-
-root-uboot:
-ifeq ($(U),1)
-  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  ifeq ($(U),1)
+    ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
 	make $(BUILDROOT_UROOTFS)
+    endif
   endif
 endif
 
-# New building rootfs
-
-root: root-build root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-build root-fixup root-uboot
-
-# Prebuilt rootfs
-
 ifeq ($(PBR), 0)
-  ROOT = root
+  ROOT = root-build
+else
+  ROOT = rootdir
 endif
 
-root-rebuild:
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
-
-root-patch: $(ROOT) $(ROOT_DIR) root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-rebuild
+root: $(ROOT) root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-rebuild
 
 # Kernel modules
 
@@ -349,7 +345,7 @@ ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules
 endif
 
-kernel-modules-install: $(ROOT) $(ROOT_DIR)
+kernel-modules-install: $(ROOT)
 ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
 endif

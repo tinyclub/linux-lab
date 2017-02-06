@@ -300,16 +300,21 @@ root-menuconfig:
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
 ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
+# Install kernel modules?
+KM ?= 1
+
 root:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
 	$(ROOT_INSTALL_TOOL) $(ROOT_OUTPUT)/target $(ROOT_FILEMAP)
 
+ifeq ($(KM),1)
 	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
 	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
-		make kernel IMAGE=modules; \
+		make kernel KTARGET=modules; \
 	    fi; \
-	    make kernel IMAGE=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
+	    make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
 	fi
+endif
 
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
@@ -327,12 +332,14 @@ root-patch: $(ROOT) $(ROOT_DIR)
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
 	$(ROOT_INSTALL_TOOL) $(ROOTDIR) $(ROOT_FILEMAP)
 
+ifeq ($(KM),1)
 	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
 	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
-		make kernel IMAGE=modules; \
+		make kernel KTARGET=modules; \
 	    fi;				\
-	    make kernel IMAGE=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
+	    make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
 	fi
+endif
 
 	cd $(ROOTDIR)/ && find . | sudo cpio -R $(USER):$(USER) -H newc -o | gzip -9 > ../rootfs.cpio.gz && cd $(TOP_DIR)
 endif
@@ -354,6 +361,9 @@ kernel-defconfig:  $(KERNEL_CHECKOUT)
 	mkdir -p $(KERNEL_OUTPUT)
 	cp $(KERNEL_CONFIG_PATH) $(KERNEL_SRC)/arch/$(ARCH)/configs/
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
+
+kernel-oldconfig:
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) silentoldconfig
 
 kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
@@ -428,8 +438,10 @@ ifneq ($(findstring v2.6.,$(LINUX)),v2.6.)
 endif
 endif
 
+KTARGET ?= $(IMAGE) $(DTBS)
+
 kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
-	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS) $(IMAGE) $(DTBS)
+	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Configure Uboot
 uboot-checkout:
@@ -611,7 +623,7 @@ endif
 
 $(UKIMAGE):
 ifeq ($(PBK),0)
-	make kernel IMAGE=uImage
+	make kernel KTARGET=uImage
 endif
 
 uboot-imgs: $(ROOTFS) $(UKIMAGE)

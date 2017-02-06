@@ -9,13 +9,20 @@ TOP_DIR=$(dirname `readlink -f $0`)
 
 IMAGE=$(< $TOP_DIR/lab-name)
 
+lab_user=`dirname $IMAGE`
+lab_name=`basename $IMAGE`
+
 # Make sure docker is installed
 which docker 2>&1 > /dev/null
-[ $? -eq 1 ] && $(TOP_DIR)/install-docker.sh
+[ $? -eq 1 ] && $TOP_DIR/install-docker.sh
 
-# Build the lab
-sudo docker build -t $IMAGE $TOP_DIR/
-
+# Prefer Pull the lab to Build the lab
+docker search $lab_user | grep -q $lab_name
+if [ $? -eq 0 ]; then
+	docker pull $IMAGE
+else
+	sudo docker build -t $IMAGE $TOP_DIR/
+fi
 # Note: Let docker without sudo
 docker_without_sudo=0
 groups $USER | grep -q docker

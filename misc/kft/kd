@@ -1,0 +1,671 @@
+#!/usr/bin/env python
+#
+# kd (kft-dump):
+# Read data from an kft dump, and format various ways.
+#
+# ToDo:
+# - show function call tree
+#
+
+MAJOR_VERSION = 1
+MINOR_VERSION = 1
+
+import sys
+import string
+import time
+
+UNDEFINED=-1
+
+def usage():
+	print """usage: kd [<options>] <filename>
+
+This program parses the output from a set of kft message lines
+
+Options:
+  -h, --help    Show this usage help.
+  -V, --version Show version information.
+
+<< Cumulative summary mode >>
+  -n <num>	Only show the <num> most time-consuming functions
+  -t <time>     Only show functions with time greater than <time>
+  -f <format>   Show columns indicated by <format> string.  Column IDs
+                are single characters, with the following meaning:
+                  F = Function name
+		  c = Count (number of times function was called)
+		  t = Time (total time spent in this function)
+                  a = Average (average time per function call)
+                  r = Range (minimum and maximum times for a single call)
+                  s = Sub-time (time spent in sub-routines)
+                  l = Local time (time not spent in sub-routines)
+                  m = Max sub-routine (name of sub-routine with max time)
+                  n = Max sub-routine count (# of times max sub-routine
+                      was called)
+		  u = Sub-routine list (this feature is experimental)
+		The default column format string is "Fctal"
+  -l            Show long listing (default format string is "Fctalsmn")
+  -s <col-ID>   Sort by the column with the specified ID.  Can be one
+                of: F,c,t,a,s,l.  Default is to sort by total time, 't'.
+
+<< Call trace mode >>
+  -c            Format data as a call tree.  Sub-routines are displayed in
+		time-sequential order.
+  -f <format>   Show columns indicated by <format> string.  Following are
+		available:
+                  e = entry time
+                  t = duration time
+                  l = local time
+                  p = pid
+  -l            Show long listing (default format string is "etlp")
+  -i            Display traces in "interlaced" mode, with multiple threads
+                intermingled according to actual entry time.  Otherwise, each
+		calltree is shown separately.
+  -r		Show calltree at parse time
+  -d		Specify max function call depth (default is 20)
+  -m		Specify max function name length (default is 40)
+"""
+	sys.exit(1)
+
+class func_node:
+	sort_order = "t"
+	def __init__(self, name, called_at, pid, duration, a1, a2, a3):
+		self.name = name
+		self.callers = [(called_at, pid, duration, a1, a2, a3)]
+		d = int(duration)
+		self.total_time = d
+		self.min = d
+		self.max = d
+		self.subs = []
+		self.sub_time = 0
+		self.sub_list = {}
+
+	def get_name(self):
+		return self.name
+
+	def add_call(self, called_at, pid, duration, a1, a2, a3):
+		self.callers.append((called_at, pid, duration, a1, a2, a3))
+		d = int(duration)
+		self.total_time += d
+		if d < self.min:
+			self.min = d
+		if d > self.max:
+			self.max = d
+
+	def add_sub(self, name, pid, duration, a1, a2, a3):
+		self.subs.append((name, pid, duration, a1, a2, a3))
+		self.sub_list[name] = 1
+		d = int(duration)
+		# if subr has valid duration, add to my sub_time
+		if d!=-1:
+			self.sub_time += int(duration)
+
+	def time(self):
+		return self.total_time
+
+	def call_count(self):
+		return len(self.callers)
+
+	def avg_time(self):
+		count = len(self.callers)
+		if self.total_time==-1:
+			return -1
+		else:
+			return self.total_time/count
+
+	def time_range(self):
+		if self.call_count > 1:
+			return "(%d-%d)" % (self.min, self.max)
+		else:
+			return ""
+
+	def sub_time(self):
+		return self.sub_time
+
+	def local_time(self):
+		if self.total_time!=-1:
+			return self.total_time - self.sub_time
+		else:
+			return -1
+
+	def sub_list(self):
+		return str(self.sub_list.keys())
+
+	def __cmp__(self, other):
+		if self.sort_order == "t":
+			return cmp(self.total_time, other.total_time)
+		if self.sort_order == "F":
+			return cmp(self.name, other.name)
+		if self.sort_order == "c":
+			return cmp(self.call_count(), other.call_count())
+		if self.sort_order == "a":
+			return cmp(self.avg_time(), other.avg_time())
+		if self.sort_order == "s":
+			return cmp(self.sub_time, other.sub_time)
+		if self.sort_order == "l":
+			return cmp(self.local_time(), other.local_time())
+		# huh? no match, sort by total time
+		return cmp(self.total_time, other.total_time)
+
+def max_sub(parent_func):
+	global funcs_for_max_sub
+
+	# stupid kludge for passing funcs here through a global
+	funcs = funcs_for_max_sub
+	max_sub = None
+	max_time = 0
+	for (name, pid, duration, a1, a2, a3) in parent_func.subs:
+		if funcs.has_key(name):
+			sub_func = funcs[name]
+			if not max_sub:
+				max_sub = sub_func
+			else:
+				if sub_func.time() > max_sub.time():
+					max_sub = sub_func
+	if max_sub:
+		return max_sub.get_name()
+	else:
+		return ""
+
+def max_sub_count(parent_func):
+	global funcs_for_max_sub
+
+	# stupid kludge for passing funcs here through a global
+	funcs = funcs_for_max_sub
+	max_sub = None
+	max_time = 0
+	for (name, pid, duration, a1, a2, a3) in parent_func.subs:
+		if funcs.has_key(name):
+			sub_func = funcs[name]
+			if not max_sub:
+				max_sub = sub_func
+			else:
+				if sub_func.time() > max_sub.time():
+					max_sub = sub_func
+	if max_sub:
+		ms_name = max_sub.get_name()
+		ms_count = 0
+		for (name, pid, duration, a1, a2, a3) in parent_func.subs:
+			if funcs.has_key(name):
+				if name == ms_name:
+					ms_count = ms_count + 1
+		return ms_count
+	else:
+		return 0
+
+class display_flags:
+	pass
+
+thread_chars = []
+thread_char_list = ["|","!","@","[","#",";","(","$","/","{","%","]","*",")","&",
+	":","\\","}"]
+next_char = 0
+
+class tree_node:
+	def __init__(self, name, entry, duration, pid, called_at, a1, a2, a3):
+		self.name = name
+		self.entry_time = int(entry)
+		self.pid = pid
+		self.duration = int(duration)
+		if self.duration==-1:
+			self.exit_time = self.entry_time + 9999999
+		else:
+			self.exit_time = self.entry_time + self.duration
+		self.children = []
+		self.parent = None
+		self.local_time = self.duration
+		self.thread_char = None
+		self.depth = UNDEFINED
+		if a1 or a2 or a3:
+			self.args = a1 + " " + a2 + " " + a3
+		else:
+			self.args = ""
+
+	def is_active(self, time):
+		if self.entry_time <= time and time <= self.exit_time:
+			return True
+		else:
+			return False
+
+	def add_child(self, node):
+		self.children.append(node)
+		self.local_time -= node.duration
+		if self.local_time < 0:
+			self.local_time = 0
+
+	def add_parent(self, node):
+		self.parent = node
+
+	def set_thread_char(self):
+		global thread_char_list
+		global next_char
+		global dflags
+
+		# if already set, do nothing
+		if self.thread_char:
+			return
+
+		if not dflags.intermingle_threads:
+			self.thread_char = "|"
+			return
+
+		if self.parent:
+			self.thread_char = self.parent.thread_char
+		else:
+			# take next one from list
+			self.thread_char = thread_char_list[next_char]
+			next_char += 1
+
+			# wrap on overflow
+			if next_char >= len(thread_char_list):
+				next_char = 0
+
+	def get_indents(self):
+		global dflags
+
+		indent = ""
+		arg_indent = ""
+		if dflags.show_times:
+			indent += "%10d " % self.entry_time
+
+		if dflags.show_duration:
+			indent += "%10d " % self.duration
+
+		if dflags.show_local_time:
+			indent += "%10d " % self.local_time
+
+		if dflags.show_pid:
+			indent += "%7s " % self.pid
+
+		# define thread_char for this thread
+		self.set_thread_char()
+
+		# set depth, if unknown
+		if self.depth==UNDEFINED:
+			if self.parent:
+				self.depth = self.parent.depth+1
+			else:
+				self.depth = 0
+
+		# following works for self.depth==0 also
+		indent += ("%s  " % self.thread_char)*self.depth
+
+		# set arg_indent to compensate for length of indent
+		arg_indent = ""
+		if self.args:
+			arg_indent += ("   ")*(dflags.max_depth-self.depth)
+			arg_indent += (" ")*(dflags.max_funclen - len(self.name))
+		else:
+			arg_indent = ""
+
+		return (indent, arg_indent)
+
+	def show_rt_node(self):
+		global dflags
+
+		(indent, arg_indent) = self.get_indents()
+		print "%s%s%s%s" % (indent, self.name, arg_indent, self.args)
+
+	def show_threads(self):
+		global dflags
+		global roots_remaining
+
+		# check for another thread start
+		if dflags.intermingle_threads:
+			if roots_remaining:
+				next_root = roots_remaining[0]
+				while next_root and next_root.entry_time < self.entry_time:
+					del(roots_remaining[0])
+					next_root.set_thread_char()
+					print "----------- %s start --------------" % (next_root.thread_char * 4)
+					next_root.show_threads()
+					print "----------- %s end ----------------" % (next_root.thread_char * 4)
+					if roots_remaining:
+						next_root = roots_remaining[0]
+					else:
+						next_root = None
+
+		(indent, arg_indent) = self.get_indents()
+		print "%s%s%s%s" % (indent, self.name, arg_indent, self.args)
+
+		for child in self.children:
+			child.show_threads()
+
+def show_call_tree_titles():
+	global dflags
+
+	title = ""
+	tline = ""
+	if dflags.show_times:
+		title += " Entry     "
+		tline += "---------- "
+	if dflags.show_duration:
+		title += " Duration  "
+		tline += "---------- "
+	if dflags.show_local_time:
+		title += " Local     "
+		tline += "---------- "
+	if dflags.show_pid:
+		title += "  Pid   "
+		tline += "------- "
+
+	title += " Trace "
+	tline += "---------------------------------"
+	print title
+	print tline
+
+# parse lines from the KFT output
+# each line consists of:
+# entry time, delta, pid, function, caller location
+# pid of -1 is executing in interrupt context
+
+def parse_lines(lines, do_call_tree, do_rt_tree):
+	funcs = {}
+	root_list = []
+	tree_stack = []
+	first_active_node = None
+
+	# tree_stack has a list of functions still in duration scope
+
+	# find start line:
+	in_lines = 0
+	for line in lines:
+		if string.find(line, "--------")==0:
+			in_lines = 1
+			continue
+		if not in_lines:
+			continue
+		tuple = string.split(line)
+		# possible line formats are:
+		# entry, delta, pid, func_name, called_at
+		# entry, no, exit, pid, func_name, called_at
+		# entry, delta, pid, func_name, called_at, framepointer, a1, a2, a3
+		# entry, no, exit, pid, func_name, called_at, framepointer, a1, a2, a3
+		entry = tuple[0]
+
+		offset = 0
+		if string.find(line, "no exit")==-1:
+			delta = tuple[1]
+		else:
+			delta = 0
+			offset = 1
+
+		pid = tuple[2+offset]
+		func_name = tuple[3+offset]
+		called_at = tuple[4+offset]
+		if len(tuple)>5+offset:
+			framepointer = tuple[5+offset]
+			a1 = tuple[6+offset]
+			a2 = tuple[7+offset]
+			a3 = tuple[8+offset]
+		else:
+			framepointer = ""
+			a1 = ""
+			a2 = ""
+			a3 = ""
+
+		# add this call to the function map
+		if funcs.has_key(func_name):
+			funcs[func_name].add_call(called_at, pid, delta, a1, a2, a3)
+		else:
+			funcs[func_name] = func_node(func_name, called_at, pid, delta, a1, a2, a3)
+
+		# add to the caller's function data
+		if string.find(called_at, '+')!=-1:
+			(caller, addr) = string.split(called_at, '+')
+		else:
+			caller = called_at
+		if funcs.has_key(caller):
+			funcs[caller].add_sub(func_name, pid, delta, a1, a2, a3)
+
+		if do_call_tree:
+			# add to tree
+			new_node = tree_node(func_name, entry, delta, pid, called_at, a1, a2, a3)
+
+			# remove any functions now out of duration scope
+			# add them to replacement stack
+			new_tree_stack = []
+			for node in tree_stack:
+				if node.is_active(int(entry)):
+					new_tree_stack.append(node)
+			tree_stack = new_tree_stack
+
+			# find the bottom-most caller from the tree stack
+			parent = None
+			index = len(tree_stack)-1
+			while index>=0:
+				node = tree_stack[index]
+				if caller==node.name:
+					parent = node
+					break
+				index -= 1
+
+			if parent:
+				parent.add_child(new_node)
+				new_node.add_parent(parent)
+			else:
+				# no parent, add to root_list
+				root_list.append(new_node)
+
+			# There's a problem with build-up of nodes
+			# in the tree_stack with infinite duration (no exit seen
+			# in the trace).  They accumulate and slow down the
+			# algorithm.  With a 50,000-line trace log, with about
+			# 1100 such nodes, the parse time goes up to about
+			# 145 seconds.  With the code below, it drops to 8 seconds.
+
+			# find extraneous duplicates and remove them
+			# only remove duplicates with infinite duration
+			# FIXTHIS - the following, although great in theory,
+			# just DOES NOT WORK!
+			"""new_tree_stack = []
+			dup_count = 0
+			max_dups = 10
+			index = len(tree_stack)-1
+			while index>=0:
+				node = tree_stack[index]
+				if node.name==new_node.name and node.duration==-1:
+					dup_count += 1
+					if dup_count >= max_dups:
+						# omit node from list
+						# print "Dropping %s %s" % (self.entry, self.name)
+						break
+				new_tree_stack.append(node)
+				index -= 1
+			tree_stack = new_tree_stack
+			# NOTE: It's faster to append the nodes on the end
+			# and then reverse the list, than to insert the nodes
+			# at the head of the list.
+			tree_stack.reverse()
+			"""
+
+			# add node to tree_stack
+			tree_stack.append(new_node)
+			if do_rt_tree:
+				#print real time
+				new_node.show_rt_node()
+
+	return (funcs, root_list)
+
+class column:
+	def __init__(self, id, name, len, format, data_func):
+		self.id = id
+		self.name = name
+		self.format = format
+		self.tlen = len
+		self.data_func = data_func
+	def show_title(self):
+		format = "%-"+"%ss" % self.tlen
+		print format % self.name,
+	def show_underline(self):
+		print "-"*self.tlen,
+	def show_data(self, arg):
+		print self.format % self.data_func(arg),
+
+def init_columns():
+	global columns
+
+	columns = {}
+	columns['F'] = column('F', "Function", 35, "%-35s", func_node.get_name)
+	columns['c'] = column('c', "Count", 5, "%5d", func_node.call_count)
+	columns['t'] = column('t', "Time", 8, "%8d", func_node.time)
+	columns['a'] = column('a', "Average", 8, "%8d", func_node.avg_time)
+	columns['r'] = column('r', "Range", 12, "%12s", func_node.time_range)
+	columns['s'] = column('s', "Sub-time", 8, "%8d", func_node.sub_time)
+	columns['l'] = column('l', "Local", 8, "%8d", func_node.local_time)
+	columns['m'] = column('m', "Max-sub", 35, "%35s", max_sub)
+	columns['n'] = column('n', "Ms count", 8, "%8d", max_sub_count)
+	columns['u'] = column('u', "Sub list", 20, "%s", func_node.sub_list)
+
+
+def show_func_list(funcs, show_count, show_time, col_list):
+	global columns, funcs_for_max_sub
+
+	funcs_for_max_sub = funcs
+	funclist = funcs.values()
+	funclist.sort()
+	funclist.reverse()
+
+	if not col_list:
+		col_list = "Fctal"
+
+	# filter the col_list to only valid columns
+	col_list_old = col_list
+	col_list = ""
+	for col_id in col_list_old:
+		if not columns.has_key(col_id):
+			print "Invalid column id: %s" % col_id
+		else:
+			col_list = col_list + col_id
+
+	# show titles
+	for col_id in col_list:
+		col = columns[col_id]
+		col.show_title()
+	print
+
+	# show underlines
+	for col_id in col_list:
+		col = columns[col_id]
+		col.show_underline()
+	print
+
+	# show data
+	i = 0
+	for func in funclist:
+		if show_time and func.total_time < show_time:
+			continue
+		if show_count:
+			i = i+1
+			if i>show_count:
+				continue
+		for col_id in col_list:
+			col = columns[col_id]
+			col.show_data(func)
+		print
+
+def show_call_tree(root_list):
+	global dflags
+	global roots_remaining
+
+	show_call_tree_titles()
+	roots_remaining = root_list[:]
+	while roots_remaining:
+		root = roots_remaining[0]
+		del(roots_remaining[0])
+		root.show_threads()
+
+def main():
+	global dflags
+
+	filein = ""
+	show_count = 0
+	show_time = 0
+	col_list = ""
+	sort_order = "t"
+	call_tree = 0
+	interlace = 0
+	rt_tree = 0
+	max_depth = 20
+	max_funclen = 40
+	for arg in sys.argv[1:]:
+		if arg=="-h" or arg=="--help":
+			usage()
+		if arg=="-V" or arg=="--version":
+			print "KFT dump - kd version %s.%s" % (MAJOR_VERSION, MINOR_VERSION)
+			sys.exit(0)
+		elif arg=="-l":
+			col_list = "Fctalsmn"
+		elif arg=="-i":
+			interlace = 1
+		elif arg=="-n":
+			show_count = int(sys.argv[sys.argv.index("-n")+1])
+		elif arg=="-t":
+			show_time = int(sys.argv[sys.argv.index("-t")+1])
+		elif arg=="-f":
+			col_list = sys.argv[sys.argv.index("-f")+1]
+		elif arg=="-s":
+			sort_order = sys.argv[sys.argv.index("-s")+1]
+			if sort_order not in ["F", "c", "t", "a", "s", "l"]:
+				print "Invalid sort order. See usage for help. (Use -h)"
+				sys.exit(1)
+		elif arg=="-c":
+			call_tree = 1
+		elif arg=="-r":
+			rt_tree = 1
+		elif arg=="-d":
+			max_depth = sys.argv[sys.argv.index("-d")+1]
+		elif arg=="-m":
+			max_funclen = sys.argv[sys.argv.index("-m")+1]
+		else:
+			filein = arg
+
+	if not filein:
+		print "No filename specified. See usage for help. (Use -h)"
+		sys.exit(1)
+
+	try:
+		lines = open(filein,"r").readlines()
+	except:
+		print "Problem opening file: %s" % filein
+		sys.exit(1)
+
+	# convert display arguments to calltree mode
+	dflags = display_flags()
+	dflags.intermingle_threads = 0
+	dflags.show_times = 0
+	dflags.show_duration = 0
+	dflags.show_local_time = 0
+	dflags.show_pid = 0
+
+	if call_tree:
+		if col_list == "Fctalsmn":
+			col_list = "etlp"
+
+		if col_list.find("e")!=-1:
+			dflags.show_times = 1
+		if col_list.find("t")!=-1:
+			dflags.show_duration = 1
+		if col_list.find("l")!=-1:
+			dflags.show_local_time = 1
+		if col_list.find("p")!=-1:
+			dflags.show_pid = 1
+
+		dflags.intermingle_threads = interlace
+		dflags.max_depth = max_depth
+		dflags.max_funclen = max_funclen
+
+	if call_tree and rt_tree:
+		show_call_tree_titles()
+
+	(funcs, root_list) = parse_lines(lines, call_tree, rt_tree)
+
+	if rt_tree:
+		sys.exit(0)
+	if call_tree:
+		show_call_tree(root_list)
+	else:
+		init_columns()
+		func_node.sort_order = sort_order
+		show_func_list(funcs, show_count, show_time, col_list)
+
+if __name__ == "__main__":
+	main()

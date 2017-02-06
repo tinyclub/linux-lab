@@ -46,7 +46,7 @@ If the screen size doesn't fit your display, set the scaling mode via the settin
 
 Check supported machines:
 
-    $ make list-short
+    $ make list
     [ pc ]:
           ARCH     = x86
           CPU     ?= i686
@@ -167,6 +167,38 @@ and boot for a specific machine with 'MACH', for example:
     $ make kernel
     $ make boot U=0
 
+To transfer files between Qemu Board and Host, two methods are supported by
+default:
+
+* One is `/dev/nfs`, this need to boot the board with `ROOTDEV=/dev/nfs`
+
+    Boot/Qemu Board:
+
+        $ make boot ROOTDEV=/dev/nfs
+
+    Host:
+
+        $ make env | grep ROOTDIR
+	ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
+
+* Another is use tftp server of host from the Qemu board with the `tftp` command.
+
+    Host:
+
+        $ ifconfig docker0
+        inet addr:172.17.0.3  Bcast:172.17.255.255  Mask:255.255.0.0
+        $ cd tftpboot/
+        $ ls tftpboot
+        kft.patch test.log
+
+    Qemu Board:
+
+        $ ls
+        kft_data.log
+        $ tftp -g -r kft.patch 172.17.0.3
+        $ tftp -p -r test.log -l kft_data.log 172.17.0.3
+
+    Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
 ## More
 

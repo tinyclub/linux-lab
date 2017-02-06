@@ -31,23 +31,23 @@ endif
 QEMU_GIT ?= https://github.com/qemu/qemu.git
 QEMU_SRC ?= $(TOP_DIR)/qemu/
 
-BOOTLOADER_GIT ?= https://github.com/u-boot/u-boot.git
-BOOTLOADER_SRC ?= $(TOP_DIR)/u-boot/
+UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+UBOOT_SRC ?= $(TOP_DIR)/u-boot/
 
 KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_SRC ?= $(TOP_DIR)/linux-stable/
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
-BUILDROOT_GIT ?= https://github.com/buildroot/buildroot
-BUILDROOT_SRC ?= $(TOP_DIR)/buildroot/
+ROOT_GIT ?= https://github.com/buildroot/buildroot
+ROOT_SRC ?= $(TOP_DIR)/buildroot/
 
 QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu/
-BOOTLOADER_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)/
+UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)/
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)/
-BUILDROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)/
+ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)/
 
-CCPATH ?= $(BUILDROOT_OUTPUT)/host/usr/bin/
+CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin/
 TOOLCHAIN = $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 HOST_CPU_THREADS = $(shell grep processor /proc/cpuinfo | wc -l)
@@ -88,7 +88,7 @@ ifeq ($(PBD),0)
 endif
 
 # Uboot image
-UBOOT_BIMAGE = $(BOOTLOADER_OUTPUT)/u-boot
+UBOOT_BIMAGE = $(UBOOT_OUTPUT)/u-boot
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
 else
@@ -118,9 +118,9 @@ endif
 
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
-BUILDROOT_UROOTFS = $(BUILDROOT_OUTPUT)/images/rootfs.cpio.uboot
-BUILDROOT_HROOTFS = $(BUILDROOT_OUTPUT)/images/rootfs.$(FSTYPE)
-BUILDROOT_ROOTFS = $(BUILDROOT_OUTPUT)/images/rootfs.cpio.gz
+BUILDROOT_UROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.uboot
+BUILDROOT_HROOTFS = $(ROOT_OUTPUT)/images/rootfs.$(FSTYPE)
+BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
 PREBUILT_ROOTDIR = $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
 PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/
@@ -136,7 +136,7 @@ ifneq ($(ROOTFS),)
   PREBUILT_ROOTFS = $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
   ROOTDIR = $(PREBUILT_ROOTDIR)/rootfs
 else
-  ROOTDIR = $(BUILDROOT_OUTPUT)/target/
+  ROOTDIR = $(ROOT_OUTPUT)/target/
   PREBUILT_ROOTFS = $(ROOTFS)
 endif
 
@@ -160,7 +160,7 @@ ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
 endif
 
 ifeq ($(PBR),0)
-  ROOTDIR = $(BUILDROOT_OUTPUT)/target/
+  ROOTDIR = $(ROOT_OUTPUT)/target/
   ifeq ($(U),0)
     ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
       ROOTFS = $(BUILDROOT_ROOTFS)
@@ -202,12 +202,10 @@ ifneq ($(MACH),)
 	@echo $(MACH) > $(TOP_DIR)/.config
 endif
 
-list-short:
+list:
 	@make -s mach MACH= FILTER="^ *ARCH |[a-z0-9]* \]:|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
 
-list: mach-list
-
-mach-list:
+list-full:
 	@make mach MACH=
 
 # Please makesure docker, git are installed
@@ -284,23 +282,26 @@ endif
 
 # Configure Buildroot
 root-checkout:
-	cd $(BUILDROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fd && cd $(TOP_DIR)
+	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fd && cd $(TOP_DIR)
 
-root-defconfig: $(MACH_DIR)/buildroot_$(CPU)_defconfig $(ROOT_CHECKOUT)
-	mkdir -p $(BUILDROOT_OUTPUT)
-	cp $(MACH_DIR)/buildroot_$(CPU)_defconfig $(BUILDROOT_SRC)/configs/
-	make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) buildroot_$(CPU)_defconfig
+ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
+ROOT_CONFIG_PATH = $(MACH_DIR)/$(ROOT_CONFIG_FILE)
+
+root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
+	mkdir -p $(ROOT_OUTPUT)
+	cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs/
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(ROOT_CONFIG_FILE)
 
 root-menuconfig:
-	make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) menuconfig
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
 
 # Build Buildroot
-ROOT_INSTALL = $(TOP_DIR)/tools/rootfs/install.sh
+ROOT_INSTALL_TOOL = $(TOP_DIR)/tools/rootfs/install.sh
 ROOT_FILEMAP = $(TOP_DIR)/tools/rootfs/file_map
 
 root:
-	make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) -j$(HOST_CPU_THREADS)
-	$(ROOT_INSTALL) $(BUILDROOT_OUTPUT)/target $(ROOT_FILEMAP)
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
+	$(ROOT_INSTALL_TOOL) $(ROOT_OUTPUT)/target $(ROOT_FILEMAP)
 
 	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
 	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
@@ -309,8 +310,8 @@ root:
 	    make kernel IMAGE=modules_install INSTALL_MOD_PATH=$(ROOTDIR); \
 	fi
 
-	make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC)
-	chown -R $(USER):$(USER) $(BUILDROOT_OUTPUT)/target
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
+	chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
 ifeq ($(U),1)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
 	make $(BUILDROOT_UROOTFS)
@@ -323,7 +324,7 @@ endif
 
 root-patch: $(ROOT) $(ROOT_DIR)
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-	$(ROOT_INSTALL) $(ROOTDIR) $(ROOT_FILEMAP)
+	$(ROOT_INSTALL_TOOL) $(ROOTDIR) $(ROOT_FILEMAP)
 
 	-if [ -f $(KERNEL_OUTPUT)/vmlinux ]; then \
 	    if [ ! -f $(KERNEL_OUTPUT)/modules.order ]; then \
@@ -345,10 +346,13 @@ ifeq ($(KCO),1)
   KERNEL_CHECKOUT = kernel-checkout
 endif
 
-kernel-defconfig: $(MACH_DIR)/linux_$(LINUX)_defconfig $(KERNEL_CHECKOUT)
+KERNEL_CONFIG_FILE = linux_$(LINUX)_defconfig
+KERNEL_CONFIG_PATH = $(MACH_DIR)/$(KERNEL_CONFIG_FILE)
+
+kernel-defconfig:  $(KERNEL_CHECKOUT)
 	mkdir -p $(KERNEL_OUTPUT)
-	cp $(MACH_DIR)/linux_$(LINUX)_defconfig $(KERNEL_SRC)/arch/$(ARCH)/configs/
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) linux_$(LINUX)_defconfig
+	cp $(KERNEL_CONFIG_PATH) $(KERNEL_SRC)/arch/$(ARCH)/configs/
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
 
 kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
@@ -381,6 +385,36 @@ ifeq ($(KP),1)
   KERNEL_PATCH = kernel-patch
 endif
 
+KFD_MACH_BASE=$(TOP_DIR)/machine/$(MACH)/feature/linux/$(LINUX_BASE)/
+KFD_MACH=$(TOP_DIR)/machine/$(MACH)/feature/linux/$(LINUX)/
+KFD_BASE=$(TOP_DIR)/feature/linux/$(LINUX_BASE)/
+KFD=$(TOP_DIR)/feature/linux/$(LINUX)/
+
+ifneq ($(FEATURE),)
+  KF ?= 1
+endif
+kernel-feature:
+ifeq ($(KFD_MACH_BASE),$(wildcard $(KFD_MACH_BASE)))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH_BASE)/$(f).patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH_BASE)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+endif
+ifeq ($(KFD_BASE),$(wildcard $(KFD_BASE)))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_BASE)/$(f).patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_BASE)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+endif
+ifeq ($(KFD_MACH),$(wildcard $(KFD_MACH)))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH)/$(f).patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+endif
+ifeq ($(KFD),$(wildcard $(KFD)))
+	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD)/$(f).patch\;))
+	-$(foreach f,$(FEATURE),$(shell cat $(KFD)/$(f).config >> $(KERNEL_OUTPUT)/.config \;))
+endif
+
+ifeq ($(KF),1)
+  KERNEL_FEATURE = kernel-feature
+endif
+
 IMAGE = $(shell basename $(ORIIMG))
 
 ifeq ($(U),1)
@@ -393,12 +427,12 @@ ifneq ($(findstring v2.6.,$(LINUX)),v2.6.)
 endif
 endif
 
-kernel: $(KERNEL_PATCH)
+kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
 	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS) $(IMAGE) $(DTBS)
 
 # Configure Uboot
 uboot-checkout:
-	cd $(BOOTLOADER_SRC) && git checkout -f $(UBOOT) && git clean -fd && cd $(TOP_DIR)
+	cd $(UBOOT_SRC) && git checkout -f $(UBOOT) && git clean -fd && cd $(TOP_DIR)
 
 BCO ?= 0
 UBOOT ?= master
@@ -424,34 +458,37 @@ ifeq ($(ORIDTB),)
   DTB_ADDR = -
 endif
 
-UBOOT_CONFIG = $(TOP_DIR)/tools/uboot/config.sh
+UBOOT_CONFIG_TOOL = $(TOP_DIR)/tools/uboot/config.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
-	$(UBOOT_CONFIG) $(IP) $(ROUTE) $(ROOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
+	$(UBOOT_CONFIG_TOOL) $(IP) $(ROUTE) $(ROOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
 endif
 ifeq ($(UPD_MACH),$(wildcard $(UPD_MACH)))
 	cp -r $(UPD_MACH)/* $(UPD)/
 endif
 ifeq ($(UPD),$(wildcard $(UPD)))
-	-$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(BOOTLOADER_SRC) -p1 \< $(UPD)/$p\;))
+	-$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
 endif
 
 ifeq ($(UP),1)
   UBOOT_PATCH = uboot-patch
 endif
 
-uboot-defconfig: $(MACH_DIR)/uboot_$(UBOOT)_defconfig $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
-	mkdir -p $(BOOTLOADER_OUTPUT)
-	cp $(MACH_DIR)/uboot_$(UBOOT)_defconfig $(BOOTLOADER_SRC)/configs/
-	make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) ARCH=$(ARCH) uboot_$(UBOOT)_defconfig
+UBOOT_CONFIG_FILE = uboot_$(UBOOT)_defconfig
+UBOOT_CONFIG_PATH = $(MACH_DIR)/$(UBOOT_CONFIG_FILE)
+
+uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
+	mkdir -p $(UBOOT_OUTPUT)
+	cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs/
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UBOOT_CONFIG_FILE)
 
 uboot-menuconfig:
-	make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) ARCH=$(ARCH) menuconfig
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig
 
 # Build Uboot
 uboot:
-	PATH=$(PATH):$(CCPATH) make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
+	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
 # Checkout kernel and Rootfs
 checkout: kernel-checkout
@@ -484,10 +521,10 @@ uboot-save:
 uboot-saveconfig: uconfig-save
 
 uconfig-save:
-	-PATH=$(PATH):$(CCPATH) make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) ARCH=$(ARCH) savedefconfig
-	if [ -f $(BOOTLOADER_OUTPUT)/defconfig ]; \
-	then cp $(BOOTLOADER_OUTPUT)/defconfig $(MACH_DIR)/uboot_$(UBOOT)_defconfig; \
-	else cp $(BOOTLOADER_OUTPUT)/.config $(MACH_DIR)/uboot_$(UBOOT)_defconfig; fi
+	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
+	if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
+	then cp $(UBOOT_OUTPUT)/defconfig $(MACH_DIR)/uboot_$(UBOOT)_defconfig; \
+	else cp $(UBOOT_OUTPUT)/.config $(MACH_DIR)/uboot_$(UBOOT)_defconfig; fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
@@ -501,10 +538,10 @@ kconfig-save:
 root-saveconfig: rconfig-save
 
 rconfig-save:
-	make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
-	if [ -f $(BUILDROOT_OUTPUT)/defconfig ]; \
-	then cp $(BUILDROOT_OUTPUT)/defconfig $(MACH_DIR)/buildroot_$(CPU)_defconfig; \
-	else cp $(BUILDROOT_OUTPUT)/.config $(MACH_DIR)/buildroot_$(CPU)_defconfig; fi
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
+	if [ -f $(ROOT_OUTPUT)/defconfig ]; \
+	then cp $(ROOT_OUTPUT)/defconfig $(MACH_DIR)/buildroot_$(CPU)_defconfig; \
+	else cp $(ROOT_OUTPUT)/.config $(MACH_DIR)/buildroot_$(CPU)_defconfig; fi
 
 
 save: root-save kernel-save rconfig-save kconfig-save
@@ -588,11 +625,11 @@ endif
 UBOOT_IMGS = uboot-imgs
 endif
 
-ROOT_MKFS = $(TOP_DIR)/tools/rootfs/mkfs.sh
+ROOT_MKFS_TOOL = $(TOP_DIR)/tools/rootfs/mkfs.sh
 
 root-fs:
 ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
-	$(ROOT_MKFS) $(ROOTDIR) $(FSTYPE)
+	$(ROOT_MKFS_TOOL) $(ROOTDIR) $(FSTYPE)
 endif
 
 ifeq ($(HD),1)
@@ -613,10 +650,10 @@ emulator-clean:
 	-make -C $(QEMU_OUTPUT) clean
 
 root-clean:
-	-make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) clean
+	-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
 
 uboot-clean:
-	-make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) clean
+	-make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
 
 kernel-clean:
 	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
@@ -627,15 +664,28 @@ emulator-distclean:
 	-make -C $(QEMU_OUTPUT) distclean
 
 root-distclean:
-	-make O=$(BUILDROOT_OUTPUT) -C $(BUILDROOT_SRC) distclean
+	-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
 
 uboot-distclean:
-	-make O=$(BOOTLOADER_OUTPUT) -C $(BOOTLOADER_SRC) distclean
+	-make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
 
 kernel-distclean:
 	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
 
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
+
+# Show the variables 
+VARS = $(shell cat $(TOP_DIR)/machine/$(MACH)/Makefile | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS += FEATURE TFTPBOOT
+VARS += ROOTDIR ROOT_FILEMAP ROOT_SRC ROOT_OUTPUT ROOT_GIT
+VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
+VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
+VARS += IP ROUTE BOOT_CMD
+
+env:
+	@echo [ $(MACH) ]:
+	@echo -n " "
+	-@echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
 
 help:
 	@cat $(TOP_DIR)/README.md

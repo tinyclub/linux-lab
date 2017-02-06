@@ -15,8 +15,8 @@ KFD_CORE=${TOP_DIR}/feature/linux/core/
 
 LINUX_BASE=${LINUX%.*}
 
-KFD_BOARD_BASE=${TOP_DIR}/machine/${BOARD}/feature/linux/${LINUX_BASE}/
-KFD_BOARD=${TOP_DIR}/machine/${BOARD}/feature/linux/${LINUX}/
+KFD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/feature/linux/${LINUX_BASE}/
+KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux/${LINUX}/
 
 KFD_BASE=${TOP_DIR}/feature/linux/${LINUX_BASE}/
 KFD=${TOP_DIR}/feature/linux/${LINUX}/

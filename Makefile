@@ -552,6 +552,10 @@ ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
 endif
 ifeq ($(G),0)
   BOOT_CMD += -nographic
+else
+  ifeq ($(G), 2)
+    BOOT_CMD += -curses
+  endif
 endif
 ifneq ($(DEBUG),)
   BOOT_CMD += -s -S

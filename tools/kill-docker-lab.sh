@@ -3,7 +3,7 @@
 # kill-docker-lab.sh -- rm a docker lab
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)
+TOP_DIR=$(cd $(dirname $0) && pwd)
 
 CONTAINER_ID=$1
 if [ -z "$CONTAINER_ID" ]; then

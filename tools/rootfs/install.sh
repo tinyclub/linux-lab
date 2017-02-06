@@ -3,7 +3,7 @@
 # install.sh -- install extra packages to the rootfs target
 #
 
-TOP_DIR=$(dirname `readlink -f $0`)/../../
+TOP_DIR=$(cd $(dirname $0) && pwd)/../../
 
 # The rootdir
 ROOTDIR=$1

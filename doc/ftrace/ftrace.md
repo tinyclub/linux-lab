@@ -34,7 +34,7 @@ Kernel Hacking --->
 
 In Lab:
 
-    $ cp misc/ftrace/trace.sh prebuilt/root/arm/arm926t/rootfs/root/  # Use ARM as example
+    $ cp system/tools/ftrace/trace.sh prebuilt/root/arm/arm926t/rootfs/root/  # Use ARM as example
 
 In Qemu:
 

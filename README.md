@@ -165,13 +165,21 @@ and boot for a specific board with 'BOARD', for example:
     $ make kernel-checkout
     $ make kernel-defconfig
     $ make kernel
-    $ make root-patch      # Build and install kernel modules
     $ make boot U=0
 
-To transfer files between Qemu Board and Host, two methods are supported by
+To transfer files between Qemu Board and Host, three methods are supported by
 default:
 
-* One is `/dev/nfs`, this need to boot the board with `ROOTDEV=/dev/nfs`
+* The first one is simply put the files with a relative path in `system/`
+
+    $ cd system/
+    $ mkdir system/root/
+    $ touch system/root/new_file
+    $ make root-install
+    $ make root-rebuild
+    $ make boot G=1
+
+* Another is `/dev/nfs`, this need to boot the board with `ROOTDEV=/dev/nfs`
 
     Boot/Qemu Board:
 
@@ -182,7 +190,7 @@ default:
         $ make env | grep ROOTDIR
 	ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
 
-* Another is use tftp server of host from the Qemu board with the `tftp` command.
+* The last one is use tftp server of host from the Qemu board with the `tftp` command.
 
     Host:
 

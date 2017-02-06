@@ -305,15 +305,15 @@ ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 KM ?= 1
 
 ifeq ($(KM), 1)
-  KERNEL_MODULES = kernel-modules
   KERNEL_MODULES_INSTALL = kernel-modules-install
 endif
 
 root-build:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
 
-root-filemap:
-	ROOTDIR=$(ROOTDIR) FILEMAP=$(ROOT_FILEMAP) $(ROOT_INSTALL_TOOL)
+# Install system/ to ROOTDIR
+root-install:
+	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 root-rebuild:
 ifeq ($(PBR), 1)
@@ -334,7 +334,7 @@ else
   ROOT = rootdir
 endif
 
-root: $(ROOT) root-filemap $(KERNEL_MODULES) $(KERNEL_MODULES_INSTALL) root-rebuild
+root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 # Kernel modules
 
@@ -345,7 +345,7 @@ ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules
 endif
 
-kernel-modules-install: $(ROOT)
+kernel-modules-install: kernel-modules $(ROOT)
 ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
 endif

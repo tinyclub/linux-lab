@@ -1,4 +1,0 @@
-misc/if-pre-up.d/config_iface /etc/network/if-pre-up.d/
-misc/ftrace/trace.sh /root/tools/
-misc/kft/kft.conf /root/tools/
-misc/kft/kd /root/tools/

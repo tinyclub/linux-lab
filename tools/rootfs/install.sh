@@ -5,20 +5,17 @@
 
 TOP_DIR=$(cd $(dirname $0) && pwd)/../../
 
+[ -z "$SYSTEM" ] && SYSTEM=$TOP_DIR/system
+echo "LOG: SYSTEM: $SYSTEM"
+
 # The rootdir
 #ROOTDIR=$1
-#FILEMAP=$2
-#echo $ROOTDIR
-#echo $FILEMAP
+[ -z "$ROOTDIR" ] && echo "LOG: target ROOTDIR can not be empty" && exit 1
+echo "LOG: ROOTDIR: $ROOTDIR"
 
-while read local target
+for f in `find $SYSTEM -type f | sed -e "s%$SYSTEM%%g"`
 do
-	mkdir -p $ROOTDIR/$target
-
-	echo "Copying $TOP_DIR/$local to $ROOTDIR/$target"
-
-	cp -r $TOP_DIR/$local $ROOTDIR/$target
-
-	chown $USER:$USER -R $ROOTDIR/$target
-
-done < $FILEMAP
+    dest=`dirname $f`
+    [ ! -d $ROOTDIR/$dest ] && mkdir -p $ROOTDIR/$dest
+    cp $SYSTEM/$f $ROOTDIR/$f
+done

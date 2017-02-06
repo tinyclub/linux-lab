@@ -1,25 +1,25 @@
 #!/bin/bash
 #
-# autokft.sh -- Trace a function automatically
+# trace.sh -- Trace a function automatically
 #
 # Author: falcon <wuzhangjin@gmail.com>
 # Update: 2009-08-06, 2016-10-07
 # Usage:
 #
-#      $ ./autokft.sh [function_name] [script_path] [1|0]
+#      $ ./trace.sh [function_name] [script_path] [1|0]
 #
-# E.x. $ ./autokft.sh sys_write ./ 1
+# E.x. $ ./trace.sh sys_write ./ 1
 
 function error_report
 {
 	echo "Usage: "
-	echo "    $ ./autokft.sh [function_name] [script_path] [1|0]"
+	echo "    $ ./trace.sh [function_name] [script_path] [1|0]"
 	echo ""
 	echo "    Note: Copy `kd` to the same and then try this"
 	echo ""
-	echo "    $ ./autokft.sh sys_write ./    # Trigger it ourselves"
+	echo "    $ ./trace.sh sys_write ./    # Trigger it ourselves"
 	echo "    or"
-	echo "    $ ./autokft.sh sys_write ./ 1  # Trigger by external actions"
+	echo "    $ ./trace.sh sys_write ./ 1  # Trigger by external actions"
 	exit
 }
 

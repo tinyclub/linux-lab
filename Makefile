@@ -575,7 +575,7 @@ endif
 rootdir:
 ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
 	- mkdir -p $(ROOTDIR) && cd $(ROOTDIR)/ && gunzip -kf ../rootfs.cpio.gz \
-		&& sudo cpio -idmv -R $(USER):$(USER) < ../rootfs.cpio && cd $(TOP_DIR)
+		&& sudo cpio -idmv -R $(USER):$(USER) < ../rootfs.cpio >/dev/null 2>&1 && cd $(TOP_DIR)
 	chown $(USER):$(USER) -R $(ROOTDIR)
 endif
 

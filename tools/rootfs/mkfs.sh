@@ -31,7 +31,7 @@ sudo mount ${ROOTFS} ${ROOTDIR}
 
 pushd ${ROOTDIR}
 [ -f ../rootfs.cpio.gz ] && gunzip -kf ../rootfs.cpio.gz
-sudo cpio --quiet -idmv -R ${USER}:${USER} < ../rootfs.cpio 2>&1 >/dev/null
+sudo cpio --quiet -idmv -R ${USER}:${USER} < ../rootfs.cpio >/dev/null 2>&1
 chown ${USER}:${USER} -R ./
 sync
 popd

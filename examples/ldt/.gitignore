@@ -5,3 +5,8 @@ all.txt
 trace
 *.ko
 dio
+*.cmd
+*.mod.c
+*.order
+.tmp_versions/
+*.symvers

@@ -37,4 +37,4 @@ make kernel-oldconfig
 
 make kernel
 
-make boot
+make boot U=0

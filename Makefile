@@ -302,7 +302,8 @@ ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
 ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
 # Install kernel modules?
-KM ?= 1
+ KM ?= 1
+XKM ?= 0
 
 ifeq ($(KM), 1)
   KERNEL_MODULES_INSTALL = kernel-modules-install
@@ -340,24 +341,20 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 MODULES_EN=$(shell grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
+# External kernel driver modules, disable it with XKM=0
+ifeq ($(XKM), 1)
+  M ?= $(TOP_DIR)/examples/ldt/
+endif
+
 kernel-modules:
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules
+	make kernel KTARGET=modules M=$M
 endif
 
 kernel-modules-install: kernel-modules $(ROOT)
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR)
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$M
 endif
-
-# External kernel driver modules
-MODULES ?= $(TOP_DIR)/examples/ldt/
-
-modules:
-	make kernel-modules M=$(MODULES)
-
-modules-install:
-	make kernel-modules-install M=$(MODULES)
 
 # Configure Kernel
 kernel-checkout:

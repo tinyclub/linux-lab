@@ -113,9 +113,10 @@ Build them:
     $ make kernel-modules-install
     $ make root-rebuild && make boot
 
-    $ make modules MODULES=/path/to/kernel/modules  # Extern kernel modules, By default, examples/ldt/
-    $ make modules-install
-    $ make root-rebuild && make boot
+    $ make kernel-modules M=/path/to/kernel/modules XKM=1 # External kernel modules, By default, examples/ldt/
+
+    $ make kernel-modules XKM=0  # No external kernel modules
+    $ make kernel-modules KM=0   # No kernel modules
 
 Boot it:
 

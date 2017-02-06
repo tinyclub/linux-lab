@@ -15,17 +15,16 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux
 
 ## Download the lab
 
-    $ git clone https://github.com/tinyclub/linux-lab.git
-    $ cd /linux-lab/
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## Build the Lab
+    $ tools/docker/build # Build ourselves
+    or
+    $ tools/docker/pull # Pull from docker hub
 
-    $ sudo tools/install-docker-lab.sh # Install docker and pull the lab
-
-    $ tools/update-lab-uid.sh
-    $ tools/update-lab-identify.sh  # Disable VNC login password
-    $ tools/run-docker-lab.sh
-    $ tools/open-docker-lab.sh
+    $ tools/docker/uid
+    $ tools/docker/identify
+    $ tools/docker/run
 
 For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
 

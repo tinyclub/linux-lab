@@ -238,7 +238,7 @@ ifneq ($(QCO),0)
 endif
 endif
 emulator-checkout:
-	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fd && cd $(TOP_DIR)
+	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fdX && cd $(TOP_DIR)
 
 QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
 
@@ -283,7 +283,7 @@ endif
 
 # Configure Buildroot
 root-checkout:
-	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fd && cd $(TOP_DIR)
+	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdX && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
 ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
@@ -346,7 +346,7 @@ endif
 
 # Configure Kernel
 kernel-checkout:
-	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fd && cd $(TOP_DIR)
+	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fdX && cd $(TOP_DIR)
 
 KCO ?= 0
 LINUX ?= master
@@ -409,7 +409,7 @@ kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
 
 # Configure Uboot
 uboot-checkout:
-	cd $(UBOOT_SRC) && git checkout -f $(UBOOT) && git clean -fd && cd $(TOP_DIR)
+	cd $(UBOOT_SRC) && git checkout -f $(UBOOT) && git clean -fdX && cd $(TOP_DIR)
 
 BCO ?= 0
 UBOOT ?= master

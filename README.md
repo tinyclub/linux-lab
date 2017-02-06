@@ -7,7 +7,7 @@ A full Chinese document is added: [Using Linux Lab to do embedded linux developm
 
 For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab).
 
-![Docker Qemu Linux Lab](doc/docker-qemu-linux-lab.jpg)
+![Docker Qemu Linux Lab](doc/docker.jpg)
 
 ## Homepage
 

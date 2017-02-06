@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FEATURE=$1
+FEATURE="$1"
 LINUX=$2
 MACH=$3
 
@@ -15,11 +15,16 @@ function usage
 [ -z "$MACH" ] && usage
 [ -z "$LINUX" ] && usage
 
-FEATURE_ENV=${TOP_DIR}/feature/linux/${LINUX}/${FEATURE}/env.${MACH}
+for feature in $FEATURE
+do
+	FEATURE_ENV=${TOP_DIR}/feature/core/${feature}/env.${MACH}
+	[ -f $FEATURE_ENV ] && source $FEATURE_ENV
 
-[ -f $FEATURE_ENV ] && source $FEATURE_ENV
+	FEATURE_ENV=${TOP_DIR}/feature/linux/${LINUX}/${feature}/env.${MACH}
+	[ -f $FEATURE_ENV ] && source $FEATURE_ENV
+done
 
-export MACH=$MACH LINUX=$LINUX FEATURE=$FEATURE GCC=$GCC
+export MACH=$MACH LINUX=$LINUX FEATURE="$FEATURE" GCC=$GCC
 
 make gcc
 

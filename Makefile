@@ -356,10 +356,11 @@ endif
 
 KERNEL_CONFIG_FILE = linux_$(LINUX)_defconfig
 KERNEL_CONFIG_PATH = $(MACH_DIR)/$(KERNEL_CONFIG_FILE)
+KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT)
 	mkdir -p $(KERNEL_OUTPUT)
-	cp $(KERNEL_CONFIG_PATH) $(KERNEL_SRC)/arch/$(ARCH)/configs/
+	cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
 
 kernel-oldconfig:
@@ -371,61 +372,20 @@ kernel-menuconfig:
 
 # Build Kernel
 
-LINUX_BASE=$(shell bash -c 'V=${LINUX}; echo $${V%.*}')
-
-KPD_MACH_BASE=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX_BASE)/
-KPD_MACH=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX)/
-KPD_BASE=$(TOP_DIR)/machine/$(MACH)/patch/linux/$(LINUX_BASE)/
-KPD=$(TOP_DIR)/patch/linux/$(LINUX)/
+KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
 
 KP ?= 1
 kernel-patch:
-ifeq ($(KPD_MACH_BASE),$(wildcard $(KPD_MACH_BASE)))
-	-$(foreach p,$(shell ls $(KPD_MACH_BASE)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_MACH_BASE)/$p\;))
-endif
-ifeq ($(KPD_MACH),$(wildcard $(KPD_MACH)))
-	-$(foreach p,$(shell ls $(KPD_MACH)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_MACH)/$p\;))
-endif
-ifeq ($(KPD_BASE),$(wildcard $(KPD_BASE)))
-	-$(foreach p,$(shell ls $(KPD_BASE)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD_BASE)/$p\;))
-endif
-ifeq ($(KPD),$(wildcard $(KPD)))
-	-$(foreach p,$(shell ls $(KPD)),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KPD)/$p\;))
-endif
+	$(KERNEL_PATCH_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
 
 ifeq ($(KP),1)
   KERNEL_PATCH = kernel-patch
 endif
 
-KFD_MACH_BASE=$(TOP_DIR)/machine/$(MACH)/feature/linux/$(LINUX_BASE)/
-KFD_MACH=$(TOP_DIR)/machine/$(MACH)/feature/linux/$(LINUX)/
-KFD_BASE=$(TOP_DIR)/feature/linux/$(LINUX_BASE)/
-KFD=$(TOP_DIR)/feature/linux/$(LINUX)/
+KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
-ifneq ($(FEATURE),)
-  KF ?= 1
-endif
 kernel-feature:
-ifeq ($(KFD_MACH_BASE),$(wildcard $(KFD_MACH_BASE)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH_BASE)/$(f)/patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH_BASE)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
-endif
-ifeq ($(KFD_BASE),$(wildcard $(KFD_BASE)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_BASE)/$(f)/patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_BASE)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
-endif
-ifeq ($(KFD_MACH),$(wildcard $(KFD_MACH)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD_MACH)/$(f)/patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD_MACH)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
-endif
-ifeq ($(KFD),$(wildcard $(KFD)))
-	-$(foreach f,$(FEATURE),$(shell echo patch -r- -N -l -d $(KERNEL_SRC) -p1 \< $(KFD)/$(f)/patch\;))
-	-$(foreach f,$(FEATURE),$(shell cat $(KFD)/$(f)/config >> $(KERNEL_OUTPUT)/.config \;))
-endif
-
-ifeq ($(KF),1)
-  KERNEL_FEATURE = kernel-feature
-endif
+	$(KERNEL_FEATURE_TOOL) $(MACH) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
 IMAGE = $(shell basename $(ORIIMG))
 

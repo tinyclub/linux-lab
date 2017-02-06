@@ -568,7 +568,12 @@ else
     BOOT_CMD += -curses
   endif
 endif
-ifneq ($(DEBUG),)
+
+D ?= 0
+ifeq ($(D),1)
+  DEBUG = 1
+endif
+ifeq ($(DEBUG),1)
   BOOT_CMD += -s -S
 endif
 

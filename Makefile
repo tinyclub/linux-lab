@@ -590,14 +590,20 @@ ifeq ($(PBK),0)
 	make kernel KTARGET=uImage
 endif
 
-uboot-imgs: $(ROOTFS) $(UKIMAGE)
+U_ROOT_IMAGE=-
+U_DTB_IMAGE=-
+U_KERNEL_IMAGE=$(UKIMAGE)
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-	-cp $(ROOTFS) $(TFTPBOOT)/ramdisk
+  U_ROOT_IMAGE=$(ROOTFS)
 endif
 ifeq ($(DTB),$(wildcard $(DTB)))
-	-cp $(DTB) $(TFTPBOOT)/dtb
+  U_DTB_IMAGE=$(DTB)
 endif
-	-cp $(UKIMAGE) $(TFTPBOOT)/uImage
+
+UBOOT_IMAGES_TOOL=$(TOOL_DIR)/uboot/images.sh
+
+uboot-imgs: $(ROOTFS) $(UKIMAGE)
+	$(UBOOT_IMAGES_TOOL) $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE) $(TFTPBOOT)
 
 UBOOT_IMGS = uboot-imgs
 endif

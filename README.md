@@ -11,7 +11,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux
 
 ## Homepage
 
-    See: <http://tinylab.org/linux-lab/>
+See: <http://tinylab.org/linux-lab/>
 
 ## Download the lab
 

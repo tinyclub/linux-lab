@@ -4,7 +4,7 @@
   <td style="text-align:center;">
     <img src='/images/sponsor/weixin-pay-admin-3.69.jpg' width='110px' />
   </td>
-  <td style="text-align:center;color:#0c0"><br/><br/><b>微信扫码<br/><br/>打赏一下</b>
+  <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>微信扫码，打赏一下！
   </td>
   <td style="text-align:center;">
     <img src='/images/sponsor/weixin-pay-admin-9.68.jpg' width='110px' />

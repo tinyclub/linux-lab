@@ -9,6 +9,11 @@
   description: 轻松录制，即时分享
   group: tools
 
+- title: 终端秀
+  permalink: http://showterm.io
+  description: 轻松录制，即时分享
+  group: tools
+
 - title: 在线代码编译器
   permalink: http://ideone.com
   description: Learn how to code

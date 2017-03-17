@@ -3,3 +3,23 @@
   permalink: /qrcode/
   description: 方便手机快速共享资源
   group: tools
+
+- title: 桌面秀
+  permalink: https://showdesk.github.io
+  description: 轻松录制，即时分享
+  group: tools
+
+- title: 在线代码编译器
+  permalink: http://ideone.com
+  description: Learn how to code
+  group: tools
+
+- title: 在线 Python 混淆
+  permalink: http://pyobf.herokuapp.com/
+  description: 方便对 Python 代码做简单的加密处理
+  group: tools
+
+- title: 在线 JS 混淆
+  permalink: https://js.willin.vip/ 
+  description: 方便对 Javascript 代码做简单的加密处理
+  group: tools

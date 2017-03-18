@@ -24,7 +24,10 @@ tags:
 
 有了这些脚本，学生就可以很方便地在当前开发主机上实验，从而免去了不必要的重启，也避免了烧坏自己主机的风险。
 
-这里为在线演示地址：<http://showterm.io/547ccaae139df14c3deec>。
+这里为在线演示地址：
+
+* 命令行：<http://showterm.io/547ccaae139df14c3deec>。
+* 视频：<https://showdesk.github.io/1f06d49dfff081e9b54792436590d9f9/>。
 
 ## 实验代码
 
@@ -112,7 +115,9 @@ tags:
 
 ![image][4]
 
+## 演示视频
 
+<iframe src="http://showdesk.github.io/1f06d49dfff081e9b54792436590d9f9/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
 
  [1]: http://www.cs.usfca.edu/~cruse/cs630f06/

@@ -62,7 +62,7 @@ tags:
     or
     $ tools/docker/build          # Build from source code
 
-    $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器
+    $ tools/docker/run            # 加载镜像，拉起一个 CS630 Qemu Lab 容器
 
 ### 实验
 

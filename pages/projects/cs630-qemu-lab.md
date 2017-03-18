@@ -26,7 +26,7 @@ tags:
 
 这里为在线演示地址：<http://showterm.io/547ccaae139df14c3deec>。
 
-## 代码仓库
+## 实验代码
 
   * 仓库地址
 
@@ -46,6 +46,31 @@ tags:
         $ make update
     
     上述命令将从 CS630 课程网站 [CS 630: Advanced Microcomputer Programming (Fall 2006)][1] 下载最新的源码到 `res/`。
+
+## 实验环境
+
+[Cloud Lab](http://tinylab.org/how-to-deploy-cloud-labs/) 是泰晓科技开发的一套独立的虚拟实验环境，可快速构建和远程访问，方便企业和学校教学。
+
+### 下载
+
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab && tools/docker/choose cs630-qemu-lab
+
+### 安装
+
+    $ tools/docker/pull           # Pull from docker hub
+    or
+    $ tools/docker/build          # Build from source code
+
+    $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器
+
+### 实验
+
+执行 `tools/docker/vnc` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `CS630 Qemu Lab` 控制台并执行：
+
+    $ make help
+    $ ./configure src/rtc.s
+    $ make boot
 
 ## 通过 Qemu 学 CS630
 

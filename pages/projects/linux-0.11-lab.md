@@ -18,7 +18,9 @@ tags:
 该项目致力于快速构建一个 Linux 0.11 实验环境，可配合[《Linux内核完全注释》][1] 一书使用。
 
   * 使用文档：[README.md][2]
-  * 在线演示：<http://showterm.io/ffb67385a07fd3fcec182>
+  * 在线演示
+      * 命令行：<http://showterm.io/ffb67385a07fd3fcec182>
+      * 视频：<http://showdesk.github.io/50bc346f53a19b4d1f813b428b0b7b49>
   * 代码仓库：[https://github.com/tinyclub/linux-0.11-lab.git][3]
   * 基本特性： 
       * 包含所有可用的映像文件: ramfs/floppy/hard disk image。
@@ -101,11 +103,13 @@ See:
 
 ![Linux 0.11 Calltree][6]
 
-### 演示
+### 演示图片
 
 ![Linux 0.11 Lab][7]
 
+### 视频演示
 
+<iframe src="http://showdesk.github.io/50bc346f53a19b4d1f813b428b0b7b49/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
  [1]: http://www.oldlinux.org/download/clk011c-3.0.pdf
  [2]: https://github.com/tinyclub/linux-0.11-lab/blob/master/README.md

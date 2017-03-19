@@ -22,7 +22,6 @@ See: <http://tinylab.org/linux-lab/>
     or
     $ tools/docker/pull # Pull from docker hub
 
-    $ tools/docker/identify
     $ tools/docker/run
 
 For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:

@@ -1,16 +1,3 @@
-<!-- Duoshuo Share Button -->
-<div class="ds-share flat" style="float: right;" data-thread-key="{{page.url}}" data-title="{{page.title | remove:' ' }}" data-images="" data-content="{{page.content | replace:':','：', | strip_html | truncate:300 | xml_escape}}" data-url="{{ site.production_url | append: page.url }}" >
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
-  </div>
-</div>
-
 <!-- ChangeYan Comment BEGIN -->
 <!--PC和WAP自适应版-->
 <div id="SOHUCS" sid="{{page.url}}" ></div>

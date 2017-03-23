@@ -145,8 +145,8 @@
     {% assign p_ctg_list = p_ctg_list | downcase | split:"," %}
 
     {% for category in site.categories %}
-      {% assign name = category[0] %}
-      {% if p_ctg_list contains name  %}
+      {% assign name = category[0] | downcase %}
+      {% if p_ctg_list contains name %}
         {% continue %}
       {% endif %}
 

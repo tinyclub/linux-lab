@@ -68,7 +68,9 @@ JB :
     theme: prettify
 
   comments :
-    provider : duoshuo
+    provider : changeyan
+    changyan:
+      short_name: tinylab
     duoshuo :
       short_name : tinylab
     disqus :

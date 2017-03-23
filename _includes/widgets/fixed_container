@@ -22,8 +22,6 @@
   {% else %}
     {% include widgets/sidebars %}
   {% endif %}
-
-  {% include widgets/recent_comments %}
 </div>
 <script type="text/javascript">
 $(document).ready(function() {

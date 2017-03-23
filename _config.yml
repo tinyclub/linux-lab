@@ -70,7 +70,8 @@ JB :
   comments :
     provider : changeyan
     changyan:
-      short_name: tinylab
+      appid: cysUrhPh4
+      conf: prod_fbd8fc8ac3f8dd0f7d1997acd736ef58
     duoshuo :
       short_name : tinylab
     disqus :

@@ -27,7 +27,7 @@ tags:
 这里为在线演示地址：
 
 * 命令行：<http://showterm.io/547ccaae139df14c3deec>。
-* 视频：<https://showdesk.io/1f06d49dfff081e9b54792436590d9f9/>。
+* 视频：<http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/>。
 
 ## 实验代码
 

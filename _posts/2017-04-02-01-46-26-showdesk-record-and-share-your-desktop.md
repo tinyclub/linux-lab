@@ -2,10 +2,10 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "桌面秀（Showdesk.io）— 轻松录制，即时分享"
-tagline: "人类因知识而进步，因分享而伟大，桌面秀（Showdesk.io）让进步来得更猛烈些。"
+tagline: "人类因知识而进步，因分享而伟大，桌面秀（Showdesk.io）让进步来得更猛烈些吧"
 group: original
 permalink: /showdesk-record-and-share-your-desktop/
-description: "桌面秀（showdesk.io）基于开源项目 noVNC 和 pyvnc2swf 编写了一套桌面会话录制和播放工具，录制的视频允许通过网页直接播放。"
+description: "桌面秀（showdesk.io）基于开源项目 noVNC 和 pyvnc2swf 编写了一套桌面会话录制和播放工具，录制的视频允许通过网页播放器直接播放，也可以嵌入到其他网站中。"
 category:
   - Showdesk.io
   - 效率工具

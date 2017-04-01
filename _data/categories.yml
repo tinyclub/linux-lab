@@ -326,6 +326,7 @@
         - name: Gitbook
         - name: FlameGraph
         - name: Oscilloscope
+        - name: Showdesk.io
 
 - name: 行业观察
   categories:

@@ -44,9 +44,9 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 4. 视频数据库
     * [Vrecordings][9]：暂时未启用独立的数据存储服务，而是直接使用 Github 仓库来存放录制的视频，由于短时间的视频文件大小可控（大约1M/1分钟），而且是拆分成片的，所以对于 Git 来说也是友好的，而且也方便通过 Pull Request 进行视频内容审核。由于 Vplayer 可以播放来自公网任何位置的视频，所以该数据库可以灵活存放。甚至可以直接存放在博客作者们自己的服务器上，又或者直接存放在开源项目的源码目录下。
 
-## 录制、回放、分享
+## 录制与回放
 
-接下来介绍如何通过 Showdesk.io 完成桌面操作视频的录制、回放和分享。
+接下来介绍如何通过 Showdesk.io 完成桌面操作会话视频的录制、回放、编辑和分享。
 
 首先下载和安装 Showdesk.io：
 
@@ -65,7 +65,52 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 * `sessions/2017-03-11-14-16-15-linux-lab.session.md`
 * `_posts/2017-03-11-14-16-15-linux-lab.post.md`
 
-之后，即可把上面三类文件提交到服务器上进行分享，可先提交到自己 Fork 的 Git 仓库，再发 PR。需要注意的是，为了方便维护，数据部分需要提交到 `recordings/default` 或者确实有必要，可以在 `recordings` 下再增加一个子的数据仓库。而 `Sessions` 和 `_posts` 需要统一提交到 Showdesk.io 下。
+## 编辑和分享
+
+之后，可以对视频信息进行简单的编辑。
+
+录制的视频默认存放在 `recordings/default/` 目录下，流媒体化后的格式为 `.slice*`，建议分享时选择该格式，可以节省流量并提高加载体验。如果录制的视频不大，也可以用 `.zb64`，这个是单一文件，也有其便利性。
+
+为了更好地展示视频信息，建议做一定编辑，可以打开 `.zb64` 文件进行编辑，配置好 `Title`，`Author`，`Category`，`Tags` 和 `Description`：
+
+    var VNC_frame_category = 'Linux 0.11';
+    var VNC_frame_title = 'Linux 0.11 Lab Usage';
+    var VNC_frame_author = 'Wu Zhangjin <wuzhangjin@gmail.com';
+    var VNC_frame_tags = 'Linux 0.11, OS';
+    var VNC_frame_desc = 'Do Linux 0.11 operating system experiments with Linux 0.11 Lab.';
+
+另外，默认生成的文件名为创建时间，建议命名为更有意义的文件名，例如：
+
+    $ ls recordings/default/2017-04-02/20170402062749.novnc*
+    $ tools/rename.sh 20170402062749.novnc test-showdesk
+
+编辑完成后需要执行如下命令进行更新：
+
+    $ rm recordings/default/2017-04-02/test-showdesk.slice*
+    $ tools/publish.sh
+
+编辑完成后，即可把上面三类文件提交到服务器上进行分享，可先提交到自己 Fork 的 Git 仓库，再发 PR。
+
+首先 Fork 它们：
+
+* 视频发布页：[Fork Showdesk.io][12]
+* 视频数据库：[Fork Vrecordings][13]
+
+上传视频数据部分，再通过 Github 发 PR：
+
+    $ cd recordings/default/
+    $ git add 2017-03-11/linux-lab.slice*
+    $ git commit -s
+    $ git remote add USER https://github.com/USER/vrecordings
+    $ git push USER master
+
+上传视频会话和展示页面，再通过 Github 发 PR（注意：这里是 gh-pages 分支）：
+
+    $ git add sessions/*linux-lab*
+    $ git add _post/*linux-lab*
+    $ git commit -s
+    $ git remote add USER https://github.com/USER/showdesk.io
+    $ git push USER gh-pages
 
 ## 内嵌到其他网站
 
@@ -74,29 +119,31 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
     $ grep permalink sessions/2017-03-11-14-16-15-linux-lab.session.md
     permalink: /7977891c1d24e38dffbea1b8550ffbb8/
 
-接着直接嵌入如下代码即可：
+接着直接嵌入如下代码到目标网页即可：
 
     <iframe src="http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
 如果要自适应视频大小，可以使用 [iframeresizer][5]，在网页中加入如下代码即可：
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="https://raw.githubusercontent.com/davidjbradshaw/iframe-resizer/master/js/iframeResizer.min.js"></script>
     <script>
-    function resize_iframe() {
+      function resize_iframe() {
         iFrameResize({
-                log: false,
-                autoResize: true,
-                interval: -1,
-                minHeight: 300,
-                heightCalculationMethod: "lowestElement",
+          log: false,
+          autoResize: true,
+          interval: -1,
+          minHeight: 300,
+          heightCalculationMethod: "lowestElement",
         });
-    }
+      }
 
-    $(document).ready(function () {
-      resize_iframe();
-      $('iframe').iframeAutoHeight({debug: false});
-    });
+      $(document).ready(function () {
+        resize_iframe();
+      });
     </script>
+
+也可自行下载上述 [jquery][14] 和 [iframeResizer.min.js][15] 到网页所在服务器，并引用服务器的地址。
 
 ## 演示效果
 
@@ -114,3 +161,7 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 [9]: https://github.com/tinyclub/vrecordings
 [10]: https://github.com/davidjbradshaw/iframe-resizer
 [11]: https://github.com/novnc/noVNC
+[12]: https://github.com/tinyclub/showdesk.io#fork-destination-box
+[13]: https://github.com/tinyclub/vrecordings#fork-destination-box
+[14]: https://code.jquery.com/jquery-1.10.1.min.js
+[15]: https://raw.githubusercontent.com/davidjbradshaw/iframe-resizer/master/js/iframeResizer.min.js

@@ -104,10 +104,11 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
     $ git remote add USER https://github.com/USER/vrecordings
     $ git push USER master
 
-上传视频会话和展示页面，再通过 Github 发 PR（注意：这里是 gh-pages 分支）：
+上传视频会话（sessions）和展示（_posts）页面以及视频列表（records.js），再通过 Github 发 PR（注意：这里是 gh-pages 分支）：
 
     $ git add sessions/*linux-lab*
-    $ git add _post/*linux-lab*
+    $ git add _posts/*linux-lab*
+    $ git add recordings/records.js
     $ git commit -s
     $ git remote add USER https://github.com/USER/showdesk.io
     $ git push USER gh-pages

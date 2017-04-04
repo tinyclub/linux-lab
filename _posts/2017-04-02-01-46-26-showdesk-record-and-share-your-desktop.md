@@ -61,7 +61,7 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 
 录制完成后，会自动在 `recordings/default/` 下生成视频并生成会话（用于内嵌到其他页面）和发布页面（用于集中展示），例如：
 
-* `recordings/default/2017-03-11/linux-lab.slice*`
+* `recordings/default/2017-03-11/linux-lab.nvs*`
 * `sessions/2017-03-11-14-16-15-linux-lab.session.md`
 * `_posts/2017-03-11-14-16-15-linux-lab.post.md`
 
@@ -69,9 +69,9 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 
 之后，可以对视频信息进行简单的编辑。
 
-录制的视频默认存放在 `recordings/default/` 目录下，流媒体化后的格式为 `.slice*`，建议分享时选择该格式，可以节省流量并提高加载体验。如果录制的视频不大，也可以用 `.zb64`，这个是单一文件，也有其便利性。
+录制的视频默认存放在 `recordings/default/` 目录下，流媒体化后的格式为 `.nvs*`，建议分享时选择该格式，可以节省流量并提高加载体验。如果录制的视频不大，也可以用 `.nvz`，这个是单一文件，也有其便利性。
 
-为了更好地展示视频信息，建议做一定编辑，可以打开 `.zb64` 文件进行编辑，配置好 `Title`，`Author`，`Category`，`Tags` 和 `Description`：
+为了更好地展示视频信息，建议做一定编辑，可以打开 `.nvz` 文件进行编辑，配置好 `Title`，`Author`，`Category`，`Tags` 和 `Description`：
 
     var VNC_frame_category = 'Linux 0.11';
     var VNC_frame_title = 'Linux 0.11 Lab Usage';
@@ -86,7 +86,7 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 
 编辑完成后需要执行如下命令进行更新：
 
-    $ rm recordings/default/2017-04-02/test-showdesk.slice*
+    $ rm recordings/default/2017-04-02/test-showdesk.nvs*
     $ tools/publish.sh
 
 编辑完成后，即可把上面三类文件提交到服务器上进行分享，可先提交到自己 Fork 的 Git 仓库，再发 PR。
@@ -99,7 +99,7 @@ Showdesk.io 本身即是一套工具集，也是一个集合发布的界面。�
 上传视频数据部分，再通过 Github 发 PR：
 
     $ cd recordings/default/
-    $ git add 2017-03-11/linux-lab.slice*
+    $ git add 2017-03-11/linux-lab.nvs*
     $ git commit -s
     $ git remote add USER https://github.com/USER/vrecordings
     $ git push USER master

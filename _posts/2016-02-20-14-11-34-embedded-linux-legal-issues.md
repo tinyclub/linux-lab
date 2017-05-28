@@ -17,7 +17,7 @@ tags:
   - EXPORT_SYMBOL_GPL
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Legal_Issues "http://eLinux.org/Legal_Issues")
 > 翻译：[@zxqhbd](https://github.com/zxqhbd)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

@@ -13,7 +13,7 @@ tags:
   - 术语
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文: [eLinux.org](http://eLinux.org/Glossary "http://eLinux.org/Glossary")
 > 翻译：[@mintisan](https://github.com/mintisan)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

@@ -22,7 +22,7 @@ tags:
 
 该项目致力于翻译 [Embedded Linux Wiki][1] 为中文版。
 
-  * 在线阅读：<http://tinylab.gitbooks.io/elinux>
+  * 在线阅读：<https://gitbook.com/book/tinylab/elinux>
   * 代码仓库：[https://github.com/tinyclub/elinux.git][4]
   * 项目首页：[elinux](/elinux/)
 
@@ -80,6 +80,6 @@ tags:
  [10]: /start-posting-with-markdown/
  [11]: http://www.gitbook.com
  [12]: /elinux-org-translation-project/
- [13]: http://tinylab.gitbooks.io/linux-doc/
- [14]: http://tinylab.gitbooks.io/cbook/
- [15]: http://tinylab.gitbooks.io/shellbook/
+ [13]: https://gitbook.com/book/tinylab/linux-doc/
+ [14]: https://gitbook.com/book/tinylab/cbook/
+ [15]: https://gitbook.com/book/tinylab/shellbook/

@@ -18,7 +18,7 @@ tags:
   - 内存预留
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Memory_Management "http://eLinux.org/Memory_Management")
 > 翻译：[@zipper1956](https://github.com/zipper)
 > 校订：[@wengpingbo](https://github.com/wengpingbo), [@lzufalcon](https://github.com/lzufalcon)

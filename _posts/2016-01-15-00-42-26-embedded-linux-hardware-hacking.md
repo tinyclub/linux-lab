@@ -16,7 +16,7 @@ tags:
   - 硬件工具
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Hardware_Hacking "http://eLinux.org/Hardware_Hacking")
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 

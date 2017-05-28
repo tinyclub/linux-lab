@@ -16,7 +16,7 @@ tags:
   - CPUSets 
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Resource_Management)
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 

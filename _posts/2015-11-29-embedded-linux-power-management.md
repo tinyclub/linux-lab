@@ -18,7 +18,7 @@ tags:
   - DVFS
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://elinux.org/Power_Management)
 > 翻译：[@zhongbin](https://github.com/qkhhyga)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

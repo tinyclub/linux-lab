@@ -20,7 +20,7 @@ tags:
   - 扁平设备树
 ---
 
-> 书籍：[嵌入式 Linux 知识库](http://tinylab.gitbooks.io/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
 > 原文：[eLinux.org](http://elinux.org/Boot_Time.md)
 > 翻译：[@sdfd](https://github.com/sdfd)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

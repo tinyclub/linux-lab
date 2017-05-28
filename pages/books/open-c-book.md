@@ -86,7 +86,7 @@ tags:
 
 自由书籍将会维护在 TinyLab 的[项目仓库][14]中。项目相关信息如下：
 
-  * 在线阅读：<http://tinylab.gitbooks.io/cbook>
+  * 在线阅读：<https://gitbook.com/book/tinylab/cbook>
   * 代码仓库：[https://github.com/tinyclub/open-c-book.git][14]
   * 项目首页：[Open-C-Book](/open-c-book/)
 

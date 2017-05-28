@@ -21,7 +21,7 @@ tags:
 
 该项目致力于翻译 [Linux Documentation][1] 为中文版。
 
-  * 在线阅读：<http://tinylab.gitbooks.io/linux-doc>
+  * 在线阅读：<https://gitbook.com/book/tinylab/linux-doc>
   * 代码仓库：[https://github.com/tinyclub/linux-doc.git][2]
   * 项目首页：[Linux-Doc](/linux-doc/)
 
@@ -58,6 +58,6 @@ tags:
  [5]: /docker-quick-start-docker-gitbook-writing-a-book/
  [6]: http://tinylab.gitbooks.io/linux-doc/content/zh-cn/doc/PLAN.html
  [7]: http://tinylab.gitbooks.io/linux-doc/content/zh-cn/doc/index.html
- [8]: http://tinylab.gitbooks.io/elinux/
- [9]: http://tinylab.gitbooks.io/cbook/
- [10]: http://tinylab.gitbooks.io/shellbook/
+ [8]: https://gitbook.com/book/tinylab/elinux/
+ [9]: https://gitbook.com/book/tinylab/cbook/
+ [10]: https://gitbook.com/book/tinylab/shellbook/

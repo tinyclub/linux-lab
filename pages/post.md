@@ -43,7 +43,7 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 这一步要求事先做如下准备：
 
-  * 在 Github Fork 上述 [文章仓库][1]
+  * 在 Github [Fork][3] 上述 [文章仓库][1]
   * 您在本地修改后先提交到刚 Fork 的仓库
   * 然后再进入自己仓库，选择合并到 [文章仓库][1] 的 master 分支
 
@@ -126,3 +126,4 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: http://wowubuntu.com/markdown/
+ [3]: https://github.com/tinyclub/tinylab.org#fork-destination-box

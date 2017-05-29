@@ -16,69 +16,38 @@ order: 30
 
 下面是一般的稿件投递过程。
 
-## 快速上手
+## 撰写稿件
 
-* 下载博客仓库
+首先下载文章仓库：
 
-      $ git clone https://github.com/tinyclub/cloud-lab.git
-      $ cd cloud-lab/ && tools/docker/choose tinylab.org
+    $ git clone https://github.com/tinyclub/tinylab.org
+    $ cd tinylab.org
 
-* 安装 Jekyll 编译环境
+然后生成文章模板, slug 为链接，title 为标题。
 
-  Ubuntu 14.04 以上用户可直接执行：
+    $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
 
-      $ tools/docker/pull        # Pull from docker hub
-      or
-      $ tools/docker/build       # Build ourselves
+接着，参照模板编辑文章。
 
-  其他用户请先参照 [官方文档](https://docs.docker.com/engine/installation/linux/)安装好 docker，之后通过如下命令搭建环境：
+    $ vim _posts/*the-first-post-slug*
 
-* 启动 Jekyll 环境
+Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
 
-      $ tools/docker/run
+如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
 
-  之后可通过浏览器登陆并通过桌面快捷方式进入 `tinylab.org` 工作目录。
+如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
 
-  Jekyll 环境默认已经支持中文，但是输入法要通过设置手动添加一下 `ibus-sunpinyin`，并配置下中英文的快捷切换方式为 `ALT+s`，以避免跟本地的中英文切换快捷方式冲突。
+## 递送稿件
 
-* 撰写稿件
+撰写完后即可通过 Github 发送 Pull Request 进行投稿。也可直接把稿件和相关图片发送到 wuzhangjin [AT] gmail [DOT] com。
 
-  首先生成文章模板, slug 为链接，title 为标题。
-
-      $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
-
-  接着，参照模板编辑文章。
-
-      $ vim _posts/*the-first-post-slug*
-
-  Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
-
-  如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
-
-  如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
-
-  *注*：也可以在 `_data/people.yml` 中添加上作者信息后直接通过如下方式创建一个快捷命令以便自动填充作者信息，例如：
-
-      $ cd tools
-      $ ln -s post falcon.post
-
-  把 `falcon` 替换为你自己的昵称即可。
-
-* 编译和浏览文稿
-
-  Jekyll 环境由 docker 搭建，文章会被自动编译，可实时通过桌面快捷方式 `Local Page` 查看编译效果。
-
-* 递送稿件
-
-  测试完无误后即可通过 Github 发送 Pull Request 进行投稿。也可直接把稿件发送到 wuzhangjin [AT] gmail [DOT] com。
-
-  这一步要求事先做如下准备：
+这一步要求事先做如下准备：
 
   * 在 Github Fork 上述 [文章仓库][1]
   * 您在本地修改后先提交到刚 Fork 的仓库
-  * 然后再进入自己仓库，选择合并到我们的 master 分支
+  * 然后再进入自己仓库，选择合并到 [文章仓库][1] 的 master 分支
 
-  提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布到网站。
+提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布到网站。
 
 ## 文章模板说明
 

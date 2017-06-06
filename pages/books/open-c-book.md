@@ -119,7 +119,7 @@ tags:
 如果有时间和兴趣，欢迎参与，可以[联系我们][16]，也可以直接在 [TinyLab.org][17] 相关页面进行评论回复。
 
  [1]: http://oss.lzu.edu.cn
- [2]: /shell-programming-paradigm-series-index-review/
+ [2]: https://gitbook.com/book/tinylab/shellbook
  [3]: /shell-programming-paradigm-of-process-operations/
  [4]: /wp-content/uploads/2014/03/c_dev_procedure.jpg
  [5]: /make-vim-source-code-editor/

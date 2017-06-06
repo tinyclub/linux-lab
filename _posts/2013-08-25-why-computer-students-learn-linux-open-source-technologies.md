@@ -120,7 +120,7 @@ Advanced Unix Programming
 
 学一两样脚本语言，对于平时的学习和工作会起到事半功倍的效果。
 
-比如说要处理一些数据，可以用 sed, awk 加 gnuplot ，这个时候 Shell 程序设计就非常重要。关于 Shell ，有写过一个 [《 Shell 编程范例序列》][20] ，已经作为 [ 开源书籍：Shell 编程范例][21] 发布。
+比如说要处理一些数据，可以用 sed, awk 加 gnuplot ，这个时候 Shell 程序设计就非常重要。关于 Shell ，有写过一个 [《 Shell 编程范例》][20] 。
 
 又比如，要做一些比较复杂的甚至带有图形的交互，这个时候可以用 Python ，可以高效地实现一些案子，而且可以学习面向对象的思路。
 
@@ -174,9 +174,8 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
  [16]: http://c-faq.com/
  [17]: http://blog.linux.org.tw/~jserv/archives/001844.html
  [18]: https://github.com/shuopensourcecommunity/Information/tree/master/Resources/201203HackingHelloWold-%E6%B4%BB%E5%8A%A8/HackingHelloWorld
- [19]: /open-c-book/
- [20]: /shell-programming-paradigm-series-index-review/
- [21]: /open-shell-book/
+ [19]: https://gitbook.com/book/tinylab/cbook
+ [20]: https://gitbook.com/book/tinylab/shellbook
  [22]: http://bellard.org/tcc/
  [23]: http://www.brenelz.com/blog/20-source-code-hosting-sites-you-should-know/
  [24]: http://tinylab.org/markdown-lab

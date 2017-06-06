@@ -10,7 +10,7 @@ categories:
   - OS X
 ---
 
-![Image](https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine.png)
+![Image][1]
 
 ## 前言
 
@@ -37,7 +37,7 @@ categories:
 
 原理如下图：
 
-![Hard-Links-Example](https://prettyxw.com/wp-content/uploads/2015/05/Hard-Links-Example-494x600.jpg)
+![Hard-Links-Example][2]
 
 首先有文件 A 和文件 B，此时备份，A 和 B 都被复制。之后，文件 A 被删除，创建了文件 C，在进行备份时，只需要复制文件 C，然后创建文件 B 的硬链接即可。
 
@@ -76,7 +76,7 @@ Time Machine 的备份文件会以目录的形式组织，其中包括每一个�
 
 以下图为例说明组织结构：
 
-![Time-Machine-Disk](https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine-Disk-600x219.png)
+![Time-Machine-Disk][4]
 
   * 在备份磁盘的根目录有名为 “Backups.backupdb” 的文件夹，所有的备份文件均放置于此
   * 每台 Mac 在 “Backups.backupdb” 目录下会有单独的文件夹来隔离存放数据
@@ -88,7 +88,7 @@ Time Machine 的备份文件会以目录的形式组织，其中包括每一个�
 
 
 
- [1]: https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine.png
- [2]: https://prettyxw.com/wp-content/uploads/2015/05/Hard-Links-Example-494x600.jpg
- [3]: https://prettyxw.com/article/2014/03/25/how-to-use-linux-as-time-capsule/
- [4]: https://prettyxw.com/wp-content/uploads/2015/05/Time-Machine-Disk-600x219.png
+ [1]: /wp-content/uploads/2015/05/Time-Machine.o.jpg
+ [2]: /wp-content/uploads/2015/05/Hard-Links-Example.o.jpg
+ [3]: https://prettyxw.com/article/2014-03-25/how-to-use-linux-as-time-capsule/
+ [4]: /wp-content/uploads/2015/05/Time-Machine-Disk.o.jpg

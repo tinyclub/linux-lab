@@ -59,6 +59,9 @@ Linux Engineer 一枚，重度开源践行者，[兰州大学开源社区][3]联
       * 2003~2010 年，[兰州大学][9]，本科、研究生
 
   * 重要社区贡献
+      * 泰晓科技开源项目
+          * [项目首页][15]
+          * [代码仓库][16]
       * [官方 Linux 社区][10]
       * [TinyLinux][11]
       * [PREEMTP_RT][12]
@@ -83,3 +86,5 @@ Gnite! Falcon
  [12]: /preempt-rt-4-loongson/
  [13]: /linux-loongson-community/
  [14]: /vnstatsvg/
+ [15]: /projects
+ [16]: https://github.com/tinyclub/

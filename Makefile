@@ -212,16 +212,16 @@ list-full:
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
 uboot-source:
-	git submodule update --init u-boot
+	git submodule update --init --remote u-boot
 
 qemu-source:
-	git submodule update --init qemu
+	git submodule update --init --remote qemu
 
 kernel-source:
-	git submodule update --init linux-stable
+	git submodule update --init --remote linux-stable
 
 root-source:
-	git submodule update --init buildroot
+	git submodule update --init --remote buildroot
 
 source: kernel-source root-source
 

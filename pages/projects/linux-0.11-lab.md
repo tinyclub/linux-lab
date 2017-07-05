@@ -42,7 +42,11 @@ tags:
 以 Ubuntu 和 Qemu 为例, 对于 Mac OS X 和 Bochs 的用法，请参考 [README.md][2].
 
     apt-get install vim cscope exuberant-ctags gcc gdb binutils qemu
-    
+
+更多可选工具：
+ 
+    apt-get install bochs vgabios bochsbios bochs-doc bochs-x libltdl7 bochs-sdl bochs-term
+    apt-get install graphviz cflow
 
 ### 下载
 

@@ -101,7 +101,7 @@ tags:
 
 - __Patch commit__：当前 CPU 进入 nohz，将其原本要提交的 delta，存入 calc_load_idle[idx]
   - calc_load_idle\[2\] 是个 “double buffer”：“front buffer” 由 calc_load_idx 所指出。
-  - 在 calc_global_load() →  [calc_load_fold_idle()][15] 中被消费（“front buffer” 清 0）
+  - 在 calc_global_load() →  [calc_load_fold_idle()][15] 中，“front buffer” 被消费（“front buffer” 清 0）
   - 在 calc_global_load() →  [calc_global_nohz()][16] 中，swap “front/back buffer”。
   - 对应代码：[calc_load_enter_idle()][17]
   - 退出 nohz 对应代码：[calc_load_exit_idle()][18] —— 主要是更新 `rq->calc_load_update`：取决于是否在 “10 ticks 的 sampling window” 内，或为 `calc_load_update + 5s`，或就是全局时间戳 `calc_load_update`。 

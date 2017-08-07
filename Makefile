@@ -179,6 +179,10 @@ endif
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET =  -net nic,model=$(NETDEV) -net tap
 
+ifeq ($(SMP),)
+  SMP = 1
+endif
+
 # Common
 ROUTE = $(shell ifconfig br0 | grep "inet addr" | cut -d':' -f2 | cut -d' ' -f1)
 
@@ -537,8 +541,10 @@ save: root-save kernel-save rconfig-save kconfig-save
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
 
+EMULATOR_OPTS ?= -M $(BOARD) -m $(MEM) $(NET) -smp $(SMP) $(EXTRA_OPTS) -kernel $(KIMAGE)
+
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) -M $(BOARD) -m $(MEM) $(NET) -kernel $(KIMAGE)
+BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS)
 ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)

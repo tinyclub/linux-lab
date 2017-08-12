@@ -127,18 +127,20 @@ PREBUILT_ROOTDIR = $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
 PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
 PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 
-ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-  PBR ?= 0
-else
-  PBR = 1
-endif
+PBR ?= 0
 
 ifneq ($(ROOTFS),)
   PREBUILT_ROOTFS = $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
   ROOTDIR = $(PREBUILT_ROOTDIR)/rootfs
+  ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
+    PBR = 1
+  endif
 else
   ROOTDIR = $(ROOT_OUTPUT)/target/
   PREBUILT_ROOTFS = $(ROOTFS)
+  ifeq ($(ROOTDIR)/rootfs.cpio.gz,$(wildcard $(ROOTDIR)/rootfs.cpio.gz))
+    PBR = 1
+  endif
 endif
 
 ifeq ($(U),0)

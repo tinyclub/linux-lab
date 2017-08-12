@@ -128,17 +128,15 @@ PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
 PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 
 PBR ?= 0
+_PBR := $(PBR)
 
-ifneq ($(ROOTFS),)
+ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
+  ROOTDIR = $(ROOT_OUTPUT)/target/
+  PREBUILT_ROOTFS = $(ROOTFS)
+else
   PREBUILT_ROOTFS = $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
   ROOTDIR = $(PREBUILT_ROOTDIR)/rootfs
   ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
-    PBR = 1
-  endif
-else
-  ROOTDIR = $(ROOT_OUTPUT)/target/
-  PREBUILT_ROOTFS = $(ROOTFS)
-  ifeq ($(ROOTDIR)/rootfs.cpio.gz,$(wildcard $(ROOTDIR)/rootfs.cpio.gz))
     PBR = 1
   endif
 endif
@@ -338,10 +336,11 @@ else
   endif
 endif
 
-ifeq ($(PBR), 0)
-  ROOT = root-build
-else
-  ROOT = rootdir
+ROOT ?= rootdir
+ifeq ($(_PBR), 0)
+  ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
+    ROOT = root-build
+  endif
 endif
 
 root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild

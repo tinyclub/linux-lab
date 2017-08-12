@@ -179,8 +179,10 @@ endif
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET =  -net nic,model=$(NETDEV) -net tap
 
+MACADDR_TOOL = $(TOP_DIR)/tools/random/macaddr.sh
+RANDOM_MACADDR = $(shell $(MACADDR_TOOL))
 ifeq ($(NETDEV), virtio)
-  NET += -device virtio-net-device,netdev=net0,mac=00:00:00:00:00:00 -netdev tap,id=net0
+  NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
 endif
 
 ifeq ($(SMP),)

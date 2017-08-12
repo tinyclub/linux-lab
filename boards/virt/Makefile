@@ -1,0 +1,17 @@
+ARCH     = arm64
+XARCH    = aarch64
+CPU     ?= cortex-a57
+SMP     ?= 2
+MEM     ?= 128M
+EXTRA_OPTS?= -cpu $(CPU)
+LINUX   ?= v4.5.5
+BUILDROOT?= 2016.05
+NETDEV  ?= virtio
+SERIAL  ?= ttyAMA0
+ROOTDEV ?= /dev/ram0
+FSTYPE  ?= ext2
+ORIIMG  ?= arch/$(ARCH)/boot/Image
+CCPRE   ?= aarch64-linux-gnu-
+KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/Image
+#ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
+#HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)

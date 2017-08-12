@@ -6,6 +6,7 @@ QEMU    ?= v0.10.6
 SMP     ?= 2
 LINUX   ?= v4.6.7
 #LINUX   ?= v2.6.35.14
+BUILDROOT?= 2016.05
 NETDEV  ?= ne2k_pci
 SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage

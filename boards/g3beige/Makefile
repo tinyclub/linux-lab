@@ -3,6 +3,7 @@ XARCH    = ppc
 CPU     ?= generic
 # Note: <2.6.37 kernel don't have __NR_socket implementation
 LINUX   ?= v4.6.7
+BUILDROOT?= 2016.05
 MEM     ?= 128M
 NETDEV  ?= pcnet
 SERIAL  ?= ttyS0

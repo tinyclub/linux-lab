@@ -2,6 +2,7 @@ ARCH     = mips
 XARCH    = mipsel
 CPU     ?= mips32r2
 LINUX   ?= v4.6.7
+BUILDROOT?= 2016.05
 MEM     ?= 128M
 NETDEV  ?= pcnet
 SERIAL  ?= ttyS0

@@ -263,7 +263,10 @@ kernel-source:
 root-source:
 	git submodule update --init --remote buildroot
 
-source: kernel-source root-source
+prebuilt-images:
+	git submodule update --init --remote prebuilt
+
+source: prebuilt-images kernel-source root-source
 
 core-source: source uboot-source
 
@@ -688,7 +691,11 @@ ifneq ($(PBR),0)
 endif
 endif
 
-boot: $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS)
+ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
+  PREBUILT = prebuilt-images
+endif
+
+boot: $(PREBUILT) $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS)
 	$(BOOT_CMD)
 
 # Debug

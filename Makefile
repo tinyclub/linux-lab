@@ -29,6 +29,10 @@ ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
 endif
 
+_BIMAGE := $(BIMAGE)
+_KIMAGE := $(KIMAGE)
+_ROOTFS := $(ROOTFS)
+
 QEMU_GIT ?= https://github.com/qemu/qemu.git
 QEMU_SRC ?= $(TOP_DIR)/qemu/
 
@@ -77,6 +81,16 @@ else
   PBD = 1
 endif
 
+ifneq ($(_BIMAGE),)
+  PREBUILT_UBOOTDIR ?= $(shell dirname $(_BIMAGE))
+endif
+ifneq ($(_KIMAGE),)
+  PREBUILT_KERNELDIR ?= $(shell dirname $(_KIMAGE))
+endif
+ifneq ($(_ROOTFS),)
+  PREBUILT_ROOTDIR ?= $(shell dirname $(_ROOTFS))
+endif
+
 KIMAGE ?= $(LINUX_KIMAGE)
 UKIMAGE ?= $(LINUX_UKIMAGE)
 DTB     ?= $(LINUX_DTB)
@@ -123,9 +137,9 @@ BUILDROOT_UROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.uboot
 BUILDROOT_HROOTFS = $(ROOT_OUTPUT)/images/rootfs.$(FSTYPE)
 BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
-PREBUILT_ROOTDIR = $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
-PREBUILT_KERNELDIR = $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
-PREBUILT_UBOOTDIR = $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
+PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
+PREBUILT_KERNELDIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
+PREBUILT_UBOOTDIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 
 PBR ?= 0
 _PBR := $(PBR)

@@ -547,8 +547,9 @@ save: root-save kernel-save rconfig-save kconfig-save
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
+MACH ?= $(shell echo $(BOARD) | cut -d'_' -f1)
 
-EMULATOR_OPTS ?= -M $(BOARD) -m $(MEM) $(NET) -smp $(SMP) $(EXTRA_OPTS) -kernel $(KIMAGE)
+EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
 BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS)

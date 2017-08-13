@@ -576,9 +576,9 @@ G ?= 0
 MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
 # Shutdown the board if 'poweroff -h/-n' or crash
-WDT_ACTION ?= shutdown
+EXIT_ACTION ?= -no-reboot
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE) -watchdog-action $(WDT_ACTION) 
+EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
 BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS)

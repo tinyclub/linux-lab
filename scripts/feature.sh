@@ -1,4 +1,11 @@
 #!/bin/bash
+#
+# feature.sh -- test a kernel feature of a specified kernel version on a specified board automatically
+#
+# Usage: scripts/feature.sh FEATURE LINUX BOARD
+#
+#  e.g.: scripts/feature.sh kft v2.6.36 malta
+#
 
 FEATURE="$1"
 LINUX=$2

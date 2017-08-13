@@ -144,14 +144,17 @@ PREBUILT_UBOOTDIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 PBR ?= 0
 _PBR := $(PBR)
 
-ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-  ROOTDIR = $(ROOT_OUTPUT)/target/
-  PREBUILT_ROOTFS = $(ROOTFS)
-else
-  PREBUILT_ROOTFS = $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
-  ROOTDIR = $(PREBUILT_ROOTDIR)/rootfs
-  ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
-    PBR = 1
+PREBUILT_ROOTFS ?= $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
+ROOTDIR ?= $(PREBUILT_ROOTDIR)/rootfs
+
+ifeq ($(_PBR), 0)
+  ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
+    ROOTDIR = $(ROOT_OUTPUT)/target/
+    PREBUILT_ROOTFS = $(ROOTFS)
+  else
+    ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
+      PBR = 1
+    endif
   endif
 endif
 

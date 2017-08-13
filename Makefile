@@ -205,7 +205,7 @@ endif
 
 # For debug
 board:
-	@find $(TOP_DIR)/boards/$(BOARD) -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
+	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 2 -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep "$(FILTER)"

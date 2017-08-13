@@ -38,6 +38,7 @@ do
 done
 
 export BOARD=$BOARD LINUX=$LINUX FEATURE="$FEATURE"
+eval `make env | grep ROOTDIR | tr -d ' '`
 
 make gcc
 
@@ -51,4 +52,25 @@ make kernel-oldconfig
 
 make kernel V=$V
 
-make boot U=0
+# Make sure the testing framework is installed
+# system/: etc/default/testing, tools/testing/start.sh, tools/FEATURE/test.sh
+make root-install
+
+make root-rebuild
+
+# TODO: host prepare for testing
+for f in $FEATURE
+do
+    test_host_before=${TOP_DIR}/system/tools/$f/test_host_before.sh
+    [ -x $test_host_before ] && $test_host_before
+done
+
+# TODO: To transfer data easier, ROOTDEV=/dev/nfs is preferable, data is stored in $ROOTDIR
+make boot U=0 EXT_CMDLINE=feature=$(echo $FEATURE | tr ' ' ',') ROOTDEV=/dev/nfs
+
+# TODO: host prepare for testing
+for f in $FEATURE
+do
+    test_host_after=${TOP_DIR}/system/tools/$f/test_host_after.sh
+    [ -x $test_host_after ] && $test_host_after $ROOTDIR
+done

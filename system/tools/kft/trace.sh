@@ -74,7 +74,7 @@ fi
 sleep 1
 
 # Get the data
-cat /proc/kft_data > log.sym
+cat /proc/kft_data > kft_data.sym
 
 # Generate a readable log
-$script_path/kd -c -l -i log.sym
+$script_path/kd -c -l -i kft_data.sym

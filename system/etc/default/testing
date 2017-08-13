@@ -1,0 +1,6 @@
+# Kernel features test service
+
+TOOLS=/tools/
+
+START_TESTING=${TOOLS}/testing/start.sh
+STOP_TESTING=${TOOLS}/testing/stop.sh

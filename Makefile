@@ -402,11 +402,21 @@ ifeq ($(KCO),1)
   KERNEL_CHECKOUT = kernel-checkout
 endif
 
+KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
+
+KP ?= 1
+kernel-patch:
+	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
+
+ifeq ($(KP),1)
+  KERNEL_PATCH = kernel-patch
+endif
+
 KERNEL_CONFIG_FILE = linux_$(LINUX)_defconfig
 KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
 
-kernel-defconfig:  $(KERNEL_CHECKOUT)
+kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	mkdir -p $(KERNEL_OUTPUT)
 	cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
@@ -419,16 +429,6 @@ kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
 
 # Build Kernel
-
-KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
-
-KP ?= 1
-kernel-patch:
-	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
-
-ifeq ($(KP),1)
-  KERNEL_PATCH = kernel-patch
-endif
 
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
@@ -452,7 +452,7 @@ endif
 
 KTARGET ?= $(IMAGE) $(DTBS)
 
-kernel: $(KERNEL_PATCH) $(KERNEL_PATCH)
+kernel:
 	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Configure Uboot

@@ -91,6 +91,7 @@ Checkout/Configure the sources:
     $ make root-defconfig
 
     $ make kernel-defconfig
+    $ make kernel-defconfig KP=0  # Disable kernel patch action
 
 Manually configure the sources:
 
@@ -103,8 +104,6 @@ Build them:
 
     $ make kernel  # One by one
     $ make root
-
-    $ make kernel KP=0  # Disable kernel patch action
 
     $ make kernel-modules # Build internel kernel modules, Must ensure CONFIG_MODULES=y
     $ make kernel-modules-install

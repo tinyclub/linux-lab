@@ -212,7 +212,8 @@ endif
 
 # For debug
 board:
-	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 2 -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
+	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 3 -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
+		| egrep -v "/module" \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep "$(FILTER)"
@@ -554,7 +555,7 @@ save: root-save kernel-save rconfig-save kconfig-save
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
-MACH ?= $(shell echo $(BOARD) | cut -d'_' -f1)
+MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE)
 

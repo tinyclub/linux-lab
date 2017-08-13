@@ -221,5 +221,9 @@ Buildroot has provided many examples about buildroot and kernel configuration:
 
 To start a new ARCH, BOARD and linux VERSION test, please based on it.
 
-Note, different qemu version uses different kernel VERSION, so, to find the
+Note1: different qemu version uses different kernel VERSION, so, to find the
 suitable kernel version, we can checkout different git tags.
+
+Note2: If nfs or tftpboot not work, please run `modprobe nfsd` in host side and
+restart the net services via `/configs/tools/restart-net-servers.sh` and please
+make sure not use `tools/docker/trun`.

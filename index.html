@@ -15,6 +15,8 @@ description: 泰晓科技 -- 聚焦嵌入式 Linux，致力于推动业界打造
 <!-- Recent Posts  -->
 <section id="home">
   {% assign articles = paginator.posts %}
+  {% assign condition = 'draft' %}
+  {% assign value = false %}
   {% include widgets/articles %}
 </section>
 

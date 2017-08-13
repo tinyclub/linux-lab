@@ -195,7 +195,14 @@ ROUTE = $(shell ifconfig br0 | grep "inet addr" | cut -d':' -f2 | cut -d' ' -f1)
 SERIAL ?= ttyS0
 CONSOLE?= tty0
 
-CMDLINE = route=$(ROUTE) root=$(ROOTDEV) $(EXT_CMDLINE)
+CMDLINE = route=$(ROUTE)
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  CMDLINE += rdinit=$(RDINIT)
+else
+  CMDLINE += root=$(ROOTDEV)
+endif
+CMDLINE += $(EXT_CMDLINE)
+
 TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
 

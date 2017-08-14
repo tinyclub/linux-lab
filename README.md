@@ -18,8 +18,6 @@ See: <http://tinylab.org/linux-lab/>
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-    $ tools/docker/build # Build ourselves
-    or
     $ tools/docker/pull # Pull from docker hub
 
     $ tools/docker/run

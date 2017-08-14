@@ -62,9 +62,6 @@ tags:
 ### 安装
 
     $ tools/docker/pull           # Pull from docker hub
-    or
-    $ tools/docker/build          # Build from source code
-
     $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器
 
 ### 快速尝鲜

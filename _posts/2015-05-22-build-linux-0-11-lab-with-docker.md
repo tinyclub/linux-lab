@@ -31,8 +31,6 @@ categories:
 ## 通过 Docker 构建一个独立的实验环境
 
     $ tools/docker/pull         # Pull from docker hub
-    or
-    $ tools/docker/build        # Build from source
 
 ## 启动装有实验环境的 Docker 容器
 

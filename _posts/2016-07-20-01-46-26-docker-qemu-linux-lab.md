@@ -78,8 +78,6 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 ### 安装
 
     $ tools/docker/pull        # Pull from docker hub
-    or
-    $ tools/docker/build       # Build from source
 
     $ tools/docker/run	       # 加载镜像，拉起一个 Linux Lab 容器
 

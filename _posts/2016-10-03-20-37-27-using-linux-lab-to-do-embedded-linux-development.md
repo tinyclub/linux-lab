@@ -48,9 +48,6 @@ tags:
 由于 Linux Lab 把所有的环境 docker 容器化了，只需要一条命令即可构建，以 Ubuntu 为例：
 
     $ tools/docker/pull   # Pull from docker hub
-    or
-    $ tools/docker/build  # Build from source
-
 
 接着就可以启动该环境，加载镜像，拉起一个 Linux Lab 容器：
 

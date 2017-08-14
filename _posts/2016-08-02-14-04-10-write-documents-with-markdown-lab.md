@@ -62,8 +62,6 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 Docker 安装/启动：
 
     $ tools/docker/pull         # Pull from docker hub
-    or
-    $ tools/docker/build        # Build from source
 
     $ tools/docker/run
 

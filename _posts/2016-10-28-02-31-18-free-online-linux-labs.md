@@ -72,9 +72,6 @@ tags:
 
     // Pull the docker image from docker hub
     $ tools/docker/pull
-    OR
-    // Build the docker image from Dockfile
-    $ tools/docker/build
 
     // 运行 Docker image 并自动加载浏览器访问实验环境，可通过控制台打印的密码登陆
     $ tools/docker/run

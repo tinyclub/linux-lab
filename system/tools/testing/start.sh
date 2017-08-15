@@ -19,7 +19,7 @@ do
     echo "Testing feature: $f"
     echo
 
-    ${TOOLS}/$f/test_guest.sh
+    [ -x ${TOOLS}/$f/test_guest.sh ] && ${TOOLS}/$f/test_guest.sh
 
     echo
 done

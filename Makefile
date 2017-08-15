@@ -30,6 +30,7 @@ ifeq ($(P),)
   endif
 else
   PLUGIN := $(P)
+  _plugin := $(PLUGIN)
 endif
 
 TOOL_DIR = $(TOP_DIR)/tools/
@@ -250,17 +251,20 @@ endif
 # For debug
 BOARD_TOOL=${TOOL_DIR}/board/show.sh
 export GREP_COLOR=32;40
-FILTER   ?= ^[ [\./a-z0-9-]* \]|^ *[a-zA-Z0-9]* *
+FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
 
 board: board-save plugin-save
 	@find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| sort -t':' -k2 | cut -d':' -f1 | xargs -i ${BOARD_TOOL} {} $(PLUGIN) \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
 		| egrep -v "/module" \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep --colour=auto "$(FILTER)"
+		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep --colour=auto "$(FILTER)"
+
+board-clean:
+	@rm $(TOP_DIR)/.board_config
 
 board-save:
 ifneq ($(BOARD),)
@@ -276,6 +280,9 @@ ifneq ($(PLUGIN),)
   endif
 endif
 
+plugin-clean:
+	@rm $(TOP_DIR)/.plugin_config
+
 plugin: plugin-save
 	@echo $(PLUGIN)
 
@@ -288,9 +295,10 @@ plugin-list-full:
 p: plugin
 p-l: plugin-list
 p-l-f: plugin-list-full
+p-c: plugin-clean
 
 list:
-	@make -s board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
+	@make -s board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-base:
 	@make -s list BTYPE="^_BASE"

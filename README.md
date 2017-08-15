@@ -224,7 +224,7 @@ default:
 
     Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
-* The fourth one is using 9p virtio (tested on vexpress-a9 board)
+* The fourth one is using 9p virtio (tested on vexpress-a9 and virt board)
 
     Reconfigure the kernel with:
 

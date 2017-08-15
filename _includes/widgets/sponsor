@@ -1,10 +1,10 @@
 <table id='sponsor'>
-<tr><td style="text-align:center;">3.69￥</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">9.68￥</td></tr>
+<tr><td style="text-align:center;">支付宝打赏￥9.68</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏￥9.68</td></tr>
 <tr>
   <td style="text-align:center;">
-    <img src='/images/sponsor/weixin-pay-admin-3.69.jpg' width='110px' />
+    <img src='/images/sponsor/alipay-admin-9.68.jpg' width='110px' />
   </td>
-  <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>微信扫码，打赏一下！
+  <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>泰晓原创，扫码助力！
   </td>
   <td style="text-align:center;">
     <img src='/images/sponsor/weixin-pay-admin-9.68.jpg' width='110px' />

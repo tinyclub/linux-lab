@@ -238,7 +238,7 @@ ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
 else
   CMDLINE += root=$(ROOTDEV)
 endif
-CMDLINE += $(EXT_CMDLINE)
+CMDLINE += $(XKCLI)
 
 TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
@@ -443,8 +443,7 @@ ifneq ($(PLUGIN),)
   PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules/
 endif
 
-MODULE ?= $(m)
-module ?= $(MODULE)
+module ?= $(m)
 ifneq ($(module),)
   M := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
 else
@@ -704,7 +703,7 @@ endif
 # Shutdown the board if 'poweroff -h/-n' or crash
 EXIT_ACTION ?= -no-reboot
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
+EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(XOPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
@@ -831,6 +830,21 @@ endif
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
+
+# Test support
+FS_SHARE ?= ROOTDEV=/dev/nfs
+TEST_OPTS  = $(FS_SHARE)
+TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
+ifeq ($(findstring module,$(FEATURE)),module)
+  TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+endif
+ifneq ($(TEST_FINISH),)
+  TEST_KCLI += test_finish=$(TEST_FINISH)
+endif
+TEST_OPTS += XKCLI=$(TEST_KCLI)
+
+boot-test:
+	@make -s boot $(TEST_OPTS)
 
 # Debug
 

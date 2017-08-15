@@ -17,4 +17,4 @@ KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/bzImage
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.ext2
 # Fixup: MP-BIOS bug: 8254 timer not connected to IO-APIC
-EXT_CMDLINE ?= noapic
+XKCLI   ?= noapic

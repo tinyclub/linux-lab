@@ -7,7 +7,10 @@
 
 # Get feature list from kernel command line
 FEATURE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^feature= | cut -d'=' -f2 | tr ',' ' ')"
+FINISH="$(cat /proc/cmdline | tr ' ' '\n' | grep ^test_finish= | cut -d'=' -f2 | tr ',' ' ')"
+
 [ -z "$FEATURE" ] && exit 0
+[ -z "$FINISH" ] && FINISH="poweroff -d 5"
 
 echo
 echo "Starting testing ..."
@@ -25,6 +28,8 @@ do
 done
 
 echo
+echo "Testing finished"
+echo
 
-echo "Stop testing through poweroff the machine in 5 seconds ..."
-poweroff -d 5
+echo "Running $FINISH"
+eval $FINISH

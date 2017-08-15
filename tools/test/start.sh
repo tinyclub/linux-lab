@@ -1,22 +1,24 @@
 #!/bin/bash
 #
-# feature.sh -- test a kernel feature of a specified kernel version on a specified board automatically
+# start.sh -- test a kernel feature of a specified kernel version on a specified board automatically
 #
-# Usage: scripts/feature.sh FEATURE LINUX BOARD
+# Usage: tools/test/start.sh FEATURE LINUX BOARD
 #
-#  e.g.: scripts/feature.sh kft v2.6.36 malta
+#  e.g.: tools/test/start.sh kft v2.6.36 malta
 #
 
 FEATURE="$1"
 LINUX=$2
 BOARD=$3
-V=$4
+K=$4
+U=$5
+V=$6
 
 TOP_DIR=$(dirname `readlink -f $0`)/../
 
 function usage
 {
-	echo -e "Usage: $0 FEATURE LINUX BOARD\n\n e.g. scripts/feature.sh kft v2.6.36 malta" && exit 0
+	echo -e "Usage: $0 FEATURE LINUX BOARD\n\n e.g. tools/test/start.sh kft v2.6.36 malta" && exit 0
 }
 
 [ -z "$FEATURE" ] && usage
@@ -24,13 +26,13 @@ function usage
 [ -z "$LINUX" ] && usage
 
 CORE_DIR=${TOP_DIR}/feature/linux/core/
-LINUX_DIR=${TOP_DIR}/feature/linux/$LINUX/
 
 for f in $FEATURE
 do
     f=$(echo $f | tr 'A-Z' 'a-z')
+    LINUX_DIR=${TOP_DIR}/feature/linux/$f/$LINUX/
 
-    for f_env in $CORE_DIR/$f/env $CORE_DIR/$f/env.$BOARD $LINUX_DIR/$f/env $LINUX_DIR/$f/env.$BOARD
+    for f_env in $CORE_DIR/$f/env $CORE_DIR/$f/env.$BOARD $LINUX_DIR/env $LINUX_DIR/env.$BOARD
     do
 	echo $f_env
         [ -f $f_env ] && export $(< $f_env)
@@ -40,17 +42,19 @@ done
 export board=$BOARD LINUX=$LINUX FEATURE="$FEATURE"
 eval `make env | grep ROOTDIR | tr -d ' '`
 
-make gcc
+if [ -n "$K" -a $K -ne 1 ]; then
+    make gcc
 
-make kernel-checkout
+    make kernel-checkout
 
-make kernel-defconfig
+    make kernel-defconfig
 
-make kernel-feature
+    make kernel-feature
 
-make kernel-oldconfig
+    make kernel-oldconfig
 
-make kernel V=$V
+    make kernel V=$V
+fi
 
 # Make sure the testing framework is installed
 # system/: etc/default/testing, tools/testing/start.sh, tools/FEATURE/test.sh
@@ -66,7 +70,7 @@ do
 done
 
 # TODO: To transfer data easier, ROOTDEV=/dev/nfs is preferable, data is stored in $ROOTDIR
-make boot U=0 EXT_CMDLINE=feature=$(echo $FEATURE | tr ' ' ',') ROOTDEV=/dev/nfs
+make boot U=$U XKCLI=feature=$(echo $FEATURE | tr ' ' ',') ROOTDEV=/dev/nfs
 
 # TODO: host prepare for testing
 for f in $FEATURE

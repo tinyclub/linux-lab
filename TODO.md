@@ -15,10 +15,12 @@
     * HD, /etc/default/docker: --storage-opt dm.basesize=10G
     * IO,  echo "253:1 10485760" > /sys/fs/cgroup/blkio/docker/$CONTAINER_ID/ blkio.throttle.write_bps_device
 12. Make everything work with minimal root permission for specific binaries with 'sudo'+nopasswd
-13. Add user demostration with showterm.io and lxsession record
+13. Add user demostration with showterm.io and lxsession record (showdesk.io)
 14. Add https support? or at least add ssl support for x11vnc or novnc itself.
 15. Allow to set GCC version for different kernel version
 16. Add more features: BFS, UKSM, KGTP, RT-preempt ...
 17. Add more examples and utilities
 18. Add testsuites, benchmarks and test automation support
 19. Add Android emulator support?
+20. Add Features list and test support
+21. Add Modules list and test support

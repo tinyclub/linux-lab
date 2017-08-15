@@ -452,6 +452,10 @@ ifneq ($(PLUGIN),)
 endif
 
 module ?= $(m)
+ifeq ($(module),all)
+  module := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
+endif
+
 ifneq ($(module),)
   M := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
 else
@@ -501,11 +505,27 @@ module-list-full: kernel-modules-list-full plugin-save
 module-install: kernel-modules-install
 module-clean: kernel-modules-clean
 
+modules: FORCE
+	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nBuilding module: $(m) ...\n" && make module m=$(m);) echo '')
+
+modules-install: FORCE
+	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nInstalling module: $(m) ...\n" && make module-install m=$(m);) echo '')
+
+modules-clean: FORCE
+	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nCleaning module: $(m) ...\n" && make module-clean m=$(m);) echo '')
+
 m: module
 m-l: module-list
 m-l-f: module-list-full
 m-i: module-install
 m-c: module-clean
+
+ms: modules
+ms-i: modules-install
+ms-c: modules-clean
 
 # Configure Kernel
 kernel-checkout:
@@ -947,3 +967,6 @@ env-save:
 
 help:
 	@cat $(TOP_DIR)/README.md
+
+
+FORCE:

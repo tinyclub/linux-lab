@@ -11,6 +11,7 @@ fi
 
 for p in $MODULE_DIRS
 do
+  echo "Cleaning $p ..."
   cd $p
-  rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions modules.order Module.symvers dio *.tmp *.log
+  rm -rf *.o .*.o.d *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions modules.order Module.symvers dio *.tmp *.log
 done

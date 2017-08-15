@@ -511,7 +511,7 @@ endif
 
 KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
 
-KP ?= 1
+KP ?= 0
 kernel-patch:
 	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
 

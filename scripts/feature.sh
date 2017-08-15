@@ -37,7 +37,7 @@ do
     done
 done
 
-export TMP_BOARD=$BOARD LINUX=$LINUX FEATURE="$FEATURE"
+export board=$BOARD LINUX=$LINUX FEATURE="$FEATURE"
 eval `make env | grep ROOTDIR | tr -d ' '`
 
 make gcc

@@ -10,9 +10,10 @@
 FEATURE="$1"
 LINUX=$2
 BOARD=$3
-K=$4
-U=$5
-V=$6
+MODULE="$4"
+K=$5
+U=$6
+V=$7
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
@@ -28,6 +29,8 @@ function usage
 [ -z "$U" ] && U=0
 
 CORE_DIR=${TOP_DIR}/feature/linux/core/
+FEATURE="$(echo $FEATURE | tr ',' ' ')"
+MODULE="$(echo $MODULE | tr ',' ' ')"
 
 for f in $FEATURE
 do
@@ -41,7 +44,7 @@ do
     done
 done
 
-export board=$BOARD U=$U LINUX=$LINUX FEATURE="$FEATURE"
+export board=$BOARD U=$U LINUX=$LINUX FEATURE="$FEATURE" MODULE="$MODULE"
 eval `make env | grep ROOTDIR | tr -d ' '`
 
 if [ "x$K" == "x1" ]; then
@@ -52,6 +55,11 @@ if [ "x$K" == "x1" ]; then
     make kernel-feature
     make kernel-oldconfig
     make kernel V=$V
+fi
+
+echo $FEATURE | grep -q module
+if [ $? -eq 0 ]; then
+    make module M=
 fi
 
 # Make sure the testing framework is installed

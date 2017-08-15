@@ -1056,26 +1056,29 @@ ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
 endif
 
 # Test support
-TEST_KCLI =
-ifneq ($(FEATURE),)
-  TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
-  ifeq ($(findstring module,$(FEATURE)),module)
-    TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
-  endif
-endif
-ifneq ($(TEST_REBOOT),)
-  TEST_KCLI += reboot=$(TEST_REBOOT)
-endif
-ifneq ($(TEST_FINISH),)
-  TEST_KCLI += test_finish=$(TEST_FINISH)
-endif
-
-TEST_CASE ?= $(TEST_CASES)
-ifneq ($(TEST_CASE),)
-  TEST_KCLI += test_case=$(TEST_CASE)
-endif
-
 ifneq ($(TEST),)
+  TEST_KCLI =
+  ifneq ($(module),)
+    FEATURE += module
+  endif
+  ifneq ($(FEATURE),)
+    TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
+    ifeq ($(findstring module,$(FEATURE)),module)
+      TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+    endif
+  endif
+  ifneq ($(TEST_REBOOT),)
+    TEST_KCLI += reboot=$(TEST_REBOOT)
+  endif
+  ifneq ($(TEST_FINISH),)
+    TEST_KCLI += test_finish=$(TEST_FINISH)
+  endif
+
+  TEST_CASE ?= $(TEST_CASES)
+  ifneq ($(TEST_CASE),)
+    TEST_KCLI += test_case=$(TEST_CASE)
+  endif
+
   CMDLINE += $(TEST_KCLI)
 endif
 

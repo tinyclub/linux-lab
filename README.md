@@ -105,13 +105,13 @@ Build them:
     $ make kernel  # One by one
     $ make root
 
-    $ make module  # Build internel kernel modules, Must ensure CONFIG_MODULES=y
-    $ make module-install
+    $ make modules  # Build internel kernel modules, Must ensure CONFIG_MODULES=y
+    $ make modules-install
     $ make root-rebuild && make boot
 
-    $ make module-list
+    $ make modules-list
         1 ldt
-    $ make module m=ldt  # With traditional methods
+    $ make modules m=ldt  # With traditional methods
     $ make root-rebuild && make boot
 
 Boot it:
@@ -158,6 +158,27 @@ Debug it:
 
     Note: some commands have been already added in `.gdbinit`, you can customize it for yourself.
 
+Test it:
+
+    // Test a feature of a specified linux version on a specified board
+    $ make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=auto
+
+    // Test a kernel module
+    $ make module-test m=oops_test
+
+    // Test a kernel module and make some targets before testing
+    $ make module-test m=oops_test TEST=kernel-checkout,kernel-patch
+
+    // Don't poweroff after testing
+    $ make module-test m=oops_test TEST_FINISH=echo
+
+    // Run guest test case
+    $ make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh
+
+    // Reboot the guest system for several times
+    $ make module-test m=oops_test TEST_REBOOT=2
+
+
 Save your changes:
 
     $ make save         # Save all of the configs and rootfs/kernel/dtb images
@@ -180,6 +201,7 @@ and boot for a specific board with 'BOARD', for example:
     $ make root-defconfig
     $ make root
     $ make kernel-checkout
+    $ make kernel-patch
     $ make kernel-defconfig
     $ make kernel
     $ make boot U=0

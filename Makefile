@@ -236,7 +236,7 @@ endif
 
 # For debug
 BOARD_TOOL=${TOOL_DIR}/board/show.sh
-GREP_COLOR=32;40
+export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./a-z0-9-]* \]|^ *[a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^BASE|^PLUGIN

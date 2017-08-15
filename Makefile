@@ -530,8 +530,14 @@ module-list-full: kernel-modules-list-full plugin-save
 module-install: kernel-modules-install
 module-clean: kernel-modules-clean
 
+modules-list: module-list
+modules-list-full: module-list-full
+ms-l: module-list
+ms-l-f: modules-list-full
+
 # e.g. make module-test module=ldt,oops_test MODULE=ldt,oops
 module-test: FORCE
+ifneq ($(module),)
 	@make feature FEATURE="$(FEATURE),module"
 	@make modules M=
 	@make modules-install M=
@@ -539,6 +545,13 @@ module-test: FORCE
 	@make modules-install
 	@make root-install
 	@make test FEATURE="$(FEATURE),module"
+else
+	@echo Usage: make module-test modules=... MODULES=...
+	@echo Available Modules:
+	@make -s module-list
+endif
+
+modules-test: module-test
 
 modules: FORCE
 	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
@@ -560,6 +573,7 @@ m-c: module-clean
 m-t: module-test
 
 ms: modules
+ms-t: modules-test
 ms-i: modules-install
 ms-c: modules-clean
 
@@ -614,6 +628,34 @@ features: feature
 kernel-features: feature
 k-f: feature
 f: feature
+
+FEATURE_DIR = $(TOP_DIR)/feature/linux
+kernel-feature-list:
+	@echo [ $(FEATURE_DIR) ]: | sed -e "s%$(TOP_DIR)/%%g"
+	@find $(FEATURE_DIR) -mindepth 1 | egrep -v "config|patch|version" | sed -e "s%$(FEATURE_DIR)/%%g" | sort | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
+
+kernel-features-list: kernel-feature-list
+features-list: kernel-feature-list
+feature-list: kernel-feature-list
+f-l: feature-list
+
+kernel-feature-test: FORCE
+ifneq ($(FEATURE),)
+	@make feature FEATURE="$(FEATURE)"
+	@make kernel
+	@make root-install
+	@make test FEATURE="$(FEATURE)"
+else
+	@echo Usage: make feature-test FEATURE=...
+	@echo Available Features:
+	@make -s feature-list
+endif
+
+
+kernel-features-test: kernel-feature-test
+features-test: kernel-feature-test
+feature-test: kernel-feature-test
+f-t: feature-test
 
 IMAGE = $(shell basename $(ORIIMG))
 

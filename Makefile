@@ -584,10 +584,20 @@ save: root-save kernel-save rconfig-save kconfig-save
 G ?= 0
 MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
+# Sharing with the 9p virtio protocol
+SHARE ?= 0
+SHARE_DIR ?= $(TOP_DIR)/hostshare/
+SHARE_TAG ?= hostshare
+ifneq ($(SHARE),0)
+  SHARE_OPT ?= -fsdev local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(shell basename $(SHARE_DIR))
+endif
+
 # Shutdown the board if 'poweroff -h/-n' or crash
 EXIT_ACTION ?= -no-reboot
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(EXT_OPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
+EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
 BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS)

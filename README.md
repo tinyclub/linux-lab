@@ -78,7 +78,7 @@ Download the sources:
 
     $ make core-source -j3     # All in one
 
-    $ make kernel-source       # One by one 
+    $ make kernel-source       # One by one
     $ make root-source
 
 Checkout/Configure the sources:
@@ -205,7 +205,7 @@ default:
         $ make env | grep ROOTDIR
 	ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
 
-* The last one is use tftp server of host from the Qemu board with the `tftp` command.
+* The third one is use tftp server of host from the Qemu board with the `tftp` command.
 
     Host:
 
@@ -223,6 +223,38 @@ default:
         $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
     Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
+
+* The fourth one is using 9p virtio (tested on vexpress-a9 board)
+
+    Reconfigure the kernel with:
+
+        CONFIG_NET_9P=y
+        CONFIG_NET_9P_VIRTIO=y
+        CONFIG_9P_FS=y
+
+    Docker host:
+
+        $ modprobe 9pnet_virtio
+        $ lsmod | grep 9p
+        9pnet_virtio           17519  0
+        9pnet                  72068  1 9pnet_virtio
+
+    Host:
+
+        $ make BOARD=vexpress-a9
+
+        $ make root-install PBR=1
+        $ make root-rebuild PBR=1
+
+        $ touch share/test     # Create a file in host
+
+        $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
+
+    Qemu Board:
+
+        $ ls /hostshare/       # Access the file in guest
+        test
+        $ touch /hostshare/guest-test   # Create a file in guest
 
 ## More
 

@@ -1,0 +1,4 @@
+# Kernel features test service
+
+START_SHARING=/tools/sharing/start.sh
+STOP_SHARING=/tools/sharing/stop.sh

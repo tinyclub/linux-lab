@@ -687,6 +687,21 @@ endif
 boot: $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS)
 	$(BOOT_CMD)
 
+# Debug
+
+VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
+GDB_CMD ?= $(CCPRE)gdb --quiet $(VMLINUX)
+XTERM_CMD ?= lxterminal --working-directory=$(TOP_DIR) -t "$(GDB_CMD)" -e "$(GDB_CMD)"
+
+debug:
+ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
+	@echo "add-auto-load-safe-path $(TOP_DIR)/.gdbinit" > $(HOME)/.gdbinit
+	@$(XTERM_CMD) &
+	@make -s boot DEBUG=1
+else
+	@echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
+endif
+
 # Allinone
 all: config build boot
 

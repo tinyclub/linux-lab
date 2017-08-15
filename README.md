@@ -131,18 +131,30 @@ Boot with different rootfs:
 
 Debug it:
 
-    Compile the kernel with CONFIG_DEBUG_INFO=y and boot it:
+    Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:
+
+    $ make BOARD=malta debug
+
+    Or debug it in two steps:
 
     $ make BOARD=malta boot DEBUG=1
 
     Open a new terminal:
 
-    $ gdb output/mipsel/linux-4.6-malta/vmlinux
+    $ make env | grep KERNEL_OUTPUT
+    /labs/linux-lab/output/mipsel/linux-4.6-malta/
+
+    $ mipsel-linux-gnu-gdb output/mipsel/linux-4.6-malta/vmlinux
     (gdb) target remote :1234
     (gdb) b kernel_entry
     (gdb) b start_kernel
+    (gdb) b do_fork
     (gdb) c
+    (gdb) c
+    (gdb) c
+    (gdb) bt
 
+    Note: some commands have been already added in `.gdbinit`, you can customize it for yourself.
 
 Save your changes:
 

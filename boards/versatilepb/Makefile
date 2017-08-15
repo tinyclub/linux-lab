@@ -1,4 +1,4 @@
-BASE     = 1
+_BASE    = 1
 ARCH     = arm
 XARCH    = $(ARCH)
 CPU     ?= arm926t

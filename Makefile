@@ -6,22 +6,35 @@ TOP_DIR = $(CURDIR)
 
 USER ?= $(shell whoami)
 
-CONFIG = $(shell cat $(TOP_DIR)/.config 2>/dev/null)
+BOARD_CONFIG = $(shell cat $(TOP_DIR)/.board_config 2>/dev/null)
+PLUGIN_CONFIG = $(shell cat $(TOP_DIR)/.plugin_config 2>/dev/null)
+MODULE_CONFIG = $(shell cat $(TOP_DIR)/.module_config 2>/dev/null)
 
-ifeq ($(CONFIG),)
-  BOARD = versatilepb
-else
-  board ?= $(b)
-  B ?= $(board)
-  ifeq ($(B),)
-    BOARD ?= $(CONFIG)
+board ?= $(b)
+B ?= $(board)
+ifeq ($(B),)
+  ifeq ($(BOARD_CONFIG),)
+    BOARD = versatilepb
   else
-    BOARD := $(B)
+    BOARD ?= $(BOARD_CONFIG)
   endif
+else
+    BOARD := $(B)
+endif
+
+plugin ?= $(p)
+P ?= $(plugin)
+ifeq ($(P),)
+  ifneq ($(PLUGIN_CONFIG),)
+    PLUGIN ?= $(PLUGIN_CONFIG)
+  endif
+else
+  PLUGIN := $(P)
 endif
 
 TOOL_DIR = $(TOP_DIR)/tools/
-BOARD_DIR = $(TOP_DIR)/boards/$(BOARD)/
+BOARDS_DIR = $(TOP_DIR)/boards
+BOARD_DIR = $(BOARDS_DIR)/$(BOARD)/
 TFTPBOOT = $(TOP_DIR)/tftpboot/
 
 PREBUILT_DIR = $(TOP_DIR)/prebuilt/
@@ -184,7 +197,7 @@ ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
 endif
 
 ifeq ($(PBR),0)
-  ROOTDIR = $(ROOT_OUTPUT)/target/
+  ROOTDIR ?= $(ROOT_OUTPUT)/target/
   ifeq ($(U),0)
     ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
       ROOTFS = $(BUILDROOT_ROOTFS)
@@ -239,32 +252,59 @@ BOARD_TOOL=${TOOL_DIR}/board/show.sh
 export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./a-z0-9-]* \]|^ *[a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
-BTYPE    ?= ^BASE|^PLUGIN
+BTYPE    ?= ^_BASE|^_PLUGIN
 
-board:
-	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| sort -t':' -k2 | cut -d':' -f1 | xargs -i ${BOARD_TOOL} {} $(plugin) \
+board: board-save plugin-save
+	@find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i ${BOARD_TOOL} {} $(PLUGIN) \
 		| egrep -v "/module" \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep --colour=auto "$(FILTER)"
+
+board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
-	@echo $(BOARD) > $(TOP_DIR)/.config
+	@echo $(BOARD) > $(TOP_DIR)/.board_config
   endif
 endif
+
+plugin-save:
+ifneq ($(PLUGIN),)
+  ifeq ($(plugin),)
+	@echo $(PLUGIN) > $(TOP_DIR)/.plugin_config
+  endif
+endif
+
+plugin: plugin-save
+	@echo $(PLUGIN)
+
+plugin-list:
+	@find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | xargs -i basename {} | cat -n
+
+plugin-list-full:
+	@find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | cat -n
+
+p: plugin
+p-l: plugin-list
+p-l-f: plugin-list-full
 
 list:
 	@make -s board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
 
 list-base:
-	@make -s list BTYPE="^BASE"
+	@make -s list BTYPE="^_BASE"
 
 list-plugin:
-	@make -s list BTYPE="^PLUGIN"
+	@make -s list BTYPE="^_PLUGIN"
 
 list-full:
 	@make -s board BOARD=
+
+l: list
+l-b: list-base
+l-p: list-plugin
+l-f: list-full
 
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
@@ -361,10 +401,10 @@ ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
 ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
 
 # Install kernel modules?
- KM ?= 1
+KM ?= 1
 
 ifeq ($(KM), 1)
-  KERNEL_MODULES_INSTALL = kernel-modules-install
+  KERNEL_MODULES_INSTALL = module-install
 endif
 
 root-build:
@@ -398,22 +438,67 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 # Kernel modules
 
-MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
-
-# Enable LDT: Linux Driver Template
-ifeq ($(LDT), 1)
-  M ?= $(TOP_DIR)/examples/ldt/
+TOP_MODULE_DIR = $(TOP_DIR)/modules/
+ifneq ($(PLUGIN),)
+  PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules/
 endif
 
-kernel-modules:
+MODULE ?= $(m)
+module ?= $(MODULE)
+ifneq ($(module),)
+  M := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
+else
+  ifneq ($(MODULE_CONFIG),)
+    M ?= $(MODULE_CONFIG)
+  endif
+endif
+
+kernel-modules-save:
+ifneq ($(M),)
+	@echo $(M) > $(TOP_DIR)/.module_config
+endif
+
+MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
+
+kernel-modules: kernel-modules-save
 ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules M=$M
 endif
 
-kernel-modules-install: kernel-modules $(ROOT)
+kernel-modules-list:
+	@find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
+
+kernel-modules-list-full:
+	@find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
+
+M_I_ROOT ?= rootdir
+ifeq ($(PBR), 0)
+  ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
+    M_I_ROOT = root-build
+  endif
+endif
+
+kernel-modules-install: kernel-modules $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$M
 endif
+
+KERNEL_MODULE_CLEAN = $(TOP_DIR)/tools/module/clean.sh
+kernel-modules-clean:
+	$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
+	rm -rf $(TOP_DIR)/.module_config
+
+module: kernel-modules plugin-save
+module-list: kernel-modules-list plugin-save
+module-list-full: kernel-modules-list-full plugin-save
+module-install: kernel-modules-install
+module-clean: kernel-modules-clean
+
+m: module
+m-l: module-list
+m-l-f: module-list-full
+m-i: module-install
+m-c: module-clean
 
 # Configure Kernel
 kernel-checkout:
@@ -476,7 +561,7 @@ endif
 KTARGET ?= $(IMAGE) $(DTBS)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  _ROOT_DIR = rootdir
+  K_ROOT_DIR = rootdir
   KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTDIR)
 endif
 
@@ -484,7 +569,7 @@ KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
-kernel: $(_ROOT_DIR)
+kernel: $(K_ROOT_DIR)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 # Configure Uboot
@@ -670,7 +755,7 @@ ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
 endif
 
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-  ROOT_DIR = rootdir
+  BOOT_ROOT_DIR = rootdir
 endif
 
 rootdir-clean:
@@ -739,12 +824,12 @@ endif
 endif
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-  ifneq ($(PLUGIN),1)
+  ifneq ($(_PLUGIN),1)
     PREBUILT = prebuilt-images
   endif
 endif
 
-boot: $(PREBUILT) $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
+boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
 # Debug

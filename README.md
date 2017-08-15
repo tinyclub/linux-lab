@@ -105,12 +105,14 @@ Build them:
     $ make kernel  # One by one
     $ make root
 
-    $ make kernel-modules # Build internel kernel modules, Must ensure CONFIG_MODULES=y
-    $ make kernel-modules-install
+    $ make module  # Build internel kernel modules, Must ensure CONFIG_MODULES=y
+    $ make module-install
     $ make root-rebuild && make boot
 
-    $ make kernel-modules LDT=1                # Compile examples/ldt/
-    $ make kernel-modules M=$PWD/examples/ldt  # With traditional methods
+    $ make module-list
+        1 ldt
+    $ make module m=ldt  # With traditional methods
+    $ make root-rebuild && make boot
 
 Boot it:
 

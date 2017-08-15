@@ -1,4 +1,4 @@
 output
-.config
+.*_config
 .orig
 .rej

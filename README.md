@@ -169,7 +169,7 @@ Save your changes:
 If NFS boot fails, please make sure `IP_PNP` and `ROOT_NFS` are configured in
 kernel and if issue still exists, then try to fix up it:
 
-    $ tools/restart-net-servers.sh
+    $ /configs/tools/restart-net-servers.sh
 
 By default, the default board: 'versatilepb' is used, we can configure, build
 and boot for a specific board with 'BOARD', for example:

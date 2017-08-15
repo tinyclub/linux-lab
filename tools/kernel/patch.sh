@@ -27,7 +27,9 @@ do
 
     for p in `ls $d`
     do
+        # Ignore some buggy patch via renaming it with suffix .ignore
+        echo $p | grep -q .patch$
+
         [ -f "$d/$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $d/$p
     done
 done
-

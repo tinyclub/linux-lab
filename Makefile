@@ -834,9 +834,12 @@ ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
 endif
 
 # Test support
-TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
-ifeq ($(findstring module,$(FEATURE)),module)
-  TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+TEST_KCLI =
+ifneq ($(FEATURE),)
+  TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
+  ifeq ($(findstring module,$(FEATURE)),module)
+    TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+  endif
 endif
 ifneq ($(TEST_REBOOT),)
   TEST_KCLI += reboot=$(TEST_REBOOT)
@@ -847,16 +850,17 @@ endif
 
 ifeq ($(TEST),1)
   CMDLINE += $(TEST_KCLI)
-  # For file transfering
-  # TODO: Use SHARE=1 instead, but only part of boards support
-  ROOTDEV = /dev/nfs
 endif
+
+# ROOTDEV=/dev/nfs for file sharing between guest and host
+# SHARE=1 is another method, but only work on some boards
+
+test:
+	@make boot TEST=1 ROOTDEV=/dev/nfs
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
-test:
-	@make boot TEST=1
 
 # Debug
 

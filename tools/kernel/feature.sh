@@ -9,25 +9,39 @@ KERNEL_SRC=$3
 KERNEL_OUTPUT=$4
 FEATURE="$5"
 
-TOP_DIR=$(cd $(dirname $0) && pwd)/../../
+TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 KFD_CORE=${TOP_DIR}/feature/linux/core/
 
 LINUX_BASE=${LINUX%.*}
 
-KFD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/feature/linux/${LINUX_BASE}/
-KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux/${LINUX}/
+KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux/
+KFD=${TOP_DIR}/feature/linux/
 
-KFD_BASE=${TOP_DIR}/feature/linux/${LINUX_BASE}/
-KFD=${TOP_DIR}/feature/linux/${LINUX}/
-
-for d in $KFD_CORE $KFD_BOARD_BASE $KFD_BOARD $KFD_BASE $KFD_BASE $KFD
+for d in $KFD_CORE
 do
     for f in $FEATURE
     do
         f=$(echo $f | tr 'A-Z' 'a-z')
-        [ -f "$d/$f/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $d/$f/patch
-        [ -f "$d/$f/config" ] && cat $d/$f/config >> ${KERNEL_OUTPUT}/.config
-        [ -f "$d/$f/config.$BOARD" ] && cat $d/$f/config.$BOARD >> ${KERNEL_OUTPUT}/.config
+
+        path=$d/$f
+        [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
+        [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
+        [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
+    done
+done
+
+for f in $FEATURE
+do
+    f=$(echo $f | tr 'A-Z' 'a-z')
+
+    for d in $KFD_BOARD $KFD
+    do
+        for path in $d/$f/$LINUX $d/$f/$LINUX_BASE
+        do
+            [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
+            [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
+            [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
+        done
     done
 done

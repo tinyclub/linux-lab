@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-# start.sh -- test a kernel feature of a specified kernel version on a specified board automatically
+# launch.sh -- test a kernel feature of a specified kernel version on a specified board automatically
 #
-# Usage: tools/test/start.sh FEATURE LINUX BOARD
+# Usage: tools/testing/launch.sh FEATURE LINUX BOARD
 #
-#  e.g.: tools/test/start.sh kft v2.6.36 malta
+#  e.g.: tools/testing/launch.sh kft v2.6.36 malta
 #
 
 FEATURE="$1"
@@ -14,16 +14,18 @@ K=$4
 U=$5
 V=$6
 
-TOP_DIR=$(dirname `readlink -f $0`)/../
+TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 function usage
 {
-	echo -e "Usage: $0 FEATURE LINUX BOARD\n\n e.g. tools/test/start.sh kft v2.6.36 malta" && exit 0
+	echo -e "Usage: $0 FEATURE LINUX BOARD\n\n e.g. tools/testing/launch.sh kft v2.6.36 malta" && exit 0
 }
 
 [ -z "$FEATURE" ] && usage
 [ -z "$BOARD" ] && usage
 [ -z "$LINUX" ] && usage
+[ -z "$K" ] && K=1
+[ -z "$U" ] && U=0
 
 CORE_DIR=${TOP_DIR}/feature/linux/core/
 
@@ -39,28 +41,23 @@ do
     done
 done
 
-export board=$BOARD LINUX=$LINUX FEATURE="$FEATURE"
+export board=$BOARD U=$U LINUX=$LINUX FEATURE="$FEATURE"
 eval `make env | grep ROOTDIR | tr -d ' '`
 
-if [ -n "$K" -a $K -ne 1 ]; then
+if [ "x$K" == "x1" ]; then
     make gcc
-
     make kernel-checkout
-
+    make kernel-patch
     make kernel-defconfig
-
     make kernel-feature
-
     make kernel-oldconfig
-
     make kernel V=$V
 fi
 
 # Make sure the testing framework is installed
 # system/: etc/default/testing, tools/testing/start.sh, tools/FEATURE/test.sh
+make rootdir
 make root-install
-
-make root-rebuild
 
 # TODO: host prepare for testing
 for f in $FEATURE
@@ -70,7 +67,7 @@ do
 done
 
 # TODO: To transfer data easier, ROOTDEV=/dev/nfs is preferable, data is stored in $ROOTDIR
-make boot U=$U XKCLI=feature=$(echo $FEATURE | tr ' ' ',') ROOTDEV=/dev/nfs
+make test
 
 # TODO: host prepare for testing
 for f in $FEATURE

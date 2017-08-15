@@ -36,6 +36,7 @@ endif
 TOOL_DIR = $(TOP_DIR)/tools/
 BOARDS_DIR = $(TOP_DIR)/boards
 BOARD_DIR = $(BOARDS_DIR)/$(BOARD)/
+FEATURE_DIR = $(TOP_DIR)/feature/linux
 TFTPBOOT = $(TOP_DIR)/tftpboot/
 
 PREBUILT_DIR = $(TOP_DIR)/prebuilt/
@@ -47,6 +48,18 @@ PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot/
 
 ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
+endif
+
+F ?= $(f)
+FEATURES ?= $(F)
+FEATURE ?= $(FEATURES)
+ifneq ($(FEATURE),)
+  _BOARD = $(shell basename $(BOARD))
+  FEATURE_ENVS = $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+			$(shell [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ] && \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) | \
+			sed -e "s%$(TOP_DIR)/%%g"))
+  include $(FEATURE_ENVS)
 endif
 
 _BIMAGE := $(BIMAGE)
@@ -449,6 +462,9 @@ endif
 
 root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
+root-prepare: root-checkout root-defconfig
+root-auto: root-prepare root
+
 # Kernel modules
 
 TOP_MODULE_DIR = $(TOP_DIR)/modules/
@@ -476,10 +492,6 @@ ifeq ($(MODULE),)
     MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',')
   endif
 endif
-
-tmp: FORCE
-	@echo $(module)
-	@echo $(MODULE)
 
 ifneq ($(module),)
   M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
@@ -538,13 +550,7 @@ ms-l-f: modules-list-full
 # e.g. make module-test module=ldt,oops_test MODULE=ldt,oops
 module-test: FORCE
 ifneq ($(module),)
-	@make feature FEATURE="$(FEATURE),module"
-	@make modules M=
-	@make modules-install M=
-	@make modules
-	@make modules-install
-	@make root-install
-	@make test FEATURE="$(FEATURE),module"
+	@make feature-test FEATURE="$(FEATURE),module"
 else
 	@echo Usage: make module-test modules=... MODULES=...
 	@echo Available Modules:
@@ -617,9 +623,6 @@ kernel-menuconfig:
 
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
-F ?= $(f)
-FEATURES ?= $(F)
-FEATURE ?= $(FEATURES)
 kernel-feature:
 	@$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
@@ -629,7 +632,6 @@ kernel-features: feature
 k-f: feature
 f: feature
 
-FEATURE_DIR = $(TOP_DIR)/feature/linux
 kernel-feature-list:
 	@echo [ $(FEATURE_DIR) ]: | sed -e "s%$(TOP_DIR)/%%g"
 	@find $(FEATURE_DIR) -mindepth 1 | egrep -v "config|patch|version" | sed -e "s%$(FEATURE_DIR)/%%g" | sort | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
@@ -639,10 +641,35 @@ features-list: kernel-feature-list
 feature-list: kernel-feature-list
 f-l: feature-list
 
-kernel-feature-test: FORCE
+# Automated testing
+#
+# e.g. make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=auto
+#      make module-test m=oops_test TEST=kernel-checkout,kernel-patch  # Make more targets for test
+#      make module-test m=oops_test TEST_FINISH=echo        # Don't poweroff after test
+#      make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh # run guest test case
+#      make module-test m=oops_test TEST_REBOOT=2           # Reboot for 2 times
+
+ifeq ($(findstring auto,$(TEST)),auto)
+  TEST_TARGETS := kernel-prepare
+else
+  TEST_TARGETS ?= $(TEST)
+endif
+
+TEST_PREPARE := $(shell echo $(TEST_TARGETS) | tr ',' ' ')
+
+kernel-feature-test: $(TEST_PREPARE) FORCE
 ifneq ($(FEATURE),)
 	@make feature FEATURE="$(FEATURE)"
+	@make kernel-oldconfig
 	@make kernel
+	@make rootdir-clean
+	@make rootdir
+ifeq ($(findstring module,$(FEATURE)),module)
+	@make modules M=
+	@make modules-install M=
+	@make modules
+	@make modules-install
+endif
 	@make root-install
 	@make test FEATURE="$(FEATURE)"
 else
@@ -685,6 +712,9 @@ KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 kernel: $(K_ROOT_DIR)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
+
+kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
+kernel-auto: kernel-prepare kernel
 
 # Configure Uboot
 uboot-checkout:
@@ -962,19 +992,29 @@ endif
 ifneq ($(TEST_FINISH),)
   TEST_KCLI += test_finish=$(TEST_FINISH)
 endif
+
+TEST_CASE ?= $(TEST_CASES)
 ifneq ($(TEST_CASE),)
   TEST_KCLI += test_case=$(TEST_CASE)
 endif
 
-ifeq ($(TEST),1)
+ifneq ($(TEST),)
   CMDLINE += $(TEST_KCLI)
 endif
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards
 
+SYSTEM_TOOL_DIR=$(TOP_DIR)/system/tools
+
 test:
-	@make boot TEST=1 ROOTDEV=/dev/nfs
+	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
+	@make boot TEST=FORCE ROOTDEV=/dev/nfs
+	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)

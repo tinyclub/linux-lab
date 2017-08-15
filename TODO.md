@@ -24,3 +24,5 @@
 19. Add Android emulator support?
 20. Add Features list and test support
 21. Add Modules list and test support
+22. Add rootfs and uboot test support
+23. Automate everything, download sources, build and boot.

@@ -14,13 +14,30 @@ echo
 for m in $MODULES 
 do
 
+    echo
+    echo "module: Starting testing module: $m"
+    echo
+
+    echo
+    echo "module: modprobe $m"
+    echo
     modprobe $m
     sleep 1
 
+    echo
+    echo "module: lsmod $m"
+    echo
     lsmod
     sleep 1
 
+    echo
+    echo "module: rmmod $m"
+    echo
     rmmod $m
+
+    echo
+    echo "module: Stoping testing module: $m"
+    echo
 
 done
 

@@ -26,6 +26,9 @@ do
         f=$(echo $f | tr 'A-Z' 'a-z')
 
         path=$d/$f
+        [ ! -d $path ] && continue
+        echo "Appling feature: $f"
+
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
         [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
         [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
@@ -40,6 +43,10 @@ do
     do
         for path in $d/$f/$LINUX $d/$f/$LINUX_BASE
         do
+
+            [ ! -d $path ] && continue
+            echo "Appling feature: $f"
+
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
             [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
             [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config

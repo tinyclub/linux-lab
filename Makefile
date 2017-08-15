@@ -273,6 +273,10 @@ ifneq ($(BOARD),)
   endif
 endif
 
+b: board
+b-s: board-save
+b-c: board-clean
+
 plugin-save:
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
@@ -293,6 +297,7 @@ plugin-list-full:
 	@find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | cat -n
 
 p: plugin
+p-s: plugin-save
 p-l: plugin-list
 p-l-f: plugin-list-full
 p-c: plugin-clean
@@ -451,16 +456,36 @@ ifneq ($(PLUGIN),)
   PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules/
 endif
 
-module ?= $(m)
+modules ?= $(m)
+module ?= $(modules)
 ifeq ($(module),all)
   module := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
 endif
 
+ifneq ($(M),)
+  ifeq ($(M),$(wildcard $(M)))
+    M_PATH ?= $(M)
+  else
+    MODULES ?= $(M)
+  endif
+endif
+
+MODULE ?= $(MODULES)
+ifeq ($(MODULE),)
+  ifneq ($(module),)
+    MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',')
+  endif
+endif
+
+tmp: FORCE
+	@echo $(module)
+	@echo $(MODULE)
+
 ifneq ($(module),)
-  M := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
+  M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
 else
   ifneq ($(MODULE_CONFIG),)
-    M ?= $(MODULE_CONFIG)
+    M_PATH ?= $(MODULE_CONFIG)
   endif
 endif
 
@@ -473,7 +498,7 @@ MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL
 
 kernel-modules: kernel-modules-save
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules M=$M
+	make kernel KTARGET=modules M=$(M_PATH)
 endif
 
 kernel-modules-list:
@@ -491,12 +516,12 @@ endif
 
 kernel-modules-install: kernel-modules $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$M
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$(M_PATH)
 endif
 
 KERNEL_MODULE_CLEAN = $(TOP_DIR)/tools/module/clean.sh
 kernel-modules-clean:
-	$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
+	@$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
 	rm -rf $(TOP_DIR)/.module_config
 
 module: kernel-modules plugin-save
@@ -504,6 +529,16 @@ module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
 module-install: kernel-modules-install
 module-clean: kernel-modules-clean
+
+# e.g. make module-test module=ldt,oops_test MODULE=ldt,oops
+module-test: FORCE
+	@make feature FEATURE="$(FEATURE),module"
+	@make modules M=
+	@make modules-install M=
+	@make modules
+	@make modules-install
+	@make root-install
+	@make test FEATURE="$(FEATURE),module"
 
 modules: FORCE
 	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
@@ -522,6 +557,7 @@ m-l: module-list
 m-l-f: module-list-full
 m-i: module-install
 m-c: module-clean
+m-t: module-test
 
 ms: modules
 ms-i: modules-install
@@ -567,8 +603,17 @@ kernel-menuconfig:
 
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
+F ?= $(f)
+FEATURES ?= $(F)
+FEATURE ?= $(FEATURES)
 kernel-feature:
 	@$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+
+feature: kernel-feature
+features: feature
+kernel-features: feature
+k-f: feature
+f: feature
 
 IMAGE = $(shell basename $(ORIIMG))
 

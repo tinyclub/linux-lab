@@ -286,7 +286,6 @@ ifneq ($(BOARD),)
   endif
 endif
 
-b: board
 b-s: board-save
 b-c: board-clean
 
@@ -337,23 +336,56 @@ l-f: list-full
 uboot-source:
 	git submodule update --init --remote u-boot
 
+download-uboot: uboot-source
+uboot-download: uboot-source
+d-u: uboot-source
+
 qemu-source:
 	git submodule update --init --remote qemu
+
+qemu-download: qemu-source
+download-qemu: qemu-source
+d-q: qemu-source
+q-d: qemu-source
+e-d: qemu-source
 
 kernel-source:
 	git submodule update --init --remote linux-stable
 
+kernel-download: kernel-source
+download-kernel: kernel-source
+d-k: kernel-source
+
 root-source:
 	git submodule update --init --remote buildroot
+
+root-download: root-source
+download-root: root-source
+d-r: root-source
 
 prebuilt-images:
 	git submodule update --init --remote prebuilt
 
+prebuilt-download: prebuilt-images
+download-prebuilt: prebuilt-images
+d-p: prebuilt-images
+
 source: prebuilt-images kernel-source root-source
+
+download: source
+d: source
 
 core-source: source uboot-source
 
+core-download: core-source
+download-core: core-source
+d-c: core-source
+
 all-source: source uboot-source qemu-source
+
+download-all: all-source
+all-download: all-source
+d-a: all-source
 
 # Qemu
 
@@ -365,6 +397,8 @@ endif
 endif
 emulator-checkout:
 	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fdx && cd $(TOP_DIR)
+
+e-c: emulator-checkout
 
 QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
 
@@ -380,6 +414,8 @@ ifeq ($(QPD),$(wildcard $(QPD)))
 	-$(foreach p,$(shell ls $(QPD)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD)/$p\;))
 endif
 
+e-p: emualtor-patch
+
 ifneq ($(QEMU),)
 ifneq ($(QP),0)
   EMULATOR_PATCH = emulator-patch
@@ -391,6 +427,9 @@ emulator: $(EMULATOR_PATCH)
 	cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
 	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)
 
+q: emulator
+e: q
+
 # Toolchains
 
 toolchain:
@@ -398,6 +437,9 @@ toolchain:
 
 toolchain-clean:
 	make -C $(TOOLCHAIN) clean
+
+t: toolchain
+t-c: toolchain-clean
 
 # Rootfs
 
@@ -421,6 +463,11 @@ root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
 
 root-menuconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
+
+r-d: root-source
+r-o: root-checkout
+r-c: root-defconfig
+r-m: root-menuconfig
 
 # Build Buildroot
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
@@ -639,7 +686,8 @@ kernel-feature-list:
 kernel-features-list: kernel-feature-list
 features-list: kernel-feature-list
 feature-list: kernel-feature-list
-f-l: feature-list
+k-f-l: feature-list
+f-l: k-f-l
 
 # Automated testing
 #
@@ -682,7 +730,8 @@ endif
 kernel-features-test: kernel-feature-test
 features-test: kernel-feature-test
 feature-test: kernel-feature-test
-f-t: feature-test
+k-f-t: feature-test
+f-t: k-f-t
 
 IMAGE = $(shell basename $(ORIIMG))
 
@@ -712,6 +761,14 @@ KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 kernel: $(K_ROOT_DIR)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
+
+k-d: kernel-source
+k-o: kernel-checkout
+k-p: kernel-patch
+k-c: kernel-defconfig
+k-o-c: kernel-oldconfig
+k-m: kernel-menuconfig
+k: kernel
 
 kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
 kernel-auto: kernel-prepare kernel
@@ -776,6 +833,14 @@ uboot-menuconfig:
 uboot:
 	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
+
+u-d: uboot-source
+u-o: uboot-checkout
+u-p: uboot-patch
+u-c: uboot-defconfig
+u-m: uboot-menuconfig
+u: uboot
+
 # Checkout kernel and Rootfs
 checkout: kernel-checkout root-checkout
 
@@ -784,6 +849,11 @@ config: root-defconfig kernel-defconfig
 
 # Build Kernel and Rootfs
 build: root kernel
+
+
+o: checkout
+c: config
+b: build
 
 # Save the built images
 root-save:
@@ -803,6 +873,11 @@ endif
 uboot-save:
 	mkdir -p $(PREBUILT_UBOOTDIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOTDIR)
+
+
+r-s: root-save
+k-s: kernel-save
+u-s: uboot-save
 
 uboot-saveconfig: uconfig-save
 
@@ -829,8 +904,13 @@ rconfig-save:
 	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
 	else cp $(ROOT_OUTPUT)/.config $(BOARD_DIR)/buildroot_$(CPU)_defconfig; fi
 
+r-c-s: rconfig-save
+u-c-s: uconfig-save
+k-c-s: kconfig-save
 
 save: root-save kernel-save rconfig-save kconfig-save
+
+s: save
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
@@ -1066,15 +1146,30 @@ uboot-distclean:
 kernel-distclean:
 	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
 
+
+c-e: emulator-clean
+c-r: root-clean
+c-u: uboot-clean
+c-k: kernel-clean
+c: clean
+
+dc-e: emulator-distclean
+dc-r: root-distclean
+dc-u: uboot-distclean
+dc-k: kernel-distclean
+dc: distclean
+
+distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
+
 GCC_SWITCH_TOOL = $(TOP_DIR)/tools/gcc/switch.sh
 gcc:
 ifneq ($(GCC),)
 	$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
 endif
 
-distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
+g: gcc
 
-# Show the variables 
+# Show the variables
 VARS = $(shell cat $(TOP_DIR)/boards/$(BOARD)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
@@ -1095,5 +1190,6 @@ env-save:
 help:
 	@cat $(TOP_DIR)/README.md
 
+h: help
 
 FORCE:

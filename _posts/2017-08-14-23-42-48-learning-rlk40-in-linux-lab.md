@@ -55,7 +55,7 @@ tags:
 
 作为一个安卓手机系统研发的从业者，这本书犹如及时雨，从 ARM64 处理器架构、内核版本 4.0 到为节能引入的 [EAS 调度](http://www.linaro.org/blog/core-dump/energy-aware-scheduling-eas-project/)，甚至更强大的内存检测工具 [Kasan](https://www.ibm.com/developerworks/cn/linux/1608_tengr_kasan/index.html) ，这些都是安卓 Linux 内核开发者所迫切需要的内容。而源自工作经验的启发式问题，能让相关的从业者产生共鸣，相关的解法可以用到实际工作中去，阅读效果预计会提高不少。
 
-## 实操性
+## 本书实操性强
 
 本书还有一个很重要的特点，就是它的实操性很强。
 

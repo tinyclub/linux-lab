@@ -701,7 +701,12 @@ ifneq ($(SHARE),0)
 endif
 
 # Shutdown the board if 'poweroff -h/-n' or crash
-EXIT_ACTION ?= -no-reboot
+ifneq ($(TEST_REBOOT),)
+  TEST_FINISH = reboot
+endif
+ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
+  EXIT_ACTION ?= -no-reboot
+endif
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(XOPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
@@ -828,23 +833,30 @@ ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
   endif
 endif
 
-boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
-	$(BOOT_CMD)
-
 # Test support
-FS_SHARE ?= ROOTDEV=/dev/nfs
-TEST_OPTS  = $(FS_SHARE)
 TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
 ifeq ($(findstring module,$(FEATURE)),module)
   TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
 endif
+ifneq ($(TEST_REBOOT),)
+  TEST_KCLI += reboot=$(TEST_REBOOT)
+endif
 ifneq ($(TEST_FINISH),)
   TEST_KCLI += test_finish=$(TEST_FINISH)
 endif
-TEST_OPTS += XKCLI=$(TEST_KCLI)
 
-boot-test:
-	@make -s boot $(TEST_OPTS)
+ifeq ($(TEST),1)
+  CMDLINE += $(TEST_KCLI)
+  # For file transfering
+  # TODO: Use SHARE=1 instead, but only part of boards support
+  ROOTDEV = /dev/nfs
+endif
+
+boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
+	$(BOOT_CMD)
+
+test:
+	@make boot TEST=1
 
 # Debug
 

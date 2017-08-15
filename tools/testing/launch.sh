@@ -10,10 +10,7 @@
 FEATURE="$1"
 LINUX=$2
 BOARD=$3
-MODULE="$4"
-K=$5
-U=$6
-V=$7
+K=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
@@ -25,12 +22,29 @@ function usage
 [ -z "$FEATURE" ] && usage
 [ -z "$BOARD" ] && usage
 [ -z "$LINUX" ] && usage
+
+# Access environment variables
+# Usage:
+#
+#  e.g. ./tools/testing/launch.sh debug,module v4.0 rlk4.0/virt module=oops_test MODULE=oops
+#  e.g. ./tools/testing/launch.sh module v4.0 rlk4.0/virt module=oops_test,rcu_test MODULE=oops,rcu,krng,stp,llc TEST_FINISH="echo"
+#
+# module: module directory list
+# MODULE: module name list
+#
+for v in $(echo $@ | tr ' ' '\n' | grep =)
+do
+    export $v
+done
+
+[ -n "$module" -o "$MODULE" ] && FEATURE=$FEATURE",module"
 [ -z "$K" ] && K=1
 [ -z "$U" ] && U=0
 
 CORE_DIR=${TOP_DIR}/feature/linux/core/
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 MODULE="$(echo $MODULE | tr ',' ' ')"
+module="$(echo $module | tr ',' ' ')"
 
 for f in $FEATURE
 do
@@ -57,14 +71,23 @@ if [ "x$K" == "x1" ]; then
     make kernel V=$V
 fi
 
-echo $FEATURE | grep -q module
-if [ $? -eq 0 ]; then
-    make module M=
-fi
-
 # Make sure the testing framework is installed
 # system/: etc/default/testing, tools/testing/start.sh, tools/FEATURE/test.sh
 make rootdir
+
+echo $FEATURE | grep -q module
+if [ $? -eq 0 ]; then
+    make module M=
+    make module-install M=
+
+    for m in $module
+    do
+        echo "Building module: $m"
+        make module module=$m
+        make module-install module=$m
+    done
+fi
+
 make root-install
 
 # TODO: host prepare for testing

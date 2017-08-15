@@ -16,6 +16,10 @@ do
 
     modprobe $m
     sleep 1
+
+    lsmod
+    sleep 1
+
     rmmod $m
 
 done

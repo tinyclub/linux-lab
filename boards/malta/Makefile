@@ -1,3 +1,4 @@
+BASE     = 1
 ARCH     = mips
 XARCH    = mipsel
 CPU     ?= mips32r2

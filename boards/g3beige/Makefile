@@ -1,3 +1,4 @@
+BASE     = 1
 ARCH     = powerpc
 XARCH    = ppc
 CPU     ?= generic

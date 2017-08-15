@@ -1,3 +1,4 @@
+BASE     = 1
 ARCH     = arm
 XARCH    = $(ARCH)
 CPU     ?= cortex-a9

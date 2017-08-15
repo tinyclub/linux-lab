@@ -235,12 +235,19 @@ ifeq ($(ROOTDEV),/dev/nfs)
 endif
 
 # For debug
+BOARD_TOOL=${TOOL_DIR}/board/show.sh
+GREP_COLOR=32;40
+FILTER   ?= ^[ [\./a-z0-9-]* \]|^ *[a-zA-Z0-9]* *
+# all: 0, plugin: 1, noplugin: 2
+BTYPE    ?= ^BASE|^PLUGIN
+
 board:
-	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 3 -name "Makefile" -printf "[ %p ]:\n" -exec cat -n {} \; \
+	@find $(TOP_DIR)/boards/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i ${BOARD_TOOL} {} $(plugin) \
 		| egrep -v "/module" \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep "$(FILTER)"
+		| egrep --colour=auto "$(FILTER)"
 ifneq ($(BOARD),)
   ifeq ($(board),)
 	@echo $(BOARD) > $(TOP_DIR)/.config
@@ -248,10 +255,16 @@ ifneq ($(BOARD),)
 endif
 
 list:
-	@make -s board BOARD= FILTER="^ *ARCH |[a-z0-9]* \]:|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
+	@make -s board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ARCH|^ *ROOTDEV"
+
+list-base:
+	@make -s list BTYPE="^BASE"
+
+list-plugin:
+	@make -s list BTYPE="^PLUGIN"
 
 list-full:
-	@make board BOARD=
+	@make -s board BOARD=
 
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
@@ -346,7 +359,6 @@ root-menuconfig:
 # Build Buildroot
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
 ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
-ROOT_FILEMAP = $(TOOL_DIR)/rootfs/file_map
 
 # Install kernel modules?
  KM ?= 1
@@ -783,7 +795,7 @@ distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean 
 # Show the variables 
 VARS = $(shell cat $(TOP_DIR)/boards/$(BOARD)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += FEATURE TFTPBOOT
-VARS += ROOTDIR ROOT_FILEMAP ROOT_SRC ROOT_OUTPUT ROOT_GIT
+VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD

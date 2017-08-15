@@ -1,3 +1,4 @@
+BASE     = 1
 ARCH     = arm64
 XARCH    = aarch64
 CPU     ?= cortex-a57

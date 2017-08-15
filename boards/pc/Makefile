@@ -1,3 +1,4 @@
+BASE     = 1
 ARCH     = x86
 XARCH    = i386
 CPU     ?= i686

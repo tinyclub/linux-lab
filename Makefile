@@ -1058,6 +1058,9 @@ endif
 # Test support
 ifneq ($(TEST),)
   TEST_KCLI =
+  ifeq ($(FEATURE),)
+    FEATURE := boot
+  endif
   ifneq ($(module),)
     FEATURE += module
   endif

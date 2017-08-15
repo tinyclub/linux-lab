@@ -160,6 +160,18 @@ Debug it:
 
 Test it:
 
+    // Simply boot and poweroff
+    $ make test
+
+    // Don't poweroff after testing
+    $ make test TEST_FINISH=echo
+
+    // Run guest test case
+    $ make test TEST_CASE=/tools/ftrace/trace.sh
+
+    // Reboot the guest system for several times
+    $ make test TEST_REBOOT=2
+
     // Test a feature of a specified linux version on a specified board
     $ make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=auto
 
@@ -168,16 +180,6 @@ Test it:
 
     // Test a kernel module and make some targets before testing
     $ make module-test m=oops_test TEST=kernel-checkout,kernel-patch
-
-    // Don't poweroff after testing
-    $ make module-test m=oops_test TEST_FINISH=echo
-
-    // Run guest test case
-    $ make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh
-
-    // Reboot the guest system for several times
-    $ make module-test m=oops_test TEST_REBOOT=2
-
 
 Save your changes:
 

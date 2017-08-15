@@ -475,8 +475,17 @@ endif
 
 KTARGET ?= $(IMAGE) $(DTBS)
 
-kernel:
-	PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) -j$(HOST_CPU_THREADS) $(KTARGET)
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  _ROOT_DIR = rootdir
+  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTDIR)
+endif
+
+KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
+KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
+KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
+
+kernel: $(_ROOT_DIR)
+	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 # Configure Uboot
 uboot-checkout:

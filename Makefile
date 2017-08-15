@@ -438,9 +438,6 @@ toolchain:
 toolchain-clean:
 	make -C $(TOOLCHAIN) clean
 
-t: toolchain
-t-c: toolchain-clean
-
 # Rootfs
 
 RCO ?= 0
@@ -853,7 +850,7 @@ build: root kernel
 
 o: checkout
 c: config
-b: build
+B: build
 
 # Save the built images
 root-save:
@@ -1099,6 +1096,9 @@ test:
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
+
+t: test
+b: boot
 
 # Debug
 

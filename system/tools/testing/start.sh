@@ -7,15 +7,28 @@
 
 # Get feature list from kernel command line
 FEATURE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^feature= | cut -d'=' -f2 | tr ',' ' ')"
+CASE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^test_case= | cut -d'=' -f2 | tr ',' ' ')"
 FINISH="$(cat /proc/cmdline | tr ' ' '\n' | grep ^test_finish= | cut -d'=' -f2 | tr ',' ' ')"
 REBOOT="$(cat /proc/cmdline | tr ' ' '\n' | grep ^reboot= | cut -d'=' -f2 | tr ',' ' ')"
 
-[ -z "$FEATURE" ] && exit 0
+[ -z "$FEATURE" -a -z "$CASE" -a -z "$REBOOT" ] && exit 0
 [ -z "$FINISH" ] && FINISH=$FINISH_ACTION
 
 echo
 echo "Starting testing ..."
 echo
+
+for c in $CASE
+do
+    echo
+    echo "Testing case: $c"
+    echo
+
+    $c
+
+    echo
+
+done
 
 for f in $FEATURE
 do

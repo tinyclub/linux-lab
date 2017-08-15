@@ -855,6 +855,9 @@ endif
 ifneq ($(TEST_FINISH),)
   TEST_KCLI += test_finish=$(TEST_FINISH)
 endif
+ifneq ($(TEST_CASE),)
+  TEST_KCLI += test_case=$(TEST_CASE)
+endif
 
 ifeq ($(TEST),1)
   CMDLINE += $(TEST_KCLI)

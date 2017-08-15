@@ -11,6 +11,9 @@ CONFIG = $(shell cat $(TOP_DIR)/.config 2>/dev/null)
 ifeq ($(CONFIG),)
   BOARD = versatilepb
 else
+  T ?= $(TMP_BOARD)
+  t ?= $(T)
+  B ?= $(t)
   b ?= $(B)
   board ?= $(b)
   ifeq ($(board),)
@@ -242,7 +245,9 @@ board:
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep "$(FILTER)"
 ifneq ($(BOARD),)
+  ifeq ($(t),)
 	@echo $(BOARD) > $(TOP_DIR)/.config
+  endif
 endif
 
 list:

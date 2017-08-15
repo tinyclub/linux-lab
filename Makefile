@@ -695,6 +695,18 @@ uboot-imgs: $(ROOTFS) $(UKIMAGE)
 UBOOT_IMGS = uboot-imgs
 endif
 
+ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  ifeq ($(PBR),0)
+    ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
+      ROOT_CPIO = root-rebuild
+    endif
+  else
+    ifneq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
+      ROOT_CPIO = root-rebuild
+    endif
+  endif
+endif
+
 ROOT_MKFS_TOOL = $(TOOL_DIR)/rootfs/mkfs.sh
 
 root-fs:
@@ -709,10 +721,12 @@ endif
 endif
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-  PREBUILT = prebuilt-images
+  ifneq ($(PLUGIN),1)
+    PREBUILT = prebuilt-images
+  endif
 endif
 
-boot: $(PREBUILT) $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS)
+boot: $(PREBUILT) $(ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
 # Debug

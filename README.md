@@ -246,7 +246,7 @@ default:
         $ make root-install PBR=1
         $ make root-rebuild PBR=1
 
-        $ touch share/test     # Create a file in host
+        $ touch hostshare/test     # Create a file in host
 
         $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
 

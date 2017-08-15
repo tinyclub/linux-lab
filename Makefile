@@ -822,8 +822,8 @@ ifneq ($(PBR),0)
 endif
 endif
 
-ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-  ifneq ($(_PLUGIN),1)
+ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
+  ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
     PREBUILT = prebuilt-images
   endif
 endif

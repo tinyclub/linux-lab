@@ -11,7 +11,11 @@ CONFIG = $(shell cat $(TOP_DIR)/.config 2>/dev/null)
 ifeq ($(CONFIG),)
   BOARD = versatilepb
 else
-  BOARD ?= $(CONFIG)
+  ifeq ($(board),)
+    BOARD ?= $(CONFIG)
+  else
+    BOARD := $(board)
+  endif
 endif
 
 TOOL_DIR = $(TOP_DIR)/tools/

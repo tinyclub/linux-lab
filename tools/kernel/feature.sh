@@ -17,6 +17,7 @@ LINUX_BASE=${LINUX%.*}
 
 KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux/
 KFD=${TOP_DIR}/feature/linux/
+FEATURE="$(echo $FEATURE | tr ',' ' ')"
 
 for d in $KFD_CORE
 do
@@ -45,3 +46,5 @@ do
         done
     done
 done
+
+exit 0

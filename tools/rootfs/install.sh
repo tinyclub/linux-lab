@@ -3,7 +3,7 @@
 # install.sh -- install extra packages to the rootfs target
 #
 
-TOP_DIR=$(cd $(dirname $0) && pwd)/../../
+TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 [ -z "$SYSTEM" ] && SYSTEM=$TOP_DIR/system
 echo "LOG: SYSTEM: $SYSTEM"

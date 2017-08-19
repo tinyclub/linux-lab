@@ -8,7 +8,7 @@ LINUX=$2
 KERNEL_SRC=$3
 KERNEL_OUTPUT=$4
 
-TOP_DIR=$(cd $(dirname $0) && pwd)/../../
+TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 KFD_CORE=${TOP_DIR}/patch/linux/core/
 
@@ -28,7 +28,8 @@ do
     for p in `ls $d`
     do
         # Ignore some buggy patch via renaming it with suffix .ignore
-        echo $p | grep -q .patch$
+        echo $p | grep -q .ignore$
+        [ $? -eq 0 ] && continue
 
         [ -f "$d/$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $d/$p
     done

@@ -514,6 +514,8 @@ root-auto: root-prepare root
 TOP_MODULE_DIR = $(TOP_DIR)/modules/
 ifneq ($(PLUGIN),)
   PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules/
+else
+  PLUGIN_MODULE_DIR = $(shell find $(TOP_DIR)/boards/ -type d -name "modules")
 endif
 
 modules ?= $(m)

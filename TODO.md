@@ -26,3 +26,5 @@
 21. Add Modules list and test support
 22. Add rootfs and uboot test support
 23. Automate everything, download sources, build and boot.
+24. Boot uboot with kernel/rootfs from flash
+   http://www.cnblogs.com/WuCountry/archive/2012/05/01/2477876.html

@@ -696,29 +696,81 @@ f-l: k-f-l
 #      make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh # run guest test case
 #      make module-test m=oops_test TEST_REBOOT=2           # Reboot for 2 times
 
+ifneq ($(module),)
+  FEATURE += module
+endif
+
 ifeq ($(findstring auto,$(TEST)),auto)
   TEST_TARGETS := kernel-prepare
 else
-  TEST_TARGETS ?= $(TEST)
+  ifeq ($(findstring feature,$(TEST)),feature)
+    ifneq ($(FEATURE),)
+      TEST_TARGETS += feature-init
+    endif
+  else
+    TEST_TARGETS ?= $(TEST)
+  endif
 endif
+
 
 TEST_PREPARE := $(shell echo $(TEST_TARGETS) | tr ',' ' ')
 
-kernel-feature-test: $(TEST_PREPARE) FORCE
-ifneq ($(FEATURE),)
-	@make feature FEATURE="$(FEATURE)"
+ifeq ($(FEATURE),)
+  FEATURE := boot
+endif
+
+# Test support
+ifneq ($(TEST),)
+  TEST_KCLI =
+  ifneq ($(FEATURE),)
+    TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
+    ifeq ($(findstring module,$(FEATURE)),module)
+      TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+    endif
+  endif
+  ifneq ($(TEST_REBOOT),)
+    TEST_KCLI += reboot=$(TEST_REBOOT)
+  endif
+  ifneq ($(TEST_FINISH),)
+    TEST_KCLI += test_finish=$(TEST_FINISH)
+  endif
+
+  TEST_CASE ?= $(TEST_CASES)
+  ifneq ($(TEST_CASE),)
+    TEST_KCLI += test_case=$(TEST_CASE)
+  endif
+
+  CMDLINE += $(TEST_KCLI)
+endif
+
+kernel-init:
 	@make kernel-oldconfig
 	@make kernel
+
+rootdir-init:
 	@make rootdir-clean
 	@make rootdir
-ifeq ($(findstring module,$(FEATURE)),module)
+	@make root-install
+
+module-init:
 	@make modules M=
 	@make modules-install M=
 	@make modules
 	@make modules-install
+
+feature-init: FORCE
+ifneq ($(FEATURE),)
+	@make feature FEATURE="$(FEATURE)"
+	@make kernel-init
+	@make rootdir-init
+ifeq ($(findstring module,$(FEATURE)),module)
+	@make module-init
 endif
-	@make root-install
-	@make test FEATURE="$(FEATURE)"
+endif
+
+kernel-feature-test: $(TEST_PREPARE) feature-init FORCE
+ifneq ($(FEATURE),)
+	@make test FEATURE="$(FEATURE)" TEST_PREAPRE=
 else
 	@echo Usage: make feature-test FEATURE=...
 	@echo Available Features:
@@ -1057,49 +1109,25 @@ ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
   endif
 endif
 
-# Test support
-ifneq ($(TEST),)
-  TEST_KCLI =
-  ifeq ($(FEATURE),)
-    FEATURE := boot
-  endif
-  ifneq ($(module),)
-    FEATURE += module
-  endif
-  ifneq ($(FEATURE),)
-    TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
-    ifeq ($(findstring module,$(FEATURE)),module)
-      TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
-    endif
-  endif
-  ifneq ($(TEST_REBOOT),)
-    TEST_KCLI += reboot=$(TEST_REBOOT)
-  endif
-  ifneq ($(TEST_FINISH),)
-    TEST_KCLI += test_finish=$(TEST_FINISH)
-  endif
-
-  TEST_CASE ?= $(TEST_CASES)
-  ifneq ($(TEST_CASE),)
-    TEST_KCLI += test_case=$(TEST_CASE)
-  endif
-
-  CMDLINE += $(TEST_KCLI)
-endif
-
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards
 
 SYSTEM_TOOL_DIR=$(TOP_DIR)/system/tools
 
-test:
+boot-init: FORCE
 	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
-	@make boot TEST=FORCE ROOTDEV=/dev/nfs
+
+boot-finish: FORCE
 	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
+
+test: $(TEST_PREPARE) FORCE
+	@make -s boot-init
+	@make boot TEST=FORCE ROOTDEV=/dev/nfs
+	@make -s boot-finish
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)

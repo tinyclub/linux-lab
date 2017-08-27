@@ -19,9 +19,9 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > 2017-08-28 01:09:09
 
-首先我们来看看成果。
+首先我们来看看成果，请大家切换画质到高清观看，在手机上需要腾讯视频客户端才能看高清。
 
-[![Linux Lab via Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)[2]
+<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=y0543o6zlh5&tiny=0&auto=0" allowfullscreen></iframe>
 
 ## 如何进行 IT 技术直播
 
@@ -66,7 +66,7 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 * Openshot
     * 录制完的视频可以用 Linux 下的 Openshot 进行剪接，剪接时可以根据进度和需要进行分片、标记、删除、重排，也可以插入图片和其他视频素材。
-    * 内容可以根据录制的素材选择是 HD 720P 还是 HD 1080P，输出格式保留为 OBS 默认的 FLV。
+    * 内容可以根据录制的分辨率选择是 HD 720P 30fps （1280x720）还是 HD 1080P 30fps（1920x1080），输出格式保留为 OBS 默认的 FLV (h.264)，中等质量。
 
 * 腾讯视频
     * 通过 QQ 或者QQ安全中心扫码即可登陆上传[腾讯视频][9]，至此一个完整的直播、收看、录像编辑和视频发布就完工了。
@@ -83,9 +83,12 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 这期直播充分展示了 Linux Lab 的便利性，也初步展示了如何开展《奔跑吧 Linux 内核》一书中基于 ARM32/ARM64 架构的内核实验，欢迎观看并回复交流。
 
+<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=y0543o6zlh5&tiny=0&auto=0" allowfullscreen></iframe>
+
 如果喜欢该内容，也欢迎扫描如下二维码赞助和鼓励我们继续制作更精彩的 IT 技术直播和视频。
 
 [1]: http://tinylab.org
+[2]: https://v.qq.com/x/page/y0543o6zlh5.html
 [3]: https://obsproject.com
 [4]: https://github.com/jp9000/obs-studio
 [5]: https://github.com/jp9000/obs-studio/releases

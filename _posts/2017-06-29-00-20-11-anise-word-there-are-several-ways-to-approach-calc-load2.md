@@ -334,7 +334,7 @@ task 入列和出列时 —— enqueue_task_fair() / dequeue_task_fair() —— 
 		cfs_rq->runnable_load_sum =
 				decay_load(cfs_rq->runnable_load_sum, periods + 1);
 
-		/* 尚未计入的历史负载，在 1...N 周期的各衰减求和，再计入 */
+		/* 尚未计入的历史（持续）负载，在 1...N 周期的各衰减求和，再计入 */
 		contrib = __compute_runnable_contrib(periods);
 		       // ^^^^^^^^^^^^^^^^^^^^^^^^^^ Question 3
 		contrib = cap_scale(contrib, scale_freq);

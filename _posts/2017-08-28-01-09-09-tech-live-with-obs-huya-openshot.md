@@ -21,7 +21,7 @@ tags:
 
 首先我们来看看成果，请大家切换画质到高清观看，在手机上需要腾讯视频客户端才能看高清。
 
-<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=y0543o6zlh5&tiny=0&auto=0" allowfullscreen></iframe>
+<a target="_blank" href="https://v.qq.com/x/page/y0543o6zlh5.html" title="用Linux Lab做《奔跑吧Linux内核》实验">![Linux Lab with Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)</a>
 
 ## 如何进行 IT 技术直播
 
@@ -83,7 +83,7 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 这期直播充分展示了 Linux Lab 的便利性，也初步展示了如何开展《奔跑吧 Linux 内核》一书中基于 ARM32/ARM64 架构的内核实验，欢迎观看并回复交流。
 
-<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=y0543o6zlh5&tiny=0&auto=0" allowfullscreen></iframe>
+<a target="_blank" href="https://v.qq.com/x/page/y0543o6zlh5.html" title="用Linux Lab做《奔跑吧Linux内核》实验">![Linux Lab with Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)</a>
 
 如果喜欢该内容，也欢迎扫描如下二维码赞助和鼓励我们继续制作更精彩的 IT 技术直播和视频。
 

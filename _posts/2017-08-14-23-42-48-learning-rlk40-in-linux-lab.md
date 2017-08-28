@@ -82,4 +82,10 @@ tags:
 
 <iframe src="http://showdesk.io/71ebfa3a31094daf1cc4b2ff5f2ea0f1/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
+我们后面又做了一期直播，录制的视频请点击如下图片链接观看。记得切换画质到高清720P，手机上需要用腾讯视频客户端才能看高清。
+
+<a target="_blank" href="https://v.qq.com/x/page/y0543o6zlh5.html" title="用Linux Lab做《奔跑吧Linux内核》实验">![Linux Lab with Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)</a>
+
+如果喜欢该内容，也欢迎扫描如下二维码赞助和鼓励我们继续制作更精彩的 IT 技术直播和视频。
+
 [1]: http://tinylab.org

@@ -19,12 +19,6 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > 2017-08-28 01:09:09
 
-## 直播成果展示
-
-首先我们来看看成果，请大家切换画质到高清观看，在手机上需要腾讯视频客户端才能看高清。
-
-<a target="_blank" href="https://v.qq.com/x/page/y0543o6zlh5.html" title="用Linux Lab做《奔跑吧Linux内核》实验">![Linux Lab with Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)</a>
-
 ## 如何进行 IT 技术直播
 
 随着手机的普及和网络带宽的提升，直播现在变成了一种潮流，打开手机，随时随地可以跟友人还有粉丝分享所有的喜怒哀乐，这类直播的内容蛮多是轻松娱乐的范畴，而素材通常是图像，对手机显示非常友好。
@@ -94,7 +88,13 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 [Linux Lab][11] 基于 Docker 和 Qemu，可用于快速构建一套嵌入式 Linux 系统和内核的实验环境，内建 4 大架构和 10 多款虚拟开发板，支持调试和测试，内置交叉编译器，预编译了内核和文件系统，可高效开展 Uboot、内核、驱动和文件系统等实验，可用于辅助 Linux 内核、嵌入式 Linux 系统的学习，也可以用于辅助验证提往官方 Linux 的内核 Patch。
 
-这期直播充分展示了 Linux Lab 的便利性，也初步展示了如何开展《奔跑吧 Linux 内核》一书中基于 ARM32/ARM64 架构的内核实验，欢迎观看并回复交流。
+这期直播充分展示了 Linux Lab 的便利性，也初步展示了如何开展《奔跑吧 Linux 内核》一书中基于 ARM32/ARM64 架构的内核实验。
+
+## 直播成果展示
+
+直播过程中我们录制了一份视频并上传到了腾讯视频网站上，欢迎观看并回复交流。请大家切换画质到高清观看，在手机上需要腾讯视频客户端才能看高清。
+
+点击如下图片即可进入视频播放界面：
 
 <a target="_blank" href="https://v.qq.com/x/page/y0543o6zlh5.html" title="用Linux Lab做《奔跑吧Linux内核》实验">![Linux Lab with Docker](/wp-content/uploads/2017/08/docker-linux-lab.jpg)</a>
 

@@ -78,7 +78,7 @@ tags:
 
 ## 实验演示视频
 
-备注：点击视频右上角的`+`加号放大观看，效果更佳！单击可暂停/继续，本视频用 [showdesk.io](http://showdesk.io) 录制，用 [vplayer.io](http://vplayer.io) 播放。
+备注：点击视频右上角的`+`号放大观看，效果更佳！单击可暂停/继续，本视频用 [showdesk.io](http://showdesk.io) 录制，用 [vplayer.io](http://vplayer.io) 播放。
 
 <iframe src="http://showdesk.io/71ebfa3a31094daf1cc4b2ff5f2ea0f1/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 

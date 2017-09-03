@@ -62,13 +62,13 @@ Cloud Ubuntu 极易扩展，要添加一个新的镜像，以 `xxx` 为例，步
 
 在扩展之后，可以使用现有的工具来管理镜像：
 
-* `./build xxx`: 构建
-* `./run xxx`：运行
-* `./rm xxx`：删除
-* `./login/bash`: 直接登陆进容器并执行 bash
-* `./login/ssh`：登陆 ssh
-* `./login/webssh`：通过 web 登陆 ssh，需要先启动 web ubuntu：`./scripts/web-ubuntu.sh` 开启 ssh/vnc 代理服务
-* `./login/vnc`：通过 web 登陆 vnc，同样需要先启动 web ubuuntu
+* `tools/build xxx`: 构建
+* `tools/run xxx`：运行
+* `tools/rm xxx`：删除
+* `tools/login/bash`: 直接登陆进容器并执行 bash
+* `tools/login/ssh`：登陆 ssh
+* `tools/login/webssh`：通过 web 登陆 ssh，需要先启动 web ubuntu：`scripts/web-ubuntu.sh` 开启 ssh/vnc 代理服务
+* `tools/login/vnc`：通过 web 登陆 vnc，同样需要先启动 web ubuuntu
 
 ## Cloud Lab：实验环境管理
 

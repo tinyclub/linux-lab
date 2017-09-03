@@ -40,7 +40,7 @@ tags:
 
 如果本地还没有安装 Docker，请先安装之：
 
-    $ ./install
+    $ tools/install
 
 如果是国内用户，建议在 `/etc/default/docker` 中打开如下配置：
 
@@ -72,7 +72,7 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 |gateone/webssh| 443             | 4433                 |
 |noVNC         | 6080            | 6080                 |
 
-可通过修改 `./config` 中的 `LOCAL_VNC_PORT`, `LOCAL_SSH_PORT` 和 `LOCAL_WEBSSH_PORT` 进行调整。
+可通过修改 `tools/config` 中的 `LOCAL_VNC_PORT`, `LOCAL_SSH_PORT` 和 `LOCAL_WEBSSH_PORT` 进行调整。
 
 另外，它还允许设置 `LAB_SECURITY` 来开启 https 支持。
 
@@ -95,12 +95,12 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 
 接下来，开启一个新的镜像，新镜像本身有 ssh 和 VNC 服务（所有除 `cloud-ubuntu-web` 外的镜像都支持），以 `cloud-ubuntu` 为例：
 
-    $ ./run base
+    $ tools/run base
 
 然后，就可以通过上述代理访问了：
 
-    $ ./login/vnc
-    $ ./login/webssh
+    $ tools/login/vnc
+    $ tools/login/webssh
 
 上述两条命令会自动生成 Web URL，设置服务器地址，端口，协议，token和密码等，并主动调用浏览器登陆。如果要手动在浏览器访问，请根据上述命令打印的日志中获取 `URL`。
 
@@ -121,8 +121,8 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 
     $ git clone https://github.com/tinyclub/cloud-ubuntu.git
     $ cd cloud-ubuntu
-    $ ./install
-    $ ./pull proxy_server
+    $ tools/install
+    $ tools/pull proxy_server
 
     $ sudo apt-get install pwgen
     $ pwgen -c -n -s -1 15
@@ -134,8 +134,8 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 
     $ git clone https://github.com/tinyclub/cloud-ubuntu.git
     $ cd cloud-ubuntu
-    $ ./install
-    $ ./pull proxy_client
+    $ tools/install
+    $ tools/pull proxy_client
 
     $ PROXY_SERVER=a.b.c.d:80 PROXY_PWD=DfOPhlguZB7fbJv ENCRYPT_CMD=md5sum \
       PROXY_PORT=1080 MAP_PORT=1 ./scripts/proxy-client.sh
@@ -155,7 +155,7 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 
 如果希望任何程序未经配置直接使用 sock5 代理，也即所谓的透明代理，就可以使用 `cloud-ubuntu-proxy_client_transparent`。它不仅允许所有服务透明使用代理，而且自动为国内的地址绕开代理而直连，从而区别加速不同的网络访问。其启动方法跟 `cloud-ubunt-proxy_client` 几乎一致：
 
-    $ ./pull proxy_client_transparent
+    $ tools/pull proxy_client_transparent
 
     $ PROXY_SERVER=a.b.c.d:80 PROXY_PWD=DfOPhlguZB7fbJv ENCRYPT_CMD=md5sum \
       PROXY_PORT=1080 MAP_PORT=1 ./scripts/proxy-client-transparent.sh
@@ -165,13 +165,13 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
 
     $ docker inspect --format '{{ "{{ .NetworkSettings.IPAddress " }}}}' cloud-ubuntu-proxy_client_transparent-7831
     10.66.33.4
-    $ ./login/vnc
+    $ tools/login/vnc
 
 进去以后，打开浏览器，无需配置即可访问外部网络。如果要在其他容器内使用，简单配置即可，以 `cloud-ubuntu-dev` 为例：
 
-    $ ./pull dev
-    $ ./run dev
-    $ ./login/bash
+    $ tools/pull dev
+    $ tools/run dev
+    $ tools/login/bash
     # route -n
     Kernel IP routing table
     Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -180,14 +180,14 @@ noVNC 还提供了 token 功能，即一组到 "VNC 地址：端口" 的字符�
     # route del default gw 10.66.33.10 eth0
     # route add default gw 10.66.33.4 eth0
 
-    $ ./login/vnc
+    $ tools/login/vnc
 
 如果直连国外的代理服务器比较慢的话，可以考虑在国内找一个转发服务器，此时可以用 `cloud-ubuntu-proxy_relay`：
 
     $ git clone https://github.com/tinyclub/cloud-ubuntu.git
     $ cd cloud-ubuntu
-    $ ./install
-    $ ./pull proxy_relay
+    $ tools/install
+    $ tools/pull proxy_relay
 
     $ PROXY_SERVER=a.b.c.d:80 RELAY_PORT=80  ./scripts/proxy-relay.sh
 
@@ -201,8 +201,8 @@ Cloud Ubuntu 为此提供了开放和便捷的解决方案。首先，它需要�
 
     $ git clone https://github.com/tinyclub/cloud-ubuntu.git
     $ cd cloud-ubuntu
-    $ ./install
-    $ ./pull reverse_proxy
+    $ tools/install
+    $ tools/pull reverse_proxy
 
     $ SSH_SERVER=a.b.c.d SSH_PORT=2222 SSH_USER=ubuntu SSH_PASS=QHe26sHyy21AIkE ./scripts/reverse-proxy.sh
 
@@ -210,11 +210,11 @@ Cloud Ubuntu 为此提供了开放和便捷的解决方案。首先，它需要�
 
 如果想直接把本地主机（而不是容器）的 VNC 和 ssh 反向转发到公网，可以直接使用 `system/reverse_proxy/etc/startup.aux/lan2internet.sh`，替代 `scripts/reverse-proxy.sh`。用法完全一样。
 
-为了在外网可以访问这台主机中该容器的 VNC 和 ssh 端口。不能直接通过 `./login/vnc` 和 `./login/webssh` 访问，需要稍微构建一下 URL 地址，容器地址设置为 `cloud-ubuntu-web` 的 `10.66.33.1`。 
+为了在外网可以访问这台主机中该容器的 VNC 和 ssh 端口。不能直接通过 `tools/login/vnc` 和 `tools/login/webssh` 访问，需要稍微构建一下 URL 地址，容器地址设置为 `cloud-ubuntu-web` 的 `10.66.33.1`。 
 
-    $ VNC_PORT=5000 HOST_NAME=a.b.c.d ./login/vnc
+    $ VNC_PORT=5000 HOST_NAME=a.b.c.d tools/login/vnc
 
-    $ CONTAINER_IP=10.66.33.1 SSH_PORT=2000 HOST_NAME=a.b.c.d ./login/webssh
+    $ CONTAINER_IP=10.66.33.1 SSH_PORT=2000 HOST_NAME=a.b.c.d tools/login/webssh
 
 ## 总结
 

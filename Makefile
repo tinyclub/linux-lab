@@ -815,6 +815,7 @@ UPD=$(TOP_DIR)/patch/uboot/$(UBOOT)/
 
 UP ?= 1
 
+BOOTDEV ?= -
 ROOTDIR ?= -
 KRN_ADDR ?= -
 RDK_ADDR ?= -
@@ -832,7 +833,7 @@ UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
-	$(UBOOT_CONFIG_TOOL) $(IP) $(ROUTE) $(ROOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
+	$(UBOOT_CONFIG_TOOL) $(IP) $(ROUTE) $(ROOTDEV) $(BOOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
 endif
 ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
 	cp -r $(UPD_BOARD)/* $(UPD)/
@@ -977,6 +978,10 @@ ifeq ($(U),0)
   else
     BOOT_CMD += -append '$(CMDLINE) console=$(CONSOLE)'
   endif
+else
+  ifeq ($(BOOTDEV),sdcard)
+    BOOT_CMD += -sd $(TFTPBOOT)/sd.img
+  endif
 endif
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
   BOOT_CMD += -hda $(HROOTFS)
@@ -1050,7 +1055,7 @@ UBOOT_IMAGES_TOOL=$(TOOL_DIR)/uboot/images.sh
 
 uboot-imgs: $(ROOTFS) $(UKIMAGE)
 	$(UBOOT_IMAGES_TOOL) $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE) \
-		$(TFTPBOOT) $(BIMAGE) $(ROUTE)
+		$(TFTPBOOT) $(BIMAGE) $(ROUTE) $(BOOTDEV)
 
 
 UBOOT_IMGS = uboot-imgs

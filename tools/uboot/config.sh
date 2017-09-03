@@ -4,24 +4,14 @@
 #
 # Example: ./config.sh 127.168.1.3 127.168.1.1 /dev/ram - 0x7fc0 - - include/configs/versatile.h
 
-IP=$1
-ROUTE=$2
-ROOTDEV=$3
-BOOTDEV=$4
-ROOTDIR=$5
-
-KERNEL_ADDR=$6
-RAMDISK_ADDR=$7
-DTB_ADDR=$8
-
-CONFIG_FILE=$9
+CONFIG_FILE=$1
 
 KERNEL_IMG=uImage
 RAMDISK_IMG=ramdisk
 DTB_IMG=dtb
 
-TFTP_KERNEL="tftpboot $KERNEL_ADDR $KERNEL_IMG;"
-[ "$RAMDISK_ADDR" != "-" ] && TFTP_RAMDISK="tftpboot $RAMDISK_ADDR $RAMDISK_IMG;"
+TFTP_KERNEL="tftpboot $KRN_ADDR $KERNEL_IMG;"
+[ "$RDK_ADDR" != "-" ] && TFTP_RAMDISK="tftpboot $RDK_ADDR $RAMDISK_IMG;"
 [ "$DTB_ADDR" != "-" ] && TFTP_DTB="tftpboot $DTB_ADDR $DTB_IMG;"
 
 # Core configuration
@@ -36,20 +26,41 @@ else
 fi
 TFTPS="$TFTP_KERNEL $TFTP_RAMDISK $TFTP_DTB"
 [ "$DTB_ADDR" == "-" ] && DTB_ADDR=""
-BOOTM="bootm $KERNEL_ADDR $RAMDISK_ADDR $DTB_ADDR"
+BOOTM="bootm $KRN_ADDR $RDK_ADDR $DTB_ADDR"
 
 BOOT_TFTP="$IPADDR $SERVERIP $BOOTARGS $TFTPS $BOOTM"
 
 ## boot from sdcaard
-FATLOAD_KERNEL="fatload mmc 0:0 $KERNEL_ADDR $KERNEL_IMG;"
-[ "$RAMDISK_ADDR" != "-" ] &&  FATLOAD_RAMDISK="fatload mmc 0:0 $RAMDISK_ADDR $RAMDISK_IMG;"
+FATLOAD_KERNEL="fatload mmc 0:0 $KRN_ADDR $KERNEL_IMG;"
+[ "$RDK_ADDR" != "-" ] && FATLOAD_RAMDISK="fatload mmc 0:0 $RDK_ADDR $RAMDISK_IMG;"
 [ "$DTB_ADDR" != "-" ] && FATLOAD_DTB="fatload mmc 0:0 $DTB_ADDR $DTB_IMG;"
 FATLOADS="$FATLOAD_KERNEL $FATLOAD_RAMDISK $FATLOAD_DTB"
 
 BOOT_SDCARD="$BOOTARGS $FATLOADS $BOOTM"
 
+## boot from pflash, for the image offset, see tools/uboot/images.sh
+function _size16b() { size=$1; echo -n 0x$(echo "obase=16;$size" | bc); }
+function _size16b_m() { size=$1; echo $(_size16b $((size*1024*1024))); }
+
+_KRN_SIZE=$(_size16b_m $KRN_SIZE)
+_RDK_SIZE=$(_size16b_m $RDK_SIZE)
+_DTB_SIZE=$(_size16b_m $DTB_SIZE)
+
+KERNEL_BASE=$PFLASH_BASE
+RAMDISK_BASE=$(_size16b $((PFLASH_BASE + _KRN_SIZE)))
+DTB_BASE=$(_size16b $((PFLASH_BASE + _KRN_SIZE + _RDK_SIZE)))
+
+PFLOAD_KERNEL="cp $KERNEL_BASE $KRN_ADDR $_KRN_SIZE;"
+[ "$RDK_ADDR" != "-" ] && PFLOAD_RAMDISK="cp $RAMDISK_BASE $RDK_ADDR $_RDK_SIZE;"
+[ "$DTB_ADDR" != "-" ] && PFLOAD_DTB="cp $DTB_BASE $DTB_ADDR $_DTB_SIZE;"
+PFLOADS="$PFLOAD_KERNEL $PFLOAD_RAMDISK $PFLOAD_DTB"
+
+BOOT_PFLASH="$BOOTARGS $PFLOADS $BOOTM"
+
 ## Use tftp by default
-if [ "${BOOTDEV}" == "sdcard" ]; then
+if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
+  BOOT_CMD="bootcmd3"
+elif [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]; then
   BOOT_CMD="bootcmd2"
 else
   BOOT_CMD="bootcmd1"
@@ -60,7 +71,7 @@ CONFIG_BOOTCOMMAND="\"run $BOOT_CMD;\""
 CONFIG_SYS_CBSIZE=1024
 CONFIG_INITRD_TAG=1
 CONFIG_OF_LIBFDT=1
-CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0\" \\\\"
+CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0\" \\\\"
 
 # More
 EXTRA_CONFIGS=`env | grep ^CONFIG | cut -d'=' -f1`

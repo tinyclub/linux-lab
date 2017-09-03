@@ -7,11 +7,17 @@ UBOOT   ?= v2015.07
 LINUX   ?= v4.6.7
 BUILDROOT?= 2016.05
 KRN_ADDR?= 0x60003000
+KRN_SIZE?= 5
 RDK_ADDR?= 0x60900000
+RDK_SIZE?= 4
 DTB_ADDR?= 0x60500000
+DTB_SIZE?= 1
 UCONFIG ?= vexpress_common.h
+# tftp, sdcard/sd/mmc, flash/pflash
 BOOTDEV ?= tftp
-#BOOTDEV ?= sdcard
+# 64M pflash0@0x40000000, 64M pflash1@0x44000000
+PFLASH_BASE ?= 0x40000000
+PFLASH_SIZE ?= 64
 NETDEV  ?= lan9118
 SERIAL  ?= ttyAMA0
 ROOTDEV ?= /dev/mmcblk0

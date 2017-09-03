@@ -815,11 +815,16 @@ UPD=$(TOP_DIR)/patch/uboot/$(UBOOT)/
 
 UP ?= 1
 
+PFLASH_BASE ?= 0
+PFLASH_SIZE ?= 0
 BOOTDEV ?= -
 ROOTDIR ?= -
 KRN_ADDR ?= -
+KRN_SIZE ?= 0
 RDK_ADDR ?= -
+RDK_SIZE ?= 0
 DTB_ADDR ?= -
+DTB_SIZE ?= 0
 UCFG_DIR = $(TOP_DIR)/u-boot/include/configs/
 
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
@@ -831,9 +836,13 @@ endif
 
 UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 
+ifneq ($(U),)
+  export IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
+endif
+
 uboot-patch:
 ifneq ($(UCONFIG),)
-	$(UBOOT_CONFIG_TOOL) $(IP) $(ROUTE) $(ROOTDEV) $(BOOTDEV) $(ROOTDIR) $(KRN_ADDR) $(RDK_ADDR) $(DTB_ADDR) $(UCFG_DIR)/$(UCONFIG)
+	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR)/$(UCONFIG)
 endif
 ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
 	cp -r $(UPD_BOARD)/* $(UPD)/
@@ -979,8 +988,14 @@ ifeq ($(U),0)
     BOOT_CMD += -append '$(CMDLINE) console=$(CONSOLE)'
   endif
 else
-  ifeq ($(BOOTDEV),sdcard)
-    BOOT_CMD += -sd $(TFTPBOOT)/sd.img
+  ifeq ($(findstring sd,$(BOOTDEV)),sd)
+    BOOT_CMD += -sd $(SD_IMG)
+  endif
+  ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
+    BOOT_CMD += -sd $(SD_IMG)
+  endif
+  ifeq ($(findstring flash,$(BOOTDEV)),flash)
+    BOOT_CMD += -pflash $(PFLASH_IMG)
   endif
 endif
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
@@ -1053,10 +1068,13 @@ endif
 
 UBOOT_IMAGES_TOOL=$(TOOL_DIR)/uboot/images.sh
 
-uboot-imgs: $(ROOTFS) $(UKIMAGE)
-	$(UBOOT_IMAGES_TOOL) $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE) \
-		$(TFTPBOOT) $(BIMAGE) $(ROUTE) $(BOOTDEV)
+PFLASH_IMG ?= $(TFTPBOOT)/pflash.img
+SD_IMG ?= $(TFTPBOOT)/sd.img
 
+export PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+
+uboot-imgs: $(ROOTFS) $(UKIMAGE)
+	$(UBOOT_IMAGES_TOOL)
 
 UBOOT_IMGS = uboot-imgs
 endif

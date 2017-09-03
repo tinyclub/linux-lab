@@ -2,3 +2,4 @@ uImage
 dtb
 ramdisk
 sd*
+*flash*

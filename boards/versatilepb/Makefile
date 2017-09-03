@@ -7,9 +7,18 @@ UBOOT   ?= v2015.07
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v4.6.7
+# get flash info: flinfo
+PFLASH_BASE ?= 0x34000000
+PFLASH_SIZE ?= 64
+# get dram range: bdinfo
 KRN_ADDR?= 0x007fc0
-RDK_ADDR?= 0x907fc0
-DTB_ADDR?= 0x800000
+KRN_SIZE?= 5
+RDK_ADDR?= 0x607fc0
+RDK_SIZE?= 4
+DTB_ADDR?= 0xa07fc0
+DTB_SIZE?= 1
+# tftp, flash/pflash
+BOOTDEV ?= tftp
 UCONFIG ?= versatile.h
 NETDEV  ?= smc91c111
 SERIAL  ?= ttyAMA0

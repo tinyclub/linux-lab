@@ -25,7 +25,9 @@ tags:
 
   * 使用文档：[README.md][2]
   * 在线演示
-      * 命令行：<http://showterm.io/6fb264246580281d372c6>
+      * 命令行
+          * Linux: <http://showterm.io/6fb264246580281d372c6>
+          * Uboot: <http://showterm.io/11f5ae44b211b56a5d267>
       * 视频：<http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
@@ -61,7 +63,6 @@ tags:
 
 ### 安装
 
-    $ tools/docker/pull           # Pull from docker hub
     $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器
 
 ### 快速尝鲜
@@ -78,7 +79,7 @@ tags:
 
 ### 下载更多源码
 
-    $ make source -j3             # 同时下载 linux-stable, qemu 和 buildroot
+    $ make core-source -j3             # 同时下载 linux-stable, qemu 和 buildroot
 
 ### 配置
 

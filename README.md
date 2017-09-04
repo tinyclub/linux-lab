@@ -15,16 +15,18 @@ See: <http://tinylab.org/linux-lab/>
 
 ## Download the lab
 
-Download cloud lab framework and our linux-lab entity :
+Download cloud lab framework, pull images and checkout linux-lab repository:
 
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-Pull from docker hub:
+Run the target lab:
 
-    $ tools/docker/pull
+    $ tools/docker/run linux-lab
 
-    $ tools/docker/run
+Re-login the lab via web browser:
+
+    $ tools/docker/vnc linux-lab
 
 For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
 
@@ -94,7 +96,7 @@ Download one by one:
     $ make kernel-source
     $ make root-source
 
-### Checkout
+### Checkout target versions
 
 Checkout the target version of kernel and builroot:
 
@@ -104,14 +106,14 @@ Checkout them one by one:
 
     $ make kernel-checkout
     $ make root-checkout
- 
+
 ### Patching
 
 Apply available patches in `boards/<BOARD>/patch/linux` and `patch/linux/`:
 
     $ make kernel-patch
 
-### Configuration
+### Default Configuration
 
 Configure kernel and buildroot with defconfig:
 
@@ -241,7 +243,7 @@ Test a kernel module and make some targets before testing:
 
     $ make module-test m=oops_test TEST=kernel-checkout,kernel-patch
 
-### Save images and configurations
+### Save images and configs
 
 Save all of the configs and rootfs/kernel/dtb images:
 
@@ -374,3 +376,14 @@ kernel version, we can checkout different git tags.
 If nfs or tftpboot not work, please run `modprobe nfsd` in host side and
 restart the net services via `/configs/tools/restart-net-servers.sh` and please
 make sure not use `tools/docker/trun`.
+
+### Note3
+
+To use the tools under `tools` without sudo, please make sure add your account
+to the docker group and reboot your system to take effect:
+
+    $ sudo usermod -aG docker $USER
+
+### Note4
+
+To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/default/docker` via referring to `tools/docker/install`.

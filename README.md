@@ -167,6 +167,10 @@ Boot with graphic:
 
     $ make boot G=1
 
+Boot with curses graphic (friendly for ssh login):
+
+    $ make boot G=2
+
 Boot with prebuilt kernel and rootfs (if no new available, simple use `make boot`):
 
     $ make boot PBK=1 PBD=1 PBR=1
@@ -185,6 +189,38 @@ Boot with different rootfs:
     $ make boot ROOTDEV=/dev/nfs
     $ make boot ROOTDEV=/dev/sda
     $ make boot ROOTDEV=/dev/mmcblk0
+
+### Using Uboot
+
+Choose one of the tested boards: `versatilepb` and `vexpress-a9`.
+
+    $ make BOARD=vexpress-a9
+
+Download Uboot:
+
+    $ make uboot-source
+
+Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` by default:
+
+    $ make uboot-patch
+
+Use `sdcard` or `flash`:
+
+    $ make uboot-patch BOOTDEV=sdcard
+    $ make uboot-patch BOOTDEV=flash
+
+Building:
+
+    $ make uboot
+
+Boot with `BOOTDEV` and `ROOTDEV`, use `tftp` by default:
+
+    $ make boot U=1
+
+Use `sdcard` or `flash`:
+
+    $ make boot U=1 BOOTDEV=sdcard
+    $ make boot U=1 BOOTDEV=flash
 
 ### Debugging
 

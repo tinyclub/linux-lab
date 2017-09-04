@@ -28,3 +28,4 @@
 23. Automate everything, download sources, build and boot.
 24. Boot uboot with kernel/rootfs from flash
    http://www.cnblogs.com/WuCountry/archive/2012/05/01/2477876.html
+25. Load env variables from external images, allow pass arguments via a standalone image to uboot

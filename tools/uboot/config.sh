@@ -58,13 +58,7 @@ PFLOADS="$PFLOAD_KERNEL $PFLOAD_RAMDISK $PFLOAD_DTB"
 BOOT_PFLASH="$BOOTARGS $PFLOADS $BOOTM"
 
 ## Use tftp by default
-if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
-  BOOT_CMD="bootcmd3"
-elif [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]; then
-  BOOT_CMD="bootcmd2"
-else
-  BOOT_CMD="bootcmd1"
-fi
+BOOT_CMD=$U_BOOT_CMD
 CONFIG_BOOTCOMMAND="\"run $BOOT_CMD;\""
 
 # Others

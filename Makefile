@@ -833,6 +833,15 @@ ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
   SD_BOOT ?= 1
 endif
 
+# By default, boot from tftp
+U_BOOT_CMD ?= bootcmd1
+ifeq ($(SD_BOOT),1)
+  U_BOOT_CMD := bootcmd2
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+  U_BOOT_CMD := bootcmd3
+endif
+
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   RDK_ADDR = -
 endif
@@ -840,11 +849,11 @@ ifeq ($(ORIDTB),)
   DTB_ADDR = -
 endif
 
-UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
-
 ifneq ($(U),)
-  export IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
+  export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
 endif
+
+UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
@@ -1043,6 +1052,7 @@ ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
 endif
 
 ifeq ($(U),1)
+
 ifeq ($(PBR),0)
   UROOTFS_SRC=$(BUILDROOT_ROOTFS)
 else
@@ -1067,12 +1077,12 @@ ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
 
+export PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+
 UBOOT_TFTP_TOOL=$(TOOL_DIR)/uboot/tftp.sh
 UBOOT_SD_TOOL=$(TOOL_DIR)/uboot/sd.sh
 UBOOT_PFLASH_TOOL=$(TOOL_DIR)/uboot/pflash.sh
 UBOOT_ENV_TOOL=$(TOOL_DIR)/uboot/env.sh
-
-export PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
 ifeq ($(BOOTDEV),tftp)
 tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)

@@ -6,17 +6,9 @@
 ROOT_IMAGE=${U_ROOT_IMAGE}
 DTB_IMAGE=${U_DTB_IMAGE}
 KERNEL_IMAGE=${U_KERNEL_IMAGE}
+BOOT_CMD=${U_BOOT_CMD}
 IMAGES_DIR=${TFTPBOOT}
 UBOOT_IMAGE=${BIMAGE}
-
-## Get bootcommand
-if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
-  BOOT_CMD="bootcmd3"
-elif [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]; then
-  BOOT_CMD="bootcmd2"
-else
-  BOOT_CMD="bootcmd1"
-fi
 
 if [ -f "$UBOOT_IMAGE" ]; then
   ## Fix up tftp server ip

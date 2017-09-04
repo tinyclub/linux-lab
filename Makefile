@@ -813,7 +813,7 @@ endif
 UPD_BOARD=$(TOP_DIR)/boards/$(BOARD)/patch/uboot/$(UBOOT)/
 UPD=$(TOP_DIR)/patch/uboot/$(UBOOT)/
 
-UP ?= 1
+UP ?= 0
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0

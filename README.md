@@ -209,6 +209,11 @@ Use `sdcard` or `flash`:
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
 
+Configure:
+
+    $ make uboot-defconfig
+    $ make uboot-menuconfig
+
 Building:
 
     $ make uboot

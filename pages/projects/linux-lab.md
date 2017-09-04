@@ -61,6 +61,10 @@ tags:
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose linux-lab
 
+注意：安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
+
+    $ sudo usermod -aG docker $USER
+
 ### 安装
 
     $ tools/docker/run            # 加载镜像，拉起一个 Linux Lab 容器

@@ -403,12 +403,78 @@ Qemu Board:
 
 ## More
 
+### Add a new board
+
+#### Chooose a board supported by qemu
+
+list the boards, use arm as an example:
+
+    $ qemu-system-arm -M ?
+
+#### Create the board directory
+
+Use `vexpress-a9` as an example:
+
+    $ mkdir boards/vexpress-a9/
+
+#### Clone a Makefile from an existing board
+
+Use `versatilepb` as an example:
+
+    $ cp boards/versatilebp/Makefile boards/vexpress-a9/Makefile
+
+#### Configure the variables from scratch
+
+Comment everything, add minimal ones and then others.
+
+Please refer to `doc/qemu/qemu-doc.html` or the online one `http://qemu.weilnetz.de/qemu-doc.html`.
+
+#### At the same time, prepare the configs
+
+We need to prepare the configs for linux, buildroot and even uboot.
+
 Buildroot has provided many examples about buildroot and kernel configuration:
 
-* buildroot: `configs/qemu_ARCH_BOARD_defconfig`
-* kernel: `board/qemu/ARCH-BOARD/linux-VERSION.config`
+* buildroot: `buildroot/configs/qemu_ARCH_BOARD_defconfig`
+* kernel: `buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config`
 
-To add a new ARCH, BOARD and linux VERSION test, please based on it.
+Uboot has also provided many default configs:
+
+* uboot: `u-boot/configs/vexpress_ca9x4_defconfig`
+
+Kernel itself also:
+
+* kernel: `linux-stable/arch/arm/configs/vexpress_defconfig`
+
+Edit the configs and Makefile untill they match our requirements.
+
+#### Save the images and configs
+
+    $ make root-save
+    $ make kernel-save
+    $ make uboot-save
+
+    $ make rconfig-save
+    $ make kconfig-save
+    $ make uconfig-save
+
+#### Upload everything
+
+At last, upload the images to the `prebuilt/` repository and the new board directory to the `linux-lab` repository.
+
+* prebuilt: <https://github.com/tinyclub/prebuilt>
+* linux-lab: <https://github.com/tinyclub/linux-lab>
+
+### Learning Assembly
+
+Linux Lab has added many assembly examples in `examples/assembly`:
+
+    $ cd examples/assembly
+    $ ls
+    aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
+    $ make -s -C aarch64/
+    Hello, ARM64!
+
 
 ## Notes
 

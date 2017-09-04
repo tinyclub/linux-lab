@@ -827,6 +827,13 @@ DTB_ADDR ?= -
 DTB_SIZE ?= 0
 UCFG_DIR = $(TOP_DIR)/u-boot/include/configs/
 
+ifeq ($(findstring sd,$(BOOTDEV)),sd)
+  SD_BOOT ?= 1
+endif
+ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
+  SD_BOOT ?= 1
+endif
+
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   RDK_ADDR = -
 endif
@@ -988,10 +995,7 @@ ifeq ($(U),0)
     BOOT_CMD += -append '$(CMDLINE) console=$(CONSOLE)'
   endif
 else
-  ifeq ($(findstring sd,$(BOOTDEV)),sd)
-    BOOT_CMD += -sd $(SD_IMG)
-  endif
-  ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
+  ifeq ($(SD_BOOT),1)
     BOOT_CMD += -sd $(SD_IMG)
   endif
   ifeq ($(findstring flash,$(BOOTDEV)),flash)
@@ -1066,17 +1070,48 @@ ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
 
-UBOOT_IMAGES_TOOL=$(TOOL_DIR)/uboot/images.sh
-
-PFLASH_IMG ?= $(TFTPBOOT)/pflash.img
-SD_IMG ?= $(TFTPBOOT)/sd.img
+UBOOT_TFTP_TOOL=$(TOOL_DIR)/uboot/tftp.sh
+UBOOT_SD_TOOL=$(TOOL_DIR)/uboot/sd.sh
+UBOOT_PFLASH_TOOL=$(TOOL_DIR)/uboot/pflash.sh
+UBOOT_ENV_TOOL=$(TOOL_DIR)/uboot/env.sh
 
 export PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
-uboot-imgs: $(ROOTFS) $(UKIMAGE)
-	$(UBOOT_IMAGES_TOOL)
+ifeq ($(BOOTDEV),tftp)
+tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
+	$(UBOOT_TFTP_TOOL)
 
-UBOOT_IMGS = uboot-imgs
+TFTP_IMAGES = tftp-images
+endif
+
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+ifeq ($(PFLASH_IMG),)
+pflash-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
+	$(UBOOT_PFLASH_TOOL)
+
+PFLASH_IMAGES = pflash-images
+PFLASH_IMG    = $(TFTPBOOT)/pflash.img
+endif
+endif
+
+ifeq ($(SD_BOOT),1)
+ifeq ($(SD_IMG),)
+sd-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
+	$(UBOOT_SD_TOOL)
+
+SD_IMAGES = sd-images
+SD_IMG    = $(TFTPBOOT)/sd.img
+endif
+
+endif
+
+uboot-images: $(TFTP_IMAGES) $(PFLASH_IMAGES) $(SD_IMAGES)
+	$(UBOOT_ENV_TOOL)
+
+uboot-images-clean:
+	@rm -rf $(PFLASH_IMG) $(SD_IMG)
+
+UBOOT_IMGS = uboot-images
 endif
 
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)

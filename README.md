@@ -15,10 +15,14 @@ See: <http://tinylab.org/linux-lab/>
 
 ## Download the lab
 
+Download cloud lab framework and our linux-lab entity :
+
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-    $ tools/docker/pull # Pull from docker hub
+Pull from docker hub:
+
+    $ tools/docker/pull
 
     $ tools/docker/run
 
@@ -28,20 +32,18 @@ For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will
 
 ## Quickstart
 
-Login the VNC page via `tools/open-docker-lab.sh` with the password printed in
-the console, and then open the 'Linux Lab' desktop shortcut on the desktop to
+Login the VNC page via `tools/docker/vnc` with the password printed in the
+console, and then open the 'Linux Lab' desktop shortcut on the desktop to
 launch into the Lab, and issue the following command to boot the prebuilt
-kernel and rootfs on the default versatilepb board:
+kernel and rootfs on the default `versatilepb` board:
 
     $ make boot
 
-**Notes**
-
-If the screen size doesn't fit your display, set the scaling mode via the setting button on the top right side, or just modify the `-screen 0 1720x960x16` of `tools/supervisord.conf` to your own. the second method need to rerun `tools/install-docker-lab.sh` and `tools/run-docker-lab-daemon.h`.
-
 ## Usage
 
-Check supported boards:
+### Available boards
+
+List builtin boards:
 
     $ make list
     [ pc ]:
@@ -70,78 +72,129 @@ Check supported boards:
           LINUX   ?= 4.6
           ROOTDEV ?= /dev/ram0
 
+    [ virt ]:
+          ARCH     = arm64
+          CPU     ?= cortex-a57
+          LINUX   ?= v4.5.5
+          ROOTDEV ?= /dev/ram0
+
 Check the board specific configuration:
 
     $ cat boards/versatilepb/Makefile
 
-Download the sources:
+### Download sources
 
-    $ make core-source -j3     # All in one
+Download prebuilt images and the kernel, buildroot source code:
 
-    $ make kernel-source       # One by one
+    $ make core-source -j3
+
+Download one by one:
+
+    $ make prebuilt-images
+    $ make kernel-source
     $ make root-source
 
-Checkout/Configure the sources:
+### Checkout
 
-    $ make checkout         # Without uboot
-    $ make config           # Configure all with defconfig, without uboot
+Checkout the target version of kernel and builroot:
 
-    $ make kernel-checkout  # Checkout the specific version, *Please make sure changes are saved before do it!*
-    $ make kernel-defconfig # Configure one by one
-    $ make root-defconfig
+    $ make checkout
+
+Checkout them one by one:
+
+    $ make kernel-checkout
+    $ make root-checkout
+ 
+### Patching
+
+Apply available patches in `boards/<BOARD>/patch/linux` and `patch/linux/`:
+
+    $ make kernel-patch
+
+### Configuration
+
+Configure kernel and buildroot with defconfig:
+
+    $ make config
+
+Configure one by one:
 
     $ make kernel-defconfig
-    $ make kernel-defconfig KP=0  # Disable kernel patch action
+    $ make root-defconfig
 
-Manually configure the sources:
+### Manual Configuration
 
     $ make kernel-menuconfig
     $ make root-menuconfig
 
-Build them:
+### Building
 
-    $ make build   # All in one without uboot
+Build kernel and buildroot together:
 
-    $ make kernel  # One by one
+    $ make build
+
+Build them one by one:
+
+    $ make kernel
     $ make root
 
-    $ make modules  # Build internel kernel modules, Must ensure CONFIG_MODULES=y
+Build internel kernel modules:
+
+    $ make modules
     $ make modules-install
     $ make root-rebuild && make boot
 
+List available modules in `modules/` and `boards/<BOARD>/modules/`:
+
     $ make modules-list
         1 ldt
-    $ make modules m=ldt  # With traditional methods
+
+Build external kernel modules:
+
+    $ make modules m=ldt
+    $ make modules-install m=ldt
     $ make root-rebuild && make boot
 
-Boot it:
+### Booting
 
-    $ make boot     # Boot with graphic
+Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff' or 'pkill qemu':
 
-    $ make boot G=0  # Boot with serial port (no graphic), exit with 'CTRL+a x' or 'pkill qemu'
+    $ make boot
 
-    $ make boot PBK=0 PBD=0 PBR=0 # Disable prebuilt kernel, dtb and rootfs
+Boot with graphic:
 
-    $ make boot U=1  # Boot with Uboot
+    $ make boot G=1
+
+Boot with prebuilt kernel and rootfs (if no new available, simple use `make boot`):
+
+    $ make boot PBK=1 PBD=1 PBR=1
+
+Boot with new kernel, dtb and rootfs if exists (if new available, simple use `make boot`):
+
+    $ make boot PBK=0 PBD=0 PBR=0
+
+Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
+
+    $ make boot U=0
 
 Boot with different rootfs:
 
-    $ make boot ROOTDEV=/dev/ram    # default
+    $ make boot ROOTDEV=/dev/ram
     $ make boot ROOTDEV=/dev/nfs
     $ make boot ROOTDEV=/dev/sda
     $ make boot ROOTDEV=/dev/mmcblk0
 
-Debug it:
+### Debugging
 
-    Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:
+Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:
 
     $ make BOARD=malta debug
 
-    Or debug it in two steps:
+Or debug it in two steps:
 
     $ make BOARD=malta boot DEBUG=1
 
-    Open a new terminal:
+Open a new terminal:
 
     $ make env | grep KERNEL_OUTPUT
     /labs/linux-lab/output/mipsel/linux-4.6-malta/
@@ -156,45 +209,55 @@ Debug it:
     (gdb) c
     (gdb) bt
 
-    Note: some commands have been already added in `.gdbinit`, you can customize it for yourself.
+Note: some commands have been already added in `.gdbinit`, you can customize it for yourself.
 
-Test it:
+### Testing
 
-    // Simply boot and poweroff
+Simply boot and poweroff:
+
     $ make test
 
-    // Don't poweroff after testing
+Don't poweroff after testing:
+
     $ make test TEST_FINISH=echo
 
-    // Run guest test case
+Run guest test case:
+
     $ make test TEST_CASE=/tools/ftrace/trace.sh
 
-    // Reboot the guest system for several times
+Reboot the guest system for several times:
+
     $ make test TEST_REBOOT=2
 
-    // Test a feature of a specified linux version on a specified board
+Test a feature of a specified linux version on a specified board:
+
     $ make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=auto
 
-    // Test a kernel module
+Test a kernel module:
+
     $ make module-test m=oops_test
 
-    // Test a kernel module and make some targets before testing
+Test a kernel module and make some targets before testing:
+
     $ make module-test m=oops_test TEST=kernel-checkout,kernel-patch
 
-Save your changes:
+### Save images and configurations
 
-    $ make save         # Save all of the configs and rootfs/kernel/dtb images
+Save all of the configs and rootfs/kernel/dtb images:
 
-    $ make kconfig-save # Save configs to boards/BOARD/, kernel config
-    $ make rconfig-save # rootfs config
+    $ make save
 
-    $ make root-save    # Save images to prebuilt/
+Save configs to `boards/<BOARD>/`:
+
+    $ make kconfig-save
+    $ make rconfig-save
+
+Save images to `prebuilt/`:
+
+    $ make root-save
     $ make kernel-save
 
-If NFS boot fails, please make sure `IP_PNP` and `ROOT_NFS` are configured in
-kernel and if issue still exists, then try to fix up it:
-
-    $ /configs/tools/restart-net-servers.sh
+### Choose a new board
 
 By default, the default board: 'versatilepb' is used, we can configure, build
 and boot for a specific board with 'BOARD', for example:
@@ -208,10 +271,14 @@ and boot for a specific board with 'BOARD', for example:
     $ make kernel
     $ make boot U=0
 
+### Files transfering
+
 To transfer files between Qemu Board and Host, three methods are supported by
 default:
 
-* The first one is simply put the files with a relative path in `system/`
+### Install files to rootfs
+
+Simply put the files with a relative path in `system/`, install and rebuild the rootfs:
 
     $ cd system/
     $ mkdir system/root/
@@ -220,67 +287,71 @@ default:
     $ make root-rebuild
     $ make boot G=1
 
-* Another is `/dev/nfs`, this need to boot the board with `ROOTDEV=/dev/nfs`
+### Share with NFS
 
-    Boot/Qemu Board:
+Boot the board with `ROOTDEV=/dev/nfs`,
 
-        $ make boot ROOTDEV=/dev/nfs
+Boot/Qemu Board:
 
-    Host:
+    $ make boot ROOTDEV=/dev/nfs
 
-        $ make env | grep ROOTDIR
-	ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
+Host:
 
-* The third one is use tftp server of host from the Qemu board with the `tftp` command.
+    $ make env | grep ROOTDIR
+    ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
 
-    Host:
+### Transfer via tftp
 
-        $ ifconfig br0
-        inet addr:172.17.0.3  Bcast:172.17.255.255  Mask:255.255.0.0
-        $ cd tftpboot/
-        $ ls tftpboot
-        kft.patch kft.log
+Using tftp server of host from the Qemu board with the `tftp` command.
 
-    Qemu Board:
+Host:
 
-        $ ls
-        kft_data.log
-        $ tftp -g -r kft.patch 172.17.0.3
-        $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
+    $ ifconfig br0
+    inet addr:172.17.0.3  Bcast:172.17.255.255  Mask:255.255.0.0
+    $ cd tftpboot/
+    $ ls tftpboot
+    kft.patch kft.log
 
-    Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
+Qemu Board:
 
-* The fourth one is using 9p virtio (tested on vexpress-a9 and virt board)
+    $ ls
+    kft_data.log
+    $ tftp -g -r kft.patch 172.17.0.3
+    $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
-    Reconfigure the kernel with:
+Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
-        CONFIG_NET_9P=y
-        CONFIG_NET_9P_VIRTIO=y
-        CONFIG_9P_FS=y
+### Share with 9p virtio (tested on vexpress-a9 and virt board)
 
-    Docker host:
+Reconfigure the kernel with:
 
-        $ modprobe 9pnet_virtio
-        $ lsmod | grep 9p
-        9pnet_virtio           17519  0
-        9pnet                  72068  1 9pnet_virtio
+    CONFIG_NET_9P=y
+    CONFIG_NET_9P_VIRTIO=y
+    CONFIG_9P_FS=y
 
-    Host:
+Docker host:
 
-        $ make BOARD=vexpress-a9
+    $ modprobe 9pnet_virtio
+    $ lsmod | grep 9p
+    9pnet_virtio           17519  0
+    9pnet                  72068  1 9pnet_virtio
 
-        $ make root-install PBR=1
-        $ make root-rebuild PBR=1
+Host:
 
-        $ touch hostshare/test     # Create a file in host
+    $ make BOARD=vexpress-a9
 
-        $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
+    $ make root-install PBR=1
+    $ make root-rebuild PBR=1
 
-    Qemu Board:
+    $ touch hostshare/test     # Create a file in host
 
-        $ ls /hostshare/       # Access the file in guest
-        test
-        $ touch /hostshare/guest-test   # Create a file in guest
+    $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
+
+Qemu Board:
+
+    $ ls /hostshare/       # Access the file in guest
+    test
+    $ touch /hostshare/guest-test   # Create a file in guest
 
 ## More
 
@@ -289,11 +360,17 @@ Buildroot has provided many examples about buildroot and kernel configuration:
 * buildroot: `configs/qemu_ARCH_BOARD_defconfig`
 * kernel: `board/qemu/ARCH-BOARD/linux-VERSION.config`
 
-To start a new ARCH, BOARD and linux VERSION test, please based on it.
+To add a new ARCH, BOARD and linux VERSION test, please based on it.
 
-Note1: different qemu version uses different kernel VERSION, so, to find the
-suitable kernel version, we can checkout different git tags.
+## Notes
 
-Note2: If nfs or tftpboot not work, please run `modprobe nfsd` in host side and
+### Note1
+
+Different qemu version uses different kernel VERSION, so, to find the suitable
+kernel version, we can checkout different git tags.
+
+### Note2
+
+If nfs or tftpboot not work, please run `modprobe nfsd` in host side and
 restart the net services via `/configs/tools/restart-net-servers.sh` and please
 make sure not use `tools/docker/trun`.

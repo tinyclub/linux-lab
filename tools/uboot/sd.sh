@@ -21,9 +21,9 @@ if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]
   [ -f $SD_IMG ] && mkfs.fat $SD_IMG
   [ ! -d $SD_DIR ] && mkdir -p $SD_DIR
   sudo mount $SD_IMG $SD_DIR
-  [ -n "$ROOT_IMAGE" -a "$ROOT_IMAGE" != "-" ] && sudo cp $ROOT_IMAGE $SD_DIR/ramdisk
-  [ -n "$DTB_IMAGE" -a "$DTB_IMAGE" != "-" ] && sudo cp $DTB_IMAGE $SD_DIR/dtb
-  [ -n "$KERNEL_IMAGE" -a "$KERNEL_IMAGE" != "-" ] && sudo cp $KERNEL_IMAGE $SD_DIR/uImage
+  [ -n "$ROOT_IMAGE" ] && sudo cp $ROOT_IMAGE $SD_DIR/ramdisk
+  [ -n "$DTB_IMAGE" ] && sudo cp $DTB_IMAGE $SD_DIR/dtb
+  [ -n "$KERNEL_IMAGE" ] && sudo cp $KERNEL_IMAGE $SD_DIR/uImage
   sudo umount $SD_DIR
   sync
 fi

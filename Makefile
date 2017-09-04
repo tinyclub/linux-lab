@@ -817,8 +817,7 @@ UP ?= 1
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
-BOOTDEV ?= -
-ROOTDIR ?= -
+BOOTDEV ?= tftp
 KRN_ADDR ?= -
 KRN_SIZE ?= 0
 RDK_ADDR ?= -
@@ -1060,8 +1059,6 @@ ifeq ($(PBK),0)
 	make kernel KTARGET=uImage
 endif
 
-U_ROOT_IMAGE=-
-U_DTB_IMAGE=-
 U_KERNEL_IMAGE=$(UKIMAGE)
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   U_ROOT_IMAGE=$(ROOTFS)

@@ -227,6 +227,11 @@ Use `sdcard` or `flash`:
     $ make boot U=1 BOOTDEV=sdcard
     $ make boot U=1 BOOTDEV=flash
 
+Save uboot images and configs:
+
+    $ make uboot-save
+    $ make uconfig-save
+
 ### Debugging
 
 Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:

@@ -1074,8 +1074,9 @@ ifeq ($(PBK),0)
 endif
 
 U_KERNEL_IMAGE=$(UKIMAGE)
-# Put it in flash/sdcard whenever if it will be used, for U=0 boot
-U_ROOT_IMAGE=$(ROOTFS)
+ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  U_ROOT_IMAGE=$(ROOTFS)
+endif
 ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif

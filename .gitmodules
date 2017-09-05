@@ -1,15 +1,20 @@
 [submodule "qemu"]
 	path = qemu
 	url = https://github.com/qemu/qemu.git
+	ignore = all
 [submodule "buildroot"]
 	path = buildroot
 	url = https://github.com/buildroot/buildroot
+	ignore = all
 [submodule "linux-stable"]
 	path = linux-stable
 	url = https://github.com/tinyclub/linux-stable.git
+	ignore = all
 [submodule "u-boot"]
 	path = u-boot
 	url = https://github.com/u-boot/u-boot.git
+	ignore = all
 [submodule "prebuilt"]
 	path = prebuilt
 	url = https://github.com/tinyclub/prebuilt.git
+	ignore = all

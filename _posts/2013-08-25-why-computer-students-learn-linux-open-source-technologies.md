@@ -154,7 +154,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 ## 在线实验
 
-为了更快更高效地做相关实验，泰晓科技开发了一套实验云台，这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux等在内的实验环境，更多实验环境正在陆续开发中。欢迎添加微信（lzufalcon）进行讨论和交流。
+为了更快更高效地做实验，泰晓科技开发了一套实验云台。这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux等在内的实验环境，更多环境正在陆续开发中。欢迎添加微信（lzufalcon）进行讨论和交流，也欢迎提出需求和建议。
 
 * 实验云台：<http://tinylab.cloud:6080>
 * 购买帐号：<http://weidian.com/?userid=335178200>
@@ -165,7 +165,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 ## 演示视频
 
-我们已经录制了几份课程的实验演示视频，请查看：
+我们录制了几份课程的实验演示视频，请查看：
 
 * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言
     * [CS630 Qemu Lab 用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)

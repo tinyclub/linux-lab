@@ -4,7 +4,9 @@
 #
 # Example: ./config.sh 127.168.1.3 127.168.1.1 /dev/ram - 0x7fc0 - - include/configs/versatile.h
 
-CONFIG_FILE=$1
+_CONFIG_DIR=$1
+_CONFIG_FILE=$2
+CONFIG_FILE=$1/$2
 
 KERNEL_IMG=uImage
 RAMDISK_IMG=ramdisk
@@ -77,6 +79,11 @@ echo $CONFIG_BOOTCOMMAND
 # Build the config lines
 
 CONFIGS="CONFIG_EXTRA_ENV_SETTINGS FLASH_MAX_SECTOR_SIZE CONFIG_BOOTCOMMAND CONFIG_SYS_CBSIZE CONFIG_INITRD_TAG CONFIG_OF_LIBFDT $EXTRA_CONFIGS"
+
+# Reset changes
+pushd $_CONFIG_DIR
+git checkout -- $_CONFIG_FILE
+popd
 
 # Update the new one
 # Insert the new configs in the end of the external #if .. #endif condition

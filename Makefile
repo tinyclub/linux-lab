@@ -857,7 +857,7 @@ UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
-	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR)/$(UCONFIG)
+	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 endif
 ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
 	cp -r $(UPD_BOARD)/* $(UPD)/

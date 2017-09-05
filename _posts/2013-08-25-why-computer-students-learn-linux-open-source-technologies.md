@@ -152,17 +152,30 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 几乎所有的课程，都可以找到开放的实践项目，看: [20 Source Code Hosting Sites You Should Know][23]
 
-## 在线实验和演示视频
+## 在线实验
 
 为了更快更高效地做相关实验，泰晓科技开发了一套实验云台，这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux等在内的实验环境，更多实验环境正在陆续开发中。欢迎添加微信（lzufalcon）进行讨论和交流。
 
 * 实验云台：<http://tinylab.cloud:6080>
-* 演示视频：<http://showdesk.io>
 * 购买帐号：<http://weidian.com/?userid=335178200>
 
-购买帐号后通过浏览器登陆[实验云台](http://tinylab.cloud:6080)即可进行相应的实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
+购买帐号后通过浏览器登陆 [实验云台](http://tinylab.cloud:6080) 即可实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
 [![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)](http://tinylab.cloud:6080)
+
+## 演示视频
+
+我们已经录制了几份课程的实验演示视频，请查看：
+
+* [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言
+    * [CS630 Qemu Lab 用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)
+
+* [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
+    * [Linux 0.11 Lab 用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
+
+* [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
+    * [Linux Lab 用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+    * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
 
 ## 小结
 

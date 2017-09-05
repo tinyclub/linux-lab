@@ -10,6 +10,10 @@ BOOT_CMD=${U_BOOT_CMD}
 IMAGES_DIR=${TFTPBOOT}
 UBOOT_IMAGE=${BIMAGE}
 
+# Fixme: this not work on some platforms, just skip this script currently.
+# Todo: load env vars from a storage instead of compile it with uboot image
+exit 0
+
 if [ -f "$UBOOT_IMAGE" ]; then
   ## Fix up tftp server ip
   sed -i -e "s/route=[0-9.]* /route=$ROUTE /g" -ur $UBOOT_IMAGE

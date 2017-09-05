@@ -14,7 +14,7 @@ DTB_ADDR?= 0x60500000
 DTB_SIZE?= 1
 UCONFIG ?= vexpress_common.h
 # tftp, sdcard/sd/mmc, flash/pflash
-BOOTDEV ?= tftp
+BOOTDEV ?= flash
 # 64M pflash0@0x40000000, 64M pflash1@0x44000000
 PFLASH_BASE ?= 0x40000000
 PFLASH_SIZE ?= 64

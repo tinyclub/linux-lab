@@ -18,7 +18,7 @@ RDK_SIZE?= 4
 DTB_ADDR?= 0xa07fc0
 DTB_SIZE?= 1
 # tftp, flash/pflash
-BOOTDEV ?= tftp
+BOOTDEV ?= flash
 UCONFIG ?= versatile.h
 NETDEV  ?= smc91c111
 SERIAL  ?= ttyAMA0

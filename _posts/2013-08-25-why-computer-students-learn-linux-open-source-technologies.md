@@ -152,9 +152,25 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 几乎所有的课程，都可以找到开放的实践项目，看: [20 Source Code Hosting Sites You Should Know][23]
 
+## 在线实验和演示视频
+
+为了更快更高效地做相关实验，泰晓科技开发了一套实验云台，这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux等在内的实验环境，更多实验环境正在陆续开发中。欢迎添加微信（lzufalcon）进行讨论和交流。
+
+* 实验云台：<http://tinylab.cloud:6080>
+* 演示视频：<http://showdesk.io>
+* 购买帐号：<http://weidian.com/?userid=335178200>
+
+购买帐号后通过浏览器登陆[实验云台](http://tinylab.cloud:6080)即可进行相应的实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
+
+![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)
+
 ## 小结
 
 以上从多个方面分析了学习 Linux 开源技术的诸多益处。潮流一点叫“社区化学习”，国际一点叫“Open, Free, Share”，国内一点叫“共赢”，传统一点叫“三人行，必有我师”。
+
+欢迎添加微信（lzufalcon）进一步交流，添加时请务必注明准确原因。
+
+如果觉得文章有帮助，也欢迎扫描如下二维码鼓励和支持我们。
 
  [1]: http://tinylab.org
  [2]: http://www.linkedin.com/

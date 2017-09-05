@@ -162,7 +162,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 购买帐号后通过浏览器登陆[实验云台](http://tinylab.cloud:6080)即可进行相应的实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
-![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)
+[![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)](http://tinylab.cloud:6080)
 
 ## 小结
 

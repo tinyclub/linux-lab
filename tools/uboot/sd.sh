@@ -17,6 +17,7 @@ UBOOT_IMAGE=${BIMAGE}
 ##
 if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]; then
   SD_DIR=${SD_IMG%.*}
+  [ -f $SD_IMG ] && rm $SD_IMG
   [ ! -f $SD_IMG ] && dd if=/dev/zero of=$SD_IMG status=none bs=1M count=$((KRN_SIZE+RDK_SIZE+DTB_SIZE+2))
   [ -f $SD_IMG ] && mkfs.fat $SD_IMG
   [ ! -d $SD_DIR ] && mkdir -p $SD_DIR

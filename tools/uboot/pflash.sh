@@ -16,6 +16,7 @@ IMAGES_DIR=${TFTPBOOT}
 ##
 
 if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
+  [ -f $PFLASH_IMG ] && rm -rf $PFLASH_IMG
   dd if=/dev/zero of=$PFLASH_IMG status=none bs=128K count=$((PFLASH_SIZE*8))
   [ -n "$KERNEL_IMAGE" ] && dd if=$KERNEL_IMAGE of=$PFLASH_IMG status=none conv=notrunc bs=128K
   [ -n "$ROOT_IMAGE" ] && dd if=$ROOT_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$((KRN_SIZE*8)) bs=128K

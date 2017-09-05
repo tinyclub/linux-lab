@@ -67,7 +67,7 @@ CONFIG_INITRD_TAG=1
 CONFIG_OF_LIBFDT=1
 # aligh with 1M for env partition, for saveenv command
 FLASH_MAX_SECTOR_SIZE=0x00100000
-CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0\" \\\\"
+CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0\""
 
 # More
 EXTRA_CONFIGS=`env | grep ^CONFIG | cut -d'=' -f1`
@@ -92,7 +92,7 @@ do
 
     grep -q "^#define $config" $CONFIG_FILE
     if [ $? -eq 0 ]; then
-        sed -i -e "s%^#define $config.*$%#define $config\t${value}%g" $CONFIG_FILE
+        sed -i -e "s%^#define $config[^\\]*\([\\]*\)$%#define $config\t${value}\1%g" $CONFIG_FILE
     else
         sed -i -e "${line}i#define ${config}\t${value}" $CONFIG_FILE
     fi

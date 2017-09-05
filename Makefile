@@ -989,7 +989,7 @@ EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(XOPTS) -kernel $(KIMA
 EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS) 2>/dev/null
+BOOT_CMD = PATH=$(QEMU_OUTPUT)/$(ARCH)-softmmu/:$(PATH) sudo $(EMULATOR) $(EMULATOR_OPTS)
 ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)
@@ -1035,6 +1035,10 @@ ifeq ($(DEBUG),1)
   BOOT_CMD += -s -S
 endif
 
+# Silence qemu warnings
+QUIET_OPT = 2>/dev/null
+BOOT_CMD += $(QUIET_OPT)
+
 rootdir:
 ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
 	- mkdir -p $(ROOTDIR) && cd $(ROOTDIR)/ && gunzip -kf ../rootfs.cpio.gz \
@@ -1070,9 +1074,8 @@ ifeq ($(PBK),0)
 endif
 
 U_KERNEL_IMAGE=$(UKIMAGE)
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-  U_ROOT_IMAGE=$(ROOTFS)
-endif
+# Put it in flash/sdcard whenever if it will be used, for U=0 boot
+U_ROOT_IMAGE=$(ROOTFS)
 ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif

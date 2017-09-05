@@ -1086,7 +1086,7 @@ UBOOT_ENV_TOOL=$(TOOL_DIR)/uboot/env.sh
 
 ifeq ($(BOOTDEV),tftp)
 tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(UBOOT_TFTP_TOOL)
+	@$(UBOOT_TFTP_TOOL)
 
 TFTP_IMAGES = tftp-images
 endif
@@ -1094,7 +1094,7 @@ endif
 ifeq ($(findstring flash,$(BOOTDEV)),flash)
 ifeq ($(PFLASH_IMG),)
 pflash-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(UBOOT_PFLASH_TOOL)
+	@$(UBOOT_PFLASH_TOOL)
 
 PFLASH_IMAGES = pflash-images
 PFLASH_IMG    = $(TFTPBOOT)/pflash.img
@@ -1104,7 +1104,7 @@ endif
 ifeq ($(SD_BOOT),1)
 ifeq ($(SD_IMG),)
 sd-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(UBOOT_SD_TOOL)
+	@$(UBOOT_SD_TOOL)
 
 SD_IMAGES = sd-images
 SD_IMG    = $(TFTPBOOT)/sd.img
@@ -1113,7 +1113,7 @@ endif
 endif
 
 uboot-images: $(TFTP_IMAGES) $(PFLASH_IMAGES) $(SD_IMAGES)
-	$(UBOOT_ENV_TOOL)
+	@$(UBOOT_ENV_TOOL)
 
 uboot-images-clean:
 	@rm -rf $(PFLASH_IMG) $(SD_IMG)

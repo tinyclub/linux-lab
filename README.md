@@ -167,7 +167,7 @@ Boot with graphic:
 
     $ make boot G=1
 
-Boot with curses graphic (friendly for ssh login):
+Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit'):
 
     $ make boot G=2
 

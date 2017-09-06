@@ -977,6 +977,12 @@ ifneq ($(SHARE),0)
   CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(shell basename $(SHARE_DIR))
 endif
 
+ifeq ($(G),0)
+  CMDLINE += console=$(SERIAL)
+else
+  CMDLINE += console=$(CONSOLE)
+endif
+
 # Shutdown the board if 'poweroff -h/-n' or crash
 ifneq ($(TEST_REBOOT),)
   TEST_FINISH = reboot
@@ -997,11 +1003,8 @@ ifeq ($(U),0)
   ifeq ($(DTB),$(wildcard $(DTB)))
     BOOT_CMD += -dtb $(DTB)
   endif
-  ifeq ($(G),0)
-    BOOT_CMD += -append '$(CMDLINE) console=$(SERIAL)'
-  else
-    BOOT_CMD += -append '$(CMDLINE) console=$(CONSOLE)'
-  endif
+
+  BOOT_CMD += -append '$(CMDLINE)'
 else
   ifeq ($(SD_BOOT),1)
     BOOT_CMD += -sd $(SD_IMG)
@@ -1082,7 +1085,7 @@ ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
 
-export PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+export CMDLINE PFLASH_IMG PFLASH_SIZE SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
 UBOOT_TFTP_TOOL=$(TOOL_DIR)/uboot/tftp.sh
 UBOOT_SD_TOOL=$(TOOL_DIR)/uboot/sd.sh

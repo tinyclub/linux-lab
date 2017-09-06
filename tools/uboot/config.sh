@@ -22,9 +22,9 @@ TFTP_KERNEL="tftpboot $KRN_ADDR $KERNEL_IMG;"
 IPADDR="set ipaddr $IP;"
 SERVERIP="set serverip $ROUTE;"
 if [ ${ROOTDEV} == "/dev/nfs" ]; then
-    BOOTARGS="set bootargs 'route=$ROUTE console=tty0 console=ttyAMA0 root=$ROOTDEV nfsroot=$ROUTE:$ROOTDIR ip=$IP';"
+    BOOTARGS="set bootargs '$CMDLINE';"
 else
-    BOOTARGS="set bootargs 'route=$ROUTE console=tty0 console=ttyAMA0 root=$ROOTDEV';"
+    BOOTARGS="set bootargs '$CMDLINE';"
 fi
 TFTPS="$TFTP_KERNEL $TFTP_RAMDISK $TFTP_DTB"
 [ "$DTB_ADDR" == "-" ] && DTB_ADDR=""

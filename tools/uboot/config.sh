@@ -91,7 +91,7 @@ CONFIG_INITRD_TAG=1
 CONFIG_OF_LIBFDT=1
 # aligh with 1M for env partition, for saveenv command
 FLASH_MAX_SECTOR_SIZE=0x00100000
-CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0bootcmdx=run bootcmd3\\\\0\""
+CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0bootcmdx=run $BOOT_CMD\\\\0\""
 
 ENV_OFFSET=$(_size16b_m $((PFLASH_SIZE-1)))
 ENV_ADDR=$(_size16b $((PFLASH_BASE + ENV_OFFSET)))

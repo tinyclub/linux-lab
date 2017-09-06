@@ -817,7 +817,7 @@ UP ?= 0
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
-BOOTDEV ?= tftp
+BOOTDEV ?= flash
 KRN_ADDR ?= -
 KRN_SIZE ?= 0
 RDK_ADDR ?= -
@@ -1006,9 +1006,10 @@ else
   ifeq ($(SD_BOOT),1)
     BOOT_CMD += -sd $(SD_IMG)
   endif
-  ifeq ($(findstring flash,$(BOOTDEV)),flash)
-    BOOT_CMD += -pflash $(PFLASH_IMG)
-  endif
+
+  # Load pflash for booting with uboot every time
+  # pflash is at least used as the env storage
+  BOOT_CMD += -pflash $(PFLASH_IMG)
 endif
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
   BOOT_CMD += -hda $(HROOTFS)
@@ -1095,14 +1096,15 @@ tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
 TFTP_IMAGES = tftp-images
 endif
 
-ifeq ($(findstring flash,$(BOOTDEV)),flash)
+# require by env saving, whenever boot from pflash
 ifeq ($(PFLASH_IMG),)
+  PFLASH_IMG = $(TFTPBOOT)/pflash.img
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
 pflash-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
 	@$(UBOOT_PFLASH_TOOL)
 
 PFLASH_IMAGES = pflash-images
-PFLASH_IMG    = $(TFTPBOOT)/pflash.img
-endif
 endif
 
 ifeq ($(SD_BOOT),1)
@@ -1116,7 +1118,11 @@ endif
 
 endif
 
+ENV_IMG ?= ${TFTPBOOT}/env.img
+export ENV_IMG
+
 uboot-images: $(TFTP_IMAGES) $(PFLASH_IMAGES) $(SD_IMAGES)
+	@$(UBOOT_CONFIG_TOOL)
 	@$(UBOOT_ENV_TOOL)
 
 uboot-images-clean:

@@ -12,13 +12,13 @@ KERNEL_IMG=uImage
 RAMDISK_IMG=ramdisk
 DTB_IMG=dtb
 
+# Core configuration
+
+## boot from tftp
 TFTP_KERNEL="tftpboot $KRN_ADDR $KERNEL_IMG;"
 [ "$RDK_ADDR" != "-" ] && TFTP_RAMDISK="tftpboot $RDK_ADDR $RAMDISK_IMG;"
 [ "$DTB_ADDR" != "-" ] && TFTP_DTB="tftpboot $DTB_ADDR $DTB_IMG;"
 
-# Core configuration
-
-## boot from tftp
 IPADDR="set ipaddr $IP;"
 SERVERIP="set serverip $ROUTE;"
 if [ ${ROOTDEV} == "/dev/nfs" ]; then
@@ -61,7 +61,29 @@ BOOT_PFLASH="$BOOTARGS $PFLOADS $BOOTM"
 
 ## Use tftp by default
 BOOT_CMD=$U_BOOT_CMD
-CONFIG_BOOTCOMMAND="\"run $BOOT_CMD;\""
+
+# build env image or customize config file?
+
+## build env image
+if [ -z "$_CONFIG_FILE" ]; then
+
+    case $BOOT_CMD in
+      bootcmd3) boot_cmd=$BOOT_PFLASH
+	;;
+      bootcmd2) boot_cmd=$BOOT_SDCARD
+	;;
+      *) boot_cmd=$BOOT_TFTP
+	;;
+    esac
+
+    dd if=/dev/zero of=$ENV_IMG bs=1M count=1 status=none
+    echo -e -n "bootcmdx=${boot_cmd}\0" > $ENV_IMG 
+    ##hexdump -C $ENV_IMG
+
+    exit 0
+fi
+
+## customize config file
 
 # Others
 CONFIG_SYS_CBSIZE=1024
@@ -69,7 +91,11 @@ CONFIG_INITRD_TAG=1
 CONFIG_OF_LIBFDT=1
 # aligh with 1M for env partition, for saveenv command
 FLASH_MAX_SECTOR_SIZE=0x00100000
-CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0\""
+CONFIG_EXTRA_ENV_SETTINGS="\"bootcmd1=$BOOT_TFTP\\\\0bootcmd2=$BOOT_SDCARD\\\\0bootcmd3=$BOOT_PFLASH\\\\0bootcmdx=run bootcmd3\\\\0\""
+
+ENV_OFFSET=$(_size16b_m $((PFLASH_SIZE-1)))
+ENV_ADDR=$(_size16b $((PFLASH_BASE + ENV_OFFSET)))
+CONFIG_BOOTCOMMAND="\"env import $ENV_ADDR $CONFIG_SYS_CBSIZE; run bootcmdx\""
 
 # More
 EXTRA_CONFIGS=`env | grep ^CONFIG | cut -d'=' -f1`

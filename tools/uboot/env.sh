@@ -10,6 +10,15 @@ BOOT_CMD=${U_BOOT_CMD}
 IMAGES_DIR=${TFTPBOOT}
 UBOOT_IMAGE=${BIMAGE}
 
+# Save env to the last 1M of pflash
+if [ -n "$ENV_IMG" ]; then
+  [ ! -f $PFLASH_IMG ] && dd if=/dev/zero of=$PFLASH_IMG status=none bs=128K count=$((PFLASH_SIZE*8))
+  dd if=$ENV_IMG of=$PFLASH_IMG bs=1M seek=$((PFLASH_SIZE-1)) conv=notrunc status=none
+fi
+
+# Ignore the old uggly method...
+exit 0
+
 if [ -f "$UBOOT_IMAGE" ]; then
   ## Fix up tftp server ip, only when the docker net is 10.66.33.n
   ## See /etc/default/docker: DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.33.10/24"

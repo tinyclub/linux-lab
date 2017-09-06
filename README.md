@@ -204,8 +204,9 @@ Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` b
 
     $ make uboot-patch
 
-Use `sdcard` or `flash`:
+Use `tftp`, `sdcard` or `flash` explicitly:
 
+    $ make uboot-patch BOOTDEV=tftp
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
 
@@ -222,10 +223,15 @@ Boot with `BOOTDEV` and `ROOTDEV`, use `tftp` by default:
 
     $ make boot U=1
 
-Use `sdcard` or `flash`:
+Use `tftp`, `sdcard` or `flash` explicitly:
 
+    $ make boot U=1 BOOTDEV=tftp
     $ make boot U=1 BOOTDEV=sdcard
     $ make boot U=1 BOOTDEV=flash
+
+We can also change `ROOTDEV` during boot, for example:
+
+    $ make boot U=1 BOOTDEV=flash ROOTDEV=/dev/nfs
 
 Save uboot images and configs:
 

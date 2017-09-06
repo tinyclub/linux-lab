@@ -20,7 +20,9 @@ Download cloud lab framework, pull images and checkout linux-lab repository:
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-Run the target lab:
+## Run and login the lab
+
+Launch the lab and login with the user and password printed in the console:
 
     $ tools/docker/run linux-lab
 
@@ -32,12 +34,10 @@ For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will
 
     $ sudo apt-get install linux-generic-lts-trusty
 
-## Quickstart
+## Quickstart: Boot a board
 
-Login the VNC page via `tools/docker/vnc` with the password printed in the
-console, and then open the 'Linux Lab' desktop shortcut on the desktop to
-launch into the Lab, and issue the following command to boot the prebuilt
-kernel and rootfs on the default `versatilepb` board:
+Issue the following command to boot the prebuilt kernel and rootfs on the
+default `versatilepb` board:
 
     $ make boot
 

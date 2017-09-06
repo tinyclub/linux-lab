@@ -1067,10 +1067,8 @@ else
   UROOTFS_SRC=$(PREBUILT_ROOTFS)
 endif
 
-$(ROOTFS):
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+$(ROOTFS): $(UROOTFS_SRC)
 	mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
-endif
 
 $(UKIMAGE):
 ifeq ($(PBK),0)

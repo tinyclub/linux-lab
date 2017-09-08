@@ -29,7 +29,7 @@ tags:
 本次介绍如何用 Linux Lab 做 Uboot 实验：
 
 > 直播主题：用 Linux Lab 做 Uboot 实验
-> 直播地址：<a target="_blank" href="http://t.cn/RpLlvTD">泰晓科技 Linux 直播频道</a>
+> 直播地址：<a target="_blank" href="http://t.cn/RpLlvTD">泰晓科技 Linux 直播频道 @ 三千氪</a>
 > 直播时间：本周六(2017/9/9)下午2:00～3:00
 > 直播口号：跟上年轻人的脚步，用直播传播 Linux 知识。
 
@@ -49,9 +49,16 @@ tags:
 
 另外，本次直播内容实操性非常强，建议提前 [参考文档][4] 搭建好 Linux Lab，或者直接从 [泰晓开源小店][6] 提前获取一个在线 Linux Lab 帐号。
 
+## 致谢
+
+本次直播采用的直播平台和服务由 [三千氪][7] 赞助，本次直播采用的 [实验云台/Cloud Lab][8] 由 [青云QingCloud][9] 赞助服务器。
+
 [1]: http://tinylab.org
 [2]: http://t.cn/RpLlvTD
 [3]: http://www.denx.de/wiki/U-Boot/
 [4]: http://tinylab.org/linux-lab/
 [5]: https://github.com/tinyclub/linux-lab
 [6]: https://weidian.com/i/1937753839
+[7]: https://3qk.easyvaas.com/
+[8]: http://tinylab.cloud:6080
+[9]: https://www.qingcloud.com/

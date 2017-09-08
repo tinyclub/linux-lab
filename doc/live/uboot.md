@@ -44,17 +44,19 @@
 
 1. Download
     - `make uboot-source`
-2. Patch
+2. Checkout
+    - `make uboot-checkout`
+3. Patch
     - `make uboot-patch`
-3. Configure
+4. Configure
     - `make uboot-defconfig`
     - `make uboot-menuconfig`
-4. Compile
+5. Compile
     - `make uboot`
-5. Boot to CLI
+6. Boot to CLI
     - `make boot`
     - Hit any key to stop autoboot and enter into CLI
-6. Load and Run Linux
+7. Load and Run Linux
     - `print bootcmd`
     - `run bootcmd`
 

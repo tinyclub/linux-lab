@@ -2,6 +2,8 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "用 OBS 和虎牙进行 IT 技术直播"
+tagline: "Linux直播第1期：用 Linux Lab 做《奔跑吧 Linux 内核》实验"
+album: Linux 直播
 permalink: /tech-live-with-obs-huya-openshot/
 description: "本文介绍在Macbook下，如何用OBS和虎牙进行IT技术直播，并顺带介绍如何用Openshot剪辑视频并发布到腾讯视频上。"
 category:

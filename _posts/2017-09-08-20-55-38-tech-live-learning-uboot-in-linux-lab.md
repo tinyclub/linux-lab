@@ -29,7 +29,7 @@ tags:
 本次介绍如何用 Linux Lab 做 Uboot 实验：
 
 > 直播主题：用 Linux Lab 做 Uboot 实验
-> 直播地址：<http://t.cn/RpLlvTD>
+> 直播地址：<a target="_blank" href="http://t.cn/RpLlvTD">泰晓科技 Linux 直播频道</a>
 > 直播时间：本周六(2017/9/9)下午2:00～3:00
 > 直播口号：跟上年轻人的脚步，用直播传播 Linux 知识。
 

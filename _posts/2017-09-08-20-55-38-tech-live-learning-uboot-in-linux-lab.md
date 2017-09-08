@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "Linux直播第2期：用 Linux Lab 做 Uboot 实验"
+title: "第2期直播：用 Linux Lab 做 Uboot 实验"
 album: Linux 直播
 permalink: /tech-live-learning-uboot-in-linux-lab/
 description: "本文主要介绍如何用 Linux Lab 做 Uboot 实验，Uboot 是一款流行的 Boot Loader，用于引导操作系统，被广泛用于嵌入式 Linux 系统中。"

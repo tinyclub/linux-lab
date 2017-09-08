@@ -14,7 +14,7 @@ board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
   ifeq ($(BOARD_CONFIG),)
-    BOARD = versatilepb
+    BOARD = vexpress-a9
   else
     BOARD ?= $(BOARD_CONFIG)
   endif

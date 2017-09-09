@@ -26,9 +26,13 @@ tags:
   * 使用文档：[README.md][2]
   * 在线演示
       * 命令行
-          * Linux: <http://showterm.io/6fb264246580281d372c6>
-          * Uboot: <http://showterm.io/11f5ae44b211b56a5d267>
-      * 视频：<http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
+          * Linux 快速上手: <http://showterm.io/6fb264246580281d372c6>
+          * Uboot 快速上手: <http://showterm.io/11f5ae44b211b56a5d267>
+          * AT&T 汇编上手：<http://showterm.io/0f0c2a6e754702a429269>
+      * 视频
+          * Linux 基本用法: <http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
+          * Linux 进阶用法：<https://v.qq.com/x/page/y0543o6zlh5.html>
+          * Uboot 基本用法: <http://t.cn/RpVsQLJ>
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。

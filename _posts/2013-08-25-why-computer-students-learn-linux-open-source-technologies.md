@@ -106,11 +106,7 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 > Hello, Falcon
 >
-> I'm amazed to receive your cs630-experiment-on-VM.  I think, as
-> an online "student", you have earned an 'A' for this course!  I
-> will let some Ubuntu-savvy students here know about what you've
-> created, and we'll see if they find it to be a timesaver, as it
-> ought to be.  Thanks for contributing these efforts to the class.
+> I'm amazed to receive your cs630-experiment-on-VM.  I think, as an online "student", you have earned an 'A' for this course!  I will let some Ubuntu-savvy students here know about what you've created, and we'll see if they find it to be a timesaver, as it ought to be.  Thanks for contributing these efforts to the class.
 >
 
 BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 gas 和 gcc ，那个 boot 引导的 16bit 汇编代码有用 AT&T 重写。
@@ -152,12 +148,11 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 整个系列的 slides 的原始存放位置已经无法访问，大家也可以从这里下载备份版本：[Part-I][26]，[Part-II][27]，[Part-III][28]。
 
-巧合地是，在 2008 年左右也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源书籍：[《C 语言编程透视（开源书籍）》][19]，正在持续校订和完善中。Jserv 前辈也参与了该书的修订并把该书作为大学补充教材：
+巧合地是，在 2008 年左右也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源书籍：[《C 语言编程透视》][19]，正在持续校订和完善中。Jserv 前辈也参与了该书的修订并把该书作为大学补充教材：
 
 > hi,
 >
-> 首先感謝將《C语言编程透视》[1] 一書開源，本人任教於台灣的大學，很希望拿這本好書當作補充教材，於是著手調整，很希望能夠符合 Linux
-> x86_64 環境。我做了一點調整，請見:
+> 首先感謝將《C语言编程透视》一書開源，本人任教於台灣的大學，很希望拿這本好書當作補充教材，於是著手調整，很希望能夠符合 Linux x86_64 環境。我做了一點調整，請見:
 >    https://github.com/jserv/open-c-book/tree/x86_64
 >
 > 但涉及到 dynamic linking 的部分，實在有太多地方得修改。請問最近有改版的計畫嗎？

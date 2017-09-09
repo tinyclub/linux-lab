@@ -68,7 +68,7 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 还可以自己制作一个完整的操作系统。看看 Building Embedded Linux System 这本书 ,  从 Linux 官方社区 : <http://www.kernel.org> 下载一份源代码，编译一下，然后用 [Busybox][6] ， [Buildroot][7] 、 LFS 或者 Openembedded 制作自己的文件系统，然后就是一个完整的操作系统。然后会知道什么是一个完整的操作系统，什么仅仅是一个操作系统 Kernel 。然后会了解，用户交互的界面，除了 GUI ，其实它最最本质的东西还是 Shell Terminator ， GUI 只是换上了一袭花衣裳。会真正地理解，当按下一个键盘上的按键的时候，这个背后发生了什么样的故事和演变。作为计算机的学生，不应该被这些蒙在鼓里，应该掀开那袭花衣裳，打探背后的细枝末节，然后，等到哪一天，闭上眼睛，当整个故事情节在脑海里像放电影一样清晰不再模糊的时候，就如偿所愿了，那种美妙的滋味在出现 Bug 需要解决的时候会得到印证。
 
-做这些实验，根本不需要买开发板，Qemu就绰绰有余了，可以参考：
+做这些实验，根本不需要买开发板，Qemu 就绰绰有余了，可以参考：
 
 * [Using QEMU for Embedded Systems Development, Part 1][8]
 * [Using QEMU for Embedded Systems Development, Part 2][9]
@@ -82,10 +82,12 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 * Linux 0.11 Lab 用法视频演示
     * 命令行：<http://showterm.io/ffb67385a07fd3fcec182>
     * 视频：<http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49>
+    * 即时在线实验帐号：<https://weidian.com/i/1487448443>
 
 * Linux Lab 用法视频演示
     * 视频1：<http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
     * 视频2（请切到高清观看）：<https://v.qq.com/x/page/y0543o6zlh5.html>
+    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
 
 ### 汇编语言
 
@@ -108,9 +110,11 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 * CS630 Qemu Lab 用法视频演示
     * 命令行：<http://showterm.io/547ccaae139df14c3deec>
     * 视频：<http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/>
+    * 即时在线实验帐号：<https://weidian.com/i/1978159029>
 
 * Linux Lab 各架构汇编例子用法视频演示
     * 命令行：<http://showterm.io/0f0c2a6e754702a429269>
+    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
 
 ### C 语言
 
@@ -118,7 +122,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 语言本身是不是还在学谭老师的课程呢？建议还是要自学 C 语言作者的书：
 
-The C programming Language
+* The C programming Language
 
 然后，不要忘记把基础打扎实一下，下面几个内容基本可以作为日后学习和工作的持久参考书，最好是在大学阶段系统地全部阅读和实践一遍，会受益匪浅的：
 
@@ -136,6 +140,10 @@ The C programming Language
 
 忘记提 gcc， gdb 之类了。在 Linux 下面学习 C ，离不开他们，当然还有编辑器 vim+cscope+ctags ，还有 gprof, gcov 等。
 
+由于 [Linux Lab](http://tinylab.org/linux-lab) 提供了非常丰富的开发工具，因此也可以用 Linux Lab 来做 C 语言实验。
+
+* Linux 下 C 语言视频演示：<http://showterm.io/a98435fb1b79b83954775>
+
 ### 脚本语言
 
 学一两样脚本语言，对于平时的学习和工作会起到事半功倍的效果。
@@ -144,21 +152,27 @@ The C programming Language
 
 又比如，要做一些比较复杂的甚至带有图形的交互，这个时候可以用 Python ，可以高效地实现一些案子，而且可以学习面向对象的思路。
 
+* Linux 下 Shell 语言视频演示：<http://showterm.io/445cbf5541c926b19d4af>
+
 ### 编译原理
 
 编译原理太重要了，了解 turob c, virtual studio C++ 背后的故事吗？很难吧，但是 gnu toolchains 可以。
 
-从源代码编辑 (vim) 、预处理 (Gcc -E, cpp) 、汇编（as）、编译 (gcc -c) 、链接（gcc, ld）的整个过程可以看得一清二楚。可以用 binutils 提供的一序列工具 readelf, objdump, objcopy, nm, ld, as 理解什么是可执行文件，可执行文件的结构是什么样的，它包含了哪些东西，那些所谓的代码段、数据段是如何组织的。通过 objdump ，可以反汇编一个有趣的可执行文件，看看它背后的实现思路。还可以看看为了支持动态链接，可执行文件该怎么组织。还可以了解，一个程序执行时的细节，它怎么能够在屏幕上打印出来一个 "Hello, World!"，这需要什么样的支持，这个背后的硬件、操作系统以及应用程序做了什么样的工作？
+从源代码编辑 (vim) 、预处理 (Gcc -E, cpp) 、编译 (gcc -S)、汇编（gcc -c, as） 、链接（gcc, ld）的整个过程可以看得一清二楚。可以用 binutils 提供的一序列工具 readelf, objdump, objcopy, nm, ld, as 理解什么是可执行文件，可执行文件的结构是什么样的，它包含了哪些东西，那些所谓的代码段、数据段是如何组织的。通过 objdump ，可以反汇编一个有趣的可执行文件，看看它背后的实现思路。还可以看看为了支持动态链接，可执行文件该怎么组织。还可以了解，一个程序执行时的细节，它怎么能够在屏幕上打印出来一个 "Hello, World!"，这需要什么样的支持，这个背后的硬件、操作系统以及应用程序做了什么样的工作？
 
 另外，还可以去看 gnu toolchains 的源代码。如果觉得这个东西太庞大。也可以去阅读刚才提到的那个天才：法布里斯·贝拉，他写的 [TCC ： Tiny C Compiler][22] ，可以看到一个完整的小巧的 C 编译器是如何实现的。
 
 对了，相关的方面，有写一个序列的 Blog： Linux 下 C 语言程序开发过的程视图，后面整理成了开源书籍，即上面提到的： [《 C 语言编程透视（开源书籍）》 ][19] 。
+
+* Linux 下 C 语言编译过程视频演示：<http://showterm.io/887b5ee77e3f377035d01>
 
 ### 数据库
 
 Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年了，还是那么火。特别是那个小巧的 SQLite， Android 都在用了。而且她小巧，可以学习那些 SQL 语言背后具体是怎么实现的。
 
 也许说企业级的 Oracle, SQLServer 很好用啊，是的，她们是浓妆艳抹的贵妇，高高在上，在有钱人的圈子里打转，不会投怀送抱的，永远没有机会摸透她们的心思。
+
+* Linux 下 SQL 视频演示：<http://showterm.io/7766b67876c0b7615850e>
 
 ### 计算机网络
 
@@ -189,14 +203,24 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
     * [CS630 Qemu Lab 基本用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)
+    * 即时在线实验帐号：<https://weidian.com/i/1978159029>
 
 * [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux 0.11 Lab 基本用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
+    * 即时在线实验帐号：<https://weidian.com/i/1487448443>
 
 * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
     * [Linux Lab 基本用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
     * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
     * [通过 Linux Lab 做 Uboot 实验](http://t.cn/RpVsQLJ)
+    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
+
+* 其他
+    * C 语言：<http://showterm.io/a98435fb1b79b83954775>
+    * C 编译过程：<http://showterm.io/887b5ee77e3f377035d01>
+    * Shell 语言：<http://showterm.io/445cbf5541c926b19d4af>
+    * SQL 语言：<http://showterm.io/7766b67876c0b7615850e>
+    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
 
 ## 小结
 

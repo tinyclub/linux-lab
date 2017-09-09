@@ -29,6 +29,9 @@ tags:
           * Linux 快速上手: <http://showterm.io/6fb264246580281d372c6>
           * Uboot 快速上手: <http://showterm.io/11f5ae44b211b56a5d267>
           * AT&T 汇编上手：<http://showterm.io/0f0c2a6e754702a429269>
+          * C 语言上手：<http://showterm.io/a98435fb1b79b83954775>
+          * C 语言编译过程：<http://showterm.io/887b5ee77e3f377035d01>
+          * Shell语言上手：<http://showterm.io/445cbf5541c926b19d4af>
       * 视频
           * Linux 基本用法: <http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
           * Linux 进阶用法：<https://v.qq.com/x/page/y0543o6zlh5.html>

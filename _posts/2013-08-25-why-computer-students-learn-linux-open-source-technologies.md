@@ -85,8 +85,9 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
 
 * Linux 0.11 Lab 用法演示
-    * [命令行演示](http://showterm.io/ffb67385a07fd3fcec182)
+    * [基本用法](http://showterm.io/ffb67385a07fd3fcec182)
     * [视频演示](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
+    * [添加一个新的系统调用](http://showterm.io/4b628301d2d45936a7f8a)
     * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * Linux Lab 用法演示
@@ -230,6 +231,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 * [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux 0.11 Lab 基本用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
+    * [为 Linux 0.11 添加系统调用](http://showterm.io/4b628301d2d45936a7f8a)
     * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境

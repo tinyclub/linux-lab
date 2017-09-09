@@ -55,7 +55,9 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 
 大学时学习了 BIOS ，基本输入输出系统，是个啥玩意，感觉得到，看得到面纱，看不到她真实的样子。但是有了 [Uboot](http://www.denx.de/wiki/U-Boot) ，可以。
 
-可以直接在 Qemu 里头做 Uboot 的实验 [Using QEMU for Embedded Systems Development, Part 3][3]  或者 [利用 qemu 模拟嵌入式系统制作全过程][4]。而最近，更是可以更便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验，详见：
+可以直接在 Qemu 里头做 Uboot 的实验 [Using QEMU for Embedded Systems Development, Part 3][3]  或者 [利用 qemu 模拟嵌入式系统制作全过程][4]。
+
+而最近，更是可以更便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验，详见：
 
 * [命令行演示效果](http://showterm.io/11f5ae44b211b56a5d267)
 * [视频演示效果](http://t.cn/RpVsQLJ)
@@ -79,12 +81,12 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
 
-* Linux 0.11 Lab 用法视频演示
+* Linux 0.11 Lab 用法演示
     * [命令行演示](http://showterm.io/ffb67385a07fd3fcec182)
     * [视频演示](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
     * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
-* Linux Lab 用法视频演示
+* Linux Lab 用法演示
     * [视频演示1](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
     * [视频演示2（请切到高清观看）](https://v.qq.com/x/page/y0543o6zlh5.html)
     * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
@@ -107,12 +109,12 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 关于 CS630 Qemu Lab 以及 Linux Lab 中汇编语言例子的用法请参考：
 
-* CS630 Qemu Lab 用法视频演示
+* CS630 Qemu Lab 用法演示
     * [命令行演示](http://showterm.io/547ccaae139df14c3deec)
     * [视频演示](http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/)
     * [获取即时在线实验帐号](https://weidian.com/i/1978159029)
 
-* Linux Lab 各架构汇编例子用法视频演示
+* Linux Lab 各架构汇编例子用法演示
     * [命令行演示](http://showterm.io/0f0c2a6e754702a429269)
     * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
@@ -152,7 +154,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 又比如，要做一些比较复杂的甚至带有图形的交互，这个时候可以用 Python ，可以高效地实现一些案子，而且可以学习面向对象的思路。
 
-* [Linux 下 Shell 语言视频演示](http://showterm.io/445cbf5541c926b19d4af)
+* [Linux 下 Shell 语言演示](http://showterm.io/445cbf5541c926b19d4af)
 
 ### 编译原理
 

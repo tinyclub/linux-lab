@@ -2,6 +2,8 @@
 CC   = gcc
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
+ASMS = $(SRCS:.c=.s)
+PRES = $(SRCS:.c=.i)
 
 all: $(OBJS)
 	$(CURDIR)/$(basename $<)
@@ -10,4 +12,4 @@ all: $(OBJS)
 	$(CC) -g -o $(basename $@) $<
 
 clean:
-	rm -f $(basename $(OBJS))
+	rm -f $(basename $(OBJS)) $(OBJS) $(ASMS) $(PRES)

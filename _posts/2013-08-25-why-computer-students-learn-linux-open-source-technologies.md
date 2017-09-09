@@ -58,7 +58,7 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 可以直接在 Qemu 里头做 Uboot 的实验：
 
 * [Using QEMU for Embedded Systems Development, Part 3][3]
-* [利用 qemu 模拟嵌入式系统制作全过程][4]
+* [利用 Qemu 模拟嵌入式系统制作全过程][4]
 
 而最近，更是可以便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验：
 

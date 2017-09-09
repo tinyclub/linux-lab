@@ -10,6 +10,7 @@ LINUX   ?= v4.6.7
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64
+PFLASH_BS   ?= 256
 # get dram range: bdinfo
 KRN_ADDR?= 0x007fc0
 KRN_SIZE?= 5

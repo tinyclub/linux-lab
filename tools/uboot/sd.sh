@@ -18,13 +18,18 @@ UBOOT_IMAGE=${BIMAGE}
 if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]; then
   SD_DIR=${SD_IMG%.*}
   [ -f $SD_IMG ] && rm $SD_IMG
+
   [ ! -f $SD_IMG ] && dd if=/dev/zero of=$SD_IMG status=none bs=1M count=$((KRN_SIZE+RDK_SIZE+DTB_SIZE+2))
+
   [ -f $SD_IMG ] && mkfs.fat $SD_IMG
+
   [ ! -d $SD_DIR ] && mkdir -p $SD_DIR
+
   sudo mount $SD_IMG $SD_DIR
   [ -n "$ROOT_IMAGE" ] && sudo cp $ROOT_IMAGE $SD_DIR/ramdisk
   [ -n "$DTB_IMAGE" ] && sudo cp $DTB_IMAGE $SD_DIR/dtb
   [ -n "$KERNEL_IMAGE" ] && sudo cp $KERNEL_IMAGE $SD_DIR/uImage
   sudo umount $SD_DIR
+
   sync
 fi

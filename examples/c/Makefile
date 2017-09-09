@@ -1,12 +1,13 @@
 
-CC=gcc
-OBJ=hello.o
+CC   = gcc
+SRCS = $(wildcard *.c)
+OBJS = $(SRCS:.c=.o)
 
-all: $(OBJ)
+all: $(OBJS)
 	$(CURDIR)/$(basename $<)
 
 %.o: %.c
 	$(CC) -g -o $(basename $@) $<
 
 clean:
-	rm -f $(basename $(OBJ))
+	rm -f $(basename $(OBJS))

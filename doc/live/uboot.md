@@ -50,11 +50,12 @@
     - `make uboot-defconfig`
     - `make uboot-menuconfig`
 4. Compile
-    - make uboot
+    - `make uboot`
 5. Boot to CLI
+    - `make boot`
     - Hit any key to stop autoboot and enter into CLI
 6. Load and Run Linux
-    - `bootcmd`
+    - `print bootcmd`
     - `run bootcmd`
 
 ## Hacking Uboot: part2

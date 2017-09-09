@@ -43,7 +43,7 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 
 ### 硬件方面
 
-硬件模拟已经是趋势，不可阻挡。包括处理器模拟、系统模拟，大名鼎鼎的 Qemu ，以及它的伟大的派生者： Android Emulator 提供了易用的案例，支持四大，不是律师事务所，是 ARM, X86, PPC 以及 MIPS 。这东西不仅能够模拟处理器指令，还支持系统级（各种外设）的模拟，还支持直接在一个架构上执行另一个架构的可执行文件（通过 qemu-user-static 翻译）。有了它，不用花钱买开发板，有了它，可以研究如何模拟设计和实现一个硬件系统，一套处理器指令，还可以研究虚拟化技术，虚拟化集群。
+硬件模拟已经是趋势，不可阻挡。包括处理器模拟、系统模拟，大名鼎鼎的 Qemu ，以及它的伟大的派生者： Android Emulator 提供了易用的案例，支持四大，不是律师事务所，是 ARM, X86, PPC 以及 MIPS 。这东西不仅能够模拟处理器指令，还支持系统级（各种外设）的模拟，还支持直接在一个架构上执行另一个架构的可执行文件（通过 qemu-user 翻译）。有了它，不用花钱买开发板，有了它，可以研究如何模拟设计和实现一个硬件系统，一套处理器指令，还可以研究虚拟化技术，虚拟化集群。
 
 跟 GNU 序列工具的开创者 Stallman 以及 Linux 的开创者 Linus 一样， Qemu 的开创者也是一个伟大的先驱，看看他的简介和个人主页吧： <http://bellard.org/> ，以及那个用 Javascript 写的可以直接通过浏览器跑 Linux 的模拟器吧： <http://bellard.org/jslinux/> 
 
@@ -55,12 +55,15 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 
 大学时学习了 BIOS ，基本输入输出系统，是个啥玩意，感觉得到，看得到面纱，看不到她真实的样子。但是有了 [Uboot](http://www.denx.de/wiki/U-Boot) ，可以。
 
-可以直接在 Qemu 里头做 Uboot 的实验 [Using QEMU for Embedded Systems Development, Part 3][3]  或者 [利用 qemu 模拟嵌入式系统制作全过程][4]。
+可以直接在 Qemu 里头做 Uboot 的实验：
 
-而最近，更是可以更便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验，详见：
+* [Using QEMU for Embedded Systems Development, Part 3][3]
+* [利用 qemu 模拟嵌入式系统制作全过程][4]
 
-* [命令行演示效果](http://showterm.io/11f5ae44b211b56a5d267)
-* [视频演示效果](http://t.cn/RpVsQLJ)
+而最近，更是可以便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验：
+
+* [命令行演示](http://showterm.io/11f5ae44b211b56a5d267)
+* [视频演示](http://t.cn/RpVsQLJ)
 
 ### 操作系统
 
@@ -77,7 +80,7 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 如果想看 Linux 0.11 的源代码，可以到 <http://oldlinux.org/> 下载开放的书籍和源代码，在 Ubuntu 下用 Qemu 做实验就好了。记得下载可以在 Ubuntu 下用最新编译器编译的 Linux 0.11 代码： [https://github.com/tinyclub/linux-0.11-lab.git][10] 以及这里的 [五分钟 Linux 0.11 实验环境使用指南][11] 。
 
-如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建一个集成的 Linux 内核的实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot，Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试，可通过 Web 远程访问。
+如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建一个集成的 Linux 内核实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot，Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试和测试，可通过 Web 远程访问。
 
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
 
@@ -95,9 +98,20 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 
 估计学校还在用王老师的书吧，这个是大二时写的[《汇编语言 王爽著》课后实验参考答案][12]。
 
-Share 在这里是非常想强调实践的重要性，不知道有几个同学认真地做完了所有或者绝大部分大学计算机课程课后的实验，实验真地非常重要。另外一个原因是，真地希望大家能够在 Linux 平台下学 X86 的汇编，用 gas 汇编器，用 AT&T 的语法，用 gcc 看 C 语言写的东西是怎么用汇编语言实现的。非常美妙的事情。当然，还可以用 qemu-user-static 跑一个 debootstrap 制作的 Debian for ARM, MIPS or PPC ，学习 ARM ， MIPS 和 PPC 汇编。特别推荐学习 MIPS 汇编，精简指令集，最优美的纯天然的汇编语言。
+分享在这里是非常想强调实践的重要性，不知道有几个同学认真地做完了所有或者绝大部分大学计算机课程课后的实验，实验真地非常重要。另外一个原因是，真地希望大家能够在 Linux 平台下学 X86 的汇编，用 gas 汇编器，用 AT&T 的语法，用 gcc 看 C 语言写的东西是怎么用汇编语言实现的。非常美妙的事情。当然，还可以用 qemu-user-static 跑一个 debootstrap 制作的 Debian for ARM, MIPS or PPC ，学习 ARM，MIPS 和 PPC 汇编。特别推荐学习 MIPS 汇编，精简指令集，最优美的纯天然的汇编语言。
 
-结合上面的操作系统课程，特别推荐一个国外的貌似是旧金山大学的课程，叫 [CS630][13] ，本来这个老师 (Allan B. Cruse) 是在 I386 真机上做实验的，鄙人完善了他的 Makefile ，然后直接在 Qemu 上做实验。分享一个趣事：鄙人给那个老师分享了在 Qemu 上做实验的方法，人家说这个学生不错，可以直接给个 A 了，呵呵。具体用法和源代码请参考： [Learn CS630 on Qemu in Ubuntu][14] 。
+结合上面的操作系统课程，特别推荐一个国外的貌似是旧金山大学的课程，叫 [CS630][13] ，本来这个老师 (Allan B. Cruse) 是在 I386 真机上做实验的，鄙人完善了他的 Makefile ，然后直接在 Qemu 上做实验。具体用法和源代码请参考： [Learn CS630 on Qemu in Ubuntu][14]。
+
+分享一个趣事：鄙人给那个老师分享了在 Qemu 上做实验的方法，人家说这个 online 学生不错，可以直接给个 A 了，呵呵。
+
+> Hello, Falcon
+>
+> I'm amazed to receive your cs630-experiment-on-VM.  I think, as
+> an online "student", you have earned an 'A' for this course!  I
+> will let some Ubuntu-savvy students here know about what you've
+> created, and we'll see if they find it to be a timesaver, as it
+> ought to be.  Thanks for contributing these efforts to the class.
+>
 
 BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 gas 和 gcc ，那个 boot 引导的 16bit 汇编代码有用 AT&T 重写。
 
@@ -105,7 +119,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 如果想学 X86 汇编，不要错过那个 [CS630 课程][13] 以及 Allan B. Cruse 的 [个人主页][15] ，有蛮多相关的资料。
 
-如果要在 Linux 下快速上手四大架构的汇编语言，在下载 [Linux Lab](http://tinylab.org/linux-lab) 后，可以从 [examples/assembly](https://github.com/tinyclub/linux-lab/tree/master/examples/assembly) 找到 32 位和 64 位的汇编语言例子。这篇文章：[Linux 汇编语言快速上手：4大架构一块学](http://tinylab.org/linux-assembly-language-quick-start/) 对此进行了详细的介绍。
+如果要在 Linux 下快速上手四大架构的汇编语言，在下载 [Linux Lab](http://tinylab.org/linux-lab) 后，可以从 [examples/assembly](https://github.com/tinyclub/linux-lab/tree/master/examples/assembly) 找到各个架构的 32 位和 64 位汇编语言例子。这篇文章：[Linux 汇编语言快速上手：4大架构一块学](http://tinylab.org/linux-assembly-language-quick-start/) 对此进行了详细的介绍。
 
 关于 CS630 Qemu Lab 以及 Linux Lab 中汇编语言例子的用法请参考：
 
@@ -136,11 +150,24 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 > 許多充斥於開放資源的 Linux programming 文件常只敘及概念或技術細節，往往以照單全收卻沒有充分消化的結局作收。我們何嘗不能以「實驗」的心態去思考 "Hello World" 這種小規模應用程式在執行時期的微妙變化，此時再佐以網路上豐富的資料，不是更能享受醍醐灌頂的美妙嗎？
 
-整个系列的 slides 的原始存放位置已经无法访问，大家也可以从这里下载：[Part-I](http://www.kernelchina.org/files/HackingHelloWorld-PartI-2007-03-25.pdf)，[Part-II](http://www.kernelchina.org/files/HackingHelloWorld-PartII-2007-03-25.pdf)，[Part-III](http://www.kernelchina.org/files/HackingHelloWorld-PartIII-2007-03-25.pdf)。
+整个系列的 slides 的原始存放位置已经无法访问，大家也可以从这里下载备份版本：[Part-I][26]，[Part-II][27]，[Part-III][28]。
 
-巧合地是，在 2008 年左右也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源书籍：[《C 语言编程透视（开源书籍）》][19]，目前只是 0.2 版，正在持续校订中。
+巧合地是，在 2008 年左右也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源书籍：[《C 语言编程透视（开源书籍）》][19]，正在持续校订和完善中。Jserv 前辈也参与了该书的修订并把该书作为大学补充教材：
 
-忘记提 gcc， gdb 之类了。在 Linux 下面学习 C ，离不开他们，当然还有编辑器 vim+cscope+ctags ，还有 gprof, gcov 等。
+> hi,
+>
+> 首先感謝將《C语言编程透视》[1] 一書開源，本人任教於台灣的大學，很希望拿這本好書當作補充教材，於是著手調整，很希望能夠符合 Linux
+> x86_64 環境。我做了一點調整，請見:
+>    https://github.com/jserv/open-c-book/tree/x86_64
+>
+> 但涉及到 dynamic linking 的部分，實在有太多地方得修改。請問最近有改版的計畫嗎？
+>
+> Thanks,
+> -jserv
+
+这里再推荐一本 Jserv 老师引荐的书：[Computer Science from the Bottom Up](https://www.bottomupcs.com/)
+
+忘记提 gcc，gdb 之类了。在 Linux 下面学习 C ，离不开他们，当然还有编辑器 vim+cscope+ctags，还有 gprof, gcov 等。
 
 由于 [Linux Lab](http://tinylab.org/linux-lab) 提供了非常丰富的开发工具，因此也可以用 Linux Lab 来做 C 语言实验。
 
@@ -150,7 +177,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 学一两样脚本语言，对于平时的学习和工作会起到事半功倍的效果。
 
-比如说要处理一些数据，可以用 sed, awk 加 gnuplot ，这个时候 Shell 程序设计就非常重要。关于 Shell ，有写过一个 [《 Shell 编程范例》][20] 。
+比如说要处理一些数据，可以用 sed, awk 加 gnuplot ，这个时候 Shell 程序设计就非常重要。关于 Shell，有写过一个 [《 Shell 编程范例（开源书籍）》][20] 。
 
 又比如，要做一些比较复杂的甚至带有图形的交互，这个时候可以用 Python ，可以高效地实现一些案子，而且可以学习面向对象的思路。
 
@@ -162,15 +189,15 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 从源代码编辑 (vim) 、预处理 (Gcc -E, cpp) 、编译 (gcc -S)、汇编（gcc -c, as） 、链接（gcc, ld）的整个过程可以看得一清二楚。可以用 binutils 提供的一序列工具 readelf, objdump, objcopy, nm, ld, as 理解什么是可执行文件，可执行文件的结构是什么样的，它包含了哪些东西，那些所谓的代码段、数据段是如何组织的。通过 objdump ，可以反汇编一个有趣的可执行文件，看看它背后的实现思路。还可以看看为了支持动态链接，可执行文件该怎么组织。还可以了解，一个程序执行时的细节，它怎么能够在屏幕上打印出来一个 "Hello, World!"，这需要什么样的支持，这个背后的硬件、操作系统以及应用程序做了什么样的工作？
 
-另外，还可以去看 gnu toolchains 的源代码。如果觉得这个东西太庞大。也可以去阅读刚才提到的那个天才：法布里斯·贝拉，他写的 [TCC ： Tiny C Compiler][22] ，可以看到一个完整的小巧的 C 编译器是如何实现的。
+另外，还可以去看 gnu toolchains 的源代码。如果觉得这个东西太庞大。也可以去阅读刚才提到的那个天才：法布里斯·贝拉，他写的 [TCC：Tiny C Compiler][22]，可以看到一个完整的小巧的 C 编译器是如何实现的。
 
-对了，相关的方面，有写一个序列的 Blog： Linux 下 C 语言程序开发过的程视图，后面整理成了开源书籍，即上面提到的： [《 C 语言编程透视（开源书籍）》 ][19] 。
+对了，相关的方面，有写一个序列的 Blog： Linux 下 C 语言程序开发过程的视图，后面整理成了开源书籍，即上面提到的： [《 C 语言编程透视（开源书籍）》 ][19] 。
 
 * [Linux 下 C 语言编译过程演示](http://showterm.io/887b5ee77e3f377035d01)
 
 ### 数据库
 
-Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年了，还是那么火。特别是那个小巧的 SQLite， Android 都在用了。而且她小巧，可以学习那些 SQL 语言背后具体是怎么实现的。
+Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年了，还是那么火。特别是那个小巧的 SQLite，Android 都在用了。而且她小巧，可以学习那些 SQL 语言背后具体是怎么实现的。
 
 也许说企业级的 Oracle, SQLServer 很好用啊，是的，她们是浓妆艳抹的贵妇，高高在上，在有钱人的圈子里打转，不会投怀送抱的，永远没有机会摸透她们的心思。
 
@@ -186,7 +213,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 ### 其他
 
-几乎所有的课程，都可以找到开放的实践项目，看: [20 Source Code Hosting Sites You Should Know][23]
+几乎所有的课程，都可以找到开放的实践项目，看: [Comparison of source code hosting facilities][23]
 
 ## 在线实验
 
@@ -249,9 +276,12 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
  [15]: http://www.cs.usfca.edu/~cruse/
  [16]: http://c-faq.com/
  [17]: http://blog.linux.org.tw/~jserv/archives/001844.html
- [18]: https://github.com/shuopensourcecommunity/Information/tree/master/Resources/201203HackingHelloWold-%E6%B4%BB%E5%8A%A8/HackingHelloWorld
  [19]: https://gitbook.com/book/tinylab/cbook
  [20]: https://gitbook.com/book/tinylab/shellbook
  [22]: http://bellard.org/tcc/
- [23]: http://www.brenelz.com/blog/20-source-code-hosting-sites-you-should-know/
+ [23]: https://en.wikipedia.org/wiki/Comparison_of_source_code_hosting_facilities
  [24]: http://tinylab.org/markdown-lab
+
+ [26]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartI-2007-03-25.pdf
+ [27]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartII-2007-03-25.pdf
+ [28]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartIII-2007-03-25.pdf

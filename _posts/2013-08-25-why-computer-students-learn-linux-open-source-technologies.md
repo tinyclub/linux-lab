@@ -57,8 +57,8 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 
 可以直接在 Qemu 里头做 Uboot 的实验 [Using QEMU for Embedded Systems Development, Part 3][3]  或者 [利用 qemu 模拟嵌入式系统制作全过程][4]。而最近，更是可以更便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验，详见：
 
-* 命令行演示效果：<http://showterm.io/11f5ae44b211b56a5d267>
-* 视频演示效果：<http://t.cn/RpVsQLJ>
+* [命令行演示效果](http://showterm.io/11f5ae44b211b56a5d267)
+* [视频演示效果](http://t.cn/RpVsQLJ)
 
 ### 操作系统
 
@@ -80,14 +80,14 @@ Linux 本身绝大部分都是 Open 的，操作系统课程如果在上课的�
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
 
 * Linux 0.11 Lab 用法视频演示
-    * 命令行：<http://showterm.io/ffb67385a07fd3fcec182>
-    * 视频：<http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49>
-    * 即时在线实验帐号：<https://weidian.com/i/1487448443>
+    * [命令行演示](http://showterm.io/ffb67385a07fd3fcec182)
+    * [视频演示](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
+    * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * Linux Lab 用法视频演示
-    * 视频1：<http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
-    * 视频2（请切到高清观看）：<https://v.qq.com/x/page/y0543o6zlh5.html>
-    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
+    * [视频演示1](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
+    * [视频演示2（请切到高清观看）](https://v.qq.com/x/page/y0543o6zlh5.html)
+    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ### 汇编语言
 
@@ -108,13 +108,13 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 关于 CS630 Qemu Lab 以及 Linux Lab 中汇编语言例子的用法请参考：
 
 * CS630 Qemu Lab 用法视频演示
-    * 命令行：<http://showterm.io/547ccaae139df14c3deec>
-    * 视频：<http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/>
-    * 即时在线实验帐号：<https://weidian.com/i/1978159029>
+    * [命令行演示](http://showterm.io/547ccaae139df14c3deec)
+    * [视频演示](http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/)
+    * [获取即时在线实验帐号](https://weidian.com/i/1978159029)
 
 * Linux Lab 各架构汇编例子用法视频演示
-    * 命令行：<http://showterm.io/0f0c2a6e754702a429269>
-    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
+    * [命令行演示](http://showterm.io/0f0c2a6e754702a429269)
+    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ### C 语言
 
@@ -142,7 +142,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 由于 [Linux Lab](http://tinylab.org/linux-lab) 提供了非常丰富的开发工具，因此也可以用 Linux Lab 来做 C 语言实验。
 
-* Linux 下 C 语言视频演示：<http://showterm.io/a98435fb1b79b83954775>
+* [Linux 下 C 语言演示](http://showterm.io/a98435fb1b79b83954775)
 
 ### 脚本语言
 
@@ -152,7 +152,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 又比如，要做一些比较复杂的甚至带有图形的交互，这个时候可以用 Python ，可以高效地实现一些案子，而且可以学习面向对象的思路。
 
-* Linux 下 Shell 语言视频演示：<http://showterm.io/445cbf5541c926b19d4af>
+* [Linux 下 Shell 语言视频演示](http://showterm.io/445cbf5541c926b19d4af)
 
 ### 编译原理
 
@@ -164,7 +164,7 @@ BTW：上面 Linux 0.11 的课程，为了可以直接用现在流行的标准 g
 
 对了，相关的方面，有写一个序列的 Blog： Linux 下 C 语言程序开发过的程视图，后面整理成了开源书籍，即上面提到的： [《 C 语言编程透视（开源书籍）》 ][19] 。
 
-* Linux 下 C 语言编译过程视频演示：<http://showterm.io/887b5ee77e3f377035d01>
+* [Linux 下 C 语言编译过程演示](http://showterm.io/887b5ee77e3f377035d01)
 
 ### 数据库
 
@@ -172,7 +172,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 也许说企业级的 Oracle, SQLServer 很好用啊，是的，她们是浓妆艳抹的贵妇，高高在上，在有钱人的圈子里打转，不会投怀送抱的，永远没有机会摸透她们的心思。
 
-* Linux 下 SQL 视频演示：<http://showterm.io/7766b67876c0b7615850e>
+* [Linux 下 SQL 演示](http://showterm.io/7766b67876c0b7615850e)
 
 ### 计算机网络
 
@@ -191,7 +191,7 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 为了更快更高效地做实验，泰晓科技开发了一套实验云台。这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux 等在内的实验环境，更多环境正在陆续开发中。欢迎加微信（lzufalcon）讨论和交流，也欢迎提出需求和建议。
 
 * 实验云台：<http://tinylab.cloud:6080>
-* 购买帐号：<http://weidian.com/?userid=335178200>
+* [获取即时在线实验帐号](http://weidian.com/?userid=335178200)
 
 购买帐号后通过浏览器登陆 [实验云台](http://tinylab.cloud:6080) 即可实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
@@ -203,24 +203,24 @@ Mysql, PostgreSQL, SQLite?  在上学时，这些东西就很火，这么多年�
 
 * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
     * [CS630 Qemu Lab 基本用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)
-    * 即时在线实验帐号：<https://weidian.com/i/1978159029>
+    * [获取即时在线实验帐号](https://weidian.com/i/1978159029)
 
 * [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux 0.11 Lab 基本用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
-    * 即时在线实验帐号：<https://weidian.com/i/1487448443>
+    * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
     * [Linux Lab 基本用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
     * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
     * [通过 Linux Lab 做 Uboot 实验](http://t.cn/RpVsQLJ)
-    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
+    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 * 其他
-    * C 语言：<http://showterm.io/a98435fb1b79b83954775>
-    * C 编译过程：<http://showterm.io/887b5ee77e3f377035d01>
-    * Shell 语言：<http://showterm.io/445cbf5541c926b19d4af>
-    * SQL 语言：<http://showterm.io/7766b67876c0b7615850e>
-    * 即时在线实验帐号：<https://weidian.com/i/1937753839>
+    * [C 语言](http://showterm.io/a98435fb1b79b83954775)
+    * [C 编译过程](http://showterm.io/887b5ee77e3f377035d01)
+    * [Shell 语言](http://showterm.io/445cbf5541c926b19d4af)
+    * [SQL 语言](http://showterm.io/7766b67876c0b7615850e)
+    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ## 小结
 

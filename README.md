@@ -1,9 +1,7 @@
 
 # Linux Lab
 
-This project aims to make a Qemu-based Linux development Lab to easier the learning and development of the [Linux Kernel](http://www.kernel.org).
-
-A full Chinese document is added: [Using Linux Lab to do embedded linux development](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
+This project aims to create a Qemu-based Linux development Lab to easier the learning and development of [Linux Kernel](http://www.kernel.org).
 
 For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab).
 
@@ -12,6 +10,13 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux
 ## Homepage
 
 See: <http://tinylab.org/linux-lab/>
+
+## Demonstration
+
+* [Basic Usage](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
+* [Learning Uboot](http://showterm.io/11f5ae44b211b56a5d267)
+* [Learning RLK4.0 Book (Chinese)](https://v.qq.com/x/page/y0543o6zlh5.html)
+* [Developing Embedded Linux (Chinese)](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
 
 ## Download the lab
 

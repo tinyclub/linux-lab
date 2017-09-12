@@ -24,21 +24,15 @@ tags:
 
 上次直播介绍了 [如何用 Linux Lab 做《奔跑吧 Linux 内核》一书的实验][2]。
 
-## 本次直播
+## 直播/回放
 
 本次介绍如何用 Linux Lab 做 Uboot 实验：
 
 > 直播主题：用 Linux Lab 做 Uboot 实验
-> 直播地址：<a target="_blank" href="http://t.cn/RpLlvTD">泰晓科技 Linux 直播频道 @ 三千氪</a>
-> 回放地址：<a target="_blank" href="http://t.cn/RpLlvTD">泰晓科技 Linux 直播频道 @ 三千氪</a>
+> 回放地址：正在剪辑视频中...
+> 内容大纲：[Learning Uboot in Linux Lab](https://github.com/tinyclub/linux-lab/blob/master/doc/live/uboot.md)
 > 直播时间：本周六(2017/9/9)下午2:00～3:00
 > 直播口号：跟上年轻人的脚步，用直播传播 Linux 知识。
-
-## 报名/预约
-
-可进入 [直播地址][2] 提前查看直播信息，并预约报名，本次直播第一次尝试象征性的收取 16.8￥ 的费用，该费用主要用于支付直播服务器。
-
-如果在微信或者微博转发并截图可私信（微信：lzufalcon）获得一枚F 码，F 码数量有限先到先得。另外，前 5 名在读学生可以凭学生证获得一枚 F 码。
 
 ## 课前准备
 

@@ -35,7 +35,9 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 如果希望使用更多样式，可参照 `_posts/` 目录下的其他文章。
 
-如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。
+如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。引用图片的方式：
+
+    ![图片简介](/wp-content/uploads/2017/09/xxx.png)
 
 ## 递送稿件
 

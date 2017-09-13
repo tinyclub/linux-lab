@@ -49,7 +49,7 @@ tags:
 本次直播采用的直播平台和服务由 [三千氪][7] 赞助，本次直播采用的 [实验云台/Cloud Lab][8] 由 [青云QingCloud][9] 赞助服务器。
 
 [1]: http://tinylab.org
-[2]: http://t.cn/RpLlvTD
+[2]: https://v.qq.com/x/page/y0543o6zlh5.html
 [3]: http://www.denx.de/wiki/U-Boot/
 [4]: http://tinylab.org/linux-lab/
 [5]: https://github.com/tinyclub/linux-lab

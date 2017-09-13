@@ -72,7 +72,7 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 录制完的视频可以用 Linux 下的 Openshot 进行剪接，剪接时可以根据进度和需要进行分片、标记、删除、重排，也可以插入图片和其他视频素材。
 
-内容可以根据录制的分辨率选择是 HD 720P 30fps （1280x720）还是 HD 1080P 30fps（1920x1080），输出格式保留为 OBS 默认的 FLV (h.264)，中等质量。
+剪辑完成后选择导出视频（Export Video），首先在 Profile 下拉列表选择 All Formats，然后输出格式保留为 OBS 默认的 FLV (h.264)，分辨率选择 HD 720P 30fps （1280x720，请根据视频源分辨率自行选择），中等质量。
 
 ![Openshot Image](/wp-content/uploads/2017/08/openshot.png)
 

@@ -35,7 +35,7 @@ tags:
       * 视频
           * [Linux 基本用法](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
           * [Linux 进阶用法](https://v.qq.com/x/page/y0543o6zlh5.html)
-          * [Uboot 基本用法](http://t.cn/RpVsQLJ)
+          * [Uboot 基本用法](https://v.qq.com/x/page/l0549rgi54e.html)
   * 代码仓库：[https://github.com/tinyclub/linux-lab.git][3]
   * 基本特性：
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。

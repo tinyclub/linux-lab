@@ -63,7 +63,7 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 而最近，更是可以便捷地在 [Linux Lab](http://tinylab.org/linux-lab) 中做 Uboot 实验：
 
 * [命令行演示](http://showterm.io/11f5ae44b211b56a5d267)
-* [视频演示](http://t.cn/RpVsQLJ)
+* [视频演示](https://v.qq.com/x/page/l0549rgi54e.html)
 
 ### 操作系统
 
@@ -237,7 +237,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
     * [Linux Lab 基本用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
     * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
-    * [通过 Linux Lab 做 Uboot 实验](http://t.cn/RpVsQLJ)
+    * [通过 Linux Lab 做 Uboot 实验](https://v.qq.com/x/page/l0549rgi54e.html)
     * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 * 其他

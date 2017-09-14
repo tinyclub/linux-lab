@@ -29,12 +29,16 @@ tags:
 本次介绍如何用 Linux Lab 做 Uboot 实验：
 
 > 直播主题：用 Linux Lab 做 Uboot 实验
-> 回放地址：正在剪辑视频中...
+> 回放地址：<https://v.qq.com/x/page/l0549rgi54e.html>
 > 内容大纲：[Learning Uboot in Linux Lab](https://github.com/tinyclub/linux-lab/blob/master/doc/live/uboot.md)
 > 直播时间：本周六(2017/9/9)下午2:00～3:00
 > 直播口号：跟上年轻人的脚步，用直播传播 Linux 知识。
 
-## 课前准备
+也可以点击下面的图片进入视频播放界面：
+
+<a target="_blank" href="https://v.qq.com/x/page/l0549rgi54e.html" title="用Linux Lab 做 Uboot 实验">![Using Uboot in Linux Lab](/wp-content/uploads/2017/09/linux-lab-uboot.png)</a>
+
+## 阅读材料
 
 为达到更好的收看效果，请提前了解一下 U-Boot 和 Linux Lab：
 

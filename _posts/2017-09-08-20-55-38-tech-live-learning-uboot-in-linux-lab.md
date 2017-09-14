@@ -26,10 +26,7 @@ tags:
 
 ## 直播/回放
 
-本次介绍如何用 Linux Lab 做 Uboot 实验：
-
-> 直播主题：用 Linux Lab 做 Uboot 实验
-> 回放地址：<https://v.qq.com/x/page/l0549rgi54e.html>
+> 回放地址：[如何用 Linux Lab 做 Uboot 实验](https://v.qq.com/x/page/l0549rgi54e.html)
 > 内容大纲：[Learning Uboot in Linux Lab](https://github.com/tinyclub/linux-lab/blob/master/doc/live/uboot.md)
 > 直播时间：本周六(2017/9/9)下午2:00～3:00
 > 直播口号：跟上年轻人的脚步，用直播传播 Linux 知识。

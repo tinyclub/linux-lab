@@ -2,7 +2,7 @@
 # ** Using RLK4.0 Book Examples in Linux Lab **
 
 - Author: Wu Zhangjin / Falcon
-- Time  : 2017/08/26 3:00 ~ 4:00
+- Time  : 2017/08/26 15:00 ~ 16:00
 - Video : <https://v.qq.com/x/page/y0543o6zlh5.html>
 - Doc   :
     + <http://tinylab.org/tech-live-with-obs-huya-openshot/>

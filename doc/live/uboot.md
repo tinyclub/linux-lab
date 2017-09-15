@@ -2,8 +2,8 @@
 # ** Learning Uboot in Linux Lab **
 
 - Author: Wu Zhangjin / Falcon
-- Time  : 2017/09/09 2:00 ~ 3:00
-- Video : <http://t.cn/RpLlvTD>
+- Time  : 2017/09/09 14:00 ~ 15:00
+- Video : <https://v.qq.com/x/page/l0549rgi54e.html>
 - Doc   :
     + <http://tinylab.org/tech-live-learning-uboot-in-linux-lab>
     + <https://github.com/tinyclub/linux-lab>

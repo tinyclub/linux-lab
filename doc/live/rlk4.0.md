@@ -8,8 +8,8 @@
     + <http://tinylab.org/tech-live-with-obs-huya-openshot/>
     + <https://github.com/tinyclub/rlk4.0>
     + <http://tinylab.org/linux-lab>
+    + <http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8>
     + <http://tinylab.cloud:6080>
-    + <http://showdesk.io>
     + boards/rl4k.0/README.md
     + README.md
 

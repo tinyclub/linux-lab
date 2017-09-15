@@ -8,8 +8,9 @@
     + <http://tinylab.org/tech-live-learning-uboot-in-linux-lab>
     + <https://github.com/tinyclub/linux-lab>
     + <http://tinylab.org/linux-lab>
-    + <http://tinylab.cloud:6080>
+    + <http://showterm.io/11f5ae44b211b56a5d267>
     + <http://showdesk.io>
+    + <http://tinylab.cloud:6080>
     + README.md
 
 ## Introduction

@@ -10,6 +10,14 @@ BOARD_CONFIG = $(shell cat $(TOP_DIR)/.board_config 2>/dev/null)
 PLUGIN_CONFIG = $(shell cat $(TOP_DIR)/.plugin_config 2>/dev/null)
 MODULE_CONFIG = $(shell cat $(TOP_DIR)/.module_config 2>/dev/null)
 
+ifeq ($V, 1)
+  Q =
+  S =
+else
+  S ?= -s
+  Q ?= @
+endif
+
 board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
@@ -269,7 +277,7 @@ FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 BTYPE    ?= ^_BASE|^_PLUGIN
 
 board: board-save plugin-save
-	@find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
 		| egrep -v "/module" \
 		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
@@ -277,12 +285,12 @@ board: board-save plugin-save
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep --colour=auto "$(FILTER)"
 
 board-clean:
-	@rm $(TOP_DIR)/.board_config
+	$(Q)rm $(TOP_DIR)/.board_config
 
 board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
-	@echo $(BOARD) > $(TOP_DIR)/.board_config
+	$(Q)echo $(BOARD) > $(TOP_DIR)/.board_config
   endif
 endif
 
@@ -292,21 +300,21 @@ b-c: board-clean
 plugin-save:
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
-	@echo $(PLUGIN) > $(TOP_DIR)/.plugin_config
+	$(Q)echo $(PLUGIN) > $(TOP_DIR)/.plugin_config
   endif
 endif
 
 plugin-clean:
-	@rm $(TOP_DIR)/.plugin_config
+	$(Q)rm $(TOP_DIR)/.plugin_config
 
 plugin: plugin-save
-	@echo $(PLUGIN)
+	$(Q)echo $(PLUGIN)
 
 plugin-list:
-	@find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | xargs -i basename {} | cat -n
+	$(Q)find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | xargs -i basename {} | cat -n
 
 plugin-list-full:
-	@find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | cat -n
+	$(Q)find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | cat -n
 
 p: plugin
 p-s: plugin-save
@@ -315,16 +323,16 @@ p-l-f: plugin-list-full
 p-c: plugin-clean
 
 list:
-	@make -s board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
+	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-base:
-	@make -s list BTYPE="^_BASE"
+	$(Q)make $(S) list BTYPE="^_BASE"
 
 list-plugin:
-	@make -s list BTYPE="^_PLUGIN"
+	$(Q)make $(S) list BTYPE="^_PLUGIN"
 
 list-full:
-	@make -s board BOARD=
+	$(Q)make $(S) board BOARD=
 
 l: list
 l-b: list-base
@@ -408,10 +416,10 @@ QP ?= 1
 
 emulator-patch: $(EMULATOR_CHECKOUT)
 ifeq ($(QPD_BASE),$(wildcard $(QPD_BASE)))
-	-$(foreach p,$(shell ls $(QPD_BASE)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD_BASE)/$p\;))
+	-$(Q)$(foreach p,$(shell ls $(QPD_BASE)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD_BASE)/$p\;))
 endif
 ifeq ($(QPD),$(wildcard $(QPD)))
-	-$(foreach p,$(shell ls $(QPD)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD)/$p\;))
+	-$(Q)$(foreach p,$(shell ls $(QPD)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD)/$p\;))
 endif
 
 e-p: emualtor-patch
@@ -423,8 +431,8 @@ endif
 endif
 
 emulator: $(EMULATOR_PATCH)
-	mkdir -p $(QEMU_OUTPUT)
-	cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
+	$(Q)mkdir -p $(QEMU_OUTPUT)
+	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
 	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)
 
 q: emulator
@@ -433,10 +441,10 @@ e: q
 # Toolchains
 
 toolchain:
-	make -C $(TOOLCHAIN)
+	$(Q)make $(S) -C $(TOOLCHAIN)
 
 toolchain-clean:
-	make -C $(TOOLCHAIN) clean
+	$(Q)make $(S) -C $(TOOLCHAIN) clean
 
 # Rootfs
 
@@ -454,8 +462,8 @@ ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
 ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
 
 root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
-	mkdir -p $(ROOT_OUTPUT)
-	cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs/
+	$(Q)mkdir -p $(ROOT_OUTPUT)
+	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs/
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(ROOT_CONFIG_FILE)
 
 root-menuconfig:
@@ -489,10 +497,10 @@ ifeq ($(PBR), 1)
 	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
-	chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
+	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
   ifeq ($(U),1)
     ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-	make $(BUILDROOT_UROOTFS)
+	$(Q)make $(S) $(BUILDROOT_UROOTFS)
     endif
   endif
 endif
@@ -549,7 +557,7 @@ endif
 
 kernel-modules-save:
 ifneq ($(M),)
-	@echo $(M) > $(TOP_DIR)/.module_config
+	$(Q)echo $(M) > $(TOP_DIR)/.module_config
 endif
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
@@ -560,10 +568,10 @@ ifeq ($(MODULES_EN), 0)
 endif
 
 kernel-modules-list:
-	@find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
+	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
 
 kernel-modules-list-full:
-	@find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
+	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
 
 M_I_ROOT ?= rootdir
 ifeq ($(PBR), 0)
@@ -572,15 +580,15 @@ ifeq ($(PBR), 0)
   endif
 endif
 
-kernel-modules-install: kernel-modules $(M_I_ROOT)
+kernel-modules-install: $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
 	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$(M_PATH)
 endif
 
 KERNEL_MODULE_CLEAN = $(TOP_DIR)/tools/module/clean.sh
 kernel-modules-clean:
-	@$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
-	rm -rf $(TOP_DIR)/.module_config
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
+	$(Q)rm -rf $(TOP_DIR)/.module_config
 
 module: kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
@@ -596,25 +604,25 @@ ms-l-f: modules-list-full
 # e.g. make module-test module=ldt,oops_test MODULE=ldt,oops
 module-test: FORCE
 ifneq ($(module),)
-	@make feature-test FEATURE="$(FEATURE),module"
+	make feature-test FEATURE="$(FEATURE)"
 else
-	@echo Usage: make module-test modules=... MODULES=...
-	@echo Available Modules:
-	@make -s module-list
+	$(Q)echo Usage: make module-test modules=... MODULES=...
+	$(Q)echo Available Modules:
+	$(Q)make $(S) module-list
 endif
 
 modules-test: module-test
 
 modules: FORCE
-	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nBuilding module: $(m) ...\n" && make module m=$(m);) echo '')
 
 modules-install: FORCE
-	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nInstalling module: $(m) ...\n" && make module-install m=$(m);) echo '')
 
 modules-clean: FORCE
-	@$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nCleaning module: $(m) ...\n" && make module-clean m=$(m);) echo '')
 
 m: module
@@ -654,13 +662,13 @@ KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
-	mkdir -p $(KERNEL_OUTPUT)
-	cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
+	$(Q)mkdir -p $(KERNEL_OUTPUT)
+	$(Q)cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
 
 kernel-oldconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldnoconfig
-	#make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) silentoldconfig
+	@#make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) silentoldconfig
 
 kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
@@ -670,7 +678,7 @@ kernel-menuconfig:
 KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
 
 kernel-feature:
-	@$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+	$(Q)$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
 feature: kernel-feature
 features: feature
@@ -679,8 +687,8 @@ k-f: feature
 f: feature
 
 kernel-feature-list:
-	@echo [ $(FEATURE_DIR) ]: | sed -e "s%$(TOP_DIR)/%%g"
-	@find $(FEATURE_DIR) -mindepth 1 | egrep -v "config|patch|version" | sed -e "s%$(FEATURE_DIR)/%%g" | sort | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
+	$(Q)echo [ $(FEATURE_DIR) ]: | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)find $(FEATURE_DIR) -mindepth 1 | egrep -v "config|patch|version" | sed -e "s%$(FEATURE_DIR)/%%g" | sort | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
 
 kernel-features-list: kernel-feature-list
 features-list: kernel-feature-list
@@ -715,42 +723,38 @@ endif
 
 TEST_PREPARE := $(shell echo $(TEST_TARGETS) | tr ',' ' ')
 
-ifeq ($(FEATURE),)
-  FEATURE := boot
-endif
-
 kernel-init:
-	@make kernel-oldconfig
-	@make kernel
+	$(Q)make kernel-oldconfig
+	$(Q)make kernel
 
 rootdir-init:
-	@make rootdir-clean
-	@make rootdir
-	@make root-install
+	$(Q)make rootdir-clean
+	$(Q)make rootdir
+	$(Q)make root-install
 
 module-init:
-	@make modules M=
-	@make modules-install M=
-	@make modules
-	@make modules-install
+	make kernel-modules M_PATH=
+	make kernel-modules-install M_PATH=
+	make modules
+	make modules-install
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
-	@make feature FEATURE="$(FEATURE)"
-	@make kernel-init
-	@make rootdir-init
+	make feature FEATURE="$(FEATURE)"
+	make kernel-init
+	make rootdir-init
 ifeq ($(findstring module,$(FEATURE)),module)
-	@make module-init
+	make module-init
 endif
 endif
 
 kernel-feature-test: $(TEST_PREPARE) feature-init FORCE
 ifneq ($(FEATURE),)
-	@make test FEATURE="$(FEATURE)" TEST_PREAPRE=
+	make test FEATURE="$(FEATURE)" TEST_PREAPRE=
 else
-	@echo Usage: make feature-test FEATURE=...
-	@echo Available Features:
-	@make -s feature-list
+	$(Q)echo Usage: make feature-test FEATURE=...
+	$(Q)echo Available Features:
+	$(Q)make $(S) feature-list
 endif
 
 
@@ -860,10 +864,10 @@ ifneq ($(UCONFIG),)
 	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 endif
 ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
-	cp -r $(UPD_BOARD)/* $(UPD)/
+	$(Q)cp -r $(UPD_BOARD)/* $(UPD)/
 endif
 ifeq ($(UPD),$(wildcard $(UPD)))
-	-$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
+	-$(Q)$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
 endif
 
 ifeq ($(UP),1)
@@ -874,8 +878,8 @@ UBOOT_CONFIG_FILE = uboot_$(UBOOT)_defconfig
 UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
 
 uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
-	mkdir -p $(UBOOT_OUTPUT)
-	cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs/
+	$(Q)mkdir -p $(UBOOT_OUTPUT)
+	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs/
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UBOOT_CONFIG_FILE)
 
 uboot-menuconfig:
@@ -909,11 +913,11 @@ B: build
 
 # Save the built images
 root-save:
-	mkdir -p $(PREBUILT_ROOTDIR)/
+	$(Q)mkdir -p $(PREBUILT_ROOTDIR)/
 	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)/
 
 kernel-save:
-	mkdir -p $(PREBUILT_KERNELDIR)
+	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
 ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
 	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
@@ -923,7 +927,7 @@ ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
 endif
 
 uboot-save:
-	mkdir -p $(PREBUILT_UBOOTDIR)
+	$(Q)mkdir -p $(PREBUILT_UBOOTDIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOTDIR)
 
 
@@ -935,7 +939,7 @@ uboot-saveconfig: uconfig-save
 
 uconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
-	if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
+	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
 	else cp $(UBOOT_OUTPUT)/.config $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; fi
 
@@ -944,7 +948,7 @@ kernel-saveconfig: kconfig-save
 
 kconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
-	if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
+	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
 	else cp $(KERNEL_OUTPUT)/.config $(BOARD_DIR)/linux_$(LINUX)_defconfig; fi
 
@@ -952,7 +956,7 @@ root-saveconfig: rconfig-save
 
 rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
-	if [ -f $(ROOT_OUTPUT)/defconfig ]; \
+	$(Q)if [ -f $(ROOT_OUTPUT)/defconfig ]; \
 	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
 	else cp $(ROOT_OUTPUT)/.config $(BOARD_DIR)/buildroot_$(CPU)_defconfig; fi
 
@@ -1045,9 +1049,9 @@ BOOT_CMD += $(QUIET_OPT)
 
 rootdir:
 ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
-	- mkdir -p $(ROOTDIR) && cd $(ROOTDIR)/ && gunzip -kf ../rootfs.cpio.gz \
+	-$(Q)mkdir -p $(ROOTDIR) && cd $(ROOTDIR)/ && gunzip -kf ../rootfs.cpio.gz \
 		&& sudo cpio -idmv -R $(USER):$(USER) < ../rootfs.cpio >/dev/null 2>&1 && cd $(TOP_DIR)
-	chown $(USER):$(USER) -R $(ROOTDIR)
+	$(Q)chown $(USER):$(USER) -R $(ROOTDIR)
 endif
 
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
@@ -1056,7 +1060,7 @@ endif
 
 rootdir-clean:
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-	-rm -rf $(ROOTDIR)
+	-$(Q)rm -rf $(ROOTDIR)
 endif
 
 ifeq ($(U),1)
@@ -1068,11 +1072,11 @@ else
 endif
 
 $(ROOTFS): $(UROOTFS_SRC)
-	mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
+	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
 
 $(UKIMAGE):
 ifeq ($(PBK),0)
-	make kernel KTARGET=uImage
+	$(Q)make $(S) kernel KTARGET=uImage
 endif
 
 U_KERNEL_IMAGE=$(UKIMAGE)
@@ -1092,7 +1096,7 @@ UBOOT_ENV_TOOL=$(TOOL_DIR)/uboot/env.sh
 
 ifeq ($(BOOTDEV),tftp)
 tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	@$(UBOOT_TFTP_TOOL)
+	$(Q)$(UBOOT_TFTP_TOOL)
 
 TFTP_IMAGES = tftp-images
 endif
@@ -1103,7 +1107,7 @@ ifeq ($(PFLASH_IMG),)
 endif
 ifeq ($(findstring flash,$(BOOTDEV)),flash)
 pflash-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	@$(UBOOT_PFLASH_TOOL)
+	$(Q)$(UBOOT_PFLASH_TOOL)
 
 PFLASH_IMAGES = pflash-images
 endif
@@ -1111,7 +1115,7 @@ endif
 ifeq ($(SD_BOOT),1)
 ifeq ($(SD_IMG),)
 sd-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	@$(UBOOT_SD_TOOL)
+	$(Q)$(UBOOT_SD_TOOL)
 
 SD_IMAGES = sd-images
 SD_IMG    = $(TFTPBOOT)/sd.img
@@ -1123,11 +1127,11 @@ ENV_IMG ?= ${TFTPBOOT}/env.img
 export ENV_IMG
 
 uboot-images: $(TFTP_IMAGES) $(PFLASH_IMAGES) $(SD_IMAGES)
-	@$(UBOOT_CONFIG_TOOL)
-	@$(UBOOT_ENV_TOOL)
+	$(Q)$(UBOOT_CONFIG_TOOL)
+	$(Q)$(UBOOT_ENV_TOOL)
 
 uboot-images-clean:
-	@rm -rf $(PFLASH_IMG) $(SD_IMG)
+	$(Q)rm -rf $(PFLASH_IMG) $(SD_IMG)
 
 UBOOT_IMGS = uboot-images
 endif
@@ -1148,7 +1152,7 @@ ROOT_MKFS_TOOL = $(TOOL_DIR)/rootfs/mkfs.sh
 
 root-fs:
 ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
-	$(ROOT_MKFS_TOOL) $(ROOTDIR) $(FSTYPE)
+	$(Q)$(ROOT_MKFS_TOOL) $(ROOTDIR) $(FSTYPE)
 endif
 
 ifeq ($(HD),1)
@@ -1169,12 +1173,12 @@ endif
 SYSTEM_TOOL_DIR=$(TOP_DIR)/system/tools
 
 boot-init: FORCE
-	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
 
 boot-finish: FORCE
-	@$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
 
@@ -1204,9 +1208,9 @@ endif
 
 
 test: $(TEST_PREPARE) FORCE
-	@make -s boot-init
-	@make boot TEST=FORCE ROOTDEV=/dev/nfs
-	@make -s boot-finish
+	make boot-init
+	make boot TEST=FORCE FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
+	make boot-finish
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
@@ -1223,11 +1227,11 @@ XTERM_CMD ?= lxterminal --working-directory=$(TOP_DIR) -t "$(GDB_CMD)" -e "$(GDB
 
 debug:
 ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-	@echo "add-auto-load-safe-path $(TOP_DIR)/.gdbinit" > $(HOME)/.gdbinit
-	@$(XTERM_CMD) &
-	@make -s boot DEBUG=1
+	$(Q)echo "add-auto-load-safe-path $(TOP_DIR)/.gdbinit" > $(HOME)/.gdbinit
+	$(Q)$(XTERM_CMD) &
+	$(Q)make boot DEBUG=1
 else
-	@echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
+	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
 endif
 
 # Allinone
@@ -1236,30 +1240,30 @@ all: config build boot
 # Clean up
 
 emulator-clean:
-	-make -C $(QEMU_OUTPUT) clean
+	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
 
 root-clean:
-	-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
+	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
 
 uboot-clean:
-	-make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
+	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
 
 kernel-clean:
-	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
+	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
 
 clean: emulator-clean root-clean kernel-clean rootdir-clean uboot-clean
 
 emulator-distclean:
-	-make -C $(QEMU_OUTPUT) distclean
+	-$(Q)make $(S) -C $(QEMU_OUTPUT) distclean
 
 root-distclean:
-	-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
+	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
 
 uboot-distclean:
-	-make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
+	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
 
 kernel-distclean:
-	-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
+	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
 
 
 c-e: emulator-clean
@@ -1279,7 +1283,7 @@ distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean 
 GCC_SWITCH_TOOL = $(TOP_DIR)/tools/gcc/switch.sh
 gcc:
 ifneq ($(GCC),)
-	$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
+	$(Q)$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
 endif
 
 g: gcc
@@ -1293,17 +1297,17 @@ VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 
 env:
-	@echo [ $(BOARD) ]:
-	@echo -n " "
-	-@echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
+	$(Q)echo [ $(BOARD) ]:
+	$(Q)echo -n " "
+	-$(Q)echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
 
 ENV_SAVE_TOOL = $(TOOL_DIR)/save-env.sh
 
 env-save:
-	@$(ENV_SAVE_TOOL) $(BOARD_DIR)/Makefile "$(VARS)"
+	$(Q)$(ENV_SAVE_TOOL) $(BOARD_DIR)/Makefile "$(VARS)"
 
 help:
-	@cat $(TOP_DIR)/README.md
+	$(Q)cat $(TOP_DIR)/README.md
 
 h: help
 

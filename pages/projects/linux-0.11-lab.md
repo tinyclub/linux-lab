@@ -70,15 +70,6 @@ tags:
 打开一个终端并启动进入调试模式:
 
     make debug-hd
-    
-
-打开另外一个终端启动 gdb 开始调试:
-
-    gdb images/kernel.sym
-    (gdb) target remote :1234
-    (gdb) b main
-    (gdb) c
-    
 
 ### 获得帮助
 

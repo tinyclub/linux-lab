@@ -112,15 +112,6 @@ categories:
 
     make debug-hd
 
-
-通过 gdb 调试：
-
-    gdb images/kernel.sym
-    (gdb) target remote :1234
-    (gdb) b main
-    (gdb) c
-
-
 ### 查阅文档
 
 [README.md][7]

@@ -79,28 +79,24 @@ $ make update
 
   * 打印 helloworld
 
-<pre>$ ./configure src/helloworld.s
-$ make boot
+<pre>$ make boot SRC=src/helloworld.s
 </pre>
 
   * 访问 rtc 并显示时钟
 
-<pre>$ ./configure src/rtc.s
-$ make boot
+<pre>$ make boot SRC=src/rtc.s
 </pre>
 
 ### 保护模式：Protected Mode
 
   * 打印 helloworld
 
-<pre>$ ./configure res/pmhello.s
-$ make pmboot
+<pre>$ make boot SRC=res/pmhello.s
 </pre>
 
   * 访问 rtc 并显示时钟
 
-<pre>$ ./configure res/rtcdemo.s
-$ make pmboot
+<pre>$ make boot SRC=res/rtcdemo.s
 </pre>
 
 ## 演示截图

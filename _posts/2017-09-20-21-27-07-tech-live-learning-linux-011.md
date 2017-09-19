@@ -19,7 +19,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > 2017-09-20 21:27:07
 
-## 回顾
+## 回顾/简介
 
 最近一个月，我们陆续组织了两场技术直播，这两场都是介绍 Linux Lab —— 一个高效的 Linux 内核和嵌入式 Linux 实验环境：
 
@@ -32,7 +32,7 @@ tags:
 
 ## 报名/预约
 
-本次直播简介：
+本次直播纲要：
 
 > 内容大纲：[Learning Linux 0.11 in Linux 0.11 Lab](https://github.com/tinyclub/linux-0.11-lab/blob/master/doc/live/linux-0.11-lab.md)
 > 直播时间：本周六(2017/9/23) 下午 2:00～3:00

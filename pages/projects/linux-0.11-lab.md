@@ -31,6 +31,8 @@ tags:
       * 支持 Ubuntu 和 Mac OS X，在 VirtualBox 的支持下也可以在 Windows 上工作。
       * 测试过的编译器: Ubuntu: gcc-4.8， Mac OS X：i386-elf-gcc 4.7.2
       * 在解压之前整个大小只有 30M
+      * 支持 Docker 一键构建
+      * 可通过 Web 直接访问
 
 ## 相关文章
 

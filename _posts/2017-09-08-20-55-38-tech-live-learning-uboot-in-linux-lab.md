@@ -12,6 +12,7 @@ category:
 tags:
   - Uboot
   - Qemu
+  - Linux
   - 三千氪
 ---
 

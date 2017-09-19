@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "第3期直播：用 Linux 0.11 Lab 学古董 Linux 内核"
+title: "第3期直播：用 Linux 0.11 Lab 学古董 Linux"
 tagline: 用泰晓实验云台+微信语音做 IT 技术直播
 album: Linux 直播
 permalink: /tech-live-learning-linux-0.11/
@@ -34,14 +34,16 @@ tags:
 
 本次直播纲要：
 
+> 直播地址：[泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423)
 > 内容大纲：[Learning Linux 0.11 in Linux 0.11 Lab](https://github.com/tinyclub/linux-0.11-lab/blob/master/doc/live/linux-0.11-lab.md)
 > 直播时间：本周六(2017/9/23) 下午 2:00～3:00
 > 直播口号：摆平操作系统学习之路上的拦路虎，从此。。。
 
-可通过如下两种方式报名：
+可通过如下三种方式报名：
 
 * 扫描文末的二维码赞助我们
-* 从[开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号
+* 从 [开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号
+* 直接通过 [直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 预约报名
 
 报名后请添加笔者微信号 lzufalcon 申请加入直播专用微信群，申请时记得提供报名凭证。
 
@@ -76,7 +78,7 @@ Linux 0.11 Lab 的主要特性如下：
 
 ## 致谢
 
-本次直播直接采用 [泰晓实验云台/Cloud Lab][4] + 微信语音进行，该实验云台由 [青云QingCloud][5] 赞助服务器。
+本次直播在原 [泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 的基础上，增加另外一种直播方式，那就是直接采用 [泰晓实验云台/Cloud Lab][4] + 微信语音，该实验云台由 [青云QingCloud][5] 赞助服务器。
 
 
 [1]: http://tinylab.org

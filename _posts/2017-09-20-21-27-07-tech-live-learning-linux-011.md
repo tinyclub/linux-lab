@@ -42,7 +42,7 @@ tags:
 
 ### 报名方式
 
-可任选如下任何一种方式报名：
+可任选一种方式报名：
 
 * 直接通过 [直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 预约报名
 * 从 [开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号

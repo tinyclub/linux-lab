@@ -14,6 +14,7 @@ tags:
   - Cloud Lab
   - Linux 0.11
   - oldlinux.org
+  - 实验云台
 ---
 
 > By Falcon of [TinyLab.org][1]
@@ -32,20 +33,24 @@ tags:
 
 ## 报名/预约
 
-本次直播纲要：
+### 直播纲要
 
 > 直播地址：[泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423)
 > 内容大纲：[Learning Linux 0.11 in Linux 0.11 Lab](https://github.com/tinyclub/linux-0.11-lab/blob/master/doc/live/linux-0.11-lab.md)
 > 直播时间：本周六(2017/9/23) 下午 2:00～3:00
 > 直播口号：摆平操作系统学习之路上的拦路虎，从此。。。
 
-可通过如下三种方式报名：
+### 报名方式
 
-* 扫描文末的二维码赞助我们
-* 从 [开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号
+可任选如下任何一种方式报名：
+
 * 直接通过 [直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 预约报名
+* 从 [开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号
+* 扫描文末的二维码赞助我们
 
 报名后请添加笔者微信号 lzufalcon 申请加入直播专用微信群，申请时记得提供报名凭证。
+
+**注**：本次直播仅象征性地收取一些费用，用于支付相关服务器的运营，感谢支持！
 
 ![Learning Linux 0.11 in Linux 0.11 Lab](/wp-content/uploads/2017/09/linux-0.11-lab.jpg)
 

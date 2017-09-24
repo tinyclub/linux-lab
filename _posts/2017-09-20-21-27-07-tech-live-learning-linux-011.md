@@ -35,7 +35,7 @@ tags:
 
 ### 直播纲要
 
-> 直播地址：[泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423)
+> 回放地址：正在剪辑中。。。
 > 内容大纲：[Learning Linux 0.11 in Linux 0.11 Lab](https://github.com/tinyclub/linux-0.11-lab/blob/master/doc/live/linux-0.11-lab.md)
 > 直播时间：本周六(2017/9/23) 下午 2:00～3:00
 > 直播口号：摆平操作系统学习之路上的拦路虎，从此。。。
@@ -44,7 +44,6 @@ tags:
 
 可任选一种方式报名：
 
-* 直接通过 [直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 预约报名
 * 从 [开源小店][3] 购买一个月的 Linux 0.11 Lab 体验帐号
 * 扫描文末的二维码赞助我们
 

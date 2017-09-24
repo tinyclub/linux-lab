@@ -10,6 +10,11 @@
   description: Linux 内核官方首页。
   group: links
 
+- title: OS Development Wiki
+  permalink: http://wiki.osdev.org/
+  description: 操作系统内核开发知识库。
+  group: links
+
 - title: Linux Talents
   permalink: http://linux-talents.tinylab.org
   description: 连接高校和企业 Linux 团队。

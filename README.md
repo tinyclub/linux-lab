@@ -284,7 +284,11 @@ Run guest test case:
 
     $ make test TEST_CASE=/tools/ftrace/trace.sh
 
-Reboot the guest system for several times:
+Run guest test cases (need install new `system/` via `make r-i`):
+
+    $ make test TEST_END=ls TEST_FINISH=echo TEST_BEGIN=date TEST_CASE='"ls /root","echo hello world"'
+
+Reboot the guest system for several times (not work on Malta board):
 
     $ make test TEST_REBOOT=2
 

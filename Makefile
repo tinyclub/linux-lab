@@ -989,7 +989,7 @@ endif
 
 # Shutdown the board if 'poweroff -h/-n' or crash
 ifneq ($(TEST_REBOOT),)
-  TEST_FINISH = reboot
+  TEST_FINISH := reboot
 endif
 ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
   EXIT_ACTION ?= -no-reboot
@@ -1189,13 +1189,19 @@ boot-finish: FORCE
 ifneq ($(TEST),)
   TEST_KCLI =
   ifneq ($(FEATURE),)
-    TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',')
+    TEST_KCLI  = feature=$(shell echo $(FEATURE) | tr ' ' ',' | sed -e "s%,$$%%g" | sed -e "s%^,%%g")
     ifeq ($(findstring module,$(FEATURE)),module)
-      TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',')
+      TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',' | sed -e "s%,$$%%g" | sed -e "s%^,%%g")
     endif
   endif
   ifneq ($(TEST_REBOOT),)
     TEST_KCLI += reboot=$(TEST_REBOOT)
+  endif
+  ifneq ($(TEST_BEGIN),)
+    TEST_KCLI += test_begin=$(TEST_INIT)
+  endif
+  ifneq ($(TEST_END),)
+    TEST_KCLI += test_end=$(TEST_END)
   endif
   ifneq ($(TEST_FINISH),)
     TEST_KCLI += test_finish=$(TEST_FINISH)

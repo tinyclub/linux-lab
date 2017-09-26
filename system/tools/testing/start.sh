@@ -6,25 +6,40 @@
 [ -r /etc/default/testing ] && . /etc/default/testing
 
 # Get feature list from kernel command line
-FEATURE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^feature= | cut -d'=' -f2 | tr ',' ' ')"
-CASE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^test_case= | cut -d'=' -f2 | tr ',' ' ')"
-FINISH="$(cat /proc/cmdline | tr ' ' '\n' | grep ^test_finish= | cut -d'=' -f2 | tr ',' ' ')"
-REBOOT="$(cat /proc/cmdline | tr ' ' '\n' | grep ^reboot= | cut -d'=' -f2 | tr ',' ' ')"
+eval `cat /proc/cmdline`
+
+FEATURE="$feature"
+CASE="$test_case"
+BEGIN="$test_begin"
+END="$test_end"
+FINISH="$test_finish"
+REBOOT="$reboot"
 
 [ -z "$FEATURE" -a -z "$CASE" -a -z "$REBOOT" ] && exit 0
+[ -z "$BEGIN" ] && BEGIN=$BEGIN_ACTION
+[ -z "$END" ] && END=$END_ACTION
 [ -z "$FINISH" ] && FINISH=$FINISH_ACTION
 
 echo
 echo "Starting testing ..."
 echo
 
+echo
+echo "Testing begin: Running \"$BEGIN\" ..."
+echo
+
+eval $BEGIN
+
+oldIFS=$IFS
+IFS=","
+
 for c in $CASE
 do
     echo
-    echo "Testing case: $c"
+    echo "Testing case: \"$c\""
     echo
 
-    $c
+    eval $c
 
     echo
 
@@ -41,7 +56,18 @@ do
     echo
 done
 
+IFS=$oldIFS
+
+echo
+echo "Testing end: Running \"$END\" ..."
+echo
+
+eval $END
+
+echo
+
 if [ -n "$REBOOT" ]; then
+    FINISH=$REBOOT_ACTION
     if [ ! -f "$REBOOT_COUNT" ]; then
         reboot_count=0
         echo "Rebooting in progress, current: $reboot_count, total: $REBOOT."
@@ -50,9 +76,9 @@ if [ -n "$REBOOT" ]; then
         reboot_count=`cat $REBOOT_COUNT`
         let reboot_count=$reboot_count+1
         if [ $reboot_count -ge $REBOOT ]; then
-            echo "Rebooting finished, total times: $reboot_count."
+            echo "Rebooting finish, total times: $reboot_count."
             rm $REBOOT_COUNT
-            FINISH=$FINISH_ACTION
+            FINISH=$POWEROFF_ACTION
         else
             echo "Rebooting in progress, current: $reboot_count, total: $REBOOT."
             echo $reboot_count > $REBOOT_COUNT
@@ -61,7 +87,7 @@ if [ -n "$REBOOT" ]; then
 fi
 
 echo
-echo "Testing finished: Running '$FINISH' ..."
+echo "Testing finish: Running \"$FINISH\" ..."
 echo
 
 eval $FINISH

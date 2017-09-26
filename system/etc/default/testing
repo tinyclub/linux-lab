@@ -5,4 +5,11 @@ TOOLS=/tools/
 START_TESTING=${TOOLS}/testing/start.sh
 STOP_TESTING=${TOOLS}/testing/stop.sh
 REBOOT_COUNT=/reboot_count
-FINISH_ACTION="poweroff -d 1"
+
+BEGIN_ACTION="echo 'begin'"
+END_ACTION="echo 'end'"
+
+POWEROFF_ACTION="poweroff -f"
+REBOOT_ACTION="reboot -f"
+
+FINISH_ACTION=${POWEROFF_ACTION}

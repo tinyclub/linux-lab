@@ -1318,6 +1318,9 @@ dc: distclean
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean \
 	toolchain-clean plugin-clean board-clean
 
+fullclean: distclean
+	$(Q)git clean -fdx
+
 GCC_SWITCH_TOOL = tools/gcc/switch.sh
 gcc:
 ifneq ($(GCC),)

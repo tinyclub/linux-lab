@@ -919,11 +919,15 @@ root-save:
 kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
-ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
+ifneq ($(UORIIMG),)
+  ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
 	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
+  endif
 endif
-ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
+ifneq ($(ORIDTB),)
+  ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
 	-cp $(LINUX_DTB) $(PREBUILT_KERNELDIR)
+  endif
 endif
 
 uboot-save:

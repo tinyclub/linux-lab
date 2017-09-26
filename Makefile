@@ -440,12 +440,12 @@ e: q
 # Toolchains
 
 toolchain:
-ifeq ($(TOOLCHAIN)/$(ARCH), $(TOOLCHAIN)/$(ARCH))
+ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN)
 endif
 
 toolchain-clean:
-ifeq ($(TOOLCHAIN)/$(ARCH), $(TOOLCHAIN)/$(ARCH))
+ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
 endif
 

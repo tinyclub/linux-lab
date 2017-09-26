@@ -251,7 +251,7 @@ ROUTE = $(shell ifconfig br0 | grep "inet addr" | cut -d':' -f2 | cut -d' ' -f1)
 
 SERIAL ?= ttyS0
 CONSOLE?= tty0
-RDINIT ?= /linuxrc
+RDINIT ?= /init
 
 CMDLINE = route=$(ROUTE)
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)

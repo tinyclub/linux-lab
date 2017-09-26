@@ -689,7 +689,7 @@ kernel-menuconfig:
 KERNEL_FEATURE_TOOL = tools/kernel/feature.sh
 
 kernel-feature:
-	$(Q)$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+	$(Q)$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
 
 feature: kernel-feature
 features: feature

@@ -11,12 +11,12 @@ FEATURE="$5"
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
-KFD_CORE=${TOP_DIR}/feature/linux/core/
+KFD_CORE=${TOP_DIR}/feature/linux/core
 
 LINUX_BASE=${LINUX%.*}
 
-KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux/
-KFD=${TOP_DIR}/feature/linux/
+KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux
+KFD=${TOP_DIR}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 
 for d in $KFD_CORE
@@ -43,7 +43,6 @@ do
     do
         for path in $d/$f/$LINUX $d/$f/$LINUX_BASE
         do
-
             [ ! -d $path ] && continue
             echo "Appling feature: $f"
 

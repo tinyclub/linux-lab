@@ -6,9 +6,9 @@ TOP_DIR = $(CURDIR)
 
 USER ?= $(shell whoami)
 
-BOARD_CONFIG = $(shell cat $(TOP_DIR)/.board_config 2>/dev/null)
-PLUGIN_CONFIG = $(shell cat $(TOP_DIR)/.plugin_config 2>/dev/null)
-MODULE_CONFIG = $(shell cat $(TOP_DIR)/.module_config 2>/dev/null)
+BOARD_CONFIG = $(shell cat .board_config 2>/dev/null)
+PLUGIN_CONFIG = $(shell cat .plugin_config 2>/dev/null)
+MODULE_CONFIG = $(shell cat .module_config 2>/dev/null)
 
 ifeq ($V, 1)
   Q =
@@ -41,18 +41,18 @@ else
   _plugin := $(PLUGIN)
 endif
 
-TOOL_DIR = $(TOP_DIR)/tools/
-BOARDS_DIR = $(TOP_DIR)/boards
-BOARD_DIR = $(BOARDS_DIR)/$(BOARD)/
-FEATURE_DIR = $(TOP_DIR)/feature/linux
-TFTPBOOT = $(TOP_DIR)/tftpboot/
+TOOL_DIR = tools
+BOARDS_DIR = boards
+BOARD_DIR = $(BOARDS_DIR)/$(BOARD)
+FEATURE_DIR = feature/linux
+TFTPBOOT = tftpboot
 
-PREBUILT_DIR = $(TOP_DIR)/prebuilt/
-PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains/
-PREBUILT_ROOT = $(PREBUILT_DIR)/root/
-PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel/
-PREBUILT_BIOS = $(PREBUILT_DIR)/bios/
-PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot/
+PREBUILT_DIR = prebuilt
+PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
+PREBUILT_ROOT = $(PREBUILT_DIR)/root
+PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel
+PREBUILT_BIOS = $(PREBUILT_DIR)/bios
+PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot
 
 ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
@@ -65,8 +65,7 @@ ifneq ($(FEATURE),)
   _BOARD = $(shell basename $(BOARD))
   FEATURE_ENVS = $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 			$(shell [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ] && \
-			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) | \
-			sed -e "s%$(TOP_DIR)/%%g"))
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD)))
   include $(FEATURE_ENVS)
 endif
 
@@ -75,25 +74,25 @@ _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 
 QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_SRC ?= $(TOP_DIR)/qemu/
+QEMU_SRC ?= qemu
 
 UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
-UBOOT_SRC ?= $(TOP_DIR)/u-boot/
+UBOOT_SRC ?= u-boot
 
 KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-KERNEL_SRC ?= $(TOP_DIR)/linux-stable/
+KERNEL_SRC ?= linux-stable
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
 ROOT_GIT ?= https://github.com/buildroot/buildroot
-ROOT_SRC ?= $(TOP_DIR)/buildroot/
+ROOT_SRC ?= buildroot
 
-QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu/
-UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)/
-KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)/
-ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)/
+QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu
+UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
+KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
+ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)
 
-CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin/
+CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
 TOOLCHAIN = $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 HOST_CPU_THREADS = $(shell grep processor /proc/cpuinfo | wc -l)
@@ -178,8 +177,8 @@ BUILDROOT_UROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.uboot
 BUILDROOT_HROOTFS = $(ROOT_OUTPUT)/images/rootfs.$(FSTYPE)
 BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
-PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/
-PREBUILT_KERNELDIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/
+PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
+PREBUILT_KERNELDIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
 PREBUILT_UBOOTDIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
 
 PBR ?= 0
@@ -190,7 +189,7 @@ ROOTDIR ?= $(PREBUILT_ROOTDIR)/rootfs
 
 ifeq ($(_PBR), 0)
   ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    ROOTDIR = $(ROOT_OUTPUT)/target/
+    ROOTDIR = $(ROOT_OUTPUT)/target
     PREBUILT_ROOTFS = $(ROOTFS)
   else
     ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
@@ -219,7 +218,7 @@ ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
 endif
 
 ifeq ($(PBR),0)
-  ROOTDIR ?= $(ROOT_OUTPUT)/target/
+  ROOTDIR ?= $(ROOT_OUTPUT)/target
   ifeq ($(U),0)
     ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
       ROOTFS = $(BUILDROOT_ROOTFS)
@@ -237,7 +236,7 @@ endif
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET =  -net nic,model=$(NETDEV) -net tap
 
-MACADDR_TOOL = $(TOP_DIR)/tools/qemu/macaddr.sh
+MACADDR_TOOL = tools/qemu/macaddr.sh
 RANDOM_MACADDR = $(shell $(MACADDR_TOOL))
 ifeq ($(NETDEV), virtio)
   NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
@@ -266,7 +265,7 @@ TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
 
 ifeq ($(ROOTDEV),/dev/nfs)
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) ip=$(IP)
+  CMDLINE += nfsroot=$(ROUTE):$(TOP_DIR)/$(ROOTDIR) ip=$(IP)
 endif
 
 # For debug
@@ -280,17 +279,17 @@ board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
 		| egrep -v "/module" \
-		| sed -e "s%$(TOP_DIR)/boards/\(.*\)/Makefile%\1%g" \
+		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep --colour=auto "$(FILTER)"
 
 board-clean:
-	$(Q)rm $(TOP_DIR)/.board_config
+	$(Q)rm -rf .board_config
 
 board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
-	$(Q)echo $(BOARD) > $(TOP_DIR)/.board_config
+	$(Q)echo $(BOARD) > .board_config
   endif
 endif
 
@@ -300,12 +299,12 @@ b-c: board-clean
 plugin-save:
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
-	$(Q)echo $(PLUGIN) > $(TOP_DIR)/.plugin_config
+	$(Q)echo $(PLUGIN) > .plugin_config
   endif
 endif
 
 plugin-clean:
-	$(Q)rm $(TOP_DIR)/.plugin_config
+	$(Q)rm -rf .plugin_config
 
 plugin: plugin-save
 	$(Q)echo $(PLUGIN)
@@ -410,8 +409,8 @@ e-c: emulator-checkout
 
 QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
 
-QPD_BASE=$(TOP_DIR)/patch/qemu/$(QEMU_BASE)/
-QPD=$(TOP_DIR)/patch/qemu/$(QEMU)/
+QPD_BASE=patch/qemu/$(QEMU_BASE)
+QPD=patch/qemu/$(QEMU)
 QP ?= 1
 
 emulator-patch: $(EMULATOR_CHECKOUT)
@@ -467,7 +466,7 @@ ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
 
 root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
-	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs/
+	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(ROOT_CONFIG_FILE)
 
 root-menuconfig:
@@ -523,11 +522,11 @@ root-auto: root-prepare root
 
 # Kernel modules
 
-TOP_MODULE_DIR = $(TOP_DIR)/modules/
+TOP_MODULE_DIR = $(TOP_DIR)/modules
 ifneq ($(PLUGIN),)
-  PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules/
+  PLUGIN_MODULE_DIR = $(TOP_DIR)/boards/$(PLUGIN)/modules
 else
-  PLUGIN_MODULE_DIR = $(shell find $(TOP_DIR)/boards/ -type d -name "modules")
+  PLUGIN_MODULE_DIR = $(shell find $(TOP_DIR)/boards -type d -name "modules")
 endif
 
 modules ?= $(m)
@@ -561,7 +560,7 @@ endif
 
 kernel-modules-save:
 ifneq ($(M),)
-	$(Q)echo $(M) > $(TOP_DIR)/.module_config
+	$(Q)echo $(M) > .module_config
 endif
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
@@ -586,13 +585,13 @@ endif
 
 kernel-modules-install: $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$(M_PATH)
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(TOP_DIR)/$(ROOTDIR) M=$(M_PATH)
 endif
 
-KERNEL_MODULE_CLEAN = $(TOP_DIR)/tools/module/clean.sh
+KERNEL_MODULE_CLEAN = tools/module/clean.sh
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
-	$(Q)rm -rf $(TOP_DIR)/.module_config
+	$(Q)rm -rf .module_config
 
 module: kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
@@ -651,7 +650,7 @@ ifeq ($(KCO),1)
   KERNEL_CHECKOUT = kernel-checkout
 endif
 
-KERNEL_PATCH_TOOL = $(TOP_DIR)/tools/kernel/patch.sh
+KERNEL_PATCH_TOOL = tools/kernel/patch.sh
 
 KP ?= 0
 kernel-patch:
@@ -679,7 +678,7 @@ kernel-menuconfig:
 
 # Build Kernel
 
-KERNEL_FEATURE_TOOL = $(TOP_DIR)/tools/kernel/feature.sh
+KERNEL_FEATURE_TOOL = tools/kernel/feature.sh
 
 kernel-feature:
 	$(Q)$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
@@ -691,7 +690,7 @@ k-f: feature
 f: feature
 
 kernel-feature-list:
-	$(Q)echo [ $(FEATURE_DIR) ]: | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)echo [ $(FEATURE_DIR) ]:
 	$(Q)find $(FEATURE_DIR) -mindepth 1 | egrep -v "config|patch|version" | sed -e "s%$(FEATURE_DIR)/%%g" | sort | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
 
 kernel-features-list: kernel-feature-list
@@ -818,8 +817,8 @@ ifeq ($(BCO),1)
   UBOOT_CHECKOUT = uboot-checkout
 endif
 
-UPD_BOARD=$(TOP_DIR)/boards/$(BOARD)/patch/uboot/$(UBOOT)/
-UPD=$(TOP_DIR)/patch/uboot/$(UBOOT)/
+UPD_BOARD=boards/$(BOARD)/patch/uboot/$(UBOOT)
+UPD=patch/uboot/$(UBOOT)
 
 UP ?= 0
 
@@ -832,7 +831,7 @@ RDK_ADDR ?= -
 RDK_SIZE ?= 0
 DTB_ADDR ?= -
 DTB_SIZE ?= 0
-UCFG_DIR = $(TOP_DIR)/u-boot/include/configs/
+UCFG_DIR = u-boot/include/configs
 
 ifeq ($(findstring sd,$(BOOTDEV)),sd)
   SD_BOOT ?= 1
@@ -868,7 +867,7 @@ ifneq ($(UCONFIG),)
 	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 endif
 ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
-	$(Q)cp -r $(UPD_BOARD)/* $(UPD)/
+	$(Q)cp -r $(UPD_BOARD)/* $(UPD)
 endif
 ifeq ($(UPD),$(wildcard $(UPD)))
 	-$(Q)$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
@@ -883,7 +882,7 @@ UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
 
 uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
-	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs/
+	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UBOOT_CONFIG_FILE)
 
 uboot-menuconfig:
@@ -917,8 +916,8 @@ B: build
 
 # Save the built images
 root-save:
-	$(Q)mkdir -p $(PREBUILT_ROOTDIR)/
-	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)/
+	$(Q)mkdir -p $(PREBUILT_ROOTDIR)
+	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)
 
 kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
@@ -978,7 +977,7 @@ MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
 # Sharing with the 9p virtio protocol
 SHARE ?= 0
-SHARE_DIR ?= $(TOP_DIR)/hostshare/
+SHARE_DIR ?= hostshare
 SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
   SHARE_OPT ?= -fsdev local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
@@ -1008,8 +1007,10 @@ ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)
   endif
-  ifeq ($(DTB),$(wildcard $(DTB)))
-    BOOT_CMD += -dtb $(DTB)
+  ifneq ($(ORIDTB),)
+    ifeq ($(DTB),$(wildcard $(DTB)))
+      BOOT_CMD += -dtb $(DTB)
+    endif
   endif
 
   BOOT_CMD += -append '$(CMDLINE)'
@@ -1175,7 +1176,7 @@ endif
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards
 
-SYSTEM_TOOL_DIR=$(TOP_DIR)/system/tools
+SYSTEM_TOOL_DIR=system/tools
 
 boot-init: FORCE
 	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
@@ -1228,11 +1229,11 @@ b: boot
 
 VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
 GDB_CMD ?= $(CCPRE)gdb --quiet $(VMLINUX)
-XTERM_CMD ?= lxterminal --working-directory=$(TOP_DIR) -t "$(GDB_CMD)" -e "$(GDB_CMD)"
+XTERM_CMD ?= lxterminal --working-directory=$(CURDIR) -t "$(GDB_CMD)" -e "$(GDB_CMD)"
 
 debug:
 ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-	$(Q)echo "add-auto-load-safe-path $(TOP_DIR)/.gdbinit" > $(HOME)/.gdbinit
+	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
 	$(Q)$(XTERM_CMD) &
 	$(Q)make boot DEBUG=1
 else
@@ -1269,21 +1270,25 @@ clean: emulator-clean root-clean kernel-clean rootdir-clean uboot-clean
 emulator-distclean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) distclean
+	$(Q)rm -rf $(QEMU_OUTPUT)
 endif
 
 root-distclean:
 ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
+	$(Q)rm -rf $(ROOT_OUTPUT)
 endif
 
 uboot-distclean:
 ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
+	$(Q)rm -rf $(UBOOT_OUTPUT)
 endif
 
 kernel-distclean:
 ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
+	$(Q)rm -rf $(KERNEL_OUTPUT)
 endif
 
 rootdir-distclean: rootdir-clean
@@ -1303,7 +1308,7 @@ dc: distclean
 distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean \
 	toolchain-clean plugin-clean board-clean
 
-GCC_SWITCH_TOOL = $(TOP_DIR)/tools/gcc/switch.sh
+GCC_SWITCH_TOOL = tools/gcc/switch.sh
 gcc:
 ifneq ($(GCC),)
 	$(Q)$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
@@ -1312,7 +1317,7 @@ endif
 g: gcc
 
 # Show the variables
-VARS = $(shell cat $(TOP_DIR)/boards/$(BOARD)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS = $(shell cat boards/$(BOARD)/Makefile | grep -v "^ *\#" | cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
@@ -1330,7 +1335,7 @@ env-save:
 	$(Q)$(ENV_SAVE_TOOL) $(BOARD_DIR)/Makefile "$(VARS)"
 
 help:
-	$(Q)cat $(TOP_DIR)/README.md
+	$(Q)cat README.md
 
 h: help
 

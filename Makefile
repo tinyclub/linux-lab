@@ -1225,7 +1225,7 @@ endif
 
 test: $(TEST_PREPARE) FORCE
 	make boot-init
-	make boot TEST=FORCE FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
+	make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
 	make boot-finish
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)

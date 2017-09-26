@@ -719,8 +719,10 @@ ifneq ($(module),)
   FEATURE += module
 endif
 
-ifeq ($(findstring auto,$(TEST)),auto)
-  TEST_TARGETS := kernel-prepare
+TEST ?= $T
+
+ifeq ($(TEST), auto)
+  TEST_TARGETS := kernel-auto
 else
   ifeq ($(findstring feature,$(TEST)),feature)
     ifneq ($(FEATURE),)

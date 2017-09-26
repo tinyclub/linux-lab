@@ -709,7 +709,7 @@ f-l: k-f-l
 
 # Automated testing
 #
-# e.g. make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=auto
+# e.g. make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
 #      make module-test m=oops_test TEST=kernel-checkout,kernel-patch  # Make more targets for test
 #      make module-test m=oops_test TEST_FINISH=echo        # Don't poweroff after test
 #      make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh # run guest test case
@@ -724,12 +724,16 @@ TEST ?= $T
 ifeq ($(TEST), auto)
   TEST_TARGETS := kernel-auto
 else
-  ifeq ($(findstring feature,$(TEST)),feature)
-    ifneq ($(FEATURE),)
-      TEST_TARGETS += feature-init
-    endif
+  ifeq ($(TEST), prepare)
+    TEST_TARGETS := kernel-prepare
   else
-    TEST_TARGETS ?= $(TEST)
+    ifeq ($(findstring feature,$(TEST)),feature)
+      ifneq ($(FEATURE),)
+        TEST_TARGETS += feature-init
+      endif
+    else
+      TEST_TARGETS ?= $(TEST)
+    endif
   endif
 endif
 

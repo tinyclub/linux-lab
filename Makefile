@@ -441,10 +441,14 @@ e: q
 # Toolchains
 
 toolchain:
+ifeq ($(TOOLCHAIN)/$(ARCH), $(TOOLCHAIN)/$(ARCH))
 	$(Q)make $(S) -C $(TOOLCHAIN)
+endif
 
 toolchain-clean:
+ifeq ($(TOOLCHAIN)/$(ARCH), $(TOOLCHAIN)/$(ARCH))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
+endif
 
 # Rootfs
 
@@ -1134,6 +1138,7 @@ uboot-images-clean:
 	$(Q)rm -rf $(PFLASH_IMG) $(SD_IMG)
 
 UBOOT_IMGS = uboot-images
+UBOOT_IMAS_CLEAN = uboot-images-clean
 endif
 
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
@@ -1240,31 +1245,48 @@ all: config build boot
 # Clean up
 
 emulator-clean:
+ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
+endif
 
 root-clean:
+ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
+endif
 
-uboot-clean:
+uboot-clean: $(UBOOT_IMGS_CLEAN)
+ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
+endif
 
-kernel-clean:
+kernel-clean: kernel-modules-clean
+ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
+endif
 
 clean: emulator-clean root-clean kernel-clean rootdir-clean uboot-clean
 
 emulator-distclean:
+ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) distclean
+endif
 
 root-distclean:
+ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
+endif
 
 uboot-distclean:
+ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
+endif
 
 kernel-distclean:
+ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
+endif
 
+rootdir-distclean: rootdir-clean
 
 c-e: emulator-clean
 c-r: root-clean
@@ -1278,7 +1300,8 @@ dc-u: uboot-distclean
 dc-k: kernel-distclean
 dc: distclean
 
-distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean
+distclean: emulator-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean \
+	toolchain-clean plugin-clean board-clean
 
 GCC_SWITCH_TOOL = $(TOP_DIR)/tools/gcc/switch.sh
 gcc:

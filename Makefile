@@ -559,7 +559,13 @@ ifeq ($(MODULE),)
 endif
 
 ifneq ($(module),)
-  M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$")
+  M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+  ifeq ($(M_PATH),)
+    M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+  endif
+  ifeq ($(M_PATH),)
+    M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+  endif
 else
   ifneq ($(MODULE_CONFIG),)
     M_PATH ?= $(MODULE_CONFIG)
@@ -612,16 +618,7 @@ modules-list-full: module-list-full
 ms-l: module-list
 ms-l-f: modules-list-full
 
-# e.g. make module-test module=ldt,oops_test MODULE=ldt,oops
-module-test: FORCE
-ifneq ($(module),)
-	make feature-test FEATURE="$(FEATURE)"
-else
-	$(Q)echo Usage: make module-test modules=... MODULES=...
-	$(Q)echo Available Modules:
-	$(Q)make $(S) module-list
-endif
-
+module-test: test
 modules-test: module-test
 
 modules: FORCE
@@ -707,16 +704,12 @@ feature-list: kernel-feature-list
 k-f-l: feature-list
 f-l: k-f-l
 
-# Automated testing
-#
-# e.g. make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
-#      make module-test m=oops_test TEST=kernel-checkout,kernel-patch  # Make more targets for test
-#      make module-test m=oops_test TEST_FINISH=echo        # Don't poweroff after test
-#      make module-test m=oops_test TEST_CASE=/tools/ftrace/trace.sh # run guest test case
-#      make module-test m=oops_test TEST_REBOOT=2           # Reboot for 2 times
-
 ifneq ($(module),)
-  FEATURE += module
+  ifneq ($(FEATURE),)
+    FEATURE += module
+  else
+    FEATURE := module
+  endif
 endif
 
 TEST ?= $T
@@ -764,16 +757,7 @@ ifeq ($(findstring module,$(FEATURE)),module)
 endif
 endif
 
-kernel-feature-test: $(TEST_PREPARE) feature-init FORCE
-ifneq ($(FEATURE),)
-	make test FEATURE="$(FEATURE)" TEST_PREAPRE= TEST=
-else
-	$(Q)echo Usage: make feature-test FEATURE=...
-	$(Q)echo Available Features:
-	$(Q)make $(S) feature-list
-endif
-
-
+kernel-feature-test: test
 kernel-features-test: kernel-feature-test
 features-test: kernel-feature-test
 feature-test: kernel-feature-test
@@ -1225,8 +1209,8 @@ ifneq ($(TEST),)
   CMDLINE += $(TEST_KCLI)
 endif
 
-
 test: $(TEST_PREPARE) FORCE
+	$(if $(FEATURE), make feature-init)
 	make boot-init
 	make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
 	make boot-finish

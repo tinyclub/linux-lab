@@ -290,15 +290,15 @@ Reboot the guest system for several times:
 
 Test a feature of a specified linux version on a specified board:
 
-    $ make feature-test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
+    $ make test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
 
 Test a kernel module:
 
-    $ make module-test m=oops_test
+    $ make test m=oops_test
 
 Test a kernel module and make some targets before testing:
 
-    $ make module-test m=oops_test TEST=kernel-checkout,kernel-patch
+    $ make test m=oops_test TEST=kernel-checkout,kernel-patch
 
 ### Save images and configs
 

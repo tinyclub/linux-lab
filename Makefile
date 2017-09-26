@@ -720,13 +720,7 @@ else
   ifeq ($(TEST), prepare)
     TEST_TARGETS := kernel-prepare
   else
-    ifeq ($(findstring feature,$(TEST)),feature)
-      ifneq ($(FEATURE),)
-        TEST_TARGETS += feature-init
-      endif
-    else
-      TEST_TARGETS ?= $(TEST)
-    endif
+    TEST_TARGETS ?= $(TEST)
   endif
 endif
 

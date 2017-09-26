@@ -737,7 +737,6 @@ else
   endif
 endif
 
-
 TEST_PREPARE := $(shell echo $(TEST_TARGETS) | tr ',' ' ')
 
 kernel-init:
@@ -767,7 +766,7 @@ endif
 
 kernel-feature-test: $(TEST_PREPARE) feature-init FORCE
 ifneq ($(FEATURE),)
-	make test FEATURE="$(FEATURE)" TEST_PREAPRE=
+	make test FEATURE="$(FEATURE)" TEST_PREAPRE= TEST=
 else
 	$(Q)echo Usage: make feature-test FEATURE=...
 	$(Q)echo Available Features:

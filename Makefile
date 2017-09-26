@@ -493,11 +493,11 @@ root-build:
 
 # Install system/ to ROOTDIR
 root-install:
-	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+	ROOTDIR=$(TOP_DIR)/$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 root-rebuild:
 ifeq ($(PBR), 1)
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
+	ROOTDIR=$(TOP_DIR)/$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
@@ -507,6 +507,10 @@ else
     endif
   endif
 endif
+
+r-b: root-build
+r-i: root-install
+r-r: root-rebuild
 
 ROOT ?= rootdir
 ifeq ($(_PBR), 0)
@@ -519,6 +523,10 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 root-prepare: root-checkout root-defconfig
 root-auto: root-prepare root
+
+r: root
+r-p: root-prepare
+r-a: root-auto
 
 # Kernel modules
 
@@ -786,7 +794,7 @@ KTARGET ?= $(IMAGE) $(DTBS)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
   K_ROOT_DIR = rootdir
-  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTDIR)
+  KOPTS = CONFIG_INITRAMFS_SOURCE=$(TOP_DIR)/$(ROOTDIR)
 endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)

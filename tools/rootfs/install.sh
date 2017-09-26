@@ -17,5 +17,5 @@ for f in `find $SYSTEM -type f | sed -e "s%$SYSTEM%%g"`
 do
     dest=`dirname $f`
     [ ! -d $ROOTDIR/$dest ] && mkdir -p $ROOTDIR/$dest
-    cp $SYSTEM/$f $ROOTDIR/$f
+    cp --remove-destination $SYSTEM/$f $ROOTDIR/$f
 done

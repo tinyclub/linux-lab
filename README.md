@@ -286,7 +286,7 @@ Run guest test case:
 
 Run guest test cases (need install new `system/` via `make r-i`):
 
-    $ make test TEST_END=ls TEST_FINISH=echo TEST_BEGIN=date TEST_CASE='"ls /root","echo hello world"'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'
 
 Reboot the guest system for several times (not work on Malta board):
 
@@ -299,6 +299,14 @@ Test a feature of a specified linux version on a specified board:
 Test a kernel module:
 
     $ make test m=oops_test
+
+Test multiple kernel modules:
+
+    $ make test m=oops_test,kmemleak_test
+
+Run test cases while testing kernel modules:
+
+    $ make test m=oops,kmemleak TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'
 
 Test a kernel module and make some targets before testing:
 

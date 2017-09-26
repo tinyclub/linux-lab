@@ -1198,7 +1198,7 @@ ifneq ($(TEST),)
     TEST_KCLI += reboot=$(TEST_REBOOT)
   endif
   ifneq ($(TEST_BEGIN),)
-    TEST_KCLI += test_begin=$(TEST_INIT)
+    TEST_KCLI += test_begin=$(TEST_BEGIN)
   endif
   ifneq ($(TEST_END),)
     TEST_KCLI += test_end=$(TEST_END)

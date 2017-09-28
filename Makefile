@@ -776,8 +776,13 @@ KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
+# Require root to access the /etc/random-seed in initramfs source
+ifeq ($(ROOTDEV), /dev/null)
+  SUDO = sudo
+endif
+
 kernel: $(K_ROOT_DIR)
-	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
+	$(SUDO) PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 k-d: kernel-source
 k-o: kernel-checkout

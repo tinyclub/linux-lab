@@ -713,18 +713,7 @@ ifneq ($(module),)
 endif
 
 TEST ?= $T
-
-ifeq ($(TEST), auto)
-  TEST_TARGETS := kernel-auto
-else
-  ifeq ($(TEST), prepare)
-    TEST_TARGETS := kernel-prepare
-  else
-    TEST_TARGETS ?= $(TEST)
-  endif
-endif
-
-TEST_PREPARE := $(shell echo $(TEST_TARGETS) | tr ',' ' ')
+TEST_PREPARE := $(shell echo $(TEST) | tr ',' ' ')
 
 kernel-init:
 	$(Q)make kernel-oldconfig
@@ -797,6 +786,9 @@ k: kernel
 
 kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
 kernel-auto: kernel-prepare kernel
+
+prepare: kernel-prepare
+auto: kernel-auto
 
 # Configure Uboot
 uboot-checkout:

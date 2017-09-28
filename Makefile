@@ -786,9 +786,12 @@ k: kernel
 
 kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
 kernel-auto: kernel-prepare kernel
+kernel-full: kernel-download kernel-prepare kernel
 
+# Simplify testing
 prepare: kernel-prepare
 auto: kernel-auto
+full: kernel-full
 
 # Configure Uboot
 uboot-checkout:

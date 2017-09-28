@@ -288,7 +288,7 @@ Run guest test cases (need install new `system/` via `make r-i`):
 
     $ make test TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'
 
-Reboot the guest system for several times (not work on Malta board):
+Reboot the guest system for several times:
 
     $ make test TEST_REBOOT=2
 

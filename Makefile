@@ -485,7 +485,9 @@ ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
 KM ?= 1
 
 ifeq ($(KM), 1)
-  KERNEL_MODULES_INSTALL = module-install
+  ifeq ($(KERNEL_OUTPUT)/.modules.order, $(wildcard $(KERNEL_OUTPUT)/.modules.order))
+    KERNEL_MODULES_INSTALL = module-install
+  endif
 endif
 
 root-build:

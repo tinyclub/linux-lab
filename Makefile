@@ -1232,10 +1232,11 @@ endif
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
+	make boot TEST=default ROOTDEV=/dev/nfs FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
-		echo "\nRebooting test: $r\n" && make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs;)
+		echo "\nRebooting test: $r\n" && \
+		make boot TEST=default ROOTDEV=/dev/nfs FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot;)
 endif
 
 test: $(TEST_PREPARE) FORCE

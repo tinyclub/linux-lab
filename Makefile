@@ -569,6 +569,10 @@ ifneq ($(module),)
   ifeq ($(M_PATH),)
     M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
   endif
+
+  ifeq ($(M_PATH),)
+    $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
+  endif
 else
   ifneq ($(MODULE_CONFIG),)
     M_PATH ?= $(MODULE_CONFIG)

@@ -901,11 +901,11 @@ c: config
 B: build
 
 # Save the built images
-root-save:
+root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOTDIR)
 	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)
 
-kernel-save:
+kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
 ifneq ($(UORIIMG),)
@@ -919,7 +919,7 @@ ifneq ($(ORIDTB),)
   endif
 endif
 
-uboot-save:
+uboot-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_UBOOTDIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOTDIR)
 
@@ -930,7 +930,7 @@ u-s: uboot-save
 
 uboot-saveconfig: uconfig-save
 
-uconfig-save:
+uconfig-save: prebuilt-images
 	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
@@ -939,7 +939,7 @@ uconfig-save:
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
 
-kconfig-save:
+kconfig-save: prebuilt-images
 	-PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
@@ -947,7 +947,7 @@ kconfig-save:
 
 root-saveconfig: rconfig-save
 
-rconfig-save:
+rconfig-save: prebuilt-images
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
 	$(Q)if [ -f $(ROOT_OUTPUT)/defconfig ]; \
 	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \

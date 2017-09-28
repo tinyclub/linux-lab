@@ -881,6 +881,9 @@ uboot-menuconfig:
 uboot:
 	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
+uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
+uboot-auto: uboot-prepare uboot
+uboot-full: uboot-download uboot-prepare uboot
 
 u-d: uboot-source
 u-o: uboot-checkout

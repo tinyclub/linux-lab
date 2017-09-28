@@ -312,6 +312,10 @@ Test a kernel module and make some targets before testing:
 
     $ make test m=oops_test TEST=kernel-checkout,kernel-patch
 
+Test everything in one command (from download to poweroff):
+
+    $ make test TEST=kernel-full,root-full
+
 ### Save images and configs
 
 Save all of the configs and rootfs/kernel/dtb images:

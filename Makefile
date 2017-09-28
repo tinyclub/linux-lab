@@ -523,6 +523,7 @@ root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
 root-prepare: root-checkout root-defconfig
 root-auto: root-prepare root
+root-full: root-download root-prepare root
 
 r: root
 r-p: root-prepare

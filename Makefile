@@ -185,7 +185,7 @@ PBR ?= 0
 _PBR := $(PBR)
 
 PREBUILT_ROOTFS ?= $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
-ROOTDIR ?= $(PREBUILT_ROOTDIR)/rootfs
+ROOTDIR ?= $(TOP_DIR)/$(PREBUILT_ROOTDIR)/rootfs
 
 ifeq ($(_PBR), 0)
   ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
@@ -265,7 +265,7 @@ TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
 
 ifeq ($(ROOTDEV),/dev/nfs)
-  CMDLINE += nfsroot=$(ROUTE):$(TOP_DIR)/$(ROOTDIR) ip=$(IP)
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) ip=$(IP)
 endif
 
 # For debug
@@ -495,11 +495,11 @@ root-build:
 
 # Install system/ to ROOTDIR
 root-install:
-	ROOTDIR=$(TOP_DIR)/$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 root-rebuild:
 ifeq ($(PBR), 1)
-	ROOTDIR=$(TOP_DIR)/$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
@@ -602,7 +602,7 @@ endif
 
 kernel-modules-install: $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(TOP_DIR)/$(ROOTDIR) M=$(M_PATH)
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$(M_PATH)
 endif
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
@@ -769,7 +769,7 @@ KTARGET ?= $(IMAGE) $(DTBS)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
   K_ROOT_DIR = rootdir
-  KOPTS = CONFIG_INITRAMFS_SOURCE=$(TOP_DIR)/$(ROOTDIR)
+  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTDIR)
 endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)

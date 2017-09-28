@@ -985,10 +985,23 @@ else
   CMDLINE += console=$(CONSOLE)
 endif
 
+# Some boards not support 'reboot' test, please use 'power' instead.
+#
+# reboot means run reboot command in Qemu guest
+# power means rn poweroff command in Qemu guest and poweron it via host
+#
+REBOOT_TYPE ?= power
+TEST_REBOOT ?= 0
+
 # Shutdown the board if 'poweroff -h/-n' or crash
-ifneq ($(TEST_REBOOT),)
-  TEST_FINISH := reboot
+ifeq ($(REBOOT_TYPE), reboot)
+  ifneq ($(TEST_REBOOT),0)
+    TEST_FINISH := reboot
+  endif
+else
+  TEST_FINISH := poweroff
 endif
+
 ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
   EXIT_ACTION ?= -no-reboot
 endif
@@ -1192,8 +1205,10 @@ ifneq ($(TEST),)
       TEST_KCLI += module=$(shell echo $(MODULE) | tr ' ' ',' | sed -e "s%,$$%%g" | sed -e "s%^,%%g")
     endif
   endif
-  ifneq ($(TEST_REBOOT),)
-    TEST_KCLI += reboot=$(TEST_REBOOT)
+  ifeq ($(REBOOT_TYPE), reboot)
+    ifneq ($(TEST_REBOOT),0)
+      TEST_KCLI += reboot=$(TEST_REBOOT)
+    endif
   endif
   ifneq ($(TEST_BEGIN),)
     TEST_KCLI += test_begin=$(TEST_BEGIN)
@@ -1213,10 +1228,25 @@ ifneq ($(TEST),)
   CMDLINE += $(TEST_KCLI)
 endif
 
+BOOT_TEST=default
+ifneq ($(TEST_REBOOT), 0)
+  ifeq ($(findstring power,$(REBOOT_TYPE)),power)
+    BOOT_TEST=loop
+  endif
+endif
+
+boot-test:
+ifeq ($(BOOT_TEST), default)
+	make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
+else
+	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
+		echo "\nRebooting test: $r\n" && make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs;)
+endif
+
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot TEST=default FEATURE=$(FEATURE),boot ROOTDEV=/dev/nfs
+	make boot-test
 	make boot-finish
 
 boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)

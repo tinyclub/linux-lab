@@ -327,6 +327,7 @@
         - name: FlameGraph
         - name: Oscilloscope
         - name: Showdesk.io
+        - name: Synergy
 
 - name: 行业观察
   categories:

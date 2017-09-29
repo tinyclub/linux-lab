@@ -362,6 +362,10 @@ emulator-prepare: emulator-checkout emulator-patch emulator-defconfig
 emulator-auto: emulator-prepare emulator
 emulator-full: emulator-download emulator-prepare emulator
 
+qemu-prepare: emulator-prepare
+qemu-auto: emulator-auto
+qemu-full: emulator-full
+
 kernel-source:
 	git submodule update --init --remote linux-stable
 

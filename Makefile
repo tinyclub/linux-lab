@@ -421,7 +421,7 @@ QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
 
 QPD_BASE=patch/qemu/$(QEMU_BASE)
 QPD=patch/qemu/$(QEMU)
-QP ?= 1
+QP ?= 0
 
 emulator-patch: $(EMULATOR_CHECKOUT)
 ifeq ($(QPD_BASE),$(wildcard $(QPD_BASE)))
@@ -439,9 +439,11 @@ ifneq ($(QP),0)
 endif
 endif
 
-emulator: $(EMULATOR_PATCH)
+emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
+
+emulator:
 	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)
 
 q: emulator

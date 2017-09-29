@@ -316,6 +316,10 @@ Test everything in one command (from download to poweroff):
 
     $ make test TEST=kernel-full,root-full
 
+Test everything in one command (with uboot while support, e.g. vexpress-a9):
+
+    $ make test TEST=kernel-full,root-full,uboot-full
+
 ### Save images and configs
 
 Save all of the configs and rootfs/kernel/dtb images:

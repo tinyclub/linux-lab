@@ -354,7 +354,13 @@ qemu-download: qemu-source
 download-qemu: qemu-source
 d-q: qemu-source
 q-d: qemu-source
+
+emulator-download: qemu-source
 e-d: qemu-source
+
+emulator-prepare: emulator-checkout emulator-patch emulator-defconfig
+emulator-auto: emulator-prepare emulator
+emulator-full: emulator-download emulator-prepare emulator
 
 kernel-source:
 	git submodule update --init --remote linux-stable

@@ -74,7 +74,7 @@ _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 
 QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_SRC ?= qemu
+QEMU_SRC ?= $(TOP_DIR)/qemu
 
 UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
 UBOOT_SRC ?= u-boot

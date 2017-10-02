@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "多屏之间通过Synergy共享鼠标键盘和剪切板"
+title: "多屏通过 Synergy 共享鼠标、键盘和剪切板"
 permalink: /share-mouse-keyboard-and-clipboard-among-sreens/
 description: "本文介绍如何通过 Synergy 实现多个屏幕之间共享同一套鼠标、键盘和剪切板，方便快捷高效率的工作。"
 category:
@@ -51,17 +51,17 @@ Synergy 支持多个平台：Windows, Mac 和 Linux。可以通过其 [官方网
 
   ![synergykm server](/wp-content/uploads/2017/10/synergykm-general.png)
 
-* 接着在 Ubuntu 上启动 Quicksynergy，在 `Use` 标签填入刚记下的 IP 地址并配置本机屏幕的名称，例如：`myubuntu-screen`，然后点击 `Execute` 运行。
+* 接着在 Ubuntu 上启动 Quicksynergy，在 `Use` 处填入刚记下的 IP 地址并配置本机屏幕的名称，例如：`myubuntu-screen`，然后点击 `Execute` 运行。
 
   ![synergykm server](/wp-content/uploads/2017/10/quicksynergy.png)
 
-* 紧接着回到 Macbook 上，在 SynergyKM 的 `Server Configuration` 标签处添加屏幕并把名字设置为`myubuntu-screen`
+* 紧接着回到 Macbook 上，在 SynergyKM 的 `Server Configuration` 处添加屏幕并通过 `Edit Screen Options` 把名字设置为`myubuntu-screen`
 
-* 根据台式机屏幕和笔记本屏幕的位置关系，在 SynergyKM 的 `Server Configuration` 标签处调整好位置关系，比如台式机显示器在上面，笔记本屏幕在下面，则可以把 `myubuntu-screen` 拖动到笔记本屏幕的上面。
+* 根据台式机屏幕和笔记本屏幕的位置关系，在 SynergyKM 的 `Server Configuration` 处调整好位置关系，比如台式机显示器在上面，笔记本屏幕在下面，则可以把 `myubuntu-screen` 拖动到笔记本屏幕的上面。
 
   ![synergykm server](/wp-content/uploads/2017/10/synergykm-config.png)
 
-* 调整完以后，点击下面的 `Apply Now` 即可建立连接。
+* 调整后，点击下面的 `Apply Now` 即可建立连接。
 
 接下来，把鼠标从屏幕上方移出屏幕即可进入到台式机上的显示器，键盘操作也会相应地移动到台式机那边。反之，向下移动则可以回到笔记本。
 

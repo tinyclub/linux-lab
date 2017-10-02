@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "多屏通过 Synergy 共享鼠标、键盘和剪切板"
-permalink: /share-mouse-keyboard-and-clipboard-among-sreens/
+permalink: /share-mouse-keyboard-and-clipboard-among-screens/
 description: "本文介绍如何通过 Synergy 实现多个屏幕之间共享同一套鼠标、键盘和剪切板，方便快捷高效率的工作。"
 category:
   - Synergy

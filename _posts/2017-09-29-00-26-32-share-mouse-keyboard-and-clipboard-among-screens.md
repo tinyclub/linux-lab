@@ -33,7 +33,7 @@ Synergy 支持多个平台：Windows, Mac 和 Linux。可以通过其 [官方网
 
     $ sudo apt-get install synergy quicksynergy
 
-在 Mac 下可以安装 synergykm.com 提供的版本，经测试，在 MacOS X EI Caption (Version 10.11.4) 上，只有 [1.0.1](http://synergykm.com/SynergyKM-1.0.1-Installer.zip) 工作。
+在 Mac 下可以安装 synergykm.com 提供的版本，经测试，在 MacOS X EI Caption (Version 10.11.4) 上，只有 [1.0.1 版](http://synergykm.com/SynergyKM-1.0.1-Installer.zip) 工作。
 
     $ wget -c http://synergykm.com/SynergyKM-1.0.1-Installer.zip
 

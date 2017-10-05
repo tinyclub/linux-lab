@@ -1280,15 +1280,22 @@ t: test
 b: boot
 
 # Debug
-
+# Xterm: lxterminal, terminator
+XTERM ?= lxterminal
 VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
 GDB_CMD ?= $(CCPRE)gdb --quiet $(VMLINUX)
-XTERM_CMD ?= lxterminal --working-directory=$(CURDIR) -t "$(GDB_CMD)" -e "$(GDB_CMD)"
+XTERM_CMD ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+XTERM_STATUS = $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
+ifeq ($(XTERM_STATUS), 0)
+  DEBUG_CMD = $(XTERM_CMD)
+else
+  DEBUG_CMD = $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
+endif
 
 debug:
 ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
 	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
-	$(Q)$(XTERM_CMD) &
+	$(Q)$(DEBUG_CMD) &
 	$(Q)make boot DEBUG=1
 else
 	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"

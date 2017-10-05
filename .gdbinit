@@ -5,6 +5,10 @@ python print "\n(gdb) break start_kernel"
 break start_kernel
 
 python import time; time.sleep(1)
+python print "\n(gdb) break time_init"
+break time_init
+
+python import time; time.sleep(1)
 python print "\n(gdb) break do_fork"
 break do_fork
 

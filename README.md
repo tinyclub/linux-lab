@@ -20,6 +20,8 @@ See: <http://tinylab.org/linux-lab/>
 
 ## Download the lab
 
+Use Ubuntu system as an example, otherwise, please install docker at first with help from [Docker CE](https://store.docker.com/search?type=edition&offering=community).
+
 Download cloud lab framework, pull images and checkout linux-lab repository:
 
     $ git clone https://github.com/tinyclub/cloud-lab.git

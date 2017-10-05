@@ -67,7 +67,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ## 尝鲜
 
-未来的迭代还会继续，但是已经不妨碍我们尝鲜了，以 Ubuntu 和 Qemu 为例：
+未来的迭代还会继续，但是已经不妨碍我们尝鲜了，以 Ubuntu 和 Qemu 为例。其他系统请参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community) 。
 
 ### 下载
 

@@ -61,7 +61,7 @@ tags:
 
 ### 准备
 
-以 Ubuntu 和 Qemu 为例：
+以 Ubuntu 和 Qemu 为例，其他平台请参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。
 
 ### 下载
 

@@ -40,6 +40,8 @@ tags:
 
 ## 环境搭建
 
+下面以 Ubuntu 系统为例，其他系统请参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。
+
 首先把 Linux Lab 下载下来：
 
     $ git clone https://github.com/tinyclub/cloud-lab.git

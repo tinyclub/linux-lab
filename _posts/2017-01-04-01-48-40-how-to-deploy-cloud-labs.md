@@ -107,6 +107,8 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
 接下来参照 Cloud Lab 中的 README.md 简单介绍如何使用一个现有的 Lab。
 
+下面以 Ubuntu 为例，其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+
 * 安装 Docker
 
       $ tools/docker/install

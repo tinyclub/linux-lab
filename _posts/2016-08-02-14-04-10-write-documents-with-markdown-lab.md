@@ -50,7 +50,7 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 
 ### 准备
 
-以 Ubuntu 为例：
+以 Ubuntu 为例，其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 ### 下载
 

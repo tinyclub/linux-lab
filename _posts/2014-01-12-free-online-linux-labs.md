@@ -29,9 +29,9 @@ categories:
   * [armv7][11]: An ARM emulator written in JavaScript
 
 2. 其他
+  * [泰晓实验云台](http://tinylab.cloud:6080)
   * [Linux 实验楼](https://www.shiyanlou.com/)
   * [Linuxzoo: Learn Linux from the safety of your chair using a remote private linux machine with root access][4]
-  * [RT-Thread on Javascript ARMv7 Emulator](http://lab.rt-thread.org/cloudide/simulator/index.html)
 
 
  [2]: http://tinylab.org

@@ -61,7 +61,7 @@ tags:
 
 ### 准备
 
-以 Ubuntu 和 Qemu 为例，其他平台请参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。
+以 Ubuntu 和 Qemu 为例。其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 ### 下载
 

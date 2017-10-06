@@ -267,6 +267,8 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
         tinylab/cs630-qemu-lab ...
         tinylab/cloud-ubuntu-dev ...
 
+    如果添加 Docker 镜像很通用，也可以直接往 [Cloud Ubuntu](https://github.com/tinyclub/cloud-ubuntu.git) 提交源码。
+
 * `docker/`
 
     该目录用于设置镜像名、配置资源、或者添加需要用到的设备等。镜像名命名规则为 `tinylab/<LAB_NAME>`，例如：`tinylab/linux-0.11-lab`。

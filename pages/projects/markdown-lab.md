@@ -37,7 +37,12 @@ tags:
 
 ### 准备
 
-以 Ubuntu 为例：
+在实验之前，请先参考下面文档安装好 Docker。
+
+* Linux：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows 和 Mac 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+
+下面以 Ubuntu 为例：
 
 ### 下载
 

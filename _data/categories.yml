@@ -354,6 +354,7 @@
         - name: vnStatSVG
         - name: Linux 0.11 Lab
         - name: Linux Lab
+        - name: Cloud Lab
         - name: TinyDraw
         - name: B9Creator
     - name: 开源书籍

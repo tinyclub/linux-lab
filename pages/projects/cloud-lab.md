@@ -1,5 +1,5 @@
 ---
-title: 'Cloud Lab -- 泰晓实验云台'
+title: 'Cloud Lab: 泰晓实验云台'
 tagline: '可快速构建的计算机课程在线实验平台'
 author: Wu Zhangjin
 layout: page

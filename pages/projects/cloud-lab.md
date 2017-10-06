@@ -75,7 +75,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
     $ sudo usermod -aG docker $USER
 
-## 工作目录
+## 实验目录
 
 在 Mac 系统上，请先启动 Virtualbox 上 default 系统，并进入 `/mnt/sda1` 目录下，Windows 应该类似。
 
@@ -90,7 +90,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab
 
-## Lab 选择与下载
+## 选择并下载 Lab 源码
 
 可以列出来后再选择：
 
@@ -125,7 +125,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
     book	   COPYING  examples  Makefile	   Makefile.emu   Makefile.help  README.md  src
     callgraph  doc	    images    Makefile.cg  Makefile.head  Makefile.tags  rootfs     tools
 
-## Lab 环境拉取与运行
+## 拉取并运行 Lab 环境
 
 下述命令会直接拉取实验环境的 Docker 镜像并运行，运行完以后会打印出 VNC 的登陆链接。
 
@@ -147,7 +147,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
 该登陆链接可以通过现代浏览器打开，比如 Firefox, Chromium-browser 以及 Safari，Chromium-browser 为首选，其兼容性和性能最好。
 
-## 登陆实验环境
+## 登陆 Lab
 
 Cloud Lab 提供了多种登陆方式：
 
@@ -225,7 +225,7 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
 
 该功能可用于大学实验室教学、企业培训、甚至是课堂或者讲座时即时演示。
 
-## 添加新的 Lab
+## 添加新 Lab
 
 先尽量复用现有的 Lab，如果现有的 Lab 无法满足要求，也可以自行添加。
 
@@ -298,7 +298,7 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
     $ cd labs/
     $ git submodule add https://github.com/tinyclub/linux-0.11-lab.git
 
-## 录制学习视频
+## 录制视频
 
 Cloud Lab 支持自动录制实验过程。登陆进去之前，进行如下设置并点击 `Apply` 后再登陆即可开启录制。要停止录制，退出实验环境即可。
 

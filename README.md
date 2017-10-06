@@ -18,9 +18,16 @@ See: <http://tinylab.org/linux-lab/>
 * [Learning RLK4.0 Book (Chinese)](https://v.qq.com/x/page/y0543o6zlh5.html)
 * [Developing Embedded Linux (Chinese)](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
 
+## Install docker
+
+Docker is required by Linux Lab, please install it at first:
+
+* Linux: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows or Mac OS: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+
 ## Download the lab
 
-Use Ubuntu system as an example, otherwise, please install docker at first with help from [Docker CE](https://store.docker.com/search?type=edition&offering=community).
+Use Ubuntu system as an example:
 
 Download cloud lab framework, pull images and checkout linux-lab repository:
 

@@ -90,7 +90,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab
 
-## 选择并下载 Lab 源码
+## 下载 Lab
 
 可以列出来后再选择：
 
@@ -125,7 +125,7 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
     book	   COPYING  examples  Makefile	   Makefile.emu   Makefile.help  README.md  src
     callgraph  doc	    images    Makefile.cg  Makefile.head  Makefile.tags  rootfs     tools
 
-## 拉取并运行 Lab 环境
+## 运行 Lab
 
 下述命令会直接拉取实验环境的 Docker 镜像并运行，运行完以后会打印出 VNC 的登陆链接。
 
@@ -225,7 +225,7 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
 
 该功能可用于大学实验室教学、企业培训、甚至是课堂或者讲座时即时演示。
 
-## 添加新 Lab
+## 添加 Lab
 
 先尽量复用现有的 Lab，如果现有的 Lab 无法满足要求，也可以自行添加。
 

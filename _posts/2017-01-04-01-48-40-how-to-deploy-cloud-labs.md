@@ -52,7 +52,7 @@ tags:
 
 Cloud Ubuntu 不仅实现了一系列基础镜像，而且提供了进一步快速扩展其他镜像的框架。
 
-截止到目前，Cloud Ubuntu 实现了 13 个基础镜像，其中 base 镜像为 cloud-ubuntu，它提供了基础的 ssh 和 vnc 服务，其中 ssh 支持登陆失败限制。而 cloud-ubuntu-web 提供了 gateone 和 novnc，即 ssh 和 telnet 的 Web 代理，均支持 ssl。其他镜像还包括中文支持，中文输入支持（按下 `alt+s` 切换），基础开发环境（gcc+vim+git），虚拟化（qemu+bochs)，嵌入式开发，Markdown编辑，Jekyll网站以及代理服务/客户端，透明代理，代理转发和反向代理支持。
+截止到目前，Cloud Ubuntu 实现了 13 个基础镜像，其中 base 镜像为 cloud-ubuntu，它提供了基础的 ssh 和 vnc 服务，其中 ssh 支持登陆失败限制。而 cloud-ubuntu-web 提供了 gateone 和 novnc，即 ssh/telnet 和 vnc 的 Web 代理，均支持 ssl。其他镜像还包括中文支持，中文输入支持（按下 `alt+s` 切换），基础开发环境（gcc+vim+git），虚拟化（qemu+bochs)，嵌入式开发，Markdown 编辑，Jekyll 网站以及代理服务/客户端，透明代理，代理转发和反向代理支持。
 
 Cloud Ubuntu 极易扩展，要添加一个新的镜像，以 `xxx` 为例，步骤很简单：
 
@@ -100,14 +100,19 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
 ## 用法演示
 
-首先下载 `Cloud Lab`：
+首先请确保安装有 Docker 环境，可参考：
+
+* Linux：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows 和 Mac 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+
+接着下载 `Cloud Lab`：
 
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/
 
 接下来参照 Cloud Lab 中的 README.md 简单介绍如何使用一个现有的 Lab。
 
-下面以 Ubuntu 为例，其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+下面以 Ubuntu 为例。
 
 * 安装 Docker
 

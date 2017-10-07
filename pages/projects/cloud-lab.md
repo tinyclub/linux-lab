@@ -30,7 +30,7 @@ tags:
   * 代码仓库：[https://github.com/tinyclub/cloud-lab.git][3]
   * 基本特性：
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
-      * 通过 Docker CE 和 Docker Toolbox 支持所有 Linux，Windows，Mac OS 平台
+      * 通过 Docker CE 和 Docker Toolbox 支持所有 Linux，Windows，Mac OSX 平台
       * 可直接通过 Web 远程访问（支持ssh和vnc），非常便捷，便捷，便捷。
       * 支持即时录制，随时记录和分享学习过程。
       * 已内置多个示例 Lab：Linux Lab，Linux 0.11 Lab, CS630 Qemu Lab，Markdown Lab
@@ -60,16 +60,16 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
 在 Linux 系统上，安装完 Docker CE 后就会自动启动 docker 服务。
 
-### Mac OS 和 Windows
+### Mac OSX 和 Windows
 
 以 Mac 系统为例，安装完 Docker Toolbox 以后，打开 `kitematic` 并运行，会在 Virtualbox 中创建一个名为 `default` 的 Linux 系统，该系统为 TinyCoreLinux，其中集成了 docker 服务。
 
 该系统启动后，会挂载两个目录，可用于存放实验源码，它们是：
 
-* `/Users`：由 Mac OS 的 `/Users` 挂载过来，方便在 Mac OS 和该系统之间交换文件。
+* `/Users`：由 Mac OSX 的 `/Users` 挂载过来，方便在 Mac OSX 和该系统之间交换文件。
 * `/mnt/sda1`：在 Virtualbox 上外挂的一个虚拟磁盘镜像文件，默认有 17.9 G，足够存放常见的实验环境。
 
-另外，由于该系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，并通过 Mac OS 访问。
+另外，由于该系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，并通过 Mac OSX 访问。
 
     $ ifconfig eth1 | grep 'inet addr' | tr -s ' ' | tr ':' ' ' | cut -d' ' -f4
     192.168.99.100
@@ -247,7 +247,7 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
       * VNC_VIEWONLY: http://192.168.99.100:6080/?r=d41d8cw7lxxm
       * Webssh: http://192.168.99.100:n7p7fd/?ssh=ssh://tom:linux-0.11-lab-29979@4433:22
 
-之后即可在 Mac OS 和 Windows 系统中，访问上述链接开展实验。
+之后即可在 Mac OSX 和 Windows 系统中，访问上述链接开展实验。
 
 ### 互动模式（分布式）
 

@@ -40,7 +40,7 @@ tags:
 
 ## 环境搭建
 
-下面以 Ubuntu 系统为例，其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+下面以 Ubuntu 系统为例，其他 Linux 和 Mac OSX 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 首先把 Linux Lab 下载下来：
 

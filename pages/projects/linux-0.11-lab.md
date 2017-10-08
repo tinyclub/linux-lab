@@ -24,11 +24,11 @@ tags:
           * [添加一个新的系统调用](http://showterm.io/4b628301d2d45936a7f8a)
       * [视频演示](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
   * 代码仓库：[https://github.com/tinyclub/linux-0.11-lab.git][3]
-  * 基本特性： 
+  * 基本特性：
       * 包含所有可用的映像文件: ramfs/floppy/hard disk image。
       * 轻松支持 qemu 和 bochs，可通过配置 tools/vm.cfg 切换。
       * 可以生成任何函数的调用关系，方便代码分析：`make cg f=func d=file|dir`
-      * 支持 Ubuntu 和 Mac OS X，在 VirtualBox 的支持下也可以在 Windows 上工作。
+      * 通过 Docker Toolbox 和 Docker CE 支持所有系统：Linux、Windows 和 Mac OSX。
       * 支持最新的编译器和调试器，可直接用 Qemu/Bochs + gdb 调试
       * 在解压之前整个大小只有 30M
       * 支持 Docker 一键构建

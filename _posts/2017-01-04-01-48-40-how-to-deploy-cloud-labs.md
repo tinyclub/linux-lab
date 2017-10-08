@@ -102,8 +102,8 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
 首先请确保安装有 Docker 环境，可参考：
 
-* Linux：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows 和 Mac 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux 和 Mac 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 接着下载 `Cloud Lab`：
 

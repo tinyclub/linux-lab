@@ -56,7 +56,7 @@ tags:
 | [Markdown Lab ](/markdown-lab)    | tinylab/markdown-lab   | [showterm.io][6]           |
 |-----------------------------------|------------------------|----------------------------|
 
-所有实验环境可以通过 [Cloud-Lab][7] 管理，下面以 Ubuntu 为例。其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+所有实验环境可以通过 [Cloud-Lab][7] 管理，下面以 Ubuntu 为例。其他 Linux 和 Mac OSX 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 用法如下：
 

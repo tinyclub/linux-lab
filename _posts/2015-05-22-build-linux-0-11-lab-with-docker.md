@@ -23,7 +23,7 @@ categories:
 
 本文介绍如何快速构建一个独立于宿主机的 Linux 0.11 实验环境，该实验环境可以用于任何操作系统的宿主开发机，将非常方便各类学生学习 Linux 0.11，本文只介绍 Ubuntu。
 
-如果是其他 Linux 发行版，请务必自行提前安装好 Docker，可参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+如果是其他 Linux 发行版或者是 Mac OSX 系统，请务必自行提前安装好 Docker，可参考 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 ## 拉下 Linux 0.11 实验环境
 

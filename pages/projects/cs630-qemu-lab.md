@@ -54,7 +54,7 @@ tags:
 
 [Cloud Lab](http://tinylab.org/how-to-deploy-cloud-labs/) 是泰晓科技开发的一套独立的虚拟实验环境，可快速构建和远程访问，方便企业和学校教学。
 
-下面以 Ubuntu 为例。其他 Linux 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 和 Mac 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+下面以 Ubuntu 为例。其他 Linux 和 Mac OSX 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 ### 下载
 

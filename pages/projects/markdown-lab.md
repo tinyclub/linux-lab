@@ -32,6 +32,7 @@ tags:
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
       * 基于 Markdown，并内建书、简历、文档和幻灯片的主题模板，可专心内容创作。
+      * 通过 Docker Toolbox 和 Docker CE 支持所有系统：Linux、Windows 和 Mac OSX
 
 ## 五分钟教程
 
@@ -39,8 +40,8 @@ tags:
 
 在实验之前，请先参考下面文档安装好 Docker。
 
-* Linux：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows 和 Mac 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux 和 Mac 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 下面以 Ubuntu 为例：
 

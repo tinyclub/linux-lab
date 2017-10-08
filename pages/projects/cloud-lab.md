@@ -53,14 +53,20 @@ tags:
 
 Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
-* Linux：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Mac 和 Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux 和 Mac 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
 
-### Linux
+### Linux 和 Mac 系统
 
-在 Linux 系统上，安装完 Docker CE 后就会自动启动 docker 服务。
+在 Linux 和 Mac 系统上，安装完 Docker CE 后就会自动启动 docker 服务。
 
-### Mac OSX 和 Windows
+在 Mac 系统下，虽然也可以通过 Docker Toolbox 来安装 Docker，不过 Docker CE 已经支持原生 Docker，性能和体验会更好，Cloud Lab 也已经支持这种方式，所以 Mac 下也推荐用 Docker CE 安装。
+
+### Windows
+
+Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使用 Cloud Lab，需要一套兼容 Linux 和 Mac 的脚本环境，所以目前还是推荐 Windows 用户通过 Docker Toolbox 来安装 Docker。
+
+由于没有可测试的 Windows 系统，下面以 Mac OSX 为例介绍如何通过 Docker Toolbox 安装 Docker。
 
 以 Mac 系统为例，安装完 Docker Toolbox 以后，打开 `kitematic` 并运行，会在 Virtualbox 中创建一个名为 `default` 的 Linux 系统，该系统为 TinyCoreLinux，其中集成了 docker 服务。
 

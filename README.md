@@ -22,8 +22,8 @@ See: <http://tinylab.org/linux-lab/>
 
 Docker is required by Linux Lab, please install it at first:
 
-* Linux: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows or Mac OS: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux and Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 ## Download the lab
 

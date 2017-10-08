@@ -39,6 +39,25 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
     ![图片简介](/wp-content/uploads/2017/09/xxx.png)
 
+## 本地预览
+
+如果时间允许，请务必提前在本地预览一下效果，确保文档显示优雅美观。这一步可通过 Cloud Lab 完成，大体用法如下。
+
+首先请安装好 Docker，可参考：
+
+* Linux 和 Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+
+接着：
+
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab/ && tools/docker/choose tinylab.org
+    $ tools/docker/run tinylab.org
+
+运行完以后会通过浏览器自动登陆一个桌面，点击里头的 `Local Page` 即可查看预览效果。
+
+随后把新撰写的文章内容拷贝到 `labs/tinylab.org/_posts` 后，稍等几分钟即可在在预览页面查看，如果发现有问题，请提前进行调整，确保文章质量。
+
 ## 递送稿件
 
 撰写完后即可通过 Github 发送 Pull Request 进行投稿。也可直接把稿件和相关图片发送到 wuzhangjin [AT] gmail [DOT] com。

@@ -5,7 +5,7 @@ This project aims to create a Qemu-based Linux development Lab to easier the lea
 
 For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab).
 
-[![Docker Qemu Linux Lab](doc/docker.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+[![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
 ## Homepage
 

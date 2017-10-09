@@ -229,16 +229,16 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
 
 默认地址是 `localhost`，如果有一个域名或者主机之外可访问的 IP 地址，可以填入 `.host_name`，例如：
 
-    $ echo tinylab.cloud:6080 > .host_name
+    $ echo tinylab.cloud > .host_name
     $ tools/deploy/release
     Lab: linux-0.11-lab-29979, User: tom
-      * VNC: http://tinylab.cloud:6080:6080/?u=1e6005&p=ktft7s
-      * VNC_VIEWONLY: http://tinylab.cloud:6080:6080/?r=1e6005w7lxxm
-      * Webssh: http://tinylab.cloud:6080:4433/?ssh=ssh://tom:n7p7fd@10.66.0.3:22
+      * VNC: http://tinylab.cloud:6080/?u=1e6005&p=ktft7s
+      * VNC_VIEWONLY: http://tinylab.cloud:6080/?r=1e6005w7lxxm
+      * Webssh: http://tinylab.cloud:4433/?ssh=ssh://tom:n7p7fd@10.66.0.3:22
     Lab: linux-0.11-lab-29965, User: john
-      * VNC: http://tinylab.cloud:6080:6080/?u=3699ab&p=7cn9wn
-      * VNC_VIEWONLY: http://tinylab.cloud:6080:6080/?r=3699ab3mvmmp
-      * Webssh: http://tinylab.cloud:6080:4433/?ssh=ssh://john:tk9lbf@10.66.0.2:22
+      * VNC: http://tinylab.cloud:6080/?u=3699ab&p=7cn9wn
+      * VNC_VIEWONLY: http://tinylab.cloud:6080/?r=3699ab3mvmmp
+      * Webssh: http://tinylab.cloud:4433/?ssh=ssh://john:tk9lbf@10.66.0.2:22
 
 对于 Mac 和 Windows 系统，则可以直接填入 eth1 的 IP 地址，例如咱们上面通过 `ifconfig eth1` 获取到的地址：
 

@@ -542,10 +542,10 @@ To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/def
 
 ### Note5
 
-We assume the docker network is `10.66.33.0/24`, if not, we'd better change it.
+We assume the docker network is `10.66.0.0/16`, if not, we'd better change it.
 
     $ cat /etc/default/docker | grep bip
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.33.10/24"
+    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
 
     $ cat /lib/systemd/system/docker.service | grep bip
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.33.10/24
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16

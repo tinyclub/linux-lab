@@ -1079,7 +1079,9 @@ ifeq ($(DEBUG),1)
 endif
 
 # Silence qemu warnings
-QUIET_OPT = 2>/dev/null
+ifneq ($(V), 1)
+  QUIET_OPT ?= 2>/dev/null
+endif
 BOOT_CMD += $(QUIET_OPT)
 
 rootdir:

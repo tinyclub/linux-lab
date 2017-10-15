@@ -1199,10 +1199,8 @@ ifneq ($(PBR),0)
 endif
 endif
 
-ifeq ($(findstring prebuilt,$(ROOTFS)),prebuilt)
-  ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-    PREBUILT = prebuilt-images
-  endif
+ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
+  PREBUILT = prebuilt-images
 endif
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
@@ -1274,9 +1272,11 @@ test: $(TEST_PREPARE) FORCE
 	make boot-test
 	make boot-finish
 
-boot: $(PREBUILT) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
+_boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
+boot: $(PREBUILT)
+	$(Q)make $(S) _boot
 
 t: test
 b: boot

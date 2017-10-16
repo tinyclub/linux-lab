@@ -598,9 +598,11 @@ endif
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
+_M ?= M=$(M_PATH)
+
 kernel-modules: kernel-modules-save
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules M=$(M_PATH)
+	make kernel KTARGET=modules $(_M)
 endif
 
 kernel-modules-list:
@@ -618,7 +620,7 @@ endif
 
 kernel-modules-install: $(M_I_ROOT)
 ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) M=$(M_PATH)
+	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M)
 endif
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
@@ -744,8 +746,8 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-	make kernel-modules M_PATH=
-	make kernel-modules-install M_PATH=
+	make kernel-modules _M=
+	make kernel-modules-install _M=
 	make modules
 	make modules-install
 

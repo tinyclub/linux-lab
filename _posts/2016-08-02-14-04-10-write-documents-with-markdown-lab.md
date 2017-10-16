@@ -100,6 +100,7 @@ Docker 安装/启动：
 
     $ git submodule update --init book
     $ cd book/
+    $ gitbook install
     $ make
 
 字体配置可通过 `book.json` 的 `fontFamily` 实现。

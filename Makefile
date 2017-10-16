@@ -47,7 +47,7 @@ BOARD_DIR = $(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR = feature/linux
 TFTPBOOT = tftpboot
 
-PREBUILT_DIR = prebuilt
+PREBUILT_DIR = $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
 PREBUILT_ROOT = $(PREBUILT_DIR)/root
 PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel
@@ -185,7 +185,7 @@ PBR ?= 0
 _PBR := $(PBR)
 
 PREBUILT_ROOTFS ?= $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
-ROOTDIR ?= $(TOP_DIR)/$(PREBUILT_ROOTDIR)/rootfs
+ROOTDIR ?= $(PREBUILT_ROOTDIR)/rootfs
 
 ifeq ($(_PBR), 0)
   ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))

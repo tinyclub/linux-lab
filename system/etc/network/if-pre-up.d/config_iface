@@ -7,7 +7,8 @@ eth=eth0
 route=`cat /proc/cmdline | sed -e "s/.*route=\([0-9.]*\).*/\1/g"`
 ip=`echo $route | sed -e 's/\.\([0-9]*\)$/.'$(($RANDOM%230+11))'/g'`
 
-echo $ip $route
+echo "IP: $ip"
+echo "Route: $route"
 
 ifconfig $eth $ip up
 route add default gw $route $eth

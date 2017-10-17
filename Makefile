@@ -1097,6 +1097,8 @@ ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
   BOOT_ROOT_DIR = rootdir
 endif
 
+rootdir-install: root-install
+
 rootdir-clean:
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
 	-$(Q)rm -rf $(ROOTDIR)

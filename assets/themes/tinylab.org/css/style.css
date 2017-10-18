@@ -1176,6 +1176,9 @@ short_prev_next {
     article header time {
         font-size: 60%;
     }
+    #author-box-wrap {
+        margin-left: 0px;
+    }
     .author-article,
     long_prev_next,
     #full-screen,

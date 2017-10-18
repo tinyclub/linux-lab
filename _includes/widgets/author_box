@@ -11,7 +11,6 @@
 {% assign author = site.data.people[author_name] %}
 {% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
 
-{% assign count = 0 %}
 {% for contact in site.data.contacts %}
   {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
     {% continue %}
@@ -107,11 +106,6 @@
           {% endif %}
       </span>
     </a>
-
-    {% assign count = count | plus:'1' %}
-
-    {% assign mod = count | modulo: site.JB.author_box.max_perline %}
-    {% if count > 1 and mod == 0 %}<br />{% endif %}
   {% endif %}
 {% endfor %}
 </div>

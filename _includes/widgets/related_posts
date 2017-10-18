@@ -18,7 +18,7 @@
       {% if SimilarNum < site.JB.posts.related_limit and category == thiscat %}
         {% if SimilarNum == 0 %}
             {{ related_header }}
-            <ul id="{{ related_container  }}">
+            <ul id="related_container">
         {% endif %}
 
         <li>
@@ -75,7 +75,7 @@
 
         {% if SimilarNum == 0 %}
           {{ related_header }}
-          <ul id="{{ related_container  }}">
+          <ul id="related_container">
         {% endif %}
 
         <li>

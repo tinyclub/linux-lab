@@ -1,0 +1,36 @@
+{% if page.album %}
+
+{% assign size = 0 %}
+
+{% for post in site.posts  %}
+  {% if post.title and page.title and page.title == post.title %}
+    {% continue %}
+  {% endif %}
+  {% if post.album == page.ablum %}
+    {% assign size = 1 %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if size != 0 %}
+  {{ related_header }}
+  <ul id="album_container">
+
+  {% for post in site.posts %}
+    {% if post.album == empty %}
+      {% continue %}
+    {% endif %}
+    {% if post.album != page.album %}
+      {% continue %}
+    {% endif %}
+    {% if post.title and page.title and page.title == post.title %}
+      {% continue %}
+    {% endif %}
+    <li>
+      <a rel="nofollow" href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}
+
+{% endif %}

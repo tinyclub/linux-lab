@@ -17,6 +17,11 @@
   <hr>
   {% include widgets/sponsor %}
 
+     {% unless page.album == empty %}
+       {% assign related_header = "<h2> Album Articles: </h2>" %}
+       {% include widgets/album_posts %}
+     {% endunless %}
+
      {% assign related_header = "<h2> Read More: </h2>" %}
      {% include widgets/related_posts %}
 

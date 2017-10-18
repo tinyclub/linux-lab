@@ -1,18 +1,30 @@
 #!/bin/sh
+#
+# xterm.sh -- get current terminal
+#
 
+# Default setting
+TERM_MATCH='term'
+DEPTH=${2:-5}
+
+# Functions
 ppid () { ps -p ${1:-$$} -o ppid=; }
 pcmd () { ps -p ${1:-$$} -o command=; }
-pppid () { ppid `ppid ${1:-$$}`; }
-ppcmd () { pcmd `pppid ${1:-$$}`; }
-ppppid () { pppid `ppid ${1:-$$}`; }
-pppcmd () { pcmd `ppppid ${1:-$$}`; }
-pppppid () { ppppid `ppid ${1:-$$}`; }
-ppppcmd () { pcmd `pppppid ${1:-$$}`; }
 
-# Override XTERM
-_XTERM=`ppppcmd`
-echo $_XTERM | grep -q 'term'
-[ $? -eq 0 ] && XTERM=$(basename `echo $_XTERM | tr ' ' '\n' | grep 'term'`)
+# Find the terminal
+found=0
+pid=`ppid`
+for i in `seq 1 $DEPTH`
+do
+    _XTERM=`pcmd $pid`
+    echo $_XTERM | grep -v grep | grep -q $TERM_MATCH
+    [ $? -eq 0 ] && found=1 && break
+    pid=`ppid $pid`
+    depth=$i
+done
+
+# Get the command name
+[ $found -eq 1 ] && XTERM=$(basename `echo $_XTERM | tr ' ' '\n' | grep $TERM_MATCH`)
 
 XTERM=${XTERM:-$1}
 

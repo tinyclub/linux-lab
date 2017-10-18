@@ -18,13 +18,15 @@
   {% include widgets/sponsor %}
 
      {% unless page.album == empty %}
-       {% assign related_header = "<h2> Album Articles: </h2>" %}
+       {% assign album_header = "<h2> Read album: </h2>" %}
        {% include widgets/album_posts %}
      {% endunless %}
 
-     {% assign related_header = "<h2> Read More: </h2>" %}
+     {% assign related_header = "<h2> Read Related: </h2>" %}
      {% include widgets/related_posts %}
 
+     {% assign recent_header = "<h2> Read Latest: </h2>" %}
+     {% include widgets/recent_posts %}
    </section>
   </article>
 </section>

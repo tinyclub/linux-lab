@@ -13,7 +13,7 @@
 {% endfor %}
 
 {% if size != 0 %}
-  {{ related_header }}
+  {{ album_header }}
   <ul id="album_container">
 
   {% for post in site.posts %}

@@ -1,0 +1,22 @@
+{% assign size = 0 %}
+{% assign total_num = 0 %}
+
+{{ recent_header }}
+<ul id="recent_container">
+
+{% for post in site.posts %}
+  {% if total_num >= site.JB.sidebar.items_limit %}
+    {% break %}
+  {% endif %}
+  {% if post.title and page.title and page.title == post.title %}
+    {% continue %}
+  {% endif %}
+  {% if page.album and post.album and page.album == post.album %}
+    {% continue %}
+  {% endif %}
+  <li>
+    <a rel="nofollow" href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+  </li>
+  {% assign total_num =  total_num | plus:1 %}
+{% endfor %}
+</ul>

@@ -1131,16 +1131,6 @@ short_prev_next {
     overflow: hidden;
     display: none;
     text-align: center;
-    width: 230px;
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    -moz-border-radius: 80px;
-    -webkit-border-radius: 80px;
-    border-radius: 80px
 }
 .author-box-wrap .author-box-header {
     color: #000;

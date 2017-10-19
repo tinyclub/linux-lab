@@ -41,6 +41,8 @@ tags:
 
 ## 五分钟教程
 
+注：不再推荐如下方式使用 Linux 0.11 Lab，请参考 [基于 Docker 快速构建 Linux 0.11 实验环境][5]，基于 Docker，可以轻松在 Windows，Linux 和 Mac OSX 下使用 Linux 0.11 Lab。
+
 ### 准备
 
 以 Ubuntu 和 Qemu 为例, 对于 Mac OS X 和 Bochs 的用法，请参考 [README.md][2].

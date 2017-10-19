@@ -52,6 +52,22 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 
 以 Ubuntu 为例，其他 Linux 和 Mac OSX 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
+安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
+
+    $ sudo usermod -aG docker $USER
+
+由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
+
+    $ grep registry-mirror /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
+    $ service docker restart
+
+如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
+
+    $ grep bip /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
+    $ service docker restart
+
 ### 下载
 
     $ git clone https://github.com/tinyclub/cloud-lab.git

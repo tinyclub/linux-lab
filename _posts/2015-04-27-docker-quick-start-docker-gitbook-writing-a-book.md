@@ -19,6 +19,8 @@ categories:
 > [泰晓沙龙][2]第二期 @ 2015/04/26
 
 
+注：由于 Docker 和 Gitbook 更新换代太快，以下方法或许已经失效，推荐直接通过 [Markdown Lab](http://tinylab.org/markdown-lab) 来撰写书籍，它基于 Docker 内建有 Gitbook 环境。
+
 # 准备 GitBook 环境
 
 ## 安装 Docker

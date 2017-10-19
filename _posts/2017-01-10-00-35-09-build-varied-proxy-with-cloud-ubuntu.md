@@ -33,14 +33,14 @@ tags:
 
 ## 准备
 
-在介绍之前，先下载 Cloud Ubuntu：
+在介绍之前，请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)，Windows 上请先安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)，然后下载 Cloud Ubuntu：
 
     $ git clone https://github.com/tinyclub/cloud-ubuntu.git
     $ cd cloud-ubuntu/
 
 如果本地还没有安装 Docker，请先安装之：
 
-    $ tools/install
+    $ tools/docker/install
 
 如果是国内用户，建议在 `/etc/default/docker` 中打开如下配置：
 

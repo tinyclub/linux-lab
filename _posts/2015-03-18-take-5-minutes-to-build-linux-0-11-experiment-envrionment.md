@@ -84,6 +84,8 @@ categories:
 
 ## 五分钟教程
 
+注：不再推荐如下方式使用 Linux 0.11 Lab，请参考 [基于 Docker 快速构建 Linux 0.11 实验环境][5]，基于 Docker，可以轻松在 Windows，Linux 和 Mac OSX 下使用 Linux 0.11 Lab。
+
 ### 预备
 
 先准备个电脑，XP 已死，建议用 Ubuntu 或者 OS X，这里主要介绍 Ubuntu，OS X 看 [README.md][7] 吧。

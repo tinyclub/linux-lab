@@ -91,7 +91,9 @@ Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使
 * `/Users`：由 Mac OSX 的 `/Users` 挂载过来，方便在 Mac OSX 和该系统之间交换文件。
 * `/mnt/sda1`：在 Virtualbox 上外挂的一个虚拟磁盘镜像文件，默认有 17.9 G，足够存放常见的实验环境。
 
-另外，由于该系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，并通过 Mac OSX 访问。
+请务必注意，该 `default` 系统中默认的 `/root` 目录仅仅挂载在内存中，关闭系统后数据会丢失，请千万不要用它来保存实验数据。
+
+另外，由于该系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，并通过 Windows 或者 Mac OSX 访问 Lab。
 
     $ ifconfig eth1 | grep 'inet addr' | tr -s ' ' | tr ':' ' ' | cut -d' ' -f4
     192.168.99.100
@@ -135,11 +137,11 @@ Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使
 
 ## 实验目录
 
-在 Mac 系统上，请先启动 Virtualbox 上 default 系统，并进入 `/mnt/sda1` 目录下，Windows 应该类似。
+如果使用了 Docker Toolbox 安装 Docker，则启动 Virtualbox 上的 `default` 系统后，请使用 `/mnt/sda1` 目录。因为默认的 `/root` 目录仅仅挂载在内存中，该系统关闭后数据会丢失。
 
     $ cd /mnt/sda1
 
-在 Linux 系统上，找一处当前用户可存储的目录即可，例如 `~/Documents`。
+在 Linux 或者 Mac 系统上，找一处当前用户可存储的目录即可，例如 `~/Documents`。
 
     $ cd ~/Documents/
 

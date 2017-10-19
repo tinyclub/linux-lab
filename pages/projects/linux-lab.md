@@ -92,6 +92,18 @@ tags:
 
 如果是自己通过 Virtualbox 安装的 Linux 系统，即使有桌面，也想在外部系统访问时，则可以通过设置 'Network -> Adapter2 -> Host-only Adapter' 来添加一个 eth1 网口设备。
 
+请务必注意，通过 Docker Toolbox 安装的 `default` 系统中默认的 `/root` 目录仅仅挂载在内存中，关闭系统后数据会丢失，请千万不要用它来保存实验数据。可以使用另外的目录来存放，比如 `/mnt/sda1`，它是在 Virtualbox 上外挂的一个虚拟磁盘镜像文件，默认有 17.9 G，足够存放常见的实验环境。
+
+### 工作目录
+
+再次提醒，在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
+
+   $ cd ~/Documents
+
+但是如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
+
+   $ cd /mnt/sda1
+
 ### 下载
 
     $ git clone https://github.com/tinyclub/cloud-lab.git

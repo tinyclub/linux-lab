@@ -96,6 +96,8 @@ Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使
     $ ifconfig eth1 | grep 'inet addr' | tr -s ' ' | tr ':' ' ' | cut -d' ' -f4
     192.168.99.100
 
+如果是自己通过 Virtualbox 安装的 Linux 系统，即使有桌面，也想在外部系统访问时，则可以通过设置 'Network -> Adapter2 -> Host-only Adapter' 来添加一个 eth1 网口设备。
+
 ### 免 root 使用 Docker
 
 安装完 docker 后如果想免 `sudo` 使用 Cloud Lab，请务必把用户加入到 docker 用户组并重启系统。

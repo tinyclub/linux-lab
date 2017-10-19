@@ -85,6 +85,13 @@ tags:
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
     $ service docker restart
 
+如果使用 Docker Toolbox，由于安装的默认 `default` 系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，然后在外部系统访问。
+
+    $ ifconfig eth1 | grep 'inet addr' | tr -s ' ' | tr ':' ' ' | cut -d' ' -f4
+    192.168.99.100
+
+如果是自己通过 Virtualbox 安装的 Linux 系统，即使有桌面，也想在外部系统访问时，则可以通过设置 'Network -> Adapter2 -> Host-only Adapter' 来添加一个 eth1 网口设备。
+
 ### 下载
 
     $ git clone https://github.com/tinyclub/cloud-lab.git

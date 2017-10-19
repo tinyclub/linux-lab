@@ -102,6 +102,35 @@ Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使
 
     $ sudo usermod -aG docker $USER
 
+### 免密运行 Lab
+
+运行 Lab 过程中，部分操作需要 root 权限，如果想免密使用，可以配置下 sudo。如果配置过程中出错，可以用 `pkexec visudo` 补救。
+
+    $ sudo -s
+    $ echo "$SUDO_USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$SUDO_USER
+
+### 提升镜像下载速度
+
+由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
+
+    $ grep registry-mirror /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
+    $ service docker restart
+
+### 避免网络地址冲突
+
+如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
+
+    $ grep bip /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
+    $ service docker restart
+
+如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
+
+    $ grep dockerd /lib/systemd/system/docker.service
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
+    $ service docker restart
+
 ## 实验目录
 
 在 Mac 系统上，请先启动 Virtualbox 上 default 系统，并进入 `/mnt/sda1` 目录下，Windows 应该类似。

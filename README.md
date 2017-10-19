@@ -49,6 +49,16 @@ If the above changes not work, try something as following:
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
     $ service docker restart
 
+## Choose a working directory
+
+If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
+
+    $ cd /mnt/sda1
+
+For Linux or Mac OSX, please simply choose one directory in `~/Downloads` or `~/Documents`.
+
+    $ cd ~/Documents
+
 ## Download the lab
 
 Use Ubuntu system as an example:

@@ -1287,7 +1287,7 @@ b: boot
 
 # Debug
 # Xterm: lxterminal, terminator
-XTERM ?= lxterminal
+XTERM ?= $(shell echo `tools/xterm.sh lxterminal`)
 VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
 GDB_CMD ?= $(CCPRE)gdb --quiet $(VMLINUX)
 XTERM_CMD ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"

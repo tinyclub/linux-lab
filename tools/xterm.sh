@@ -5,6 +5,7 @@
 
 # Default setting
 TERM_MATCH='term'
+THIS_SCRIPT=`basename $0`
 DEPTH=${2:-5}
 
 # Functions
@@ -17,7 +18,7 @@ pid=`ppid`
 for i in `seq 1 $DEPTH`
 do
     _XTERM=`pcmd $pid`
-    echo $_XTERM | grep -v grep | grep -q $TERM_MATCH
+    echo $_XTERM | grep -v grep | grep -v $THIS_SCRIPT | grep -q $TERM_MATCH
     [ $? -eq 0 ] && found=1 && break
     pid=`ppid $pid`
     depth=$i

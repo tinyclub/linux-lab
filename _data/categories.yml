@@ -337,6 +337,8 @@
       categories:
         - name: GPL
     - name: 技术动态
+      categories:
+        - name: LWN
     - name: 行业动向
     - name: 行业标准
       categories:

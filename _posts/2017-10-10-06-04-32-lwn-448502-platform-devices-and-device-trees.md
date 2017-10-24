@@ -7,7 +7,7 @@ group: translation
 permalink: /lwn-448502-platform-devices-and-device-trees/
 description: "LWN 文章翻译，平台设备和设备树"
 category:
-  - 设备驱动
+  - 设备树
   - LWN
 tags:
   - Linux

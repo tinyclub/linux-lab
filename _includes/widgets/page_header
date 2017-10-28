@@ -9,7 +9,7 @@
     {% assign post_date = page.update %}
     {%endif %}
   {% endif %}
-  <span>由 <a onclick="common_click('#author-box-wrap')" id="author" class="author" href="#" title="点击 关注/联系/赞助 {% if page.author == 'admin' %}管理员{%else%}作者{%endif%}">{{ page.author }}</a> 创建{%if post_date%}于 {{ post_date | date: "%Y/%m/%d" }}{%endif%} </span>
+  <span>由 <a onclick="common_click('#author-box-wrap-page')" id="author" class="author" title="点击 关注/联系/赞助 {% if page.author == 'admin' %}管理员{%else%}作者{%endif%}">{{ page.author }}</a> 创建{%if post_date%}于 {{ post_date | date: "%Y/%m/%d" }}{%endif%} </span>
   </div>
  {% endif %}
  {% if page.comments != false %}
@@ -27,7 +27,7 @@
 {% endif %}
 
 {% if page.author %}
-<div id="author-box-wrap" class="author-box-wrap">
+<div id="author-box-wrap-page" class="author-box-wrap">
    {% assign author_box_id = "page_header" %}
    {% assign author_box_ref = 1 %}
    {% include widgets/author_box %}

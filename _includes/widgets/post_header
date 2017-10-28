@@ -1,6 +1,6 @@
 <div class="post-extra">
   <div class="pull-left">
-    <span><a onclick="common_click('#author-box-wrap')" id="author" class="author" href="#" title="点击 关注/联系/赞助 作者">{{ page.author }}</a> 创作于 {{ page.date | date: "%Y/%m/%d" }} </span>
+    <span><a onclick="common_click('#author-box-wrap-header')" id="author" class="author" title="点击 关注/联系/赞助 作者">{{ page.author }}</a> 创作于 {{ page.date | date: "%Y/%m/%d" }} </span>
   </div>
   <div class="pull-right">
     <span><a href="#comments" style="text-decoration:none;" title="评论或分享本文">
@@ -12,7 +12,7 @@
     </span>
   </div>
 </div>
-<div id="author-box-wrap" class="author-box-wrap">
+<div id="author-box-wrap-header" class="author-box-wrap">
    {% assign author_box_id = "post_header" %}
    {% assign author_box_ref = 1 %}
    {% include widgets/author_box %}

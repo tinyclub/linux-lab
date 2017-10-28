@@ -25,9 +25,14 @@
   {% assign money = "" %}
 
   {% if contact.name == "sponsor" and author['sponsor'] %}
+  {% assign url_base = author[url_base] %}
   {% capture tool %}{{ url_base | split: "-" | first }}{% endcapture %}
   {% capture tool %}用{{ site.data.paytools[tool] }}扫码{% endcapture %}
-  {% capture money %}{{ who }} {{ url_base | split: "-" | last }} ￥{% endcapture %}
+  {% assign pay_info = url_base | split: "-" %}
+  {% if pay_info[3] %}
+    {% capture money_info %}￥{{pay_info[3]}}元{% endcapture %}
+  {% endif %}
+  {% capture money %}{{ who }}{{ money_info }}{% endcapture %}
   {% endif %}
 
   {% if contact.name == "wechat" or contact.name == "weibo" %}

@@ -1,13 +1,39 @@
+{% if author_name == null or author_name == empty %}
+{% capture author_name %}{% if page.author %}{{ page.author }}{% else %}admin{% endif %}{% endcapture %}
+{% endif %}
+
+{% assign author = site.data.people[author_name] %}
+{% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
+
+{% if author['wechat-pay'] == null or author['wechat-pay'] == empty %} {% assign author = site.data.people["admin"] %} {% endif %}
+
+{% assign wechat_pay = author['wechat-pay'] %}
+{% assign wechat_pay_info = wechat_pay | split: "-" %}
+{% if wechat_pay_info[3] %}
+  {% capture wechat_pay_money %}￥{{ wechat_pay_info[3] }}元{% endcapture %}
+{% endif %}
+
+{% if author['ali-pay'] == null or author['ali-pay'] == empty %} {% assign author = site.data.people["admin"] %} {% endif %}
+
+{% assign ali_pay = author['ali-pay'] %}
+{% assign ali_pay_info = ali_pay | split: "-" %}
+{% if ali_pay_info[3] %}
+  {% capture ali_pay_money %}￥{{ ali_pay_info[3] }}元{% endcapture %}
+{% endif %}
+
+{% assign author = null %}
+{% assign author_name = null %}
+
 <table id='sponsor'>
-<tr><td style="text-align:center;">支付宝打赏￥9.68</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏￥9.68</td></tr>
+<tr><td style="text-align:center;">支付宝打赏{{ ali_pay_money }}</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏{{ wechat_pay_money }}</td></tr>
 <tr>
   <td style="text-align:center;">
-    <img src='/images/sponsor/alipay-admin-9.68.jpg' width='110px' />
+    <img src='/images/sponsor/{{ ali_pay }}.jpg' width='110px' />
   </td>
   <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>泰晓原创，扫码助力！
   </td>
   <td style="text-align:center;">
-    <img src='/images/sponsor/weixin-pay-admin-9.68.jpg' width='110px' />
+    <img src='/images/sponsor/{{ wechat_pay }}.jpg' width='110px' />
   </td>
 </tr>
 </table>

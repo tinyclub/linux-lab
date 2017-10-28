@@ -21,7 +21,7 @@ tags:
 
 > The [first part](https://lwn.net/Articles/448499/) of this pair of articles described the kernel's mechanism for dealing with non-discoverable devices: platform devices. The platform device scheme has a long history and is heavily used, but it has some disadvantages, the biggest of which is the need to instantiate these devices in code. There are alternatives coming into play, though; this article will describe how platform devices interact with the device tree mechanism.
 
-[本系列文章的上篇](https://lwn.net/Articles/448499/)介绍了内核处理那些不能自动枚举的硬件(译者注，即平台设备)的方法。平台设备机制已经存在了很长一段时间并且被广泛应用，但该机制有一些缺点，其中最大的问题就是该方法要求采用硬编码的方式实例化硬件设备。然而现在情况有了一点变化，本文将继续介绍一种新的机制即采用设备树是如何解决平台设备问题的。
+[本系列文章的上篇](/lwn-448499-platform-device-api)介绍了内核处理那些不能自动枚举的硬件(译者注，即平台设备)的方法。平台设备机制已经存在了很长一段时间并且被广泛应用，但该机制有一些缺点，其中最大的问题就是该方法要求采用硬编码的方式实例化硬件设备。然而现在情况有了一点变化，本文将继续介绍一种新的机制即采用设备树是如何解决平台设备问题的。
 
 > The current platform device mechanism is relatively easy to use for a developer trying to bring up Linux on a new system. It's just a matter of creating the descriptions for the devices present on that system and registering all of the devices at boot time. Unfortunately, this approach leads to the proliferation of "board files," each of which describes a single type of computer. Kernels are typically built around a single board file and cannot boot on any other type of system. Board files sort of worked when there were relatively small numbers of embedded system types to deal with. Now Linux-based embedded systems are everywhere, architectures which have typically depended on board files (ARM, in particular) are finding their way into more types of systems, and the whole scheme looks poised to collapse under its own weight.
 

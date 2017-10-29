@@ -76,7 +76,7 @@
   {% endif %}
 
   {% if url_base %}
-    {% capture url %}href="#" target="_blank"{% endcapture %}
+    {% assign url = "" %}
     {% if contact.name != "wechat" and contact.name != "sponsor" and contact.name != "info" %}
       {% assign raw_url = contact.url | append: url_base %}
       {% capture url %}href="{{ raw_url }}" target="_blank"{% endcapture %}

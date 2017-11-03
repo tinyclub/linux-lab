@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 #
 # edit -- edit the latest post ot the specified one/ones
 #
 
 if [ -n "$1" ]; then
-	ls _posts/*$1* | xargs -i grep "^title:" {} | cut -d':' -f2- | cat -n
-	total=`ls _posts/*$1* | wc -l`
+	ls _posts/*$1* | xargs -I{} grep "^title:" {} | cut -d':' -f2- | cat -n
+	total=`ls _posts/*$1* | wc -l | tr -d ' '`
         if [ $total -gt 1 ]; then
 		read -p "Select(1~$total): " post
 		if [ $post -le $total -a $post -ge 1 ]; then

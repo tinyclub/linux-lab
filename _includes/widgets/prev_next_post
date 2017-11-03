@@ -4,13 +4,13 @@
    {% if page.previous %}
    <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}"><long_prev_next>&larr; {{ page.previous.title | truncate: title_length, '...'  }}</long_prev_next><short_prev_next>&larr; 上一页</short_prev_next></a></li>
    {% else %}
-   <li class="prev disabled"><a>&larr; Previous</a></li>
+   <li class="prev disabled"><a>&larr; 上一页</a></li>
    {% endif %}
    <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">所有文章</a></li>
    {% if page.next %}
    <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}"><long_prev_next>{{ page.next.title | truncate: title_length '...' }} &rarr;</long_prev_next><short_prev_next>下一页 &rarr;</short_prev_next></a></li>
    {% else %}
-   <li class="next disabled"><a>Next &rarr;</a>
+   <li class="next disabled"><a>下一页 &rarr;</a>
    {% endif %}
   </ul>
 </div>

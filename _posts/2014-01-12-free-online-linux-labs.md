@@ -29,7 +29,7 @@ categories:
   * [armv7][11]: An ARM emulator written in JavaScript
 
 2. 其他
-  * [泰晓实验云台](http://tinylab.cloud:6080)
+  * [泰晓实验云台](http://tinylab.cloud:6080/labs/)
   * [Linux 实验楼](https://www.shiyanlou.com/)
   * [Linuxzoo: Learn Linux from the safety of your chair using a remote private linux machine with root access][4]
 

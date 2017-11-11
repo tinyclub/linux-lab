@@ -19,7 +19,7 @@ tags:
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考[wiki LWN](https://en.wikipedia.org/wiki/LWN.net)。
 
-- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index](https://lwn.net/Kernel/Index/)，其中文翻译成果汇总在 [LWN 内核文章中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index](https://lwn.net/Kernel/Index/)，其中文翻译成果汇总在 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
 - 本活动本着 “自愿参与，开放共享” 的原则进行。所有译文提交给 [泰晓科技](http://www.tinylab.org/) 公开发布后，均遵循 [CC BY-NC-ND 4.0 协议](http://creativecommons.org/licenses/by-nc-nd/4.0/) 许可。
 
@@ -98,7 +98,7 @@ tags:
 
 - LWN 的内核文章原文汇总在 [Kernel index](https://lwn.net/Kernel/Index/)
 
-- 已经翻译完毕并正式发布的文章列表请参考 [LWN 内核文章中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
 - 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"审核中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
 

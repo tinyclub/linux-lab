@@ -56,16 +56,24 @@ tags:
 
 本活动欢迎广大爱好 Linux 的朋友一起参与，为保证活动的有序和质量，特制订如下流程：
 
-- Step 1: 有意向参与的朋友向 [unicornx][102](Wechat: polardotw) 申请加入微信群 "LWN 翻译团队"，方便沟通交流。
+- Step 1: 加入翻译团队
 
-- Step 2: 我们的工作基于 Github 进行，请首先注册 [github](https://github.com) 帐号，然后 [Fork TinyLab.org](https://github.com/tinyclub/tinylab.org#fork-destination-box) .
+  [unicornx][102] 为该项目的发起人，有意向参与的朋友请先加他微信（polardotw），然后再申请加入微信群 "LWN 翻译团队"，方便沟通交流。
 
-- Step 3: 克隆 Fork 后的代码仓库到本地并添加 upstream，假设你的帐号是 `jack`
+- Step 2: Fork 主仓库
+
+  我们的工作基于 Github 进行，请首先注册 [github](https://github.com) 帐号，然后 [Fork TinyLab.org](https://github.com/tinyclub/tinylab.org#fork-destination-box) .
+
+- Step 3: 下载并配置仓库
+
+  克隆 Fork 后的代码仓库到本地并添加主仓库地址为 upstream，假设你的帐号是 `jack`
 
 		$ git clone https://github.com/jack/tinylab.org.git
 		$ git remote add upstream https://github.com/tinyclub/tinylab.org.git
 
-- Step 4: 创建开发分支进行翻译
+- Step 4: 创建开发分支
+
+  创建开发分支进行翻译：
 
 		$ git checkout master
 		$ git checkout -b lwn-<XXXXXX>
@@ -77,6 +85,7 @@ tags:
   - 开发分支的命名规则遵循格式 `lwn-<XXXXXX>`，其中 `XXXXXX` 是文章在 [LWN.net](https://lwn.net/) 上的编号。例子：`lwn-222860`。
 
     - 每次提交至少包含两个文件的修改，一篇是新增的译文，一篇是对主索引的修改。
+
     - 对于新增的译文，文件放在 `_posts` 目录下。
 
       - 文件的命名格式如下：`YYYY-MM-DD-HH-MM-SS-lwn-XXXXXX-<article title>.md`，其中 `article title` 是原文的标题，中间的空格用 `-` 代替，具体例子参考 `_posts/2017-10-10-06-04-32-lwn-448502-platform-devices-and-device-trees.md` 。可以用 `tools/post` 创建模板文件。
@@ -85,7 +94,9 @@ tags:
 
   - 新增译文后需要修改主索引文件 `_posts/2017-10-23-22-55-32-lwn-kernel-index.md`，具体索引的格式直接参考 [Kernel index](https://lwn.net/Kernel/Index/)，如果是新增的章节则增加章节后再添加文章链接，如果所属章节已经存在则直接添加文章链接。文章链接需要修改指向我们发布的链接。注意 [Kernel index](https://lwn.net/Kernel/Index/) 中同一篇文章可能划归多个章节分类下，我们也同样遵循该原则。
 
-- Step 6: 在开发分支上工作 ( 假设你的开发分支为 lwn-123456 )：
+- Step 5: 本地翻译与修改
+
+  在开发分支上工作 ( 假设你的开发分支为 lwn-123456 )：
 
 		$ git checkout lwn-123456
 
@@ -93,11 +104,12 @@ tags:
 
 		$ git add .
 		$ git commit -s -m "commit title"
-		$ git push origin lwn-123456
 
-  **注意：我们要求在每次 commit 的时候务必添加注释**
+  **注意：我们要求在每次 commit 的时候务必添加注释和说明**
 
-- Step 7: 准备提交，注意提交前务必和 tinylab 的 upstream 保持同步，具体操作如下( 假设本地开发分支为 lwn-123456 )：
+- Step 6: 提交到自己仓库
+
+  准备提交，注意提交前务必和 tinylab 的 upstream 保持同步，具体操作如下( 假设本地开发分支为 lwn-123456 )：
 
 		$ git fetch --all
 		$ git rebase --onto upstream/master --root
@@ -105,15 +117,15 @@ tags:
 
   如果 merge 过程中有冲突则自行解决后继续，解决冲突后记得继续执行 `git rebase --continue` 确保所有变更都已合入。
 
-- Step 8: 提交 `pull request`
+- Step 7: 发起 `pull request`
 
-  进入自己的 github 首页，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，可以直接提交到 master 分支。
+  进入自己的 github 仓库页面，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，可以直接指向远程 master 分支。
 
   提交后会安排交叉审阅，审阅工作通过 github 在线完成。
 
   如果审阅过程中有修改请修改人员注意每次修改后再提请审阅时和 upstream 时刻保持同步。
 
-- Step 9: 管理员 `Merge pull request`
+- Step 8: 管理员 `Merge pull request`
 
   如果文章无误，管理员就会直接把提交合并到主线。
 

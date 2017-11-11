@@ -2,7 +2,7 @@
 layout: post
 author: 'Wang Chen'
 title: "LWN 222860: 资源管理编程接口"
-album: lwn
+album: 'LWN 中文翻译'
 group: translation
 permalink: /lwn-222860-the-managed-resource-api/
 description: "LWN 文章翻译，资源管理编程接口"

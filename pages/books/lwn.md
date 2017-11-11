@@ -3,7 +3,7 @@ title: LWN 中文翻译
 tagline: LWN.net 中文翻译计划
 author: Wang Chen
 layout: page
-album: lwn
+album: 'LWN 中文翻译'
 group: translation
 update: 2017-11-10
 permalink: /lwn/
@@ -112,8 +112,7 @@ tags:
 | [tacinight][100] | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | [tacinight][100] | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
 | [linuxkoala][101]| 翻译中 | [CFS group scheduling](https://lwn.net/Articles/240474/) |
-| [linuxkoala][101]| 翻译中 [ [CFS bandwidth control](https://lwn.net/Articles/428230/) |
-| [unicornx][102]  | 审核中 | [The managed resource API](https://lwn.net/Articles/222860/) |
+| [linuxkoala][101]| 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
 | [unicornx][102]  | 翻译中 | [The pin control subsystem](https://lwn.net/Articles/468759/) |
 
 [100]: https://github.com/tacinight

@@ -2,7 +2,7 @@
 layout: post
 author: 'Wang Chen'
 title: "LWN 448502: 平台设备和设备树"
-album: lwn
+album: 'LWN 中文翻译'
 group: translation
 permalink: /lwn-448502-platform-devices-and-device-trees/
 description: "LWN 文章翻译，平台设备和设备树"

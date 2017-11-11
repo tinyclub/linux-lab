@@ -25,6 +25,33 @@ tags:
 
 - 所有译文提交给 [泰晓科技](http://www.tinylab.org/) 公开发布后，[泰晓科技](http://www.tinylab.org/) 保留继续修改并完善的权利。在尽可能征得原翻译人员同意的前提下，欢迎其他读者提交补丁继续完善原译文。
 
+## 翻译计划
+
+由于是集体活动，为尽量避免冲突，也为了协调大家的兴趣爱好，特别将本活动的翻译计划在此公布，方便有兴趣参与的人员了解活动的进展和动向。
+
+- LWN 的内核文章原文汇总在 [Kernel index](https://lwn.net/Kernel/Index/)
+
+- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+
+- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"审核中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
+
+**计划将随时保持更新，欢迎大家关注**：
+
+| 认领人(Github id)| 状态   | 文章  |
+|------------------|--------|-------|
+| [tacinight][100] | 翻译中 | [The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/) |
+| [tacinight][100] | 翻译中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
+| [tacinight][100] | 翻译中 | [Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
+| [tacinight][100] | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
+| [tacinight][100] | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
+| [linuxkoala][101]| 翻译中 | [CFS group scheduling](https://lwn.net/Articles/240474/) |
+| [linuxkoala][101]| 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
+| [unicornx][102]  | 翻译中 | [The pin control subsystem](https://lwn.net/Articles/468759/) |
+
+[100]: https://github.com/tacinight
+[101]: https://github.com/linuxkoala
+[102]: https://github.com/unicornx
+
 ## 参与流程
 
 本活动欢迎广大爱好 Linux 的朋友一起参与，为保证活动的有序和质量，特制订如下流程：
@@ -91,30 +118,3 @@ tags:
   如果文章无误，管理员就会直接把提交合并到主线。
 
   Congratulations! 至此您的文章将在 [泰晓科技](http://www.tinylab.org/) 上发布。
-
-## 翻译计划
-
-由于是集体活动，为尽量避免冲突，也为了协调大家的兴趣爱好，特别将本活动的翻译计划在此公布，方便有兴趣参与的人员了解活动的进展和动向。
-
-- LWN 的内核文章原文汇总在 [Kernel index](https://lwn.net/Kernel/Index/)
-
-- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
-
-- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"审核中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
-
-**计划将随时保持更新，欢迎大家关注**：
-
-| 认领人(Github id)| 状态   | 文章  |
-|------------------|--------|-------|
-| [tacinight][100] | 翻译中 | [The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/) |
-| [tacinight][100] | 翻译中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
-| [tacinight][100] | 翻译中 | [Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
-| [tacinight][100] | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
-| [tacinight][100] | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
-| [linuxkoala][101]| 翻译中 | [CFS group scheduling](https://lwn.net/Articles/240474/) |
-| [linuxkoala][101]| 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
-| [unicornx][102]  | 翻译中 | [The pin control subsystem](https://lwn.net/Articles/468759/) |
-
-[100]: https://github.com/tacinight
-[101]: https://github.com/linuxkoala
-[102]: https://github.com/unicornx

@@ -49,6 +49,10 @@ If the above changes not work, try something as following:
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
     $ service docker restart
 
+For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
+
+    $ sudo apt-get install linux-generic-lts-trusty
+
 ## Choose a working directory
 
 If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
@@ -77,10 +81,6 @@ Launch the lab and login with the user and password printed in the console:
 Re-login the lab via web browser:
 
     $ tools/docker/vnc linux-lab
-
-For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
-
-    $ sudo apt-get install linux-generic-lts-trusty
 
 ## Quickstart: Boot a board
 

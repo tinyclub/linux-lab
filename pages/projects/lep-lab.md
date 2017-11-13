@@ -115,12 +115,23 @@ After login, Open 'Lep Lab' in the desktop and it will enter into the working di
 
 Change the server to 'localhost' instead of the default 'www.rmlink.cn'
 
-### Run everything in one command
+### More
 
-Open 'Lep Viewer' or run the following command in terminal:
+Basic usage:
 
-    $ make view
+    $ make help
+    Usage:
 
-It kills the running lepd, lepv and restart a new one, to specify the architecture:
+    init  -- download or update lepd and lepv (1)
+    _lepd -- compile and restart lepd (2)
+    _lepv -- restart the lepv backend (3)
+    view  -- start the lepv frontend (4)
+    all   -- do (1) (2) (3) one by one
 
-    $ LEPD_ARCH=arm make view
+Build and restart lepd for ARM:
+
+    $ make _lepd ARCH=arm
+
+Monitor lepd server: localhost:
+
+    $ make view SERVER=localhost

@@ -13,111 +13,105 @@ tags:
   - LEP
 ---
 
-## Introduction
+## 简介
 
-LEP is an open-sourced all-in-one toolbox for Linux/Android performance profiling & visualization.
+LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
-* [Homepage](http://www.linuxep.com/)
+* [首页](http://www.linuxep.com/)
 * [Github](https://github.com/linuxep/)
 
-To easier the learning and development of the LEP itself, this lab is added as a plugin of [Cloud Lab](http://tinylab.org/cloud-lab).
+为了降低 LEP 的学习和开发门槛，我们为 LEP 开发了 LEP Lab，它可以作为 Cloud Lab 的插件使用。
 
-The following sections introduce the using of LEP with Cloud Lab.
+下面简单介绍一下如何通过使用 LEP Lab。
 
-## Install Docker
+## 安装 Docker
 
-Docker is required by Lep Lab, please install it at first:
+使用 LEP Lab 之前，需要安装 Docker：
 
 * Linux and Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 * Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
 
-Notes:
+注意事项：
 
-In order to run docker without password, please make sure your user is added in the docker group:
+如果想免密使用，可以把用户加入 docker 用户组：
 
     $ sudo usermod -aG docker $USER
 
-In order to speedup docker images downloading, please configure a local docker mirror in `/etc/default/docker`, for example:
+如果想更快下载 Docker 镜像，换个国内的源吧：
 
     $ grep registry-mirror /etc/default/docker
     DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
     $ service docker restart
 
-In order to avoid network ip address conflict, please try following changes and restart docker:
+如果 Docker 默认网络跟局域网地址冲突，可进行修改：
 
     $ grep bip /etc/default/docker
     DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
     $ service docker restart
 
-If the above changes not work, try something as following:
+如果上述修改不生效，可以做如下修改：
 
     $ grep dockerd /lib/systemd/system/docker.service
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
     $ service docker restart
 
-For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
+对于 12.04，更新内核后才能使用 Docker。
 
     $ sudo apt-get install linux-generic-lts-trusty
 
-## Choose a working directory
+## 选择一个工作目录
 
-If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
+如果通过 Docker Toolbox 安装的 Docker，请使用 Virtualbox 上的 default 系统中的 `/mnt/sda1` 作为工作目录，否则，掉电后数据会丢失，因为其他目录是只读的 iso 文件，挂载在内存中，关机后无法回写。
 
     $ cd /mnt/sda1
 
-For Linux or Mac OSX, please simply choose one directory in `~/Downloads` or `~/Documents`.
+对于 Linux 或者 Mac OSX，可以使用 `~/Downloads` 或者 `~/Documents`。
 
     $ cd ~/Documents
 
-## Download the lab
+## 下载 LEP Lab
 
-Use Ubuntu system as an example:
-
-Download cloud lab framework, pull images and checkout lep-lab repository:
+以 Ubuntu 为例，首先下载 Cloud Lab 管理框架，之后，下载相关环境的镜像和源代码：
 
     $ git clone https://github.com/tinyclub/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose lep-lab
 
-## Run and login the lab
+## 运行并登陆
 
-Launch the lab and login with the user and password printed in the console:
+直接运行并自动登陆：
 
     $ tools/docker/run lep-lab
 
-Re-login the lab via web browser:
+退出以后下次可直接登陆：
 
     $ tools/docker/vnc lep-lab
 
-## Use the lab
+## 使用 LEP Lab
 
-After login, Open 'Lep Lab' in the desktop and it will enter into the working directory: `/labs/lep-lab/`,
+登陆以后，点击桌面的 'LEP Lab' 快捷键，可进入该开发环境的主目录。
 
-### Update the source code
+### 下载源码
 
     $ make init
 
-### Compile and run lepd
+### 编译和运行 lepd
 
     $ cd lepd
-    $ make ARCH=x86      // ARCH=arm
+    $ make ARCH=x86      // ARCH 现在只支持 x86 和 arm
     $ ./lepd
 
-### Run lepv web server
+### 运行 lepv 后端
 
     $ cd lepv/app
-    $ python3 ./run.py & // Must use python3 instead of python2, to avoid unicode encoding error
+    $ python3 ./run.py & // 请务必使用 python3，python2 会有编码问题
 
-### Open lepv web client
+### 打开 lepv 前端
 
     $ chromium-browser http://localhost:8889
 
-### Analyze local lepd data
+### 更多用法
 
-Change the server to 'localhost' instead of the default 'www.rmlink.cn'
-
-### More
-
-Basic usage:
+获取帮助：
 
     $ make help
     Usage:
@@ -128,10 +122,10 @@ Basic usage:
     view  -- start the lepv frontend (4)
     all   -- do (1) (2) (3) one by one
 
-Build and restart lepd for ARM:
+重新编译并启动 ARM 版本的 lepd（通过 `qemu-arm` 直接在 X86 上运行）：
 
     $ make _lepd ARCH=arm
 
-Monitor lepd server: localhost:
+默认接入的 lepd 服务地址是 `www.rmlink.cn`，可通过如下方式自动切换为本地 lepd 服务：
 
     $ make view SERVER=localhost

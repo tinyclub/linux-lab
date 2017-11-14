@@ -78,7 +78,7 @@ categories:
 登录后，无须再额外安装任何工具，因为刚才在构建 Docker 容器时就已经默认安装好。所以用法与 [五分钟内搭建 Linux 0.11 的实验环境][2] 稍有差异。基本步骤如下：
 
   * 登录后，通过左下角的启动菜单，找到 `Accessories`，再打开控制台 `LXTerminal`
-  * 进入实验环境所属目录：`cd /linux-0.11-lab`
+  * 进入实验环境所属目录：`cd /labs/linux-0.11-lab`
   * 进行各种开发与调试动作
       * 例如：`make start-hd`
       * 也可切换 bochs 启动，例如：`make switch; make start-fd`

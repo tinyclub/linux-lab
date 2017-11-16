@@ -1,7 +1,7 @@
 ---
 title: 升级 Ubuntu 后 VirtualBox 报错
 tagline: VT-x is disabled in the BIOS
-author: 泰晓科技
+author: Wu Zhangjin
 layout: post
 permalink: /virtualbox-error-after-upgrading-ubuntu-vt-x-disabled-in-bios/
 tags:

@@ -10,15 +10,15 @@ comments: false
 ---
 {% include JB/setup %}
 
-{% assign posts_by_album = site.posts | group_by:"album" | sort:"album" %}
+{% assign posts_group_by_album = site.posts | group_by:"album" %}
+{% assign posts_sort_by_album = posts_group_by_album | sort:"album" %}
 
 {% assign x_label = '专辑' %}
 {% assign y_label = '数目' %}
 
-{% assign list = nil %}
 {% assign total = 0 %}
 
-{% for album in posts_by_album %}
+{% for album in posts_group_by_album %}
   {% if album.name == empty %}
     {% continue %}
   {% endif %}
@@ -34,12 +34,6 @@ comments: false
     {% endif %}
   {% endfor %}
 
-   {% assign list0 = album.items.size | append:',' | append: album.name %}
-   {% if list == nil %}
-     {% assign list = list0 %}
-   {% else %}
-     {% assign list = list | append:';' | append: list0 %}
-   {% endif %}
    {% assign total = total | plus: album.items.size %}
 
   <h3 id="{{ album.name | downcase | replace:' ','-' | replace:'/','-' }}-ref">{% if album_url != "" %}<a href="{{ album_url }}" title="该专辑已发布为GitBook，点击查看！">{{ album.name}}</a>{% else %}{{ album.name }}{% endif %} <sup>({{ album.items.size }})</sup></h3>
@@ -49,6 +43,9 @@ comments: false
     {% endfor %}
   </ul>
 {% endfor %}
+
+{% assign list = posts_group_by_album | sort:'size' | reverse %}
+{% assign empty_item = "其他" %}
 
 <h3>{{ x_label}}{{ y_label}}统计 <sup>({{ total }})</sup></h3>
 {% include widgets/svg_statistic %}

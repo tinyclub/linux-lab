@@ -1,7 +1,5 @@
 {% if list != nil %}
 
-{% assign list = list | split:';' %}
-
 {% assign max = 0 %}
 {% for item in list %}
   {% assign i = item | split:',' %}

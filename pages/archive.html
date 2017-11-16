@@ -42,5 +42,7 @@ comments: false
    {% assign oldmonth = month %}
 {% endfor %}
 
+{% assign list = list | split:';' %}
+
 <h2>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h2>
 {% include widgets/svg_statistic %}

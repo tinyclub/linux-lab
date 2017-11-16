@@ -38,7 +38,7 @@ comments: false
 </ul>
 {% endfor %}
 
-{% assign list = list | split:';' | sort | reverse | join:';' %}
+{% assign list = list | split:';' | sort | reverse %}
 
 <h3>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h3>
 {% include widgets/svg_statistic %}

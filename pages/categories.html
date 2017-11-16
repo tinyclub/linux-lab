@@ -151,7 +151,7 @@ comments: false
 
 {% endfor %}
 
-{% assign list = list | split:';' | sort | reverse | join:';' %}
+{% assign list = list | split:';' | sort | reverse %}
 
 <h2 id="{{x_label}}统计-ref">{{ x_label}}统计 <sup>({{ site.posts.size }})</sup></h2>
 {% include widgets/svg_statistic %}

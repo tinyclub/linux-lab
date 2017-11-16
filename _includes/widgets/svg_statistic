@@ -53,6 +53,9 @@
         {% assign i = item | split:',' %}
         {% assign title = i[1] %}
         {% assign size = i[0] | plus:0 %}
+        {% if size == 0 %}
+         {% continue %}
+        {% endif %}
       {% endif %}
       {% assign cur_x_step = x_step | times: forloop.index0 %}
       {% assign x_pos = x_base | plus:cur_x_step %}

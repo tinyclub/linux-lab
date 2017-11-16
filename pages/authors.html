@@ -8,23 +8,14 @@ comments: false
 ---
 {% include JB/setup %}
 
-{% assign posts_by_author = site.posts | group_by:"author" | sort:"author" %}
+{% assign posts_group_by_author = site.posts | group_by:"author" %}
+{% assign posts_sort_by_author = posts_group_by_author | sort:"name" %}
 
 {% assign x_label = '作者' %}
 {% assign y_label = '贡献' %}
 
-{% assign list = nil %}
-
-{% for post_author in posts_by_author %}
+{% for post_author in posts_sort_by_author %}
   {% assign author_name = post_author.name %}
-
-   {% assign list0 = post_author.items.size | append:',' | append: author_name %}
-   {% if list == nil %}
-     {% assign list = list0 %}
-   {% else %}
-     {% assign list = list | append:';' | append: list0 %}
-   {% endif %}
-
   {% assign post_author_name = post_author.name | replace:' ','-' %}
   <h3 id="{{ post_author_name | downcase | replace:' ','-' | replace:'/','-' }}-ref"><a id="author-{{post_author_name}}" title="点击查看作者详细信息">{{ post_author.name }}</a> <sup>({{ post_author.items.size }})</sup></h3>
 
@@ -55,7 +46,6 @@ comments: false
   </ul>
 {% endfor %}
 
-{% assign list = list | split:';' | join:';' %}
-
+{% assign list = posts_group_by_author | sort:"size" | reverse %}
 <h3>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h3>
 {% include widgets/svg_statistic %}

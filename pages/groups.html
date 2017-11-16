@@ -15,6 +15,7 @@ comments: false
 
 {% assign list = nil %}
 {% assign group_size = 0 %}
+{% assign item_max_length = 8 %}
 
 {% for group in posts_by_group %}
   {% if group.name == 'original' %}
@@ -27,12 +28,19 @@ comments: false
   {% if group.name == empty %}
     {% assign group_name = site.data.groups['original'] %}
     {% assign group_size = group.items.size | plus: group_size %}
-    {% assign list0 = group_size | append:',' | append: group_name %}
   {% else %}
     {% assign group_size = group.items.size %}
-    {% assign list0 = group.items.size | append:',' | append: group_name %}
   {% endif %}
 
+   {% assign item_size = group_size %}
+   {% assign item_length = item_size | append:'' | size %}
+   {% assign item_zeros = item_max_length | minus: item_length %}
+   {% assign prefix_zeros = '' %}
+   {% for i in (1..item_zeros) %}
+     {% assign prefix_zeros = prefix_zeros | append:'0' %}
+   {% endfor %}
+
+   {% assign list0 = prefix_zeros | append:item_size | append:',' | append: group_name %}
    {% if list == nil %}
      {% assign list = list0 %}
    {% else %}
@@ -47,6 +55,8 @@ comments: false
     {% endfor %}
   </ul>
 {% endfor %}
+
+{% assign list = list | split:';' | sort | reverse | join:';' %}
 
 <h3>{{ x_label}}统计 <sup>({{ site.posts.size }})</sup></h3>
 {% include widgets/svg_statistic %}

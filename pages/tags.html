@@ -12,10 +12,18 @@ comments: false
 {% assign y_label = '数目' %}
 
 {% assign list = nil %}
+{% assign item_max_length = 8 %}
 
 {% for tag in site.tags %}
 
-   {% assign list0 = tag[1].size | append:',' | append: tag[0] %}
+   {% assign item_size = tag[1].size %}
+   {% assign item_length = item_size | append:'' | size %}
+   {% assign item_zeros = item_max_length | minus: item_length %}
+   {% assign prefix_zeros = '' %}
+   {% for i in (1..item_zeros) %}
+     {% assign prefix_zeros = prefix_zeros | append:'0' %}
+   {% endfor %}
+   {% assign list0 = prefix_zeros | append: item_size | append:',' | append: tag[0] %}
    {% if list == nil %}
      {% assign list = list0 %}
    {% else %}

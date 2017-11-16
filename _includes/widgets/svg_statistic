@@ -54,6 +54,7 @@
         {% assign title = i[1] %}
         {% assign size = i[0] | plus:0 %}
         {% if size == 0 %}
+         {% assign x_base = x_base | minus: x_step %}
          {% continue %}
         {% endif %}
       {% endif %}

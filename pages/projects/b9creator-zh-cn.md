@@ -24,10 +24,6 @@ tags:
 ## B9Creator 官方
 
   * [官方首页][1]
-  * [文档][2]
-  * [FAQ][3]
-  * [软件下载][4]
-  * [源码下载][5]（包括硬件、固件和软件）
 
 ## B9Creator 中文支持
 
@@ -44,9 +40,5 @@ tags:
 
 
  [1]: http://b9creator.com/
- [2]: http://b9creator.com/documentation/
- [3]: http://b9creator.com/faq/
- [4]: http://b9creator.com/software/
- [5]: http://b9creator.com/source-files/
  [6]: https://github.com/tinyclub/b9creator-zh_cn
  [7]: /3d-printing-adding-chinese-support-for-open-source-b9creator-high-precision-printers/

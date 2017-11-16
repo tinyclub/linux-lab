@@ -99,17 +99,18 @@ comments: false
   {% endif %}
 {% endfor %}
 
-<h2 id="其他分类-ref">其他分类</h2>
+<h2 id="未经分类-ref">未经分类</h2>
 
 {% assign p_ctg_list = p_ctg_list | split:"," %}
 {% for category in site.categories %}
   {% assign name = category[0] %}
-  {% if p_ctg_list contains name %}
+  {% assign downcase_name = category[0] | downcase %}
+  {% if p_ctg_list contains downcase_name %}
     {% continue %}
   {% endif %}
 
   {% assign size = category[1].size %}
-  <h3 id="{{ name | downcase | replace:" ","-" | replace:"/","-" }}-ref">{{ name | join: "/" }} <sup>({{ size }})</sup></h3>
+  <h3 id="{{ downcase_name | replace:" ","-" | replace:"/","-" }}-ref">{{ name | join: "/" }} <sup>({{ size }})</sup></h3>
   <ul>
     {% assign pages_list = category[1] %}
     {% include JB/pages_list %}

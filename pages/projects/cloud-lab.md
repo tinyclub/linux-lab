@@ -413,7 +413,7 @@ Cloud Lab 支持自动录制实验过程。登陆进去之前，进行如下设�
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: http://tinylab.org/docker-qemu-linux-lab/
  [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
-[10]: http://tinylab.cloud:6080/
+[10]: http://tinylab.cloud:6080/labs/
 [11]: http://weidian.com/?userid=335178200
 [12]: http://tinylab.org/how-to-deploy-cloud-labs/
 [13]: http://tinylab.org/showdesk-record-and-share-your-desktop/

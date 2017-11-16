@@ -24,10 +24,14 @@ tags:
 
 有了这些脚本，学生就可以很方便地在当前开发主机上实验，从而免去了不必要的重启，也避免了烧坏自己主机的风险。
 
-这里为在线演示地址：
+## 在线演示
 
-* 命令行：<http://showterm.io/547ccaae139df14c3deec>。
-* 视频：<http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/>。
+* [命令行视频](http://showterm.io/547ccaae139df14c3deec)
+* [桌面演示视频](http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/)
+
+## 在线实验
+
+* [泰晓实验云台](http://tinylab.cloud:6080/labs/)
 
 ## 实验代码
 

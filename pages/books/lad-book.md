@@ -36,6 +36,8 @@ tags:
 
 要编译本书，请使用 [Markdown Lab](http://tinylab.org/markdown-lab)。
 
+可通过 [泰晓实验云台](http://tinylab.cloud:6080/labs) 在线体验 Markdown Lab。
+
 ## 纠错
 
 如有发现任何疑问，欢迎：

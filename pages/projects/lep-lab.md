@@ -19,6 +19,7 @@ LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
 * [首页](http://www.linuxep.com/)
 * [Github](https://github.com/linuxep/)
+* [在线实验](http://tinylab.cloud:6080/labs/)
 
 为了降低 LEP 的学习和开发门槛，我们为 LEP 开发了 LEP Lab，它可以作为 Cloud Lab 的插件使用。
 

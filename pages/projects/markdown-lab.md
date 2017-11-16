@@ -26,6 +26,7 @@ tags:
 该项目致力于快速构建一个基于 Docker 的 Markdown 文档编辑环境。
 
   * 使用文档：[README.md][2]
+  * 在线实验：<http://tinylab.cloud:6080/labs>
   * 在线演示：<http://showterm.io/1809186b57f904d51aeff>
   * 代码仓库：[https://github.com/tinyclub/markdown-lab.git][3]
   * 基本特性：

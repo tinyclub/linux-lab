@@ -45,6 +45,7 @@ comments: false
 {% endfor %}
 
 {% assign list = posts_group_by_album | sort:'size' | reverse %}
+{% assign list_type = 'dict' %}
 {% assign empty_item = "其他" %}
 
 <h3>{{ x_label}}{{ y_label}}统计 <sup>({{ total }})</sup></h3>

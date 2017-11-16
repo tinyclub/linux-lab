@@ -47,5 +47,7 @@ comments: false
 {% endfor %}
 
 {% assign list = posts_group_by_author | sort:"size" | reverse %}
+{% assign list_type = 'dict' %}
+
 <h3>{{ x_label}}{{ y_label}}统计 <sup>({{ site.posts.size }})</sup></h3>
 {% include widgets/svg_statistic %}

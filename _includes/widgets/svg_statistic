@@ -2,8 +2,12 @@
 
 {% assign max = 0 %}
 {% for item in list %}
-  {% assign i = item | split:',' %}
-  {% assign size = i[0] | plus: 0 %}
+  {% if list_type == 'dict' %}
+    {% assign size = item.size %}
+  {% else %}
+    {% assign i = item | split:',' %}
+    {% assign size = i[0] | plus: 0 %}
+  {% endif %}
   {% if size > max %}
     {% assign max = size %}
   {% endif %}
@@ -38,9 +42,18 @@
         {% break %}
       {% endif %}
       {% assign cnt = cnt | plus: 1 %}
-      {% assign i = item | split:',' %}
-      {% assign title = i[1] %}
-      {% assign size = i[0] | plus:0 %}
+      {% if list_type == 'dict' %}
+        {% if item.name == nil or item.name == empty %}
+          {% assign title = empty_item %}
+        {% else %}
+          {% assign title = item.name %}
+        {% endif %}
+        {% assign size = item.size %}
+      {% else %}
+        {% assign i = item | split:',' %}
+        {% assign title = i[1] %}
+        {% assign size = i[0] | plus:0 %}
+      {% endif %}
       {% assign cur_x_step = x_step | times: forloop.index0 %}
       {% assign x_pos = x_base | plus:cur_x_step %}
       {% assign x_offset = x_rect_step | divided_by: 2 %}
@@ -67,6 +80,8 @@
 </svg>
 
 {% assign list = nil %}
+{% assign list_type = nil %}
+{% assign empty_item = nil %}
 {% assign x_label = '' %}
 {% assign y_label = '' %}
 

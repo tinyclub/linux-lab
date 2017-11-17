@@ -12,13 +12,13 @@
 
   {% assign keywords = keywords | prepend:"pLACeHoldER," | replace: ",,,","," | replace: ",,","," | remove:'pLACeHoldER,' %}
 
-  {% if keywords %}
+  {% if keywords != empty %}
     <meta name="keywords" content="{{ keywords }}">
 
     {% capture description %}{% if page.description %}{{ page.description }}{% else %}{{ page.content | strip_html | remove:'>' | remove: '<' | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' |  strip | truncate:200 | xml_escape }}{% endif %}{% endcapture %}
-    {% if content %}
-     <meta name="description" content="{{ description }}"/>
-    {% endif %}
+    {% unless description contains '{% ' %}
+      <meta name="description" content="{{ description }}"/>
+    {% endunless %}
 
   {% endif %}
 

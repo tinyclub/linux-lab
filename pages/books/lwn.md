@@ -5,7 +5,7 @@ author: Wang Chen
 layout: page
 album: 'LWN 中文翻译'
 group: translation
-update: 2017-11-10
+update: 2017-11-20
 permalink: /lwn/
 description: 翻译 LWN.net 上大家感兴趣的文章。
 categories:
@@ -19,17 +19,17 @@ tags:
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考[wiki LWN](https://en.wikipedia.org/wiki/LWN.net)。
 
-- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index](https://lwn.net/Kernel/Index/)，其中文翻译成果汇总在 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index][2]，其中文翻译成果汇总在 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
-- 本活动本着 “自愿参与，开放共享” 的原则进行。所有译文提交给 [泰晓科技](http://www.tinylab.org/) 公开发布后，均遵循 [CC BY-NC-ND 4.0 协议](http://creativecommons.org/licenses/by-nc-nd/4.0/) 许可。
+- 本活动本着 “自愿参与，开放共享” 的原则进行。所有译文提交给 [泰晓科技][1] 公开发布后，均遵循 [CC BY-NC-ND 4.0 协议](http://creativecommons.org/licenses/by-nc-nd/4.0/) 许可。
 
-- 所有译文提交给 [泰晓科技](http://www.tinylab.org/) 公开发布后，[泰晓科技](http://www.tinylab.org/) 保留继续修改并完善的权利。在尽可能征得原翻译人员同意的前提下，欢迎其他读者提交补丁继续完善原译文。
+- 所有译文提交给 [泰晓科技][1] 公开发布后，[泰晓科技][1] 保留继续修改并完善的权利。在尽可能征得原翻译人员同意的前提下，欢迎其他读者提交补丁继续完善原译文。
 
 ## 翻译计划
 
 由于是集体活动，为尽量避免冲突，也为了协调大家的兴趣爱好，特别将本活动的翻译计划在此公布，方便有兴趣参与的人员了解活动的进展和动向。
 
-- LWN 的内核文章原文汇总在 [Kernel index](https://lwn.net/Kernel/Index/)
+- LWN 的内核文章原文汇总在 [Kernel index][2]
 
 - 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
@@ -39,14 +39,17 @@ tags:
 
 | 认领人(Github id)| 状态   | 文章  |
 |------------------|--------|-------|
-| [tacinight][100] | 翻译中 | [The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/) |
+| [tacinight][100] | 审核中 | [The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/) |
 | [tacinight][100] | 翻译中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
 | [tacinight][100] | 翻译中 | [Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
 | [tacinight][100] | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | [tacinight][100] | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
-| [linuxkoala][101]| 翻译中 | [CFS group scheduling](https://lwn.net/Articles/240474/) |
+| [linuxkoala][101]| 审核中 | [CFS group scheduling](https://lwn.net/Articles/240474/) |
 | [linuxkoala][101]| 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
 | [unicornx][102]  | 翻译中 | [The pin control subsystem](https://lwn.net/Articles/468759/) |
+| [unicornx][102]  | 翻译中 | [GPIO in the kernel: an introduction](https://lwn.net/Articles/532714/) |
+| [unicornx][102]  | 翻译中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
+| [unicornx][102]  | 翻译中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
 
 [100]: https://github.com/tacinight
 [101]: https://github.com/linuxkoala
@@ -92,7 +95,9 @@ tags:
 
       - 译文的内容要求，也请直接参考 `_posts` 目录下的例子，LWN 的译文采取中英文联排格式，方便阅读者对比，毕竟译文再好也比不过原文的魅力，另外也方便读者随时审阅。另外注意如果原文中有链接，并且该链接所指向的文章我们已经翻译的，请在译文中修改相应链接指向我们已经翻译的文章，具体例子可以参考`_posts/2017-10-10-06-04-32-lwn-448502-platform-devices-and-device-trees.md` 中的 `[本系列文章的上篇](/lwn-448499-platform-device-api)`部分。
 
-  - 新增译文后需要修改主索引文件 `_posts/2017-10-23-22-55-32-lwn-kernel-index.md`，具体索引的格式直接参考 [Kernel index](https://lwn.net/Kernel/Index/)，如果是新增的章节则增加章节后再添加文章链接，如果所属章节已经存在则直接添加文章链接。文章链接需要修改指向我们发布的链接。注意 [Kernel index](https://lwn.net/Kernel/Index/) 中同一篇文章可能划归多个章节分类下，我们也同样遵循该原则。
+    - 新增译文后需要修改主索引文件 `_posts/2017-10-23-22-55-32-lwn-kernel-index.md`，具体索引的格式直接参考 [Kernel index][2]，如果是新增的章节则增加章节后再添加文章链接，如果所属章节已经存在则直接添加文章链接。文章链接需要修改指向我们发布的链接。**注意 [Kernel index][2] 中同一篇文章可能划归多个章节分类下，我们也同样遵循该原则，与[Kernel index][2]保持一致。**
+  
+  - 另外，如果您是第一次参与 [泰晓科技][1] 的文章发表，请别忘记提交您的个人信息。提交方法请参考`_data/people.yml` 进行添加。**注：该修改请以单独的 PR 提交，不要和译文工作混淆在一起，方便检查和合入。**
 
 - Step 5: 本地翻译与修改
 
@@ -129,4 +134,7 @@ tags:
 
   如果文章无误，管理员就会直接把提交合并到主线。
 
-  Congratulations! 至此您的文章将在 [泰晓科技](http://www.tinylab.org/) 上发布。
+  Congratulations! 至此您的文章将在 [泰晓科技][1] 上发布。
+  
+[1]: http://tinylab.org
+[2]: https://lwn.net/Kernel/Index/

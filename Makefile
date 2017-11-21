@@ -420,19 +420,17 @@ endif
 emulator-checkout:
 	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fdx && cd $(TOP_DIR)
 
-e-c: emulator-checkout
+e-o: emulator-checkout
+q-o: e-o
 
-QEMU_BASE=$(shell bash -c 'V=${QEMU}; echo $${V%.*}')
-
-QPD_BASE=patch/qemu/$(QEMU_BASE)
-QPD=patch/qemu/$(QEMU)
 QP ?= 0
 
 EMULATOR_PATCH_TOOL = tools/qemu/patch.sh
 emulator-patch: $(EMULATOR_CHECKOUT)
 	-$(EMULATOR_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
 
-e-p: emualtor-patch
+e-p: emulator-patch
+q-p: e-p
 
 ifneq ($(QEMU),)
 ifneq ($(QP),0)
@@ -443,6 +441,9 @@ endif
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
+
+e-c: emulator-defconfig
+q-c: e-c
 
 emulator:
 	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)

@@ -1007,6 +1007,7 @@ uboot-save: prebuilt-images
 
 emulator-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_QEMUDIR)
+	-strip -s $(QEMU_SYSTEM)
 	-cp $(QEMU_SYSTEM) $(PREBUILT_QEMUDIR)
 
 qemu-save: emulator-save

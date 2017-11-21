@@ -53,6 +53,7 @@ PREBUILT_ROOT = $(PREBUILT_DIR)/root
 PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel
 PREBUILT_BIOS = $(PREBUILT_DIR)/bios
 PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot
+PREBUILT_QEMU = $(PREBUILT_DIR)/qemu
 
 ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
@@ -72,6 +73,7 @@ endif
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
+_QTOOL  := $(QTOOL)
 
 QEMU_GIT ?= https://github.com/qemu/qemu.git
 QEMU_SRC ?= $(TOP_DIR)/qemu
@@ -92,7 +94,6 @@ UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
-QPATH ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
 TOOLCHAIN = $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
@@ -103,7 +104,21 @@ ifneq ($(BIOS),)
 endif
 
 # Another qemu-system-$(ARCH)
-QEMU_SYSTEM ?= $(QPATH)/qemu-system-$(XARCH)
+QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
+
+ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+  PBQ ?= 0
+else
+  PBQ = 1
+endif
+
+ifeq ($(PBQ), 1)
+  ifneq ($(QTOOL),)
+    ifeq ($(QTOOL),$(wildcard $(QTOOL)))
+      QEMU_SYSTEM = $(QTOOL)
+    endif
+  endif
+endif
 
 EMULATOR = qemu-system-$(XARCH) $(BIOS_ARG)
 
@@ -134,6 +149,9 @@ ifneq ($(_KIMAGE),)
 endif
 ifneq ($(_ROOTFS),)
   PREBUILT_ROOTDIR ?= $(shell dirname $(_ROOTFS))
+endif
+ifneq ($(_QTOOL),)
+  PREBUILT_QEMUDIR ?= $(shell dirname $(_QTOOL))
 endif
 
 KIMAGE ?= $(LINUX_KIMAGE)
@@ -185,6 +203,7 @@ BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
 PREBUILT_KERNELDIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
 PREBUILT_UBOOTDIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
+PREBUILT_QEMUDIR ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
 
 PBR ?= 0
 _PBR := $(PBR)
@@ -986,9 +1005,16 @@ uboot-save: prebuilt-images
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOTDIR)
 
 
+emulator-save: prebuilt-images
+	$(Q)mkdir -p $(PREBUILT_QEMUDIR)
+	-cp $(QEMU_SYSTEM) $(PREBUILT_QEMUDIR)
+
+qemu-save: emulator-save
+
 r-s: root-save
 k-s: kernel-save
 u-s: uboot-save
+q-s: qemu-save
 
 uboot-saveconfig: uconfig-save
 
@@ -1311,12 +1337,13 @@ test: $(TEST_PREPARE) FORCE
 
 ifeq ($(QEMU_SYSTEM), $(wildcard $(QEMU_SYSTEM)))
 INSTALL_QEMU=install-qemu
-QEMU_TARGET=/usr/local/bin/qemu-system-$(XARCH)
+# always install if exists
+# QEMU_TARGET=/usr/local/bin/qemu-system-$(XARCH)
 
 install-qemu:
-ifneq ($(QEMU_TARGET), $(wildcard $(QEMU_TARGET)))
+#ifneq ($(QEMU_TARGET), $(wildcard $(QEMU_TARGET)))
 	sudo cp $(QEMU_SYSTEM) /usr/local/bin
-endif
+#endif
 endif
 
 _boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)

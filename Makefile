@@ -87,10 +87,10 @@ KERNEL_SRC ?= linux-stable
 ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= buildroot
 
-QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu
+QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
 UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
-ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(CPU)
+ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 QPATH ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin

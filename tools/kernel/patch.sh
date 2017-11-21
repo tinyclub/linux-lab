@@ -10,17 +10,15 @@ KERNEL_OUTPUT=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
-KFD_CORE=${TOP_DIR}/patch/linux/core/
-
 LINUX_BASE=${LINUX%.*}
 
-KFD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX_BASE}/
-KFD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX}/
+KPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX_BASE}/
+KPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX}/
 
-KFD_BASE=${TOP_DIR}/patch/linux/${LINUX_BASE}/
-KFD=${TOP_DIR}/patch/linux/${LINUX}/
+KPD_BASE=${TOP_DIR}/patch/linux/${LINUX_BASE}/
+KPD=${TOP_DIR}/patch/linux/${LINUX}/
 
-for d in $KFD_BOARD_BASE $KFD_BOARD $KFD_BASE $KFD_BASE $KFD
+for d in $KPD_BOARD_BASE $KPD_BOARD $KPD_BASE $KPD
 do
     echo $d
     [ ! -d $d ] && continue

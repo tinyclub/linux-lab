@@ -481,7 +481,17 @@ root-checkout:
 ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
 ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
 
-root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT)
+RP ?= 0
+ROOT_PATCH_TOOL = tools/rootfs/patch.sh
+
+root-patch:
+	-$(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT)
+
+ifeq ($(RP),1)
+  ROOT_PATCH = root-patch
+endif
+
+root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(ROOT_CONFIG_FILE)
@@ -527,6 +537,7 @@ else
   endif
 endif
 
+r-p: root-patch
 r-b: root-build
 r-i: root-install
 r-r: root-rebuild
@@ -540,13 +551,14 @@ endif
 
 root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
 
-root-prepare: root-checkout root-defconfig
+root-prepare: root-checkout root-patch root-defconfig
 root-auto: root-prepare root
 root-full: root-download root-prepare root
 
 r: root
-r-p: root-prepare
+r-P: root-prepare
 r-a: root-auto
+r-f: root-full
 
 # Kernel modules
 

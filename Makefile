@@ -878,9 +878,6 @@ ifeq ($(BCO),1)
   UBOOT_CHECKOUT = uboot-checkout
 endif
 
-UPD_BOARD=boards/$(BOARD)/patch/uboot/$(UBOOT)
-UPD=patch/uboot/$(UBOOT)
-
 UP ?= 0
 
 PFLASH_BASE ?= 0
@@ -922,17 +919,13 @@ ifneq ($(U),)
 endif
 
 UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
+UBOOT_PATCH_TOOL = tools/uboot/patch.sh
 
 uboot-patch:
 ifneq ($(UCONFIG),)
 	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 endif
-ifeq ($(UPD_BOARD),$(wildcard $(UPD_BOARD)))
-	$(Q)cp -r $(UPD_BOARD)/* $(UPD)
-endif
-ifeq ($(UPD),$(wildcard $(UPD)))
-	-$(Q)$(foreach p,$(shell ls $(UPD)),$(shell echo patch -r- -N -l -d $(UBOOT_SRC) -p1 \< $(UPD)/$p\;))
-endif
+	-$(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT)
 
 ifeq ($(UP),1)
   UBOOT_PATCH = uboot-patch

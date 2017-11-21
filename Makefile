@@ -938,9 +938,12 @@ root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOTDIR)
 	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)
 
+STRIP_CMD = PATH=$(PATH):$(CCPATH) $(CCPRE)strip -s
+
 kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
+	$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell sh -c 'basename $(ORIIMG)')
 ifneq ($(UORIIMG),)
   ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
 	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
@@ -1303,7 +1306,7 @@ b: boot
 # Xterm: lxterminal, terminator
 XTERM ?= $(shell echo `tools/xterm.sh lxterminal`)
 VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
-GDB_CMD ?= $(CCPRE)gdb --quiet $(VMLINUX)
+GDB_CMD ?= PATH=$(PATH):$(CCPATH) $(CCPRE)gdb --quiet $(VMLINUX)
 XTERM_CMD ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
 XTERM_STATUS = $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
 ifeq ($(XTERM_STATUS), 0)

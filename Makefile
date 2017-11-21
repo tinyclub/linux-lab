@@ -111,6 +111,7 @@ EMULATOR = qemu-system-$(XARCH) $(BIOS_ARG)
 # PBK = prebuilt kernel; PBR = prebuilt rootfs; PBD= prebuilt dtb
 
 # TODO: kernel defconfig for $ARCH with $LINUX
+LINUX_DTS    = $(KERNEL_SRC)/$(ORIDTS)
 LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
 LINUX_KIMAGE = $(KERNEL_OUTPUT)/$(ORIIMG)
 LINUX_UKIMAGE = $(KERNEL_OUTPUT)/$(UORIIMG)
@@ -803,10 +804,18 @@ ifeq ($(ROOTDEV), /dev/null)
   SUDO = sudo
 endif
 
-kernel: $(K_ROOT_DIR)
+# Update bootargs in dts if exists, some boards not support -append
+ifeq ($(LINUX_DTS),$(wildcard $(LINUX_DTS)))
+dts:
+	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(LINUX_DTS)
+
+DTS = dts
+endif
+
+kernel: $(K_ROOT_DIR) $(DTS)
 	$(SUDO) PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
-dtbs:
+dtb: $(DTS)
 	$(Q)make kernel KTARGET=$(DTBS)
 
 k-d: kernel-source

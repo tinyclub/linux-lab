@@ -549,7 +549,12 @@ ifeq ($(_PBR), 0)
   endif
 endif
 
-root: $(ROOT) root-install $(KERNEL_MODULES_INSTALL) root-rebuild
+root: $(ROOT)
+	$(Q)make root-install
+ifneq ($(KERNEL_MODULES_INSTALL),)
+	$(Q)make $(KERNEL_MODULES_INSTALL)
+endif
+	$(Q)make root-rebuild
 
 root-prepare: root-checkout root-patch root-defconfig
 root-auto: root-prepare root

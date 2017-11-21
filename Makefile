@@ -806,6 +806,9 @@ endif
 kernel: $(K_ROOT_DIR)
 	$(SUDO) PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
+dtbs:
+	$(Q)make kernel KTARGET=$(DTBS)
+
 k-d: kernel-source
 k-o: kernel-checkout
 k-p: kernel-patch

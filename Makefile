@@ -428,13 +428,9 @@ QPD_BASE=patch/qemu/$(QEMU_BASE)
 QPD=patch/qemu/$(QEMU)
 QP ?= 0
 
+EMULATOR_PATCH_TOOL = tools/qemu/patch.sh
 emulator-patch: $(EMULATOR_CHECKOUT)
-ifeq ($(QPD_BASE),$(wildcard $(QPD_BASE)))
-	-$(Q)$(foreach p,$(shell ls $(QPD_BASE)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD_BASE)/$p\;))
-endif
-ifeq ($(QPD),$(wildcard $(QPD)))
-	-$(Q)$(foreach p,$(shell ls $(QPD)),$(shell echo patch -r- -N -l -d $(QEMU_SRC) -p1 \< $(QPD)/$p\;))
-endif
+	-$(EMULATOR_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
 
 e-p: emualtor-patch
 

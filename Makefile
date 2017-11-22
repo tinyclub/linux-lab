@@ -366,14 +366,14 @@ l-f: list-full
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
 uboot-source:
-	git submodule update --init --remote u-boot
+	git submodule update $(GIT_FORCE) --init --remote u-boot
 
 download-uboot: uboot-source
 uboot-download: uboot-source
 d-u: uboot-source
 
 qemu-source:
-	git submodule update --init --remote qemu
+	git submodule update $(GIT_FORCE) --init --remote qemu
 
 qemu-download: qemu-source
 download-qemu: qemu-source
@@ -392,21 +392,21 @@ qemu-auto: emulator-auto
 qemu-full: emulator-full
 
 kernel-source:
-	git submodule update --init --remote linux-stable
+	git submodule update $(GIT_FORCE) --init --remote linux-stable
 
 kernel-download: kernel-source
 download-kernel: kernel-source
 d-k: kernel-source
 
 root-source:
-	git submodule update --init --remote buildroot
+	git submodule update $(GIT_FORCE) --init --remote buildroot
 
 root-download: root-source
 download-root: root-source
 d-r: root-source
 
 prebuilt-images:
-	git submodule update --init --remote prebuilt
+	git submodule update $(GIT_FORCE) --init --remote prebuilt
 
 prebuilt-download: prebuilt-images
 download-prebuilt: prebuilt-images
@@ -774,6 +774,11 @@ endif
 
 TEST ?= $T
 TEST_PREPARE := $(shell echo $(TEST) | tr ',' ' ')
+
+# Force running git submodule commands
+ifneq ($(TEST),)
+  GIT_FORCE = --force
+endif
 
 kernel-init:
 	$(Q)make kernel-oldconfig

@@ -475,6 +475,17 @@ Qemu Board:
     test
     $ touch /hostshare/guest-test   # Create a file in guest
 
+## Plugins
+
+The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
+
+Book examples or the boards with a whole new cpu architecture benefit from such feature a lot, for book examples may use many boards and a new cpu architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
+
+Here maintains the available plugins:
+
+- [C-Sky Linux](https://github.com/tinyclub/csky)
+- [RLK4.0 Book Examples](https://github.com/tinyclub/rlk4.0)
+
 ## More
 
 ### Add a new board

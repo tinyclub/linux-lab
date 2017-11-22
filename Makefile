@@ -845,7 +845,16 @@ kernel: $(K_ROOT_DIR) $(DTS)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 dtb: $(DTS)
+ifneq ($(DTBS),)
 	$(Q)make kernel KTARGET=$(DTBS)
+endif
+
+# /dev/null needs to build the initrd in kernel image
+ifeq ($(ROOTDEV),/dev/null)
+  KERNEL_REBUILD = kernel
+else
+  KERNEL_REBUILD = dtb
+endif
 
 k-d: kernel-source
 k-o: kernel-checkout
@@ -1339,7 +1348,7 @@ endif
 _boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
-boot: $(PREBUILT)
+boot: $(PREBUILT) $(KERNEL_REBUILD)
 	$(Q)make $(S) _boot
 
 t: test

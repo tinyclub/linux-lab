@@ -29,3 +29,9 @@
 24. Boot uboot with kernel/rootfs from flash
    http://www.cnblogs.com/WuCountry/archive/2012/05/01/2477876.html
 25. Load env variables from external images, allow pass arguments via a standalone image to uboot
+26. Add development support
+    * Allow to fetch latest source code from a customized git repository (k-d, KERNEL_GIT=https://github.com..)
+    * Allow to checkout the master branch of above git repo (k-o, LINUX=master)
+    * Allow to configure the board configure files (Makefile.dev?), allow to load specific Makefile.$(VERSION) in top Makefile
+    * Must be compatible with current make targets and especially the 'test' target.
+    * Allow run auto test simply with 'make test BOARD=csky/virt VERSION=dev'

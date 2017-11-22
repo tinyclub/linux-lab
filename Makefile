@@ -832,11 +832,6 @@ KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
-# Require root to access the /etc/random-seed in initramfs source
-ifeq ($(ROOTDEV), /dev/null)
-  SUDO = sudo
-endif
-
 # Update bootargs in dts if exists, some boards not support -append
 ifeq ($(LINUX_DTS),$(wildcard $(LINUX_DTS)))
 dts:
@@ -846,7 +841,7 @@ DTS = dts
 endif
 
 kernel: $(K_ROOT_DIR) $(DTS)
-	$(SUDO) PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
+	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 dtb: $(DTS)
 	$(Q)make kernel KTARGET=$(DTBS)

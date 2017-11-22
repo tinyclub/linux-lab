@@ -215,6 +215,7 @@ ifeq ($(_PBR), 0)
   ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
     ROOTDIR = $(ROOT_OUTPUT)/target
     PREBUILT_ROOTFS = $(ROOTFS)
+    ROOTFS = $(BUILDROOT_ROOTFS)
   else
     ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
       PBR = 1
@@ -825,7 +826,7 @@ KTARGET ?= $(IMAGE) $(DTBS)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
   K_ROOT_DIR = rootdir
-  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTDIR)
+  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
 endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)

@@ -840,19 +840,17 @@ KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Update bootargs in dts if exists, some boards not support -append
 ifeq ($(LINUX_DTS),$(wildcard $(LINUX_DTS)))
+
 dts:
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(LINUX_DTS)
 
 DTS = dts
-endif
-
-kernel: $(K_ROOT_DIR) $(DTS)
-	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 dtb: $(DTS)
 ifneq ($(DTBS),)
 	$(Q)make kernel KTARGET=$(DTBS)
 endif
+
 
 # /dev/null needs to build the initrd in kernel image
 ifeq ($(ROOTDEV),/dev/null)
@@ -860,6 +858,10 @@ ifeq ($(ROOTDEV),/dev/null)
 else
   KERNEL_REBUILD = dtb
 endif
+endif
+
+kernel: $(K_ROOT_DIR) $(DTS)
+	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 k-d: kernel-source
 k-o: kernel-checkout

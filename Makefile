@@ -43,7 +43,7 @@ endif
 
 TOOL_DIR = tools
 BOARDS_DIR = boards
-BOARD_DIR = $(BOARDS_DIR)/$(BOARD)
+BOARD_DIR = $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR = feature/linux
 TFTPBOOT = tftpboot
 
@@ -130,7 +130,6 @@ EMULATOR = qemu-system-$(XARCH) $(BIOS_ARG)
 # PBK = prebuilt kernel; PBR = prebuilt rootfs; PBD= prebuilt dtb
 
 # TODO: kernel defconfig for $ARCH with $LINUX
-LINUX_DTS    = $(KERNEL_SRC)/$(ORIDTS)
 LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
 LINUX_KIMAGE = $(KERNEL_OUTPUT)/$(ORIIMG)
 LINUX_UKIMAGE = $(KERNEL_OUTPUT)/$(UORIIMG)
@@ -139,7 +138,13 @@ ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
 else
   PBK = 1
 endif
+
+ifneq ($(ORIDTB),)
 ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
+  ORIDTB_EXIST = 1
+endif
+endif
+ifeq ($(ORIDTB_EXIST),1)
   PBD ?= 0
 else
   PBD = 1
@@ -844,31 +849,22 @@ KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(K
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Update bootargs in dts if exists, some boards not support -append
-ifneq ($(ORIDTS),)
-ifeq ($(LINUX_DTS),$(wildcard $(LINUX_DTS)))
-
-dts:
-	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(LINUX_DTS)
-
-DTS = dts
-
 dtb: $(DTS)
-ifneq ($(DTBS),)
-	$(Q)make kernel KTARGET=$(DTBS)
+	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
+	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
+
+ifneq ($(DTS),)
+  ifeq ($(DTS),$(wildcard $(DTS)))
+    # /dev/null needs to build the initrd in kernel image
+    ifeq ($(ROOTDEV),/dev/null)
+      KERNEL_REBUILD = kernel dtb
+    else
+      KERNEL_REBUILD = dtb
+    endif
+  endif
 endif
 
-
-# /dev/null needs to build the initrd in kernel image
-ifeq ($(ROOTDEV),/dev/null)
-  KERNEL_REBUILD = kernel
-else
-  KERNEL_REBUILD = dtb
-endif
-
-endif
-endif
-
-kernel: $(DTS)
+kernel:
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 k-d: kernel-source
@@ -1112,10 +1108,8 @@ ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)
   endif
-  ifneq ($(ORIDTB),)
-    ifeq ($(DTB),$(wildcard $(DTB)))
-      BOOT_CMD += -dtb $(DTB)
-    endif
+  ifeq ($(DTB),$(wildcard $(DTB)))
+    BOOT_CMD += -dtb $(DTB)
   endif
 
   BOOT_CMD += -append '$(CMDLINE)'

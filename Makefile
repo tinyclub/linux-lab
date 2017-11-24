@@ -836,7 +836,6 @@ endif
 KTARGET ?= $(IMAGE) $(DTBS)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  K_ROOT_DIR = rootdir
   KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
 endif
 
@@ -869,7 +868,7 @@ endif
 endif
 endif
 
-kernel: $(K_ROOT_DIR) $(DTS)
+kernel: $(DTS)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 k-d: kernel-source

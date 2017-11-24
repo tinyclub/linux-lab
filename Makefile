@@ -96,6 +96,7 @@ ROOT_SRC ?= buildroot
 QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
 UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
+DTB_OUTPUT = $(TOP_DIR)/output/$(XARCH)/dtb-$(LINUX)-$(BOARD)
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
@@ -129,22 +130,29 @@ EMULATOR = qemu-system-$(XARCH) $(BIOS_ARG)
 # prefer new binaries to the prebuilt ones
 # PBK = prebuilt kernel; PBR = prebuilt rootfs; PBD= prebuilt dtb
 
-# TODO: kernel defconfig for $ARCH with $LINUX
-LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
 LINUX_KIMAGE = $(KERNEL_OUTPUT)/$(ORIIMG)
-LINUX_UKIMAGE = $(KERNEL_OUTPUT)/$(UORIIMG)
+LINUX_UKIMAGE= $(KERNEL_OUTPUT)/$(UORIIMG)
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
 else
   PBK = 1
 endif
 
-ifneq ($(ORIDTB),)
-ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
-  ORIDTB_EXIST = 1
+ifeq ($(DTS),)
+  ifneq ($(ORIDTS),)
+    DTS = $(KERNEL_SRC)/$(ORIDTS)
+  endif
+  ifneq ($(ORIDTB),)
+    ORIDTS = $(shell echo $(ORIDTB) | sed -e "s%.dtb%.dts%g")
+    DTS = $(KERNEL_SRC)/$(ORIDTS)
+  endif
 endif
+
+ifneq ($(DTS),)
+  DTB_BASENAME = $(shell basename $(DTS) | sed -e "s%.dts%.dtb%g")
+  LINUX_DTB    = $(DTB_OUTPUT)/$(DTB_BASENAME)
 endif
-ifeq ($(ORIDTB_EXIST),1)
+ifneq ($(DTS),)
   PBD ?= 0
 else
   PBD = 1
@@ -829,16 +837,7 @@ ifeq ($(U),1)
   IMAGE=uImage
 endif
 
-# 2.6 kernel doesn't support DTB?
-ifeq ($(findstring v2.6.,$(LINUX)),v2.6.)
-  ORIDTB=
-endif
-
-ifneq ($(ORIDTB),)
-  DTBS=dtbs
-endif
-
-KTARGET ?= $(IMAGE) $(DTBS)
+KTARGET ?= $(IMAGE)
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
   KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
@@ -851,16 +850,12 @@ KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 # Update bootargs in dts if exists, some boards not support -append
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
+	$(Q)mkdir -p $(DTB_OUTPUT)
 	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
 
 ifneq ($(DTS),)
   ifeq ($(DTS),$(wildcard $(DTS)))
-    # /dev/null needs to build the initrd in kernel image
-    ifeq ($(ROOTDEV),/dev/null)
-      KERNEL_REBUILD = kernel dtb
-    else
-      KERNEL_REBUILD = dtb
-    endif
+    _DTB = dtb
   endif
 endif
 
@@ -926,7 +921,7 @@ endif
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   RDK_ADDR = -
 endif
-ifeq ($(ORIDTB),)
+ifeq ($(DTS),)
   DTB_ADDR = -
 endif
 
@@ -997,13 +992,13 @@ STRIP_CMD = PATH=$(PATH):$(CCPATH) $(CCPRE)strip -s
 kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
-	$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell sh -c 'basename $(ORIIMG)')
+	$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell basename $(ORIIMG))
 ifneq ($(UORIIMG),)
   ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
 	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
   endif
 endif
-ifneq ($(ORIDTB),)
+ifneq ($(DTS),)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
 	-cp $(LINUX_DTB) $(PREBUILT_KERNELDIR)
   endif
@@ -1357,7 +1352,7 @@ endif
 _boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
-boot: $(PREBUILT_IMAGES) $(KERNEL_REBUILD)
+boot: $(PREBUILT_IMAGES) $(_DTB)
 	$(Q)make $(S) _boot
 
 t: test

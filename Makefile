@@ -151,11 +151,11 @@ endif
 ifneq ($(DTS),)
   DTB_BASENAME = $(shell basename $(DTS) | sed -e "s%.dts%.dtb%g")
   LINUX_DTB    = $(DTB_OUTPUT)/$(DTB_BASENAME)
-endif
-ifneq ($(DTS),)
-  PBD ?= 0
-else
-  PBD = 1
+  ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
+    PBD ?= 0
+  else
+    PBD = 1
+  endif
 endif
 
 ifneq ($(_BIMAGE),)
@@ -848,20 +848,21 @@ KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(K
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Update bootargs in dts if exists, some boards not support -append
+ifneq ($(DTS),)
+ifeq ($(DTS),$(wildcard $(DTS)))
+
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
 	$(Q)mkdir -p $(DTB_OUTPUT)
-	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
+	$(Q)dtc -I dts -O dtb -o $(LINUX_DTB) $(DTS)
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0
-ifneq ($(DTS),)
-  ifeq ($(DTS),$(wildcard $(DTS)))
-    ifeq ($(KCLI_DTS),1)
-      BOOT_DTB = dtb
-    endif
-    KERNEL_DTB = dtb
-  endif
+ifeq ($(KCLI_DTS),1)
+  BOOT_DTB = dtb
+endif
+KERNEL_DTB = dtb
+endif
 endif
 
 kernel: $(KERNEL_DTB)
@@ -1108,8 +1109,10 @@ ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     BOOT_CMD += -initrd $(ROOTFS)
   endif
-  ifeq ($(DTB),$(wildcard $(DTB)))
-    BOOT_CMD += -dtb $(DTB)
+  ifneq ($(DTB),)
+    ifeq ($(DTB),$(wildcard $(DTB)))
+      BOOT_CMD += -dtb $(DTB)
+    endif
   endif
 
   BOOT_CMD += -append '$(CMDLINE)'

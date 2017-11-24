@@ -9,7 +9,9 @@
 FEATURE="$(cat /proc/cmdline | tr ' ' '\n' | grep ^feature= | cut -d'=' -f2 | tr ',' ' ')"
 [ -z "$FEATURE" ] && exit 0
 
+echo
 echo "Stop testing ..."
+echo
 
 # Dummy
 

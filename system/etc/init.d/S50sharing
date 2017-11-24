@@ -6,15 +6,11 @@
 [ -r /etc/default/sharing ] && . /etc/default/sharing
 
 start() {
-	printf "Starting sharing: "
 	$START_SHARING
-	echo "OK"
 }
 
 stop() {
-	printf "Stopping sharing: "
 	$STOP_SHARING
-	echo "OK"
 }
 
 case "$1" in

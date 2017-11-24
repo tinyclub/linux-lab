@@ -9,6 +9,10 @@ SHARE_DIR="$(cat /proc/cmdline | tr ' ' '\n' | grep ^sharedir= | cut -d'=' -f2 |
 # Must pass sharetag via command line?
 [ -z "$SHARE_TAG" ] && exit 0
 
+echo
+echo "Starting sharing ..."
+echo
+
 #[ -z "$SHARE_TAG" ] && SHARE_TAG=hostshare
 [ -z "$SHARE_DIR" ] && SHARE_DIR=/hostshare/
 

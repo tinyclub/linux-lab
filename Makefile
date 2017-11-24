@@ -47,7 +47,6 @@ BOARD_DIR = $(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR = feature/linux
 TFTPBOOT = tftpboot
 
-PREBUILT ?= public
 PREBUILT_DIR = $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
 PREBUILT_ROOT = $(PREBUILT_DIR)/root
@@ -59,6 +58,10 @@ PREBUILT_QEMU = $(PREBUILT_DIR)/qemu
 ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
 endif
+
+# private for only using their own git repo
+# public for using prebuilt git repo
+PREBUILT ?= public
 
 F ?= $(f)
 FEATURES ?= $(F)
@@ -1272,7 +1275,7 @@ endif
 endif
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-  PREBUILT = prebuilt-images
+  PREBUILT_IMAGES = prebuilt-images
 endif
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
@@ -1358,7 +1361,7 @@ endif
 _boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
-boot: $(PREBUILT) $(KERNEL_REBUILD)
+boot: $(PREBUILT_IMAGES) $(KERNEL_REBUILD)
 	$(Q)make $(S) _boot
 
 t: test

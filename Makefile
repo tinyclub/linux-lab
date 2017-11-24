@@ -845,6 +845,7 @@ KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(K
 KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Update bootargs in dts if exists, some boards not support -append
+ifneq ($(ORIDTS),)
 ifeq ($(LINUX_DTS),$(wildcard $(LINUX_DTS)))
 
 dts:
@@ -863,6 +864,8 @@ ifeq ($(ROOTDEV),/dev/null)
   KERNEL_REBUILD = kernel
 else
   KERNEL_REBUILD = dtb
+endif
+
 endif
 endif
 

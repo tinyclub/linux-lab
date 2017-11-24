@@ -47,6 +47,7 @@ BOARD_DIR = $(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR = feature/linux
 TFTPBOOT = tftpboot
 
+PREBUILT ?= public
 PREBUILT_DIR = $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
 PREBUILT_ROOT = $(PREBUILT_DIR)/root
@@ -406,7 +407,9 @@ download-root: root-source
 d-r: root-source
 
 prebuilt-images:
+ifeq ($(PREBUILT),public)
 	git submodule update $(GIT_FORCE) --init --remote prebuilt
+endif
 
 prebuilt-download: prebuilt-images
 download-prebuilt: prebuilt-images

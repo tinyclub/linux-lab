@@ -853,13 +853,18 @@ dtb: $(DTS)
 	$(Q)mkdir -p $(DTB_OUTPUT)
 	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
 
+# Pass kernel command line in dts, require to build dts for every boot
+KCLI_DTS ?= 0
 ifneq ($(DTS),)
   ifeq ($(DTS),$(wildcard $(DTS)))
-    _DTB = dtb
+    ifeq ($(KCLI_DTS),1)
+      BOOT_DTB = dtb
+    endif
+    KERNEL_DTB = dtb
   endif
 endif
 
-kernel:
+kernel: $(KERNEL_DTB)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
 k-d: kernel-source
@@ -1352,7 +1357,7 @@ endif
 _boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
-boot: $(PREBUILT_IMAGES) $(_DTB)
+boot: $(PREBUILT_IMAGES) $(BOOT_DTB)
 	$(Q)make $(S) _boot
 
 t: test

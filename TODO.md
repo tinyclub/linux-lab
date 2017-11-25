@@ -35,3 +35,5 @@
     * Allow to configure the board configure files (Makefile.dev?), allow to load specific Makefile.$(VERSION) in top Makefile
     * Must be compatible with current make targets and especially the 'test' target.
     * Allow run auto test simply with 'make test BOARD=csky/virt VERSION=dev'
+27. Use git-am instead of patch command to apply the changes, need to convert .patch with git-am format
+28. Create branch for boards to avoid override while checking out source code for boards.

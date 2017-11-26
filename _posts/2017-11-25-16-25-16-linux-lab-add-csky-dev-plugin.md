@@ -30,7 +30,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 [Linux Lab](http://tinylab.org/linux-lab) 正好能够很好地解决这些问题，它允许提前编译好上述工具因此只需要下载最关键的软件包，对于在线版的 Linux Lab，还会预先下载部分软件包。这些功能允许开发者极速体验一款新的处理器或者开发板。
 
-日前，基于 [C-SKY Linux](https://github.com/c-sky) 的开源成果，与 Guo Ren 同学通过 [Cloud Lab](http://tinylab.cloud:6080/) 在线协作，经过大约一周多的努力，终于以插件的方式在 Linux Lab 中添加了对 C-SKY 810 处理器 Linux 开发环境的支持：
+日前，基于 [C-SKY Linux](https://github.com/c-sky) 的开源成果，与 Guo Ren 同学通过 [Cloud Lab](http://tinylab.cloud:6080/) 在线协作，经过大约一周多的努力，终于以插件的方式在 Linux Lab 中添加了对 C-SKY ck810 处理器 Linux 开发环境的支持：
 
 - [Linux Lab C-SKY Plugin](https://github.com/tinyclub/csky)
 
@@ -95,6 +95,6 @@ Linux Lab 一开始就加入了 4 大处理器架构和 6 款虚拟开发板，�
 
 希望这份努力能够为国产芯片的发展作出一些微薄的贡献，也期待国产芯片能够取得更多的成就。
 
-目前正计划为 Linux Lab 添加龙芯处理器开发插件，敬请期待。
+目前正计划为 Linux Lab 添加龙芯处理器的 Linux 开发插件，敬请期待。
 
 [1]: http://tinylab.org

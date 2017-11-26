@@ -266,6 +266,7 @@ body {
     font-family: 'Lucida Grande', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'WenQuanYi Micro Hei', sans-serif, 'SimSun', "宋体", 'Heiti', "黑体";
     font-size: 13.34px;
     *font-size: small;
+    letter-spacing: 1px;
     -moz-transform: scale(1.0);
     -moz-transform-origin: center top 0;
     zoom: 1.0

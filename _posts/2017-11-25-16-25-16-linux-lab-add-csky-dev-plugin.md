@@ -83,6 +83,12 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 实际上，该插件也已经支持 qemu 编译。
 
+### 详细用法
+
+由于该插件新增的 `csky/virt` 虚拟开发板完美支持 Linux Lab 的绝大部分功能（目前暂时不支持Uboot），所以用法跟其他已有的虚拟开发板类似。
+
+更多具体的用法请直接参考 [Linux Lab](http://tinylab.org/linux-lab) 以及 Linux Lab 源码中的 [README.md](https://github.com/tinyclub/linux-lab/blob/master/README.md)。
+
 ## 后记
 
 Linux Lab 一开始就加入了 4 大处理器架构和 6 款虚拟开发板，一直希望能够加入一款国产处理器和国产开发板，从而可以让国人极速体验国产芯片以及相关系统软件的研发成果。

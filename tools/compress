@@ -13,7 +13,7 @@ css_js_compressor=$TOP_DIR/compress-css-js
 html_compressor=$TOP_DIR/../_layout/prettify.html
 
 # Generate minified css/js
-find $TOP_DIR/../assets/themes/$theme/ -name "*.css" -o -name "*.js" | egrep -v $filters | xargs -i $css_js_compressor {} 2>&1 >/dev/null
+find $TOP_DIR/../assets/themes/$theme/ -name "*.css" -o -name "*.js" | egrep -v $filters | xargs -I{} $css_js_compressor {} 2>&1 >/dev/null
 
 # Enable css/js compress
 sed -i -e "s/css_js:.*/css_js: true/g" $compress_yml

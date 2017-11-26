@@ -347,7 +347,7 @@ a:active {
 
 #wrap,
 #top-wrap-inner {
-    width: 75%;
+    width: 85%;
     margin: 0 auto
 }
 
@@ -425,7 +425,7 @@ a:active {
     overflow: hidden;
 }
 #sidebar {
-    width: 238px;
+    width: 308px;
     height: auto;
     float: right;
     font-size: 100%;
@@ -434,7 +434,7 @@ a:active {
 }
 
 #sidebar #fixed-container {
-   width: 230px;
+   width: 300px;
 }
 
 #sidebar section a,
@@ -478,8 +478,8 @@ a:active {
 }
 #sidebar section ul {
     font-size: 98%;
-    margin-left: 20px;
-    margin-right: 5px
+    margin-left: 5px;
+    margin-right: 2px
 }
 #sidebar section ul li {
     list-style: none;
@@ -1020,8 +1020,8 @@ short_prev_next {
 
 #tag-cloud,
 .author-box {
-    margin-left: 10px;
-    margin-right: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
     margin-bottom: 15px
 }
 #tag-cloud a {

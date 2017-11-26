@@ -14,7 +14,7 @@
 /* By default it's not affixed in mobile views, so undo that */
 
 #sidebar section nav ul {
-    margin-left: 5px
+    margin-left: 0px
 }
 
 #sidebar nav ul ul {
@@ -42,8 +42,8 @@
 #toc_widget_container {
     max-height: 400px;
     overflow: auto;
-    margin-left: 5px;
-    margin-right: 10px;
+    margin-left: 0px;
+    margin-right: 5px;
     padding-left: 0;
 }
 

@@ -55,7 +55,7 @@ JB :
   rss_path : /rss.xml
 
   posts:
-    title_length: 25
+    title_length: 50
     related_limit: 5
   sidebar:
     items_limit: 5

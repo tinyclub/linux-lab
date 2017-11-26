@@ -56,6 +56,10 @@ tags:
       * 可灵活配置和扩展支持更多架构、虚拟开发板和内核版本。
       * 未来计划支持 Android emulator，支持在线调试。。。
 
+  * 插件
+      * [RLK4.0](https://github.com/tinyclub/rlk4.0)：《奔跑吧Linux内核 4.0》一书课程实验
+      * [CSKY](https://github.com/tinyclub/csky)：中天微国产处理器 [C-SKY Linux](https://c-sky.github.io) 开发插件
+
 ## 相关文章
 
   * [利用 Linux Lab 完成嵌入式系统开发全过程][7]

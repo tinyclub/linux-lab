@@ -25,7 +25,7 @@
 {% assign author_name = null %}
 
 <table id='sponsor'>
-<tr><td style="text-align:center;">支付宝打赏{{ ali_pay_money }}</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏{{ wechat_pay_money }}</td></tr>
+<tr><td style="text-align:center;">支付宝打赏<br>{{ ali_pay_money }}</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏<br>{{ wechat_pay_money }}</td></tr>
 <tr>
   <td style="text-align:center;">
     <img src='/images/sponsor/{{ ali_pay }}.jpg' width='110px' />

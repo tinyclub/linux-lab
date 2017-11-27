@@ -27,12 +27,12 @@
 <table id='sponsor'>
 <tr><td style="text-align:center;">支付宝打赏<br>{{ ali_pay_money }}</td><td width='150px'>{{ sponsor_info }}</td><td style="text-align:center;">微信打赏<br>{{ wechat_pay_money }}</td></tr>
 <tr>
-  <td style="text-align:center;">
+  <td style="text-align:center; vertical-align: middle;">
     <img src='/images/sponsor/{{ ali_pay }}.jpg' width='110px' />
   </td>
   <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>原创路上，<br>有您认可，<br>更为精彩！
   </td>
-  <td style="text-align:center;">
+  <td style="text-align:center; vertical-align: middle;">
     <img src='/images/sponsor/{{ wechat_pay }}.jpg' width='110px' />
   </td>
 </tr>

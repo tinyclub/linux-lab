@@ -30,7 +30,7 @@
   <td style="text-align:center;">
     <img src='/images/sponsor/{{ ali_pay }}.jpg' width='110px' />
   </td>
-  <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>原创路上，<br>有你的认可，<br>更为精彩！
+  <td style="text-align:center;color:#0c0"><div class="reward-button">赏</div><br>原创路上，<br>有您认可，<br>更为精彩！
   </td>
   <td style="text-align:center;">
     <img src='/images/sponsor/{{ wechat_pay }}.jpg' width='110px' />

@@ -1175,7 +1175,7 @@ short_prev_next {
         font-size: 120%;
         white-space: normal;
     }
-    article header h2 {
+    #home header h2 {
         white-space: normal;
     }
     article header time {

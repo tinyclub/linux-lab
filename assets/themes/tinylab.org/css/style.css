@@ -1173,6 +1173,10 @@ short_prev_next {
     }
     article header h1 {
         font-size: 120%;
+        white-space: normal;
+    }
+    article header h2 {
+        white-space: normal;
     }
     article header time {
         font-size: 60%;

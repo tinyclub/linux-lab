@@ -17,6 +17,7 @@ tags:
 > 原文：[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)
 > 原创：By Jonathan Corbet @ December 11, 2013
 > 翻译：By Tacinight of [TinyLab.org][1] @ Nov 28, 2017
+> 校对：By Unicornx of [TinyLab.org][1]
 
 > The Btrfs filesystem has been through almost every part of the hype cycle at one point or another in its short history. For a time, it was the next-generation filesystem that was going to solve many of our problems; distributors were racing to see who could be the first to ship it by default. Then it became clear that all those longtime filesystem developers weren't totally out to lunch when they warned that it takes many years to get a filesystem to a point where it can be trusted with important data. At this point, it is possible to go to a conference and hear almost nothing positive about Btrfs; disillusionment appears to have set in. By the time Btrfs is truly ready, some seem to think, it will be thoroughly obsolete.
 

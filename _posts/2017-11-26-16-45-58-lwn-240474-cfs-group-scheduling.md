@@ -19,7 +19,7 @@ tags:
 > 原文：[CFS group scheduling](https://lwn.net/Articles/240474/)
 > 原创：By Corbet @ July 2, 2007
 > 翻译：By Yupeng Li of [TinyLab.org][1] @ 2017-10-10 05:26:32
-
+> 校对：By Unicornx of [TinyLab.org][1]
 
 > Ingo Molnar's [completely fair scheduler][2] (CFS) patch continues to develop; the current version, as of this writing, is [v18][3]. One aspect of CFS behavior is seen as a serious shortcoming by many potential users, however: it only implements fairness between individual processes. If 50 processes are trying to run at any given time, CFS will carefully ensure that each gets 2% of the CPU. It could be, however, that one of those processes is the X server belonging to Alice, while the other 49 are part of a massive kernel build launched by Karl the opportunistic kernel hacker, who logged in over the net to take advantage of some free CPU time. Assuming that allowing Karl on the system is considered fair at all, it is reasonable to say that his 49 compiler processes should, as a group, share the processor with Alice's X server. In other words, X should get 50% of the CPU (if it needs it) while all of Karl's processes share the other 50%.
 

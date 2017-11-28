@@ -17,6 +17,7 @@ tags:
 > 原文：[The managed resource API](https://lwn.net/Articles/222860/)
 > 原创：By Jonathan Corbet @ February 20, 2007
 > 翻译：By Unicornx of [TinyLab.org][1] @ Oct 19, 2017
+> 校对：By Falcon of [TinyLab.org][1]
 
 > The [device resource management patch](http://lwn.net/Articles/215996/) was discussed here in January. That patch has now been merged for the 2.6.21 kernel. Since the API is now set - at least, as firmly as any in-kernel API is - it seems like a good time for a closer look at this new interface.
 

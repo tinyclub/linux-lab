@@ -17,7 +17,7 @@ tags:
 
 ## 活动简介
 
-[LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考[wiki LWN](https://en.wikipedia.org/wiki/LWN.net)。
+[LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考 [Wikipedia](https://en.wikipedia.org/wiki/LWN.net)。
 
 - 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index][2]，其中文翻译成果汇总在 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
@@ -57,7 +57,7 @@ tags:
 
 - Step 1: 加入翻译团队
 
-  [unicornx][https://github.com/unicornx] 为该项目的发起人，有意向参与的朋友请先加他微信（polardotw），然后再申请加入微信群 "LWN 翻译团队"，方便沟通交流。
+  [unicornx](https://github.com/unicornx) 为该项目的发起人，有意向参与的朋友请先加他微信（polardotw），然后再申请加入微信群 "LWN 翻译团队"，方便沟通交流。
 
 - Step 2: Fork 主仓库
 
@@ -97,13 +97,13 @@ tags:
 
     - 文件的命名格式如下：`YYYY-MM-DD-HH-MM-SS-lwn-XXXXXX-<article title>.md`，其中 `article title` 是原文的标题，中间的空格用 `-` 代替，具体例子参考 `_posts/2017-10-10-06-04-32-lwn-448502-platform-devices-and-device-trees.md` 。可以用 `tools/post` 创建模板文件。**注意：如果审阅后需要涉及多次修改和提交，请每次确保修改文件名中的时间戳部分，采用最新时间确保文章发布后在网站上能够被置顶显示。**
 
-    - 译文的内容要求，也请直接参考 `_posts` 目录下的例子，LWN 的译文采取中英文联排格式，方便阅读者对比，毕竟译文再好也比不过原文的魅力，另外也方便读者随时审阅。另外注意如果原文中有链接，并且该链接所指向的文章我们已经翻译的，请在译文中修改相应链接指向我们已经翻译的文章，具体例子可以参考`_posts/2017-10-10-06-04-32-lwn-448502-platform-devices-and-device-trees.md` 中的 `[本系列文章的上篇](/lwn-448499-platform-device-api)`部分。
+    - 译文的内容要求，也请直接参考 `_posts` 目录下的例子，LWN 的译文采取中英文联排格式，方便阅读者对比，毕竟译文再好也比不过原文的魅力，另外也方便读者随时审阅。另外注意如果原文中有链接，并且该链接所指向的文章我们已经翻译的，请在译文中修改相应链接指向我们已经翻译的文章，具体例子可以参考 `_posts/2017-10-10-06-04-32-lwn-448502-platform-devices-and-device-trees.md` 中的 [本系列文章的上篇](/lwn-448499-platform-device-api) 部分。
   
     - 译文中的校对人信息第一次提交时可以先留空，等指定评审人后第二次修改提交时再补上即可。
 
   - 新增译文后需要修改主索引文件 `_posts/2017-10-23-22-55-32-lwn-kernel-index.md`，具体索引的格式直接参考 [Kernel index][2]，如果是新增的章节则增加章节后再添加文章链接，如果所属章节已经存在则直接添加文章链接。文章链接需要修改指向我们发布的链接。**注意 [Kernel index][2] 中同一篇文章可能划归多个章节分类下，我们也同样遵循该原则，与[Kernel index][2]保持一致。**
   
-  - 另外，如果您是第一次参与 [泰晓科技][1] 的文章发表，请别忘记提交您的个人信息。提交方法请参考`_data/people.yml` 进行添加。**注：该修改请以单独的 PR 提交，不要和译文工作混淆在一起，方便检查和合入。**
+  - 另外，如果您是第一次参与 [泰晓科技][1] 的文章发表，请别忘记提交您的个人信息。提交方法请参考 `_data/people.yml` 进行添加。**注：该修改请以单独的 PR 提交，不要和译文工作混淆在一起，方便检查和合入。**
 
   修改完毕后：
   

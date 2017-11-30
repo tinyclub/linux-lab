@@ -77,6 +77,7 @@
       $('iframe').iframeAutoHeight({debug: false});
     });
   </script>
+  {% if page.plugin %}<script src="{{ ASSET_PATH }}/js/{{ page.plugin }}{{ css_js_compress_tag }}.js"></script>{% endif %}
 
 </head>
 
@@ -149,8 +150,6 @@
   <script src="{{ ASSET_PATH }}/code-prettify/prettify{{ css_js_compress_tag }}.js"></script>
   {% include widgets/code-prettify %}
   {% endif %}
-
-  {% if page.plugin %}<script src="{{ ASSET_PATH }}/js/{{ page.plugin }}{{ css_js_compress_tag }}.js"></script>{% endif %}
 
   {% include JB/analytics %}
 

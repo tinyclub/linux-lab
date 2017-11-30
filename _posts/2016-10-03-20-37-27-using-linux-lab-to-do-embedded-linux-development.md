@@ -62,11 +62,11 @@ tags:
 
 在下载实验源码之前，先找一处工作目录。在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
 
-   $ cd ~/Documents
+    $ cd ~/Documents
 
 但是如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
 
-   $ cd /mnt/sda1
+    $ cd /mnt/sda1
 
 接下来，首先把 Linux Lab 下载下来：
 

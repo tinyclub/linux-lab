@@ -105,11 +105,11 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 安装完 Docker 后，即可下载编辑环境，选择之前先选定一个工作目录。如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
 
-   $ cd /mnt/sda1
+    $ cd /mnt/sda1
 
 在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
 
-   $ cd ~/Documents
+    $ cd ~/Documents
 
 之后即可下载并运行：
 

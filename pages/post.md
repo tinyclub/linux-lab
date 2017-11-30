@@ -5,7 +5,7 @@ layout: page
 group: navigation
 plugin: mermaid
 highlight: true
-comment: false
+comments: false
 permalink: /post/
 order: 30
 ---

@@ -47,20 +47,20 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 之后再在文章正文中直接绘图，例如：
 
     <div class='mermaid'>
-    graph LR
-    A[Square Rect] -- Link text --> B((Circle))
-    A --> C(Round Rect)
-    B --> D{Rhombus}
+    graph LR;
+    A[Square Rect] -- Link text --> B((Circle));
+    A --> C(Round Rect);
+    B --> D{Rhombus};
     C --> D
     </div>
 
 效果如下：
 
 <div class='mermaid'>
-    graph LR
-    A[Square Rect] -- Link text --> B((Circle))
-    A --> C(Round Rect)
-    B --> D{Rhombus}
+    graph LR;
+    A[Square Rect] -- Link text --> B((Circle));
+    A --> C(Round Rect);
+    B --> D{Rhombus};
     C --> D
 </div>
 

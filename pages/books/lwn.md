@@ -44,10 +44,16 @@ tags:
 | tacinight        | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | tacinight        | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
 | linuxkoala       | 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
-| unicornx         | 翻译中 | [The pin control subsystem](https://lwn.net/Articles/468759/) |
-| unicornx         | 翻译中 | [GPIO in the kernel: an introduction](https://lwn.net/Articles/532714/) |
 | unicornx         | 翻译中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
 | unicornx         | 翻译中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
+| unicornx         | 翻译中 | [KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
+| unicornx         | 翻译中 | [ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
+| unicornx         | 翻译中 | [Device tree troubles](https://lwn.net/Articles/560523/) |
+| unicornx         | 翻译中 | [Device trees as ABI](https://lwn.net/Articles/561462/) |
+| unicornx         | 翻译中 | [Device tree bindings](https://lwn.net/Articles/572114/) |
+| unicornx         | 翻译中 | [Device trees I: Are we having fun yet?](https://lwn.net/Articles/572692/) |
+| unicornx         | 翻译中 | [Device trees II: The harder parts](https://lwn.net/Articles/573409/) |
+| norlanjame       | 翻译中 | [The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
 
 ## 参与流程
 

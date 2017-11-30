@@ -156,7 +156,7 @@ task :post do
     post.puts "#{group}"
     post.puts "#{permalink}"
     post.puts 'description: " 文章摘要 "'
-    post.puts 'plugin: mermaid"'
+    post.puts 'plugin: mermaid'
     post.puts "category:#{category_list}"
     post.puts "tags:#{tag_list}"
     post.puts "---"

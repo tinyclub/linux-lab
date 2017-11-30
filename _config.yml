@@ -12,7 +12,7 @@ markdown: kramdown
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "tools", "pdfs", "Dockerfile"]
 highlighter: pygments
 
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 paginate: 10
 
 # Themes are encouraged to use these universal variables

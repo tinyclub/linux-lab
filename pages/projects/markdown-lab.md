@@ -34,6 +34,7 @@ tags:
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
       * 基于 Markdown，并内建书、简历、文档和幻灯片的主题模板，可专心内容创作。
       * 通过 Docker Toolbox 和 Docker CE 支持所有系统：Linux、Windows 和 Mac OSX
+      * Gitbook 已支持通过 mermaid 绘制流程图，请参考 [mermaidjs](https://mermaidjs.github.io) 使用
 
 ## 五分钟教程
 
@@ -125,7 +126,6 @@ Docker 安装：
 
     $ git submodule update --init book
     $ cd book/
-    $ gitbook install
     $ make
 
 字体配置可通过 `book.json` 的 `fontFamily` 实现。

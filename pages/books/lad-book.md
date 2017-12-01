@@ -22,9 +22,9 @@ tags:
 
 ## 简介
 
--   代码仓库：<https://github.com/tinyclub/lad-book>
--   在线阅读：<http://tinylab.gitbooks.io/lad-book>
--   项目首页：<http://tinylab.org/lad-book>
+-   [代码仓库](https://github.com/tinyclub/lad-book)
+-   [在线阅读](http://tinylab.gitbooks.io/lad-book)
+-   [项目首页](http://tinylab.org/lad-book)
 
 ## 报名
 

@@ -1,33 +1,37 @@
 ---
-title: 'LEP 开发环境'
-tagline: 'Linux Easy Profiling 项目开发环境'
+title: 'RT-Thread 开发环境'
+tagline: '国产 IoT 操作系统 RT-Thread 开发环境'
 author: Wu Zhangjin
 layout: page
-permalink: /lep-lab/
-description: 基于 Cloud Lab 构建的一套 LEP 快捷开发环境。
+permalink: /rtthread-lab/
+description: 基于 Cloud Lab 构建的一套 RT-Thread 开发环境。
 update: 2017-11-13
 categories:
   - Cloud Lab
-  - 内核调试与跟踪
 tags:
-  - LEP
+  - RT-Thread
+  - IoT
 ---
 
 ## 简介
 
-LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
+RT-Thread 是一套国产 IoT 操作系统。
 
-* [首页](http://www.linuxep.com/)
-* [Github](https://github.com/linuxep/)
+* [首页](http://www.rt-thread.org/)
+* [Github](https://github.com/rt-thread/)
 * [在线实验](http://tinylab.cloud:6080/labs/)
 
-为了降低 LEP 的学习和开发门槛，我们为 LEP 开发了这套 LEP Lab，它可以作为 [Cloud Lab](http://tinylab.org/cloud-lab) 的插件使用。
+为了降低 RT-Thread 的学习和开发门槛，我们为它开发了这套 RT-Thread Lab，它可以作为 [Cloud Lab](http://tinylab.org/cloud-lab) 的插件使用。
 
-下面简单介绍一下如何通过 Cloud Lab 使用 LEP Lab。
+下面简单介绍一下如何通过 Cloud Lab 使用 RT-Thread Lab。
+
+在正式使用之前，可以先看一下提前录制好的演示视频：
+
+* [RT-Thread Lab 演示视频](http://showterm.io/3b7829850b0417690ad41)
 
 ## 安装 Docker
 
-使用 LEP Lab 之前，需要安装 Docker：
+使用 RT-Thread Lab 之前，需要安装 Docker：
 
 * Linux and Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 * Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
@@ -70,63 +74,45 @@ LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
     $ cd ~/Documents
 
-## 下载 LEP Lab
+## 下载 RT-Thread Lab
 
 以 Ubuntu 为例，首先下载 Cloud Lab 管理框架，之后，下载相关环境的镜像和源代码：
 
     $ git clone https://github.com/tinyclub/cloud-lab.git
-    $ cd cloud-lab/ && tools/docker/choose lep-lab
+    $ cd cloud-lab/ && tools/docker/choose rtthread-lab
 
 ## 运行并登陆
 
 直接运行并自动登陆：
 
-    $ tools/docker/run lep-lab
+    $ tools/docker/run rtthread-lab
 
 退出以后下次可直接登陆：
 
-    $ tools/docker/vnc lep-lab
+    $ tools/docker/vnc rtthread-lab
 
-## 使用 LEP Lab
+## 使用 RT-Thread Lab
 
-登陆以后，点击桌面的 'LEP Lab' 快捷键，可进入该开发环境的主目录。
+登陆以后，点击桌面的 'RT-Thread Lab' 快捷键，可进入该开发环境的主目录。
 
-### 下载源码
+### 下载或更新 RT-Thread 源码
 
-    $ make init
+    $ git submodule update --init --remote .
 
-### 编译和运行 lepd
+### 选择 BSP：qemu-vexpress-a9
 
-    $ cd lepd
-    $ make ARCH=x86      // ARCH 现在只支持 x86 和 arm
-    $ ./lepd
+    $ cd rt-thread/bsp/qemu-vexpress-a9/
 
-### 运行 lepv 后端
+### 编译 RT-Thread
 
-    $ cd lepv/app
-    $ python3 ./run.py & // 请务必使用 python3，python2 会有编码问题
+    $ scons
 
-### 打开 lepv 前端
+### 通过 Qemu 运行（串口方式）
 
-    $ chromium-browser http://localhost:8889
+    $ bash qemu-nographic.sh
 
-### 更多用法
+### 通过 Qemu 运行（图形化方式）
 
-获取帮助：
+目前实际的图形效果还没来得及添加，启动后请通过 `CTRL+ALT+4` 切到第 4 个控制台的 Shell 环境下：
 
-    $ make help
-    Usage:
-
-    init  -- download or update lepd and lepv (1)
-    _lepd -- compile and restart lepd (2)
-    _lepv -- restart the lepv backend (3)
-    view  -- start the lepv frontend (4)
-    all   -- do (1) (2) (3) one by one
-
-重新编译并启动 ARM 版本的 lepd（通过 `qemu-arm` 直接在 X86 上运行）：
-
-    $ make _lepd ARCH=arm
-
-默认接入的 lepd 服务地址是 `www.rmlink.cn`，可通过如下方式自动切换为本地 lepd 服务：
-
-    $ make view SERVER=localhost
+    $ bash qemu.sh

@@ -2,11 +2,12 @@
   From: https://github.com/i5ting/How-to-write-jQuery-plugin/tree/master/examples/jquery_plugin/plugin_four
 */
 
-#tab {
-    width: 600px;
-    height: 300px;
-    border: 0 solid #dcdee0
+.tab_content_item {
+    max-height: 350px;
+    width: 100%;
+    overflow: auto;
 }
+
 .tab_content div {
     display: none;
     float: left;

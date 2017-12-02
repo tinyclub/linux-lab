@@ -2,8 +2,13 @@
   From: https://github.com/i5ting/How-to-write-jQuery-plugin/tree/master/examples/jquery_plugin/plugin_four
 */
 
+
+.tab_content {
+    min-height: 500px;
+}
+
 .tab_content_item {
-    max-height: 350px;
+    max-height: 450px;
     width: 100%;
     overflow: auto;
 }

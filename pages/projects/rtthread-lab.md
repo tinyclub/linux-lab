@@ -97,22 +97,18 @@ RT-Thread 是一套国产 IoT 操作系统。
 
 ### 下载或更新 RT-Thread 源码
 
-    $ git submodule update --init --remote .
+    $ make init
 
-### 选择 BSP：qemu-vexpress-a9
+### 编译 RT-Thread for qemu-vexpress-a9
 
-    $ cd rt-thread/bsp/qemu-vexpress-a9/
-
-### 编译 RT-Thread
-
-    $ scons
+    $ make build
 
 ### 通过 Qemu 运行（串口方式）
 
-    $ bash qemu-nographic.sh
+    $ make boot
 
 ### 通过 Qemu 运行（图形化方式）
 
 目前实际的图形效果还没来得及添加，启动后请通过 `CTRL+ALT+4` 切到第 4 个控制台的 Shell 环境下：
 
-    $ bash qemu.sh
+    $ make boot G=1

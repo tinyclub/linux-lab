@@ -27,7 +27,7 @@ RT-Thread 是一套国产 IoT 操作系统。
 
 在正式使用之前，可以先看一下提前录制好的演示视频：
 
-* [RT-Thread Lab 演示视频](http://showterm.io/3b7829850b0417690ad41)
+* [RT-Thread Lab 演示视频](http://showterm.io/4551e753b1518243d2a83)
 
 ## 安装 Docker
 

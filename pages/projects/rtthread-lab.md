@@ -17,9 +17,9 @@ tags:
 
 RT-Thread 是一套国产 IoT 操作系统。
 
-* [首页](http://www.rt-thread.org/)
-* [Github](https://github.com/rt-thread/)
-* [在线实验](http://tinylab.cloud:6080/labs/)
+* [RT-Thread 首页](http://www.rt-thread.org/)
+* [RT-Thread Git 仓库](https://github.com/rt-thread/)
+* [在线实验 RT-Thread](http://tinylab.cloud:6080/labs/)
 
 为了降低 RT-Thread 的学习和开发门槛，我们为它开发了这套 RT-Thread Lab，它可以作为 [Cloud Lab](http://tinylab.org/cloud-lab) 的插件使用。
 
@@ -27,7 +27,7 @@ RT-Thread 是一套国产 IoT 操作系统。
 
 在正式使用之前，可以先看一下提前录制好的演示视频：
 
-* [RT-Thread Lab 演示视频](http://showterm.io/4551e753b1518243d2a83)
+* [RT-Thread Lab 演示视频](http://showterm.io/942d1782b37d737b04856)
 
 ## 安装 Docker
 
@@ -99,6 +99,10 @@ RT-Thread 是一套国产 IoT 操作系统。
 
     $ make init
 
+### 配置 RT-Thread
+
+    $ make config
+
 ### 编译 RT-Thread for qemu-vexpress-a9
 
     $ make build
@@ -112,3 +116,32 @@ RT-Thread 是一套国产 IoT 操作系统。
 目前实际的图形效果还没来得及添加，启动后请通过 `CTRL+ALT+4` 切到第 4 个控制台的 Shell 环境下：
 
     $ make boot G=1
+
+### 配置网络
+
+先获得主机 br0 设备的 IP：
+
+    $ ifconfig br0 | grep inet
+          inet addr:172.17.217.83  Bcast:172.17.255.255  Mask:255.255.0.0
+
+然后随机选择该网段的一个 IP 作为 Guest 系统的 IP，并以 br0 IP 为网关：
+
+    msh /> ifconfig e0 172.17.217.168 172.17.217.83 255.255.255.0
+    config : e0
+    IP addr: 172.17.217.168
+    Gateway: 172.17.217.83
+    netmask: 255.255.255.0
+
+从主机 ping 往 Guest 进行测试：
+
+    $ ping 172.17.217.168
+    PING 172.17.217.168 (172.17.217.168) 56(84) bytes of data.
+    64 bytes from 172.17.217.168: icmp_seq=1 ttl=255 time=1.96 ms
+
+### 清理编译结果
+
+    $ make clean
+
+### 更多用法
+
+    $ make help

@@ -1,6 +1,6 @@
 ---
 title: 'Linux 0.11 实验环境'
-tagline: '可快速构建，支持Docker/Qemu/Bochs/Ubuntu/OS X/Windows'
+tagline: '可快速构建，支持 Docker, Qemu, Bochs, Ubuntu, Mac OSX, Windows'
 author: Wu Zhangjin
 layout: page
 permalink: /linux-0.11-lab/

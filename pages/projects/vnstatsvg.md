@@ -1,6 +1,6 @@
 ---
 title: 'vnStatSVG: Linux 流量监控'
-tagline: '最佳vnStat Web前端，专为嵌入式与分布式系统设计'
+tagline: '最佳 vnStat Web 前端，专为嵌入式与分布式系统设计'
 author: Wu Zhangjin
 layout: page
 permalink: /vnstatsvg/

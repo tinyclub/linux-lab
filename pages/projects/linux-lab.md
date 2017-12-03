@@ -1,6 +1,6 @@
 ---
 title: 'Linux 内核实验环境'
-tagline: '可快速构建，支持Docker/Qemu/Ubuntu/OS X/Windows/Web'
+tagline: '可快速构建，支持 Docker, Qemu, Ubuntu, Mac OSX, Windows, Web'
 author: Wu Zhangjin
 layout: page
 permalink: /linux-lab/

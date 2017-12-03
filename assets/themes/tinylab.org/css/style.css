@@ -532,7 +532,6 @@ article header h2 {
 article header h1 {
     font-size: 130%;
     font-weight: 600;
-    margin-bottom: 10px
 }
 
 article header a:hover {
@@ -633,16 +632,24 @@ article header time {
 article header span a:hover {
     text-decoration: none
 }
+section header small,
 article header small {
-    font-size: 100%;
-    border-top: 2px dotted #214d41;
     margin-left: 10px;
-    padding-top: 10px;
-    line-height: 60px
+    font-size: 100%;
+    white-space: normal;
 }
+
+section header,
+article header {
+    margin-bottom: 10px;
+}
+
+section header hr,
 article header hr {
+    padding: 0;
     border: 0;
-    border-top: 2px dotted #f60
+    margin-left: 10px;
+    border-top: 2px dotted #ccced0;
 }
 article aside {
     float: right;

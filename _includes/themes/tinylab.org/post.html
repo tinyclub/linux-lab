@@ -3,9 +3,11 @@
     <header>
       <h1 title="{{ page.title }}">{{ page.title }}</h1>
     </header>
+{% if page.tagline %}
     <header>
-       {% if page.tagline %}<hr><small>{{ page.tagline }}</small>{% endif %}
+       <hr><small>{{ page.tagline }}</small>
     </header>
+{% endif %}
 
    <section>
      {% include widgets/post_header %}

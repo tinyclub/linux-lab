@@ -3,7 +3,6 @@ title: 投稿
 tagline: 欢迎投递原创稿件、工作机会、求职简历等
 layout: page
 group: navigation
-plugin: mermaid
 highlight: true
 permalink: /post/
 order: 30
@@ -39,32 +38,6 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。引用图片的方式：
 
     ![图片简介](/wp-content/uploads/2017/09/xxx.png)
-
-如果想直接用 Markdown 绘制流程图等图表，可以在文件头加入如下行启动 `mermaid` 插件：
-
-    plugin: mermaid
-
-之后再在文章正文中直接绘图，例如：
-
-    <div class='mermaid'>
-    graph LR;
-    A[Square Rect] -- Link text --> B((Circle));
-    A --> C(Round Rect);
-    B --> D{Rhombus};
-    C --> D
-    </div>
-
-效果如下：
-
-<div class='mermaid'>
-    graph LR;
-    A[Square Rect] -- Link text --> B((Circle));
-    A --> C(Round Rect);
-    B --> D{Rhombus};
-    C --> D
-</div>
-
-更多用法请参考：[mermaidjs](https://mermaidjs.github.io/).
 
 ## 本地预览
 

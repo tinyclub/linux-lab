@@ -459,6 +459,8 @@ endif
 emulator-checkout:
 	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fdx && cd $(TOP_DIR)
 
+qemu-checkout: emulator-checkout
+
 e-o: emulator-checkout
 q-o: e-o
 
@@ -467,6 +469,8 @@ QP ?= 0
 EMULATOR_PATCH_TOOL = tools/qemu/patch.sh
 emulator-patch: $(EMULATOR_CHECKOUT)
 	-$(EMULATOR_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
+
+qemu-patch: emulator-patch
 
 e-p: emulator-patch
 q-p: e-p
@@ -481,14 +485,21 @@ emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
 
+qemu-defconfig: emulator-defconfig
+
 e-c: emulator-defconfig
 q-c: e-c
 
 emulator:
 	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)
 
+emulator-build: emulator
+qemu-build: emulator
+
 q: emulator
 e: q
+e-b: q
+q-b: q
 
 # Toolchains
 
@@ -553,7 +564,7 @@ ifeq ($(KM), 1)
   endif
 endif
 
-root-build:
+root-Build:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
 
 # Install system/ to ROOTDIR
@@ -574,14 +585,14 @@ else
 endif
 
 r-p: root-patch
-r-b: root-build
+r-B: root-Build
 r-i: root-install
 r-r: root-rebuild
 
 ROOT ?= rootdir
 ifeq ($(_PBR), 0)
   ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    ROOT = root-build
+    ROOT = root-Build
   endif
 endif
 
@@ -592,11 +603,14 @@ ifneq ($(KERNEL_MODULES_INSTALL),)
 endif
 	$(Q)make root-rebuild
 
+root-build: root
+
 root-prepare: root-checkout root-patch root-defconfig
 root-auto: root-prepare root
 root-full: root-download root-prepare root
 
 r: root
+r-b: root
 r-P: root-prepare
 r-a: root-auto
 r-f: root-full
@@ -672,7 +686,7 @@ kernel-modules-list-full:
 M_I_ROOT ?= rootdir
 ifeq ($(PBR), 0)
   ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    M_I_ROOT = root-build
+    M_I_ROOT = root-Build
   endif
 endif
 
@@ -868,12 +882,15 @@ endif
 kernel: $(KERNEL_DTB)
 	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
 
+kernel-build: kernel
+
 k-d: kernel-source
 k-o: kernel-checkout
 k-p: kernel-patch
 k-c: kernel-defconfig
 k-o-c: kernel-oldconfig
 k-m: kernel-menuconfig
+k-b: kernel
 k: kernel
 
 kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
@@ -963,6 +980,8 @@ uboot-menuconfig:
 uboot:
 	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
+uboot-build: uboot
+
 uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
 uboot-auto: uboot-prepare uboot
 uboot-full: uboot-download uboot-prepare uboot
@@ -972,6 +991,7 @@ u-o: uboot-checkout
 u-p: uboot-patch
 u-c: uboot-defconfig
 u-m: uboot-menuconfig
+u-b: uboot
 u: uboot
 
 # Checkout kernel and Rootfs

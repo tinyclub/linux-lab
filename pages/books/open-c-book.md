@@ -19,9 +19,9 @@ tags:
 ---
 
 > 成绩简报：
-> 1. Gitbook 中文类书籍 Top 100，260+ Stars
+> 1. Gitbook 中文类书籍 Top 100 330+ Stars
 > 2. 过去一年，在线阅读量 45000+，下载量 22000+
-> 3. Github 仓库，220+ Stars 90+ Forks
+> 3. Github 仓库，270+ Stars 119+ Forks
 
 ## 背景
 
@@ -45,9 +45,12 @@ tags:
 
 自由书籍将会维护在 TinyLab 的[项目仓库][14]中。项目相关信息如下：
 
-  * 在线阅读：<https://gitbook.com/book/tinylab/cbook>
-  * 代码仓库：[https://github.com/tinyclub/open-c-book.git][14]
-  * 项目首页：[Open-C-Book](/open-c-book/)
+* 在线阅读
+  * <https://gitbook.com/book/tinylab/cbook>
+* 代码仓库
+  * [https://github.com/tinyclub/open-c-book.git][14]
+* 项目首页
+  * [Open-C-Book](/open-c-book/)
 
 ## 获取书稿
 

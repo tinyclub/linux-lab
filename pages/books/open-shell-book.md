@@ -19,9 +19,9 @@ tags:
 ---
 
 > 成绩简报：
-> 1. Gitbook 中文类书籍 Top 20，750+ Stars
+> 1. Gitbook 中文类书籍 Top 20，960+ Stars
 > 2. 过去一年，在线阅读量 65000+，下载量 35000+
-> 3. Github 仓库，150+ Stars 40+ Forks
+> 3. Github 仓库，190+ Stars 60+ Forks
 
 ## 简介
 
@@ -29,9 +29,12 @@ tags:
 
 因为 Shell 非常流行并且在日常工作和生活中广泛使用，所以计划把整个系列重写并作为开源书籍发布，以便让更多的同学获益。
 
-* 在线阅读：<https://gitbook.com/book/tinylab/shellbook>
-* 仓库地址：<https://github.com/tinyclub/open-shell-book>
-* 项目首页：[Open-Shell-Book](/open-shell-book/)
+* 在线阅读
+  * <https://gitbook.com/book/tinylab/shellbook>
+* 仓库地址
+  * <https://github.com/tinyclub/open-shell-book>
+* 项目首页
+  * [Open-Shell-Book](/open-shell-book/)
 
 ## 下载源码
 

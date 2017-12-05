@@ -21,9 +21,12 @@ tags:
 
 该项目致力于翻译 [Linux Documentation][1] 为中文版。
 
-  * 在线阅读：<https://gitbook.com/book/tinylab/linux-doc>
-  * 代码仓库：[https://github.com/tinyclub/linux-doc.git][2]
-  * 项目首页：[Linux-Doc](/linux-doc/)
+* 在线阅读
+  * <https://gitbook.com/book/tinylab/linux-doc>
+* 代码仓库
+  * [https://github.com/tinyclub/linux-doc.git][2]
+* 项目首页
+  [Linux-Doc](/linux-doc/)
 
 ## 报名参与
 

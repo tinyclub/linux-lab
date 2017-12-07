@@ -22,4 +22,6 @@ else
 fi
 path=/usr/bin/${name}-${version}
 
+[ ! -f $path ] && echo "ERROR: No such file: $path" && exit 1
+
 update-alternatives --set ${name} ${path}

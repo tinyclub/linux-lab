@@ -205,6 +205,10 @@ Build external kernel modules:
     $ make modules-install m=ldt
     $ make root-rebuild && make boot
 
+Switch compiler version if exists, for example:
+
+    $ tools/gcc/switch.sh arm 4.3
+
 ### Booting
 
 Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff' or 'pkill qemu':

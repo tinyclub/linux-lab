@@ -27,7 +27,7 @@ tags:
 * 本文源码：<https://github.com/tinyclub/markdown-lab/tree/clk-2016-ftrace/slides>
 
 > Ftrace 实现原理与开发实践
-> 吴章金, MIPS Ftrace Author, <http://kernel.MEIZU.com>
+> 吴章金, MIPS Ftrace Author, <http://kernel.meizu.com>
 > 2016.10.21
 
 ## 什么是 Ftrace
@@ -284,10 +284,10 @@ tags:
 
 ### Linux Lab 介绍
 
-* 基于 Qemu 的嵌入式 Linux 开发环境
+* 基于 Docker/Qemu 的嵌入式 Linux 开发环境
 * 首页：<http://tinylab.org/linux-lab>
 * 仓库：<https://github.com/tinyclub/linux-lab>
-* 访问：http://novnc-server:novnc-port/vnc.html
+* 访问：<http://tinylab.cloud:6080/labs>
 * 特性
     * Docker 容器化
     * 可通过 Web 访问的 LXDE Desktop（基于noVNC）
@@ -330,7 +330,7 @@ tags:
 
 * Linux Lab Host
 
-      $ scripts/feature.sh kft v2.6.36 malta
+      $ make test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
 
 * Qemu Malta Board
 

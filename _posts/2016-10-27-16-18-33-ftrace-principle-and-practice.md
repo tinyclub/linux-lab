@@ -304,6 +304,8 @@ tags:
 
 * Doc: doc/ftrace
 
+* Demo: <http://showterm.io/346ea62996736d1716458>
+
 * Linux Lab Host
 
       $ make list             # List supported boards
@@ -327,6 +329,8 @@ tags:
 
 
 * Doc: doc/kft/kft_kickstart.txt
+
+* Demo: <http://showterm.io/50d1a5f2c7dd27877d3d1>
 
 * Linux Lab Host
 

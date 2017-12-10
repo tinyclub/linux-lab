@@ -56,6 +56,11 @@ Linux 开源相关技术对于学生来说，特别是计算机专业的学生�
 
 关于纯 CPU 模拟，这里补充一个 [Unicorn](https://github.com/unicorn-engine/unicorn)，同样源自 Qemu。
 
+再补充一个，如果要研究处理器，可以考虑 [RISC-V](https://riscv.org)，它采用 BSP 协议授权，完全开源。
+
+* [The RISC-V Analysis (in Chinese)](https://medium.com/@yuxing.tang/the-risc-v-analysis-in-chinese-a26abaac03f3)
+* [Risc-V 开放源码首页](https://github.com/riscv)
+
 ### 引导程序
 
 大学时学习了 BIOS，基本输入输出系统，是个啥玩意，感觉得到，看得到面纱，看不到她真实的样子。但是有了 [Uboot](http://www.denx.de/wiki/U-Boot) ，可以。

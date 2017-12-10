@@ -21,6 +21,10 @@ categories:
 
 相关原创分享会逐步整理成开放书籍并统一发布到：<http://tinylab.gitbooks.io/>，目前已涵盖 Shell、C 和 嵌入式 Linux，未来会逐步加入 汇编、操作系统、编译原理、系统优化 等其他基础课程。
 
+早在 2013 年，我们就系统地分析了 [为什么计算机的学生要学习 Linux 开源技术](http://tinylab.org/why-computer-students-learn-linux-open-source-technologies/)，希望这些开放书籍可以提供更多的助力。
+
+也欢迎更多来自高校和企业的同学参与进来，联合开发公开课程，把企业需求和前沿技术带进传统大学课堂，提升教学水平，优化教学质量，缩小高校教学和企业需求之间的差距。
+
 ## 已经发布
 
 1. C 语言编程透视

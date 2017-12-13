@@ -37,6 +37,10 @@ Plan to restart the whole project on Android emulator, see our previous work 
 
   * [Break through the Linux kernel image size limitation of the Uboot][4]
 
+## References
+
+  * [Linux Kernel Tinification](http://events.linuxfoundation.org/sites/events/files/slides/tiny.pdf)
+  * [Tiny Linux Kernel Wiki Page](http://tiny.wiki.kernel.org)
 
  [1]: http://elinux.org/Work_on_Tiny_Linux_Kernel
  [2]: https://github.com/tinyclub/tinylinux

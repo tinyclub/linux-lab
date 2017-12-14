@@ -5,7 +5,7 @@ author: Wang Chen
 layout: page
 album: 'LWN 中文翻译'
 group: translation
-update: 2017-11-29
+update: 2017-11-10
 permalink: /lwn/
 description: 翻译 LWN.net 上大家感兴趣的文章。
 categories:
@@ -14,6 +14,8 @@ tags:
   - lwn.net
   - 中文翻译
 ---
+
+本页面最近一次更新于： 2017/12/14 14:59:30
 
 ## 活动简介
 
@@ -33,18 +35,18 @@ tags:
 
 - 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
 
-- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"审核中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
+- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"校对中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
 
 **计划将随时保持更新，欢迎大家关注**：
 
 | 认领人(Github id)| 状态   | 文章  |
 |------------------|--------|-------|
-| tacinight        | 翻译中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
+| tacinight        | 校对中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
 | tacinight        | 翻译中 | [Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
 | tacinight        | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | tacinight        | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
 | linuxkoala       | 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
-| unicornx         | 翻译中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
+| unicornx         | 校对中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
 | unicornx         | 翻译中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
 | unicornx         | 翻译中 | [KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
 | unicornx         | 翻译中 | [ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
@@ -54,6 +56,7 @@ tags:
 | unicornx         | 翻译中 | [Device trees I: Are we having fun yet?](https://lwn.net/Articles/572692/) |
 | unicornx         | 翻译中 | [Device trees II: The harder parts](https://lwn.net/Articles/573409/) |
 | norlanjame       | 翻译中 | [The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
+| lljgithub        | 翻译中 | [Realtime KVM](https://lwn.net/Articles/656807/) |
 
 ## 参与流程
 
@@ -63,7 +66,11 @@ tags:
 
 - Step 1: 加入翻译团队
 
-  [unicornx](https://github.com/unicornx) 为该项目的发起人，有意向参与的朋友请先加他微信（polardotw），然后再申请加入微信群 "LWN 翻译团队"，方便沟通交流。
+  [unicornx](https://github.com/unicornx) 为该项目的发起人，有意向参与的朋友请先加他微信（polardotw），然后再申请加入微信群 "LWN 翻译团队"，入群后请提供如下信息方便沟通交流。
+  
+  |姓名  |微信 id               |github id      |自我介绍|
+  |------|----------------------|---------------|--------|
+  |汪辰  |polardotw             |unicornx       |目前的工作方向，对 Linux 内核哪方面感兴趣或者比较擅长，另外如能提供您的英语水平等级资质更好 |
 
 - Step 2: Fork 主仓库
 
@@ -78,7 +85,9 @@ tags:
 
 - Step 4: 创建开发分支
 
-  创建开发分支进行翻译：
+  **注意：开始翻译前请和 polardotw (微信号) 联系，确定翻译的文章没有和其他人员冲突。**
+  
+  确认无误后创建开发分支进行翻译：
 
 		$ git checkout master
 		$ git checkout -b lwn-<XXXXXX>-<description>

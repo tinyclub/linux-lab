@@ -15,13 +15,13 @@ tags:
   - 中文翻译
 ---
 
-本页面最近一次更新于： 2017/12/14 14:59:30
+本页面最近一次更新于： 2017/12/21 8:56:06
 
 ## 活动简介
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考 [Wikipedia](https://en.wikipedia.org/wiki/LWN.net)。
 
-- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章汇总在 [Kernel index][2]，其中文翻译成果汇总在 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，目前 LWN 的内核文章原文汇总在 [Kernel index][2]，我们的中文翻译成果汇总在 [LWN 中文翻译成果索引][3]。
 
 - 本活动本着 “自愿参与，开放共享” 的原则进行。所有译文提交给 [泰晓科技][1] 公开发布后，均遵循 [CC BY-NC-ND 4.0 协议](http://creativecommons.org/licenses/by-nc-nd/4.0/) 许可。
 
@@ -31,11 +31,11 @@ tags:
 
 由于是集体活动，为尽量避免冲突，也为了协调大家的兴趣爱好，特别将本活动的翻译计划在此公布，方便有兴趣参与的人员了解活动的进展和动向。
 
-- LWN 的内核文章原文汇总在 [Kernel index][2]
+- LWN 的内核文章原文汇总在 [Kernel index][2]。
 
-- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引](http://tinylab.org/lwn-kernel-index/)。
+- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引][3]。
 
-- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态（状态包括"翻译中"，"校对中"，翻译完毕或者取消翻译的会从列表中删除）等其他信息。
+- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态等其他信息（翻译状态包括"翻译中"，"校对中"，翻译完毕或者取消翻译的会从列表中删除，其中翻译完毕的会移动到[LWN 中文翻译成果索引][3]）。
 
 **计划将随时保持更新，欢迎大家关注**：
 
@@ -47,7 +47,7 @@ tags:
 | tacinight        | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
 | linuxkoala       | 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
 | unicornx         | 校对中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
-| unicornx         | 翻译中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
+| unicornx         | 校对中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
 | unicornx         | 翻译中 | [KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
 | unicornx         | 翻译中 | [ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
 | unicornx         | 翻译中 | [Device tree troubles](https://lwn.net/Articles/560523/) |
@@ -55,6 +55,8 @@ tags:
 | unicornx         | 翻译中 | [Device tree bindings](https://lwn.net/Articles/572114/) |
 | unicornx         | 翻译中 | [Device trees I: Are we having fun yet?](https://lwn.net/Articles/572692/) |
 | unicornx         | 翻译中 | [Device trees II: The harder parts](https://lwn.net/Articles/573409/) |
+| unicornx         | 翻译中 | [Object-oriented design patterns in the kernel, part 1](https://lwn.net/Articles/444910/) |
+| unicornx         | 翻译中 | [Object-oriented design patterns in the kernel, part 2](https://lwn.net/Articles/446317/) |
 | norlanjame       | 翻译中 | [The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
 | lljgithub        | 翻译中 | [Realtime KVM](https://lwn.net/Articles/656807/) |
 
@@ -164,3 +166,4 @@ tags:
 
 [1]: http://tinylab.org
 [2]: https://lwn.net/Kernel/Index/
+[3]: http://tinylab.org/lwn-kernel-index/

@@ -29,7 +29,7 @@ Btrfs 文件系统几乎在它短暂的历史中，经历了舆论评价的大�
 
 > This article is intended to be the first in a series for users interested in experimenting with and evaluating the Btrfs filesystem. We'll start with the basics of the design of the filesystem and how it is being developed; that will be followed by a detailed look at specific Btrfs features. One thing that will not appear in this series, though, is benchmark results; experience says that proper filesystem benchmarking is hard to do right; it's also highly workload- and hardware-dependent. Poor-quality results would not be helpful to anybody, so your editor will simply not try.
 
-小编准备为有兴趣尝试和评估 Btrfs 文件系统的用户撰写一个系列文章，本文则是该系列文章的第一篇。我们将从文件系统设计的基础知识开始，介绍它是如何发展的。之后将详细介绍特定的 Btrfs 特性。但是，这个系列中不会出现基准测试结果。经验表明，严格意义上的文件系统基准测试是很难做到的；而且它对工作负载和特定硬件高度依赖。质量不好的结果不会对任何人有帮助，所以小编也不会轻易去尝试。
+小编准备为有兴趣尝试和评估 Btrfs 文件系统的用户撰写一个系列文章，本文则是该系列文章的第一篇。我们将从文件系统设计的基础知识开始，介绍它是如何发展的。之后将详细介绍特定的 Btrfs 特性。但是，这个系列中不会出现基准测试结果。经验表明，精确的文件系统基准测试是很难做到的，因为这对测试负载和硬件高度依赖。质量不好的结果不会对任何人有帮助，所以小编也不会轻易去尝试。
 
 ## 是什么让 Btrfs 与众不同？ (What makes Btrfs different?) 
 
@@ -63,7 +63,7 @@ Btrfs 还提供了一大堆其他 Linux 文件系统不支持的功能。它可�
 
 > So all this shiny new Btrfs functionality does not come for free. In many settings, administrators may well decide that the costs associated with Btrfs outweigh the benefits; those sites will stick with filesystems like ext4 or XFS. For others, though, the flexibility and feature set provided with Btrfs are likely to be quite appealing. Once it is generally accepted that Btrfs is ready for real-world use, chances are it will start popping up on a lot of systems.
 
-所以所有这些 Btrfs 诱人的新功能都不是免费的。在许多情况下，系统管理员可能会认为 Btrfs 带来的相关的成本要大于它的好处；这些站点也将继续拥护像 ext4 或 XFS 这样的文件系统。但对于其他人来说，Btrfs 提供的灵活性和功能集可能会相当吸引人。一旦 Btrfs 准备就绪并且被人们所普遍接受，相信其很快就会在众多系统上得到应用。
+所以所有这些 Btrfs 诱人的新功能都是需要付出一定代价的。在许多情况下，系统管理员可能会认为 Btrfs 带来的相关的成本要大于它的好处；这些站点也将继续拥护像 ext4 或 XFS 这样的文件系统。但对于其他人来说，Btrfs 提供的灵活性和功能集可能会相当吸引人。一旦 Btrfs 准备就绪并且被人们所普遍接受，相信其很快就会在众多系统上得到应用。
 
 ## 发展 (Development)
 

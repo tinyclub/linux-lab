@@ -29,6 +29,14 @@
   <hr>
   {% include widgets/sponsor %}
 
+  {% if page.license != false %}
+  <hr>
+  <footer>
+     {% include widgets/copyright %}
+  </footer>
+  <hr>
+  {% endif %}
+
 </section>
 
 <section id="comments">

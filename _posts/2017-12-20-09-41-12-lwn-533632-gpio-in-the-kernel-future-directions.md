@@ -4,6 +4,7 @@ author: 'Wang Chen'
 title: "LWN 533632: 内核 GPIO 子系统的未来发展方向"
 album: 'LWN 中文翻译'
 group: translation
+license: "cc-by-sa-4.0"
 permalink: /lwn-533632-gpio-in-the-kernel-future-directions/
 description: "LWN 文章翻译，内核 GPIO 子系统的未来发展方向"
 category:

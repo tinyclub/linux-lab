@@ -4,6 +4,7 @@ author: 'Wang Chen'
 title: "LWN 222860: 资源管理编程接口"
 album: 'LWN 中文翻译'
 group: translation
+license: "cc-by-sa-4.0"
 permalink: /lwn-222860-the-managed-resource-api/
 description: "LWN 文章翻译，资源管理编程接口"
 category:

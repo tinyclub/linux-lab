@@ -4,6 +4,7 @@ author: 'Wang Chen'
 title: "LWN 215996: 设备资源管理"
 album: 'LWN 中文翻译'
 group: translation
+license: "cc-by-sa-4.0"
 permalink: /lwn-215996-device-resource-management/
 description: "LWN 文章翻译，设备资源管理"
 category:

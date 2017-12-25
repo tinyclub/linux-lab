@@ -5,6 +5,7 @@ title: "LWN 576276: Btrfs文件系统介绍"
 # tagline: " 子标题，如果存在的话 "
 album: "LWN 中文翻译"
 group: translation
+license: "cc-by-sa-4.0"
 permalink: /lwn-576276-the-btrfs-filesystem-an-introduction/
 description: "LWN 文章翻译，本文是系列文章的第一篇，简单介绍了 Btrfs 文件系统，包括了发展历史以及一些简要的特性介绍。"
 category:

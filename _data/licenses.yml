@@ -1,0 +1,16 @@
+
+gpl_v2:
+  name: "GNU General Public License, version 2"
+  url: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+
+gpl:
+  name: "GNU General Public License"
+  url: https://www.gnu.org/licenses/gpl.html
+
+cc-by-sa-4.0:
+  name: "CC BY-SA 4.0"
+  url: https://creativecommons.org/licenses/by-sa/4.0/
+
+cc-by-nc-nd-4.0:
+  name: "CC BY-NC-ND 4.0"
+  url: https://creativecommons.org/licenses/by-nc-nd/4.0/

@@ -15,8 +15,6 @@ tags:
   - 中文翻译
 ---
 
-本页面最近一次更新于： 2017/12/21 8:56:06
-
 ## 活动简介
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体介绍参考 [Wikipedia](https://en.wikipedia.org/wiki/LWN.net)。
@@ -27,38 +25,13 @@ tags:
 
 - 所有译文提交给 [泰晓科技][1] 公开发布后，[泰晓科技][1] 保留继续修改并完善的权利。在尽可能征得原翻译人员同意的前提下，欢迎其他读者提交补丁继续完善原译文。
 
-## 翻译计划
-
 由于是集体活动，为尽量避免冲突，也为了协调大家的兴趣爱好，特别将本活动的翻译计划在此公布，方便有兴趣参与的人员了解活动的进展和动向。
 
-- LWN 的内核文章原文汇总在 [Kernel index][2]。
+- 本计划中所有已经被认领的文章列表可参见本文最后的 [翻译文章列表汇总](#articles_summary)。
 
-- 已经翻译完毕并正式发布的文章列表请参考 [LWN 中文翻译成果索引][3]。
+- LWN 的内核文章 “原文” 汇总在 [Kernel index][2]，有志于参加本翻译计划的朋友可以从中挑选您感兴趣的文章，只要确保不和前述 [翻译文章列表汇总](#articles_summary) 中已经被其他人认领的文章冲突即可。
 
-- 以下列表包含当前计划进行中已经认领的文章、及其翻译状态等其他信息（翻译状态包括"翻译中"，"校对中"，翻译完毕或者取消翻译的会从列表中删除，其中翻译完毕的会移动到[LWN 中文翻译成果索引][3]）。
-
-**计划将随时保持更新，欢迎大家关注**：
-
-| 认领人(Github id)| 状态   | 文章  |
-|------------------|--------|-------|
-| tacinight        | 校对中 | [Btrfs: Getting started](https://lwn.net/Articles/577218/) |
-| tacinight        | 翻译中 | [Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
-| tacinight        | 翻译中 | [Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
-| tacinight        | 翻译中 | [Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
-| linuxkoala       | 翻译中 | [CFS bandwidth control](https://lwn.net/Articles/428230/) |
-| unicornx         | 校对中 | [GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
-| unicornx         | 校对中 | [Device tree overlays](https://lwn.net/Articles/616859/) |
-| unicornx         | 翻译中 | [KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
-| unicornx         | 翻译中 | [ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
-| unicornx         | 翻译中 | [Device tree troubles](https://lwn.net/Articles/560523/) |
-| unicornx         | 翻译中 | [Device trees as ABI](https://lwn.net/Articles/561462/) |
-| unicornx         | 翻译中 | [Device tree bindings](https://lwn.net/Articles/572114/) |
-| unicornx         | 翻译中 | [Device trees I: Are we having fun yet?](https://lwn.net/Articles/572692/) |
-| unicornx         | 翻译中 | [Device trees II: The harder parts](https://lwn.net/Articles/573409/) |
-| unicornx         | 翻译中 | [Object-oriented design patterns in the kernel, part 1](https://lwn.net/Articles/444910/) |
-| unicornx         | 翻译中 | [Object-oriented design patterns in the kernel, part 2](https://lwn.net/Articles/446317/) |
-| norlanjame       | 翻译中 | [The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
-| lljgithub        | 翻译中 | [Realtime KVM](https://lwn.net/Articles/656807/) |
+- 已经翻译完毕并正式发表的文章列表也可参考 [LWN 中文翻译成果索引][3]，该索引的格式和 [LWN 的内核文章汇总 “原文”][2] 保持一致。
 
 ## 参与流程
 
@@ -163,6 +136,43 @@ tags:
 赞助方式有两种，一种是直接扫描下面的二维码，另外一种是通过 [泰晓服务中心](https://weidian.com/item.html?itemID=2208672946) 进行。
 
 更多高质量的 Linux 翻译文章需要您的支持！
+
+## <span id="articles_summary">翻译文章列表汇总</span>
+
+以下列表包含本 LWN 翻译计划中所有已经 **被认领** 的文章、及其翻译状态等其他信息（翻译状态包括"翻译中"，"校对中"，"已发表"），其中 "已发表" 的文章也同时列在[LWN 中文翻译成果索引][3]中。
+
+**计划将随时保持更新，欢迎大家关注**：
+
+| 状态   | 译作者(Github id)  | 校对(Github id)    | 文章  |
+|--------|--------------------|----------------------|-------|
+| 已发表 | Tacinight          | unicornx             |[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)|
+| 已发表 | Tacinight          | guojian-at-wowo      |[Btrfs: Getting started](https://lwn.net/Articles/577218/) |
+| 翻译中 | Tacinight          |                      |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
+| 翻译中 | Tacinight          |                      |[Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
+| 翻译中 | Tacinight          |                      |[Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
+| 已发表 | linuxkoala         | unicornx             |[CFS group scheduling](https://lwn.net/Articles/240474/)|
+| 翻译中 | linuxkoala         |                      |[CFS bandwidth control](https://lwn.net/Articles/428230/) |
+| 已发表 | unicornx           | lzufalcon            |[Device resource management](https://lwn.net/Articles/215996/)|
+| 已发表 | unicornx           | Tacinight, lzufalcon |[The pin control subsystem](https://lwn.net/Articles/468759/)|
+| 已发表 | unicornx           | lzufalcon            |[The platform device API](https://lwn.net/Articles/448499/)|
+| 已发表 | unicornx           | lzufalcon            |[Platform devices and device trees](https://lwn.net/Articles/448502/)|
+| 已发表 | unicornx           | lzufalcon            |[The managed resource API](https://lwn.net/Articles/222860/)|
+| 已发表 | unicornx           | cee1, norlanjame     |[GPIO in the kernel: an introduction](https://lwn.net/Articles/532714/)|
+| 已发表 | unicornx           | lljgithub            |[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
+| 校对中 | unicornx           | w-simon              |[Device tree overlays](https://lwn.net/Articles/616859/) |
+| 已发表 | unicornx           | WH2136               |[KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
+| 翻译中 | unicornx           |                      |[ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
+| 翻译中 | unicornx           |                      |[Device tree troubles](https://lwn.net/Articles/560523/) |
+| 翻译中 | unicornx           |                      |[Device trees as ABI](https://lwn.net/Articles/561462/) |
+| 翻译中 | unicornx           |                      |[Device tree bindings](https://lwn.net/Articles/572114/) |
+| 翻译中 | unicornx           |                      |[Device trees I: Are we having fun yet?](https://lwn.net/Articles/572692/) |
+| 翻译中 | unicornx           |                      |[Device trees II: The harder parts](https://lwn.net/Articles/573409/) |
+| 翻译中 | unicornx           |                      |[Object-oriented design patterns in the kernel, part 1](https://lwn.net/Articles/444910/) |
+| 翻译中 | unicornx           |                      |[Object-oriented design patterns in the kernel, part 2](https://lwn.net/Articles/446317/) |
+| 翻译中 | norlanjame         |                      |[The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
+| 翻译中 | lljgithub          |                      |[Realtime KVM](https://lwn.net/Articles/656807/) |
+| 翻译中 | fan-xin            |                      |[LTSI and Fuego](https://lwn.net/Articles/694880/) |
+
 
 [1]: http://tinylab.org
 [2]: https://lwn.net/Kernel/Index/

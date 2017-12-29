@@ -161,7 +161,7 @@ tags:
 | 已发表 | unicornx           | lljgithub            |[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
 | 校对中 | unicornx           | w-simon              |[Device tree overlays](https://lwn.net/Articles/616859/) |
 | 已发表 | unicornx           | WH2136               |[KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
-| 翻译中 | unicornx           |                      |[(Partially) graduating IIO](https://lwn.net/Articles/465358/) |
+| 校对中 | unicornx           | maxiao1993           |[(Partially) graduating IIO](https://lwn.net/Articles/465358/) |
 | 翻译中 | unicornx           |                      |[ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
 | 翻译中 | unicornx           |                      |[Device tree troubles](https://lwn.net/Articles/560523/) |
 | 翻译中 | unicornx           |                      |[Device trees as ABI](https://lwn.net/Articles/561462/) |
@@ -174,7 +174,7 @@ tags:
 | 翻译中 | lljgithub          |                      |[Realtime KVM](https://lwn.net/Articles/656807/) |
 | 翻译中 | fan-xin            |                      |[LTSI and Fuego](https://lwn.net/Articles/694880/) |
 | 翻译中 | fan-xin            |                      |[Yocto 2.0](https://lwn.net/Articles/664073/) |
-
+| 翻译中 | maxiao1993         |                      |[Deadline scheduling for Linux](https://lwn.net/Articles/356576/) |
 
 [1]: http://tinylab.org
 [2]: https://lwn.net/Kernel/Index/

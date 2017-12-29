@@ -35,7 +35,7 @@ tags:
 
 ### 直播纲要
 
-> 回放地址：正在剪辑中。。。
+> 回放地址：[用 Linux 0.11 Lab 学古董 Linux](https://v.qq.com/x/page/g052642za8l.html)
 > 内容大纲：[Learning Linux 0.11 in Linux 0.11 Lab](https://github.com/tinyclub/linux-0.11-lab/blob/master/doc/live/linux-0.11-lab.md)
 > 直播时间：本周六(2017/9/23) 下午 2:00～3:00
 > 直播口号：摆平操作系统学习之路上的拦路虎，从此。。。

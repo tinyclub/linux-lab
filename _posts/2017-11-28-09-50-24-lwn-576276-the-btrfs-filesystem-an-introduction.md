@@ -16,7 +16,7 @@ tags:
   - btrfs
 ---
 > 原文：[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)
-> 原创：By Jonathan Corbet @ December 11, 2013
+> 原创：By Jonathan Corbet @ Dec 11, 2013
 > 翻译：By Tacinight of [TinyLab.org][1] @ Nov 28, 2017
 > 校对：By Unicornx of [TinyLab.org][1]
 

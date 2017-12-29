@@ -17,7 +17,7 @@ tags:
 ---
 
 > 原文：[Btrfs: Getting started](https://lwn.net/Articles/577218/)
-> 原创：By Jonathan Corbet @ December 11, 2013
+> 原创：By Jonathan Corbet @ Dec 11, 2013
 > 翻译：By Tacinight of [TinyLab.org][1] @ Nov 23, 2017
 > 校对：By guojian-at-wowo of [TinyLab.org][1] @ Dec 11, 2017
 

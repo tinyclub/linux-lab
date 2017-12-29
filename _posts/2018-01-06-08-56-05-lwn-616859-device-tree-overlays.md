@@ -17,7 +17,7 @@ tags:
 ---
 
 > 原文：[Device tree overlays](https://lwn.net/Articles/616859/)
-> 原创：By Jonathan Corbet @ October 22, 2014
+> 原创：By Jonathan Corbet @ Oct 22, 2014
 > 翻译：By Unicornx of [TinyLab.org][1]
 > 校对：By [w-simon](https://github.com/w-simon)
 

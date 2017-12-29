@@ -16,7 +16,7 @@ tags:
 ---
 
 > 原文：[KS2009: Generic device trees](https://lwn.net/Articles/357487/)
-> 原创：By Jonathan Corbet @ October 19, 2009
+> 原创：By Jonathan Corbet @ Oct 19, 2009
 > 翻译：By Unicornx of [TinyLab.org][1]
 > 校对：By [WH2136](https://github.com/WH2136)
 

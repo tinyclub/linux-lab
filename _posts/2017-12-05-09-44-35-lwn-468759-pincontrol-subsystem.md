@@ -16,8 +16,8 @@ tags:
 ---
 
 > 原文：[The pin control subsystem](https://lwn.net/Articles/468759/)
-> 原创：By Jonathan Corbet @ November 22, 2011
-> 翻译：By Unicornx of [TinyLab.org][1] @ November 2, 2017
+> 原创：By Jonathan Corbet @ Nov 22, 2011
+> 翻译：By Unicornx of [TinyLab.org][1] @ Nov 2, 2017
 > 校对：By Tacinight & Falcon of [TinyLab.org][1]
 
 > Classic x86-style processors are designed to fit into a mostly standardized system architecture, so they all tend, in a general sense, to look alike. One of the reasons why it is hard to make a general-purpose kernel for embedded processors is the absence of this standardized architecture. Embedded processors must be extensively configured, at boot time, to be able to run the system they are connected to at all. The 3.1 kernel saw the addition of the "pin controller" subsystem which is intended to help with that task; enhancements are on the way for (presumably) 3.2 as well. This article will provide a superficial overview of how the pin controller works.

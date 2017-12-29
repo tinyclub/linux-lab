@@ -16,7 +16,7 @@ tags:
 ---
 
 > 原文：[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/)
-> 原创：By Jonathan Corbet @ January 23, 2013
+> 原创：By Jonathan Corbet @ Jan 23, 2013
 > 翻译：By Unicornx of [TinyLab.org][1] @ Nov 24, 2017
 > 校对：By [lljgithub](https://github.com/lljgithub)
 

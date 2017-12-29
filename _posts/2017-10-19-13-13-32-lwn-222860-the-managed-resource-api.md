@@ -16,7 +16,7 @@ tags:
 ---
 
 > 原文：[The managed resource API](https://lwn.net/Articles/222860/)
-> 原创：By Jonathan Corbet @ February 20, 2007
+> 原创：By Jonathan Corbet @ Feb 20, 2007
 > 翻译：By Unicornx of [TinyLab.org][1] @ Oct 19, 2017
 > 校对：By Falcon of [TinyLab.org][1]
 

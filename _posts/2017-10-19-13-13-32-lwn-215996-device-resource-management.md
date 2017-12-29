@@ -17,7 +17,7 @@ tags:
 ---
 
 > 原文：[Device resource management](https://lwn.net/Articles/215996/)
-> 原创：By Jonathan Corbet @ January 2, 2007
+> 原创：By Jonathan Corbet @ Jan 2, 2007
 > 翻译：By Unicornx of [TinyLab.org][1] @ Oct 19, 2017
 > 校对：By Falcon of [TinyLab.org][1]
 

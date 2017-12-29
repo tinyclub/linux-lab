@@ -22,6 +22,9 @@ tags:
   * 在线实验
       * [泰晓实验云台](http://tinylab.cloud:6080/labs/)
 
+  * 考古计划
+      * [Linux 考古笔记](http://tinylab.org/lad-book)
+
   * 在线演示
       * 命令行
           * [基本用法](http://showterm.io/ffb67385a07fd3fcec182)

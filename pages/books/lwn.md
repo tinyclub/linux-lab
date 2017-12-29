@@ -147,7 +147,7 @@ tags:
 |--------|--------------------|----------------------|-------|
 | 已发表 | Tacinight          | unicornx             |[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)|
 | 已发表 | Tacinight          | guojian-at-wowo      |[Btrfs: Getting started](https://lwn.net/Articles/577218/) |
-| 翻译中 | Tacinight          |                      |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
+| 校对中 | Tacinight          | fan-xin              |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
 | 已发表 | linuxkoala         | unicornx             |[CFS group scheduling](https://lwn.net/Articles/240474/)|
@@ -161,6 +161,7 @@ tags:
 | 已发表 | unicornx           | lljgithub            |[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
 | 校对中 | unicornx           | w-simon              |[Device tree overlays](https://lwn.net/Articles/616859/) |
 | 已发表 | unicornx           | WH2136               |[KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
+| 翻译中 | unicornx           |                      |[(Partially) graduating IIO](https://lwn.net/Articles/465358/) |
 | 翻译中 | unicornx           |                      |[ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
 | 翻译中 | unicornx           |                      |[Device tree troubles](https://lwn.net/Articles/560523/) |
 | 翻译中 | unicornx           |                      |[Device trees as ABI](https://lwn.net/Articles/561462/) |
@@ -172,6 +173,7 @@ tags:
 | 翻译中 | norlanjame         |                      |[The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |
 | 翻译中 | lljgithub          |                      |[Realtime KVM](https://lwn.net/Articles/656807/) |
 | 翻译中 | fan-xin            |                      |[LTSI and Fuego](https://lwn.net/Articles/694880/) |
+| 翻译中 | fan-xin            |                      |[Yocto 2.0](https://lwn.net/Articles/664073/) |
 
 
 [1]: http://tinylab.org

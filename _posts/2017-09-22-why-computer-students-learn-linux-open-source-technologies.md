@@ -19,10 +19,10 @@ categories:
   - Linux 系统
 ---
 
-> by falcon of [TinyLab.org][1]
+> by Falcon of [TinyLab.org][1]
 > 2013/08/25
 
-Linux 开源相关技术对于学生来说，特别是计算机专业的学生来说，非常重要，下面就几个方面进行讨论：
+Linux 相关的开源技术对于学生来说，特别是计算机专业的学生来说，非常重要，下面就几个方面进行讨论：
 
 ## 研究平台
 

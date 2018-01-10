@@ -150,6 +150,9 @@ tags:
 | 校对中 | Tacinight          | fan-xin              |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
+| 翻译中 | Tacinight          |                      |[Container-aware filesystems](https://lwn.net/Articles/718639/) |
+| 翻译中 | Tacinight          |                      |[A new API for mounting filesystems](https://lwn.net/Articles/718638/) |
+| 翻译中 | Tacinight          |                      |[Filesystem management interfaces](https://lwn.net/Articles/718803/) |
 | 已发表 | linuxkoala         | unicornx             |[CFS group scheduling](https://lwn.net/Articles/240474/)|
 | 翻译中 | linuxkoala         |                      |[CFS bandwidth control](https://lwn.net/Articles/428230/) |
 | 已发表 | unicornx           | lzufalcon            |[Device resource management](https://lwn.net/Articles/215996/)|
@@ -159,9 +162,9 @@ tags:
 | 已发表 | unicornx           | lzufalcon            |[The managed resource API](https://lwn.net/Articles/222860/)|
 | 已发表 | unicornx           | cee1, norlanjame     |[GPIO in the kernel: an introduction](https://lwn.net/Articles/532714/)|
 | 已发表 | unicornx           | lljgithub            |[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/) |
-| 校对中 | unicornx           | w-simon              |[Device tree overlays](https://lwn.net/Articles/616859/) |
+| 已发表 | unicornx           | w-simon              |[Device tree overlays](https://lwn.net/Articles/616859/) |
 | 已发表 | unicornx           | WH2136               |[KS2009: Generic device trees](https://lwn.net/Articles/357487/) |
-| 校对中 | unicornx           | maxiao1993           |[(Partially) graduating IIO](https://lwn.net/Articles/465358/) |
+| 已发表 | unicornx           | maxiao1993           |[(Partially) graduating IIO](https://lwn.net/Articles/465358/) |
 | 翻译中 | unicornx           |                      |[ELCE: Grant Likely on device trees](https://lwn.net/Articles/414016/) |
 | 翻译中 | unicornx           |                      |[Device tree troubles](https://lwn.net/Articles/560523/) |
 | 翻译中 | unicornx           |                      |[Device trees as ABI](https://lwn.net/Articles/561462/) |

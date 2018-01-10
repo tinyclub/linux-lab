@@ -1,5 +1,5 @@
 ---
-title: 为什么计算机的学生要学习 Linux 开源技术
+title: 为什么计算机的学生要学习Linux开源技术
 author: Wu Zhangjin
 layout: post
 permalink: /why-computer-students-learn-linux-open-source-technologies/
@@ -30,7 +30,7 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 
 ## 专业视野
 
-藉由那些开源项目，可以通过邮件列表、[Linkedin][2]、Google Group 接触到来自全球各地的天才，不仅可以提升英文读写能力，认识国际友人，还可以把握领域前沿，甚至还有机会得到大佬们的指点迷津。
+藉由那些开源项目，可以通过[邮件列表][30]、[Patchwork][31]、[Github][32]、[Linkedin][2]、Google Group 接触到来自全球各地的天才，不仅可以提升英文读写能力，认识国际友人，还可以把握领域前沿，甚至还有机会得到大佬们的指点迷津。
 
 ## 工作机会
 
@@ -40,7 +40,7 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 
 ## 课程实践
 
-几乎从硬件到软件，Linux 平台能够自下而上提供各类触及“灵魂”学习案例，让所有课程从纸上谈兵转变成沙场实战，会极大地提升工程实践的效率和技能。
+几乎从硬件到软件，Linux 平台能够自下而上提供各类触及“灵魂”的学习案例，让所有课程从纸上谈兵转变成沙场实战，会极大地提升工程实践的效率和技能。
 
 ### 硬件方面
 
@@ -81,7 +81,7 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 
 Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时如果能够读一读 Linux 0.11 的源代码，会发现操作系统不是干巴巴的电梯调度算法之类算法描述。可以看到实实在在的活生生的场景，可以说话的场景。
 
-什么调度算法，什么同步机制，什么中断管理，什么文件系统，什么各类外设的驱动等等，通通可以看到源代码实现并允许亲自去修改、调试和完善，甚至可以通过 [ 邮件列表 ][5] 提交 Patch 到官方 Linux 社区，然后有机会接触 Linux 社区的那些印象中“神一般”现实里“平易近人”的大佬们。而且开源社区很喜欢初生牛犊不怕虎、善于思考、勇于探索的同学们。
+什么调度算法，什么同步机制，什么中断管理，什么文件系统，什么各类外设的驱动等等，通通可以看到源代码实现并允许亲自去修改、调试和完善，甚至可以通过 [邮件列表][5] 提交 Patch 到官方 Linux 社区，然后有机会接触 Linux 社区的那些印象中“神一般”现实里“平易近人”的大佬们。而且开源社区很喜欢初生牛犊不怕虎、善于思考、勇于探索的同学们。
 
 还可以自己制作一个完整的操作系统。看看 Building Embedded Linux System 这本书，从 [Linux 官方社区](http://www.kernel.org) 下载一份源代码，编译一下，然后用 [Busybox][6]、[Buildroot][7]、LFS、Openembedded 甚至 Yocto 制作文件系统，然后就是一个完整的操作系统。
 
@@ -125,7 +125,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 结合上面的操作系统课程，特别推荐一门旧金山大学的课程：[CS630][13]，本来这个老师 (Allan B. Cruse) 是在 I386 真机上做实验的，笔者完善了 Makefile，然后就可以在 Qemu 上做实验：
 
-* [ CS630 汇编语言课程实验环境][14]。
+* [CS630 汇编语言课程实验环境][14]。
 * [Linux 下通过 Qemu 学习 X86 AT&T 汇编语言](http://tinylab.org/learn-x86-language-courses-on-the-ubuntu-qemu-cs630/)
 
 分享一个趣事：笔者给 Cruse 老师分享了通过 Qemu 做实验的方法，他说这个 Online 学生不错，可以直接拿个 A ^-^。
@@ -178,7 +178,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 整个系列的 Slides 的原始存放位置已经无法访问，这里提供了备份：[Part-I][26]，[Part-II][27]，[Part-III][28]。
 
-巧合地是，2008 年左右笔者也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源 [《C 语言编程透视》][19]，正在持续校订和完善中。Jserv 前辈也参与了该书的修订并已经把该书作为大学补充教材：
+巧合地是，2008 年左右笔者也有过类似的心路历程，虽然跟前辈 Jserv 比起来只是咿呀学步，不过有兴趣的朋友也可以一同分享，目前已经整理成开源书籍：[《C 语言编程透视》][19]，正在持续校订和完善中。Jserv 前辈也参与了该书的修订并已经把该书作为大学补充教材：
 
 > hi,
 >
@@ -213,7 +213,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 编译原理太重要了，了解 Turob c, Virtual studio C++ 背后的故事吗？很难吧，但是 Gnu Toolchains 可以。
 
-从源代码编辑 (vim) 、预处理 (gcc -E, cpp) 、编译 (gcc -S)、汇编（gcc -c, as） 、链接（gcc, ld）的整个过程可以看得一清二楚。
+从源代码编辑 (vim) 、预处理 (gcc -E, cpp) 、编译 (gcc -S)、汇编（gcc -c, as）、链接（gcc, ld）的整个过程可以看得一清二楚。
 
 可以用 binutils 提供的一序列工具 readelf, objdump, objcopy, nm, ld, as 理解什么是可执行文件，可执行文件的结构是什么样的，它包含了哪些东西，那些所谓的代码段、数据段是如何组织的。
 
@@ -237,7 +237,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 ### 计算机网络
 
-回到虚拟化，用 Qemu （当然，还有 VirtualBox 之类），理论上可以创建任意多台虚拟的计算机，搭建任意多种不同的网络服务，创建一个复杂的集群，想做网桥，还是想做 NAT 可以选……
+回到虚拟化，用 Qemu （当然，还有 VirtualBox 之类），理论上可以创建任意多台虚拟的计算机，搭建任意多种不同的网络服务，创建一个复杂的集群，想做网桥，还是想做 NAT，可以根据需要选……
 
 ### 文档撰写
 
@@ -255,12 +255,14 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 ## 在线实验
 
-为了更快更高效地做实验，泰晓科技开发了一套开源的在线[实验云台](http://tinylab.cloud:6080)。
+实验环节往往是继续深入计算机课程的拦路虎。为了更快更高效地做实验，泰晓科技开发了一套开源的在线[实验云台](http://tinylab.cloud:6080)。
 
 这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux 等在内的实验环境，更多环境正在陆续开发中。欢迎提出更多想法、需求和建议。
 
 * 实验云台：<http://tinylab.cloud:6080>
-* [获取即时在线实验帐号](http://weidian.com/?userid=335178200)
+* 项目首页：<http://tinylab.org/cloud-lab>
+* 代码仓库：<https://github.com/tinyclub/cloud-lab>
+* [获取帐号](http://weidian.com/?userid=335178200)
 
 购买帐号后通过浏览器登陆 [实验云台](http://tinylab.cloud:6080) 即可实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
@@ -294,7 +296,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 ## 小结
 
-以上从多个方面分析了学习 Linux 开源相关技术的诸多益处。
+以上从多个方面分析了学习 Linux 相关开源技术的诸多益处。
 
 潮流一点叫“社区化学习”，国际一点叫“Open, Free, Share”，国内一点叫“共赢”，传统一点叫“三人行，必有我师”。
 
@@ -327,3 +329,6 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
  [26]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartI-2007-03-25.pdf
  [27]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartII-2007-03-25.pdf
  [28]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartIII-2007-03-25.pdf
+ [30]: http://vger.kernel.org/vger-lists.html
+ [31]: https://patchwork.kernel.org/
+ [32]: https://github.com/

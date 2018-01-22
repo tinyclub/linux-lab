@@ -10,7 +10,7 @@ markdown: kramdown
 # redcarpet:
 #  extensions: ["no_intra_emphasis", "autolink", "tables"]
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "tools", "pdfs", "Dockerfile"]
-highlighter: pygments
+highlighter: rouge
 
 plugins: [jekyll-paginate]
 paginate: 10

@@ -107,14 +107,14 @@ tags:
   准备提交，注意提交前务必和 tinylab 的 upstream 保持同步，具体操作如下( 假设本地开发分支为 lwn-123456-just-an-example )：
 
 		$ git fetch --all
-		$ git rebase --onto upstream/master --root
+		$ git rebase --onto remotes/upstream/gh-pages --root
 		$ git push origin lwn-123456-just-an-example
 
   如果 merge 过程中有冲突则自行解决后继续，解决冲突后记得继续执行 `git rebase --continue` 确保所有变更都已合入。
 
 - Step 7: 发起 `pull request`
 
-  进入自己的 github 仓库页面，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，可以直接指向远程 master 分支。
+  进入自己的 github 仓库页面，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，可以直接指向远程 `gh-pages` 分支。
 
   提交后会安排交叉审阅，审阅工作通过 github 在线完成。
 
@@ -147,12 +147,12 @@ tags:
 |--------|--------------------|----------------------|-------|
 | 已发表 | Tacinight          | unicornx             |[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)|
 | 已发表 | Tacinight          | guojian-at-wowo      |[Btrfs: Getting started](https://lwn.net/Articles/577218/) |
-| 校对中 | Tacinight          | fan-xin              |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
+| 已发表 | Tacinight          | fan-xin              |[Btrfs: Working with multiple devices](https://lwn.net/Articles/577961/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |
 | 翻译中 | Tacinight          |                      |[Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |
-| 翻译中 | Tacinight          |                      |[Container-aware filesystems](https://lwn.net/Articles/718639/) |
+| 校对中 | Tacinight          | norlanjame           |[Container-aware filesystems](https://lwn.net/Articles/718639/) |
 | 翻译中 | Tacinight          |                      |[A new API for mounting filesystems](https://lwn.net/Articles/718638/) |
-| 翻译中 | Tacinight          |                      |[Filesystem management interfaces](https://lwn.net/Articles/718803/) |
+| 校对中 | Tacinight          | cee1                 |[Filesystem management interfaces](https://lwn.net/Articles/718803/) |
 | 已发表 | linuxkoala         | unicornx             |[CFS group scheduling](https://lwn.net/Articles/240474/)|
 | 翻译中 | linuxkoala         |                      |[CFS bandwidth control](https://lwn.net/Articles/428230/) |
 | 已发表 | unicornx           | lzufalcon            |[Device resource management](https://lwn.net/Articles/215996/)|

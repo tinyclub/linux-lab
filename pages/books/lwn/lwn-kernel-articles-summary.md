@@ -1,4 +1,4 @@
-n---
+---
 title: LWN 中文翻译文章汇总
 tagline: LWN.net 中文翻译计划
 author: Wang Chen

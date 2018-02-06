@@ -41,7 +41,7 @@ tags:
 
 - Step 2: Fork 主仓库
 
-  我们的工作基于 Github 进行，请首先注册 [github](https://github.com) 帐号，然后 [Fork TinyLab.org](https://github.com/tinyclub/tinylab.org#fork-destination-box) .
+  我们的工作基于 Github 进行，请首先注册 [github](https://github.com) 帐号，然后 [Fork 主仓库 TinyLab.org](https://github.com/tinyclub/tinylab.org#fork-destination-box) .
 
 - Step 3: Clone 仓库
 
@@ -56,12 +56,12 @@ tags:
   
   确认无误后创建开发分支进行翻译：
 
-		$ git checkout gh-pages
+		$ git checkout master
 		$ git checkout -b lwn-<XXXXXX>-<description>
 
   对译文的开发分支的要求如下：
 
-  - 译文开发分支基于主线分支 `gh-pages` 创建（**注意，不是 `master`** 哦！），一篇翻译文章对应一个开发分支；一个开发分支对应一次或者多次 `pull request` 和 一次 `merge`。
+  - 译文开发分支基于 origin 仓库的主线分支 `master` 创建，一篇翻译文章对应一个开发分支；一个开发分支对应一次或者多次 `pull request` 和 一次 `merge`。
 
   - 开发分支的命名规则遵循格式 `lwn-<XXXXXX>-<description>`，其中 `XXXXXX` 是文章在 [LWN.net](https://lwn.net/) 上的编号；<description> 是你自己的简单描述，描述中只用英文字母，如果有多个单词用 `-` 分隔。例子：`lwn-123456-just-an-example`。
 
@@ -92,7 +92,7 @@ tags:
 
 - Step 6: 提交到自己仓库
 
-  准备提交，注意提交前务必和 tinylab 的 upstream 保持同步，具体操作如下( 假设本地开发分支为 lwn-123456-just-an-example )：
+  准备提交，注意提交前务必和 tinylab 的 upstream 保持同步，具体操作如下( 假设本地开发分支为 lwn-123456-just-an-example 并且当前已经 checkout 在该开发分支上工作)：
 
 		$ git fetch --all
 		$ git rebase --onto remotes/upstream/gh-pages --root
@@ -102,7 +102,7 @@ tags:
 
 - Step 7: 发起 `pull request`
 
-  进入自己的 github 仓库页面，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，可以直接指向远程 `gh-pages` 分支。
+  进入自己的 github 仓库页面，找到标签 `pull request`，点击右侧的 `New pull request` 按钮创建一笔 PR，缺省直接指向远程 `gh-pages` 分支（注意，远程主仓库 (upstream) 的主线分支不是 `master`，而是 `gh-pages`）。
 
   提交后会安排交叉审阅，审阅工作通过 github 在线完成。
 
@@ -113,7 +113,7 @@ tags:
 
 - Step 8: 管理员 `Merge pull request`
 
-  如果文章无误，管理员就会直接把提交合并到主线分支 `gh-pages` 。
+  如果文章无误，管理员就会直接把提交合并到主仓库的主线分支 `gh-pages` 。
 
   Congratulations! 至此您的文章将在 [泰晓科技][1] 上发布。
 

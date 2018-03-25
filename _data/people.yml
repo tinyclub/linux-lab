@@ -279,3 +279,12 @@ Li Feng:
   email: myothers2014@126.com
   github: KooLi2015
   info: Linux fans
+
+Oliver Yang:
+  name: Oliver Yang
+  nickname: Oliver
+  archive: true
+  article: true
+  email: yang_oliver@hotmail.com
+  github: yangoliver
+  info: Linux 内核工程师，来自阿里云系统组(微信订阅号：内核月谈)。曾就职于 EMC，Sun 中国工程研究院，在存储系统和 Solaris 内核开发领域工作。 近几年来开始研究 Linux 内核，对 Linux 性能优化，内存管理子系统有浓厚兴趣。

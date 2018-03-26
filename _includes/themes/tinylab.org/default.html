@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
-  <title>{{ site.title }} - {% if page.group == "home" %}{{ page.tagline }}{% else %}{{ page.title }}{% endif %}</title>
+  <title>{% if page.group == "home" %}{{ page.tagline }}{% else %}{{ page.title }}{% endif %} - {{ site.title }}</title>
 
 {% capture tmpcache %}
 {% capture nl0 %}

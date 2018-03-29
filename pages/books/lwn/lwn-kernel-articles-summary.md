@@ -32,7 +32,7 @@ tags:
 | 已发表 | Tacinight          | fan-xin              |[Btrfs: Working with multiple devices](/lwn-577961-btrfs-working-with-multiple-devices) |December 30, 2013|
 | 翻译中 | Tacinight          |                      |[Btrfs: Subvolumes and snapshots](https://lwn.net/Articles/579009/) |January 6, 2014|
 | 翻译中 | Tacinight          |                      |[Btrfs: Send/receive and ioctl()](https://lwn.net/Articles/581558/) |January 22, 2014|
-| 校对中 | Tacinight          | norlanjame           |[Container-aware filesystems](https://lwn.net/Articles/718639/) |April 3, 2017|
+| 校对中 | Tacinight          | fan-xin              |[Container-aware filesystems](https://lwn.net/Articles/718639/) |April 3, 2017|
 | 翻译中 | Tacinight          |                      |[A new API for mounting filesystems](https://lwn.net/Articles/718638/) |April 2, 2017|
 | 已发表 | Tacinight          | cee1                 |[Filesystem management interfaces](/lwn-718803-filesystem-management-interfaces) |April 5, 2017|
 | 已发表 | linuxkoala         | unicornx             |[CFS group scheduling](/lwn-240474-cfs-group-scheduling)|July 2, 2007|
@@ -55,10 +55,15 @@ tags:
 | 翻译中 | unicornx           |                      |[Device trees II: The harder parts](https://lwn.net/Articles/573409/) |November 18, 2013|
 | 翻译中 | unicornx           |                      |[Object-oriented design patterns in the kernel, part 1](https://lwn.net/Articles/444910/) |June 1, 2011|
 | 翻译中 | unicornx           |                      |[Object-oriented design patterns in the kernel, part 2](https://lwn.net/Articles/446317/) |June 7, 2011|
-| 翻译中 | unicornx           |                      |[Namespaces in operation, part 1: namespaces overview](https://lwn.net/Articles/531114/) |January 4, 2013|
-| 翻译中 | unicornx           |                      |[Namespaces in operation, part 2: the namespaces API](https://lwn.net/Articles/531381/) |January 8, 2013|
-| 翻译中 | unicornx           |                      |[Namespaces in operation, part 3: PID namespaces](https://lwn.net/Articles/531419/) |January 16, 2013|
+| 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 1: namespaces overview](/lwn-531114-namespaces-in-op-part1) |January 4, 2013|
+| 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 2: the namespaces API](/lwn-531381-namespaces-in-op-part2) |January 8, 2013|
+| 校对中 | unicornx           |                      |[Namespaces in operation, part 3: PID namespaces](https://lwn.net/Articles/531419/) |January 16, 2013|
 | 翻译中 | unicornx           |                      |[Namespaces in operation, part 4: more on PID namespaces](https://lwn.net/Articles/532748/) |January 23, 2013|
+| 翻译中 | unicornx           |                      |[A new generic IRQ layer](https://lwn.net/Articles/184750/) |May 23, 2006|
+| 翻译中 | unicornx           |                      |[A new approach to kernel timers](https://lwn.net/Articles/152436/) |September 20, 2005|
+| 翻译中 | unicornx           |                      |[On the merging of ktimers](https://lwn.net/Articles/156325/) |October 19, 2005|
+| 翻译中 | unicornx           |                      |[The high-resolution timer API](https://lwn.net/Articles/167897/) |January 16, 2006|
+| 翻译中 | unicornx           |                      |[High- (but not too high-) resolution timeouts](https://lwn.net/Articles/296578/) |September 2, 2008|
 | 翻译中 | norlanjame         |                      |[The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |October 11, 2006|
 | 翻译中 | lljgithub          |                      |[Realtime KVM](https://lwn.net/Articles/656807/) |September 10, 2015|
 | 翻译中 | fan-xin            |                      |[LTSI and Fuego](https://lwn.net/Articles/694880/) |July 20, 2016|

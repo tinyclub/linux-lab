@@ -57,9 +57,9 @@ tags:
 | 翻译中 | unicornx           |                      |[Object-oriented design patterns in the kernel, part 2](https://lwn.net/Articles/446317/) |June 7, 2011|
 | 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 1: namespaces overview](/lwn-531114-namespaces-in-op-part1) |January 4, 2013|
 | 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 2: the namespaces API](/lwn-531381-namespaces-in-op-part2) |January 8, 2013|
-| 校对中 | unicornx           |                      |[Namespaces in operation, part 3: PID namespaces](https://lwn.net/Articles/531419/) |January 16, 2013|
-| 翻译中 | unicornx           |                      |[Namespaces in operation, part 4: more on PID namespaces](https://lwn.net/Articles/532748/) |January 23, 2013|
-| 翻译中 | unicornx           |                      |[A new generic IRQ layer](https://lwn.net/Articles/184750/) |May 23, 2006|
+| 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 3: PID namespaces](https://lwn.net/Articles/531419/) |January 16, 2013|
+| 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 4: more on PID namespaces](https://lwn.net/Articles/532748/) |January 23, 2013|
+| 已发表 | unicornx           | guojian-at-wowo      |[A new generic IRQ layer](https://lwn.net/Articles/184750/) |May 23, 2006|
 | 翻译中 | unicornx           |                      |[A new approach to kernel timers](https://lwn.net/Articles/152436/) |September 20, 2005|
 | 翻译中 | unicornx           |                      |[On the merging of ktimers](https://lwn.net/Articles/156325/) |October 19, 2005|
 | 翻译中 | unicornx           |                      |[The high-resolution timer API](https://lwn.net/Articles/167897/) |January 16, 2006|

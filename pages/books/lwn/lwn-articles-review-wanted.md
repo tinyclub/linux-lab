@@ -68,7 +68,7 @@ tags:
 
 	![](/wp-content/uploads/2018/05/lwn-review-step4-2.png)
 
-	点击该 “+”，即可输入您的评审意见
+	点击该 “+” 后输入您的评审意见，完成后点击 “Add single comment” 即可。
 
 	![](/wp-content/uploads/2018/05/lwn-review-step4-3.png)
 

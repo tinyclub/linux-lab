@@ -30,7 +30,8 @@ tags:
 本活动所有翻译和校对的工作都通过 [github][3] 在线完成，已经翻译就绪的文章将以 Pull Request （以下简称 PR）的方式提交并等待认领（指派）。
 
 |译者|文章原文|译文在 github 上的 PR 编号|
-|----|--------|------------------------|
+|----|--------|--------------------------|
+|N/A |N/A     |N/A|
 
 
 ## 校对的流程
@@ -47,7 +48,7 @@ tags:
  
 - Step 3: 认领希望校对的文章
 
-	参考前述**等待校对的已经翻译就绪的文章列表**，然后通过微信通知 [unicornx][2] 您希望认领的文章所对应的 PR 编号。
+	参考上一章**等待校对的已经翻译就绪的文章列表**，然后通过微信通知 [unicornx][2] 您希望认领的文章所对应的 PR 编号。
 	
 	[unicornx][2] 会在第一时间通过微信联系您并将您指派为该 PR 的校对人员，指派成功后您会收到 [github][3] 的邮件通知。
 
@@ -61,15 +62,15 @@ tags:
 
 	打开 PR 所对应的页面后，点击 “Files changed”。
 
-	![](lwn-review-step4-1.png)
+	![](/wp-content/uploads/2018/05/lwn-review-step4-1.png)
 
 	将鼠标移动到你觉得有问题的行数附近，会出现一个 “+” 
 
-	![](lwn-review-step4-2.png)
+	![](/wp-content/uploads/2018/05/lwn-review-step4-2.png)
 
 	点击该 “+”，即可输入您的评审意见
 
-	![](lwn-review-step4-3.png)
+	![](/wp-content/uploads/2018/05/lwn-review-step4-3.png)
 
 - Step 5：完成校对
 

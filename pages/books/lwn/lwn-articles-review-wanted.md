@@ -1,12 +1,12 @@
 ---
-title: LWN 中文翻译等待校对列表
+title: LWN 中文翻译 诚征校对人员
 tagline: LWN.net 中文翻译计划
 author: Wang Chen
 layout: page
 album: 'LWN 中文翻译'
 group: translation
 update: 2018-5-12
-permalink: /lwn-articles-review-wanted/
+permalink: /lwn-review/
 description: LWN 中文翻译等待校对列表
 categories:
   - Linux 综合知识
@@ -29,9 +29,12 @@ tags:
 
 本活动所有翻译和校对的工作都通过 [github][3] 在线完成，已经翻译就绪的文章将以 Pull Request （以下简称 PR）的方式提交并等待认领（指派）。
 
-|译者|文章原文|译文在 github 上的 PR 编号|
-|----|--------|--------------------------|
-|N/A |N/A     |N/A|
+目前等待校对的文章列表如下:
+
+|译者(github id)|文章原文|译文在 github 上的 PR 编号|
+|---------------|--------|--------------------------|
+|unicornx       |[A new approach to kernel timers](https://lwn.net/Articles/152436/)|[#143](https://github.com/tinyclub/tinylab.org/pull/143)|
+
 
 
 ## 校对的流程

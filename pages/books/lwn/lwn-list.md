@@ -72,8 +72,9 @@ tags:
 | 翻译中 | KooLi2015          |                      |[A thorough introduction to eBPF](https://lwn.net/Articles/740157/) |December 2, 2017|
 | 翻译中 | wangbojing         |                      |[Supporting block I/O contexts](https://lwn.net/Articles/502472/) |June 18, 2012|
 | 翻译中 | wangbojing         |                      |[Asynchronous block loop I/O](https://lwn.net/Articles/535034/) |January 30, 2013|
-
-
+| 翻译中 | darmac             |                      |[Diskdump: a new crash dump system](https://lwn.net/Articles/87684/) |June 2, 2004|
+| 翻译中 | darmac             |                      |[Bringing kgdb into 2.6](https://lwn.net/Articles/70465/) |February 10, 2004|
+| 翻译中 | darmac             |                      |[﻿Finding kernel problems automatically](https://lwn.net/Articles/87538/) |June 1, 2004|
 
 
 [1]: http://tinylab.org

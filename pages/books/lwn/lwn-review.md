@@ -33,7 +33,7 @@ tags:
 
 |译者(github id)|文章原文|译文在 github 上的 PR 编号|
 |---------------|--------|--------------------------|
-|unicornx       |[A new approach to kernel timers](https://lwn.net/Articles/152436/)|[#143](https://github.com/tinyclub/tinylab.org/pull/143)|
+||||
 
 
 

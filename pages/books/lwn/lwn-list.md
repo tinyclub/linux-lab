@@ -61,7 +61,7 @@ tags:
 | 已发表 | unicornx           | w-simon              |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748-namespaces-in-op-part4) |January 23, 2013|
 | 已发表 | unicornx           | guojian-at-wowo      |[A new generic IRQ layer](/lwn-184750-generic-irq-layer) |May 23, 2006|
 | 已发表 | unicornx           | guojian-at-wowo      |[A new approach to kernel timers](/lwn-152436-new-approach-to-ktimers) |September 20, 2005|
-| 校对中 | unicornx           | guojian-at-wowo      |[On the merging of ktimers](https://lwn.net/Articles/156325/) |October 19, 2005|
+| 已发表 | unicornx           | guojian-at-wowo      |[On the merging of ktimers](/lwn-156325-on-merging-of-ktimers) |October 19, 2005|
 | 校对中 | unicornx           | guojian-at-wowo      |[The high-resolution timer API](https://lwn.net/Articles/167897/) |January 16, 2006|
 | 翻译中 | unicornx           |                      |[High- (but not too high-) resolution timeouts](https://lwn.net/Articles/296578/) |September 2, 2008|
 | 翻译中 | norlanjame         |                      |[The Video4Linux2 API: an introduction](https://lwn.net/Articles/203924/) |October 11, 2006|

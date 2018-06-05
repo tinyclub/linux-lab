@@ -33,9 +33,7 @@ tags:
 
 |译者(github id)|文章原文|译文在 github 上的 PR 编号|
 |---------------|--------|--------------------------|
-||||
-
-
+|Tacinight      |[Container-aware filesystems](https://lwn.net/Articles/718639/)|[#125](https://github.com/tinyclub/tinylab.org/pull/125)|
 
 ## 校对的流程
 

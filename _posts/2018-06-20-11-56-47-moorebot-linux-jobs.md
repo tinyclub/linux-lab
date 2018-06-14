@@ -30,8 +30,7 @@ addrs:
 
 * 联系：contactus [AT] moorebot [DOT] com
 
-* 资讯：
-  * [中国原创机器人率先加入Alexa智能生态圈](http://www.cyzone.cn/a/20180205/323900.html)
+* 资讯：[中国原创机器人率先加入Alexa智能生态圈](http://www.cyzone.cn/a/20180205/323900.html)
 
 ## Linux 工程师（若干人）
 
@@ -39,8 +38,8 @@ addrs:
 
   1. 负责 Linux 应用程序开发
   2. Linux 内核、文件系统、Uboot 的移植与优化
-  3. 文档的整理
   4. 解决研发、生产、维护中出现的问题
+  3. 相关文档的整理
 
 * __岗位要求__
 
@@ -50,6 +49,6 @@ addrs:
   4. 熟悉系统启动流程，Linux 内核调度，内存管理等。
   5. 熟悉 TCP/IP 及 HTTP 1.1/2.0 协议，RESTful 架构，MQTT 等
   6. 熟悉 Shell 脚本，Makefile 编写，熟悉 Openwrt 优先
-  7. 良好的编码习惯
+  7. 具有良好的编码习惯
   8. 有强烈的事业心，具有良好的团队合作精神
   9. 有音频、人脸识别等开发经验优先

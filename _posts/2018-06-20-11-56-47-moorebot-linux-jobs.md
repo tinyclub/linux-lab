@@ -2,10 +2,9 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "深圳普得技术诚招 Linux 工程师"
-draft: true
 group: jobs
 permalink: /moorebot-linux-jobs/
-description: "深圳普得技术有限公司诚招Linux音频、人脸识别工程师"
+description: "深圳普得技术有限公司诚招Linux工程师，音视频和人工智能应用技术相关经验优先。"
 category:
   - Linux 职位
 tags:
@@ -14,7 +13,9 @@ tags:
   - 深圳普得技术
   - 智能语音
   - 音频
-  - 人脸识别
+  - 视频
+  - 人工智能
+  - AI
 addrs:
   - 深圳
 ---
@@ -50,5 +51,8 @@ addrs:
   5. 熟悉 TCP/IP 及 HTTP 1.1/2.0 协议，RESTful 架构，MQTT 等
   6. 熟悉 Shell 脚本，Makefile 编写，熟悉 Openwrt 优先
   7. 具有良好的编码习惯
-  8. 有强烈的事业心，具有良好的团队合作精神
-  9. 有音频、人脸识别等开发经验优先
+
+* __优选条件__
+
+  1. 有强烈的事业心，具有良好的团队合作精神
+  2. 有音视频和人工智能应用技术相关经验优先

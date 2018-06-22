@@ -64,9 +64,9 @@ tags:
 | 已发表 | unicornx           | guojian-at-wowo      |[On the merging of ktimers](/lwn-156325-on-merging-of-ktimers) |October 19, 2005|
 | 已发表 | unicornx           | guojian-at-wowo      |[The high-resolution timer API](/lwn-167897-hrtimer-api) |January 16, 2006|
 | 已发表 | unicornx           | guojian-at-wowo      |[A new core time subsystem](/lwn-120850-a-new-core-time-subsystem) |January 26, 2005|
-| 校对中 | unicornx           | guojian-at-wowo      |[The dynamic tick patch](https://lwn.net/Articles/138969/) |June 7, 2005|
-| 校对中 | unicornx           | guojian-at-wowo      |[How fast should HZ be?](https://lwn.net/Articles/145973/) |August 2, 2005|
-| 校对中 | unicornx           | guojian-at-wowo      |[The state of the dynamic tick patch](https://lwn.net/Articles/149877/) |August 31, 2005|
+| 已发表 | unicornx           | guojian-at-wowo      |[The dynamic tick patch](/lwn-138969-dynamic-tick-patch) |June 7, 2005|
+| 已发表 | unicornx           | guojian-at-wowo      |[How fast should HZ be?](/lwn-145973-how-fast-should-hz-be) |August 2, 2005|
+| 已发表 | unicornx           | guojian-at-wowo      |[The state of the dynamic tick patch](/lwn-149877-state-of-dynamic-tick-patch) |August 31, 2005|
 | 翻译中 | unicornx           |                      |[Clockevents and dyntick](https://lwn.net/Articles/223185/) |February 21, 2007|
 | 翻译中 | unicornx           |                      |[Deferrable timers](https://lwn.net/Articles/228143/) |March 28, 2007|
 | 翻译中 | unicornx           |                      |[The new timerfd() API](https://lwn.net/Articles/251413/) |September 25, 2007|

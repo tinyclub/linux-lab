@@ -37,7 +37,7 @@ noVNC 被普遍用在各大云计算、虚拟机控制面板中，比如 OpenSta
 
 ## 启动容器并加载 VNCServer 服务
 
-<pre>$ CONTAINER_ID=$(docker run -d -p 6080:6080 dorowu/ubuntu-desktop-lxde-vnc)
+<pre>$ CONTAINER_ID=$(docker run -d -p 6080:80 dorowu/ubuntu-desktop-lxde-vnc)
 </pre>
 
 ## 获得登录密码

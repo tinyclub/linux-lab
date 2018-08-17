@@ -188,11 +188,15 @@ Build them one by one:
     $ make kernel
     $ make root
 
-Build internel kernel modules:
+Build all internel kernel modules:
 
     $ make modules
     $ make modules-install
     $ make root-rebuild && make boot
+
+Build one kernel module:
+
+    $ make module M=$PWD/linux-stable/fs/minix/
 
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 

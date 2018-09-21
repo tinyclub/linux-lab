@@ -19,7 +19,7 @@ tags:
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体参考 [Wikipedia 上有关 LWN 的介绍](https://en.wikipedia.org/wiki/LWN.net)。
 
-- 本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，所有 LWN 的内核文章原文汇总在 [Kernel index][2]，我们的中文翻译成果汇总(包括已经被认领，处于翻译或者审阅中还未发表的文章列表)在 [LWN 中文翻译成果汇总][3]。有志于参加本翻译计划的朋友可以从 [Kernel index][2] 中挑选您感兴趣的文章，只要确保不和 [LWN 中文翻译成果汇总][3] 中已经被其他人认领的文章冲突即可。
+- 本活动目前主要针对 [**LWN.net**](https://lwn.net/) 的内核相关文章进行中文翻译，所有 LWN 的内核文章原文汇总在 [**Kernel index**][2]，我们的中文翻译成果汇总(包括已经被认领，处于翻译或者审阅中还未发表的文章列表)在 [**LWN 中文翻译成果汇总**][3]。有志于参加本翻译计划的朋友可以从 [**Kernel index**][2] 中挑选您感兴趣的文章，只要确保不和 [**LWN 中文翻译成果汇总**][3] 中已经被其他人认领的文章冲突即可。
 
 - 本活动本着 “自愿参与，开放共享” 的原则进行。所有译文提交给 [泰晓科技][1] 公开发布后，均遵循 [CC BY-SA 4.0 协议](http://creativecommons.org/licenses/by-sa/4.0/) 许可。
 
@@ -56,12 +56,12 @@ tags:
   
   确认无误后创建开发分支进行翻译：
 
-		$ git checkout master
+		$ git checkout gh-pages
 		$ git checkout -b lwn-<XXXXXX>-<description>
 
   对译文的开发分支的要求如下：
 
-  - 译文开发分支基于 origin 仓库的主线分支 `master` 创建，一篇翻译文章对应一个开发分支；一个开发分支对应一次或者多次 `pull request` 和 一次 `merge`。
+  - 译文开发分支基于 origin 仓库的主线分支 `gh-pages` 创建，一篇翻译文章对应一个开发分支；一个开发分支对应一次或者多次 `pull request` 和 一次 `merge`。
 
   - 开发分支的命名规则遵循格式 `lwn-<XXXXXX>-<description>`，其中 `XXXXXX` 是文章在 [LWN.net](https://lwn.net/) 上的编号；<description> 是你自己的简单描述，描述中只用英文字母，如果有多个单词用 `-` 分隔。例子：`lwn-123456-just-an-example`。
 
@@ -127,4 +127,4 @@ tags:
 
 [1]: http://tinylab.org
 [2]: https://lwn.net/Kernel/Index/
-[3]: /lwn-kernel-articles-summary
+[3]: /lwn-list

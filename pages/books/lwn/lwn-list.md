@@ -128,10 +128,19 @@ tags:
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
-| 校对中 | unicornx   | lzufalcon   |[The NO_BOOTMEM patches](https://lwn.net/Articles/382559/) |April 7, 2010|
-| 校对中 | unicornx   | lzufalcon   |[Moving x86 to LMB](https://lwn.net/Articles/387083/) |May 11, 2010|
-| 翻译中 | unicornx   | lzufalcon   |[A quick history of early-boot memory allocators](https://lwn.net/Articles/761215/) |July 30, 2018|
+| 已发表 | unicornx   | lzufalcon   |[The NO_BOOTMEM patches](/lwn-382559-no-bootmem-patches) |April 7, 2010|
+| 已发表 | unicornx   | lzufalcon   |[Moving x86 to LMB](/lwn-387083-moving-x86-to-lmb) |May 11, 2010|
+| 已发表 | unicornx   | lzufalcon   |[A quick history of early-boot memory allocators](/lwn-761215-quick-history-early-boot-mem-allocators) |July 30, 2018|
 
+#### Page tables
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 已发表 | unicornx   | simowce & lljgithub |[Four-level page tables](/lwn-106177-four-level-pt) |October 12, 2004|
+| 校对中 | unicornx   | wuhuo-org   |[Rethinking four-level page tables]() |December 22, 2004|
+| 校对中 | unicornx   | lljgithub   |[Four-level page tables merged]() |January 5, 2005|
+| 校对中 | unicornx   | simowce     |[Five-level page tables]() |March 15, 2017|
+| 校对中 | unicornx   |             |[Reworking page-table traversal]() |May 4, 2018|
 
 #### Object-based reverse mapping
 

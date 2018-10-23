@@ -132,15 +132,22 @@ tags:
 | 已发表 | unicornx   | lzufalcon   |[Moving x86 to LMB](/lwn-387083-moving-x86-to-lmb) |May 11, 2010|
 | 已发表 | unicornx   | lzufalcon   |[A quick history of early-boot memory allocators](/lwn-761215-quick-history-early-boot-mem-allocators) |July 30, 2018|
 
+#### GFP flags
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 校对中 | unicornx   | llseek      |[Introducing gfp_t](/lwn-155344) |Oct. 11, 2005|
+
+
 #### Page tables
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
 | 已发表 | unicornx   | simowce & lljgithub |[Four-level page tables](/lwn-106177-four-level-pt) |October 12, 2004|
-| 校对中 | unicornx   | wuhuo-org   |[Rethinking four-level page tables]() |December 22, 2004|
-| 校对中 | unicornx   | lljgithub   |[Four-level page tables merged]() |January 5, 2005|
-| 校对中 | unicornx   | simowce     |[Five-level page tables]() |March 15, 2017|
-| 校对中 | unicornx   |             |[Reworking page-table traversal]() |May 4, 2018|
+| 已发表 | unicornx   | wuhuo-org   |[Rethinking four-level page tables](/lwn-116810) |December 22, 2004|
+| 已发表 | unicornx   | lljgithub   |[Four-level page tables merged](/lwn-117749-4-level-page-tables-merged) |January 5, 2005|
+| 已发表 | unicornx   | simowce     |[Five-level page tables](/lwn-717293-5-level-pt) |March 15, 2017|
+| 已发表 | unicornx   | fan-xin     |[Reworking page-table traversal](/lwn-753267-reworking-pt-traversal) |May 4, 2018|
 
 #### Object-based reverse mapping
 
@@ -149,6 +156,26 @@ tags:
 | 已发表 | unicornx   | w-simon   |[The object-based reverse-mapping VM](/lwn-23732-object-based-reverse-mapping-vm) |February. 25, 2003|
 | 已发表 | unicornx   | w-simon   |[Virtual Memory II: the return of objrmap](/lwn-75198-vm-ii-return-of-objrmap) |March 10, 2004|
 | 已发表 | unicornx   | w-simon   |[The case of the overly anonymous anon_vma](/lwn-383162-case-of-overly-anonymous-anon_vma) |April 13, 2010|
+
+#### page allocator
+
+| 状态   | 译作者     | 校对      | 文章  |原文发表时间|
+|--------|------------|-----------|-------|
+| 校对中 | unicornx   | lyzhsf    |[Speeding up the page allocator](/lwn-320556/) |June. 3, 2009|
+
+#### struct page
+
+| 状态   | 译作者     | 校对      | 文章  |原文发表时间|
+|--------|------------|-----------|-------|
+| 已发表 | unicornx   | Bennyzhao |[How many page flags do we really have?](/lwn-335768/) |June. 3, 2009|
+| 校对中 | unicornx   | w-simon |[Cramming more into struct page](/lwn-565097/) |Aug. 28, 2013|
+
+#### User-space layout
+
+| 状态   | 译作者     | 校对      | 文章  |原文发表时间|
+|--------|------------|-----------|-------|
+| 已发表 | unicornx   | llseek    |[Reorganizing the address space](/lwn-91829-reorg-addr-space) |June 30, 2004|
+| 已发表 | unicornx   | hal0936   |[Address space randomization in 2.6](/lwn-121845) |Feb. 2, 2005|
 
 ### Namespaces
 

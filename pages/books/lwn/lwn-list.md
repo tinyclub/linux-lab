@@ -154,7 +154,7 @@ tags:
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|
 | 已发表 | unicornx   | w-simon   |[The object-based reverse-mapping VM](/lwn-23732-object-based-reverse-mapping-vm) |February. 25, 2003|
-| 已发表 | unicornx   | w-simon   |[Virtual Memory II: the return of objrmap](/lwn-75198-vm-ii-return-of-objrmap) |March 10, 2004|
+| 已发表 | unicornx   | w-simon   |[Virtual Memory II: the return of objrmap](/lwn-75198) |March 10, 2004|
 | 已发表 | unicornx   | w-simon   |[The case of the overly anonymous anon_vma](/lwn-383162-case-of-overly-anonymous-anon_vma) |April 13, 2010|
 
 #### page allocator

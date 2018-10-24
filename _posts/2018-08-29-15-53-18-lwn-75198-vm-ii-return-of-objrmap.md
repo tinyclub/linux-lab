@@ -5,7 +5,7 @@ title: "LWN 75198: 虚拟内存专题二：基于对象的反向映射（object-
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-75198-vm-ii-return-of-objrmap/
+permalink: /lwn-75198/
 description: "LWN 文章翻译，基于对象的反向映射的回归"
 category:
   - 内存子系统

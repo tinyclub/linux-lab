@@ -136,7 +136,47 @@ tags:
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
-| 校对中 | unicornx   | llseek      |[Introducing gfp_t](/lwn-155344) |Oct. 11, 2005|
+| 已发表 | unicornx   | llseek      |[Introducing gfp_t](/lwn-155344) |Oct. 11, 2005|
+
+#### Large allocations
+
+##### Anti-fragmentation
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 已发表 | unicornx   | Tacinight   |[Kswapd and high-order allocations](/lwn-101230)|September 8, 2004|
+| 已发表 | Tacinight  | Bennnyzhao  |[Active memory defragmentation](/lwn-105021)|October 5, 2004|
+| 已发表 | unicornx   | ShaolinDeng |[Yet another approach to memory fragmentation](/lwn-121618)|February 1, 2005|
+| 已发表 | unicornx   | simowce     |[Fragmentation avoidance](/lwn-158211)|November 2, 2005|
+| 校对中 | simowce    | unicornx    |[More on fragmentation avoidance](/lwn-159110)|November 8, 2005|
+| 校对中 | unicornx   | lljgithub   |[Avoiding - and fixing - memory fragmentation](/lwn-211505)|November 28, 2006|
+
+##### Memory compaction
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 校对中 | unicornx   | llseek      |[Memory compaction](/lwn-368869) |January 6, 2010|
+| 校对中 | unicornx   | hal0936     |[Memory compaction issues](/lwn-591998) |March 26, 2014|
+| 校对中 | unicornx   | fan-xin     |[CMA and compaction](/lwn-684611) |April 23, 2016|
+| 校对中 | unicornx   | w-simon     |[Proactive compaction](/lwn-717656) |March 21, 2017|
+
+#### Page cache
+
+##### Writeback
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 校对中 | unicornx   |             |[Flushing out pdflush](/lwn-326552) |April 1, 2009|
+| 校对中 | hal0936    |             |[KS2012: memcg/mm: Dirty/writeback LRU](/lwn-516539) |September 17, 2012|
+
+
+##### Readahead
+
+| 状态   | 译作者     | 校对        | 文章  |原文发表时间|
+|--------|------------|-------------|-------|
+| 翻译中 | llseek     |             |[Adaptive file readahead](/lwn-155510) |October 12, 2005|
+| 翻译中 | unicornx   |             |[On-demand readahead](/lwn-235164) |May 21, 2007|
+| 翻译中 | Tacinight  |             |[Improving readahead](/lwn-372384) |February 3, 2010|
 
 
 #### Page tables
@@ -161,14 +201,14 @@ tags:
 
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|
-| 校对中 | unicornx   | lyzhsf    |[Speeding up the page allocator](/lwn-320556/) |June. 3, 2009|
+| 已发表 | unicornx   | lyzhsf    |[Speeding up the page allocator](/lwn-320556/) |June. 3, 2009|
 
 #### struct page
 
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|
 | 已发表 | unicornx   | Bennyzhao |[How many page flags do we really have?](/lwn-335768/) |June. 3, 2009|
-| 校对中 | unicornx   | w-simon |[Cramming more into struct page](/lwn-565097/) |Aug. 28, 2013|
+| 已发表 | unicornx   | w-simon |[Cramming more into struct page](/lwn-565097/) |Aug. 28, 2013|
 
 #### User-space layout
 

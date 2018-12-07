@@ -56,8 +56,6 @@
 
   <!-- Scripts -->
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery-1.10.1{{ css_js_compress_tag }}.js"></script>
-  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery.browser{{ css_js_compress_tag }}.js"></script>
-  <script type="text/javascript" src="{{ ASSET_PATH }}/js/jquery-iframe-auto-height{{ css_js_compress_tag }}.js"></script>
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/iframeResizer{{ css_js_compress_tag }}.js"></script>
   <script type="text/javascript" src="{{ ASSET_PATH }}/qrcode/jquery.qrcode{{ css_js_compress_tag }}.js"></script>
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/core{{ css_js_compress_tag }}.js"></script>
@@ -74,7 +72,6 @@
 
     $(document).ready(function () {
       resize_iframe();
-      $('iframe').iframeAutoHeight({debug: false});
     });
   </script>
 

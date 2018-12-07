@@ -70,7 +70,7 @@ tags:
 
 然而，为支持无 FPU 硬件，同时也避免污染 FPU context，kernel 采用定点模拟浮点，如下表：
 
-<iframe src="/wp-content/uploads/2017/06/table-float-emul-in-calc_load.xhtml" frameborder="0" width="100%" scrolling="no"> </iframe>
+<iframe src="/wp-content/uploads/2017/06/table-float-emul-in-calc_load.xhtml" frameborder="0" width="100%" scrolling="yes"> </iframe>
 
 > 对应代码位于函数 [calc_load()][8]。留意当 “active >= load”，会进行 “ceil” 形式的向上进位。
 

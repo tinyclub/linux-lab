@@ -39,7 +39,7 @@ Linux kernel 中，每个 CPU 有专属 runqueue，“各自为政”，减少�
 - 当任务被 fork / exec / wake up，其选择 “最闲” 的 CPU，即下表的 [select_task_rq_fair()][4]: “[find_idlest_group()][5] -then- [find_idlest_cpu()][6]”。
 - 每隔一定时间、或本 CPU 即将入空闲，从“最忙”的 CPU 上选取任务，分担到当前 CPU 上。选择“最忙”的 CPU，即下表的 [load_balance()][7]: “[find_busiest_group()][8] -then- [find_busiest_queue()][9]”。
 
-<iframe src="/wp-content/uploads/2017/06/when-balance-load.xhtml" frameborder="0" width="100%" scrolling="no" style="overflow: scroll;"> </iframe>
+<iframe src="/wp-content/uploads/2017/06/when-balance-load.xhtml" frameborder="0" width="100%" scrolling="yes" style="overflow: scroll;"> </iframe>
 
 负载均衡沿着 CPUs 的层次结构进行，对于表中左半部分，自上而下，全局寻求“最闲 CPU”：
 

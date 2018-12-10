@@ -148,17 +148,17 @@ tags:
 | 已发表 | Tacinight  | Bennnyzhao  |[Active memory defragmentation](/lwn-105021)|October 5, 2004|
 | 已发表 | unicornx   | ShaolinDeng |[Yet another approach to memory fragmentation](/lwn-121618)|February 1, 2005|
 | 已发表 | unicornx   | simowce     |[Fragmentation avoidance](/lwn-158211)|November 2, 2005|
-| 校对中 | simowce    | unicornx    |[More on fragmentation avoidance](/lwn-159110)|November 8, 2005|
-| 校对中 | unicornx   | lljgithub   |[Avoiding - and fixing - memory fragmentation](/lwn-211505)|November 28, 2006|
+| 已发表 | simowce    | unicornx    |[More on fragmentation avoidance](/lwn-159110)|November 8, 2005|
+| 已发表 | unicornx   | lljgithub   |[Avoiding - and fixing - memory fragmentation](/lwn-211505)|November 28, 2006|
 
 ##### Memory compaction
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
-| 校对中 | unicornx   | llseek      |[Memory compaction](/lwn-368869) |January 6, 2010|
-| 校对中 | unicornx   | hal0936     |[Memory compaction issues](/lwn-591998) |March 26, 2014|
-| 校对中 | unicornx   | fan-xin     |[CMA and compaction](/lwn-684611) |April 23, 2016|
-| 校对中 | unicornx   | w-simon     |[Proactive compaction](/lwn-717656) |March 21, 2017|
+| 已发表 | unicornx   | llseek      |[Memory compaction](/lwn-368869) |January 6, 2010|
+| 已发表 | unicornx   | hal0936     |[Memory compaction issues](/lwn-591998) |March 26, 2014|
+| 已发表 | unicornx   | fan-xin     |[CMA and compaction](/lwn-684611) |April 23, 2016|
+| 已发表 | unicornx   | w-simon     |[Proactive compaction](/lwn-717656) |March 21, 2017|
 
 #### Page cache
 
@@ -166,15 +166,20 @@ tags:
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
-| 校对中 | unicornx   |             |[Flushing out pdflush](/lwn-326552) |April 1, 2009|
-| 校对中 | hal0936    |             |[KS2012: memcg/mm: Dirty/writeback LRU](/lwn-516539) |September 17, 2012|
-
+| 校对中 | unicornx   | llseek      |[Flushing out pdflush](/lwn-326552) |April 1, 2009|
+| 校对中 | unicornx   | ShaolinDeng |[When writeback goes wrong](/lwn-384093/) |April 20, 2010|
+| 校对中 | unicornx   | hal0936     |[Fixing writeback from direct reclaim](/lwn-396561) |July 20, 2010|
+| 校对中 | unicornx   | lyzhsf      |[Dynamic writeback throttling](/lwn-405076/) |September 15, 2010|
+| 校对中 | unicornx   | Tacinight   |[No-I/O dirty throttling](/lwn-456904/) |August 31, 2011|
+| 翻译中 | unicornx   |             |[Writeback and control groups](/lwn-648292/) |June 17, 2015|
+| 翻译中 | unicornx   |             |[Toward less-annoying background writeback](/lwn-682582/) |April 13, 2016|
+| 翻译中 | unicornx   |             |[Background writeback](/lwn-685894/) |May 4, 2016|
 
 ##### Readahead
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|
-| 翻译中 | llseek     |             |[Adaptive file readahead](/lwn-155510) |October 12, 2005|
+| 校对中 | llseek     | unicornx    |[Adaptive file readahead](/lwn-155510) |October 12, 2005|
 | 翻译中 | unicornx   |             |[On-demand readahead](/lwn-235164) |May 21, 2007|
 | 翻译中 | Tacinight  |             |[Improving readahead](/lwn-372384) |February 3, 2010|
 

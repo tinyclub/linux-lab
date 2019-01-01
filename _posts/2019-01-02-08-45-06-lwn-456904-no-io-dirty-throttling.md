@@ -40,26 +40,7 @@ Fengguang 所带来的[补丁集](https://lwn.net/Articles/456503/)的目的即�
 
 鉴于大家抱怨他的代码很难理解，Fengguang 在代码之外还提供了大量的文档说明和图表。下图描述了他的设计意图（译者注，更详细的描述请参考 “[commit: writeback: dirty position control](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6c14ae1e92c77eabd3e7527cf2e7836cde8b8487)” 中 `bdi_position_ratio()` 函数前的注释。）：
 
-```
-  ^ task rate limit
-  |
-  |            *
-  |             *
-  |              *
-  |[free run]      *      [smooth throttled]
-  |                  *
-  |                     *
-  |                         *
-  ..bdi->dirty_ratelimit..........*
-  |                               .     *
-  |                               .          *
-  |                               .              *
-  |                               .                 *
-  |                               .                    *
-  +-------------------------------.-----------------------*------------>
-                          setpoint^                  limit^  dirty pages
-
-```
+![diagram](/wp-content/uploads/2019/01/lwn-456904.png)
 
 > The goal of the system is to keep the number of dirty pages at the setpoint; if things get out of line, increasing amounts of force will be applied to bring things back to where they should be. So the first order of business is to figure out the current status; that is done in two steps. The first is to look at the global situation: how many dirty pages are there in the system relative to the setpoint and to the hard limit that we never want to exceed? Using a cubic polynomial function (see [the code](http://permalink.gmane.org/gmane.linux.kernel.mm/67529) for the grungy details), Fengguang calculates a global "pos_ratio" to describe how strongly the system needs to adjust the number of dirty pages.
 

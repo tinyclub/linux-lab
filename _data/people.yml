@@ -297,3 +297,12 @@ darmac:
   email: darmac@163.com
   github: darmac
   info: Linux kernel engineer
+
+Sheng Yong:
+  name: Sheng Yong
+  nickname: shyodx
+  archive: true
+  article: true
+  email: shengyong1@huawei.com
+  github: shyodx
+  info: 华为 OS 内核实验室，Linux 内核工程师

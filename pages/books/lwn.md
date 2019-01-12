@@ -5,7 +5,7 @@ author: Wang Chen
 layout: page
 album: 'LWN 中文翻译'
 group: translation
-update: 2018-12-29
+update: 2019-1-12
 permalink: /lwn/
 description: 翻译 LWN.net 上大家感兴趣的文章。
 categories:
@@ -19,9 +19,13 @@ tags:
 
 [LWN.net](https://lwn.net/) 是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。具体参考 [Wikipedia 上有关 LWN 的介绍](https://en.wikipedia.org/wiki/LWN.net)。
 
-- 本活动目前主要针对 [**LWN.net**](https://lwn.net/) 的内核相关文章进行中文翻译，所有 LWN 的内核文章原文汇总在 [**Kernel index**][2]。
+本活动目前主要针对 [LWN.net](https://lwn.net/) 的内核相关文章进行中文翻译，所有 LWN 的内核文章 ***原文*** 汇总在 [Kernel index][2]。
 
-- 我们的中文翻译成果汇总(包括已发表、已认领，处于翻译或者校对中还未发表的文章列表)在 [**LWN 中文翻译成果汇总**][3]。
+## 翻译成果
+
+我们的中文翻译成果汇总(包括已发表、已认领，处于翻译或者校对中还未发表的文章列表)在 [**LWN 中文翻译成果汇总**][3]。
+
+## 参与我们
 
 - 如果要参与我们的翻译活动，具体流程请参考 [**LWN 中文翻译活动流程说明**][4]。
 

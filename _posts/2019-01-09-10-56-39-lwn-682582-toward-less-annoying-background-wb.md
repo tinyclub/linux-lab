@@ -15,6 +15,8 @@ tags:
   - memory
 ---
 
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+
 > 原文：[Toward less-annoying background writeback](https://lwn.net/Articles/682582/)
 > 原创：By corbet @ Apr. 13, 2016
 > 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]

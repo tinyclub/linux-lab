@@ -3,10 +3,7 @@
     <span><a onclick="common_click('#author-box-wrap-header')" id="author" class="author" title="点击 关注/联系/赞助 作者">{{ page.author }}</a> 创作于 {{ page.date | date: "%Y/%m/%d" }} </span>
   </div>
   <div class="pull-right">
-    <span><a href="#comments" style="text-decoration:none;" title="评论或分享本文">
-      <i class="icon-large icon-comment-empty"> 评论 </i>
-    </a>
-    <a href="#sponsor" style="text-decoration:none;" title="微信扫码，打赏一下">
+    <span><a href="#sponsor" style="text-decoration:none;" title="微信扫码，打赏一下">
       <i class="icon-large icon-yen"> 打赏</i>
     </a>
     </span>

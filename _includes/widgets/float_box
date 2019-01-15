@@ -3,7 +3,6 @@
     {% include widgets/back_top_button %}
     {% include widgets/go_down_button %}
     {% include widgets/search_button %}
-    {% include widgets/comment_button %}
     {% include widgets/home_button %}
     {% include widgets/full_screen_button %}
     {% include widgets/prev_next_button %}

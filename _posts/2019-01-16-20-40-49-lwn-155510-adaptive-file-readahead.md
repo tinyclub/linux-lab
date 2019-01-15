@@ -14,6 +14,8 @@ tags:
   - page cache
 ---
 
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+
 > 原文：[Adaptive file readahead](https://lwn.net/Articles/155510/)
 > 原创：By corbet @ Oct. 12, 2005
 > 翻译：By [Xiaojie Yuan](https://github.com/llseek)
@@ -50,5 +52,7 @@ tags:
 > The adaptive readahead patch might, thus, be a worthwhile addition to the Linux memory management subsystem. There has been little discussion (none, actually) of the patch on the list, however. Complicated patches working in an obscure corner of memory management do not receive the same level of review as, say, new filesystems, it would seem. In any case, a patch of this nature will require a good deal of testing before it can be considered for any sort of merge. So, while adaptive readahead may indeed make its way into the mainline, it's not something to expect to see in the very near future.
 
 这个自适应预读补丁应该是对 Linux 内存管理子系统的一个很有价值的补充。然而目前为止在邮件列表上关于这个补丁的讨论还很少（实际上还没有）。工作在内存管理子系统隐蔽角落里的复杂补丁不会像新的文件系统一样得到相同程度的审阅。无论如何，这种类型的补丁在被考虑合入主线之前需要经过大量的测试。所以尽管这个自适应预读补丁有可能会被合入内核主线，但也不会很快发生。
+
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
 
 [1]: http://tinylab.org

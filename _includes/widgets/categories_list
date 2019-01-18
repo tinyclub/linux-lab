@@ -28,8 +28,11 @@
       {% assign downcase_name = name | downcase %}
       {% if site.categories[name] %}
         {% assign size = site.categories[name].size %}
-      {% else %}
+      {% elsif site.categories[downcase_name] %}
         {% assign size = site.categories[downcase_name].size %}
+      {% else %}
+        {% assign upcase_name = name | upcase %}
+        {% assign size = site.categories[upcase_name].size %}
       {%endif%}
       {% assign more = "" %}
       {% assign not_empty = "" %}
@@ -60,8 +63,11 @@
              {% assign downcase_name = name | downcase %}
              {% if site.categories[name] %}
                {% assign size = site.categories[name].size %}
-             {% else %}
+             {% elsif site.categories[downcase_name] %}
                {% assign size = site.categories[downcase_name].size %}
+             {% else %}
+               {% assign upcase_name = name | upcase %}
+               {% assign size = site.categories[upcase_name].size %}
              {%endif%}
              {% assign more = "" %}
              {% assign not_empty = "" %}
@@ -93,8 +99,11 @@
                  {% assign downcase_name = name | downcase %}
                  {% if site.categories[name] %}
                    {% assign size = site.categories[name].size %}
-                 {% else %}
+                 {% elsif site.categories[downcase_name] %}
                    {% assign size = site.categories[downcase_name].size %}
+                 {% else %}
+                   {% assign upcase_name = name | upcase %}
+                   {% assign size = site.categories[upcase_name].size %}
                  {%endif%}
                  {% assign more = "" %}
                  {% assign not_empty = "" %}
@@ -118,8 +127,11 @@
                     {% assign downcase_name = name | downcase %}
                     {% if site.categories[name] %}
                       {% assign size = site.categories[name].size %}
-                    {% else %}
+                    {% elsif site.categories[downcase_name] %}
                       {% assign size = site.categories[downcase_name].size %}
+                    {% else %}
+                      {% assign upcase_name = name | upcase %}
+                      {% assign size = site.categories[upcase_name].size %}
                     {%endif%}
                     {% assign more = "" %}
                     {% assign not_empty = "" %}

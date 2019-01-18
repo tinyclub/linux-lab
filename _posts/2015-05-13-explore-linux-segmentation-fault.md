@@ -10,7 +10,7 @@ tags:
   - 段错误
   - Linux
 categories:
-  - Catchsegv
+  - catchsegv
   - 调试技巧
   - 稳定性
 ---

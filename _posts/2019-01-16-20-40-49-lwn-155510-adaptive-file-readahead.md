@@ -2,7 +2,7 @@
 layout: post
 author: 'Yuan Xiaojie'
 title: "LWN 155510: 自适应（Adaptive）文件预读（readahead）算法"
-album: " LWN 中文翻译"
+album: "LWN 中文翻译"
 group: translation
 license: "cc-by-sa-4.0"
 permalink: /lwn-155510/

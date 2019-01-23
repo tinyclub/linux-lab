@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Zhao Yimin'
-title: "改善文件预读（readahead）"
+title: "LWN 372384: 改善文件预读（readahead）"
 album: 'LWN 中文翻译'
 group: 'translation'
 license: "cc-by-sa-4.0"

@@ -5,7 +5,7 @@ title: "LWN 357487: 内核峰会 2009: 通用设备树"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-357487-generic-device-trees/
+permalink: /lwn-357487/
 description: "LWN 文章翻译，内核峰会 2009: 通用设备树"
 category:
   - 设备树

@@ -48,22 +48,22 @@ tags:
 
 | 状态   | 译作者    | 校对             | 文章  |原文发表时间|
 |--------|-----------|------------------|-------|------------|
-| 已发表 | unicornx  | guojian-at-wowo  |[A new core time subsystem](/lwn-120850-a-new-core-time-subsystem) |January 26, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[The dynamic tick patch](/lwn-138969-dynamic-tick-patch) |June 7, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[How fast should HZ be?](/lwn-145973-how-fast-should-hz-be) |August 2, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[The state of the dynamic tick patch](/lwn-149877-state-of-dynamic-tick-patch) |August 31, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[A new approach to kernel timers](/lwn-152436-new-approach-to-ktimers) |September 20, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[On the merging of ktimers](/lwn-156325-on-merging-of-ktimers) |October 19, 2005|
-| 已发表 | unicornx  | guojian-at-wowo  |[The high-resolution timer API](/lwn-167897-hrtimer-api) |January 16, 2006|
-| 已发表 | unicornx  | guojian-at-wowo  |[Clockevents and dyntick](/lwn-223185-clockevents-and-dyntick) |February 21, 2007|
+| 已发表 | unicornx  | guojian-at-wowo  |[A new core time subsystem](/lwn-120850) |January 26, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[The dynamic tick patch](/lwn-138969) |June 7, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[How fast should HZ be?](/lwn-145973) |August 2, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[The state of the dynamic tick patch](/lwn-149877) |August 31, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[A new approach to kernel timers](/lwn-152436) |September 20, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[On the merging of ktimers](/lwn-156325) |October 19, 2005|
+| 已发表 | unicornx  | guojian-at-wowo  |[The high-resolution timer API](/lwn-167897) |January 16, 2006|
+| 已发表 | unicornx  | guojian-at-wowo  |[Clockevents and dyntick](/lwn-223185) |February 21, 2007|
 | 翻译中 | unicornx  |                  |[Deferrable timers](https://lwn.net/Articles/228143/) |March 28, 2007|
 | 翻译中 | unicornx  |                  |[The new timerfd() API](https://lwn.net/Articles/251413/) |September 25, 2007|
 | 翻译中 | unicornx  |                  |[High- (but not too high-) resolution timeouts](https://lwn.net/Articles/296578/) |September 2, 2008|
 | 翻译中 | unicornx  |                  |[Timer slack](https://lwn.net/Articles/369549/) |January 12, 2010|
 | 翻译中 | unicornx  |                  |[NoHZ tasks](https://lwn.net/Articles/420544/) |December 20, 2010|
-| 已发表 | unicornx  | guojian-at-wowo  |[(Nearly) full tickless operation in 3.10](/lwn-549580-nearly-full-tickless-3.10) |May 8, 2013|
-| 已发表 | unicornx  | guojian-at-wowo  |[Is the whole system idle?](/lwn-558284-is-the-whole-system-idle) |July 10, 2013|
-| 已发表 | unicornx  | w-simon          |[The tick broadcast framework](/lwn-574962-the-tick-broadcast-framework) |November 26, 2013|
+| 已发表 | unicornx  | guojian-at-wowo  |[(Nearly) full tickless operation in 3.10](/lwn-549580) |May 8, 2013|
+| 已发表 | unicornx  | guojian-at-wowo  |[Is the whole system idle?](/lwn-558284) |July 10, 2013|
+| 已发表 | unicornx  | w-simon          |[The tick broadcast framework](/lwn-574962) |November 26, 2013|
 | 翻译中 | unicornx  |                  |[Reinventing the timer wheel](https://lwn.net/Articles/646950/) |June 3, 2015|
 | 翻译中 | unicornx  |                  |[Dropping the timer tick — for real this time](https://lwn.net/Articles/659490/) |October 7, 2015|
 | 翻译中 | unicornx  |                  |[Improving the kernel timers API](https://lwn.net/Articles/735887/) |October 9, 2017|

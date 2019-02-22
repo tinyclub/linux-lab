@@ -23,10 +23,10 @@ tags:
 
 | 状态   | 译作者    | 校对            | 文章  |原文发表时间|
 |--------|-----------|-----------------|-------|------------|
-| 已发表 | Tacinight | unicornx        |[The Btrfs filesystem: An introduction](/lwn-576276-the-btrfs-filesystem-an-introduction)|December 11, 2013|
-| 已发表 | Tacinight | guojian-at-wowo |[Btrfs: Getting started](/lwn-577218-btrfs-getting-started/) |December 17, 2013|
-| 已发表 | Tacinight | fan-xin         |[Btrfs: Working with multiple devices](/lwn-577961-btrfs-working-with-multiple-devices) |December 30, 2013|
-| 已发表 | Tacinight | cee1            |[Filesystem management interfaces](/lwn-718803-filesystem-management-interfaces) |April 5, 2017|
+| 已发表 | Tacinight | unicornx        |[The Btrfs filesystem: An introduction](/lwn-576276)|December 11, 2013|
+| 已发表 | Tacinight | guojian-at-wowo |[Btrfs: Getting started](/lwn-577218) |December 17, 2013|
+| 已发表 | Tacinight | fan-xin         |[Btrfs: Working with multiple devices](/lwn-577961) |December 30, 2013|
+| 已发表 | Tacinight | cee1            |[Filesystem management interfaces](/lwn-718803) |April 5, 2017|
 
 ## 赞助我们
 

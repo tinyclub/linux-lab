@@ -5,7 +5,7 @@ title: "LWN 156325: ktimers 补丁进展情况"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-156325-on-merging-of-ktimers/
+permalink: /lwn-156325/
 description: "LWN 文章翻译，ktimers 补丁进展情况"
 category:
   - 时钟系统
@@ -22,7 +22,7 @@ tags:
 
 > LWN [looked at the ktimers patch](http://lwn.net/Articles/152436/) about one month ago. Work continues on the new kernel timer mechanism; the [latest version](http://lwn.net/Articles/155862/) of the patch includes a new "clockevents" abstraction intended to make high-resolution timer support easier to implement in an architecture-independent way. The patch appears to be coming together well, and there has been little in the way of criticism.
 
-LWN 在大约一个月前已经[给大家介绍了 ktimers 补丁](/lwn-152436-new-approach-to-ktimers)。随着开发的继续，在该补丁的最新版本中引入了一个新的 “clockevents” 抽象层，旨在方便地以与体系架构无关的方式实现对高精度定时器的支持。该补丁的开发工作看上去进展良好，得到了社区的一致好评。
+LWN 在大约一个月前已经[给大家介绍了 ktimers 补丁](/lwn-152436)。随着开发的继续，在该补丁的最新版本中引入了一个新的 “clockevents” 抽象层，旨在方便地以与体系架构无关的方式实现对高精度定时器的支持。该补丁的开发工作看上去进展良好，得到了社区的一致好评。
 
 > ...with the exception of one observer, who has kept up a steady stream of complaints about the new mechanism. His objections include the name (he would rather see "process timers" than "ktimers"), the use of high-resolution time within the kernel, and various "unnecessary complexities." The discussion has been mostly unfruitful, to the point that the normally even-keeled Ingo Molnar tried to end it with a [shut up and show me the code challenge](https://lwn.net/Articles/156327/). That led Andrew Morton to state that "show me the code" is no longer an acceptable arguing point for kernel discussions, and that the objections should be addressed regardless.
 

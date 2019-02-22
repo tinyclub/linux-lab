@@ -5,7 +5,7 @@ title: "LWN 120850: 一个新的内核时间管理计时子系统"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-120850-a-new-core-time-subsystem/
+permalink: /lwn-120850/
 description: "LWN 文章翻译，一个新的内核时间管理子系统"
 category:
   - 时钟系统

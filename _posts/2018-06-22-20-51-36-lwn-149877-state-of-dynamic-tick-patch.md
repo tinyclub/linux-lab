@@ -5,7 +5,7 @@ title: "LWN 149877: 动态时钟补丁的最新状况"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-149877-state-of-dynamic-tick-patch/
+permalink: /lwn-149877/
 description: "LWN 文章翻译，动态时钟补丁的最新状况"
 category:
   - 时钟系统

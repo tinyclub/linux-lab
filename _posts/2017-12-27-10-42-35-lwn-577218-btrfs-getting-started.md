@@ -6,7 +6,7 @@ title: "LWN 577218: Btrfs 入门"
 album: "LWN 中文翻译"
 group: "translation"
 license: "cc-by-sa-4.0"
-permalink: /lwn-577218-btrfs-getting-started/ 
+permalink: /lwn-577218/ 
 description: "文章摘要：介绍如何开始上手使用 Btrfs 文件系统。"
 category:
   - 文件系统

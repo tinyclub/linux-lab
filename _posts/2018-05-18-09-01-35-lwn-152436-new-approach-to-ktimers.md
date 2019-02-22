@@ -5,7 +5,7 @@ title: "LWN 152436: 一种实现内核定时器的新方法"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-152436-new-approach-to-ktimers/
+permalink: /lwn-152436/
 description: "LWN 文章翻译，一种实现内核定时器的新方法"
 category:
   - 时钟系统

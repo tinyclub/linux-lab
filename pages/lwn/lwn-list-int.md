@@ -23,7 +23,7 @@ tags:
 
 | 状态   | 译作者    | 校对            | 文章  |原文发表时间|
 |--------|-----------|-----------------|-------|------------|
-| 已发表 | unicornx  | guojian-at-wowo |[A new generic IRQ layer](/lwn-184750-generic-irq-layer) |May 23, 2006|
+| 已发表 | unicornx  | guojian-at-wowo |[A new generic IRQ layer](/lwn-184750) |May 23, 2006|
 
 ## 赞助我们
 

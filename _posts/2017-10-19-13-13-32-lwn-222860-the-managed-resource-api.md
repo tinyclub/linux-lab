@@ -5,7 +5,7 @@ title: "LWN 222860: 资源管理编程接口"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-222860-the-managed-resource-api/
+permalink: /lwn-222860/
 description: "LWN 文章翻译，资源管理编程接口"
 category:
   - 设备驱动
@@ -22,7 +22,7 @@ tags:
 
 > The [device resource management patch](http://lwn.net/Articles/215996/) was discussed here in January. That patch has now been merged for the 2.6.21 kernel. Since the API is now set - at least, as firmly as any in-kernel API is - it seems like a good time for a closer look at this new interface.
 
-在一月份我们讨论了 [设备资源管理补丁](/lwn-215996-device-resource-management)。该补丁现在已经合入内核版本 2.6.21 。鉴于该套 API 已经成为了内核所有的正式 API 的一部分 - 是时候好好给大家介绍一下这套新接口了。
+在一月份我们讨论了 [设备资源管理补丁](/lwn-215996)。该补丁现在已经合入内核版本 2.6.21 。鉴于该套 API 已经成为了内核所有的正式 API 的一部分 - 是时候好好给大家介绍一下这套新接口了。
  
 > The core idea behind the resource management interface is that remembering to free allocated resources is hard. It appears to be especially hard for driver writers who, justly or not, have a reputation for adding more than their fair share of bugs to the kernel. And even the best driver writers can run into trouble in situations where device probing fails halfway through; the recovery paths may be there in the code, but they tend not to be well tested. The result of all this is a fair number of resource leaks in driver code.
 

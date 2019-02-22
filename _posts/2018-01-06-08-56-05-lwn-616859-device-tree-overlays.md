@@ -5,7 +5,7 @@ title: "LWN 616859: 设备树动态叠加技术"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-616859-device-tree-overlays/
+permalink: /lwn-616859/
 description: "LWN 文章翻译，设备树动态叠加技术"
 category:
   - 设备树

@@ -5,7 +5,7 @@ title: "LWN 574962: 时钟广播框架（The tick broadcast framework）"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-574962-the-tick-broadcast-framework/
+permalink: /lwn-574962/
 description: "LWN 文章翻译，时钟广播框架"
 category:
   - 时钟系统

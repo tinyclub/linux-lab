@@ -5,7 +5,7 @@ title: "LWN 383162: 案例分析，复杂设计下的匿名页反向映射处理
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-383162-case-of-overly-anonymous-anon_vma/
+permalink: /lwn-383162/
 description: "LWN 文章翻译，案例分析，复杂设计下的匿名页反向映射处理"
 category:
   - 内存子系统

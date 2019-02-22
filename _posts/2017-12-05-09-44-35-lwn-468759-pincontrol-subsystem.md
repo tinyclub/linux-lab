@@ -5,7 +5,7 @@ title: "LWN 468759: 引脚控制子系统"
 album: "LWN 中文翻译"
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-468759-pincontrol-subsystem/
+permalink: /lwn-468759/
 description: "LWN 文章翻译，引脚控制子系统"
 category:
   - 设备驱动

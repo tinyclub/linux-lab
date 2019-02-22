@@ -5,7 +5,7 @@ title: "LWN 558284: 整个系统都空闲了吗？"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-558284-is-the-whole-system-idle/
+permalink: /lwn-558284/
 description: "LWN 文章翻译，整个系统都空闲了吗？"
 category:
   - 时钟系统
@@ -22,7 +22,7 @@ tags:
 
 > The [full dynamic tick](https://lwn.net/Articles/549580/) feature that made its debut in the 3.10 kernel can be good for users who want their applications to have full use of one or more CPUs without interference from the kernel. By getting the clock tick out of the way, this feature minimizes kernel overhead and the potential latency problems. Unfortunately, full dynamic tick operation also has the potential to increase power consumption. Work is underway to fix that problem, but it turns out to require a bit of information that is surprisingly hard to get: is the system fully idle or not?
 
-在 3.10 版本内核中首次支持的[完全动态时钟（full dynamic tick）](/lwn-549580-nearly-full-tickless-3.10)（译者注，从习惯和方便出发，下文直接引用 full dynamic tick， 不再翻译为中文）特性对那些希望使其应用程序充分利用一个或多个处理器而不受内核干扰的用户来说非常有用。取消 tick 后（译者注，即不再以固定周期性的方式触发时钟中断），可以最大限度地减少内核开销和潜在的延迟问题。但不幸的是，这么做仍然存在一定的可能性会导致功耗增加。社区目前正在努力试图解决这个问题，但发现在着手解决这个问题之前存在另一个比较棘手的问题需要克服，就是如何判断当前整个系统已经完全进入了空闲状态。（译者注：本文所介绍的修改最终随 3.12 版本合入内核主线，但在 4.13 版本上又被移除了，具体可以查看内核修改 [commit](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fe5ac724d81a3c7803e60c2232718f212f3f38d4)，修改的原因是一直没有实际的应用（`was added in 2013 ......, but has not been used. This commit therefore removes it.`））
+在 3.10 版本内核中首次支持的[完全动态时钟（full dynamic tick）](/lwn-549580)（译者注，从习惯和方便出发，下文直接引用 full dynamic tick， 不再翻译为中文）特性对那些希望使其应用程序充分利用一个或多个处理器而不受内核干扰的用户来说非常有用。取消 tick 后（译者注，即不再以固定周期性的方式触发时钟中断），可以最大限度地减少内核开销和潜在的延迟问题。但不幸的是，这么做仍然存在一定的可能性会导致功耗增加。社区目前正在努力试图解决这个问题，但发现在着手解决这个问题之前存在另一个比较棘手的问题需要克服，就是如何判断当前整个系统已经完全进入了空闲状态。（译者注：本文所介绍的修改最终随 3.12 版本合入内核主线，但在 4.13 版本上又被移除了，具体可以查看内核修改 [commit](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fe5ac724d81a3c7803e60c2232718f212f3f38d4)，修改的原因是一直没有实际的应用（`was added in 2013 ......, but has not been used. This commit therefore removes it.`））
 
 > The kernel has had the ability to turn off the periodic clock interrupt on idle processors for many years. Each processor, when it goes idle, will simply stop its timer tick; when all processors are idle, the system will naturally have the timer tick disabled systemwide. Fully dynamic tick — where the timer tick can be disabled on non-idle CPUs — adds an interesting complication, though. While most processors can (when the conditions are right) run without the clock tick, one processor must continue to keep the tick enabled so that it can perform a number of necessary system timekeeping operations. Clearly, this "timekeeping CPU" should be able to disable its tick and go idle if nothing else is running in the system, but, in current kernels, there is no way for that CPU to detect this situation.
 

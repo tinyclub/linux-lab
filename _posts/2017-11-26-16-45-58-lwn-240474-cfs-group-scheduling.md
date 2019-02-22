@@ -5,7 +5,7 @@ title: "LWN 240474: CFS 组调度"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-240474-cfs-group-scheduling/
+permalink: /lwn-240474/
 description: "LWN 文章翻译，进程调度，CFS组调度"
 category:
   - 进程调度

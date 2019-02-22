@@ -15,6 +15,8 @@ tags:
   - memory
 ---
 
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+
 > 原文：[Page replacement for huge memory systems](https://lwn.net/Articles/257541/)
 > 原创：By Jake Edge @ Nov. 7, 2007
 > 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
@@ -63,5 +65,7 @@ van Riel 所列出的另一个功能是增加对最近被换出的页框的跟�
 > Overall, it is a big change to how the page replacement code works today, which is why it will be broken up into smaller chunks. By making changes that add incremental improvements, and getting them into the hands of developers and testers, the hope is that the bugs can be shaken out more easily. Before that can happen, though, this set of patches must pass muster with the kernel hackers and be merged. The external user-visible impacts of these particular patches should be small, but they are fairly intrusive, touching a fair amount of code. In addition, memory management patches tend to have a tough path into the kernel.
 
 总的来说，这次改动对于目前的页框回收逻辑影响很大，这也是为什么要将整个修改分解成更小的补丁进行提交的原因。通过这种增量的改进方式将修改提交给开发人员（试用）和测试人员（测试），其目的是希望可以更容易地发现并消除其中的隐患。然而，在此之前（指前述提交给开发和测试人员之前），这套补丁必须通过内核专家的审核才可以被合入。这个补丁修改虽然在使用上对外部用户的影响应该很小，但在内部涉及的地方很多，导致修改的代码数量也很多。此外，对内存管理方面进行修改的补丁要想被合入主线一直也不是一件容易的事情。
+
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
 
 [1]: http://tinylab.org

@@ -5,7 +5,7 @@ title: "LWN 223185: 时钟事件（Clockevents）和动态时钟（dynamic tick�
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-223185-clockevents-and-dyntick/
+permalink: /lwn-223185/
 description: "LWN 文章翻译，时钟事件（Clockevents）和动态时钟（dynamic tick）"
 category:
   - 时钟系统

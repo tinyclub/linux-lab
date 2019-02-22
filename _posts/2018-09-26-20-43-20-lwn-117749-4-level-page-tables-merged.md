@@ -5,7 +5,7 @@ title: "LWN 117749: 合入四级页表功能"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-117749-4-level-page-tables-merged/
+permalink: /lwn-117749/
 description: "LWN 文章翻译，合入四级页表功能"
 category:
   - 内存子系统
@@ -22,7 +22,7 @@ tags:
 
 > As expected, one of the first things to be merged into Linus's BitKeeper repository after the 2.6.10 release was the four-level page table patch. Two weeks ago, we [noted](http://lwn.net/Articles/116810/) that Nick Piggin had posted an alternative patch which changed the organization initially created by Andi Kleen. It was not clear, then, which version of the patch would go in. In the end, Nick's changes to the four-level patch were accepted.
 
-正如我们期望的那样，在 2.6.10 发布之后，首先合并到 Linus 的 BitKeeper 代码库中的补丁中就包含了对四级页表的支持。两周前，我们[注意到](/lwn-116810-rethinking-4-level-pt) Nick Piggin 发布了针对原四级页表补丁的一个替代方案，改进了最初由 Andi Kleen 设计的层级组织方式。一开始，哪个版本的补丁会进入内核主线并不明朗。但最后，显然胜出的是 Nick。
+正如我们期望的那样，在 2.6.10 发布之后，首先合并到 Linus 的 BitKeeper 代码库中的补丁中就包含了对四级页表的支持。两周前，我们[注意到](/lwn-116810) Nick Piggin 发布了针对原四级页表补丁的一个替代方案，改进了最初由 Andi Kleen 设计的层级组织方式。一开始，哪个版本的补丁会进入内核主线并不明朗。但最后，显然胜出的是 Nick。
 
 > Thus, in 2.6.11, the page table structure will include a new level, called "PUD," placed immediately below the top-level PGD directory. The new page table structure looks like this:
 

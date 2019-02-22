@@ -25,30 +25,30 @@ tags:
 
 | 状态   | 译作者      | 校对                 | 文章  |原文发表时间|
 |--------|-------------|----------------------|-------|------------|
-| 已发表 | unicornx    | Tacinight, lzufalcon |[The pin control subsystem](/lwn-468759-pincontrol-subsystem)|November 22, 2011|
-| 已发表 | unicornx    | lzufalcon            |[The platform device API](/lwn-448499-platform-device-api)|June 21, 2011|
-| 已发表 | unicornx    | maxiao1993           |[(Partially) graduating IIO](/lwn-465358-graduating-iio) |November 2, 2011|
+| 已发表 | unicornx    | Tacinight, lzufalcon |[The pin control subsystem](/lwn-468759)|November 22, 2011|
+| 已发表 | unicornx    | lzufalcon            |[The platform device API](/lwn-448499)|June 21, 2011|
+| 已发表 | unicornx    | maxiao1993           |[(Partially) graduating IIO](/lwn-465358) |November 2, 2011|
 
 ### Device tree
 
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|------------|
-| 已发表 | unicornx   | WH2136    |[KS2009: Generic device trees](/lwn-357487-generic-device-trees) |October 19, 2009|
-| 已发表 | unicornx   | lzufalcon |[Platform devices and device trees](/lwn-448502-platform-devices-and-device-trees)|June 21, 2011|
-| 已发表 | unicornx   | w-simon   |[Device tree overlays](/lwn-616859-device-tree-overlays) |October 22, 2014|
+| 已发表 | unicornx   | WH2136    |[KS2009: Generic device trees](/lwn-357487) |October 19, 2009|
+| 已发表 | unicornx   | lzufalcon |[Platform devices and device trees](/lwn-448502)|June 21, 2011|
+| 已发表 | unicornx   | w-simon   |[Device tree overlays](/lwn-616859) |October 22, 2014|
 
 ### General-purpose I/O
 
 | 状态   | 译作者    | 校对             | 文章  |原文发表时间|
 |--------|-----------|------------------|-------|------------|
-| 已发表 | unicornx  | cee1, norlanjame | [GPIO in the kernel: an introduction](/lwn-532714-gpio-in-the-kernel)|January 16, 2013|
-| 已发表 | unicornx  | lljgithub        | [GPIO in the kernel: future directions](/lwn-533632-gpio-in-the-kernel-future-directions) |January 23, 2013|
+| 已发表 | unicornx  | cee1, norlanjame | [GPIO in the kernel: an introduction](/lwn-532714)|January 16, 2013|
+| 已发表 | unicornx  | lljgithub        | [GPIO in the kernel: future directions](/lwn-533632) |January 23, 2013|
 
 ### Resources
 
 | 状态   | 译作者    | 校对      | 文章  |原文发表时间|
 |--------|-----------|-----------|-------|------------|
-| 已发表 | unicornx  | lzufalcon |[The managed resource API](/lwn-222860-the-managed-resource-api)|February 20, 2007|
+| 已发表 | unicornx  | lzufalcon |[The managed resource API](/lwn-222860)|February 20, 2007|
 
 ## 赞助我们
 

@@ -6,7 +6,7 @@ title: "LWN 718803: 文件系统的管理接口"
 album: "LWN 中文翻译"
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-718803-filesystem-management-interfaces/
+permalink: /lwn-718803/
 description: "在LSFMM 2017的文件系统的专题会上，Steven Whitehouse 讨论了文件系统管理接口"
 plugin: mermaid
 category:

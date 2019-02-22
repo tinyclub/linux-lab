@@ -25,9 +25,9 @@ tags:
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|------------|
-| 已发表 | unicornx   | lzufalcon   |[The NO_BOOTMEM patches](/lwn-382559-no-bootmem-patches) |April 7, 2010|
-| 已发表 | unicornx   | lzufalcon   |[Moving x86 to LMB](/lwn-387083-moving-x86-to-lmb) |May 11, 2010|
-| 已发表 | unicornx   | lzufalcon   |[A quick history of early-boot memory allocators](/lwn-761215-quick-history-early-boot-mem-allocators) |July 30, 2018|
+| 已发表 | unicornx   | lzufalcon   |[The NO_BOOTMEM patches](/lwn-382559) |April 7, 2010|
+| 已发表 | unicornx   | lzufalcon   |[Moving x86 to LMB](/lwn-387083) |May 11, 2010|
+| 已发表 | unicornx   | lzufalcon   |[A quick history of early-boot memory allocators](/lwn-761215) |July 30, 2018|
 
 ### GFP flags
 
@@ -90,19 +90,19 @@ tags:
 
 | 状态   | 译作者     | 校对        | 文章  |原文发表时间|
 |--------|------------|-------------|-------|------------|
-| 已发表 | unicornx   | simowce & lljgithub |[Four-level page tables](/lwn-106177-four-level-pt) |October 12, 2004|
+| 已发表 | unicornx   | simowce & lljgithub |[Four-level page tables](/lwn-106177) |October 12, 2004|
 | 已发表 | unicornx   | wuhuo-org   |[Rethinking four-level page tables](/lwn-116810) |December 22, 2004|
-| 已发表 | unicornx   | lljgithub   |[Four-level page tables merged](/lwn-117749-4-level-page-tables-merged) |January 5, 2005|
-| 已发表 | unicornx   | simowce     |[Five-level page tables](/lwn-717293-5-level-pt) |March 15, 2017|
-| 已发表 | unicornx   | fan-xin     |[Reworking page-table traversal](/lwn-753267-reworking-pt-traversal) |May 4, 2018|
+| 已发表 | unicornx   | lljgithub   |[Four-level page tables merged](/lwn-117749) |January 5, 2005|
+| 已发表 | unicornx   | simowce     |[Five-level page tables](/lwn-717293) |March 15, 2017|
+| 已发表 | unicornx   | fan-xin     |[Reworking page-table traversal](/lwn-753267) |May 4, 2018|
 
 ### Object-based reverse mapping
 
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|------------|
-| 已发表 | unicornx   | w-simon   |[The object-based reverse-mapping VM](/lwn-23732-object-based-reverse-mapping-vm) |February. 25, 2003|
+| 已发表 | unicornx   | w-simon   |[The object-based reverse-mapping VM](/lwn-23732) |February. 25, 2003|
 | 已发表 | unicornx   | w-simon   |[Virtual Memory II: the return of objrmap](/lwn-75198) |March 10, 2004|
-| 已发表 | unicornx   | w-simon   |[The case of the overly anonymous anon_vma](/lwn-383162-case-of-overly-anonymous-anon_vma) |April 13, 2010|
+| 已发表 | unicornx   | w-simon   |[The case of the overly anonymous anon_vma](/lwn-383162) |April 13, 2010|
 
 ### page allocator
 
@@ -121,7 +121,7 @@ tags:
 
 | 状态   | 译作者     | 校对      | 文章  |原文发表时间|
 |--------|------------|-----------|-------|------------|
-| 已发表 | unicornx   | llseek    |[Reorganizing the address space](/lwn-91829-reorg-addr-space) |June 30, 2004|
+| 已发表 | unicornx   | llseek    |[Reorganizing the address space](/lwn-91829) |June 30, 2004|
 | 已发表 | unicornx   | hal0936   |[Address space randomization in 2.6](/lwn-121845) |Feb. 2, 2005|
 
 ## 赞助我们

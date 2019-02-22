@@ -5,7 +5,7 @@ title: "LWN 533632: 内核 GPIO 子系统的未来发展方向"
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-533632-gpio-in-the-kernel-future-directions/
+permalink: /lwn-533632/
 description: "LWN 文章翻译，内核 GPIO 子系统的未来发展方向"
 category:
   - 设备驱动
@@ -22,7 +22,7 @@ tags:
 
 > [Last week's article](https://lwn.net/Articles/532714/) covered the kernel's current internal API for general-purpose I/O (GPIO) lines. The GPIO API has seen relatively little change in recent years, but that situation may be about to change as the result of a couple of significant patch sets that seek to rework how the GPIO API works in the interest of greater robustness and better performance.
 
-[上周的文章](/lwn-532714-gpio-in-the-kernel)介绍了内核中有关 “通用目的输入输出”（General-Purpose I/O，下文简称 GPIO）API 的当前状态。这些年来，GPIO 的 API 几乎没有什么大的改动，但这种局面很快就会发生变化，因为最近社区提出了一些致力于改善其鲁棒性以及性能的重要补丁。
+[上周的文章](/lwn-532714)介绍了内核中有关 “通用目的输入输出”（General-Purpose I/O，下文简称 GPIO）API 的当前状态。这些年来，GPIO 的 API 几乎没有什么大的改动，但这种局面很快就会发生变化，因为最近社区提出了一些致力于改善其鲁棒性以及性能的重要补丁。
 
 ### 不再使用整数类型的引脚标识符 (No more numbers)
 

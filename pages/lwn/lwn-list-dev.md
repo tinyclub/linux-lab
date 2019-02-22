@@ -25,13 +25,13 @@ tags:
 
 | 状态   | 译作者  | 校对      | 文章  |原文发表时间|
 |--------|---------|-----------|-------|------------|
-| 已发表 | darmac  | unicornx  |[Bringing kgdb into 2.6](/lwn-70465-bringing-kgdb-into-2.6) |February 10, 2004|
+| 已发表 | darmac  | unicornx  |[Bringing kgdb into 2.6](/lwn-70465) |February 10, 2004|
 
 ### Development tools
 
 | 状态   | 译作者    | 校对      | 文章  |原文发表时间|
 |--------|-----------|-----------|-------|------------|
-| 已发表 | unicornx  | lzufalcon |[Device resource management](/lwn-215996-device-resource-management)|January 2, 2007|
+| 已发表 | unicornx  | lzufalcon |[Device resource management](/lwn-215996)|January 2, 2007|
 
 
 ## 赞助我们

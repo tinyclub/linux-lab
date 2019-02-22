@@ -34,7 +34,7 @@ rmap 技术解决了内核虚拟内存子系统中的性能问题，但它也是
 
 > Andrea's approach is to bring back and extend the object-based reverse mapping patches. The initial object-based patch was created by Dave McCracken; LWN [covered this patch](http://lwn.net/Articles/23732/) a year ago. Essentially, this patch eliminates the rmap chains for memory which maps a file by following pointers "the long way around" and searching candidate virtual memory areas (VMAs). Andrea has [updated this patch](https://lwn.net/Articles/74812/) and fixed some bugs, but the core of the patch remains the same; see last year's description for the details.
 
-Andrea 参考了原先的基于对象的反向映射（object-based reverse mapping）补丁并基于该补丁做了改进。这个补丁最初是由 Dave McCracken 提交的；LWN 一年前[为大家介绍过](/lwn-23732-object-based-reverse-mapping-vm)。这个补丁最主要的优点，是针对文件映射使用的物理页，消除了 rmap 对内存的巨大需求，但代价是它需要通过 “更复杂” 的方式反向查找到映射该物理页的页表项，这其中还包括需要搜索关联的虚拟内存区域（virtual memory area，简称 VMA）。Andrea [对该补丁进行了修改](https://lwn.net/Articles/74812/)并修复了一些错误，但补丁的核心思想仍然保持不变；有关其核心思想可以参阅[去年的详细介绍](/lwn-23732-object-based-reverse-mapping-vm)。
+Andrea 参考了原先的基于对象的反向映射（object-based reverse mapping）补丁并基于该补丁做了改进。这个补丁最初是由 Dave McCracken 提交的；LWN 一年前[为大家介绍过](/lwn-23732)。这个补丁最主要的优点，是针对文件映射使用的物理页，消除了 rmap 对内存的巨大需求，但代价是它需要通过 “更复杂” 的方式反向查找到映射该物理页的页表项，这其中还包括需要搜索关联的虚拟内存区域（virtual memory area，简称 VMA）。Andrea [对该补丁进行了修改](https://lwn.net/Articles/74812/)并修复了一些错误，但补丁的核心思想仍然保持不变；有关其核心思想可以参阅[去年的详细介绍](/lwn-23732-object-based-reverse-mapping-vm)。
 
 > [Last week](https://lwn.net/Articles/73100/), we raised the possibility that the virtual memory subsystem could see fundamental changes in the course of the 2.6 "stable" series. This week, Linus [confirmed that possibility](https://lwn.net/Articles/75217/) in response to Andrea's object-based reverse mapping patch:
 

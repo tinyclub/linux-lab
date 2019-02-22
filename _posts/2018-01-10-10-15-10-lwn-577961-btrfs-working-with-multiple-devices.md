@@ -6,7 +6,7 @@ title: "LWN 577961: Btrfs 同多设备协作"
 album: "LWN 中文翻译"
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-577961-btrfs-working-with-multiple-devices/
+permalink: /lwn-577961/
 description: " 文章摘要 "
 plugin: mermaid
 category:

@@ -5,7 +5,7 @@ title: "LWN 761215: 关于内核初始化早期阶段内存分配管理机制的
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-761215-quick-history-early-boot-mem-allocators/
+permalink: /lwn-761215/
 description: "LWN 文章翻译，关于内核初始化早期阶段内存分配管理机制的发展回顾"
 category:
   - 内存子系统
@@ -42,7 +42,7 @@ tags:
 
 > Over time, memory detection has evolved from simply asking the BIOS for the size of the extended memory block to dealing with complex tables, pieces, banks, and clusters. In particular, the Power64 architecture came prepared, bringing with it the [Logical Memory Block allocator](https://lwn.net/Articles/387083/) (or LMB). With LMB, memory is represented as two arrays of regions. The first array describes the physically contiguous memory areas available in the system, while the second array tracks allocated regions. The LMB allocator made its way into 32-bit PowerPC when the 32-bit and 64-bit architectures were merged. Later on it was adopted by SPARC. Eventually LMB made its way to other architectures and became what is now known as memblock.
 
-随着时间的推移，对内存的检测已经从简单地询问 BIOS 有关扩展内存块的大小发展为处理更复杂的拓扑关系，譬如 tables，pieces ，banks 和 clusters 等。特别地，内核对 Power64 架构的支持也已经准备就绪，同时还引入了[逻辑内存块分配器（Logical Memory Block allocator，下文简称 LMB）](/lwn-387083-moving-x86-to-lmb) 的概念。对于 LMB，其管理的内存区域通过两个数组来标识，第一个数组描述系统中可用的连续的物理存储区域，而第二个数组用于跟踪这些区域的分配情况。在内核整合 PowerPC 的 32 位和 64 位代码过程中，LMB 分配器被 32 位 的 PowerPC 架构所采纳。后来它又被 SPARC 架构使用。最终，所有的体系架构都开始使用 LMB，现在它被叫做 memblock。
+随着时间的推移，对内存的检测已经从简单地询问 BIOS 有关扩展内存块的大小发展为处理更复杂的拓扑关系，譬如 tables，pieces ，banks 和 clusters 等。特别地，内核对 Power64 架构的支持也已经准备就绪，同时还引入了[逻辑内存块分配器（Logical Memory Block allocator，下文简称 LMB）](/lwn-387083) 的概念。对于 LMB，其管理的内存区域通过两个数组来标识，第一个数组描述系统中可用的连续的物理存储区域，而第二个数组用于跟踪这些区域的分配情况。在内核整合 PowerPC 的 32 位和 64 位代码过程中，LMB 分配器被 32 位 的 PowerPC 架构所采纳。后来它又被 SPARC 架构使用。最终，所有的体系架构都开始使用 LMB，现在它被叫做 memblock。
 
 > The memblock allocator provides two basic primitives that are used as the base for more complex allocation APIs: [`memblock_add()`](https://elixir.bootlin.com/linux/latest/source/mm/memblock.c#L596) for registering a physical memory range, and [`memblock_reserve()`](https://elixir.bootlin.com/linux/latest/source/mm/memblock.c#L714) to mark a range as busy. Both of these are based, in the end, on [`memblock_add_range()`](https://elixir.bootlin.com/linux/latest/source/mm/memblock.c#L489), which adds a range to either of the two arrays.
 

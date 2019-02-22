@@ -5,7 +5,7 @@ title: "LWN 23732: 虚拟内存之基于对象的反向映射技术（object-bas
 album: 'LWN 中文翻译'
 group: translation
 license: "cc-by-sa-4.0"
-permalink: /lwn-23732-object-based-reverse-mapping-vm/
+permalink: /lwn-23732/
 description: "LWN 文章翻译，虚拟内存之基于对象的反向映射技术"
 category:
   - 内存子系统

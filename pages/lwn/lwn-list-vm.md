@@ -25,10 +25,10 @@ tags:
 
 | 状态   | 译作者    | 校对      | 文章  |原文发表时间|
 |--------|-----------|-----------|-------|------------|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 1: namespaces overview](/lwn-531114-namespaces-in-op-part1) |January 4, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 2: the namespaces API](/lwn-531381-namespaces-in-op-part2) |January 8, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 3: PID namespaces](/lwn-531419-namespaces-in-op-part3) |January 16, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748-namespaces-in-op-part4) |January 23, 2013|
+| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 1: namespaces overview](/lwn-531114) |January 4, 2013|
+| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 2: the namespaces API](/lwn-531381) |January 8, 2013|
+| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 3: PID namespaces](/lwn-531419) |January 16, 2013|
+| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748) |January 23, 2013|
 
 ## 赞助我们
 

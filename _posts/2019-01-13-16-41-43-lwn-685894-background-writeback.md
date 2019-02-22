@@ -46,7 +46,7 @@ Ted Ts'o 询问当不同的控制组（control group）试图对 I/O 执行按�
 
 > David Howells asked about writeback that is going to multiple devices. Axboe said that still needs work. Someone else asked about background reads, which Axboe said could be added. Nothing is inherently blocking that, but the work still needs to be done.
 
-David Howells 询问有关多个设备的 writeback 问题。Axboe 说对于这方面还有工作要做。另一些人询问了对后台读取（background reads）的支持，Axboe 说可以添加。目前实现该功能并没有什么困难，需要的只是一点工作量。（译者注，该补丁集最终随 4.10 合入内核主线。）
+David Howells 询问有关多个设备的 writeback 问题。Axboe 说对于这方面还有工作要做。另一些人询问了对后台读取（background reads）的支持，Axboe 说可以添加。目前实现该功能并没有什么困难，需要的只是一点工作量。（译者注，该补丁集最终 [随 4.10 合入内核主线](https://kernelnewbies.org/Linux_4.10#Improved_writeback_management)。）
 
 **了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
 

@@ -34,7 +34,7 @@ Linux 中的 [后台回写（background writeback）](/lwn-682582/) 问题已经
 
 > The queues are managed on the device side in ways that are "very loosely based on [CoDel](https://en.wikipedia.org/wiki/CoDel)" from the networking code. The queues will be monitored and write requests will be throttled when the queues get too large. He thought about dropping writes instead (as CoDel does with network packets), but decided "people would be unhappy" with that approach.
 
-目前设备端队列的管理方式借鉴了一部分网络子系统中所采用的 [CoDel 算法](https://en.wikipedia.org/wiki/CoDel) 的思想。通过在运行过程中监控队列的状态并在队列过长时抑制（throttle）对设备的写入请求。他曾经考虑参考网络数据报处理中应用 CoDel 算法的方式，当队列最大长度超过限制时，直接丢弃写入请求，但因为考虑到 “大家一定会对这种方法不满意”，所以最终并没有这么做。
+目前设备端队列的管理方式借鉴了一部分网络子系统中所采用的 [CoDel 算法](https://en.wikipedia.org/wiki/CoDel) 的思想。通过在运行过程中监控队列的状态并在队列过长时抑制（throttle）对设备的写入请求。他曾经考虑参考网络数据报处理中应用 CoDel 算法的方式，当队列最大长度超过限制时，直接丢弃写入请求，但因为考虑到 “大家一定会对这种方法不满意”，所以最终并没有这么做。（译者注，有关代码中基于 CoDel 算法的修改参考补丁 [blk-wbt: add general throttling mechanism](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e34cbd307477ae07c5d8a8d0bd15e65a9ddaba5c)）
 
 > The problem is largely solved at this point. Both read and write latencies are improved, but there is still some tweaking needed to make it work better. The algorithm is such that if the device is fast enough, it "just stays out of the way". It also narrows in on the right queue size quickly and if there are no reads contending for the queues, it "does nothing at all". He did note that he had not yet run the "crazy Chinner [test case](https://lwn.net/Articles/683353/)" again.
 

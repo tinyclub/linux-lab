@@ -20,11 +20,11 @@ tags:
 > 翻译：By [simowce](https://github.com/simowce) of [TinyLab.org][1]
 > 校对：By [unicornx](https://github.com/unicornx)
 
-> [Last week's article](lwn-158211/) on fragmentation avoidance concluded with these famous last words:
+> [Last week's article](http://lwn.net/Articles/158211/) on fragmentation avoidance concluded with these famous last words:
 
 >     But there are legitimate reasons for wanting this capability in the kernel, and the issue is unlikely to go away. Unless somebody comes up with a better solution, it could be hard to keep Mel's patch out forever.
 
-[上周关于避免碎片化的文章](/lwn-101230/)在最后提到：
+[上周关于避免碎片化的文章](/lwn-158211/)在最后提到：
 
     但是我们真的有那么多的理由为内核添加这种功能啊，所以这个问题不太可能就此结束。除非有人提出更好的解决方案，否则我相信 Mel 的补丁迟早还是会被合入内核主线的。
 

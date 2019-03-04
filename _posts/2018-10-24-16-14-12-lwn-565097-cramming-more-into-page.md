@@ -38,7 +38,7 @@ Joonsoo Kim 发布了一个补丁集，旨在以不增加 `struct page` 大小�
 
 > Joonsoo's patch is perhaps best understood by stepping through `struct page` and noting the changes that are made to accommodate the extra data. The full definition of this structure can be found in `<linux/mm_types.h>` for the curious. The first field appears simple enough:
 
-要想理解清楚 Joonsoo 的补丁改动，最好的方法是仔细地研究 `struct page` 结构体的定义以及补丁中所做的修改。该结构体类型的完整定义在 `<linux/mm_types.h>` 中（译者注，作者写作本文时的内核版本应该是 3.10，而且请注意作者在本文中列举的代码是 **“未合入”** Joonsoo 的补丁的代码。Joonsoo 的补丁随 3.13 合入，读者在理解下文的介绍时请参照对比 3.10 和 3.13 版本中的 `<linux/mm_types.h>` 文件）。第一个字段看起来很简单：
+要想理解清楚 Joonsoo 的补丁改动，最好的方法是仔细地研究 `struct page` 结构体的定义以及补丁中所做的修改。该结构体类型的完整定义在 `<linux/mm_types.h>` 中（译者注，作者写作本文时的内核版本应该是 3.10，而且请注意作者在本文中列举的代码是 **“未合入”** Joonsoo 的补丁的代码。Joonsoo 的补丁随 3.13 合入，具体的修改请参考提交 “[slab: use struct page for slab management](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8456a648cf44f14365f1f44de90a3da2526a4776)”。读者在理解下文的介绍时也可以直接参照对比 3.10 和 3.13 版本中的 `<linux/mm_types.h>` 文件）。第一个字段看起来很简单：
 
 	unsigned long flags;
 

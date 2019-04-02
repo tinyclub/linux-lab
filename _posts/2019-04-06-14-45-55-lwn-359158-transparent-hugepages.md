@@ -40,7 +40,7 @@ There are exceptions, though. The mapping of kernel virtual memory is done with 
 
 A host setting up memory ranges for virtualized guests would like to be able to use large pages for that purpose. But if large pages are not available, the system should simply fall back to using lots of smaller pages. It should be possible to swap large pages when needed. And the virtualized guest should not need to know anything about the use of large pages by the host. In other words, it would be nice if the Linux memory management code handled large pages just like normal pages. But that is not how things happen now; hugetlbfs is, for all practical purposes, a separate, parallel memory management subsystem.
 
-当一台主机为虚拟客户机设置内存范围时更愿意使用大页。如果大页不可用，系统就会简单地退而求其次，使用大量较小的页来代替。如果可能的话，系统直接采用大页来实现交换就更好了（译者注，显然写作本文的当时直接基于大页进行页交换还没有实现。）。而虚拟客户机并不需要知道主机对大页的使用情况。换句话说，如果 Linux 的内存管理子系统能够像处理普通页一样处理大页，那就太好了。但现在的情况并非如此；就 hugetlbfs 来说，从各种方面来看（包括了实现和使用），和内核自身的内存管理子系统完全是独立和并行运行的。
+作为一台运行了多个虚拟客户机的主机，在设置内存范围时更愿意使用大页。如果大页不可用，系统最好能够自动地退而求其次，使用大量较小的页来代替。如果可能的话，系统直接采用大页来实现交换就更好了。作为虚拟客户机并不需要知道主机对大页的使用情况。换句话说，如果 Linux 的内存管理子系统能够像处理普通页一样处理大页，那就再好不过了。但现在的情况并非如此；就 hugetlbfs 来说，从各种方面来看（包括了实现和使用），和内核自身的内存管理子系统完全是独立和并行运行的。
 
 Andrea Arcangeli has posted [a transparent hugepage patch](https://lwn.net/Articles/358904/) which attempts to remedy this situation by removing the disconnect between large pages and the regular Linux virtual memory subsystem. His goals are fairly ambitious: he would like an application to be able to request large pages with a simple madvise() system call. If large pages are available, the system will provide them to the application in response to page faults; if not, smaller pages will be used.
 

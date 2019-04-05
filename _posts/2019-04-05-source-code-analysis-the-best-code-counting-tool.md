@@ -1,5 +1,5 @@
 ---
-title: 源码分析：代码计数工具及其效率与准确性
+title: 源码分析：代码计数工具及其效率与准确度
 author: Wu Zhangjin
 layout: post
 draft: true

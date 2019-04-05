@@ -3,8 +3,8 @@ layout: post
 author: 'Zhizhou Tian'
 title: "Linux Swap 与 Zram 详解"
 group: original
-permalink: /linux-swap-and-zramfs/
-description: "本文详细介绍了内存管理中的常见概念，内存回收，交换子系统以及Zramfs交换技术。"
+permalink: /linux-swap-and-zram/
+description: "本文详细介绍了内存管理中的常见概念，内存回收，交换子系统以及Zram交换技术。"
 categories:
   - 内存管理
 tags:
@@ -12,7 +12,6 @@ tags:
   - Swap
   - Android
   - Zram
-  - Zramfs
   - Linux
 ---
 

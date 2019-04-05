@@ -127,7 +127,7 @@ categories:
 
 `sloccount` 按目录统计了不同语言的占比以及整个项目的各语言代码行数，在这个项目上统计出来的 C 语言代码行数跟 `cloc` 高度一致，都是 8794 行，但是在统计 Assembly 的时候出现了偏差。
 
-很有意思的是， `sloccount` 还基于 Basic COCOMO 模型（由 TRW 公司开发，Boehm 提出的结构化成本估算模型。是一种精确的、易于使用的成本估算方法），给出了项目开发所需的人月数估算以及人力投入成本预估。
+很有意思的是， `sloccount` 还基于 Basic COCOMO 模型，给出了项目开发所需的人月数估算以及人力投入成本预估。[COCOMO 模型](https://en.wikipedia.org/wiki/COCOMO)由 TRW 公司开发，Boehm 提出的结构化成本估算模型。它是一种精确的、易于使用的成本估算方法，例如 Basic COCOMO 模型是用一个以已估算出来的源代码行数 （LOC） 为自变量的函数来计算软件开发工作量。
 
 ## loc & tokei
 
@@ -189,7 +189,7 @@ categories:
 
 ## scc
 
-[scc](https://github.com/boyter/scc) 用 `go` 语言撰写，在效率上与 `loc` 和 `tokei` 相当，但是引入一个很有意义的 `complexity` 数据，这个用于评估[软件复杂度](https://blog.csdn.net/t_1007/article/details/53034408)。
+[scc](https://github.com/boyter/scc) 用 `go` 语言撰写，在效率上与 `loc` 和 `tokei` 相当，但是引入一个很有意义的 `complexity` 数据，即 [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity)，中文翻译为圈复杂度或者环路复杂度，它反应了程序分支数或者环路个数，用于评估[软件复杂度](https://blog.csdn.net/t_1007/article/details/53034408)。
 
 在 [scc Releases](https://github.com/boyter/scc/releases) 下载一个编译好的版本，试运行如下：
 

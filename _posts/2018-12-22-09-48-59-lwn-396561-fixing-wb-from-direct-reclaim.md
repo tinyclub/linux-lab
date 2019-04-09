@@ -76,7 +76,7 @@ Direct reclaim 通常是有效的，当某些进程对内存的需求十分急�
 
 **了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
 
-[1]: http://lwn.net/Articles/396512/
+[1]: https://lwn.net/Articles/396512/
 [2]: https://kernelnewbies.org/Linux_3.2#I.2FO-less_dirty_throttling.2C_reduce_filesystem_writeback_from_page_reclaim
 [3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ee72886d8ed5d9de3fa0ed3b99a7ca7702576a96
 [4]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=49ea7eb65e7c5060807fb9312b1ad4c3eab82e2c

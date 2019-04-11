@@ -15,14 +15,16 @@ tags:
   - memory
 ---
 
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+
 > 原文：[Dynamic writeback throttling](https://lwn.net/Articles/405076/)
 > 原创：By corbet @ Sep. 15, 2010
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Songfeng Zhang](https://github.com/lyzhsf)
 
 > Writeback is the process of writing dirty memory pages (i.e. those which have been modified by applications) back to persistent storage, saving the data and potentially freeing the pages for other use. System performance is heavily dependent on getting writeback right; poorly-done writeback can lead to poor I/O rates and extreme memory pressure. Over the last year, it has become increasingly clear that the Linux kernel is not doing writeback as well as it should; several developers have been putting time into improving the situation. The [dynamic dirty throttling limits patch](http://lwn.net/Articles/404612/) from Wu Fengguang demonstrates a new, relatively complex approach to making writeback better.
 
-“回写” （writeback，译者注，下文直接使用不再翻译）的作用是将 “脏” 页（即那些已被应用程序修改过的缓存页）上的数据内容写回持久存储（译者注，可以理解为磁盘）保存起来，从而使得那些缓存页可以被用于其他用途。系统性能在很大程度上取决于 writeback 是否能够正常地工作；当 writeback 工作得不好时会降低磁盘的读写吞吐率并给内存分配带来极大的压力。过去一年以来，社区逐渐发现 Linux 内核在 writeback 上表现不佳；一些开发人员已经花费了不少时间试图改善这种情况。Wu Fengguang 提交的 [动态抑制缓存写入（dynamic dirty throttling limits）补丁](http://lwn.net/Articles/404612/) 给大家展示了一种新的，相对复杂的方法，可以用于改进 writeback 的效能。（译者注，从补丁的名字和后面的介绍来看，本文的标题严格说是有问题的，因为该补丁所抑制的是对缓存的写入（dirtying），而非 writeback。）
+“回写” （writeback，译者注，下文直接使用不再翻译）的作用是将 “脏” 页（即那些已被应用程序修改过的缓存页）上的数据内容写回持久存储（译者注，可以理解为磁盘）保存起来，从而使得那些缓存页可以被用于其他用途。系统性能在很大程度上取决于 writeback 是否能够正常地工作；当 writeback 工作得不好时会降低磁盘的读写吞吐率并给内存分配带来极大的压力。过去一年以来，社区逐渐发现 Linux 内核在 writeback 上表现不佳；一些开发人员已经花费了不少时间试图改善这种情况。Wu Fengguang 提交的 [动态抑制缓存写入（dynamic dirty throttling limits）补丁][1] 给大家展示了一种新的，相对复杂的方法，可以用于改进 writeback 的效能。（译者注，从补丁的名字和后面的介绍来看，本文的标题严格说是有问题的，因为该补丁所抑制的是对缓存的写入（dirtying），而非 writeback。）
 
 > One of the key concepts behind writeback handling is that processes which are contributing the most to the problem should be the ones to suffer the most for it. In the kernel, this suffering is managed through a call to `balance_dirty_pages()`, which is meant to throttle a process's memory-dirtying behavior until the situation improves. That throttling is done in a straightforward way: the process is given a shovel and told to start digging. In other words, a process which has been tossed into `balance_dirty_pages()` is put to work finding dirty pages and arranging to have them written to disk. Once a certain number of pages have been cleaned, the process is allowed to get back to the vital task of creating more dirty pages.
 
@@ -38,7 +40,7 @@ Fengguang 提交的补丁集（由 17 个子补丁构成）做了以下改进，
 
 > Much of the rest of the patch series is aimed at improving that pause calculation. It adds a new mechanism for estimating the actual bandwidth of each backing device - something the kernel does not have a good handle on, currently. Using that information, combined with the number of pages that the kernel would like to see written out before allowing a dirtying process to continue, a reasonable pause duration can be calculated. That pause is not allowed to exceed 200ms.
 
-补丁集的其余部分大部分旨在改善对任务休眠时长（pause，译者注，或者译为 “暂停”）的计算。它增加了一种新机制来估计每个磁盘设备的实际读写带宽，在这一点上当前的内核做的还不够。使用该信息，结合内核希望在继续缓存写入之前 writeback 的缓存页的数目值，可以计算出合理的暂停持续时间。该暂停时长最大不允许超过 200 毫秒。（这部分改动参考正式合入主线的 [“commit: writeback: bdi write bandwidth estimation”](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e98be2d599207c6b31e9bb340d52a231b2f3662d)。）
+补丁集的其余部分大部分旨在改善对任务休眠时长（pause，译者注，或者译为 “暂停”）的计算。它增加了一种新机制来估计每个磁盘设备的实际读写带宽，在这一点上当前的内核做的还不够。使用该信息，结合内核希望在继续缓存写入之前 writeback 的缓存页的数目值，可以计算出合理的暂停持续时间。该暂停时长最大不允许超过 200 毫秒。（这部分改动参考正式合入主线的 [“commit: writeback: bdi write bandwidth estimation”][2]。）
 
 > The patch set tries to be smarter than that, though. 200ms is a long time to pause a process which is trying to get some work done. On the other hand, without a bit of care, it is also possible to pause processes for a very short period of time, which is bad for throughput. For this patch set, it was decided that optimal pauses would be between 10ms and 100ms. This range is achieved by maintaining a separate "`nr_dirtied_pause`" limit for every process; if the number of dirtied pages for that process is below the limit, it is not forced to pause. Any time that `balance_dirty_pages()` calculates a pause time of less than 10ms, the limit is raised; if the pause turns out to be over 100ms, instead, the limit is cut in half. The desired result is a pause within the selected range which tends quickly toward the 10ms end when memory pressure drops.
 
@@ -54,10 +56,15 @@ Fengguang 提交的补丁集（由 17 个子补丁构成）做了以下改进，
 
 > Once this patch set is in place, there's a better way to calculate the best writeback size. The system now knows what kind of bandwidth it can expect from each device; using that information, it can size its requests to keep the device busy for one second at a time. Throttling limits are also based on this one-second number; if there are not enough dirty pages in the system for one second of I/O activity, the backing device is probably not being used to its full capacity and the number of dirty pages should be allowed to increase. In summary: the bandwidth estimation allows the kernel to scale dirty limits and I/O sizes to make the best use of all of the devices in the system, regardless of any specific device's performance characteristics.
 
-而一旦这个补丁集被加入内核后，我们就会有更好的方法来计算最佳的 writeback 大小。系统现在知道了每个设备可以承受的 writeback 带宽；基于该信息，它可以调整 writeback 请求以保证设备一次可以忙碌一秒钟。抑制（Throttling）操作也可以基于这个一秒钟的写入数据量进行判断；如果系统中的 “脏” 页量太少，不足以支持一秒钟的 writeback，则说明磁盘设备不能被充分使用，此时可以允许任务写入更多的 “脏” 页。总之：基于对磁盘读写带宽的估计，允许内核调节（提高）写入 “脏” 页的限制和 writeback 的数据量，从而可以充分利用系统中的所有设备，同时不用单独考虑特定设备的读写特性。（这部分改动参考正式合入主线的 [“commit: writeback: scale IO chunk size up to half device bandwidth”](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1a12d8bd7b2998be01ee55edb64e7473728abb9c)。）
+而一旦这个补丁集被加入内核后，我们就会有更好的方法来计算最佳的 writeback 大小。系统现在知道了每个设备可以承受的 writeback 带宽；基于该信息，它可以调整 writeback 请求以保证设备一次可以忙碌一秒钟。抑制（Throttling）操作也可以基于这个一秒钟的写入数据量进行判断；如果系统中的 “脏” 页量太少，不足以支持一秒钟的 writeback，则说明磁盘设备不能被充分使用，此时可以允许任务写入更多的 “脏” 页。总之：基于对磁盘读写带宽的估计，允许内核调节（提高）写入 “脏” 页的限制和 writeback 的数据量，从而可以充分利用系统中的所有设备，同时不用单独考虑特定设备的读写特性。（这部分改动参考正式合入主线的 [“commit: writeback: scale IO chunk size up to half device bandwidth”][3]。）
 
 > Getting this code into the mainline could take a while, though. It is a complicated set of changes to core code which is already complex; as such, it will be hard for others to review. There have been some concerns raised about the specifics of some of the heuristics. A large amount of performance testing will also be required to get this kind of change merged. So we may have to wait for a while yet, but better writeback should be coming eventually.
 
-但是，将此补丁代码合入主线还需要一段时间。内核内存子系统的代码本身已经十分复杂，而该补丁的修改也不简单；这给其他人的审查工作带来了困难。也有些人对补丁中采用的估算方式的细节提出了一些担忧。除此之外，我们还需要经过大量的性能测试验证才能将这个更改最终合入主线。总之我们还要再等待一段时间，但相信该补丁合入后对 writeback 的性能提升应该会有更大的帮助。（译者注，该补丁最终随 3.1 版本合入主线。）
+但是，将此补丁代码合入主线还需要一段时间。内核内存子系统的代码本身已经十分复杂，而该补丁的修改也不简单；这给其他人的审查工作带来了困难。也有些人对补丁中采用的估算方式的细节提出了一些担忧。除此之外，我们还需要经过大量的性能测试验证才能将这个更改最终合入主线。总之我们还要再等待一段时间，但相信该补丁合入后对 writeback 的性能提升应该会有更大的帮助。（译者注，该补丁最终 [随 3.1 版本合入主线][4]。）
 
-[1]: http://tinylab.org
+**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+
+[1]: https://lwn.net/Articles/404612/
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e98be2d599207c6b31e9bb340d52a231b2f3662d
+[3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1a12d8bd7b2998be01ee55edb64e7473728abb9c
+[4]: https://kernelnewbies.org/Linux_3.1#Dynamic_writeback_throttling

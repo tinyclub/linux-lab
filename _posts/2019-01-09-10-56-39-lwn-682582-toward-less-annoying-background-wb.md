@@ -19,7 +19,7 @@ tags:
 
 > 原文：[Toward less-annoying background writeback](https://lwn.net/Articles/682582/)
 > 原创：By corbet @ Apr. 13, 2016
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Wen Yang](https://github.com/w-simon)
 
 > It's an experience many of us have had: write a bunch of data to a relatively slow block device, then try to get some other work done. In many cases, the system will slow to a crawl or even appear to freeze for a while; things do not recover until the bulk of the data has been written to the device. On a system with a lot of memory and a slow I/O device, getting things back to a workable state can take a long time, sometimes measured in minutes. Linux users are understandably unimpressed by this behavior pattern, but it has been stubbornly present for a long time. Now, perhaps, a new patch set will improve the situation.
@@ -28,7 +28,7 @@ tags:
 
 > That patch set, from block subsystem maintainer Jens Axboe, is titled "[Make background writeback not suck](https://lwn.net/Articles/681763/)." "Background writeback" here refers to the act of flushing block data from memory to the underlying storage device. With normal Linux buffered I/O, a `write()` call simply transfers the data to memory; it's up to the memory-management subsystem to, via writeback, push that data to the device behind the scenes. Buffering writes in this manner enables a number of performance enhancements, including allowing multiple operations to be combined and enabling filesystems to improve layout locality on disk.
 
-这个补丁集由块子系统（block subsystem）的维护者 Jens Axboe 开发，补丁标题为 [“改进后台回写”（“Make background writeback not suck”）](https://lwn.net/Articles/681763/) 。这里的 “后台回写（Background writeback）” 指的是将块数据从缓存中刷新（flushing）到底层存储设备的行为。当我们执行 `write()` 系统调用时，正常情况下，基于 Linux 的读写缓充区（buffered I/O）技术，写入的数据将被缓存在内存里；然后由内存管理子系统通过回写（writeback，译者注，下文直接使用不再翻译）的方式将数据推送（push）到底层的存储设备。在写入操作中利用缓存对提升性能有很多好处，包括将多次写入操作累积合并起来（一次性 writeback 入磁盘），这么做可以方便文件系统改进数据在磁盘上的布局（译者注，使得连续的数据在磁盘上的存放也是连续的）。
+这个补丁集由块子系统（block subsystem）的维护者 Jens Axboe 开发，补丁标题为 [“改进后台回写”（“Make background writeback not suck”）][1] 。这里的 “后台回写（Background writeback）” 指的是将块数据从缓存中刷新（flushing）到底层存储设备的行为。当我们执行 `write()` 系统调用时，正常情况下，基于 Linux 的读写缓充区（buffered I/O）技术，写入的数据将被缓存在内存里；然后由内存管理子系统通过回写（writeback，译者注，下文直接使用不再翻译）的方式将数据推送（push）到底层的存储设备。在写入操作中利用缓存对提升性能有很多好处，包括将多次写入操作累积合并起来（一次性 writeback 入磁盘），这么做可以方便文件系统改进数据在磁盘上的布局（译者注，使得连续的数据在磁盘上的存放也是连续的）。
 
 > So how is it that a performance-enhancing technique occasionally leads to such terrible performance? Jens's diagnosis is that it has to do with the queuing of I/O requests in the block layer. When the memory-management code decides to write a range of dirty data, the result is an I/O request submitted to the block subsystem. That request may spend some time in the I/O scheduler, but it is eventually dispatched to the driver for the destination device. Getting there requires passing through a series of queues.
 
@@ -40,11 +40,11 @@ tags:
 
 > In other words, the block layer has a [bufferbloat](https://lwn.net/Articles/616241/) problem that mirrors the issues that have been seen in the networking stack. Lengthy queues lead to lengthy delays.
 
-换句话说，block layer 中的这个问题有点类似于网络栈中曾经发现的一个 [bufferbloat](https://lwn.net/Articles/616241/) 问题。都是因为过长的队列导致了较长的延迟。
+换句话说，block layer 中的这个问题有点类似于网络栈中曾经发现的一个 [bufferbloat][2] 问题。都是因为过长的队列导致了较长的延迟。
 
 > As with bufferbloat, the answer lies in finding a way to reduce the length of the queues. In the networking stack, techniques like [byte queue limits](https://lwn.net/Articles/454390/) and [TCP small queues](https://lwn.net/Articles/507065/) have mitigated much of the bufferbloat problem. Jens's patches attempt to do something similar in the block subsystem.
 
-与 bufferbloat 问题一样，解决的思路在于找到一种方法减小队列的长度。在网络栈中，采用的方法有 [byte queue limits](https://lwn.net/Articles/454390/) 和 [TCP small queues](https://lwn.net/Articles/507065/)，这些技术已经缓解了大部分 bufferbloat 问题。Jens 的补丁也尝试针对 block 子系统做类似的改进。
+与 bufferbloat 问题一样，解决的思路在于找到一种方法减小队列的长度。在网络栈中，采用的方法有 [byte queue limits][3] 和 [TCP small queues][4]，这些技术已经缓解了大部分 bufferbloat 问题。Jens 的补丁也尝试针对 block 子系统做类似的改进。
 
 ## 解决队列的问题（Taming the queues）
 
@@ -74,8 +74,14 @@ Jens 对该补丁执行了如下测试，一个进程负责对 50 个文件执�
 
 > This is an early-stage patch set; it is not expected to go upstream in the near future. Patches that change memory-management behavior can often cause unexpected problems with different workloads, so it takes a while to build confidence in a significant change, even after the development work is deemed to be complete (which is not the case here). Indeed, Dave Chinner has already [reported](https://lwn.net/Articles/683353/) a performance regression with one of his testing workloads. The tuning of the queue-size limits also needs to be made automatic if possible. There is clearly work still to be done here; the patch set is also likely to be a subject of discussion at the upcoming [Linux Storage, Filesystem, and Memory-Management Summit](http://events.linuxfoundation.org/events/linux-storage-filesystem-and-mm-summit). So users will have to wait a bit longer for this particular annoyance to be addressed.
 
-这个补丁集目前还处在开发阶段的早期；预计进入内核主线还需要一段时间。对内存管理行为的修改在不同的工作环境下往往会引起意想不到的问题，所以如果改动较大则要花费较长的时间才能获得大家的认可，即便是开发工作已经完成的情况下（而本文所介绍的补丁开发工作显然还没有达到这个程度）。实际上，Dave Chinner 已经 [报告了](https://lwn.net/Articles/683353/) 在他的一个测试中发现了一定程度的性能倒退。另外，如果可能，对队列大小限制的调整最好是自动的。显然还有很多工作要做；这个补丁集可能会作为即将到来的 [Linux 存储，文件系统和内存管理峰会](http://events.linuxfoundation.org/events/linux-storage-filesystem-and-mm-summit) 中的一个主题进行讨论。因此，在这个问题被彻底解决之前，用户还需要再耐心等待一段时间。（译者注，该补丁集最终 [随 4.10 合入内核主线](https://kernelnewbies.org/Linux_4.10#Improved_writeback_management)。）
+这个补丁集目前还处在开发阶段的早期；预计进入内核主线还需要一段时间。对内存管理行为的修改在不同的工作环境下往往会引起意想不到的问题，所以如果改动较大则要花费较长的时间才能获得大家的认可，即便是开发工作已经完成的情况下（而本文所介绍的补丁开发工作显然还没有达到这个程度）。实际上，Dave Chinner 已经 [报告了][5] 在他的一个测试中发现了一定程度的性能倒退。另外，如果可能，对队列大小限制的调整最好是自动的。显然还有很多工作要做；这个补丁集可能会作为即将到来的 [Linux 存储，文件系统和内存管理峰会][6] 中的一个主题进行讨论。因此，在这个问题被彻底解决之前，用户还需要再耐心等待一段时间。（译者注，该补丁集最终 [随 4.10 合入内核主线][7]。）
 
 **了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
 
-  [1]: http://tinylab.org
+[1]: https://lwn.net/Articles/681763/
+[2]: https://lwn.net/Articles/616241/
+[3]: https://lwn.net/Articles/454390/
+[4]: https://lwn.net/Articles/507065/
+[5]: https://lwn.net/Articles/683353/
+[6]: http://events.linuxfoundation.org/events/linux-storage-filesystem-and-mm-summit
+[7]: https://kernelnewbies.org/Linux_4.10#Improved_writeback_management

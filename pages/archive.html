@@ -19,6 +19,11 @@ comments: false
 {% assign size = 0 %}
 
 {% for post in site.posts  %}
+
+   {% if post.draft and post.draft == true %}
+     % continue %}
+   {% endif %}
+
    {% assign month = post.date | date: '%Y-%m' %}
    {% if oldmonth != month or post == site.posts.last %}
      {% if post == site.posts.last %}

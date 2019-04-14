@@ -14,6 +14,9 @@
   {% if page.album and post.album and page.album == post.album %}
     {% continue %}
   {% endif %}
+  {% if post.draft and post.draft == true %}
+    {% continue %}
+  {% endif %}
   <li>
     <a rel="nofollow" href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
   </li>

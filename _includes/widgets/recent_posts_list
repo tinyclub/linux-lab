@@ -5,7 +5,8 @@
 {% assign title = "最近文章" %}
 {% assign icon = "star" %}
 {% assign list = site.posts %}
-{% assign condition = nil %}
+{% assign condition = 'draft'  %}
+{% assign value = false %}
 {% assign items_limit = false %}
 {% assign new_icon_style=true %}
 

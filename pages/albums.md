@@ -39,6 +39,11 @@ comments: false
   <h3 id="{{ album.name | downcase | replace:' ','-' | replace:'/','-' }}-ref">{% if album_url != "" %}<a href="{{ album_url }}" title="该专辑已发布为GitBook，点击查看！">{{ album.name}}</a>{% else %}{{ album.name }}{% endif %} <sup>({{ album.items.size }})</sup></h3>
   <ul>
     {% for post in album.items %}
+
+    {% if post.draft and post.draft == true %}
+      {% continue %}
+    {% endif %}
+
     <li><a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>

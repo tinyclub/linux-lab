@@ -25,6 +25,11 @@ Usage:
 {% else %}
   {% for node in pages_list %}
     {% if node.title != null %}
+
+      {% if node.draft and node.draft == true %}
+          {% continue %}
+      {% endif %}
+
       {% if group == null or group == node.group %}
         {% assign highlight = "" %}
         {% if node.highlight == true %}

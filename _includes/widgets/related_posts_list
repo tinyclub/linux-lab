@@ -4,7 +4,8 @@
 {% assign title = "相关文章" %}
 {% assign icon = "attach" %}
 {% assign related_container = "related_container" %}
-{% assign condition = nil %}
+{% assign condition = 'draft' %}
+{% assign value = false %}
 
 {% capture related_header %}
 <div class="section_header">

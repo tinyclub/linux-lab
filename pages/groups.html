@@ -51,6 +51,11 @@ comments: false
   <h3 id="{{ group_name | downcase | replace:' ','-' | replace:'/','-' }}-ref">{{ group_name}} <sup>({{ group_size }})</sup></h3>
   <ul>
     {% for post in group.items %}
+
+    {% if post.draft and post.draft == true %}
+      {% continue %}
+    {% endif %}
+
     <li><a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>

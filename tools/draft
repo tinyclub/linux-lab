@@ -24,10 +24,10 @@ sed -i -e "s/$draft_on/$draft_off/g" $post
 publish_date=`date +%Y-%m-%d-%H-%M-%S`
 
 post_publish=`echo $post | sed -e "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/$publish_date/g"`
-post_title=`echo $post_publish | sed -e "s/.md$//g"`
+post_title=`basename $post_publish | sed -e "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-//g" | sed -e "s/.md$//g"`
 
 git mv $post $post_publish
 
-git add $post $post_publish
+git add $post_publish
 
-git commit -s $post $post_publish -m "post: publish $title"
+git commit -s $post $post_publish -m "post: publish $post_title"

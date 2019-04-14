@@ -17,6 +17,10 @@
   {% continue %}
 {% endif %}
 
+{% if item.draft and item.draft == true %}
+  {% continue %}
+{% endif %}
+
 {% if item[condition] == value %}
  {% assign size = 1 %}
  {% break %}

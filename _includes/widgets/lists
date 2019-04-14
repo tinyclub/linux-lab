@@ -30,7 +30,9 @@
       {% continue %}
     {% endif %}
 
-
+    {% if item.draft and item.draft == true %}
+      {% continue %}
+    {% endif %}
 
     {% if items_limit %}
        {% if total_num >= items_limit %}

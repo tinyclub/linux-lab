@@ -6,6 +6,11 @@
   {% if post.title and page.title and page.title == post.title %}
     {% continue %}
   {% endif %}
+
+  {% if post.draft and post.draft == true %}
+    {% continue %}
+  {% endif %}
+
   {% if post.album == page.ablum %}
     {% assign size = 1 %}
     {% break %}
@@ -17,6 +22,11 @@
   <ul id="album_container">
 
   {% for post in site.posts %}
+
+    {% if post.draft and post.draft == true %}
+      {% continue %}
+    {% endif %}
+
     {% if post.album == empty %}
       {% continue %}
     {% endif %}

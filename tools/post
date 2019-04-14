@@ -41,6 +41,7 @@ args=""
 [ -n "$tagline" ] && args=$args" tagline=\"$tagline\""
 [ -n "$album" ] && args=$args" album=\"$album\""
 [ -n "$group" ] && args=$args" group=\"$group\""
+[ -n "$draft" ] && args=$args" draft=\"$draft\""
 
 [ -n "$description" ] && args=$args" description=\"$description\""
 

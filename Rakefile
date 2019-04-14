@@ -105,6 +105,14 @@ task :post do
     tagline = '# tagline: " 子标题，如果存在的话 "'
   end
   
+  # Build draft (publish or hide, true for hidden, false for publish)
+  if ENV["draft"]
+    draft = ENV["draft"]
+    draft = "draft: #{draft}"
+  else
+    draft = 'draft: false'
+  end
+
   # Build album (series)
   if ENV["album"]
     album = ENV["album"]
@@ -151,6 +159,7 @@ task :post do
     post.puts "layout: post"
     post.puts "#{author}"
     post.puts "title: \"#{title.gsub(/-/,' ')}\""
+    post.puts "#{draft}"
     post.puts "#{tagline}"
     post.puts "#{album}"
     post.puts "#{group}"
@@ -317,6 +326,7 @@ task :page do
     post.puts "layout: page"
     post.puts "author: #{CONFIG['author']}"
     post.puts "title: \"#{title}\""
+    post.puts 'draft: false'
     post.puts '# tagline: " subtitle "'
     post.puts '# album: " belongs to an page series"'
     post.puts '# group: " belongs to navigation or the others"'

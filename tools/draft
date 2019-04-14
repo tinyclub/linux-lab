@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# draft -- hide, publish and list hiden posts
+#
+
+TOP_DIR=$(cd $(dirname $0) && pwd)
+
+draft_on="draft:.*true"
+draft_off="draft: false"
+
+grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | xargs -I{} grep "^title:" {} | cut -d':' -f2- | cat -n
+total=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | wc -l | tr -d ' '`
+if [ $total -gt 1 ]; then
+	read -p "Select(1~$total): " post
+	if [ $post -le $total -a $post -ge 1 ]; then
+		post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | head -$post | tail -1`
+	fi
+else
+	post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1| head -1`
+fi
+
+sed -i -e "s/$draft_on/$draft_off/g" $post
+
+publish_date=`date +%Y-%m-%d-%H-%M-%S`
+
+post_publish=`echo $post | sed -e "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/$publish_date/g"`
+post_title=`echo $post_publish | sed -e "s/.md$//g"`
+
+git mv $post $post_publish
+
+git add $post $post_publish
+
+git commit -s $post $post_publish -m "post: publish $title"

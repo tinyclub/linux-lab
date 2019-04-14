@@ -2,7 +2,7 @@
 title: 源码分析：代码计数工具及其效率与准确度
 author: Wu Zhangjin
 layout: post
-draft: true
+draft: false
 album: 源码分析之道
 permalink: /source-code-analysis-the-best-code-counting-tool/
 tags:
@@ -25,7 +25,7 @@ categories:
 
 源码分析是程序员离不开的话题。无论是研究开源项目，还是平时做各类移植、开发，都避免不了对源码的深入解读。
 
-一次偶然的著作权申请需要获取项目代码行数以及代码用到的语言，于是有了这一篇。这篇文章主要介绍如何统计项目代码，能用的工具以及它们的优劣。
+一次偶然的著作权申请需要获取项目代码行数以及代码用到的编程语言，于是有了这一篇。这篇文章主要介绍如何统计项目代码，能用的工具以及它们的优劣。
 
 ## wc
 
@@ -38,7 +38,7 @@ categories:
     $ find . -name "*.[hcs]" | xargs -i cat {} | grep -v "^ *$" | grep -v " */\*.*\*/" | wc -l
     10816
 
-可是我们对于评论的处理过于粗糙，而且漏掉了 Shell 和 Makefile 代码。
+可是我们对于评论的处理过于粗糙，而且漏掉了 Shell 和 Makefile 代码，加上这两个语言：
 
     $ find . -name "*.[hcs]" -or -name *.sh -or -name Makefile | xargs -i cat {} | grep -v "^ *$" | grep -v " */\*.*\*/" | wc -l
     11356
@@ -47,7 +47,7 @@ categories:
 
 ## cloc & sloccount
 
-简单的检索过后发现了 `cloc` 和 `sloccount`，两款都是用 `perl` 撰写的，直观的印象是两者首次运行时间都很长。
+简单的检索过后发现了 `cloc` 和 `sloccount`，两款都是用 `perl` 编写的，直观的印象是两者首次运行时间都很长。
 
 
     $ sudo apt-get install cloc sloccount
@@ -131,8 +131,7 @@ categories:
 
 ## loc & tokei
 
-
-`cloc` 与 `sloccount` 的慢对于大型项目确实是难以忍受的，所以进一步的检索发现还有 `loc` 和 `tokei`，两个都用 `rust` 语言撰写，效率有数十倍到 100 倍左右的提升。
+`cloc` 与 `sloccount` 的慢对于大型项目确实是难以忍受的，所以进一步的检索发现还有 `loc` 和 `tokei`，两个都用 `rust` 语言编写，效率有数十倍到 100 倍左右的提升。
 
     $ sudo apt-get install cargo
     $ cargo install loc tokei
@@ -179,17 +178,35 @@ categories:
      Total                 102        13807        11039         1400         1368
     -------------------------------------------------------------------------------
 
+
+    $ tokei -e tools
+    -------------------------------------------------------------------------------
+     Language            Files        Lines         Code     Comments       Blanks
+    -------------------------------------------------------------------------------
+     Assembly                8         1952         1788            0          164
+     C                      50         8444         6637         1037          770
+     C Header               33         2766         2143          294          329
+     Makefile               10          605          449           59           97
+    -------------------------------------------------------------------------------
+     Total                 101        13767        11017         1390         1360
+    -------------------------------------------------------------------------------
+
+
 两者在速度上的提升相当明显，几乎都是秒出结果。不过两者的统计数据也有差异，在主体语言 C 上的统计都还算精准。
 
 `tokei` 官网宣称其准确度比 `loc` 要高，感兴趣的可以看看这里的[对比测试结果](https://github.com/XAMPPRocky/tokei/blob/master/COMPARISON.md)。
 
+他们都提供了排序（sort）和排除（exclude）功能，exclude 功能可用于排除第三方 SDK 等非本项目原生的代码，这个对于重度使用了第三方库的项目来说非常重要，它能够更真实地呈现项目的本来面貌，也有助于更准确的计算一些启发式的数据，比如后面将要介绍到的 Complexity（软件复杂度）和前面介绍到的 COCOMO（项目成本）。
+
 另外，有趣的是 `tokei` 还提供了 `Badge` 服务，可以类似这样在 `Markdown` 中引用：
 
-    [![](https://tokei.rs/b1/github/XAMPPRocky/tokei)](https://github.com/XAMPPRocky/tokei).
+    [![](https://tokei.rs/b1/github/tinyclub/linux-0.11-lab)](https://github.com/tinyclub/linux-0.11-lab).
+
+效果为：[![](https://tokei.rs/b1/github/tinyclub/linux-0.11-lab)](https://github.com/tinyclub/linux-0.11-lab).
 
 ## scc
 
-[scc](https://github.com/boyter/scc) 用 `go` 语言撰写，在效率上与 `loc` 和 `tokei` 相当，但是引入一个很有意义的 `complexity` 数据，即 [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity)，中文翻译为圈复杂度或者环路复杂度，它反应了程序分支数或者环路个数，用于评估[软件复杂度](https://blog.csdn.net/t_1007/article/details/53034408)。
+[scc](https://github.com/boyter/scc) 用 `go` 语言撰写，在效率上与 `loc` 和 `tokei` 相当，但是引入了一个很有意义的 `Complexity` 数据，即 [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity)，中文翻译为圈复杂度或者环路复杂度，它反应了程序分支数或者环路个数，用于评估[软件复杂度](https://blog.csdn.net/t_1007/article/details/53034408)。
 
 在 [scc Releases](https://github.com/boyter/scc/releases) 下载一个编译好的版本，试运行如下：
 
@@ -212,7 +229,7 @@ categories:
     ───────────────────────────────────────────────────────────────────────────────
 
 
-`scc` 对 COCOMO 的评估结果跟 `sloccount` 接近。
+`scc` 对 COCOMO 的评估结果跟 `sloccount` 接近，同样地，它也有类似排序（`--sort`）和排除目录（`--exclude-dir`）的功能。
 
 ## gocloc
 
@@ -221,6 +238,28 @@ categories:
 
 ## 小结
 
-以上工具各有各的优势，`cloc` 和 `sloccount` 可轻松获得，而综合速度和准确度来看，tokei 优势明显，而 scc 则提供了 complexity 这样的特殊功能，另外，`sloccount` 同 `scc` 一样提供了 COCOMO 评估。请大家根据需要进行选择。更多代码计数器的功效请参考其他用户的经验：[Why count lines of code?](https://boyter.org/posts/why-count-lines-of-code/)。
+综上，以上工具都提供了几个基础数据：
 
-其实，除了用法，这篇文章隐藏了一个非常有趣的问题，那就是为什么用 Rust 和 Go 写的 `loc`, `tokei`, `gocloc` 和 `scc` 的速度提升这么明显？非常值得进一步探索，可参考 [Sloc Cloc and Code - What happened on the way to faster Cloc](https://boyter.org/posts/sloc-cloc-code/)。
+* Files
+* Lines = Code + Comments + Blanks
+* Code
+* Comments
+* Blanks
+
+但是它们各有各的优势：
+
+* `cloc` 和 `sloccount` 由系统软件仓库默认集成，可轻松安装，但是效率不行，不适合大型项目。
+* 而综合速度和准确度来看，`tokei` 优势明显，`scc` 和 `loc` 其次。
+* 就附加功能而言，scc 提供了 Complexity （软件复杂度）这样的特殊功能，而 `sloccount` 同 `scc` 一样提供了 COCOMO （项目成本）评估。
+
+请大家根据需要进行选择。更多代码计数器的功效请参考其他用户的经验：[Why count lines of code?](https://boyter.org/posts/why-count-lines-of-code/)。
+
+在 Complexity 和 COCOMO 之外，上述基础数据其实还可以进一步挖掘，比如：
+
+* Comments of Codes 可以反应代码的注释程度
+* Blanks of Codes 可以反应代码的可阅读性
+* Codes of Files 可以反应代码文件大小的适中程度
+
+做相关研究的同学可以考虑进一步挖掘这块的数据，甚至在现有开源工具的基础上做进一步的改造。
+
+其实，除了用法比较，这篇文章抛出了一个非常有趣的问题，那就是为什么用 Rust 和 Go 写出来的 `loc`, `tokei`, `scc` 和 `gocloc` 的速度提升这么明显？非常值得进一步探索，可参考 [Sloc Cloc and Code - What happened on the way to faster Cloc](https://boyter.org/posts/sloc-cloc-code/)。

@@ -16,10 +16,6 @@ categories:
   - 源码分析
 ---
 
-<!-- Title: Callgraph: Draw the calltree of the C functions -- Static Analysis (part1) -->
-
-<!-- TODO: 把 callgraph, tree2dotx 工具从 Linux 0.11 拿出来，形成一个独立的工具，并添加必要的参数，比如说过滤，比如说指定深度，还有就是指定目标路径。 -->
-
 > By Falcon of [TinyLab.org][1]
 > 2015/04/03
 

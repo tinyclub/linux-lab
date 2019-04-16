@@ -15,12 +15,6 @@ categories:
   - 调试技巧
 ---
 
-<!-- Title: Use JDB to debug Android Application -->
-
-<!-- Tags: JDB, Android, JDWP, ADB, Android Studio, ADT -->
-
-<!-- Cat:  Android -->
-
 > By Huang Tao of [TinyLab.org][1]
 > 2015/04/13
 

@@ -121,7 +121,7 @@ categories:
 
     $ wget -c https://github.com/tinyclub/linux-0.11-lab/raw/master/tools/tree2dotx
     $ sudo cp tree2dotx /usr/local/bin/
-    $ cflow -b -m main init/main.c | tree2dotx -o flame | flamegraph.pl > linux-0.11-flame.svg &#8220;\`
+    $ cflow -b -m main init/main.c | tree2dotx -o flame | flamegraph.pl > linux-0.11-flame.svg
 
 效果如下：
 

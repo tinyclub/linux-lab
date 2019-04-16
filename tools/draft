@@ -8,16 +8,35 @@ TOP_DIR=$(cd $(dirname $0) && pwd)
 draft_on="draft:.*true"
 draft_off="draft: false"
 
+# List all drafts
 grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | xargs -I{} grep "^title:" {} | cut -d':' -f2- | cat -n
 total=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | wc -l | tr -d ' '`
+post=""
 if [ $total -gt 1 ]; then
-	read -p "Select(1~$total): " post
-	if [ $post -le $total -a $post -ge 1 ]; then
-		post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | head -$post | tail -1`
+        # Select the one for publishing
+        post_num=0
+	read -p "Select(0~$total): " post_num
+	if [ -n "$post_num" ]; then
+           if [ $post_num -le $total -a $post_num -ge 1 ]; then
+		post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | head -$post_num | tail -1`
+           fi
 	fi
 else
 	post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1| head -1`
 fi
+
+# Choose it?
+
+echo
+[ -z "$post" ] && echo "No draft selected or No draft exists" && exit
+title=`grep "^title:" $post | cut -d':' -f2-`
+echo "Selected: $title"
+echo
+
+# Publish it or not, say Y for release it
+publish="N"
+read -p "Publish it? (Y/N) " publish
+[ "x$publish" != "xY" -a "x$publish" != "xy" ] && exit
 
 sed -i -e "s/$draft_on/$draft_off/g" $post
 

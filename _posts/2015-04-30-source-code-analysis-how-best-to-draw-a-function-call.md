@@ -22,11 +22,6 @@ categories:
   - 源码分析
 ---
 
-<!-- Title: 源码分析：如何更好地展示函数调用关系/流程图
-<!-- Cat: Linux, C -->
-
-<!-- TAG: Linux, C, 源码分析, 函数调用，tree, dot, twopi, fdp, graph-easy, FlameGraph -->
-
 > By Falcon of [TinyLab.org][1]
 > 2015/04/28
 

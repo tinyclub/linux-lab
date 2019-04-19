@@ -28,7 +28,7 @@ tags:
 
 > At a given point of time, there are between two and eight pdflush threads running in the system. The number of pdflush threads is determined by the load on the page cache; new pdflush threads are spawned if none of the existing pdflush threads have been idle for more than one second, and there is more work in the pdflush work queue. On the other hand, if the last active pdflush thread has been asleep for more than one second, one thread is terminated. Termination of threads happens until only a minimum number of pdflush threads remain. The current number of running pdflush threads is reflected by `/proc/sys/vm/nr_pdflush_threads`.
 
-pdflush 线程的个数，在系统运行过程中最少两个，最多八个不等，具体随 page cache 的运行负载变化而变化；当系统繁忙时，如果等待超过一秒种都找不到可用的空闲 pdflush 线程，则内核就会创建一个新的 pdflush 线程。反之，如果某个线程的空闲时间超过了一秒钟，则将被终止。但内核不会将所有的 pdflush 线程都销毁掉，而是会维持一个下限（译者注：即 `MIN_PDFLUSH_THREADS`，反之也不会无限增多，最大值为 `MAX_PDFLUSH_THREADS`）。当前运行的 pdflush 线程数可以通过 `/proc/sys/vm/nr_pdflush_threads` 获得。
+pdflush 线程的个数，在系统运行过程中最少两个，最多八个不等，具体随 page cache 的运行负载变化而变化；当系统繁忙时，如果等待超过一秒种都找不到可用的空闲 pdflush 线程，则内核就会创建一个新的 pdflush 线程。反之，如果最近一个进入睡眠的线程的睡眠时间超过了一秒钟，则内核会选择并终止一个 pdflush 线程。但内核不会将所有的 pdflush 线程都销毁掉，而是会维持一个下限（译者注：即 `MIN_PDFLUSH_THREADS`，反之也不会无限增多，最大值为 `MAX_PDFLUSH_THREADS`，具体可以参考 [pdflush 线程执行函数 `__pdflush()` 以及相关的注释][17]）。当前运行的 pdflush 线程数可以通过 `/proc/sys/vm/nr_pdflush_threads` 获得。
 
 > A number of pdflush-related issues have come to light over time. Pdflush threads are common to all block devices, but it is thought that they would perform better if they concentrated on a single disk spindle. Contention between pdflush threads is avoided through the use of the `BDI_pdflush` flag on the `backing_dev_info` structure, but this interlock can also limit writeback performance. Another issue with pdflush is request starvation. There is a fixed number of I/O requests available for each queue in the system. If the limit is exceeded, any application requesting I/O will block waiting for a new slot. Since pdflush works on several queues, it cannot block on a single queue. So, it sets the `wbc->nonblocking` writeback information flag. If other applications continue to write on the device, pdflush will not succeed in allocating request slots. This may lead to starvation of access to the queue, if pdflush repeatedly finds the queue congested.
 
@@ -111,7 +111,7 @@ pdflush 方式下，“脏” 的 inode 链表由文件系统的超级块（supe
 触发执行 writeback 有两种方式：
 
 - 类似 pdflush 的方式：即通过明确发起的请求触发执行 writeback，例如我们指定一个 `super_block` ，请求同步该文件系统上所有 “脏” inode 的物理页。我们可以调用 `wb_start_writeback()`，传入对应的超级块对象和要刷新的页数。该函数会尝试获取与 BDI 关联的 `bdi_writeback`结构。如果成功，它用传入的参数修改 `bdi_writeback` 结构的 `sb` 和 `nr_pages` 成员，然后唤醒 flusher 线程以 “异步” 方式执行实际的刷新动作。注意这一点和以往 pdflush 方式有所不同：pdflush 是以 “同步” 的方式在当前任务中试图独占设备，这样会阻止来自其他任务对该设备的写出（writeout）操作（译者注：这里提及的 `wb_start_writeback()` 函数在最终合入主线时被另一个[`bdi_start_writeback()`][11] 所代替而且被封装为另一个函数 [`writeback_inodes_sb()`][12] 为外部模块所调用）。
-- 类似 kupdated 的方式（译者注，kupdated 是内核在采用 pdflush 机制之前执行周期刷新的一个后台任务）：即当系统没有明确发起 writeback 请求时，flusher 线程也会定期被唤醒以刷新 “脏” 数据。对于存储在 BDI 中的每个 inode 所涉及的页框第一次被弄 “脏”时，其修改时间就被记录在 inode 的地址空间（address space）中。定期 writeback 逻辑会遍历超级块的 inode 列表，按照一定的标准将 inode 名下比较旧的 “脏” 页写回磁盘。轮询的周期由 `dirty_writeback_interval` 的值确定，默认为五秒一次。（译者注，这部分逻辑可以参考 `bdi_start_fn()` ，即 flusher 线程的执行函数中调用的 [`bdi_writeback_task()`][13]。）
+- 类似 kupdated 的方式（译者注，kupdated 是内核在采用 pdflush 机制之前执行周期刷新的一个后台任务）：即当系统没有明确发起 writeback 请求时，flusher 线程也会定期被唤醒以刷新 “脏” 数据。对于存储在 BDI 中的每个 inode 所涉及的页框第一次被弄 “脏”时，其修改时间就被记录在 inode 的地址空间（address space）中。定期 writeback 逻辑会遍历超级块的 inode 列表，将 inode 名下比较旧的 “脏” 页写回磁盘。轮询的周期由 `dirty_writeback_interval` 的值确定，默认为五秒一次。（译者注，这部分逻辑可以参考 `bdi_start_fn()` ，即 flusher 线程的执行函数中调用的 [`bdi_writeback_task()`][13]。）
 
 > After review of the [first attempt](http://lwn.net/Articles/322920/), Jens added functionality of having multiple flusher threads per device based on the suggestions of Andrew Morton. Dave Chinner suggested that filesystems would like to have a flusher thread per allocation group. In the patch set (second iteration) which followed, Jens added a new interface in the superblock to return the `bdi_writeback` structure associated with the inode:
 
@@ -149,3 +149,4 @@ Jens 通过初步的实验发现，（采用新补丁后）基于简单的 SATA 
 [14]: https://lwn.net/Articles/322920/
 [15]: https://sourceforge.net/projects/ffsb/
 [16]: https://kernelnewbies.org/Linux_2_6_32#Per-backing-device_based_writeback
+[17]: https://elixir.bootlin.com/linux/v2.6.31/source/mm/pdflush.c#L66

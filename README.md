@@ -246,6 +246,10 @@ Boot with different rootfs:
     $ make boot ROOTDEV=/dev/sda
     $ make boot ROOTDEV=/dev/mmcblk0
 
+Boot with extra kernel command line:
+
+    $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
+
 ### Using Uboot
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.

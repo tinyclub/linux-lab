@@ -1,5 +1,6 @@
 ---
 layout: page
+author: Wu Zhangjin
 title: 专辑
 tagline: 展示成系列撰写的文章
 header: Post By Albums

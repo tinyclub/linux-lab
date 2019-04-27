@@ -2,6 +2,7 @@
 layout: page
 toc: false
 title: 友情链接
+author: Wu Zhangjin
 tagline: 泰晓科技收集的各类资源站点
 permalink: /links/
 keywords: 开源书籍，Gitbook

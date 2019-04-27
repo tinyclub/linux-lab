@@ -3,6 +3,7 @@ layout: page
 group: navigation
 toc: false
 title: 项目
+author: Wu Zhangjin
 tagline: 由泰晓参与、发起或主导的开源项目
 permalink: /projects/
 keywords: 开源项目,linux 0.11,cs630,b9creator,Qemu,Loongson,龙芯,MIPS,VnstatSVG,Vnstat

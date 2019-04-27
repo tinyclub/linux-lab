@@ -1,5 +1,6 @@
 ---
 layout: page
+author: Wu Zhangjin
 group: navigation
 toc: false
 title: 书籍

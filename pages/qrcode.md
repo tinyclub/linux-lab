@@ -1,5 +1,6 @@
 ---
 title: 二维码
+author: Wu Zhangjin
 tagline: 生成网址二维码，方便手机扫码访问
 layout: page
 permalink: /qrcode/

@@ -3,6 +3,7 @@ layout: page
 toc: false
 group: navigation
 title: 机会
+author: Wu Zhangjin
 tagline: 由各企业一线工程师发布的工作机会
 permalink: /jobs/
 keywords: Android, Linux, Jobs, 工作机会

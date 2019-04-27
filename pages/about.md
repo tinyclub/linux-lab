@@ -1,5 +1,6 @@
 ---
 title: 关于
+author: Wu Zhangjin
 tagline: 欢迎联系、关注和打赏泰晓原创
 layout: page
 group: navigation

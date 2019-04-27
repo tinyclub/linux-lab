@@ -3,6 +3,7 @@ layout: page
 group: navigation
 toc: false
 title: 人才
+author: Wu Zhangjin
 tagline: 大中华区 Linux 人才名录
 permalink: /talents/
 keywords: Linux, Team, 团队, Talents, 人才, 简历, Resume

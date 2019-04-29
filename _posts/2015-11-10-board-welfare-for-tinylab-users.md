@@ -32,9 +32,7 @@ tags:
 
 ## 参与原创
 
-欢迎踊跃 [投稿](http://tinylab.org/post/)，参与泰晓原创与分享。下面是 **泰晓原创团队** 的微信交流群，微信扫码可加入（失效后可经由本文作者微信 lzufalcon 邀请）。
-
-<img src="/images/wechat/tinylab-weixin-group.jpg" title="TinyLab Wechat Group" width="300">
+欢迎踊跃 [投稿](http://tinylab.org/post/)，参与泰晓原创与分享。
 
 ## 福利清单
 

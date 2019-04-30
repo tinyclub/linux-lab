@@ -307,7 +307,7 @@ TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
 
 ifeq ($(ROOTDEV),/dev/nfs)
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) ip=$(IP)
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
 endif
 
 # For debug

@@ -96,7 +96,6 @@ ROOT_SRC ?= buildroot
 QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
 UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
-DTB_OUTPUT = $(TOP_DIR)/output/$(XARCH)/dtb-$(LINUX)-$(BOARD)
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
@@ -141,6 +140,7 @@ endif
 ifeq ($(DTS),)
   ifneq ($(ORIDTS),)
     DTS = $(KERNEL_SRC)/$(ORIDTS)
+    ORIDTB ?= $(shell echo $(ORIDTS) | sed -e "s%.dts%.dtb%g")
   endif
   ifneq ($(ORIDTB),)
     ORIDTS = $(shell echo $(ORIDTB) | sed -e "s%.dtb%.dts%g")
@@ -150,7 +150,7 @@ endif
 
 ifneq ($(DTS),)
   DTB_BASENAME = $(shell basename $(DTS) | sed -e "s%.dts%.dtb%g")
-  LINUX_DTB    = $(DTB_OUTPUT)/$(DTB_BASENAME)
+  LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     PBD ?= 0
   else
@@ -867,8 +867,7 @@ ifeq ($(DTS),$(wildcard $(DTS)))
 
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
-	$(Q)mkdir -p $(DTB_OUTPUT)
-	$(Q)dtc -I dts -O dtb -o $(LINUX_DTB) $(DTS)
+	$(Q)make kernel KTARGET=$(DTB_BASENAME) KERNEL_DTB=
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0
@@ -1018,7 +1017,7 @@ STRIP_CMD = PATH=$(PATH):$(CCPATH) $(CCPRE)strip -s
 kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
-	$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell basename $(ORIIMG))
+	-$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell basename $(ORIIMG))
 ifneq ($(UORIIMG),)
   ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
 	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
@@ -1494,6 +1493,7 @@ VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
+VARS += LINUX_DTB
 
 env:
 	$(Q)echo [ $(BOARD) ]:

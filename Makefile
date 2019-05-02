@@ -1048,7 +1048,7 @@ q-s: qemu-save
 
 uboot-saveconfig: uconfig-save
 
-uconfig-save: prebuilt-images
+uconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
@@ -1057,7 +1057,7 @@ uconfig-save: prebuilt-images
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
 
-kconfig-save: prebuilt-images
+kconfig-save:
 	-PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
@@ -1065,7 +1065,7 @@ kconfig-save: prebuilt-images
 
 root-saveconfig: rconfig-save
 
-rconfig-save: prebuilt-images
+rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
 	$(Q)if [ -f $(ROOT_OUTPUT)/defconfig ]; \
 	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \

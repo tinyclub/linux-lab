@@ -11,6 +11,7 @@ tags:
   - Linux
   - Linux 0.11
   - tree2dotx
+  - cflow
 categories:
   - C 语言
   - 源码分析
@@ -47,11 +48,6 @@ Callgraph 实际由三个工具组合而成。
     $ sudo apt-get install cflow graphviz
 
 
-如果确实要用 calltree，请通过如下方式下载。不过 calltree 已经年久失修了，建议不用。
-
-    $ wget -c https://github.com/tinyclub/linux-0.11-lab/raw/master/tools/calltree
-
-
 接下来安装 tree2dotx 和 Callgraph，这里都默认安装到 `/usr/local/bin`。
 
     $ wget -c https://github.com/tinyclub/linux-0.11-lab/raw/master/tools/tree2dotx
@@ -60,7 +56,7 @@ Callgraph 实际由三个工具组合而成。
     $ sudo chmod +x /usr/local/bin/{tree2dotx,callgraph}
 
 
-**注**：部分同学反馈，`tree2dotx`输出结果有异常，经过分析，发现用了 `mawk`，所以请提交安装下`gawk`：
+**注**：部分同学反馈，`tree2dotx`输出结果有异常，经过分析，发现用了 `mawk`，所以请提前安装下`gawk`：
 
     $ sudo apt-get install gawk
 

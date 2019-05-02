@@ -1,13 +1,13 @@
 _BASE    = 1
 ARCH     = x86
-XARCH    = i386
-CPU     ?= i686
+XARCH    = x86_64
+CPU     ?= x86_64
 MEM     ?= 128M
 QEMU    ?= v0.10.6
 SMP     ?= 2
-LINUX   ?= v4.6.7
+LINUX   ?= v5.0.10
 #LINUX   ?= v2.6.35.14
-BUILDROOT?= 2016.05
+BUILDROOT?= 2019.02.2
 NETDEV  ?= ne2k_pci
 SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage

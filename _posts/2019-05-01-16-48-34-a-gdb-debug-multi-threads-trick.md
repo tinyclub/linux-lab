@@ -45,7 +45,9 @@ gdb 调试多任务程序时会有些麻烦： fork 之后没法同时跟踪父�
 
 ## 调试案例
 
-接下来以 [libvirt](https://libvirt.org/git/libvirt.git "Libvirt API for virtualization") 的分析过程为例来介绍 gdb 的多任务调试。
+[Libvirt](https://libvirt.org/git/libvirt.git "Libvirt API for virtualization") 是用于管理虚拟化平台的开源的 API，后台程序和管理工具。它可以用于管理 KVM、Xen、VMware ESX，QEMU 和其他虚拟化技术。
+
+接下来以 libvirt 的分析过程为例来介绍 gdb 的多任务调试。
 
 libvirt 的基本操作和大概结构是这样的：
 

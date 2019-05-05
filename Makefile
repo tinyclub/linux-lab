@@ -174,7 +174,7 @@ ifneq ($(_ROOTFS),)
   PREBUILT_ROOTDIR ?= $(shell dirname $(_ROOTFS))
 endif
 ifneq ($(_QTOOL),)
-  PREBUILT_QEMUDIR ?= $(shell dirname $(_QTOOL))
+  PREBUILT_QEMUDIR ?= $(shell dirname $(_QTOOL) | sed -e "s%/bin$$%%g")
 endif
 
 KIMAGE ?= $(LINUX_KIMAGE)

@@ -20,4 +20,5 @@ ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 KP      ?= 1
+QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)

@@ -1,0 +1,30 @@
+From b494622c40f6b94ae2c7232c5f5ab2b44a6813bc Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Sun, 5 May 2019 06:07:10 -0700
+Subject: [PATCH 2/2] virt: arm64: fix up boot hang
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/arm64/kernel/cpuinfo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+index ca0685f..f76d654 100644
+--- a/arch/arm64/kernel/cpuinfo.c
++++ b/arch/arm64/kernel/cpuinfo.c
+@@ -347,10 +347,10 @@ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
+ 	info->reg_id_aa64isar1 = read_cpuid(ID_AA64ISAR1_EL1);
+ 	info->reg_id_aa64mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
+ 	info->reg_id_aa64mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
+-	info->reg_id_aa64mmfr2 = read_cpuid(ID_AA64MMFR2_EL1);
++	//info->reg_id_aa64mmfr2 = read_cpuid(ID_AA64MMFR2_EL1);
+ 	info->reg_id_aa64pfr0 = read_cpuid(ID_AA64PFR0_EL1);
+ 	info->reg_id_aa64pfr1 = read_cpuid(ID_AA64PFR1_EL1);
+-	info->reg_id_aa64zfr0 = read_cpuid(ID_AA64ZFR0_EL1);
++	//info->reg_id_aa64zfr0 = read_cpuid(ID_AA64ZFR0_EL1);
+ 
+ 	/* Update the 32bit ID registers only if AArch32 is implemented */
+ 	if (id_aa64pfr0_32bit_el0(info->reg_id_aa64pfr0)) {
+-- 
+2.7.4
+

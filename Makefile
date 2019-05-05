@@ -511,7 +511,7 @@ q-b: q
 
 toolchain:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-	$(Q)make $(S) -C $(TOOLCHAIN)
+	$(Q)make $(S) -C $(TOOLCHAIN) VERSION=$(CCVER)
 endif
 
 toolchain-clean:

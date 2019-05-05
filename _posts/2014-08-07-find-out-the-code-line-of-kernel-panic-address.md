@@ -69,6 +69,8 @@ categories:
 
   如果要获取到足够多的调试信息，请根据需要打开如下选项：
 
+      CONFIG_DEBUG_KERNEL=y
+      CONFIG_DEBUG_INFO=y
       CONFIG_KALLSYMS=y
       CONFIG_KALLSYMS_ALL=y
       CONFIG_DEBUG_BUGVERBOSE=y

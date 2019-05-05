@@ -99,6 +99,7 @@ KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
+C_PATH ?= env PATH=$(CCPATH):$(PATH)
 TOOLCHAIN = $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 HOST_CPU_THREADS = $(shell grep -c processor /proc/cpuinfo)
@@ -885,7 +886,7 @@ endif
 endif
 
 kernel: $(KERNEL_DTB)
-	PATH=$(PATH):$(CCPATH) $(KMAKE_CMD)
+	$(C_PATH) $(KMAKE_CMD)
 
 kernel-build: kernel
 
@@ -983,7 +984,7 @@ uboot-menuconfig:
 
 # Build Uboot
 uboot:
-	PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
 
 uboot-build: uboot
 
@@ -1018,7 +1019,7 @@ root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOTDIR)
 	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)
 
-STRIP_CMD = PATH=$(PATH):$(CCPATH) $(CCPRE)strip -s
+STRIP_CMD = $(C_PATH) $(CCPRE)strip -s
 
 kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
@@ -1055,7 +1056,7 @@ q-s: qemu-save
 uboot-saveconfig: uconfig-save
 
 uconfig-save:
-	-PATH=$(PATH):$(CCPATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
 	else cp $(UBOOT_OUTPUT)/.config $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; fi
@@ -1064,7 +1065,7 @@ uconfig-save:
 kernel-saveconfig: kconfig-save
 
 kconfig-save:
-	-PATH=$(PATH):$(CCPATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
 	else cp $(KERNEL_OUTPUT)/.config $(BOARD_DIR)/linux_$(LINUX)_defconfig; fi
@@ -1384,7 +1385,7 @@ b: boot
 # Xterm: lxterminal, terminator
 XTERM ?= $(shell echo `tools/xterm.sh lxterminal`)
 VMLINUX ?= $(KERNEL_OUTPUT)/vmlinux
-GDB_CMD ?= PATH=$(PATH):$(CCPATH) $(CCPRE)gdb --quiet $(VMLINUX)
+GDB_CMD ?= $(C_PATH) $(CCPRE)gdb --quiet $(VMLINUX)
 XTERM_CMD ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
 XTERM_STATUS = $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
 ifeq ($(XTERM_STATUS), 0)

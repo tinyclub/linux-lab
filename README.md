@@ -405,6 +405,20 @@ and boot for a specific board with 'BOARD', for example:
     $ make kernel
     $ make boot U=0
 
+If using `board`, it only works on-the-fly, the setting will not be saved, this
+is helpful to run multiple boards at the same and not to disrupt each other:
+
+    $ make board=malta root-defconfig
+    $ make board=malta root
+    $ make board=malta kernel-checkout
+    $ make board=malta kernel-patch
+    $ make board=malta kernel-defconfig
+    $ make board=malta kernel
+    $ make board=malta boot U=0
+
+This allows to run multi boards in different terminals or background at the
+same time.
+
 ### Files transfering
 
 To transfer files between Qemu Board and Host, three methods are supported by

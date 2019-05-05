@@ -5,6 +5,7 @@ CPU     ?= cortex-a57
 SMP     ?= 2
 MEM     ?= 128M
 XOPTS   ?= -cpu $(CPU)
+QEMU    ?= v2.12.0
 LINUX   ?= v5.0.10
 BUILDROOT?= 2016.05
 NETDEV  ?= virtio
@@ -19,3 +20,4 @@ ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 KP      ?= 1
+QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)

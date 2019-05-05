@@ -124,7 +124,13 @@ ifeq ($(PBQ), 1)
   endif
 endif
 
-EMULATOR = qemu-system-$(XARCH) $(BIOS_ARG)
+ifneq ($(QEMU),)
+  ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+    QEMU_PATH= env PATH=$(shell dirname $(QEMU_SYSTEM)):$(PATH)
+  endif
+endif
+
+EMULATOR = $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # prefer new binaries to the prebuilt ones
 # PBK = prebuilt kernel; PBR = prebuilt rootfs; PBD= prebuilt dtb
@@ -483,7 +489,7 @@ endif
 
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm && cd $(TOP_DIR)
+	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
 
 qemu-defconfig: emulator-defconfig
 
@@ -491,7 +497,7 @@ e-c: emulator-defconfig
 q-c: e-c
 
 emulator:
-	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS)
+	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
 
 emulator-build: emulator
 qemu-build: emulator
@@ -1036,8 +1042,8 @@ uboot-save: prebuilt-images
 
 emulator-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_QEMUDIR)
-	-strip -s $(QEMU_SYSTEM)
-	-cp $(QEMU_SYSTEM) $(PREBUILT_QEMUDIR)
+	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
+	$(Q)make -C $(QEMU_OUTPUT)/$(XARCH)-softmmu install V=$(V)
 
 qemu-save: emulator-save
 
@@ -1365,18 +1371,7 @@ test: $(TEST_PREPARE) FORCE
 	make boot-test
 	make boot-finish
 
-ifeq ($(QEMU_SYSTEM), $(wildcard $(QEMU_SYSTEM)))
-INSTALL_QEMU=install-qemu
-# always install if exists
-# QEMU_TARGET=/usr/local/bin/qemu-system-$(XARCH)
-
-install-qemu:
-#ifneq ($(QEMU_TARGET), $(wildcard $(QEMU_TARGET)))
-	sudo cp $(QEMU_SYSTEM) /usr/local/bin
-#endif
-endif
-
-_boot: $(INSTALL_QEMU) $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
+_boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
 
 boot: $(PREBUILT_IMAGES) $(BOOT_DTB)
@@ -1493,7 +1488,7 @@ VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
-VARS += LINUX_DTB
+VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 
 env:
 	$(Q)echo [ $(BOARD) ]:

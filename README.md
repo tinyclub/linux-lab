@@ -260,6 +260,10 @@ Download Uboot:
 
     $ make uboot-source
 
+Checkout the specified version:
+
+    $ make uboot-checkout
+
 Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` by default:
 
     $ make uboot-patch

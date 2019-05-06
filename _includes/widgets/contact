@@ -1,11 +1,11 @@
 <br>
 <table>
-<tr><td style="text-align:center;">微信公众号</td><td width='150px' style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center;"> 知识星球</td></tr>
+<tr><td style="text-align:center;">微信公众号</td><td width='150px' style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center;">知识星球</td></tr>
 <tr>
   <td style="text-align:center;">
     <img src='/images/wechat/tinylab-org.jpg' width='120px' />
   </td>
-  <td style="text-align:center;"><br/><br/><b>关注 @泰晓科技<br/><br/>订阅专业文章，<br/>与同行一起成长！</b>
+  <td style="text-align:center;"><br/><br/><b>关注 @泰晓科技<br/><br/>订阅 Linux 原创，<br/>与同行一起成长~</b>
   </td>
   <td>
     <img src='/images/xingqiu/tinylaborg.jpg' width='120px' />

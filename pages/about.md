@@ -8,7 +8,7 @@ permalink: /about/
 order: 50
 ---
 
-泰晓科技 聚焦嵌入式 Linux，致力于推动业界创造更极致的嵌入式 Linux 产品。欢迎阅读 [Hello TinyLab / 泰晓科技](/hello-tinylab)，进一步了解本站的由来。
+泰晓科技 聚焦 Linux，致力于推动业界创造更极致的 Linux 产品。欢迎阅读 [Hello TinyLab / 泰晓科技](/hello-tinylab)，进一步了解本站的由来。
 
 如果您喜欢我们的文章或者赞赏我们的理念，欢迎通过下列方式联系、关注或打赏我们，也欢迎直接[投递原创稿件](/post)，感谢您的认可与支持！
 

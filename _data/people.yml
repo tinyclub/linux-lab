@@ -306,3 +306,13 @@ Sheng Yong:
   email: shengyong1@huawei.com
   github: shyodx
   info: 华为 OS 内核实验室，Linux 内核工程师
+
+Zhizhou Tian:
+  name: Zhizhou Tian
+  nickname: zhizhou
+  archive: true
+  article: true
+  email: zhizhou.tian@gmail.com
+  github: zhizhoutian
+  wechat: zhizhoutian
+  info: Linux 内核工程师，来自腾讯云虚拟化组。曾就职于展讯、小米。对内核开发、C应用开发都很感兴趣，希望能广交好友

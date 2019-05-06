@@ -6,7 +6,7 @@ MEM     ?= 128M
 UBOOT   ?= v2015.07
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
-LINUX   ?= v5.0.13
+LINUX   ?= v5.1
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64

@@ -6,7 +6,7 @@ MEM     ?= 128M
 UBOOT   ?= v2015.07
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
-LINUX   ?= v4.6.7
+LINUX   ?= v5.0.13
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64
@@ -27,9 +27,21 @@ ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/zImage
 UORIIMG ?= arch/$(ARCH)/boot/uImage
-ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb
 CCPRE   ?= arm-linux-gnueabi-
-BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)/u-boot
+
+# Old Linux kernel don't support dts
+# FIXME: check which version is the first one support dts
+ifneq ($(LINUX), v2.6.36)
+  HAS_DTS ?= 1
+endif
+
+ifeq ($(HAS_DTS), 1)
+  ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb
+  BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/u-boot
+else
+  BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)/u-boot
+endif
+
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/zImage
 DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/versatile-pb.dtb
 UKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/uImage

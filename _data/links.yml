@@ -1,13 +1,33 @@
 
-- title: Embedded Linux Wiki
-  permalink: http://elinux.org
-  description: Linux 基金会下属 CE Linux Forum 维护的嵌入式 Linux 维基百科。
-  group: links
-
 - title: Linux Kernel Homepage
   permalink: http://www.kernel.org
   recommend: false
   description: Linux 内核官方首页。
+  group: links
+
+- title: LKML: Linux kernel mailing list
+  permalink: http://lkml.org
+  description: Linux 内核官方邮件列表。
+  group: links
+
+- title: Linux Weekly News
+  permalink: http://lwn.net
+  description: 由读者支持的新闻站点，专注于 Linux 到自由软件开发社区。
+  group: links
+
+- title: Linux Kernel Newbies
+  permalink: http://kernelnewbies.org
+  description: 该社区面向有志于从事完善内核工作的内核工程师和有意愿分享经验的资深开发人员。
+  group: links
+
+- title: Another Linux News Site
+  permalink: https://www.linux.com
+  description: News for the Open Source Professional
+  group: links
+
+- title: Embedded Linux Wiki
+  permalink: http://elinux.org
+  description: Linux 基金会下属 CE Linux Forum 维护的嵌入式 Linux 维基百科。
   group: links
 
 - title: OS Development Wiki
@@ -15,22 +35,12 @@
   description: 操作系统内核开发知识库。
   group: links
 
-- title: Linux Talents
-  permalink: http://linux-talents.tinylab.org
-  description: 连接高校和企业 Linux 团队。
+- title: Linaro
+  permalink: https://www.linaro.org/
+  description: ARM 开源组织。
   group: links
 
-- title: ARM Accelerator
-  permalink: http://www.armaccelerator.com/
-  description: ARM 联合中科创达在2015年共同发起成立。安创空间是第一家以技术服务为核心，以丰富的ARM生态系统资源为特色，聚焦于智能硬件和物联网创业的加速及孵化平台。
-  group: links
-
-- title: 泰晓实验云台
-  permalink: http://tinylab.cloud:6080
-  description: 在线学Linux、Linux 0.11、汇编、C、Shell。
-  group: links
-
-- title: 魅族内核团队
-  permalink: http://kernel.meizu.com
-  description: 魅族内核团队的官方博客。
+- title: Rust Force
+  permalink: https://rustforce.net
+  description: Rust 中文知识社区
   group: links

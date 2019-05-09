@@ -23,7 +23,7 @@ tags:
 
 ## 背景介绍
 
-gdb 调试多任务程序时会有些麻烦： fork 之后没法同时跟踪父进程和子进程，如果在子进程里设置了一个 breakpoint，那么子进程将会收到一个 `SIGTRAP` 信号并退出[^1]。gdb 手册里提到了一种小技巧，那就是在想要插入 breakpoint 的位置添加 `sleep()` 调用。但经过笔者试验，添加以下代码更加适合：
+gdb 调试多任务程序时会有些麻烦： fork 之后没法同时跟踪父进程和子进程，如果在子进程里设置了一个 breakpoint，那么子进程将会收到一个 `SIGTRAP` 信号并退出。[gdb 手册][1]里提到了一种小技巧，那就是在想要插入 breakpoint 的位置添加 `sleep()` 调用。但经过笔者试验，添加以下代码更加适合：
 
     static volatile int hold = 1;
     while (hold) ;
@@ -165,8 +165,11 @@ libvirt 的基本操作和大概结构是这样的：
 
 ## 附录
 
-[^1]: https://sourceware.org/gdb/current/onlinedocs/gdb/Forks.html#Forks
+[GDB online doc -- Fork.html][1]:
 
 > On most systems, GDB has no special support for debugging programs which create additional processes using the fork function. When a program forks, GDB will continue to debug the parent process and the child process will run unimpeded. If you have set a breakpoint in any code which the child then executes, the child will get a SIGTRAP signal which (unless it catches the signal) will cause it to terminate.
 
 > However, if you want to debug the child process there is a workaround which isn't too painful. Put a call to sleep in the code which the child process executes after the fork. It may be useful to sleep only if a certain environment variable is set, or a certain file exists, so that the delay need not occur when you don't want to run GDB on the child. While the child is sleeping, use the ps program to get its process ID. Then tell GDB (a new invocation of GDB if you are also debugging the parent process) to attach to the child process (see Attach). From that point on you can debug the child process just like any other process which you attached to.
+
+
+[1]: https://sourceware.org/gdb/current/onlinedocs/gdb/Forks.html#Forks

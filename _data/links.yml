@@ -5,7 +5,7 @@
   description: Linux 内核官方首页。
   group: links
 
-- title: LKML: Linux kernel mailing list
+- title: Linux kernel mailing list (LMML)
   permalink: http://lkml.org
   description: Linux 内核官方邮件列表。
   group: links
@@ -25,12 +25,10 @@
   description: News for the Open Source Professional
   group: links
 
-
 - title: Linux Patchwork
   permalink: https://patchwork.kernel.org/
   description: Linux patchset collection
   group: links
-
 
 - title: Embedded Linux Wiki
   permalink: http://elinux.org

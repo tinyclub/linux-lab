@@ -25,6 +25,13 @@
   description: News for the Open Source Professional
   group: links
 
+
+- title: Linux Patchwork
+  permalink: https://patchwork.kernel.org/
+  description: Linux patchset collection
+  group: links
+
+
 - title: Embedded Linux Wiki
   permalink: http://elinux.org
   description: Linux 基金会下属 CE Linux Forum 维护的嵌入式 Linux 维基百科。

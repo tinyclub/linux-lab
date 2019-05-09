@@ -1137,7 +1137,7 @@ short_prev_next {
 
 .author-box-wrap {
     overflow: hidden;
-    display: none;
+    display: block;
     text-align: center;
 }
 .author-box-wrap .author-box-header {

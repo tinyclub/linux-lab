@@ -20,6 +20,11 @@
   description: 该社区面向有志于从事完善内核工作的内核工程师和有意愿分享经验的资深开发人员。
   group: links
 
+- title: Phoronix
+  permalink: https://www.phoronix.com
+  description: Active Articles, News about open source world
+  group: links
+
 - title: Another Linux News Site
   permalink: https://www.linux.com
   description: News for the Open Source Professional

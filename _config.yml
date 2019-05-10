@@ -13,7 +13,7 @@ exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "
 highlighter: rouge
 
 plugins: [jekyll-paginate]
-paginate: 10
+paginate: 30
 
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.

@@ -40,6 +40,11 @@
   description: Linux 基金会下属 CE Linux Forum 维护的嵌入式 Linux 维基百科。
   group: links
 
+- title: Brendangregg'S Home Page
+  permalink: http://www.brendangregg.com/
+  description: 诸多性能优化工具的作者
+  group: links
+
 - title: OS Development Wiki
   permalink: http://wiki.osdev.org/
   description: 操作系统内核开发知识库。

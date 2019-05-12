@@ -488,9 +488,30 @@ ifneq ($(QP),0)
 endif
 endif
 
+QEMU_CONF := --disable-kvm
+
+#
+# qemu-user-static, only compile it for it works the same as qemu-user
+#
+# Ref:
+# http://logan.tw/posts/2018/02/18/build-qemu-user-static-from-source-code/
+# Disable system for it cann't by compiled with --static currently
+#
+# it is saved as $(XARCH)-linux-user/qemu-$(XARCH), need to append a suffix
+# -static and put in /usr/bin of chroot's target directory
+#
+
+ifeq ($(QEMU_US), 1)
+  QEMU_CONF += --enable-linux-user
+  QEMU_CONF += --static --target-list=$(XARCH)-linux-user
+  QEMU_CONF += --disable-system
+else
+  QEMU_CONF += --target-list=$(XARCH)-softmmu
+endif
+
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure --target-list=$(XARCH)-softmmu --disable-kvm --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
+	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
 
 qemu-defconfig: emulator-defconfig
 
@@ -1043,8 +1064,12 @@ uboot-save: prebuilt-images
 
 emulator-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_QEMUDIR)
-	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
+ifeq ($(QEMU_US), 1)
+	$(Q)make -C $(QEMU_OUTPUT)/$(XARCH)-linux-user install V=$(V)
+else
 	$(Q)make -C $(QEMU_OUTPUT)/$(XARCH)-softmmu install V=$(V)
+endif
+	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
 
 qemu-save: emulator-save
 
@@ -1411,6 +1436,11 @@ all: config build boot
 emulator-clean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
+ifeq ($(QEMU_US), 1)
+	-$(Q)make $(S) -C $(QEMU_OUTPUT)/$(XARCH)-linux-user clean
+else
+	-$(Q)make $(S) -C $(QEMU_OUTPUT)/$(XARCH)-softmmu clean
+endif
 endif
 
 root-clean:

@@ -17,6 +17,10 @@ tags:
   - yocto
   - buildroot
   - busybox
+  - docker
+  - Dockerfile
+  - qemu
+  - arm
 ---
 
 > By Falcon of [TinyLab.org][1]
@@ -34,7 +38,7 @@ tags:
 
 当然，启动也有两种方案，一种是基于 qemu-user-static 直接 chroot 进去使用，另外一种是通过 `make boot` 指定通过 NFS 挂载启动。前者只做指令翻译运行速度可能更快适合做应用的开发和编译，后者是系统级模拟则能够用于验证配套开发的内核特性是否确实正常工作。
 
-## Full Rootfs 制作
+## 制作 Full Rootfs
 
 如何快速高效地制作一个可以独立使用的并且功能完备的 Rootfs，这个课题值得好好考虑一下。Linux 世界丰富多彩的地方在于，不同的群体为不同需求设计了诸多不同的方案，所以选择很多，如何从这么多方案中选择最合适的那个，比较难。
 
@@ -94,7 +98,7 @@ Distributions，Linux 世界的发行版百花齐放，不同主题、不同桌�
 
 这样就可以快速拿到一个 ARM 的 full rootfs core，要做开发环境，还得自己安装 build-essential 等工具。
 
-## Full Rootfs 验证
+## 验证 Full Rootfs
 
 要在 Linux Lab 使用上面的 ARM / Ubuntu 14.04，有两种方式：
 
@@ -138,7 +142,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 这部分完美启动，基础验证就 ok 了，下面继续完善该开发环境。
 
-## Full Rootfs 完善
+## 完善 Full Rootfs
 
 如果要作为一个比较全的开发环境，需要能完整启动 Ubuntu，需要重置登陆密码，添加串口登陆功能，配置网络，升级到 18.04，安装相关的开发包。
 
@@ -278,6 +282,70 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
    $ apt-get install -y vim build-essential gcc-8 cscope
 
+## 发布 Full Rootfs
+
+上述制作过程蛮耗费时间的，所以这个劳动成果要尽可能地分享出去，避免大家做重复工作。
+
+一个共享的方式是发布到 Github，另外一个方式是直接制作成 Docker 镜像，这里直接选择第二种方式。
+
+先创建一个制作镜像的目录，例如：full-rootfs/tmp，把 full-rootfs/arm-ubuntu 拷贝进来，并准备一个 Dockerfile：
+
+    $ mkdir full-rootfs/tmp
+    $ sudo mv full-rootfs/arm-ubuntu full-rootfs/tmp/arm32v7-ubuntu-18.04
+    $ cd full-rootfs/tmp
+
+    $ vim Dockerfile
+    FROM scratch
+
+    MAINTAINER Wu Zhangjin <wuzhangjin@gmail.com>
+    ENV DEBIAN_FRONTEND noninteractive
+
+    ADD arm32v7-ubuntu-18.04 /
+
+    WORKDIR /root/
+
+    ENTRYPOINT ["/bin/bash"]
+
+构建并发布该镜像：
+
+    $ sudo docker build -t tinylab/arm32v7-ubuntu:18.04 ./
+    $ docker tag tinylab/arm32v7-ubuntu:18.04 tinylab/arm32v7-ubuntu:latest
+    $ docker push tinylab/arm32v7-ubuntu:latest
+    $ docker push tinylab/arm32v7-ubuntu:18.04
+
+## 下载 Full Rootfs
+
+先直接用 docker pull 拉下来：
+
+    $ docker pull tinylab/arm32v7-ubuntu
+
+运行该镜像：
+
+    $ docker run -it tinylab/arm32v7-ubuntu
+    root@126a8be481fd:~# uname -a
+    Linux 126a8be481fd 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
+    root@126a8be481fd:~# cat /etc/issue
+    Ubuntu 18.04.2 LTS \n \l
+
+把镜像中的整个文件系统拷贝出来：
+
+    $ sudo docker cp 126a8be481fd:/ full-rootfs/tinylab-arm32v7-ubuntu/
+
+用 chroot 验证：
+
+    $ $ sudo chroot tinylab-arm32v7-ubuntu-18.04/
+    root@ubuntu:/# uname -a
+    Linux ubuntu 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
+
+
+用 `make boot` 验证：
+
+    $ make boot V=1 ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/tinylab-arm32v7-ubuntu-18.04/ MEM=1024M
+
+完整启动过程录制如下：
+
+
+
 ## 小结
 
 为了制作一个全功能、可以用于开发应用的 Full Rootfs，本文详细调研了多种 Rootfs 的制作方法，并最终选择 Ubuntu-core。
@@ -285,6 +353,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 Ubuntu-core 提供了一个预先制作好的基础包，内置了包管理工具，并且支持 ARM、PowerPC、X86 和 S390 等处理器架构。
 
 本文以 ARM 为例，详细介绍了基于 Ubuntu-core，逐步完善，制作出一个带开发环境的 Full Rootfs 的过程。
+
+最后介绍了如何制作成 docker 镜像，并发布出去，以及发布后如何下载与使用。
 
 [16]: https://bootlin.com/pub/conferences/2016/elc/belloni-petazzoni-buildroot-oe/belloni-petazzoni-buildroot-oe.pdf
 [15]: http://logan.tw/posts/2018/02/18/build-qemu-user-static-from-source-code/

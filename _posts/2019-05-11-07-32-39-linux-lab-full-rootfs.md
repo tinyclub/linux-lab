@@ -95,12 +95,21 @@ Distributions，Linux 世界的发行版百花齐放，不同主题、不同桌�
 
 要在 Linux Lab 使用上面的 ARM / Ubuntu 14.04，有两种方式：
 
-1. 一种是 qemu-arm-static + chroot
-2. 另外一种是直接用 `make boot`
+### Qemu + Chroot
 
-由于编译环境当前的 qemu 版本有点老，第一种方法无法正常启动，进入就有 segmentation fault，这里我们留到后面再介绍在 Linux Lab 下[如何编译新版本的 qemu-arm-static][15]。
+其中一种方式是：qemu-arm-static + chroot，这个是直接使用指令集翻译。
 
-所以，我们考虑直接用 `make boot`，并选用 vexpress-a9 开发板，下面快速验证该环境。
+由于编译环境当前的 qemu 版本有点老，第一种方法无法正常启动，进入就有 segmentation fault，所以我们首先要参考 [如何编译新版本的 qemu-arm-static][15] 编译一个新版本的 qemu-arm-static。
+
+Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qemu-arm`，把这个复制到 `full-rootfs/arm-ubuntu/usr/bin/qemu-arm-static` 以后，即可通过 chroot 验证。
+
+    $ sudo chroot full-rootfs/arm-ubuntu
+    root@70c3a280af9a:/# uname -a
+    Linux 70c3a280af9a 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
+
+### 系统级模拟
+
+另外一种是直接用 `make boot`，直接通过 Qemu 模拟完整的系统。这里选用 vexpress-a9 开发板，下面快速验证该环境。
 
 为了方便编辑和维护，我们是以目录的方式管理该文件系统。而要能够用 `make boot`，得用 NFS 的方式挂载。
 
@@ -129,6 +138,8 @@ Distributions，Linux 世界的发行版百花齐放，不同主题、不同桌�
 ## Full Rootfs 完善
 
 如果要作为一个比较全的开发环境，我们需要能完整启动 Ubuntu，需要重置登陆密码，添加串口登陆功能，配置网络，升级到 18.04，安装相关的开发包。
+
+这里继续使用 `make boot` 做后续功能完善。
 
 ### 修改登陆密码
 

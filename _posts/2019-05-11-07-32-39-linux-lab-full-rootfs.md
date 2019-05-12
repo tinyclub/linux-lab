@@ -282,6 +282,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
    $ apt-get install -y vim build-essential gcc-8 cscope
 
+为了控制包的大小，上面这几个软件没有包含在下面发布的 Rootfs 中，请自行根据需要安装。
+
 ## 发布 Full Rootfs
 
 上述制作过程蛮耗费时间的，所以这个劳动成果要尽可能地分享出去，避免大家做重复工作。
@@ -331,20 +333,23 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
     $ sudo docker cp 126a8be481fd:/ full-rootfs/tinylab-arm32v7-ubuntu/
 
+如果只是单纯拷贝，可以这样：
+
+    $ id=$(docker run -d tinylab/arm32v7-ubuntu); sudo docker cp $id:/ tinylab-arm32v7-ubuntu/; docker rm -f $id
+
 用 chroot 验证：
 
-    $ $ sudo chroot tinylab-arm32v7-ubuntu-18.04/
+    $ sudo chroot tinylab-arm32v7-ubuntu-18.04/
     root@ubuntu:/# uname -a
     Linux ubuntu 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
 
-
 用 `make boot` 验证：
 
-    $ make boot V=1 ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/tinylab-arm32v7-ubuntu-18.04/ MEM=1024M
+    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/tinylab-arm32v7-ubuntu/
 
 完整启动过程录制如下：
 
-
+<iframe src="http://showterm.io/c351abb6b1967859b7061" width="100%" height="480" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
 ## 小结
 
@@ -355,6 +360,8 @@ Ubuntu-core 提供了一个预先制作好的基础包，内置了包管理工�
 本文以 ARM 为例，详细介绍了基于 Ubuntu-core，逐步完善，制作出一个带开发环境的 Full Rootfs 的过程。
 
 最后介绍了如何制作成 docker 镜像，并发布出去，以及发布后如何下载与使用。
+
+欢迎联系笔者微信 lzufalcon，进一步深入探讨。
 
 [16]: https://bootlin.com/pub/conferences/2016/elc/belloni-petazzoni-buildroot-oe/belloni-petazzoni-buildroot-oe.pdf
 [15]: http://logan.tw/posts/2018/02/18/build-qemu-user-static-from-source-code/

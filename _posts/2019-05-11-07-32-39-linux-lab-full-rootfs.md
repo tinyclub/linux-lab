@@ -290,28 +290,14 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 一个共享的方式是发布到 Github，另外一个方式是直接制作成 Docker 镜像，这里直接选择第二种方式。
 
-先创建一个制作镜像的目录，例如：full-rootfs/tmp，把 full-rootfs/arm-ubuntu 拷贝进来，并准备一个 Dockerfile：
+先把需要制作成镜像的文件系统搬到临时目录，之后直接用脚本构建：
 
-    $ mkdir full-rootfs/tmp
-    $ sudo mv full-rootfs/arm-ubuntu full-rootfs/tmp/arm32v7-ubuntu-18.04
-    $ cd full-rootfs/tmp
-
-    $ vim Dockerfile
-    FROM scratch
-
-    MAINTAINER Wu Zhangjin <wuzhangjin@gmail.com>
-    ENV DEBIAN_FRONTEND noninteractive
-
-    ADD arm32v7-ubuntu-18.04 /
-
-    WORKDIR /root/
-
-    ENTRYPOINT ["/bin/bash"]
-
-构建并发布该镜像：
-
-    $ sudo docker build -t tinylab/arm32v7-ubuntu:18.04 ./
+    $ sudo cp -r full-rootfs/arm-ubuntu prebuilt/fullroot/tmp/arm32v7-ubuntu-18.04
+    $ sudo tools/rootfs/docker/build.sh tinylab/arm32v7-ubuntu:18.04 arm32v7-ubuntu-18.04
     $ docker tag tinylab/arm32v7-ubuntu:18.04 tinylab/arm32v7-ubuntu:latest
+
+构建完以后，直接发布到上游：
+
     $ docker push tinylab/arm32v7-ubuntu:latest
     $ docker push tinylab/arm32v7-ubuntu:18.04
 

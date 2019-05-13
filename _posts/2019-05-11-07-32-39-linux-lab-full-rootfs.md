@@ -315,31 +315,24 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
     $ docker push tinylab/arm32v7-ubuntu:latest
     $ docker push tinylab/arm32v7-ubuntu:18.04
 
-## 下载 Full Rootfs
+## 下载并使用 Full Rootfs
 
-先直接用 docker pull 拉下来：
+把镜像下载并把整个文件系统拷贝出来：
 
-    $ docker pull tinylab/arm32v7-ubuntu
+    $ tools/rootfs/docker/extract.sh tinylab/arm32v7-ubuntu arm
 
 运行该镜像：
 
-    $ docker run -it tinylab/arm32v7-ubuntu
+    $ tools/rootfs/docker/run.sh tinylab/arm32v7-ubuntu arm
     root@126a8be481fd:~# uname -a
     Linux 126a8be481fd 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
     root@126a8be481fd:~# cat /etc/issue
     Ubuntu 18.04.2 LTS \n \l
 
-把镜像中的整个文件系统拷贝出来：
-
-    $ sudo docker cp 126a8be481fd:/ full-rootfs/tinylab-arm32v7-ubuntu/
-
-如果只是单纯拷贝，可以这样：
-
-    $ id=$(docker run -d tinylab/arm32v7-ubuntu); sudo docker cp $id:/ tinylab-arm32v7-ubuntu/; docker rm -f $id
 
 用 chroot 验证：
 
-    $ sudo chroot tinylab-arm32v7-ubuntu-18.04/
+    $ tools/rootfs/docker/chroot.sh tinylab/arm32v7-ubuntu
     root@ubuntu:/# uname -a
     Linux ubuntu 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
 

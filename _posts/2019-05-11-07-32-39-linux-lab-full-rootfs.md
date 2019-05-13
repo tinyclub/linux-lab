@@ -331,7 +331,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 通过 `make boot` 验证：
 
-    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/tinylab-arm32v7-ubuntu/
+    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu/
 
 完整启动过程录制如下：
 

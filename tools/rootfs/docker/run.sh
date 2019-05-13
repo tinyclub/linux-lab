@@ -19,15 +19,14 @@ qemu_user_static=/usr/bin/qemu-$arch-static
 qemumap="-v $qemu_user_static:$qemu_user_static"
 
 # Enable sharing /linux-lab by default, to extrat container, please disable with SHARE=0
-[ -z "$SHARE" ] && SHARE=1
+[ -z "$SHARE" ] && SHARE=0
 [ $SHARE -eq 1 ] && sharemap="-v $TOP_DIR:/linux-lab"
 
 mapping=" $qemumap $sharemap "
 
 [ -z "$image" -o -z "$arch" ] && echo "Usage: $0 image arch" && exit 1
 
-which $qemu_user_static 2>&1 > /dev/null
-[ $? -ne 0 ] && echo "LOG: Install qemu-user-static at first" && exit 1
+which $qemu_user_static 2>&1 > /dev/null || (echo "LOG: Install qemu-user-static at first" && exit 1)
 
 [ -z "$PULL" ] && PULL=0
 if [ $PULL -eq 1 ]; then

@@ -19,8 +19,7 @@ qemu_user_static=/usr/bin/qemu-$arch-static
 
 [ -z "$image" -o -z "$arch" ] && echo "Usage: $0 image arch" && exit 1
 
-which $qemu_user_static 2>&1 > /dev/null
-[ $? -ne 0 ] && echo "LOG: Install qemu-user-static at first" && exit 1
+which $qemu_user_static 2>&1 > /dev/null || (echo "LOG: Install qemu-user-static at first" && exit 1)
 
 [ -z "$PULL" ] && PULL=1
 if [ $PULL -eq 1 ]; then
@@ -31,7 +30,7 @@ fi
 echo "LOG: Running $image"
 id=$(docker run -d -v $qemu_user_static:$qemu_user_static $image)
 
-echo "LOG: Creating save temporary rootdir: $rootdir"
+echo "LOG: Creating temporary rootdir: $rootdir"
 mkdir -p $rootdir
 
 echo "LOG: Extract docker image to $rootdir"

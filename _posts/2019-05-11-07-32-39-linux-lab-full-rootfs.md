@@ -328,7 +328,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
     Linux 126a8be481fd 4.4.0-145-generic #171-Ubuntu SMP Tue Mar 26 12:43:40 UTC 2019 armv7l armv7l armv7l GNU/Linux
     root@126a8be481fd:~# cat /etc/issue
     Ubuntu 18.04.2 LTS \n \l
-
+    root@126a8be481fd:~# ls /linux-lab
+    ...
 
 用 chroot 验证：
 

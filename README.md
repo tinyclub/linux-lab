@@ -1,11 +1,68 @@
 
 # Linux Lab
 
-This project aims to create a Qemu-based Linux development Lab to easier the learning and development of [Linux Kernel](http://www.kernel.org).
+This project aims to create a Qemu-based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
 
 For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab).
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+
+## Why
+
+About 9 years ago, a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by embedded
+linux foundation, therefore I have worked on this project for serveral months.
+
+During the project cycle, several scripts written to verify if the adding tiny features (e.g. [gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf))
+breaks the other kernel features on the main cpu architectures.
+
+These scripts uses qemu-system-ARCH as the cpu/board emulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
+rootfs, test scripts have been prepared, at that time, all of them were simply put in a directory, without a design or holistic consideration.
+
+They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
+
+Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
+
+* Boards
+
+  Qemu based, 4 main Architectures, 6 popular Boards, more available, one `make boot` target for all boards, qemu options are hidden.
+
+* Components
+
+  Uboot, Linux / Modules, Buildroot, Qemu, all of them are configurable, patchable, compilable, buildable, Linux v5.1 supported.
+
+* Prebuilt
+
+  all of above components have been prebuilt for instant using, see [prebuilt](https://github.com/tinyclub/prebuilt), qemu v2.12.0 prebuilt for arm/arm64.
+
+* Rootfs
+
+  Buildtin ramfs, harddisk, mmc, nfs rootfs booting support, configurable via ROOTDEV/ROOTDIR, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
+
+* Docker
+
+  Environment (cross toolchains) available in one command in serveral minutes, 4 main architectures have builtin support, external ones configurable via `make toolchain`.
+
+* Browser
+
+  usable via modern web browsers, once installed in a internet server, available everywhere via novnc or web ssh.
+
+* Network
+
+  Builtin bridge networking support, every board support network.
+
+* Boot
+
+  Support serial port, curses (ssh friendly) and graphic booting.
+
+* Testing
+
+  Support automatic testing via `make test` target.
+
+* Debugging
+
+  debuggable via `make debug` target.
+
+Continue reading for more features and usage.
 
 ## Homepage
 
@@ -13,8 +70,16 @@ See: <http://tinylab.org/linux-lab/>
 
 ## Demonstration
 
+Basic:
+
 * [Basic Usage](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
 * [Learning Uboot](http://showterm.io/11f5ae44b211b56a5d267)
+* [Learning Assembly](http://showterm.io/0f0c2a6e754702a429269)
+* [Boot ARM Ubuntu 18.04 on Vexpress-a9 board](http://showterm.io/c351abb6b1967859b7061)
+* [Boot Linux v5.1 on ARM64/Virt board](http://showterm.io/9275515b44d208d9559aa)
+
+More:
+
 * [Learning RLK4.0 Book (Chinese)](https://v.qq.com/x/page/y0543o6zlh5.html)
 * [Developing Embedded Linux (Chinese)](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
 
@@ -96,36 +161,35 @@ default `versatilepb` board:
 List builtin boards:
 
     $ make list
-    [ pc ]:
-          ARCH     = x86
-          CPU     ?= i686
-          LINUX   ?= 4.6
-          ROOTDEV ?= /dev/ram0
     [ g3beige ]:
           ARCH     = powerpc
           CPU     ?= generic
-          LINUX   ?= 4.6
+          LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
-    [ vexpress-a9 ]:
-          ARCH     = arm
-          CPU     ?= cortex-a9
-          LINUX   ?= 4.6
-          ROOTDEV ?= /dev/mmcblk0
     [ malta ]:
           ARCH     = mips
           CPU     ?= mips32r2
-          LINUX   ?= 4.6
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
+    [ pc ]:
+          ARCH     = x86
+          CPU     ?= x86_64
+          LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
     [ versatilepb ]:
           ARCH     = arm
           CPU     ?= arm926t
-          LINUX   ?= 4.6
+          LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
-
+    [ vexpress-a9 ]:
+          ARCH     = arm
+          CPU     ?= cortex-a9
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
     [ virt ]:
           ARCH     = arm64
           CPU     ?= cortex-a57
-          LINUX   ?= v4.5.5
+          LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
 Check the board specific configuration:
@@ -301,6 +365,59 @@ Save uboot images and configs:
 
     $ make uboot-save
     $ make uconfig-save
+
+### Using external qemu
+
+Builtin qemu may not work with the newest linux kernel, so, we need compile and
+add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
+
+At first, build qemu-system-ARCH:
+
+    $ make B=vexpress-a9
+
+    $ make emulator-download
+    $ make emulator-patch
+    $ make emulator-defconfig
+    $ make emulator
+    $ make emulator-save
+
+qemu-ARCH-static and qemu-system-ARCH can not be compiled together. to build
+qemu-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and
+rebuild it.
+
+If QEMU and QTOOL specified, the one in prebuilt will be used in advance.
+
+While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
+compiling a newer qemu 2.12.0, no hang exists. please take notice such issue in
+the future kernel upgrade.
+
+### Using external toolchain
+
+The pace of Linux mainline is very fast, builtin toolchains can not keep up, to
+reduce the maintaining pressure, external toolchain feature is added. for
+example, ARM64/virt, CCVER and CCPATH has been added for it.
+
+Download, decompress and enable the external toolchain:
+
+    $ make toolchain
+
+If not external toolchain there, the builtin will be used back.
+
+### Using external rootfs
+
+Builtin rootfs is minimal, is not enough for complex application development, which requires modern Linux distributions.
+
+Such a type of rootfs has been introduced and has been released as docker
+image, ubuntu 18.04 is added for arm32v7 at first, more later.
+
+Run it via docker directly:
+
+    $ docker run -it tinylab/arm32v7-ubuntu
+
+Extract it out and run in Linux Lab:
+
+    $ tools/rootfs/docker/extract.sh tinylab/arm32v7-ubuntu arm
+    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
 
 ### Debugging
 

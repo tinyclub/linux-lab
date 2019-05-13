@@ -344,6 +344,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 <iframe src="http://showterm.io/c351abb6b1967859b7061" width="100%" height="480" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
+更多不同架构的 ubuntu/debian 可以直接从 docker image 抓取，并类似上面使用，列表请参考 `prebuilt/fullroot/README.md`。
+
 ## 小结
 
 为了制作一个全功能、可以用于开发应用的 Full Rootfs，本文详细调研了多种 Rootfs 的制作方法，并最终选择 Ubuntu-core。

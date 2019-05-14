@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "Bugfix: Qemu 运行 ARM Linux 5.0 必现启动死机"
+title: "bugfix: Qemu 运行 ARM Linux 5.0 必现启动死机"
 draft: true
 album: 'Linux Bug 解析'
 license: "cc-by-sa-4.0"

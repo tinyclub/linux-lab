@@ -84,9 +84,9 @@ Distributions，Linux 世界的发行版百花齐放，不同主题、不同桌�
 
 从 Ubuntu 16 开始，其 Ubuntu-core 的发布地址和包的格式发生了变化：
 
-- [Ubuntu >= 16][13]，制作成了含 MBR 的 img，不能直接把根文件系统拿出来，需要用带 offset 的方式挂载后拷贝出来。
+- [Ubuntu >= 16 / xenial][13]，制作成了含 MBR 的 img，不能直接把根文件系统拿出来，需要用带 offset 的方式挂载后拷贝出来。但实际 mount 出来后没有找到 rootfs，不过幸运的是，我们通过 [arm32v7/ubuntu][18] 这个 docker image 的首页找到了另外一个 Ubuntu core 的[发布地址][17]，几乎所有历史版本都有，这个 Ubuntu core 包含更小的配置，连 ifconfig 命令都没有，仅有 30M 左右。
 
-- [Ubuntu <= 14][14]，制作成了压缩包，可以直接解压使用。
+- [Ubuntu <= 14 / trusty][14]，制作成了压缩包，可以直接解压使用，压缩包在 60M 左右，包含更多基础的工具。
 
 这里以 ARM / Ubuntu 14.04 为例，后面再考虑更新如何使用 Ubuntu 16 的 Ubuntu-core 镜像文件。
 
@@ -351,6 +351,8 @@ Ubuntu-core 提供了一个预先制作好的基础包，内置了包管理工�
 
 欢迎联系笔者微信 lzufalcon，进一步深入探讨。
 
+[18]: https://hub.docker.com/r/arm32v7/ubuntu
+[17]: https://partner-images.canonical.com/core/
 [16]: https://bootlin.com/pub/conferences/2016/elc/belloni-petazzoni-buildroot-oe/belloni-petazzoni-buildroot-oe.pdf
 [15]: http://logan.tw/posts/2018/02/18/build-qemu-user-static-from-source-code/
 [14]: http://old-releases.ubuntu.com/releases/ubuntu-core/releases/

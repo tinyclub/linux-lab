@@ -2,7 +2,7 @@
 layout: post
 author: 'Zhizhou Tian'
 title: "如何用 gdb 调试多任务程序"
-draft: true
+draft: false
 tagline: " 分析 libvirt 启动 qemu 过程 "
 album: " 虚拟化"
 license: "cc-by-sa-4.0"

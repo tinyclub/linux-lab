@@ -519,7 +519,7 @@ e-c: emulator-defconfig
 q-c: e-c
 
 emulator:
-	make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
+	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
 
 emulator-build: emulator
 qemu-build: emulator

@@ -15,7 +15,7 @@ image=$1
 arch=$2
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
-qemu_user_static=/usr/bin/qemu-$arch-static
+qemu_user_static=/usr/bin/qemu-${arch}-static
 
 [ -z "$image" -o -z "$arch" ] && echo "Usage: $0 image arch" && exit 1
 

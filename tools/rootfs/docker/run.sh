@@ -15,7 +15,7 @@ image=$1
 arch=$2
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
-qemu_user_static=/usr/bin/qemu-$arch-static
+qemu_user_static=/usr/bin/qemu-${arch}-static
 qemumap="-v $qemu_user_static:$qemu_user_static"
 
 # Enable sharing /linux-lab by default, to extrat container, please disable with SHARE=0

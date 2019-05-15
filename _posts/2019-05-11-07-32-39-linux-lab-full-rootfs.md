@@ -188,7 +188,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 然后开始升级：
 
-    # apt-get update; apt-get -y upgrade; apt-get -y dist-upgrade
+    # export DEBIAN_FRONTEND=noninteractive
+    # apt-get update; apt-get -q -y upgrade; apt-get -q -y dist-upgrade
 
 之后调整源配置为 18.04/bionic 并继续升级：
 
@@ -197,7 +198,8 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
     deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted
     deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main restricted
 
-    # apt-get update; apt-get -y upgrade; apt-get -y dist-upgrade
+    # export DEBIAN_FRONTEND=noninteractive
+    # apt-get update; apt-get -q -y upgrade; apt-get -q -y dist-upgrade
 
 升级完以后进行检查：
 

@@ -1,6 +1,7 @@
 ---
 title: Linux 段错误详解
 author: Wu Zhangjin
+album: "Debugging"
 layout: post
 permalink: /explore-linux-segmentation-fault/
 tags:

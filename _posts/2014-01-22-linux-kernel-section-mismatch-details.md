@@ -1,6 +1,7 @@
 ---
 title: Linux 内核 Section Mismatch 详解
 author: Wu Zhangjin
+album: "Debugging"
 layout: post
 permalink: /linux-kernel-section-mismatch-details/
 tags:

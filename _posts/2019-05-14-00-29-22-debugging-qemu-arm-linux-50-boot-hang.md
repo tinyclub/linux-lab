@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "bugfix: Qemu 运行 ARM Linux 5.0 必现启动死机"
 draft: true
-album: 'Linux Bug 解析'
+album: 'Debugging'
 license: "cc-by-sa-4.0"
 permalink: /debugging-qemu-arm-linux-5.0-boot-hang/
 description: " 文章摘要 "

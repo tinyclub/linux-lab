@@ -1,6 +1,7 @@
 ---
 title: 利用 GDB 进行远程调试
 author: Wu Zhangjin
+album: "Debugging"
 layout: post
 permalink: /for-remote-debugging-using-gdb/
 tags:
@@ -9,6 +10,7 @@ tags:
   - Linux
 categories:
   - GDB
+  - 调试技巧
 ---
 
 > By Falcon of [TinyLab.org][1]

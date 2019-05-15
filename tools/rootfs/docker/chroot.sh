@@ -13,11 +13,18 @@ PREBUILT_FULLROOT=$TOP_DIR/prebuilt/fullroot
 
 image=$1
 entry=$2
-tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
-rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
+
+if [ -d "$image" ]; then
+    tmpdir=$(basename $image)
+    rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
+else
+    tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
+    rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
+fi
+
 [ -z "$entry" ] && entry=/bin/bash
 
-[ -z "$image" ] && echo "Usage: $0 image [entrypoint]" && exit 1
+[ -z "$image" ] && echo "Usage: $0 image|rootdir [entrypoint]" && exit 1
 
 echo "LOG: Chroot into $rootdir"
 sudo chroot $rootdir $entry

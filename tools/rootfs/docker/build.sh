@@ -10,6 +10,7 @@ image_name=$1
 root_dir=$2
 
 build_dir=$PREBUILT_FULLROOT/build/
+root_dir=$(basename $root_dir)
 root_tmpdir=$PREBUILT_FULLROOT/tmp/$root_dir
 
 [ -z "$image_name" -o -z "$root_dir" ] && echo "Usage: $0 image_name root_dir" && exit 1

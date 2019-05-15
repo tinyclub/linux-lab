@@ -1,6 +1,7 @@
 ---
 title: 通过网络使用 ADB
 author: Hu Hongbing
+album: "Debugging"
 layout: post
 permalink: /use-adb-via-network/
 tags:

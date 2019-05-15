@@ -2,6 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Ftrace 实现原理与开发实践"
+album: "Debugging"
 group: original
 permalink: /ftrace-principle-and-practice/
 description: "对照 KFT，介绍 Ftrace 的核心原理，并根据产品实践经验介绍 Ftrace 使用实例。"

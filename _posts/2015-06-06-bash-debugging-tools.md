@@ -1,6 +1,7 @@
 ---
 title: BASH 的调试手段
 author: Wen Pingbo
+album: "Debugging"
 layout: post
 permalink: /bash-debugging-tools/
 tags:

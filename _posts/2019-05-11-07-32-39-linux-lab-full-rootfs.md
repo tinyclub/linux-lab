@@ -292,6 +292,16 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 一个共享的方式是发布到 Github，另外一个方式是直接制作成 Docker 镜像，这里直接选择第二种方式。
 
+制作镜像之前，先把文件系统清理一下，一些不必要的文件删除掉（注意不要删除本地的文件！）：
+
+    $ tools/rootfs/docker/chroot.sh prebuilt/fullroot/tmp/arm32v7-ubuntu-18.04
+    # apt-get autoclean -y
+    # apt-get autoremove -y
+    # rm -rf var/lib/apt/lists/*
+    # rm -rf var/cache/apt/archives/*.deb
+    # rm -rf var/log/*
+    # rm -rf tmp/*
+
 先把需要制作成镜像的文件系统搬到临时目录，之后直接用脚本构建：
 
     $ sudo cp -r full-rootfs/arm-ubuntu prebuilt/fullroot/tmp/arm32v7-ubuntu-18.04

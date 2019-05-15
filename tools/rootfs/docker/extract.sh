@@ -43,4 +43,4 @@ docker rm -f $id
 #docker image rm -f $image
 
 echo "LOG: Chroot into new rootfs"
-sudo chroot $rootdir /bin/bash -c 'uname -a; cat /etc/issue; exit'
+sudo chroot $rootdir /bin/sh -c 'uname -a; [ -f /etc/issue ] && cat /etc/issue; exit'

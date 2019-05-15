@@ -2,6 +2,7 @@
 layout: post
 author: 'Huang Tao'
 title: "Android trace 文件抓取原理"
+album: "Debugging+Tracing"
 group: original
 permalink: /android-traces/
 description: "Android ANR 发生时，/data/anr/traces.txt 保存了 ANR 进程的 Java、Native、Kernel 堆栈，这篇文章主要介绍 traces.txt 的抓取原理"

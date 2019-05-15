@@ -1,7 +1,7 @@
 ---
 title: 用 kGDB 调试 Linux 内核
 author: Wen Pingbo
-album: "Debugging"
+album: "Debugging+Tracing"
 layout: post
 permalink: /kgdb-debugging-kernel/
 tags:

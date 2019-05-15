@@ -1,7 +1,7 @@
 ---
 title: 在 Android Native 程序中输出 LOG
 author: Wen Pingbo
-album: "Debugging"
+album: "Debugging+Tracing"
 layout: post
 permalink: /output-log-in-android-native-program/
 tags:

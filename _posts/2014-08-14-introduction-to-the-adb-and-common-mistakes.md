@@ -1,7 +1,7 @@
 ---
 title: Android ADB 介绍及常见错误分析
 author: Wen Pingbo
-album: "Debugging"
+album: "Debugging+Tracing"
 layout: post
 permalink: /introduction-to-the-adb-and-common-mistakes/
 tags:

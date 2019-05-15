@@ -1,7 +1,7 @@
 ---
 title: 利用 GDB 进行远程调试
 author: Wu Zhangjin
-album: "Debugging"
+album: "Debugging+Tracing"
 layout: post
 permalink: /for-remote-debugging-using-gdb/
 tags:

@@ -1,6 +1,7 @@
 ---
 title: Android 应用启动速度优化之 Systrace 的使用
 author: Gao JianWu
+album: "Debugging+Tracing"
 layout: post
 permalink: /android-app-launch-speed-optimization-series-part1-systrace-usage/
 tags:

@@ -4,7 +4,7 @@ author: 'Zhizhou Tian'
 title: "如何用 gdb 调试多任务程序"
 draft: false
 tagline: " 分析 libvirt 启动 qemu 过程 "
-album: "Debugging"
+album: "Debugging+Tracing"
 license: "cc-by-sa-4.0"
 permalink: /debug-multi-tasks-program-with-gdb/
 description: " 多任务间通信环境下的 gdb 调试技巧 "

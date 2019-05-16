@@ -21,7 +21,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > May 14, 2019
 
-注：泰晓科技新增 “Linux Bug 解析” 专辑，全面连载各类 Bug 实例解析过程。本文是该专辑的第一篇，欢迎持续关注。通过该专辑，您可以学习到分析和解决实际问题的方式、方法、工具和技巧。
+注：泰晓科技新增 [Debugging+Tracing](http://tinylab.org/albums/#debugging+tracing-ref) 专辑，全面连载各类 debug 实战技能。本文是该专辑的第一篇，欢迎持续关注。通过该专辑，您可以学习到分析和解决实际问题的方式、方法、工具和技巧。
 
 ## 背景介绍
 

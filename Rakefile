@@ -110,7 +110,7 @@ task :post do
     draft = ENV["draft"]
     draft = "draft: #{draft}"
   else
-    draft = 'draft: false'
+    draft = 'draft: true'
   end
 
   # Build album (series)

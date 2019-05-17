@@ -80,7 +80,7 @@ _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
 QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_SRC ?= $(TOP_DIR)/qemu
+QEMU_SRC ?= qemu
 
 UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
 UBOOT_SRC ?= u-boot
@@ -390,14 +390,14 @@ l-f: list-full
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
 uboot-source:
-	git submodule update $(GIT_FORCE) --init --remote u-boot
+	git submodule update $(GIT_FORCE) --init --remote $(UBOOT_SRC)
 
 download-uboot: uboot-source
 uboot-download: uboot-source
 d-u: uboot-source
 
 qemu-source:
-	git submodule update $(GIT_FORCE) --init --remote qemu
+	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
 
 qemu-download: qemu-source
 download-qemu: qemu-source
@@ -416,14 +416,14 @@ qemu-auto: emulator-auto
 qemu-full: emulator-full
 
 kernel-source:
-	git submodule update $(GIT_FORCE) --init --remote linux-stable
+	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
 
 kernel-download: kernel-source
 download-kernel: kernel-source
 d-k: kernel-source
 
 root-source:
-	git submodule update $(GIT_FORCE) --init --remote buildroot
+	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
 
 root-download: root-source
 download-root: root-source
@@ -511,7 +511,7 @@ endif
 
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
+	$(Q)cd $(QEMU_OUTPUT) && $(TOP_DIR)/$(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
 
 qemu-defconfig: emulator-defconfig
 

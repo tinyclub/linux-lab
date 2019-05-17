@@ -156,7 +156,7 @@ ifeq ($(DTS),)
 endif
 
 ifneq ($(DTS),)
-  DTB_BASENAME = $(shell basename $(DTS) | sed -e "s%.dts%.dtb%g")
+  DTB_TARGET = $(shell echo $(DTS) | sed -e "s%.*/dts/%%g" | sed -e "s%.dts%.dtb%g")
   LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     PBD ?= 0
@@ -895,7 +895,7 @@ ifeq ($(DTS),$(wildcard $(DTS)))
 
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
-	$(Q)make kernel KTARGET=$(DTB_BASENAME) KERNEL_DTB=
+	$(Q)make kernel KTARGET=$(DTB_TARGET) KERNEL_DTB=
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0

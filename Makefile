@@ -488,7 +488,7 @@ ifneq ($(QP),0)
 endif
 endif
 
-QEMU_CONF := --disable-kvm
+QEMU_CONF := --disable-kvm --disable-vnc --enable-sdl
 
 #
 # qemu-user-static, only compile it for it works the same as qemu-user

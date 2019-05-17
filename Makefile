@@ -1151,7 +1151,7 @@ ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
   EXIT_ACTION ?= -no-reboot
 endif
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(XOPTS) -kernel $(KIMAGE) $(EXIT_ACTION)
+EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) -kernel $(KIMAGE) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
@@ -1192,6 +1192,9 @@ else
     BOOT_CMD += -curses
   endif
 endif
+
+# Add extra emulator options
+BOOT_CMD += $(XOPTS)
 
 D ?= 0
 ifeq ($(D),1)

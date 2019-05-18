@@ -3,7 +3,7 @@ ARCH = $(shell basename `pwd`)
 ASMS = $(wildcard *.s)
 OBJS = $(ASMS:.s=.o)
 
-CROSS_COMPILE ?= $(ARCH)-linux-gnu-
+CROSS_COMPILE ?= $(ARCH)-linux-gnueabi-
 QEMU_USER ?= qemu-$(ARCH)
 
 AS = $(CROSS_COMPILE)as

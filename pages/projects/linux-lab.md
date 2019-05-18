@@ -45,18 +45,20 @@ tags:
       * [https://github.com/tinyclub/linux-lab.git][3]
 
   * 基本特性：
+      * 跨平台，支持 Linux, Windows 和 Mac OSX。
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
-      * 已内置支持 4 大架构 6 款开发板：ARM, MIPS, PowerPC 和 X86。
+      * 已内置支持 4 大架构：ARM, MIPS, PowerPC 和 X86。
+      * 已内置支持 6 款开发板：X86+X86_64/PC, PowerPC/G3beige, MIPS/Malta, ARM/versatilepb, ARM/vexpress-a9, ARM64/Virt, 全部升级到了最新的 v5.1。
       * 已内置支持从 Ramfs, Harddisk, NFS rootfs 启动。
       * 一键即可启动，支持 串口 和 图形 启动。
       * 已内建网络支持，可以直接 ping 到外网。
       * 已内建 Uboot 支持，可以直接启动 Uboot，并加载内核和文件系统。
       * 预编译有 内核镜像、Rootfs、Qemu、Toolchain，可以快速体验实验效果。
       * 可灵活配置和扩展支持更多架构、虚拟开发板和内核版本。
-      * 支持在线调试和自动化测试框架
-      * 正在添加 树莓派raspi3 和 risc-v 支持
+      * 支持在线调试和自动化测试框架。
+      * 正在添加 树莓派raspi3 和 risc-v 支持。
 
   * 插件
       * [RLK4.0](https://github.com/tinyclub/rlk4.0)：《奔跑吧Linux内核 4.0》一书课程实验

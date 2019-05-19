@@ -884,8 +884,11 @@ endif
 
 KTARGET ?= $(IMAGE)
 
+# Allow to accept external kernel compile options, such as XXX_CONFIG=y
+KOPTS ?=
+
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  KOPTS = CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
+  KOPTS += CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
 endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)

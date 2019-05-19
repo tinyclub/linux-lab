@@ -53,8 +53,8 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 已经为本站的编辑环境创建了一个 Docker 镜像，使用之前需要先安装 Docker，可参考：
 
-* Linux 和 Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 注意事项：
 

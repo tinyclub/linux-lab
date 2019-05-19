@@ -1421,19 +1421,26 @@ ifneq ($(TEST_REBOOT), 0)
   endif
 endif
 
+# By default, seconds
+TIMEOUT ?= 2m
+MONITOR_START ?= sudo timeout $(TIMEOUT)
+MONITOR_END ?=
+# If not support netowrk, should use the other root device
+TESTRD ?= /dev/nfs
+
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	make boot TEST=default ROOTDEV=/dev/nfs FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot
+	$(TIMEOUT_MONITOR) make boot V=$(V) TEST=default ROOTDEV=$(TESTRD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		make boot TEST=default ROOTDEV=/dev/nfs FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot;)
+		$(TIMEOUT_MONITOR) make boot V=$(V) TEST=default ROOTDEV=$(TESTRD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot;)
 endif
 
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot-test
+	make boot-test TIMEOUT_MONITOR="$(MONITOR)"
 	make boot-finish
 
 _boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)

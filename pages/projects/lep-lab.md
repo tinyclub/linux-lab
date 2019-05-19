@@ -29,8 +29,8 @@ LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
 使用 LEP Lab 之前，需要安装 Docker：
 
-* Linux and Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Old Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 注意事项：
 

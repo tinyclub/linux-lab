@@ -40,7 +40,7 @@ tags:
 
 ## 环境搭建
 
-下面以 Ubuntu 系统为例，其他 Linux 和 Mac OSX 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
+下面以 Ubuntu 系统为例，其他 Linux，Mac OSX 和 Windows 10 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。老版本的 Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
 
 安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
 

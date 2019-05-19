@@ -42,8 +42,8 @@ tags:
 
 在实验之前，请先参考下面文档安装好 Docker。
 
-* Linux 和 Mac 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux, Mac OSX, Windows 10 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* 老版本 Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
 

@@ -53,8 +53,8 @@ tags:
 
 Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
-* Linux 和 Mac 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
+* Linux, Mac, Windows 10 系统：[Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* 老版本的 Windows 系统：[Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
 

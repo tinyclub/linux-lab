@@ -38,7 +38,7 @@ tags:
       * 包含所有可用的映像文件: ramfs/floppy/hard disk image。
       * 轻松支持 qemu 和 bochs，可通过配置 tools/vm.cfg 切换。
       * 可以生成任何函数的调用关系，方便代码分析：`make cg f=func d=file|dir`
-      * 通过 Docker Toolbox 和 Docker CE 支持所有系统：Linux、Windows 和 Mac OSX。
+      * 通过 Docker Toolbox 或 Docker CE 支持所有系统：Linux、Windows 和 Mac OSX。
       * 支持最新的编译器和调试器，可直接用 Qemu/Bochs + gdb 调试
       * 在解压之前整个大小只有 30M
       * 支持 Docker 一键构建

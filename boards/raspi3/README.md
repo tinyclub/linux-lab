@@ -11,7 +11,7 @@
 
   Note: earlycon works, but no initial console for command line.
 
-    $ make boot V=1        // with 8250
+    $ make boot V=1        // with mini UART
 
     or 
 

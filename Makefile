@@ -265,6 +265,9 @@ endif
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
   HD = 1
 endif
+ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
+  HD = 1
+endif
 
 ifeq ($(PBR),0)
   ROOTDIR ?= $(ROOT_OUTPUT)/target
@@ -1185,6 +1188,10 @@ endif
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
   BOOT_CMD += -sd $(HROOTFS)
 endif
+ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
+  BOOT_CMD += -drive if=none,file=$(HROOTFS),id=hd0 -device virtio-blk-device,drive=hd0
+endif
+
 ifeq ($(G),0)
   BOOT_CMD += -nographic
 else

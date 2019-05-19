@@ -12,13 +12,18 @@ LINUX   ?= v5.1
 BUILDROOT?= 2016.05
 NETDEV  ?= virtio
 SERIAL  ?= ttyAMA0
-ROOTDEV ?= /dev/ram0
+
+# virtio sda: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
+# ROOTDEV ?= /dev/sda
+# virtio vda: https://wiki.debian.org/Arm64Qemu
+ROOTDEV ?= /dev/vda
+
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 CCPRE   ?= aarch64-linux-gnu-
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/Image
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-#HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 KP      ?= 1

@@ -565,10 +565,9 @@ root-checkout:
 	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE ?= buildroot_$(CPU)_defconfig
-ifeq ($(RCFG),)
-  ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
-  RCFG = $(ROOT_CONFIG_FILE)
-endif
+
+RCFG ?= $(ROOT_CONFIG_FILE)
+ROOT_CONFIG_PATH = $(BOARD_DIR)/$(RCFG)
 
 RP ?= 0
 ROOT_PATCH_TOOL = tools/rootfs/patch.sh
@@ -582,7 +581,7 @@ endif
 
 root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
-ifeq ($(RCFG),)
+ifeq ($(ROOT_CONFIG_PATH), $(wildcard $(ROOT_CONFIG_PATH)))
 	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
 endif
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(RCFG)
@@ -803,15 +802,14 @@ ifeq ($(KP),1)
 endif
 
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
-ifeq ($(KCFG),)
-  KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
-  KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
-  KCFG = $(KERNEL_CONFIG_FILE)
-endif
+
+KCFG ?= $(KERNEL_CONFIG_FILE)
+KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KCFG)
+KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KCFG)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
-ifeq ($(KCFG),)
+ifeq ($(KERNEL_CONFIG_PATH), $(wildcard $(KERNEL_CONFIG_PATH)))
 	$(Q)cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
 endif
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
@@ -1017,14 +1015,13 @@ ifeq ($(UP),1)
 endif
 
 UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
-ifeq ($(UCFG),)
-  UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
-  UCFG = $(UBOOT_CONFIG_FILE)
-endif
+
+UCFG ?= $(UBOOT_CONFIG_FILE)
+UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UCFG)
 
 uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
-ifeq ($(UCFG),)
+ifeq ($(UBOOT_CONFIG_PATH), $(wildcard $(UBOOT_CONFIG_PATH)))
 	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
 endif
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UCFG)

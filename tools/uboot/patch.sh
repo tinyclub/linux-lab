@@ -29,6 +29,9 @@ do
         echo $p | grep -q .ignore$
         [ $? -eq 0 ] && continue
 
+        echo $p | grep -q \.ignore/
+        [ $? -eq 0 ] && continue
+
         [ -f "$p" ] && patch -r- -N -l -d ${UBOOT_SRC} -p1 < $p
     done
 done

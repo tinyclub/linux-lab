@@ -1,0 +1,31 @@
+From 6e838fd7cef8a6a5291f6add54f2529e0b119da0 Mon Sep 17 00:00:00 2001
+From: Phil Elwell <phil@raspberrypi.org>
+Date: Wed, 14 Nov 2018 17:36:26 +0000
+Subject: [PATCH 141/185] lan78xx: disable interrupts for PHY irqs
+
+Signed-off-by: Phil Elwell <phil@raspberrypi.org>
+---
+ drivers/net/usb/lan78xx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 058b630..b83d845 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1274,8 +1274,12 @@ static void lan78xx_status(struct lan78xx_net *dev, struct urb *urb)
+ 		netif_dbg(dev, link, dev->net, "PHY INTR: 0x%08x\n", intdata);
+ 		lan78xx_defer_kevent(dev, EVENT_LINK_RESET);
+ 
+-		if (dev->domain_data.phyirq > 0)
++		if (dev->domain_data.phyirq > 0) {
++			unsigned long flags;
++			local_irq_save(flags);
+ 			generic_handle_irq(dev->domain_data.phyirq);
++			local_irq_restore(flags);
++		}
+ 	} else
+ 		netdev_warn(dev->net,
+ 			    "unexpected interrupt: 0x%08x\n", intdata);
+-- 
+1.9.1
+

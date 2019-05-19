@@ -1,0 +1,27 @@
+From aa41d1486e0f727fbe69f18a355ae6e7469d5be5 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Mon, 6 May 2019 09:37:27 -0700
+Subject: [PATCH] arch: arm64: remove GCC_PLUGINS feature by default
+
+workaround the 'Restart config ...' prompt
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/arm64/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 7e34b9e..da4082e 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -138,7 +138,6 @@ config ARM64
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+-	select HAVE_GCC_PLUGINS
+ 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
+ 	select HAVE_IRQ_TIME_ACCOUNTING
+ 	select HAVE_MEMBLOCK_NODE_MAP if NUMA
+-- 
+2.7.4
+

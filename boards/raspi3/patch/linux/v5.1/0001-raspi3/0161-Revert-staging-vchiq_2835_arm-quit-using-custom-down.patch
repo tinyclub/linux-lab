@@ -1,0 +1,27 @@
+From ecfa12460ff498f96be61c90eaf058f19f964716 Mon Sep 17 00:00:00 2001
+From: Phil Elwell <phil@raspberrypi.org>
+Date: Wed, 6 Mar 2019 16:29:13 +0000
+Subject: [PATCH 161/185] Revert "staging: vchiq_2835_arm: quit using custom
+ down_interruptible()"
+
+This reverts commit ff5979ad86368425b7da3a25f4e84650b51ff5fd.
+---
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_2835_arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_2835_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_2835_arm.c
+index 9e787b8..35c91c0 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_2835_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_2835_arm.c
+@@ -570,7 +570,7 @@ struct vchiq_arm_state*
+ 		(g_cache_line_size - 1)))) {
+ 		char *fragments;
+ 
+-		if (down_killable(&g_free_fragments_sema)) {
++		if (down_interruptible(&g_free_fragments_sema) != 0) {
+ 			cleanup_pagelistinfo(pagelistinfo);
+ 			return NULL;
+ 		}
+-- 
+1.9.1
+

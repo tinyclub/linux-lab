@@ -1,0 +1,31 @@
+From 40f7afa27ba7db358553cd7343010dbb60d3b49e Mon Sep 17 00:00:00 2001
+From: Dave Stevenson <dave.stevenson@raspberrypi.org>
+Date: Tue, 19 Feb 2019 15:18:25 +0000
+Subject: [PATCH 167/185] drm: vc4: Programming the CTM is conditional on
+ running full KMS
+
+vc4_ctm_commit writes to HVS registers, so this is only applicable
+when in full KMS mode, not in firmware KMS mode. Add this conditional.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.org>
+---
+ drivers/gpu/drm/vc4/vc4_kms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/vc4/vc4_kms.c b/drivers/gpu/drm/vc4/vc4_kms.c
+index 7583012..17d1600 100644
+--- a/drivers/gpu/drm/vc4/vc4_kms.c
++++ b/drivers/gpu/drm/vc4/vc4_kms.c
+@@ -145,7 +145,8 @@ static u16 vc4_ctm_s31_32_to_s0_9(u64 in)
+ 
+ 	drm_atomic_helper_commit_modeset_disables(dev, state);
+ 
+-	vc4_ctm_commit(vc4, state);
++	if (!vc4->firmware_kms)
++		vc4_ctm_commit(vc4, state);
+ 
+ 	drm_atomic_helper_commit_planes(dev, state, 0);
+ 
+-- 
+1.9.1
+

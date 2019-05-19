@@ -1,0 +1,450 @@
+# Qemu raspi3 debugging procedure
+
+  Still not fully work ...
+
+1. crash on bcm2835_power_probe
+
+    [    7.163740] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+    [    7.165106] Process swapper/0 (pid: 1, stack limit = 0x(____ptrval____))
+    [    7.165724] CPU: 2 PID: 1 Comm: swapper/0 Tainted: G        W         5.1.0-v8-43f2cb3b6385+ #5
+    [    7.166219] Hardware name: Raspberry Pi 3 Model B (DT)
+    [    7.166614] pstate: 80000005 (Nzcv daif -PAN -UAO)
+    [    7.167045] pc : bcm2835_power_probe+0x64/0x278
+    [    7.167403] lr : bcm2835_power_probe+0x40/0x278
+    [    7.167617] sp : ffffff8010023730
+    [    7.167787] x29: ffffff8010023730 x28: 0000000000000000 
+    [    7.168124] x27: ffffffc018aa2810 x26: ffffff8010dc0230 
+    [    7.168450] x25: 0000000000000000 x24: 0000000000000000 
+    [    7.169030] x23: ffffff8010db6728 x22: ffffffc018aa4080 
+    [    7.169519] x21: ffffff8010db6728 x20: ffffffc018aa2810 
+    [    7.170018] x19: ffffffc018842980 x18: 0000000000000000 
+    [    7.173333] x17: 0000000000000000 x16: 0000000000000000 
+    [    7.173804] x15: ffffffffffffffff x14: ffffff8010d3c688 
+    [    7.174144] x13: ffffffc01988f91c x12: 0000000000000030 
+    [    7.174901] x11: 0101010101010101 x10: 0000000000000002 
+    [    7.175583] x9 : ffffffbf0062a900 x8 : 0000000000000000 
+    [    7.176364] x7 : 0000000000000000 x6 : ffffff8010d3cde8 
+    [    7.176988] x5 : ffffff8010d3c000 x4 : ffffff80100917f8 
+    [    7.177519] x3 : ffffff8010d3cde8 x2 : ffffff8010055020 
+    [    7.178016] x1 : ffffffc01a138000 x0 : ffffff801004d000 
+    [    7.178764] Call trace:
+    [    7.179004]  bcm2835_power_probe+0x64/0x278
+    [    7.179475]  platform_drv_probe+0x58/0xa8
+    [    7.179804]  really_probe+0xd8/0x298
+    [    7.180103]  driver_probe_device+0x5c/0xf0
+    [    7.180592]  __device_attach_driver+0x88/0xc0
+    [    7.180933]  bus_for_each_drv+0x8c/0xd8
+    [    7.181422]  __device_attach+0xdc/0x138
+    [    7.181672]  device_initial_probe+0x24/0x30
+    [    7.181992]  bus_probe_device+0x9c/0xa8
+    [    7.182301]  device_add+0x3bc/0x5e8
+    [    7.182503]  platform_device_add+0x114/0x238
+    [    7.182786]  mfd_add_device+0x238/0x2f0
+    [    7.182987]  mfd_add_devices+0xac/0x160
+    [    7.183291]  devm_mfd_add_devices+0x7c/0xe0
+    [    7.183838]  bcm2835_pm_probe+0x100/0x140
+    [    7.184102]  platform_drv_probe+0x58/0xa8
+    [    7.184391]  really_probe+0xd8/0x298
+    [    7.184633]  driver_probe_device+0x5c/0xf0
+    [    7.184949]  device_driver_attach+0x74/0x80
+    [    7.185267]  __driver_attach+0x64/0xe0
+    [    7.185826]  bus_for_each_dev+0x84/0xd8
+    [    7.186024]  driver_attach+0x30/0x40
+    [    7.186390]  bus_add_driver+0x188/0x1e8
+    [    7.187107]  driver_register+0x64/0x110
+    [    7.189310]  __platform_driver_register+0x54/0x60
+    [    7.189592]  bcm2835_pm_driver_init+0x20/0x28
+    [    7.189915]  do_one_initcall+0x54/0x26c
+    [    7.190205]  kernel_init_freeable+0x2f0/0x38c
+    [    7.190670]  kernel_init+0x18/0x108
+    [    7.190894]  ret_from_fork+0x10/0x1c
+    [    7.191435] Code: f90006c0 f9400a62 f9000ac2 91008042 (b9400042) 
+    [    7.192486] ---[ end trace 8fcc296c98b40271 ]---
+    [    7.194475] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+    [    7.195267] SMP: stopping secondary CPUs
+    [    7.211178] Kernel Offset: disabled
+    [    7.212340] CPU features: 0x002,24002004
+
+
+    ubuntu@tinylab/linux-lab$ prebuilt/toolchains/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-nm output/aarch64/linux-v5.1-raspi3/vmlinux | grep bcm2835_power_probe
+    ffffff80104f5b00 t bcm2835_power_probe
+    ubuntu@tinylab/linux-lab$ echo "obase=16;ibase=10;$((0x80104f5b00+0x64))" | bc -l
+    80104F5B64
+    ubuntu@tinylab/linux-lab$ prebuilt/toolchains/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-objdump -dS output/aarch64/linux-v5.1-raspi3/vmlinux --start-address=0xffffff80104f5b00 --stop-address=0xffffff80104F5B80 | grep bcm2835_power_probe
+    ffffff80104f5b00 <bcm2835_power_probe>:
+    static int bcm2835_power_probe(struct platform_device *pdev)
+    ffffff80104f5b44:	b4000f20 	cbz	x0, ffffff80104f5d28 <bcm2835_power_probe+0x228>
+    ffffff80104f5b74:	b5000000 	cbnz	x0, ffffff80104f5b74 <bcm2835_power_probe+0x74>
+    ubuntu@tinylab/linux-lab$ prebuilt/toolchains/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-objdump -dS output/aarch64/linux-v5.1-raspi3/vmlinux --start-address=0xffffff80104f5b00 --stop-address=0xffffff80104F5B80 > objdump.txt
+    ubuntu@tinylab/linux-lab$ cat objdump.txt 
+    
+    output/aarch64/linux-v5.1-raspi3/vmlinux:     file format elf64-littleaarch64
+    
+    
+    Disassembly of section .text:
+    
+    ffffff80104f5b00 <bcm2835_power_probe>:
+    	[BCM2835_POWER_DOMAIN_CCP2TX] = "ccp2tx",
+    	[BCM2835_POWER_DOMAIN_HDMI] = "hdmi",
+    };
+    
+    static int bcm2835_power_probe(struct platform_device *pdev)
+    {
+    ffffff80104f5b00:	a9b97bfd 	stp	x29, x30, [sp, #-112]!
+    ffffff80104f5b04:	910003fd 	mov	x29, sp
+    ffffff80104f5b08:	a90153f3 	stp	x19, x20, [sp, #16]
+    ffffff80104f5b0c:	a9025bf5 	stp	x21, x22, [sp, #32]
+    ffffff80104f5b10:	a9046bf9 	stp	x25, x26, [sp, #64]
+    ffffff80104f5b14:	a90573fb 	stp	x27, x28, [sp, #80]
+    ffffff80104f5b18:	aa0003fb 	mov	x27, x0
+    ffffff80104f5b1c:	aa1e03e0 	mov	x0, x30
+    ffffff80104f5b20:	f90037fb 	str	x27, [sp, #104]
+    ffffff80104f5b24:	97ee8b87 	bl	ffffff8010098940 <_mcount>
+    #endif
+    }
+    
+    static inline void *dev_get_drvdata(const struct device *dev)
+    {
+    	return dev->driver_data;
+    ffffff80104f5b28:	f8410f63 	ldr	x3, [x27, #16]!
+    	return devm_kmalloc(dev, size, gfp | __GFP_ZERO);
+    ffffff80104f5b2c:	5281b802 	mov	w2, #0xdc0                 	// #3520
+    ffffff80104f5b30:	d287e301 	mov	x1, #0x3f18                	// #16152
+    ffffff80104f5b34:	aa1b03e0 	mov	x0, x27
+    	return dev->driver_data;
+    ffffff80104f5b38:	f9404c73 	ldr	x19, [x3, #152]
+    	return devm_kmalloc(dev, size, gfp | __GFP_ZERO);
+    ffffff80104f5b3c:	940125e3 	bl	ffffff801053f2c8 <devm_kmalloc>
+    ffffff80104f5b40:	aa0003f6 	mov	x22, x0
+    	};
+    	int ret = 0, i;
+    	u32 id;
+    
+    	power = devm_kzalloc(dev, sizeof(*power), GFP_KERNEL);
+    	if (!power)
+    ffffff80104f5b44:	b4000f20 	cbz	x0, ffffff80104f5d28 <bcm2835_power_probe+0x228>
+    		return -ENOMEM;
+    	platform_set_drvdata(pdev, power);
+    
+    	power->dev = dev;
+    ffffff80104f5b48:	f900001b 	str	x27, [x0]
+    }
+    
+    static inline void dev_set_drvdata(struct device *dev, void *data)
+    {
+    	dev->driver_data = data;
+    ffffff80104f5b4c:	f9004f60 	str	x0, [x27, #152]
+    	power->base = pm->base;
+    ffffff80104f5b50:	f9400660 	ldr	x0, [x19, #8]
+    ffffff80104f5b54:	f90006c0 	str	x0, [x22, #8]
+    	power->asb = pm->asb;
+    ffffff80104f5b58:	f9400a62 	ldr	x2, [x19, #16]
+    ffffff80104f5b5c:	f9000ac2 	str	x2, [x22, #16]
+    
+    	id = ASB_READ(ASB_AXI_BRDG_ID);
+    ffffff80104f5b60:	91008042 	add	x2, x2, #0x20
+    
+    #define __raw_readl __raw_readl
+    static inline u32 __raw_readl(const volatile void __iomem *addr)
+    {
+    	u32 val;
+    	asm volatile(ALTERNATIVE("ldr %w0, [%1]",
+    ffffff80104f5b64:	b9400042 	ldr	w2, [x2]
+    ffffff80104f5b68:	d5033d9f 	dsb	ld
+    ffffff80104f5b6c:	2a0203e0 	mov	w0, w2
+    ffffff80104f5b70:	ca000000 	eor	x0, x0, x0
+    ffffff80104f5b74:	b5000000 	cbnz	x0, ffffff80104f5b74 <bcm2835_power_probe+0x74>
+    	if (id != 0x62726467 /* "BRDG" */) {
+    ffffff80104f5b78:	528c8ce0 	mov	w0, #0x6467                	// #25703
+    ffffff80104f5b7c:	72ac4e40 	movk	w0, #0x6272, lsl #16
+    
+    
+    # grep bcm2835_power_probe -ur drivers/
+    drivers/soc/bcm/bcm2835-power.c:static int bcm2835_power_probe(struct platform_device *pdev)
+    drivers/soc/bcm/bcm2835-power.c:	.probe		= bcm2835_power_probe,
+    
+    
+    
+    627         power->base = pm->base;
+    628         power->asb = pm->asb;
+    629 
+    630         id = ASB_READ(ASB_AXI_BRDG_ID);
+    631         if (id != 0x62726467 /* "BRDG" */) {
+    632                 dev_err(dev, "ASB register ID returned 0x%08x\n", id);
+    633                 return -ENODEV;
+    634         }
+    
+    
+    # git blame -L 630,630 drivers/soc/bcm/bcm2835-power.c
+    670c6726 (Eric Anholt 2018-12-12 15:51:48 -0800 630)    id = ASB_READ(ASB_AXI_BRDG_ID);
+    
+    #  git show 670c6726
+    
+        soc: bcm: bcm2835-pm: Add support for power domains under a new binding.
+        
+        This provides a free software alternative to raspberrypi-power.c's
+        firmware calls to manage power domains.  It also exposes a reset line,
+        where previously the vc4 driver had to try to force power off the
+        domain in order to trigger a reset.
+
+
+    config BCM2835_POWER
+    +       bool "BCM2835 power domain driver"
+    +       depends on ARCH_BCM2835 || (COMPILE_TEST && OF)
+    +       select PM_GENERIC_DOMAINS if PM
+    +       select RESET_CONTROLLER
+    +       help
+    +         This enables support for the BCM2835 power domains and reset
+    +         controller.  Any usage of power domains by the Raspberry Pi
+    +         firmware means that Linux usage of the same power domain
+    +         must be accessed using the RASPBERRYPI_POWER driver
+    
+    
+    +obj-$(CONFIG_BCM2835_POWER)    += bcm2835-power.o
+    
+    
+    $ git show 670c6726:Makefile
+    
+    VERSION = 5
+    PATCHLEVEL = 0
+    SUBLEVEL = 0
+    EXTRAVERSION = -rc1
+
+  It means this is added in v5.0.0-rc1, but raspi3 linux exists long long ago,
+  so, this feature is not necessary, just disable it.  this provides interface to
+  firmware, which is not necessary for basic function.
+
+2. crasn on dwc_otg_cil_init
+
+    [    9.043103] libphy: Fixed MDIO Bus: probed
+    [    9.045199] usbcore: registered new interface driver lan78xx
+    [    9.046527] usbcore: registered new interface driver smsc95xx
+    [    9.048062] dwc_otg: version 3.00a 10-AUG-2012 (platform bus)
+    [    9.061013] dwc_otg 3f980000.usb: base=(____ptrval____)
+    [    9.064484] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+    [    9.069384] Modules linked in:
+    [    9.070345] Process swapper/0 (pid: 1, stack limit = 0x(____ptrval____))
+    [    9.071373] CPU: 2 PID: 1 Comm: swapper/0 Tainted: G        W         5.1.0-v8-43f2cb3b6385+ #6
+    [    9.072772] Hardware name: Raspberry Pi 3 Model B (DT)
+    [    9.073048] pstate: 60000005 (nZCv daif -PAN -UAO)
+    [    9.073404] pc : DWC_READ_REG32+0x18/0x38
+    [    9.074075] lr : dwc_otg_cil_init+0x10c/0x5a0
+    [    9.074925] sp : ffffff8010023ac0
+    [    9.075540] x29: ffffff8010023ac0 x28: 0000000000000000 
+    [    9.077361] x27: ffffff8010a80510 x26: ffffff8010b61018 
+    [    9.077862] x25: ffffffc01a257410 x24: 0000000000000000 
+    [    9.078482] x23: ffffff8010dca430 x22: ffffffc018af7300 
+    [    9.079438] x21: ffffff80112e0e00 x20: ffffffc0189fbe00 
+    [    9.080450] x19: ffffff80112e0044 x18: 0000000000000010 
+    [    9.081563] x17: 0000000000000000 x16: 0000000000000000 
+    [    9.085336] x15: ffffffffffffffff x14: ffffff8010d3c688 
+    [    9.086283] x13: ffffff8090023747 x12: ffffff8010023750 
+    [    9.086846] x11: ffffff8010d50000 x10: ffffff80100236d0 
+    [    9.087047] x9 : 0000000000000000 x8 : ffffffc018af7400 
+    [    9.087347] x7 : 0000000000000000 x6 : 000000000000003f 
+    [    9.088470] x5 : 0000000000000040 x4 : ffffff80112e0400 
+    [    9.089977] x3 : 0000000000000010 x2 : ffffff80112f1000 
+    [    9.090913] x1 : 0000000000000003 x0 : ffffff80105d595c 
+    [    9.091731] Call trace:
+    [    9.092014]  DWC_READ_REG32+0x18/0x38
+    [    9.092469]  dwc_otg_cil_init+0x10c/0x5a0
+    [    9.093275]  dwc_otg_driver_probe+0x21c/0x8e8
+    [    9.094220]  platform_drv_probe+0x58/0xa8
+    [    9.095688]  really_probe+0xd8/0x298
+    [    9.097242]  driver_probe_device+0x5c/0xf0
+    [    9.097690]  device_driver_attach+0x74/0x80
+    [    9.098757]  __driver_attach+0x64/0xe0
+    [    9.099379]  bus_for_each_dev+0x84/0xd8
+    [    9.100348]  driver_attach+0x30/0x40
+    [    9.101205]  bus_add_driver+0x188/0x1e8
+    [    9.101756]  driver_register+0x64/0x110
+    [    9.102203]  __platform_driver_register+0x54/0x60
+    [    9.103176]  dwc_otg_driver_init+0x80/0x11c
+    [    9.104317]  do_one_initcall+0x54/0x26c
+    [    9.104891]  kernel_init_freeable+0x2f0/0x38c
+    [    9.105389]  kernel_init+0x18/0x108
+    [    9.105872]  ret_from_fork+0x10/0x1c
+    [    9.108021] Code: f9000bf3 aa0003f3 aa1e03e0 d503201f (b9400260) 
+    [    9.109803] ---[ end trace 25d0dfbd4448f236 ]---
+    [    9.115304] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+    [    9.117418] SMP: stopping secondary CPUs
+    [    9.135240] Kernel Offset: disabled
+    [    9.136394] CPU features: 0x002,24002004
+    [    9.136916] Memory Limit: none
+    [    9.138074] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+
+  Disable USB_DWCOTG feature, seems DWC_READ_REG32 also not supported by Qemu.
+
+3. crash on bcm2835_wdt_probe
+
+    [    8.157392] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+    [    8.158572] Modules linked in:
+    [    8.159071] Process swapper/0 (pid: 1, stack limit = 0x(____ptrval____))
+    [    8.160034] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.1.0-v8-43f2cb3b6385+ #8
+    [    8.160696] Hardware name: Raspberry Pi 3 Model B (DT)
+    [    8.161199] pstate: 80000005 (Nzcv daif -PAN -UAO)
+    [    8.161891] pc : bcm2835_wdt_probe+0x9c/0x158
+    [    8.162278] lr : bcm2835_wdt_probe+0x78/0x158
+    [    8.162783] sp : ffffff8010023b60
+    [    8.162997] x29: ffffff8010023b60 x28: 0000000000000000 
+    [    8.163275] x27: ffffff8010a40510 x26: ffffff8010b20018 
+    [    8.163687] x25: ffffff8010a354e0 x24: ffffffc018a24780 
+    [    8.164149] x23: ffffff8010e98e58 x22: ffffff8010d832b8 
+    [    8.164608] x21: ffffffc018a37180 x20: ffffff8010d83200 
+    [    8.165005] x19: ffffffc018ac1c10 x18: 0000000000000000 
+    [    8.165617] x17: 0000000000000000 x16: 0000000000000000 
+    [    8.166077] x15: ffffffffffffffff x14: ffffff8010cec688 
+    [    8.166484] x13: ffffffc01a10491c x12: 0000000000000030 
+    [    8.166970] x11: 0101010101010101 x10: 7f7f7f7f7f7f7f7f 
+    [    8.167343] x9 : 0000000000000000 x8 : ffffffc018a37200 
+    [    8.167937] x7 : 0000000000000000 x6 : ffffff8010cecde8 
+    [    8.168551] x5 : ffffff8010cec000 x4 : ffffff80100917f8 
+    [    8.169245] x3 : ffffff801004d000 x2 : ffffff8010d832b8 
+    [    8.169691] x1 : 0000000000000000 x0 : ffffff801004d01c 
+    [    8.170189] Call trace:
+    [    8.170586]  bcm2835_wdt_probe+0x9c/0x158
+    [    8.170970]  platform_drv_probe+0x58/0xa8
+    [    8.171259]  really_probe+0xd8/0x298
+    [    8.171510]  driver_probe_device+0x5c/0xf0
+    [    8.171748]  device_driver_attach+0x74/0x80
+    [    8.172076]  __driver_attach+0x64/0xe0
+    [    8.172305]  bus_for_each_dev+0x84/0xd8
+    [    8.172629]  driver_attach+0x30/0x40
+    [    8.172885]  bus_add_driver+0x188/0x1e8
+    [    8.173167]  driver_register+0x64/0x110
+    [    8.173674]  __platform_driver_register+0x54/0x60
+    [    8.174112]  bcm2835_wdt_driver_init+0x20/0x28
+    [    8.174481]  do_one_initcall+0x54/0x26c
+    [    8.174716]  kernel_init_freeable+0x2f0/0x38c
+    [    8.175111]  kernel_init+0x18/0x108
+    [    8.175450]  ret_from_fork+0x10/0x1c
+    [    8.176011] Code: 9102e282 f9000453 f94002a0 91007000 (b9400000) 
+    [    8.176952] ---[ end trace 08686e21c4df2f7e ]---
+    [    8.178845] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+    [    8.179410] SMP: stopping secondary CPUs
+
+  Disable CONFIG_BCM2835_WDT.
+
+4. crash on bcm2835_pll_get_rate
+
+    [    9.360079] Loading compiled-in X.509 certificates
+    [    9.386917] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+    [    9.388930] Modules linked in:
+    [    9.389948] Process kworker/1:1 (pid: 34, stack limit = 0x(____ptrval____))
+    [    9.390724] CPU: 1 PID: 34 Comm: kworker/1:1 Tainted: G        W         5.1.0-v8-43f2cb3b6385+ #9
+    [    9.392739] Hardware name: Raspberry Pi 3 Model B (DT)
+    [    9.393947] Workqueue: events deferred_probe_work_func
+    [    9.394728] pstate: 40000005 (nZcv daif -PAN -UAO)
+    [    9.395695] pc : bcm2835_pll_get_rate+0x2c/0xe8
+    [    9.396445] lr : clk_register+0x384/0x6f0
+    [    9.397019] sp : ffffff8010f6ba60
+    [    9.397547] x29: ffffff8010f6ba60 x28: 0000000000000000 
+    [    9.399212] x27: ffffffc01a3c20b8 x26: 0000000000000001 
+    [    9.400016] x25: ffffff80109b48d0 x24: ffffff8010e95398 
+    [    9.401628] x23: ffffffc0189f3f80 x22: ffffff80109b40b0 
+    [    9.402347] x21: ffffff8010833ad0 x20: 000000000124f800 
+    [    9.403765] x19: ffffffc0189f3f80 x18: 0000000000000001 
+    [    9.405299] x17: 0000000000000000 x16: 0000000000000000 
+    [    9.406424] x15: ffffffffffffffff x14: ffffffffffffffff 
+    [    9.407090] x13: 0000000000000000 x12: 0000000000000018 
+    [    9.407639] x11: 0000000000000018 x10: 0101010101010101 
+    [    9.408250] x9 : 0000000000000000 x8 : ffffffff7f7f7f7f 
+    [    9.408876] x7 : fefefebeff62726e x6 : ffffff8010d659c8 
+    [    9.409433] x5 : 0000000000000000 x4 : ffffffc018a1a480 
+    [    9.410711] x3 : ffffffc01a00b400 x2 : ffffff80104ef6b8 
+    [    9.411583] x1 : 0000000000001100 x0 : ffffff8010fb3100 
+    [    9.412708] Call trace:
+    [    9.413589]  bcm2835_pll_get_rate+0x2c/0xe8
+    [    9.415348]  clk_register+0x384/0x6f0
+    [    9.416515]  devm_clk_hw_register+0x4c/0xa8
+    [    9.417707]  bcm2835_register_pll+0xb0/0xe8
+    [    9.419313]  bcm2835_clk_probe+0x1a4/0x260
+    [    9.420055]  platform_drv_probe+0x58/0xa8
+    [    9.421000]  really_probe+0xd8/0x298
+    [    9.421871]  driver_probe_device+0x5c/0xf0
+    [    9.422565]  __device_attach_driver+0x88/0xc0
+    [    9.423098]  bus_for_each_drv+0x8c/0xd8
+    [    9.424088]  __device_attach+0xdc/0x138
+    [    9.424720]  device_initial_probe+0x24/0x30
+    [    9.425557]  bus_probe_device+0x9c/0xa8
+    [    9.428038]  deferred_probe_work_func+0x74/0xa8
+    [    9.430003]  process_one_work+0x1ec/0x468
+    [    9.430738]  worker_thread+0x230/0x430
+    [    9.431196]  kthread+0x12c/0x130
+    [    9.431647]  ret_from_fork+0x10/0x1c
+    [    9.432932] Code: a9419a64 f9400480 b9400cc1 8b010000 (b9400000) 
+    [    9.434676] ---[ end trace 2d1e569ddd14e09f ]---
+
+  Just comment it, or, remove the ... from dts:
+
+    diff --git a/drivers/clk/bcm/Makefile b/drivers/clk/bcm/Makefile
+    index 002661d..cc20455 100644
+    --- a/drivers/clk/bcm/Makefile
+    +++ b/drivers/clk/bcm/Makefile
+    @@ -5,7 +5,7 @@ obj-$(CONFIG_CLK_BCM_KONA)      += clk-kona-setup.o
+     obj-$(CONFIG_CLK_BCM_KONA)     += clk-bcm281xx.o
+     obj-$(CONFIG_CLK_BCM_KONA)     += clk-bcm21664.o
+     obj-$(CONFIG_COMMON_CLK_IPROC) += clk-iproc-armpll.o clk-iproc-pll.o clk-iproc-asiu.o
+    -obj-$(CONFIG_ARCH_BCM2835)     += clk-bcm2835.o
+    +#obj-$(CONFIG_ARCH_BCM2835)    += clk-bcm2835.o
+     obj-$(CONFIG_ARCH_BCM2835)     += clk-bcm2835-aux.o
+     obj-$(CONFIG_ARCH_BCM_53573)   += clk-bcm53573-ilp.o
+     obj-$(CONFIG_CLK_BCM_CYGNUS)   += clk-cygnus.o
+
+
+5. bcmvirt_gpio_probe issue, no crash, just let it there
+
+    [    6.030367] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 0 config (0 80)
+    [    6.032084] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 1 config (0 81)
+    [    6.034388] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 2 config (0 82)
+    [    6.036255] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 3 config (0 83)
+    [    6.038693] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 4 config (0 84)
+    [    6.040010] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 5 config (0 85)
+    [    6.046189] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 6 config (0 86)
+    [    6.049853] raspberrypi-exp-gpio soc:firmware:expgpio: Failed to get GPIO 7 config (0 87)
+    [    6.069775] brcmvirt-gpio soc:virtgpio: Failed to set gpiovirtbuf, trying to get err:0
+    [    6.076045] WARNING: CPU: 1 PID: 1 at arch/arm64/mm/ioremap.c:58 __ioremap_caller+0xac/0xd0
+    [    6.076597] Modules linked in:
+    [    6.077482] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.1.0-v8-43f2cb3b6385+ #10
+    [    6.078370] Hardware name: Raspberry Pi 3 Model B (DT)
+    [    6.079342] pstate: 80000005 (Nzcv daif -PAN -UAO)
+    [    6.079672] pc : __ioremap_caller+0xac/0xd0
+    [    6.079931] lr : __ioremap_caller+0x60/0xd0
+    [    6.080359] sp : ffffff8010023ae0
+    [    6.080731] x29: ffffff8010023ae0 x28: 0000000000000000 
+    [    6.081157] x27: ffffff8010a40510 x26: ffffff8010b20018 
+    [    6.081570] x25: ffffff8010a33c58 x24: 0000000000000000 
+    [    6.082087] x23: 00e8000000000707 x22: ffffff80104c61f0 
+    [    6.082849] x21: 0000000000000000 x20: 000000001b840000 
+    [    6.083202] x19: 0000000000001000 x18: 0000000000000010 
+    [    6.083801] x17: 0000000000000000 x16: 0000000000000000 
+    [    6.084452] x15: 0000000000000002 x14: 0000000000000000 
+    [    6.084833] x13: ffffff80107ea2f0 x12: ffffff8010015000 
+    [    6.085361] x11: 0000000000000001 x10: 0000000000000000 
+    [    6.086018] x9 : ffffff8010023820 x8 : 0000000000000000 
+    [    6.086386] x7 : 000000001c000000 x6 : 0000000000000018 
+    [    6.086938] x5 : ffffff8010e44968 x4 : ffffff8010e44968 
+    [    6.087559] x3 : 0000000000000001 x2 : 0000000000000001 
+    [    6.088066] x1 : 000000001c000000 x0 : 0000000000000001 
+    [    6.089159] Call trace:
+    [    6.089590]  __ioremap_caller+0xac/0xd0
+    [    6.089925]  __ioremap+0x3c/0x50
+    [    6.090546]  brcmvirt_gpio_probe+0x228/0x300
+    [    6.091163]  platform_drv_probe+0x58/0xa8
+    [    6.091577]  really_probe+0xd8/0x298
+    [    6.092084]  driver_probe_device+0x5c/0xf0
+    [    6.092492]  device_driver_attach+0x74/0x80
+    [    6.092878]  __driver_attach+0x64/0xe0
+    [    6.093127]  bus_for_each_dev+0x84/0xd8
+    [    6.093562]  driver_attach+0x30/0x40
+    [    6.093953]  bus_add_driver+0x188/0x1e8
+    [    6.094423]  driver_register+0x64/0x110
+    [    6.094861]  __platform_driver_register+0x54/0x60
+    [    6.095516]  brcmvirt_gpio_driver_init+0x20/0x28
+    [    6.096264]  do_one_initcall+0x54/0x26c
+    [    6.096807]  kernel_init_freeable+0x2f0/0x38c
+    [    6.097354]  kernel_init+0x18/0x108
+    [    6.098033]  ret_from_fork+0x10/0x1c
+    [    6.098864] ---[ end trace 9b6b39c3320fd079 ]---
+    [    6.102181] brcmvirt-gpio soc:virtgpio: Failed to map physical address
+    [    6.104402] brcmvirt-gpio: probe of soc:virtgpio failed with error -2

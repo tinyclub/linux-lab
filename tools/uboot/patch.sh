@@ -23,12 +23,12 @@ do
     echo $d
     [ ! -d $d ] && continue
 
-    for p in `ls $d`
+    for p in `find $d -type f -name "*.patch" | sort`
     do
         # Ignore some buggy patch via renaming it with suffix .ignore
         echo $p | grep -q .ignore$
         [ $? -eq 0 ] && continue
 
-        [ -f "$d/$p" ] && patch -r- -N -l -d ${UBOOT_SRC} -p1 < $d/$p
+        [ -f "$p" ] && patch -r- -N -l -d ${UBOOT_SRC} -p1 < $p
     done
 done

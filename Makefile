@@ -1183,13 +1183,19 @@ ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
   BOOT_CMD += -hda $(HROOTFS)
 endif
 ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
-  BOOT_CMD += -hda $(HROOTFS)
+  # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
+  ifeq ($(BOARD), virt)
+    BOOT_CMD += -drive if=none,file=$(HROOTFS),id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
+  else
+    BOOT_CMD += -hda $(HROOTFS)
+  endif
 endif
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
   BOOT_CMD += -sd $(HROOTFS)
 endif
 ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
-  BOOT_CMD += -drive if=none,file=$(HROOTFS),id=hd0 -device virtio-blk-device,drive=hd0
+  # Ref: https://wiki.debian.org/Arm64Qemu
+  BOOT_CMD += -drive if=none,file=$(HROOTFS),id=virtio-vda -device virtio-blk-device,drive=virtio-vda
 endif
 
 ifeq ($(G),0)

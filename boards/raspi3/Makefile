@@ -11,12 +11,12 @@ XOPTS   ?= -cpu $(CPU)
 UART    ?= 1
 ifeq ($(UART), 1)
   # UART1 as earlycon
-  XOPTS   += -serial null -serial stdio -monitor none
+  XOPTS   += -serial null -serial mon:stdio
   XKCLI   ?= earlycon=uart8250,mmio32,0x3f215040
   SERIAL  ?= ttyS0,115200
 else
   # UART0 as earlycon
-  XOPTS   += -serial stdio -monitor none
+  XOPTS   += -serial mon:stdio
   XKCLI   ?= earlycon=pl011,0x3f201000
   SERIAL  ?= ttyAMA0,115200
 endif

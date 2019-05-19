@@ -556,8 +556,11 @@ endif
 root-checkout:
 	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx && cd $(TOP_DIR)
 
-ROOT_CONFIG_FILE = buildroot_$(CPU)_defconfig
-ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
+ROOT_CONFIG_FILE ?= buildroot_$(CPU)_defconfig
+ifeq ($(RCFG),)
+  ROOT_CONFIG_PATH = $(BOARD_DIR)/$(ROOT_CONFIG_FILE)
+  RCFG = $(ROOT_CONFIG_FILE)
+endif
 
 RP ?= 0
 ROOT_PATCH_TOOL = tools/rootfs/patch.sh
@@ -571,8 +574,10 @@ endif
 
 root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
+ifeq ($(RCFG),)
 	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(ROOT_CONFIG_FILE)
+endif
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(RCFG)
 
 root-menuconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
@@ -789,14 +794,19 @@ ifeq ($(KP),1)
   KERNEL_PATCH = kernel-patch
 endif
 
-KERNEL_CONFIG_FILE = linux_$(LINUX)_defconfig
-KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
-KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
+KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
+ifeq ($(KCFG),)
+  KERNEL_CONFIG_PATH = $(BOARD_DIR)/$(KERNEL_CONFIG_FILE)
+  KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KERNEL_CONFIG_FILE)
+  KCFG = $(KERNEL_CONFIG_FILE)
+endif
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
+ifeq ($(KCFG),)
 	$(Q)cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_CONFIG_FILE)
+endif
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
 
 kernel-oldconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldnoconfig
@@ -998,13 +1008,18 @@ ifeq ($(UP),1)
   UBOOT_PATCH = uboot-patch
 endif
 
-UBOOT_CONFIG_FILE = uboot_$(UBOOT)_defconfig
-UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
+UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
+ifeq ($(UCFG),)
+  UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UBOOT_CONFIG_FILE)
+  UCFG = $(UBOOT_CONFIG_FILE)
+endif
 
 uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
+ifeq ($(UCFG),)
 	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UBOOT_CONFIG_FILE)
+endif
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UCFG)
 
 uboot-menuconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig

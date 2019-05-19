@@ -9,6 +9,7 @@ XOPTS   ?= -cpu $(CPU)
 
 # Ref: https://github.com/bztsrc/raspi3-tutorial#emulation
 UART    ?= 1
+#XOPTS   += -serial vc -serial vc
 ifeq ($(UART), 1)
   # UART1 as earlycon
   XOPTS   += -serial null -serial mon:stdio

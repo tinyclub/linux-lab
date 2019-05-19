@@ -17,6 +17,12 @@
 
     $ make boot V=1 UART=0 // with pl011
 
+
+  More:
+
+    $ make kernel ORIDTB=arch/arm64/boot/dts/broadcom/bcm2837-rpi-3-b.dtb
+    $ make boot V=1 ORIDTB=arch/arm64/boot/dts/broadcom/bcm2837-rpi-3-b.dtb UART=0
+
 ## References
 
 * [Qemu raspi3 support](https://github.com/bztsrc/qemu-raspi3)

@@ -87,8 +87,9 @@ More:
 
 Docker is required by Linux Lab, please install it at first:
 
-* Linux and Mac OSX: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+- Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+
+- older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
 
 Notes:
 

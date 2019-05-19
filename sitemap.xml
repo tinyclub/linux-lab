@@ -14,6 +14,7 @@ title : Sitemap
 </url>
 
 {% for post in site.posts %}
+{% if post.draft and post.draft == true %}{% continue %}{% endif %}
 <url>
 	<loc>{{site.production_url}}{{ post.url }}</loc>
 	{% if post.last_updated %}<lastmod>{{ post.last_updated | date_to_xmlschema }}</lastmod>

@@ -14,6 +14,7 @@ title : RSS Feed
   <ttl>1800</ttl>
 
 {% for post in site.posts %}
+{% if post.draft and post.draft == true %}{% continue %}{% endif %}
   <item>
     <title>{{ post.title }}</title>
     <description>{{ post.content | xml_escape }}</description>

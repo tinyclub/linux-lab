@@ -19,6 +19,7 @@ title : Atom Feed
 {% endcapture %}
 {% endcapture %}{% assign tmpcache = nil %}
 {% for post in site.posts %}
+{% if post.draft and post.draft == true %}{% continue %}{% endif %}
   <entry>
     <title>{% capture post_title %}{{ post.title | strip_html | xml_escape | strip }}{%endcapture%}{{post_title}}</title>
     <link href="{{ site.production_url }}{{ post.url }}"/>

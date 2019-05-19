@@ -491,7 +491,11 @@ ifneq ($(QP),0)
 endif
 endif
 
-QEMU_CONF := --disable-kvm --disable-vnc --enable-sdl
+ifeq ($(QCFG),)
+  QEMU_CONF ?= --disable-kvm --disable-vnc --enable-sdl
+else
+  QEMU_CONF = $(QCFG)
+endif
 
 #
 # qemu-user-static, only compile it for it works the same as qemu-user
@@ -506,15 +510,19 @@ QEMU_CONF := --disable-kvm --disable-vnc --enable-sdl
 
 ifeq ($(QEMU_US), 1)
   QEMU_CONF += --enable-linux-user
-  QEMU_CONF += --static --target-list=$(XARCH)-linux-user
+  QEMU_TARGET ?= $(XARCH)-linux-user
+  QEMU_CONF += --static --target-list=$(QEMU_TARGET)
   QEMU_CONF += --disable-system
 else
-  QEMU_CONF += --target-list=$(XARCH)-softmmu
+  QEMU_TARGET ?= $(XARCH)-softmmu
+  QEMU_CONF += --target-list=$(QEMU_TARGET)
 endif
+
+QEMU_PREFIX ?= $(PREBUILT_QEMUDIR)
 
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(TOP_DIR)/$(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(PREBUILT_QEMUDIR) && cd $(TOP_DIR)
+	$(Q)cd $(QEMU_OUTPUT) && $(TOP_DIR)/$(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX) && cd $(TOP_DIR)
 
 qemu-defconfig: emulator-defconfig
 

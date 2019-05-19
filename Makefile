@@ -283,7 +283,7 @@ endif
 
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
-NET =  -net nic,model=$(NETDEV) -net tap
+NET ?=  -net nic,model=$(NETDEV) -net tap
 
 MACADDR_TOOL = tools/qemu/macaddr.sh
 RANDOM_MACADDR = $(shell $(MACADDR_TOOL))

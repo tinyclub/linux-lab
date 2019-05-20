@@ -320,6 +320,10 @@ ifeq ($(ROOTDEV),/dev/nfs)
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
 endif
 
+ifeq ($(HD),1)
+  CMDLINE += rw fsck.repair=yes rootwait
+endif
+
 # For debug
 BOARD_TOOL=${TOOL_DIR}/board/show.sh
 export GREP_COLOR=32;40

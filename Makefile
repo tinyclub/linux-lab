@@ -1440,7 +1440,6 @@ else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
-  TEST_XOPTS  = $(XOPTS)
   TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && mkfifo $(TEST_LOG_PIPE) && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sudo timeout $(TEST_TIMEOUT)
@@ -1450,6 +1449,7 @@ endif
   # If not support netowrk, should use the other root device
 endif
 
+TEST_XOPTS ?= $(XOPTS)
 TEST_RD ?= /dev/nfs
 
 export TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
@@ -1460,7 +1460,7 @@ ifeq ($(BOOT_TEST), default)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make boot XOPTS=\"$(TEST_XOPTS)\" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
+		$(T_BEFORE) make boot XOPTS="$(TEST_XOPTS)" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
 endif
 
 test: $(TEST_PREPARE) FORCE
@@ -1595,9 +1595,9 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 
 env:
-	$(Q)echo \#[ $(BOARD) ]:
-	$(Q)echo -n " "
-	-$(Q)echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'
+	@echo \#[ $(BOARD) ]:
+	@echo -n " "
+	-@echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'
 
 ENV_SAVE_TOOL = $(TOOL_DIR)/save-env.sh
 

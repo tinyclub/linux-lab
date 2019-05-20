@@ -35,10 +35,12 @@ BUILDROOT?= 2019.02.2
 #NETDEV  ?= smc91c111
 NET     ?=
 
-ROOTDEV ?= /dev/ram0
+# ROOTDEV = /dev/ram0
+ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2837-rpi-3-b.dtb
+# bcm2837-rpi-3-b.dtb all works, bcm2710-rpi-3-b.dtb has less warnings about therem zone access
+ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2710-rpi-3-b.dtb
 CCPRE   ?= aarch64-linux-gnu-
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/Image
 DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/bcm2710-rpi-3-b.dtb

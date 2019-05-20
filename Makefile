@@ -1422,33 +1422,37 @@ ifneq ($(TEST_REBOOT), 0)
 endif
 
 # By default, seconds
-TTO ?= 0
-TEST_TIMEOUT ?= $(TTO)
+TEST_TIMEOUT ?= 0
 
 ifneq ($(TEST_TIMEOUT),0)
   TEST_LOGGING?= $(TOP_DIR)/logging/$(ARCH)-$(BOARD)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
   TEST_ENV    ?= $(TEST_LOGGING)/boot.env
   TEST_LOG    ?= $(TEST_LOGGING)/boot.log
-  TEST_CMD    ?= $(TEST_LOGGING)/boot.cmd
+  TEST_LOG_PIPE?= $(TEST_LOGGING)/boot.log.pipe
+  TEST_LOG_PID?= $(TEST_LOGGING)/boot.log.pid
+  TEST_LOG_READER ?= tools/qemu/reader.sh
   TEST_RET    ?= $(TEST_LOGGING)/boot.ret
+
+  # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.lo
 ifeq ($(findstring serial,$(XOPTS)),serial)
-    XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:file:$(TEST_LOG) %g")
+    XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
 else
-    XOPTS     += -serial mon:file:$(TEST_LOG)
+    XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
+
   TEST_XOPTS  = $(XOPTS)
-  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && touch $(TEST_LOG) && make env > $(TEST_ENV) && chmod a+w $(TEST_LOGGING) && echo \"
-  TEST_AFTER  ?= 2>&1 \" > $(TEST_CMD) && chmod a+x $(TEST_CMD) && sudo timeout $(TEST_TIMEOUT) $(TEST_CMD); echo \$$\$$? > $(TEST_RET); cat $(TEST_LOG)
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) && chmod a+w $(TEST_LOGGING) && $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 && sudo timeout $(TEST_TIMEOUT)
+  TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); kill -9 \$$\$$(cat $(TEST_LOG_PID))
   # If not support netowrk, should use the other root device
 endif
 
 TEST_RD ?= /dev/nfs
 
-export TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_CMD TEST_XOPTS TEST_RET TEST_RD V
+export TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make boot XOPTS=\"$(TEST_XOPTS)\" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
+	$(T_BEFORE) make boot XOPTS="$(TEST_XOPTS)" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
@@ -1460,7 +1464,7 @@ test: $(TEST_PREPARE) FORCE
 	make boot-init
 	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)"
 	make boot-finish
-	if [ -n "$(TEST_RET)" -a -f "$(TEST_RET)" ]; then exit $$(cat $(TEST_RET)); fi
+	$(Q)if [ -n "$(TEST_RET)" -a -f "$(TEST_RET)" ]; then echo "ERR: Test timeout in $(TEST_TIMEOUT)."; exit $$(cat $(TEST_RET)); else echo "LOG: Test run successfully."; fi
 
 _boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
@@ -1585,7 +1589,7 @@ VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
-VARS += TEST_TIMEOUT TEST_CMD TEST_RD
+VARS += TEST_TIMEOUT TEST_RD
 
 env:
 	$(Q)echo \#[ $(BOARD) ]:

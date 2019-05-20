@@ -1444,7 +1444,9 @@ endif
   TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && mkfifo $(TEST_LOG_PIPE) && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sudo timeout $(TEST_TIMEOUT)
-  TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); kill -9 \$$\$$(cat $(TEST_LOG_PID))
+  TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); kill -9 \$$\$$(cat $(TEST_LOG_PID)); \
+	ret=\$$\$$(cat $(TEST_RET)) && [ \$$\$$ret -ne 0 ] && echo \"ERR: Boot timeout in $(TEST_TIMEOUT).\" && exit \$$\$$ret; \
+	echo \"LOG: Boot run successfully.\"
   # If not support netowrk, should use the other root device
 endif
 
@@ -1466,10 +1468,6 @@ test: $(TEST_PREPARE) FORCE
 	make boot-init
 	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)"
 	make boot-finish
-	$(Q)if [ -n "$(TEST_RET)" -a -f "$(TEST_RET)" ]; then\
-		ret=$$(cat $(TEST_RET)) && [ $$ret -ne 0 ] && echo "ERR: Test timeout in $(TEST_TIMEOUT)." && exit $$ret; \
-		echo "LOG: Test run successfully."; \
-	fi
 
 _boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)

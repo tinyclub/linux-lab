@@ -1422,7 +1422,8 @@ ifneq ($(TEST_REBOOT), 0)
 endif
 
 # By default, seconds
-TEST_TIMEOUT ?= 0
+TTO ?= 0
+TEST_TIMEOUT ?= $(TTO)
 
 ifneq ($(TEST_TIMEOUT),0)
   TEST_LOGGING?= $(TOP_DIR)/logging/$(ARCH)-$(BOARD)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")

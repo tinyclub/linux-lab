@@ -4,17 +4,17 @@ ARCH     = arm64
 XARCH    = aarch64
 CPU     ?= cortex-a53
 SMP     ?= 4
-MEM     ?= 512M
+MEM     ?= 1024M
 XOPTS   ?= -cpu $(CPU)
 
 # Ref: https://github.com/bztsrc/raspi3-tutorial#emulation
-UART    ?= 1
+UART    ?= 0
 #XOPTS   += -serial vc -serial vc
 ifeq ($(UART), 1)
   # UART1 as earlycon
   XOPTS   += -serial null -serial mon:stdio
   XKCLI   ?= earlycon=uart8250,mmio32,0x3f215040
-  SERIAL  ?= ttyS0,115200
+  SERIAL  ?= ttyS1,115200
 else
   # UART0 as earlycon
   XOPTS   += -serial mon:stdio
@@ -38,7 +38,7 @@ NET     ?=
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2710-rpi-3-b.dtb
+ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2837-rpi-3-b.dtb
 CCPRE   ?= aarch64-linux-gnu-
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/Image
 DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/bcm2710-rpi-3-b.dtb

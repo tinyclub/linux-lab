@@ -1422,26 +1422,45 @@ ifneq ($(TEST_REBOOT), 0)
 endif
 
 # By default, seconds
-TIMEOUT ?= 2m
-MONITOR_START ?= sudo timeout $(TIMEOUT)
-MONITOR_END ?=
-# If not support netowrk, should use the other root device
-TESTRD ?= /dev/nfs
+TTO ?= 0
+TEST_TIMEOUT ?= $(TTO)
+
+ifneq ($(TEST_TIMEOUT),0)
+  TEST_LOGGING?= $(TOP_DIR)/logging/$(ARCH)-$(BOARD)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
+  TEST_ENV    ?= $(TEST_LOGGING)/boot.env
+  TEST_LOG    ?= $(TEST_LOGGING)/boot.log
+  TEST_CMD    ?= $(TEST_LOGGING)/boot.cmd
+  TEST_RET    ?= $(TEST_LOGGING)/boot.ret
+ifeq ($(findstring serial,$(XOPTS)),serial)
+    XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:file:$(TEST_LOG) %g")
+else
+    XOPTS     += -serial mon:file:$(TEST_LOG)
+endif
+  TEST_XOPTS  = $(XOPTS)
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && touch $(TEST_LOG) && make env > $(TEST_ENV) && chmod a+w $(TEST_LOGGING) && echo \"
+  TEST_AFTER  ?= 2>&1 \" > $(TEST_CMD) && chmod a+x $(TEST_CMD) && sudo timeout $(TEST_TIMEOUT) $(TEST_CMD); echo \$$\$$? > $(TEST_RET); cat $(TEST_LOG)
+  # If not support netowrk, should use the other root device
+endif
+
+TEST_RD ?= /dev/nfs
+
+export TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_CMD TEST_XOPTS TEST_RET TEST_RD V
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(TIMEOUT_MONITOR) make boot V=$(V) TEST=default ROOTDEV=$(TESTRD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot
+	$(T_BEFORE) make boot XOPTS=\"$(TEST_XOPTS)\" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(TIMEOUT_MONITOR) make boot V=$(V) TEST=default ROOTDEV=$(TESTRD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot;)
+		$(T_BEFORE) make boot XOPTS=\"$(TEST_XOPTS)\" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
 endif
 
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot-test TIMEOUT_MONITOR="$(MONITOR)"
+	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)"
 	make boot-finish
+	if [ -n "$(TEST_RET)" -a -f "$(TEST_RET)" ]; then exit $$(cat $(TEST_RET)); fi
 
 _boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
 	$(BOOT_CMD)
@@ -1566,11 +1585,12 @@ VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
+VARS += TEST_TIMEOUT TEST_CMD TEST_RD
 
 env:
-	$(Q)echo [ $(BOARD) ]:
+	$(Q)echo \#[ $(BOARD) ]:
 	$(Q)echo -n " "
-	-$(Q)echo $(foreach v,$(VARS),"    $(v) = $($(v))\n") | tr -s '/'
+	-$(Q)echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'
 
 ENV_SAVE_TOOL = $(TOOL_DIR)/save-env.sh
 

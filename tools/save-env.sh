@@ -13,6 +13,6 @@ do
 	echo $env_list | tr ' ' '\n' | grep "^${var}="
 	if [ $? -eq 0 ]; then
 		value=`eval echo \\$${var}`
-		sed -i -e "s/^${var}\([ ?]*\)=.*/${var}\1= ${value}/g" ${ENV_FILE}
+		sed -i -e "s%^${var}\([ ?]*\)=.*%${var}\1= ${value}%g" ${ENV_FILE}
 	fi
 done

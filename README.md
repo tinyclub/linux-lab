@@ -497,6 +497,10 @@ Test everything in one command (with uboot while support, e.g. vexpress-a9):
 
     $ make test TEST=kernel-full,root-full,uboot-full
 
+Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
+
+    $ make test TEST_TIMEOUT=30s
+
 ### Save images and configs
 
 Save all of the configs and rootfs/kernel/dtb images:

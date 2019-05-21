@@ -279,15 +279,22 @@ ifeq ($(PBR),0)
     ROOTFS = $(BUILDROOT_UROOTFS)
   endif
 
-  # For harddisk rootfs, allow set with ROOTFS from commad line, environment
-  # ref: https://www.gnu.org/software/make/manual/html_node/Origin-Function.html
   ifeq ($(HD),1)
-    ifneq ($(origin ROOTFS),file)
-      HROOTFS := $(ROOTFS)
-    else
       HROOTFS := $(BUILDROOT_HROOTFS)
-    endif
   endif
+endif
+
+# Override PBR while ROOTFS, ROOTDIR specified
+# For harddisk rootfs, allow set with ROOTFS from commad line, environment
+# ref: https://www.gnu.org/software/make/manual/html_node/Origin-Function.html
+ifneq ($(origin ROOTDIR),file)
+  _ROOTDIR := $(shell echo $(ROOTDIR) | sed -e 's%/$$%%g')
+  ROOTFS   := $(_ROOTDIR).cpio.gz
+  HROOTFS  := $(_ROOTDIR).$(FSTYPE)
+  UROOTFS  := $(_ROOTDIR).uboot
+endif
+ifneq ($(origin ROOTFS),file)
+  HROOTFS := $(ROOTFS)
 endif
 
 # TODO: net driver for $BOARD
@@ -625,14 +632,18 @@ root-install:
 	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 root-rebuild:
-ifeq ($(PBR), 1)
+ifneq ($(origin ROOTDIR),file)
 	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
 else
+  ifeq ($(PBR), 1)
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
+  else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
-  ifeq ($(U),1)
-    ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    ifeq ($(U),1)
+      ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
 	$(Q)make $(S) $(BUILDROOT_UROOTFS)
+      endif
     endif
   endif
 endif
@@ -1227,7 +1238,7 @@ endif
 ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
   # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
   ifeq ($(BOARD), virt)
-    BOOT_CMD += -drive if=none,file=$(HROOTFS),id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
+    BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
   else
     BOOT_CMD += -hda $(HROOTFS)
   endif
@@ -1237,7 +1248,7 @@ ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
 endif
 ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
   # Ref: https://wiki.debian.org/Arm64Qemu
-  BOOT_CMD += -drive if=none,file=$(HROOTFS),id=virtio-vda -device virtio-blk-device,drive=virtio-vda
+  BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-vda -device virtio-blk-device,drive=virtio-vda
 endif
 
 ifeq ($(G),0)
@@ -1265,11 +1276,16 @@ ifneq ($(V), 1)
 endif
 BOOT_CMD += $(QUIET_OPT)
 
+ROOT_EXTRACT_TOOL = $(TOOL_DIR)/rootfs/extract.sh
+
 rootdir:
 ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
-	-$(Q)mkdir -p $(ROOTDIR) && cd $(ROOTDIR)/ && gunzip -kf ../rootfs.cpio.gz \
-		&& sudo cpio -idmv -R $(USER):$(USER) < ../rootfs.cpio >/dev/null 2>&1 && cd $(TOP_DIR)
-	$(Q)chown $(USER):$(USER) -R $(ROOTDIR)
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_EXTRACT_TOOL)
+endif
+ifneq ($(origin ROOTDIR),file)
+  ifneq ($(ROOTDIR),$(wildcard $(ROOTDIR)))
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_EXTRACT_TOOL)
+  endif
 endif
 
 ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)

@@ -279,8 +279,14 @@ ifeq ($(PBR),0)
     ROOTFS = $(BUILDROOT_UROOTFS)
   endif
 
+  # For harddisk rootfs, allow set with ROOTFS from commad line, environment
+  # ref: https://www.gnu.org/software/make/manual/html_node/Origin-Function.html
   ifeq ($(HD),1)
-    HROOTFS = $(BUILDROOT_HROOTFS)
+    ifneq ($(origin ROOTFS),file)
+      HROOTFS := $(ROOTFS)
+    else
+      HROOTFS := $(BUILDROOT_HROOTFS)
+    endif
   endif
 endif
 

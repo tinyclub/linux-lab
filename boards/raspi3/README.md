@@ -52,7 +52,7 @@
     $ sudo cp /mnt/debian/bcm2837-rpi-3-b.dtb .
 
     $ make boot KIMAGE=$PWD/debian/vmlinuz-4.14.0-3-arm64 INITRD=$PWD/debian/initrd.img-4.14.0-3-arm64 DTB=$PWD/debian/bcm2837-rpi-3-b.dtb \
-	ROOTDEV=/dev/mmcblk0p2 HROOTFS=$PWD/debian/2018-01-08-raspberry-pi-3-buster-PREVIEW.img V=1
+	ROOTDEV=/dev/mmcblk0p2 ROOTFS=$PWD/debian/2018-01-08-raspberry-pi-3-buster-PREVIEW.img V=1
 
     rpi3 login: root
     password:                    <------ input raspberry as passwd

@@ -583,7 +583,7 @@ ifeq ($(RP),1)
   ROOT_PATCH = root-patch
 endif
 
-root-defconfig: $(ROOT_CONFIG_PATH) $(ROOT_CHECKOUT) $(ROOT_PATCH)
+root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 ifeq ($(ROOT_CONFIG_PATH), $(wildcard $(ROOT_CONFIG_PATH)))
 	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
@@ -1023,7 +1023,7 @@ UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
 UCFG ?= $(UBOOT_CONFIG_FILE)
 UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UCFG)
 
-uboot-defconfig: $(UBOOT_CONFIG_PATH) $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
+uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 ifeq ($(UBOOT_CONFIG_PATH), $(wildcard $(UBOOT_CONFIG_PATH)))
 	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
@@ -1188,8 +1188,17 @@ EMULATOR_OPTS += $(SHARE_OPT)
 BOOT_CMD = sudo $(EMULATOR) $(EMULATOR_OPTS)
 ifeq ($(U),0)
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-    BOOT_CMD += -initrd $(ROOTFS)
+    INITRD ?= 1
   endif
+
+  ifneq ($(INITRD),)
+    ifeq ($(INITRD),$(wildcard $(INITRD)))
+      BOOT_CMD += -initrd $(INITRD)
+    else
+      BOOT_CMD += -initrd $(ROOTFS)
+    endif
+  endif
+
   ifneq ($(DTB),)
     ifeq ($(DTB),$(wildcard $(DTB)))
       BOOT_CMD += -dtb $(DTB)

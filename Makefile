@@ -613,7 +613,7 @@ r-m: root-menuconfig
 
 # Build Buildroot
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
-ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/rebuild.sh
+ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/gen_cpio.sh
 
 # Install kernel modules?
 KM ?= 1
@@ -1276,7 +1276,7 @@ ifneq ($(V), 1)
 endif
 BOOT_CMD += $(QUIET_OPT)
 
-ROOT_EXTRACT_TOOL = $(TOOL_DIR)/rootfs/extract.sh
+ROOT_EXTRACT_TOOL = $(TOOL_DIR)/rootfs/extract_cpio.sh
 
 rootdir:
 ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
@@ -1388,14 +1388,22 @@ endif
 ROOT_MKFS_TOOL = $(TOOL_DIR)/rootfs/mkfs.sh
 
 root-fs:
-ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
+ifneq ($(origin ROOTDIR),file)
+	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
+else
 	$(Q)$(ROOT_MKFS_TOOL) $(ROOTDIR) $(FSTYPE)
 endif
 
-ifeq ($(HD),1)
-ifneq ($(PBR),0)
+ifneq ($(origin ROOTDIR),file)
   ROOT_FS = root-fs
 endif
+
+ifeq ($(HD),1)
+  ifneq ($(PBR),0)
+    ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
+      ROOT_FS = root-fs
+    endif
+  endif
 endif
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))

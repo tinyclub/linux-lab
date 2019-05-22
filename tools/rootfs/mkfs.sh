@@ -21,8 +21,8 @@ FS_CPIO=${ROOTDIR}.cpio
 # Convert to cpio.gz from directory
 if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
   # sync with directory content ??
-  [ ! -f ${FS_CPIO_GZ} ] && rm ${FS_CPIO_GZ}
-  cd ${ROOTDIR} && find . | sudo cpio -R $USER:$USER -H newc -o | gzip -9 > ${FS_CPIO_GZ}
+  [ -f ${FS_CPIO_GZ} ] && rm ${FS_CPIO_GZ}
+  cd ${ROOTDIR} && find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
 fi
 
 # Calculate the size
@@ -35,7 +35,7 @@ else
 fi
 
 ROOTFS_SIZE=$(( (${ROOTFS_SIZE} / 1024 + 1) * 1024 ))
-echo $ROOTFS_SIZE
+echo "LOG: Rootfs size: $ROOTFS_SIZE (kilo bytes)"
 
 # Create the file system image
 dd if=/dev/zero of=${ROOTFS} bs=1024 count=$ROOTFS_SIZE
@@ -46,9 +46,10 @@ mkdir -p ${ROOTDIR}.tmp
 sudo mount ${ROOTFS} ${ROOTDIR}.tmp
 
 pushd ${ROOTDIR}.tmp
-[ -f ${FS_CPIO_GZ} ] && gunzip -kf ${FS_CPIO_GZ}
-sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null 2>&1
+
+[ -f ${FS_CPIO_GZ} ] && gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null 2>&1
 sudo chown ${USER}:${USER} -R ./
+
 sync
 popd
 

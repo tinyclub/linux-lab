@@ -18,7 +18,7 @@ order: 30
 * 首次发表的**原创**文章：**200 RMB**
 * 首次发表的**翻译**文章：**100 RMB**
 
-为了提高稿件、工作机会和简历的质量，我们也会安排严格的评审。
+为了提高内容质量，我们也会安排严格的评审。
 
 下面是一般的稿件投递过程。
 
@@ -56,64 +56,9 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
     ![图片简介](/wp-content/uploads/2017/09/xxx.png)
 
-## 本地预览
-
-如果时间允许，请务必提前在本地预览一下效果，确保文档显示优雅美观。这一步可通过 Cloud Lab 完成，大体用法如下。
-
-### 安装 Docker
-
-已经为本站的编辑环境创建了一个 Docker 镜像，使用之前需要先安装 Docker，可参考：
-
-* Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
-
-注意事项：
-
-安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
-
-    $ sudo usermod -aG docker $USER
-
-由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
-
-    $ grep registry-mirror /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
-
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
-
-### 使用 tinylab.org 编辑环境
-
-安装完 Docker 后，即可下载编辑环境，选择之前先选定一个工作目录。如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
-
-    $ cd /mnt/sda1
-
-在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
-
-    $ cd ~/Documents
-
-之后即可下载并运行：
-
-    $ git clone https://github.com/tinyclub/cloud-lab.git
-    $ cd cloud-lab/ && tools/docker/choose tinylab.org
-    $ tools/docker/run tinylab.org
-
-运行完以后会通过浏览器自动登陆一个桌面，点击里头的 `Local Page` 即可查看预览效果。
-
-随后把新撰写的文章内容拷贝到 `labs/tinylab.org/_posts` 后，稍等几分钟即可在在预览页面查看，如果发现有问题，请提前进行调整，确保文章质量。
-
 ## 递送稿件
 
-撰写完后即可通过 Github 发送 Pull Request 进行投稿。也可直接把稿件和相关图片发送到 wuzhangjin [AT] gmail [DOT] com。
+撰写完后即可通过 Github 发送 Pull Request 进行投稿。
 
 这一步要求事先做如下准备：
 
@@ -171,9 +116,9 @@ tags:
 |draft      | “是（true）”“否（false）”为草稿，缺省为 “是（true）”| **必须**
 |permalink  | 英文短链接，不能包含中文 | **必须**
 |tagline    | 子标题/副标题            | 可选
-|description| 文章摘要              | 可选
+|description| 文章摘要              | **必须**，会优化搜索引擎效果
 |plugin     | 仅支持mermaid，用于绘制流程图等| 可选
-|album      | 所属文章系列/专题     | 可选
+|album      | 所属文章系列/专题     | 可选，连载系列文章时推荐
 |group      | 默认 original，可选 translation, news, resume or jobs, 详见 `_data/groups.yml` | 可默认
 |category   | 分类，每行1个，至少1个，必须在`_data/categories.yml` | **必须**
 |tags       | 标签，每行1个，至少1个，至多5个 | **必须**
@@ -206,22 +151,88 @@ tags:
 
 ## 有关 “赞赏”
 
-给大家解释一下目前的打赏机制：
+在辛苦撰写完文章之后，能获得读者的认可是一件美滋滋的事情。这里给大家解释一下目前的打赏机制，目前有两个途径可以获取打赏。
 
-有两个途径可以获取打赏：
+### 网站内
 
-- 一个是 “泰晓科技” 网站上的二维码收款。文章在 “泰晓科技” 网站上发表后，读者可以通过扫描下方的 “支付宝打赏” 或者 “微信打赏” 二维码给心仪的读者打赏。
+一个是 “泰晓科技” 网站上的二维码收款。文章在 “泰晓科技” 网站上发表后，读者可以通过扫描文章末尾的 “支付宝打赏” 或者 “微信打赏” 二维码给心仪的读者打赏。效果见本文末尾的 [打赏](#sponsor)。
 
-![tools/post3](/wp-content/uploads/2019/05/post3.png)
+网站内的收款二维码配置方式见上一节：“完善作者信息”，这里再详细说明一下：
 
-- 一个是 “泰晓科技” 公众号上的 “赞赏用户”。所有文章在 “泰晓科技” 网站上发表后，我们会一并推送到 “泰晓科技” 的微信公众号上，公众号的读者也可以通过点击文章下方的 “喜欢读者” 给心仪的读者打赏。
+- 首先通过支付宝和微信导出收款二维码，保存为 jpg 格式，建议仅仅截取二维码部分，分辨率为 `150*150` 左右。
+
+- 然后放置到 `images/sponsor` 下，并分别命名为 `ali-pay-*author*-*money*.jpg` 和 `wechat-pay-*author*-*money*.jpg`。
+
+- 在 `_data/people.yml` 下相应配置 `ali-pay: ali-pay-*author*-*money*` 和 `wechat-pay: wechat-pay-*author*-*money*`。
+
+具体可以参考 `admin` 等用户进行配置，修改完以后，类似文章一样，通过发送 Pull Request 上传即可。
+
+### 公众号
+
+另外一个是 “泰晓科技” 公众号上的 “赞赏用户”。所有文章在 “泰晓科技” 网站上发表后，我们会一并推送到 “泰晓科技” 的微信公众号上，公众号的读者也可以通过点击文章末尾的 “喜欢读者” 给心仪的读者打赏，效果如：
 
 ![tools/post4](/wp-content/uploads/2019/05/post4.png)
 
-我们建议作者首先完善 **“泰晓科技” 网站上的二维码收款方式**，因为凡是发表在 “泰晓科技” 网站上的文章永久有效，只要文章写得足够精彩，会有源源不断的读者为您赞赏。
+我们建议作者首先完善 **“泰晓科技” 网站上的二维码收款方式**，因为凡是发表在 “泰晓科技” 网站上的文章永久有效，只要文章写得足够精彩，就会有源源不断的读者为您赞赏。
 
 关于 **微信公众号的 “赞赏用户”**，需要作者自己提供。另外根据微信公众号的要求，每个人的 “赞赏帐号” 需要采用公众号邀请的方式创建，邀请可以来自 “泰晓科技” 公众号，也可以是其他的公众号，但每个公众号目前最多只能邀请三个，目前 “泰晓科技” 公众号的邀请名额已满，所以如果作者自己已经拥有 “赞赏帐号”，请直接关联 “泰晓科技” 微信公众号就可以了。如果作者目前还没有自己的 “赞赏帐号”，也没有关系，“泰晓科技” 微信公众号提供缺省的打赏账户，一旦有读者为您的文章打赏，“泰晓科技” 将及时与您联系，并将打赏金额通过您方便的方式转赠给您。
 
+## 附录：本地预览文章
+
+如果时间允许，建议提前在本地预览一下文章效果，确保文档显示优雅美观。这一步可通过 Cloud Lab 完成，大体用法如下。
+
+### 安装 Docker
+
+已经为本站的编辑环境创建了一个 Docker 镜像，使用之前需要先安装 Docker，可参考：
+
+* Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+* Older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+
+注意事项：
+
+安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
+
+    $ sudo usermod -aG docker $USER
+
+由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
+
+    $ grep registry-mirror /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
+    $ service docker restart
+
+如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
+
+    $ grep bip /etc/default/docker
+    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
+    $ service docker restart
+
+如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
+
+    $ grep dockerd /lib/systemd/system/docker.service
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
+    $ service docker restart
+
+### 使用 tinylab.org 编辑环境
+
+安装完 Docker 后，即可下载编辑环境，选择之前先选定一个工作目录。如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
+
+    $ cd /mnt/sda1
+
+在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
+
+    $ cd ~/Documents
+
+之后即可下载并运行：
+
+    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ cd cloud-lab/ && tools/docker/choose tinylab.org
+    $ tools/docker/run tinylab.org
+
+运行完以后会通过浏览器自动登陆一个桌面，点击里头的 `Local Page` 即可查看预览效果。
+
+随后把新撰写的文章内容拷贝到 `labs/tinylab.org/_posts` 后，稍等几分钟即可在在预览页面查看，如果发现有问题，请提前进行调整，确保文章质量。
+
+
  [1]: https://github.com/tinyclub/tinylab.org.git
- [2]: http://wowubuntu.com/markdown/
+ [2]: https://www.w3cschool.cn/markdownyfsm/
  [3]: https://github.com/tinyclub/tinylab.org#fork-destination-box

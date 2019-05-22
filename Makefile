@@ -6,10 +6,12 @@ TOP_DIR = $(CURDIR)
 
 USER ?= $(shell whoami)
 
+# Current variables: board, plugin, module
 BOARD_CONFIG = $(shell cat .board_config 2>/dev/null)
 PLUGIN_CONFIG = $(shell cat .plugin_config 2>/dev/null)
 MODULE_CONFIG = $(shell cat .module_config 2>/dev/null)
 
+# Verbose logging control
 ifeq ($V, 1)
   Q =
   S =
@@ -18,6 +20,7 @@ else
   Q ?= @
 endif
 
+# Board config: B/BOARD persistent, b/board temporarily
 board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
@@ -30,6 +33,7 @@ else
     BOARD := $(B)
 endif
 
+# Plugin config: P/PLUGIN persistent, p/plugin temporarily (FIXME: this feature is really required?)
 plugin ?= $(p)
 P ?= $(plugin)
 ifeq ($(P),)
@@ -41,12 +45,14 @@ else
   _plugin := $(PLUGIN)
 endif
 
+# Core directories
 TOOL_DIR = tools
 BOARDS_DIR = boards
 BOARD_DIR = $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR = feature/linux
 TFTPBOOT = tftpboot
 
+# Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
 PREBUILT_DIR = $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
 PREBUILT_ROOT = $(PREBUILT_DIR)/root
@@ -55,14 +61,19 @@ PREBUILT_BIOS = $(PREBUILT_DIR)/bios
 PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot
 PREBUILT_QEMU = $(PREBUILT_DIR)/qemu
 
+# Loading board configurations
 ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
 endif
 
-# private for only using their own git repo
-# public for using prebuilt git repo
+# Using prebuilt repo or not:
+#
+# private: for only using their own git repo, plugin boards may use their own repo
+# public: for using prebuilt git repo
+#
 PREBUILT ?= public
 
+# Kernel features configuration, e.g. kft, gcs ...
 F ?= $(f)
 FEATURES ?= $(F)
 FEATURE ?= $(FEATURES)
@@ -74,11 +85,13 @@ ifneq ($(FEATURE),)
   include $(FEATURE_ENVS)
 endif
 
+# Core images: qemu, bootloader, kernel and rootfs
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
+# Core source: remote and local
 QEMU_GIT ?= https://github.com/qemu/qemu.git
 QEMU_SRC ?= qemu
 
@@ -93,17 +106,29 @@ KERNEL_SRC ?= linux-stable
 ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= buildroot
 
+# Core output: for building in standalone directories
 QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
 UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
 KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
 ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
+# Cross Compiler toolchains
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
 C_PATH ?= env PATH=$(CCPATH):$(PATH)
-TOOLCHAIN = $(PREBUILT_TOOLCHAINS)/$(XARCH)
+TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
-HOST_CPU_THREADS = $(shell grep -c processor /proc/cpuinfo)
+# Parallel Compiling threads
+HOST_CPU_THREADS ?= $(shell grep -c processor /proc/cpuinfo)
 
+#
+# Prefer new binaries to the prebuilt ones control
+#
+# PBK = 1, prebuilt kernel; 0, new building kernel if exist
+# PBR = 1, prebuilt rootfs; 0, new building rootfs if exist
+# PBD = 1, prebuilt dtb   ; 0, new building dtb if exist
+# PBQ = 1, prebuilt qemu  ; 0, new building qemu if exist
+
+# Emulator configurations
 ifneq ($(BIOS),)
   BIOS_ARG = -bios $(BIOS)
 endif
@@ -133,11 +158,10 @@ endif
 
 EMULATOR = $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
 
-# prefer new binaries to the prebuilt ones
-# PBK = prebuilt kernel; PBR = prebuilt rootfs; PBD= prebuilt dtb
-
+# Linux configurations
 LINUX_KIMAGE = $(KERNEL_OUTPUT)/$(ORIIMG)
 LINUX_UKIMAGE= $(KERNEL_OUTPUT)/$(UORIIMG)
+
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
 else
@@ -165,6 +189,18 @@ ifneq ($(DTS),)
   endif
 endif
 
+KIMAGE ?= $(LINUX_KIMAGE)
+UKIMAGE ?= $(LINUX_UKIMAGE)
+DTB     ?= $(LINUX_DTB)
+ifeq ($(PBK),0)
+  KIMAGE = $(LINUX_KIMAGE)
+  UKIMAGE = $(LINUX_UKIMAGE)
+endif
+ifeq ($(PBD),0)
+  DTB = $(LINUX_DTB)
+endif
+
+# Prebuilt path (not top dir) setting
 ifneq ($(_BIMAGE),)
   PREBUILT_UBOOTDIR ?= $(shell dirname $(_BIMAGE))
 endif
@@ -178,19 +214,9 @@ ifneq ($(_QTOOL),)
   PREBUILT_QEMUDIR ?= $(shell dirname $(_QTOOL) | sed -e "s%/bin$$%%g")
 endif
 
-KIMAGE ?= $(LINUX_KIMAGE)
-UKIMAGE ?= $(LINUX_UKIMAGE)
-DTB     ?= $(LINUX_DTB)
-ifeq ($(PBK),0)
-  KIMAGE = $(LINUX_KIMAGE)
-  UKIMAGE = $(LINUX_UKIMAGE)
-endif
-ifeq ($(PBD),0)
-  DTB = $(LINUX_DTB)
-endif
-
-# Uboot image
+# Uboot configurations
 UBOOT_BIMAGE = $(UBOOT_OUTPUT)/u-boot
+
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
 else
@@ -215,6 +241,8 @@ endif
 ifneq ($(U),0)
   KIMAGE = $(BIMAGE)
 endif
+
+# Root configurations
 
 # TODO: buildroot defconfig for $ARCH
 
@@ -297,6 +325,8 @@ ifneq ($(origin ROOTFS),file)
   HROOTFS := $(ROOTFS)
 endif
 
+# Network configurations
+
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET ?=  -net nic,model=$(NETDEV) -net tap
@@ -307,27 +337,14 @@ ifeq ($(NETDEV), virtio)
   NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
 endif
 
-ifeq ($(SMP),)
-  SMP = 1
-endif
-
-# Common
 ROUTE = $(shell ifconfig br0 | grep "inet addr" | cut -d':' -f2 | cut -d' ' -f1)
-
-SERIAL ?= ttyS0
-CONSOLE?= tty0
-RDINIT ?= /init
-
-CMDLINE = route=$(ROUTE)
-ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  CMDLINE += rdinit=$(RDINIT)
-else
-  CMDLINE += root=$(ROOTDEV)
-endif
-CMDLINE += $(XKCLI)
 
 TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
+
+# Kernel command line configuration
+
+CMDLINE = route=$(ROUTE)
 
 ifeq ($(ROOTDEV),/dev/nfs)
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
@@ -337,7 +354,20 @@ ifeq ($(HD),1)
   CMDLINE += rw fsck.repair=yes rootwait
 endif
 
-# For debug
+# Ramdisk init configuration
+RDINIT ?= /init
+
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  CMDLINE += rdinit=$(RDINIT)
+else
+  CMDLINE += root=$(ROOTDEV)
+endif
+
+# Extra kernel command line
+CMDLINE += $(XKCLI)
+
+# Board targets
+
 BOARD_TOOL=${TOOL_DIR}/board/show.sh
 export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
@@ -364,6 +394,8 @@ endif
 
 b-s: board-save
 b-c: board-clean
+
+# Plugin targets
 
 plugin-save:
 ifneq ($(PLUGIN),)
@@ -406,6 +438,8 @@ l: list
 l-b: list-base
 l-p: list-plugin
 l-f: list-full
+
+# Source download
 
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
@@ -475,7 +509,7 @@ download-all: all-source
 all-download: all-source
 d-a: all-source
 
-# Qemu
+# Qemu targets
 
 QCO ?= 1
 ifneq ($(QEMU),)
@@ -557,7 +591,7 @@ e: q
 e-b: q
 q-b: q
 
-# Toolchains
+# Toolchains targets
 
 toolchain:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
@@ -569,7 +603,7 @@ ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
 endif
 
-# Rootfs
+# Rootfs targets
 
 RCO ?= 0
 BUILDROOT ?= master
@@ -802,6 +836,8 @@ ms-t: modules-test
 ms-i: modules-install
 ms-c: modules-clean
 
+# Linux Kernel targets
+
 # Configure Kernel
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fdx && cd $(TOP_DIR)
@@ -872,6 +908,8 @@ ifneq ($(module),)
     FEATURE := module
   endif
 endif
+
+# Testing targets
 
 TEST ?= $T
 TEST_PREPARE := $(shell echo $(TEST) | tr ',' ' ')
@@ -971,6 +1009,8 @@ kernel-full: kernel-download kernel-prepare kernel
 prepare: kernel-prepare
 auto: kernel-auto
 full: kernel-full
+
+# Uboot targets
 
 # Configure Uboot
 uboot-checkout:
@@ -1158,6 +1198,8 @@ save: root-save kernel-save rconfig-save kconfig-save
 
 s: save
 
+# Qemu options and kernel command lines
+
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
 MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
@@ -1170,6 +1212,10 @@ ifneq ($(SHARE),0)
   SHARE_OPT ?= -fsdev local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
   CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(shell basename $(SHARE_DIR))
 endif
+
+# Console configurations
+SERIAL ?= ttyS0
+CONSOLE?= tty0
 
 ifeq ($(G),0)
   CMDLINE += console=$(SERIAL)
@@ -1196,6 +1242,11 @@ endif
 
 ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
   EXIT_ACTION ?= -no-reboot
+endif
+
+# SMP configuration
+ifeq ($(SMP),)
+  SMP = 1
 endif
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) -kernel $(KIMAGE) $(EXIT_ACTION)

@@ -2,3 +2,4 @@ output
 .*_config
 .orig
 .rej
+logging

@@ -1225,7 +1225,7 @@ ifeq ($(U),0)
   BOOT_CMD += -append '$(CMDLINE)'
 else
   ifeq ($(SD_BOOT),1)
-    BOOT_CMD += -sd $(SD_IMG)
+    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw
   endif
 
   # Load pflash for booting with uboot every time
@@ -1244,7 +1244,7 @@ ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
   endif
 endif
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
-  BOOT_CMD += -sd $(HROOTFS)
+  BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw
 endif
 ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
   # Ref: https://wiki.debian.org/Arm64Qemu

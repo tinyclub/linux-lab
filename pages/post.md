@@ -15,8 +15,8 @@ order: 30
 
 所有原创稿件即日起，一经采纳，即可获得相应稿费：
 
-* 首次发表的原创文章：200 RMB
-* 首次发表的翻译文章：100 RMB
+* 首次发表的**原创**文章：**200 RMB**
+* 首次发表的**翻译**文章：**100 RMB**
 
 为了提高稿件、工作机会和简历的质量，我们也会安排严格的评审。
 
@@ -29,13 +29,24 @@ order: 30
     $ git clone https://github.com/tinyclub/tinylab.org
     $ cd tinylab.org
 
-然后生成文章模板, slug 为链接，title 为标题。
+然后生成文章模板, slug 为泰晓科技站内链接（字符中间请使用 `-` 连接），title 为标题。举例如下
 
-    $ tools/post slug=the-first-post-slug title="第一篇原创文章。。。"
+    $ tools/post slug=this-is-my-link title="This is 我的文章标题"
+    Creating new post: ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+
+注：执行该命令可能会报系统缺少 rake 命令，无法运行，解决方法很简单，直接安装 rake 即可，`sudo apt-get install rake`。
+
+执行 `tools/post` 命令后会在 `./_posts/` 目录下生成名为 `2019-05-21-09-04-37-this-is-my-link.md` 的文章模版，该文件名由时间戳和您提供的 slug 字符串拼接组成。文章发表后可以通过链接 `http://tinylab.org/this-is-my-link` 访问该文章页面如下，其中红色框部分是该文章的站内链接，蓝色框部分是 title 的内容：
+
+![tools/post1](/wp-content/uploads/2019/05/post1.png)
 
 接着，参照模板编辑文章。
 
-    $ vim _posts/*the-first-post-slug*
+    $ vim ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+
+打开后内容如下所示：
+
+![tools/post2](/wp-content/uploads/2019/05/post2.png)
 
 Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的文章模板中的说明。
 
@@ -123,40 +134,43 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 模板基本样式如下：
 
-    ---
-    layout: post
-    author: "Your Name"
-    title: "new post"
-    permalink: /new-post-slug/
-    description: "summary"
-    category:
-      - category1
-      - category2
-    tags:
-      - tag1
-      - tag2
-    ---
+```
+layout: post
+author: 'Your Name'
+title: "This is 我的文章标题"
+draft: true
+# tagline: " 子标题，如果存在的话 "
+# album: " 所属文章系列/专辑，如果有的话"
+# group: " 默认为 original，也可选 translation, news, resume or jobs, 详见 _data/groups.yml"
+license: "cc-by-sa-4.0"
+permalink: /this-is-my-link/
+description: " 文章摘要 "
+category:
+  - category1
+  - category2
+tags:
+  - tag1
+  - tag2
+---
 
+> By Your Nick Name of [TinyLab.org][1]
+> May 21, 2019
 
-    > By YOUR NICK NAME of TinyLab.org
-    > 2015-09-21
-
-
-
-    文章正文
-
+文章正文
+```
 
 
 
 模板文件头中的关键字大部分为 `jekyll` 默认支持，我们加入了少许关键字，这里一并说明：
 
-| 关键字 | 说明              |  备注     |
-|:------:|-------------------|---------------|
-|layout  | 文章均为 post     | **必须**
-|author  | 作者名，同 `_data/people.yml` | **必须**
-|title   | 标题名，支持中、英文      | **必须**
-|permalink| 英文短链接，不能包含中文 | **必须**
-|tagline  | 子标题/副标题            | 可选
+| 关键字    | 说明              |  备注     |
+|:---------:|-------------------|---------------|
+|layout     | 文章均为 post     | **必须**
+|author     | 作者名，同 `_data/people.yml` | **必须**
+|title      | 标题名，支持中、英文      | **必须**
+|draft      | “是（true）”“否（false）”为草稿，缺省为 “是（true）”| **必须**
+|permalink  | 英文短链接，不能包含中文 | **必须**
+|tagline    | 子标题/副标题            | 可选
 |description| 文章摘要              | 可选
 |plugin     | 仅支持mermaid，用于绘制流程图等| 可选
 |album      | 所属文章系列/专题     | 可选
@@ -189,6 +203,24 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 |sponsor-qrcode| true                  | 图片请存到 `images/sponsor` 并设该项为 true
 |info          | ...                   | 建议介绍专业、兴趣、特长等，如较多，请用 `;` 分割，以便自动分段展示
 |--------------|-----------------------|----------------|
+
+## 有关 “赞赏”
+
+给大家解释一下目前的打赏机制：
+
+有两个途径可以获取打赏：
+
+- 一个是 “泰晓科技” 网站上的二维码收款。文章在 “泰晓科技” 网站上发表后，读者可以通过扫描下方的 “支付宝打赏” 或者 “微信打赏” 二维码给心仪的读者打赏。
+
+![tools/post3](/wp-content/uploads/2019/05/post3.png)
+
+- 一个是 “泰晓科技” 公众号上的 “赞赏用户”。所有文章在 “泰晓科技” 网站上发表后，我们会一并推送到 “泰晓科技” 的微信公众号上，公众号的读者也可以通过点击文章下方的 “喜欢读者” 给心仪的读者打赏。
+
+![tools/post4](/wp-content/uploads/2019/05/post4.png)
+
+我们建议作者首先完善 **“泰晓科技” 网站上的二维码收款方式**，因为凡是发表在 “泰晓科技” 网站上的文章永久有效，只要文章写得足够精彩，会有源源不断的读者为您赞赏。
+
+关于 **微信公众号的 “赞赏用户”**，需要作者自己提供。另外根据微信公众号的要求，每个人的 “赞赏帐号” 需要采用公众号邀请的方式创建，邀请可以来自 “泰晓科技” 公众号，也可以是其他的公众号，但每个公众号目前最多只能邀请三个，目前 “泰晓科技” 公众号的邀请名额已满，所以如果作者自己已经拥有 “赞赏帐号”，请直接关联 “泰晓科技” 微信公众号就可以了。如果作者目前还没有自己的 “赞赏帐号”，也没有关系，“泰晓科技” 微信公众号提供缺省的打赏账户，一旦有读者为您的文章打赏，“泰晓科技” 将及时与您联系，并将打赏金额通过您方便的方式转赠给您。
 
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: http://wowubuntu.com/markdown/

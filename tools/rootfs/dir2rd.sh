@@ -1,13 +1,15 @@
 #!/bin/bash
 #
-# gen_cpio.sh -- rebuild rootfs.cpio.gz from rootfs directly
+# dir2rd.sh -- rebuild rootfs.cpio.gz from rootfs directory
 #
 
 [ -z "$ROOTDIR" ] && ROOTDIR=$1
-[ -z "$ROOTDIR" ] && echo "Usage: $0 /path/to/rootdir" && exit 1
+[ -z "$INITRD" ] && INITRD=$2
+[ -z "$ROOTDIR" -o -z "$INITRD" ] && echo "Usage: $0 rootdir initrd" && exit 1
+[ -z "${USER}" ] && USER=$(whoami)
 
 ROOTDIR=$(echo ${ROOTDIR} | sed -e "s%/$%%g")
-FS_CPIO_GZ=${ROOTDIR}.cpio.gz
+FS_CPIO_GZ=${INITRD}
 
 if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
 

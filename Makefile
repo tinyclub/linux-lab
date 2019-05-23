@@ -202,16 +202,16 @@ endif
 
 # Prebuilt path (not top dir) setting
 ifneq ($(_BIMAGE),)
-  PREBUILT_UBOOTDIR ?= $(shell dirname $(_BIMAGE))
+  PREBUILT_UBOOT_DIR ?= $(shell dirname $(_BIMAGE))
 endif
 ifneq ($(_KIMAGE),)
-  PREBUILT_KERNELDIR ?= $(shell dirname $(_KIMAGE))
+  PREBUILT_KERNEL_DIR ?= $(shell dirname $(_KIMAGE))
 endif
 ifneq ($(_ROOTFS),)
-  PREBUILT_ROOTDIR ?= $(shell dirname $(_ROOTFS))
+  PREBUILT_ROOT_DIR ?= $(shell dirname $(_ROOTFS))
 endif
 ifneq ($(_QTOOL),)
-  PREBUILT_QEMUDIR ?= $(shell dirname $(_QTOOL) | sed -e "s%/bin$$%%g")
+  PREBUILT_QEMU_DIR ?= $(shell dirname $(_QTOOL) | sed -e "s%/bin$$%%g")
 endif
 
 # Uboot configurations
@@ -226,7 +226,7 @@ endif
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   U ?= 1
 else
-  ifeq ($(PREBUILT_UBOOTDIR)/u-boot,$(wildcard $(PREBUILT_UBOOTDIR)/u-boot))
+  ifeq ($(PREBUILT_UBOOT_DIR)/u-boot,$(wildcard $(PREBUILT_UBOOT_DIR)/u-boot))
     U ?= 1
   else
     U = 0
@@ -248,82 +248,83 @@ endif
 
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
-BUILDROOT_UROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.uboot
-BUILDROOT_HROOTFS = $(ROOT_OUTPUT)/images/rootfs.$(FSTYPE)
-BUILDROOT_ROOTFS = $(ROOT_OUTPUT)/images/rootfs.cpio.gz
 
-PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
-PREBUILT_KERNELDIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
-PREBUILT_UBOOTDIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
-PREBUILT_QEMUDIR ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
+ROOTFS_UBOOT_SUFFIX   = .cpio.uboot
+ROOTFS_HARDDISK_SUFFIX= .$(FSTYPE)
+ROOTFS_INITRD_SUFFIX  = .cpio.gz
+
+BUILDROOT_ROOTDIR =  $(ROOT_OUTPUT)/images/rootfs
+
+BUILDROOT_UROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+BUILDROOT_HROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+BUILDROOT_IROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+
+PREBUILT_ROOT_DIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
+PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
+PREBUILT_UBOOT_DIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
+PREBUILT_QEMU_DIR ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
+
+PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
+
+PREBUILT_UROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+PREBUILT_HROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+PREBUILT_IROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+
+# Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
+ROOTFS_TYPE_TOOL = tools/rootfs/rootfs_type.sh
+ROOTDEV_TYPE_TOOL = tools/rootfs/rootdev_type.sh
 
 PBR ?= 0
 _PBR := $(PBR)
 
-PREBUILT_ROOTFS ?= $(PREBUILT_ROOTDIR)/rootfs.cpio.gz
-ROOTDIR ?= $(PREBUILT_ROOTDIR)/rootfs
-
 ifeq ($(_PBR), 0)
-  ifeq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    ROOTDIR = $(ROOT_OUTPUT)/target
-    PREBUILT_ROOTFS = $(ROOTFS)
-    ROOTFS = $(BUILDROOT_ROOTFS)
-  else
-    ifeq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ifeq ($(PREBUILT_IROOTFS),$(wildcard $(PREBUILT_IROOTFS)))
       PBR = 1
     endif
   endif
 endif
 
-ifeq ($(U),0)
-  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-    ROOTFS ?= $(BUILDROOT_ROOTFS)
-  endif
-else
-  ROOTFS = $(UROOTFS)
-endif
-
-HD = 0
-ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
-  HD = 1
-endif
-ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
-  HD = 1
-endif
-ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
-  HD = 1
-endif
-ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
-  HD = 1
-endif
-
+# Prefer ROOTFS: command line > environment override > buildroot > prebuilt
 ifeq ($(PBR),0)
-  ROOTDIR ?= $(ROOT_OUTPUT)/target
-  ifeq ($(U),0)
-    ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-      ROOTFS = $(BUILDROOT_ROOTFS)
-    endif
+  ifeq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ROOTFS  := $(BUILDROOT_IROOTFS)
+    IROOTFS := $(BUILDROOT_IROOTFS)
+    UROOTFS := $(BUILDROOT_UROOTFS)
+    HROOTFS := $(BUILDROOT_HROOTFS)
+    ROOTDIR := $(ROOT_OUTPUT)/target
+  endif
+endif
+
+ROOTFS_TYPE = $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+ROOTDEV_TYPE = $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
+
+ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+  $(error $(ROOTFS_TYPE))
+endif
+
+ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
+  $(error $(ROOTDEV_TYPE))
+endif
+
+FS_TYPE = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f1)
+FS_PATH = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f2)
+FS_SUFFIX = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f3)
+
+# Buildroot use its own ROOTDIR in /target, not in images/rootfs
+ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
+  ifeq ($(FS_TYPE),dir)
+    ROOTDIR := $(FS_PATH)
   else
-    ROOTFS = $(BUILDROOT_UROOTFS)
+    ROOTDIR := $(shell echo "$(FS_PATH)" | sed -e "s%$(FS_SUFFIX)%%g")
   endif
 
-  ifeq ($(HD),1)
-      HROOTFS := $(BUILDROOT_HROOTFS)
-  endif
+  IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+  HROOTFS := $(ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+  UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
 endif
 
-# Override PBR while ROOTFS, ROOTDIR specified
-# For harddisk rootfs, allow set with ROOTFS from commad line, environment
-# ref: https://www.gnu.org/software/make/manual/html_node/Origin-Function.html
-ifneq ($(origin ROOTDIR),file)
-  _ROOTDIR := $(shell echo $(ROOTDIR) | sed -e 's%/$$%%g')
-  ROOTFS   := $(_ROOTDIR).cpio.gz
-  HROOTFS  := $(_ROOTDIR).$(FSTYPE)
-  UROOTFS  := $(_ROOTDIR).uboot
-endif
-ifneq ($(origin ROOTFS),file)
-  HROOTFS := $(ROOTFS)
-endif
+DEV_TYPE=$(shell echo "$(ROOTDEV_TYPE)" | cut -d',' -f1)
 
 # Network configurations
 
@@ -350,7 +351,7 @@ ifeq ($(ROOTDEV),/dev/nfs)
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
 endif
 
-ifeq ($(HD),1)
+ifeq ($(DEV_TYPE),hd)
   CMDLINE += rw fsck.repair=yes rootwait
 endif
 
@@ -569,7 +570,7 @@ else
   QEMU_CONF += --target-list=$(QEMU_TARGET)
 endif
 
-QEMU_PREFIX ?= $(PREBUILT_QEMUDIR)
+QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 emulator-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
@@ -632,9 +633,7 @@ endif
 
 root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
-ifeq ($(ROOT_CONFIG_PATH), $(wildcard $(ROOT_CONFIG_PATH)))
-	$(Q)cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
-endif
+	$(Q)if [ -f "$(ROOT_CONFIG_PATH)" ]; then cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs; fi
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(RCFG)
 
 root-menuconfig:
@@ -647,7 +646,6 @@ r-m: root-menuconfig
 
 # Build Buildroot
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
-ROOT_REBUILD_TOOL = $(TOOL_DIR)/rootfs/gen_cpio.sh
 
 # Install kernel modules?
 KM ?= 1
@@ -658,47 +656,56 @@ ifeq ($(KM), 1)
   endif
 endif
 
-root-Build:
+root-buildroot:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
 
 # Install system/ to ROOTDIR
 root-install:
 	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
-root-rebuild:
-ifneq ($(origin ROOTDIR),file)
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
-else
-  ifeq ($(PBR), 1)
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
-  else
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
-	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
-    ifeq ($(U),1)
-      ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-	$(Q)make $(S) $(BUILDROOT_UROOTFS)
-      endif
-    endif
+prebuilt_root_dir ?= $(PBR)
+ifeq ($(FS_TYPE),dir)
+  prebuilt_root_dir = 1
+endif
+
+build_root_uboot ?= 0
+ifeq ($(U),1)
+  ifeq ($(DEV_TYPE),rd)
+    build_root_uboot = 1
   endif
 endif
 
+ROOT_GENRD_TOOL = $(TOOL_DIR)/rootfs/dir2rd.sh
+
+root-rd:
+	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rebuild; fi
+
+root-rd-rebuild: root-rebuild
+
+root-rebuild:
+ifeq ($(prebuilt_root_dir), 1)
+	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
+else
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
+	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
+	$(Q)if [ $(build_root_uboot) -eq 1]; then make $(S) $(BUILDROOT_UROOTFS); fi
+endif
+
 r-p: root-patch
-r-B: root-Build
+r-B: root-buildroot
 r-i: root-install
 r-r: root-rebuild
 
 ROOT ?= rootdir
 ifeq ($(_PBR), 0)
-  ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    ROOT = root-Build
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ROOT = root-buildroot
   endif
 endif
 
 root: $(ROOT)
 	$(Q)make root-install
-ifneq ($(KERNEL_MODULES_INSTALL),)
-	$(Q)make $(KERNEL_MODULES_INSTALL)
-endif
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
 	$(Q)make root-rebuild
 
 root-build: root
@@ -762,18 +769,14 @@ else
 endif
 
 kernel-modules-save:
-ifneq ($(M),)
-	$(Q)echo $(M) > .module_config
-endif
+	$(Q)if [ -n "$(M)" ];then echo $(M) > .module_config; fi
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
 _M ?= M=$(M_PATH)
 
 kernel-modules: kernel-modules-save
-ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules $(_M)
-endif
+	if [ $(MODULES_EN) -eq 0 ]; then make _kernel KTARGET=modules $(_M); fi
 
 kernel-modules-list:
 	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
@@ -783,15 +786,13 @@ kernel-modules-list-full:
 
 M_I_ROOT ?= rootdir
 ifeq ($(PBR), 0)
-  ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-    M_I_ROOT = root-Build
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    M_I_ROOT = root-buildroot
   endif
 endif
 
 kernel-modules-install: $(M_I_ROOT)
-ifeq ($(MODULES_EN), 0)
-	make kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M)
-endif
+	if [ $(MODULES_EN) -eq 0 ]; then make _kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M); fi
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
 kernel-modules-clean:
@@ -866,13 +867,11 @@ KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KCFG)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
-ifeq ($(KERNEL_CONFIG_PATH), $(wildcard $(KERNEL_CONFIG_PATH)))
-	$(Q)cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
-endif
+	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
 
 kernel-oldconfig:
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldnoconfig
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldconfig
 	@#make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) silentoldconfig
 
 kernel-menuconfig:
@@ -915,9 +914,7 @@ TEST ?= $T
 TEST_PREPARE := $(shell echo $(TEST) | tr ',' ' ')
 
 # Force running git submodule commands
-ifneq ($(TEST),)
-  GIT_FORCE = --force
-endif
+GIT_FORCE = $(if $(TEST),--force,)
 
 kernel-init:
 	$(Q)make kernel-oldconfig
@@ -939,9 +936,7 @@ ifneq ($(FEATURE),)
 	make feature FEATURE="$(FEATURE)"
 	make kernel-init
 	make rootdir-init
-ifeq ($(findstring module,$(FEATURE)),module)
-	make module-init
-endif
+	if [ echo "$(FEATURE)" | grep -q module ]; then make module-init; fi
 endif
 
 kernel-feature-test: test
@@ -963,7 +958,9 @@ KTARGET ?= $(IMAGE)
 KOPTS ?=
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  KOPTS += CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
+  ROOT_RD = root-rd
+  # directory is ok, but is not compressed cpio
+  KOPTS += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
 endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
@@ -972,11 +969,11 @@ KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
 
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
-ifeq ($(DTS),$(wildcard $(DTS)))
+  ifeq ($(DTS),$(wildcard $(DTS)))
 
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
-	$(Q)make kernel KTARGET=$(DTB_TARGET) KERNEL_DTB=
+	$(Q)make _kernel KTARGET=$(DTB_TARGET)
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0
@@ -984,11 +981,13 @@ ifeq ($(KCLI_DTS),1)
   BOOT_DTB = dtb
 endif
 KERNEL_DTB = dtb
-endif
+  endif
 endif
 
-kernel: $(KERNEL_DTB)
+_kernel:
 	$(C_PATH) $(KMAKE_CMD)
+
+kernel: $(KERNEL_DTB) $(ROOT_RD) _kernel
 
 kernel-build: kernel
 
@@ -1054,9 +1053,7 @@ endif
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   RDK_ADDR = -
 endif
-ifeq ($(DTS),)
-  DTB_ADDR = -
-endif
+DTB_ADDR = $(if $(DTS),,-)
 
 ifneq ($(U),)
   export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
@@ -1066,9 +1063,7 @@ UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_TOOL = tools/uboot/patch.sh
 
 uboot-patch:
-ifneq ($(UCONFIG),)
-	$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
-endif
+	if [ -n "$(UCONFIG)" ]; then  $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi
 	-$(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT)
 
 ifeq ($(UP),1)
@@ -1082,9 +1077,7 @@ UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UCFG)
 
 uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
-ifeq ($(UBOOT_CONFIG_PATH), $(wildcard $(UBOOT_CONFIG_PATH)))
-	$(Q)cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
-endif
+	$(Q)if [ -f "$(UBOOT_CONFIG_PATH)" ]; then cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs; fi
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UCFG)
 
 uboot-menuconfig:
@@ -1124,38 +1117,26 @@ B: build
 
 # Save the built images
 root-save: prebuilt-images
-	$(Q)mkdir -p $(PREBUILT_ROOTDIR)
-	-cp $(BUILDROOT_ROOTFS) $(PREBUILT_ROOTDIR)
+	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
+	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
 
 STRIP_CMD = $(C_PATH) $(CCPRE)strip -s
 
 kernel-save: prebuilt-images
-	$(Q)mkdir -p $(PREBUILT_KERNELDIR)
-	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNELDIR)
-	-$(STRIP_CMD) $(PREBUILT_KERNELDIR)/$(shell basename $(ORIIMG))
-ifneq ($(UORIIMG),)
-  ifeq ($(LINUX_UKIMAGE),$(wildcard $(LINUX_UKIMAGE)))
-	-cp $(LINUX_UKIMAGE) $(PREBUILT_KERNELDIR)
-  endif
-endif
-ifneq ($(DTS),)
-  ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
-	-cp $(LINUX_DTB) $(PREBUILT_KERNELDIR)
-  endif
-endif
+	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
+	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
+	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(shell basename $(ORIIMG))
+	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
+	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
 uboot-save: prebuilt-images
-	$(Q)mkdir -p $(PREBUILT_UBOOTDIR)
-	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOTDIR)
+	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
+	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
 
 
 emulator-save: prebuilt-images
-	$(Q)mkdir -p $(PREBUILT_QEMUDIR)
-ifeq ($(QEMU_US), 1)
-	$(Q)make -C $(QEMU_OUTPUT)/$(XARCH)-linux-user install V=$(V)
-else
-	$(Q)make -C $(QEMU_OUTPUT)/$(XARCH)-softmmu install V=$(V)
-endif
+	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
+	$(Q)make -C $(QEMU_OUTPUT)/$(QEMU_TARGET) install V=$(V)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
 
 qemu-save: emulator-save
@@ -1245,9 +1226,7 @@ ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
 endif
 
 # SMP configuration
-ifeq ($(SMP),)
-  SMP = 1
-endif
+SMP ?= 1
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) -kernel $(KIMAGE) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
@@ -1263,7 +1242,7 @@ ifeq ($(U),0)
     ifeq ($(INITRD),$(wildcard $(INITRD)))
       BOOT_CMD += -initrd $(INITRD)
     else
-      BOOT_CMD += -initrd $(ROOTFS)
+      BOOT_CMD += -initrd $(IROOTFS)
     endif
   endif
 
@@ -1283,9 +1262,11 @@ else
   # pflash is at least used as the env storage
   BOOT_CMD += -pflash $(PFLASH_IMG)
 endif
+
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
   BOOT_CMD += -hda $(HROOTFS)
 endif
+
 ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
   # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
   ifeq ($(BOARD), virt)
@@ -1294,9 +1275,11 @@ ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
     BOOT_CMD += -hda $(HROOTFS)
   endif
 endif
+
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
   BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw
 endif
+
 ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
   # Ref: https://wiki.debian.org/Arm64Qemu
   BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-vda -device virtio-blk-device,drive=virtio-vda
@@ -1327,52 +1310,36 @@ ifneq ($(V), 1)
 endif
 BOOT_CMD += $(QUIET_OPT)
 
-ROOT_EXTRACT_TOOL = $(TOOL_DIR)/rootfs/extract_cpio.sh
+ifneq ($(FS_TYPE),dir)
+  ROOT_GENDIR_TOOL = $(TOOL_DIR)/rootfs/$(FS_TYPE)2dir.sh
+endif
+
+root-dir:
+	$(Q)if [ ! -d "${ROOTDIR}" ]; then make root-dir-rebuild; fi
+
+root-dir-rebuild: rootdir
 
 rootdir:
-ifneq ($(PREBUILT_ROOTDIR)/rootfs,$(wildcard $(PREBUILT_ROOTDIR)/rootfs))
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_EXTRACT_TOOL)
-endif
-ifneq ($(origin ROOTDIR),file)
-  ifneq ($(ROOTDIR),$(wildcard $(ROOTDIR)))
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_EXTRACT_TOOL)
-  endif
-endif
-
-ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-  BOOT_ROOT_DIR = rootdir
-endif
+	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
 
 rootdir-install: root-install
 
 rootdir-clean:
-ifeq ($(ROOTDIR),$(PREBUILT_ROOTDIR)/rootfs)
-	-$(Q)rm -rf $(ROOTDIR)
-endif
+	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
 
 ifeq ($(U),1)
 
-ifeq ($(PBR),0)
-  UROOTFS_SRC=$(BUILDROOT_ROOTFS)
-else
-  UROOTFS_SRC=$(PREBUILT_ROOTFS)
-endif
+UROOTFS_SRC=$(IROOTFS)
 
-$(ROOTFS): $(UROOTFS_SRC)
+$(UROOTFS): $(UROOTFS_SRC)
 	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
 
 $(UKIMAGE):
-ifeq ($(PBK),0)
-	$(Q)make $(S) kernel KTARGET=uImage
-endif
+	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KTARGET=uImage; fi
 
-U_KERNEL_IMAGE=$(UKIMAGE)
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-  U_ROOT_IMAGE=$(ROOTFS)
-endif
-ifeq ($(DTB),$(wildcard $(DTB)))
-  U_DTB_IMAGE=$(DTB)
-endif
+U_KERNEL_IMAGE = $(UKIMAGE)
+U_ROOT_IMAGE   = $(shell echo $(ROOTDEV) | grep -q /dev/ram && echo $(UROOTFS))
+U_DTB_IMAGE    = $(shell [ -f "$(DTB)" ] && echo $(DTB))
 
 export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
@@ -1407,7 +1374,6 @@ sd-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
 SD_IMAGES = sd-images
 SD_IMG    = $(TFTPBOOT)/sd.img
 endif
-
 endif
 
 ENV_IMG ?= ${TFTPBOOT}/env.img
@@ -1421,41 +1387,16 @@ uboot-images-clean:
 	$(Q)rm -rf $(PFLASH_IMG) $(SD_IMG)
 
 UBOOT_IMGS = uboot-images
-UBOOT_IMAS_CLEAN = uboot-images-clean
+UBOOT_IMGS_CLEAN = uboot-images-clean
 endif
 
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-  ifeq ($(PBR),0)
-    ifneq ($(BUILDROOT_ROOTFS),$(wildcard $(BUILDROOT_ROOTFS)))
-      ROOT_CPIO = root-rebuild
-    endif
-  else
-    ifneq ($(PREBUILT_ROOTFS),$(wildcard $(PREBUILT_ROOTFS)))
-      ROOT_CPIO = root-rebuild
-    endif
-  endif
-endif
+ROOT_GENHD_TOOL = $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
 
-ROOT_MKFS_TOOL = $(TOOL_DIR)/rootfs/mkfs.sh
+root-hd:
+	$(Q)if [ ! -f $(HROOTFS) ]; then make root-hd-rebuild; fi
 
-root-fs:
-ifneq ($(origin ROOTDIR),file)
-	ROOTDIR=$(ROOTDIR) USER=$(USER) $(ROOT_REBUILD_TOOL)
-else
-	$(Q)$(ROOT_MKFS_TOOL) $(ROOTDIR) $(FSTYPE)
-endif
-
-ifneq ($(origin ROOTDIR),file)
-  ROOT_FS = root-fs
-endif
-
-ifeq ($(HD),1)
-  ifneq ($(PBR),0)
-    ifneq ($(HROOTFS),$(wildcard $(HROOTFS)))
-      ROOT_FS = root-fs
-    endif
-  endif
-endif
+root-hd-rebuild:
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
   PREBUILT_IMAGES = prebuilt-images
@@ -1564,10 +1505,20 @@ test: $(TEST_PREPARE) FORCE
 	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)"
 	make boot-finish
 
-_boot: $(BOOT_ROOT_DIR) $(UBOOT_IMGS) $(ROOT_FS) $(ROOT_CPIO)
+# Boot dependencies
+
+_BOOT_DEPS ?=
+_BOOT_DEPS += root-$(DEV_TYPE)
+_BOOT_DEPS += $(UBOOT_IMGS)
+
+BOOT_DEPS ?=
+BOOT_DEPS += $(PREBUILT_IMAGES)
+BOOT_DEPS += $(BOOT_DTB)
+
+_boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
-boot: $(PREBUILT_IMAGES) $(BOOT_DTB)
+boot: $(BOOT_DEPS)
 	$(Q)make $(S) _boot
 
 t: test

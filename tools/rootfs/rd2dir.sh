@@ -5,7 +5,7 @@
 
 [ -z "$INITRD" ] && INITRD=$1
 [ -z "$ROOTDIR" ] && ROOTDIR=$2
-[ -z "$INITRD" -o -z "$ROOTDIR"] && echo "Usage: $0 initrd rootdir" && exit 1
+[ -z "$INITRD" -o -z "$ROOTDIR" ] && echo "Usage: $0 initrd rootdir" && exit 1
 
 _ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g" | sed -e "s%.cpio%%g")
 

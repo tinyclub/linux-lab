@@ -775,8 +775,11 @@ MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL
 
 _M ?= M=$(M_PATH)
 
-kernel-modules: kernel-modules-save
+_kernel-modules:
 	if [ $(MODULES_EN) -eq 0 ]; then make _kernel KTARGET=modules $(_M); fi
+
+kernel-modules: kernel-modules-save
+	make _kernel-modules _M=
 
 kernel-modules-list:
 	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
@@ -799,7 +802,7 @@ kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
 	$(Q)rm -rf .module_config
 
-module: kernel-modules plugin-save
+module: _kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
 module-install: kernel-modules-install
@@ -926,8 +929,8 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-	make kernel-modules _M=
-	make kernel-modules-install _M=
+	make kernel-modules
+	make kernel-modules-install
 	make modules
 	make modules-install
 
@@ -936,7 +939,8 @@ ifneq ($(FEATURE),)
 	make feature FEATURE="$(FEATURE)"
 	make kernel-init
 	make rootdir-init
-	if [ echo "$(FEATURE)" | grep -q module ]; then make module-init; fi
+	echo "$(FEATURE)" | grep -q module && make module-init
+	[ "$(TEST_RD)" != "/dev/nfs" ] && make root-rebuild
 endif
 
 kernel-feature-test: test

@@ -1073,10 +1073,13 @@ ifneq ($(o),)
   KCONFIG_GET_OPT = -s $(o)
 endif
 
+kernel-getcfg: kernel-getopt
 kernel-getopt:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)grep $(o) $(DEFAULT_KCONFIG)
 
+kernel-config: kernel-setopt
+kernel-setcfg: kernel-setopt
 kernel-setopt:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)

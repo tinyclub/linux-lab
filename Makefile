@@ -180,7 +180,7 @@ ifeq ($(DTS),)
 endif
 
 ifneq ($(DTS),)
-  DTB_TARGET = $(shell echo $(DTS) | sed -e "s%.*/dts/%%g" | sed -e "s%.dts%.dtb%g")
+  DTB_TARGET ?= $(shell echo $(DTS) | sed -e "s%.*/dts/%%g" | sed -e "s%.dts%.dtb%g")
   LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     PBD ?= 0
@@ -729,10 +729,13 @@ else
   PLUGIN_MODULE_DIR = $(shell find $(TOP_DIR)/boards -type d -name "modules")
 endif
 
+EXT_MODULE_DIR = $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
+ALL_MODULE_DIR = $(EXT_MODULE_DIR) $(TOP_DIR)/$(KERNEL_SRC)
+
 modules ?= $(m)
 module ?= $(modules)
 ifeq ($(module),all)
-  module := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
+  module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
 endif
 
 ifneq ($(M),)
@@ -751,12 +754,12 @@ ifeq ($(MODULE),)
 endif
 
 ifneq ($(module),)
-  M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+  M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
   ifeq ($(M_PATH),)
-    M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+    M_PATH := $(shell find $ALL_(MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
   endif
   ifeq ($(M_PATH),)
-    M_PATH := $(shell find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
   endif
 
   ifeq ($(M_PATH),)
@@ -782,10 +785,10 @@ kernel-modules: kernel-modules-save
 	make _kernel-modules _M=
 
 kernel-modules-list:
-	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
 
 kernel-modules-list-full:
-	$(Q)find $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
 
 M_I_ROOT ?= rootdir
 ifeq ($(PBR), 0)
@@ -991,7 +994,12 @@ endif
 _kernel:
 	$(C_PATH) $(KMAKE_CMD)
 
-kernel: $(KERNEL_DTB) $(ROOT_RD) _kernel
+# Ignore DTB and RD dependency if KTARGET specified
+ifeq ($(KTARGET),)
+  KERNEL_DEPS = $(KERNEL_DTB) $(ROOT_RD)
+endif
+
+kernel: $(KERNEL_DEPS) _kernel
 
 kernel-build: kernel
 

@@ -633,7 +633,7 @@ endif
 
 root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
-	$(Q)if [ -f "$(ROOT_CONFIG_PATH)" ]; then cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs; fi
+	$(Q)[ -f "$(ROOT_CONFIG_PATH)" ] && cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(RCFG)
 
 root-menuconfig:
@@ -678,7 +678,7 @@ endif
 ROOT_GENRD_TOOL = $(TOOL_DIR)/rootfs/dir2rd.sh
 
 root-rd:
-	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rebuild; fi
+	$(Q)[ ! -f "$(IROOTFS)" ] && make $(S) root-rebuild
 
 root-rd-rebuild: root-rebuild
 
@@ -688,7 +688,7 @@ ifeq ($(prebuilt_root_dir), 1)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
-	$(Q)if [ $(build_root_uboot) -eq 1]; then make $(S) $(BUILDROOT_UROOTFS); fi
+	$(Q)[ $(build_root_uboot) -eq 1] && make $(S) $(BUILDROOT_UROOTFS)
 endif
 
 r-p: root-patch
@@ -705,7 +705,7 @@ endif
 
 root: $(ROOT)
 	$(Q)make root-install
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
+	$(Q)[ -n "$(KERNEL_MODULES_INSTALL)" ] && make $(KERNEL_MODULES_INSTALL)
 	$(Q)make root-rebuild
 
 root-build: root
@@ -769,14 +769,14 @@ else
 endif
 
 kernel-modules-save:
-	$(Q)if [ -n "$(M)" ];then echo $(M) > .module_config; fi
+	$(Q)[ -n "$(M)" ] && echo $(M) > .module_config
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
 _M ?= M=$(M_PATH)
 
 _kernel-modules:
-	if [ $(MODULES_EN) -eq 0 ]; then make _kernel KTARGET=modules $(_M); fi
+	[ $(MODULES_EN) -eq 0 ] && make _kernel KTARGET=modules $(_M)
 
 kernel-modules: kernel-modules-save
 	make _kernel-modules _M=
@@ -795,7 +795,7 @@ ifeq ($(PBR), 0)
 endif
 
 kernel-modules-install: $(M_I_ROOT)
-	if [ $(MODULES_EN) -eq 0 ]; then make _kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M); fi
+	[ $(MODULES_EN) -eq 0 ] && make _kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M)
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
 kernel-modules-clean:
@@ -870,7 +870,7 @@ KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KCFG)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
-	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
+	$(Q)[ -f "$(KERNEL_CONFIG_PATH)" ] && cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP)
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
 
 kernel-oldconfig:
@@ -1067,7 +1067,7 @@ UBOOT_CONFIG_TOOL = $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_TOOL = tools/uboot/patch.sh
 
 uboot-patch:
-	if [ -n "$(UCONFIG)" ]; then  $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi
+	[ -n "$(UCONFIG)" ] && $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 	-$(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT)
 
 ifeq ($(UP),1)
@@ -1081,7 +1081,7 @@ UBOOT_CONFIG_PATH = $(BOARD_DIR)/$(UCFG)
 
 uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
-	$(Q)if [ -f "$(UBOOT_CONFIG_PATH)" ]; then cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs; fi
+	$(Q)[ -f "$(UBOOT_CONFIG_PATH)" ] && cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UCFG)
 
 uboot-menuconfig:
@@ -1130,8 +1130,8 @@ kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(shell basename $(ORIIMG))
-	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
-	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
+	-[ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ] && cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR)
+	-[ -n "$(DTS)" -a -f "$(LINUX_DTB)" ] && cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR)
 
 uboot-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
@@ -1319,7 +1319,7 @@ ifneq ($(FS_TYPE),dir)
 endif
 
 root-dir:
-	$(Q)if [ ! -d "${ROOTDIR}" ]; then make root-dir-rebuild; fi
+	$(Q)[ ! -d "${ROOTDIR}" ] && make root-dir-rebuild
 
 root-dir-rebuild: rootdir
 
@@ -1329,7 +1329,7 @@ rootdir:
 rootdir-install: root-install
 
 rootdir-clean:
-	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
+	-$(Q)[ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ] && rm -rf $(ROOTDIR)
 
 ifeq ($(U),1)
 
@@ -1339,7 +1339,7 @@ $(UROOTFS): $(UROOTFS_SRC)
 	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
 
 $(UKIMAGE):
-	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KTARGET=uImage; fi
+	$(Q)[ $(PBK) -eq 0 ] && make $(S) kernel KTARGET=uImage
 
 U_KERNEL_IMAGE = $(UKIMAGE)
 U_ROOT_IMAGE   = $(shell echo $(ROOTDEV) | grep -q /dev/ram && echo $(UROOTFS))
@@ -1397,7 +1397,7 @@ endif
 ROOT_GENHD_TOOL = $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
 
 root-hd:
-	$(Q)if [ ! -f $(HROOTFS) ]; then make root-hd-rebuild; fi
+	$(Q)[ ! -f $(HROOTFS) ] && make root-hd-rebuild
 
 root-hd-rebuild:
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)

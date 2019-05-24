@@ -584,6 +584,8 @@ q-c: e-c
 emulator:
 	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
 
+qemu: emulator
+
 emulator-build: emulator
 qemu-build: emulator
 
@@ -753,7 +755,11 @@ ifeq ($(MODULE),)
   endif
 endif
 
-ifneq ($(module),)
+# Ignore multiple modules check here
+MM ?= $(shell echo $(module) | tr -c ","  " " | tr -d ' ' | wc -c)
+
+ifeq ($(MM), 0)
+ ifneq ($(module),)
   M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
   ifeq ($(M_PATH),)
     M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
@@ -765,10 +771,11 @@ ifneq ($(module),)
   ifeq ($(M_PATH),)
     $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
   endif
-else
+ else
   ifneq ($(MODULE_CONFIG),)
     M_PATH ?= $(MODULE_CONFIG)
   endif
+ endif
 endif
 
 kernel-modules-save:
@@ -782,8 +789,11 @@ ifneq ($(M_PATH),)
   KERNEL_MODULES_DEPS = kernel-modules-save
 endif
 
-kernel-modules: $(KERNEL_MODULES_DEPS)
+_kernel-modules:
 	[ $(MODULES_EN) -eq 0 ] && make kernel KT=modules $(KM)
+
+kernel-modules: $(KERNEL_MODULES_DEPS)
+	make _kernel-modules KM=
 
 kernel-modules-list:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
@@ -798,18 +808,21 @@ ifeq ($(PBR), 0)
   endif
 endif
 
-kernel-modules-install: $(M_I_ROOT)
+_kernel-modules-install:
 	[ $(MODULES_EN) -eq 0 ] && make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM)
+
+kernel-modules-install: $(M_I_ROOT)
+	make _kernel-modules-install KM=
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
 	$(Q)rm -rf .module_config
 
-module: kernel-modules plugin-save
+module: _kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
-module-install: kernel-modules-install
+module-install: _kernel-modules-install
 module-clean: kernel-modules-clean
 
 modules-list: module-list
@@ -1668,3 +1681,5 @@ help:
 h: help
 
 FORCE:
+
+.PHONY: modules qemu FORCE

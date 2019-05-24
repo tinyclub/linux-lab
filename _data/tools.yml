@@ -43,3 +43,8 @@
   permalink: https://lceda.cn
   description: 立创EDA - 免费、易用、强大的在线电路设计软件
   group: tools
+
+- title: 在线检测 RSS/Atom URL
+  permalink: https://validator.w3.org/feed/
+  description: a free service that checks the syntax of Atom or RSS feeds.
+  group: tools

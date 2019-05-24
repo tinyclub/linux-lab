@@ -962,8 +962,8 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-	make kernel-modules
-	make kernel-modules-install
+	#make kernel-modules
+	#make kernel-modules-install
 	make modules
 	make modules-install
 

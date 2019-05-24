@@ -12,12 +12,15 @@ title : RSS Feed
   <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
   <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
   <ttl>1800</ttl>
-
+{% capture tmpcache %}
+{% capture nl0 %}
+{% endcapture %}
+{% endcapture %}{% assign tmpcache = nil %}
 {% for post in site.posts %}
 {% if post.draft and post.draft == true %}{% continue %}{% endif %}
   <item>
     <title>{{ post.title }}</title>
-    <description>{{ post.content | xml_escape }}</description>
+{% capture description %}{{ post.description | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip_html | xml_escape }}{% endcapture %}{% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | strip_xml | xml_escape }}{% endcapture %}{% if content.size != 0 %}<description type="html">{{description}} {{content}}</description>{% endif %}
     <link>{{ site.production_url }}{{ post.url }}</link>
     <guid>{{ site.production_url }}{{ post.id }}</guid>
     <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>

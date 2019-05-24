@@ -7,7 +7,7 @@ album: "LWN 中文翻译"
 group: translation
 license: "cc-by-sa-4.0"
 permalink: /lwn-577961/
-description: " 文章摘要 "
+description: "本文详细介绍了 Btrfs 内置的 RAID 机制。"
 plugin: mermaid
 category:
   - 文件系统

@@ -6,7 +6,7 @@ draft: false
 album: "Debugging+Tracing"
 license: "cc-by-sa-4.0"
 permalink: /debugging-qemu-arm-linux-5.0-boot-hang/
-description: " 文章摘要 "
+description: "本文以 Qemu 运行 ARM Linux 5.0 为例，详细介绍了解决 Linux 死机问题的过程。"
 category:
   - 调试技巧
 tags:

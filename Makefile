@@ -761,7 +761,7 @@ endif
 MM ?= $(shell echo $(module) | tr -c ","  " " | tr -d ' ' | wc -c)
 
 # Only check module exists for 'module' target
-ifeq ($(filter module,$(MAKECMDGOALS)),module)
+ifeq ($(filter _module,$(MAKECMDGOALS)),_module)
  ifeq ($(MM), 0)
   ifneq ($(module),)
    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
@@ -838,11 +838,11 @@ kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
 	$(Q)rm -rf .module_config
 
-module: _kernel-modules plugin-save
+_module: _kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
-module-install: _kernel-modules-install
-module-clean: kernel-modules-clean
+_module-install: _kernel-modules-install
+_module-clean: kernel-modules-clean FORCE
 
 modules-list: module-list
 modules-list-full: module-list-full
@@ -852,17 +852,20 @@ ms-l-f: modules-list-full
 module-test: test
 modules-test: module-test
 
-modules: FORCE
+modules: module
+module: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nBuilding module: $(m) ...\n" && make module m=$(m);) echo '')
+		echo "\nBuilding module: $(m) ...\n" && make _module m=$(m);) echo '')
 
-modules-install: FORCE
+modules-install: module-install
+module-install: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nInstalling module: $(m) ...\n" && make module-install m=$(m);) echo '')
+		echo "\nInstalling module: $(m) ...\n" && make _module-install m=$(m);) echo '')
 
-modules-clean: FORCE
+modules-clean: module-clean
+module-clean: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nCleaning module: $(m) ...\n" && make module-clean m=$(m);) echo '')
+		echo "\nCleaning module: $(m) ...\n" && make _module-clean m=$(m);) echo '')
 
 m: module
 m-l: module-list
@@ -1031,6 +1034,17 @@ ifeq ($(KT),)
   KERNEL_DEPS = $(KERNEL_DTB) $(ROOT_RD)
 endif
 
+ifeq ($(filter kernel-setconfig,$(MAKECMDGOALS)),kernel-setconfig)
+  ksetconfig = 1
+endif
+ifeq ($(filter kernel-setcfg,$(MAKECMDGOALS)),kernel-setcfg)
+  ksetconfig = 1
+endif
+ifeq ($(filter kernel-config,$(MAKECMDGOALS)),kernel-config)
+  ksetconfig = 1
+endif
+
+ifeq ($(ksetconfig),1)
 # y=MODULE, n=MODULE, m=MODULE, v=VALUE
 y ?= $e
 y ?= $(enable)
@@ -1066,21 +1080,34 @@ ifneq ($(v),)
   KCONFIG_GET_OPT = -s $(shell echo $(v) | cut -d' ' -f1)
 endif
 
-o ?= $m
-o ?= $(opt)
-o ?= $(option)
-ifneq ($(o),)
-  KCONFIG_GET_OPT = -s $(o)
+endif #ksetconfig
+
+ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
+  kgetconfig = 1
 endif
 
-kernel-getcfg: kernel-getopt
-kernel-getopt:
+ifeq ($(filter kernel-getcfg,$(MAKECMDGOALS)),kernel-getcfg)
+  kgetconfig = 1
+endif
+
+ifeq ($(kgetconfig),1)
+  o ?= $m
+  o ?= $(opt)
+  o ?= $(option)
+  o ?= $(config)
+  ifneq ($(o),)
+    KCONFIG_GET_OPT = -s $(o)
+  endif
+endif
+
+kernel-getcfg: kernel-getconfig
+kernel-getconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)grep $(o) $(DEFAULT_KCONFIG)
 
-kernel-config: kernel-setopt
-kernel-setcfg: kernel-setopt
-kernel-setopt:
+kernel-config: kernel-setconfig
+kernel-setcfg: kernel-setconfig
+kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)make kernel KT=oldconfig

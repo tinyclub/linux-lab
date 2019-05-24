@@ -10,6 +10,7 @@ USER ?= $(shell whoami)
 BOARD_CONFIG = $(shell cat .board_config 2>/dev/null)
 PLUGIN_CONFIG = $(shell cat .plugin_config 2>/dev/null)
 MODULE_CONFIG = $(shell cat .module_config 2>/dev/null)
+MPATH_CONFIG = $(shell cat .mpath_config 2>/dev/null)
 
 # Verbose logging control
 ifeq ($V, 1)
@@ -761,26 +762,43 @@ endif
 MM ?= $(shell echo $(module) | tr -c ","  " " | tr -d ' ' | wc -c)
 
 # Only check module exists for 'module' target
-ifeq ($(filter _module,$(MAKECMDGOALS)),_module)
- ifeq ($(MM), 0)
-  ifneq ($(module),)
-   M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
-   ifeq ($(M_PATH),)
-    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
-   endif
-   ifeq ($(M_PATH),)
-    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
-   endif
-
-   ifeq ($(M_PATH),)
-    $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
-   endif
-  else
-   ifneq ($(MODULE_CONFIG),)
-    M_PATH ?= $(MODULE_CONFIG)
-   endif
+ext_single_module = 0
+ifeq ($(MM), 0)
+  ifeq ($(filter _module,$(MAKECMDGOALS)),_module)
+    ext_single_module = 1
+  endif
+  ifeq ($(filter _module-install,$(MAKECMDGOALS)),_module-install)
+    ext_single_module = 1
+  endif
+  ifeq ($(filter _module-clean,$(MAKECMDGOALS)),_module-clean)
+    ext_single_module = 1
   endif
 endif
+
+ifeq ($(module),)
+  ifneq ($(MODULE_CONFIG),)
+    module = $(MODULE_CONFIG)
+  endif
+endif
+
+ifeq ($(module),)
+  ifneq ($(MPATH_CONFIG),)
+    M_PATH ?= $(MPATH_CONFIG)
+  endif
+else
+  ifeq ($(ext_single_module),1)
+    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+    ifeq ($(M_PATH),)
+      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+    endif
+    ifeq ($(M_PATH),)
+      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+    endif
+
+    ifeq ($(M_PATH),)
+      $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
+    endif
+  endif
 endif
 
 SCRIPTS_KCONFIG = ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
@@ -801,7 +819,8 @@ modules-prompt:
 	@echo
 
 kernel-modules-save:
-	$(Q)echo "$(M_PATH)" > .module_config
+	$(Q)echo "$(M_PATH)" > .mpath_config
+	$(Q)echo "$(module)" > .module_config
 
 
 KM ?= M=$(M_PATH)
@@ -834,15 +853,18 @@ kernel-modules-install: $(M_I_ROOT)
 	make _kernel-modules-install KM=
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
-kernel-modules-clean:
-	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
+_kernel-modules-clean:
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_PATH)
 	$(Q)rm -rf .module_config
+
+kernel-modules-clean:
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT)
 
 _module: _kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
 _module-install: _kernel-modules-install
-_module-clean: kernel-modules-clean FORCE
+_module-clean: _kernel-modules-clean
 
 modules-list: module-list
 modules-list-full: module-list-full

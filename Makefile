@@ -806,7 +806,7 @@ KERNEL_MODULES_DEPS = modules-prompt kernel-modules-save
 endif
 
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_prepare; make kernel KT=modules $(KM); fi
 
 kernel-modules:
 	make _kernel-modules KM=
@@ -903,7 +903,7 @@ KERNEL_CONFIG_PATH_TMP = $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KCFG)
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
-	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
+	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
 
 kernel-oldconfig:
@@ -1003,7 +1003,8 @@ endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
-KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KT)
+KMAKE_CMD += -j$(HOST_CPU_THREADS)
+KMAKE_CMD += $(KT)
 
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)

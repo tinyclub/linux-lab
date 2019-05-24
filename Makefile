@@ -760,24 +760,27 @@ endif
 # Ignore multiple modules check here
 MM ?= $(shell echo $(module) | tr -c ","  " " | tr -d ' ' | wc -c)
 
-ifeq ($(MM), 0)
- ifneq ($(module),)
-  M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
-  ifeq ($(M_PATH),)
+# Only check module exists for 'module' target
+ifeq ($(filter module,$(MAKECMDGOALS)),module)
+ ifeq ($(MM), 0)
+  ifneq ($(module),)
+   M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+   ifeq ($(M_PATH),)
     M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
-  endif
-  ifeq ($(M_PATH),)
+   endif
+   ifeq ($(M_PATH),)
     M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
-  endif
+   endif
 
-  ifeq ($(M_PATH),)
+   ifeq ($(M_PATH),)
     $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
-  endif
- else
-  ifneq ($(MODULE_CONFIG),)
+   endif
+  else
+   ifneq ($(MODULE_CONFIG),)
     M_PATH ?= $(MODULE_CONFIG)
+   endif
   endif
- endif
+endif
 endif
 
 SCRIPTS_KCONFIG = ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
@@ -1028,11 +1031,41 @@ ifeq ($(KT),)
   KERNEL_DEPS = $(KERNEL_DTB) $(ROOT_RD)
 endif
 
+# y=MODULE, n=MODULE, m=MODULE, v=VALUE
+ifneq ($(y),)
+  KCONFIG_SET_OPT = -e $(y)
+  KCONFIG_GET_OPT = -s $(y)
+endif
+ifneq ($(n),)
+  KCONFIG_SET_OPT = -d $(n)
+  KCONFIG_GET_OPT = -s $(n)
+endif
+ifneq ($(m),)
+  KCONFIG_SET_OPT = -m $(m)
+  KCONFIG_GET_OPT = -s $(m)
+endif
+ifneq ($(s),)
+  KCONFIG_SET_OPT = --set-str $(s)
+  KCONFIG_GET_OPT = -s $(shell echo $(s) | cut -d' ' -f1)
+endif
+ifneq ($(v),)
+  KCONFIG_SET_OPT = --set-val $(v)
+  KCONFIG_GET_OPT = -s $(shell echo $(v) | cut -d' ' -f1)
+endif
+
+kernel-config:
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
+
+kernel-help:
+	$(Q)make kernel KT=help
+
 kernel: $(KERNEL_DEPS)
 	$(C_PATH) $(KMAKE_CMD)
 
 kernel-build: kernel
 
+k-h: kernel-help
 k-d: kernel-source
 k-o: kernel-checkout
 k-p: kernel-patch

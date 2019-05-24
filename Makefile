@@ -772,13 +772,13 @@ else
 endif
 
 kernel-modules-save:
-	$(Q)echo "$(M)" > .module_config
+	$(Q)echo "$(M_PATH)" > .module_config
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
 KM ?= M=$(M_PATH)
 
-ifneq ($(M),)
+ifneq ($(M_PATH),)
   KERNEL_MODULES_DEPS = kernel-modules-save
 endif
 

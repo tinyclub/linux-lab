@@ -181,9 +181,9 @@ categories:
  [7]: http://valgrind.org/docs/manual/ms-manual.html
  [8]: http://blog.inliniac.net/2014/12/23/profiling-suricata-with-jemalloc/
  [9]: /memory-management-album-1/
- [10]: /memory-allocation-mystery-·-jemalloc-a/
- [11]: /memory-allocation-mystery-·-jemalloc-b/
+ [10]: /memory-allocation-mystery-jemalloc-a/
+ [11]: /memory-allocation-mystery-jemalloc-b/
  [12]: /wp-content/uploads/2015/11/jemalloc-heap-profiling-sample.png
  [13]: /wp-content/uploads/2015/11/jemalloc-heap-profiling-alloc-promote.png
  [14]: /wp-content/uploads/2015/11/jemalloc-heap-profiling-dump.png
- [15]: /memory-allocation-mystery-·-jemalloc-b/#how-to-free
+ [15]: /memory-allocation-mystery-jemalloc-b/#how-to-free

@@ -1000,7 +1000,9 @@ ifneq ($(FEATURE),)
 	make feature FEATURE="$(FEATURE)"
 	make kernel-init
 	make rootdir-init
-	echo "$(FEATURE)" | grep -q module && make module-init
+ifeq ($(findstring module,$(FEATURE)),module)
+	make module-init
+endif
 	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make root-rebuild; fi
 endif
 

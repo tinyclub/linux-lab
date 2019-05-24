@@ -1032,30 +1032,55 @@ ifeq ($(KT),)
 endif
 
 # y=MODULE, n=MODULE, m=MODULE, v=VALUE
+y ?= $e
+y ?= $(enable)
 ifneq ($(y),)
   KCONFIG_SET_OPT = -e $(y)
   KCONFIG_GET_OPT = -s $(y)
 endif
+
+n ?= $d
+n ?= $(disable)
 ifneq ($(n),)
   KCONFIG_SET_OPT = -d $(n)
   KCONFIG_GET_OPT = -s $(n)
 endif
+
+m ?= $(module)
 ifneq ($(m),)
   KCONFIG_SET_OPT = -m $(m)
   KCONFIG_GET_OPT = -s $(m)
 endif
+
+s ?= $(str)
+s ?= $(setstr)
 ifneq ($(s),)
   KCONFIG_SET_OPT = --set-str $(s)
   KCONFIG_GET_OPT = -s $(shell echo $(s) | cut -d' ' -f1)
 endif
+
+v ?= $(val)
+v ?= $(setval)
 ifneq ($(v),)
   KCONFIG_SET_OPT = --set-val $(v)
   KCONFIG_GET_OPT = -s $(shell echo $(v) | cut -d' ' -f1)
 endif
 
-kernel-config:
+o ?= $m
+o ?= $(opt)
+o ?= $(option)
+ifneq ($(o),)
+  KCONFIG_GET_OPT = -s $(o)
+endif
+
+kernel-getopt:
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
+	$(Q)grep $(o) $(DEFAULT_KCONFIG)
+
+kernel-setopt:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
+	$(Q)make kernel KT=oldconfig
 
 kernel-help:
 	$(Q)make kernel KT=help

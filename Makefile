@@ -756,7 +756,7 @@ endif
 ifneq ($(module),)
   M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
   ifeq ($(M_PATH),)
-    M_PATH := $(shell find $ALL_(MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
   endif
   ifeq ($(M_PATH),)
     M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)

@@ -575,24 +575,23 @@ endif
 
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
-emulator-defconfig: $(EMULATOR_PATCH)
+qemu-defconfig: $(EMULATOR_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(TOP_DIR)/$(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX) && cd $(TOP_DIR)
 
-qemu-defconfig: emulator-defconfig
+emulator-defconfig: qemu-defconfig
 
+q-c: qemu-defconfig
 e-c: emulator-defconfig
-q-c: e-c
 
-emulator:
+qemu:
 	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
 
-qemu: emulator
-
+qemu-build: qemu
+emulator: qemu
 emulator-build: emulator
-qemu-build: emulator
 
-q: emulator
+q: qemu
 e: q
 e-b: q
 q-b: q

@@ -261,7 +261,7 @@ Build all internel kernel modules:
 
 Build one kernel module:
 
-    $ make module M=$PWD/linux-stable/fs/minix/
+    $ make xk KT=fs/minix/minix.ko
 
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 

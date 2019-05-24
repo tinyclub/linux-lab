@@ -80,9 +80,12 @@ FEATURE ?= $(FEATURES)
 ifneq ($(FEATURE),)
   _BOARD = $(shell basename $(BOARD))
   FEATURE_ENVS = $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
-			$(shell [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ] && \
-			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD)))
-  include $(FEATURE_ENVS)
+			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ]; then \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD); fi))
+
+  ifneq ($(FEATURE_ENVS),)
+    include $(FEATURE_ENVS)
+  endif
 endif
 
 # Core images: qemu, bootloader, kernel and rootfs
@@ -778,7 +781,14 @@ ifeq ($(MM), 0)
  endif
 endif
 
-MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
+SCRIPTS_KCONFIG = ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
+DEFAULT_KCONFIG = $(KERNEL_OUTPUT)/.config
+MODULES_STATE  = $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
+ifeq ($(MODULES_STATE),y)
+  MODULES_EN := 1
+else
+  MODULES_EN := 0
+endif
 
 ifneq ($(M_PATH),)
 
@@ -797,7 +807,7 @@ KERNEL_MODULES_DEPS = modules-prompt kernel-modules-save
 endif
 
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 0 ]; then make kernel KT=modules $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules $(KM); fi
 
 kernel-modules:
 	make _kernel-modules KM=
@@ -816,7 +826,7 @@ ifeq ($(PBR), 0)
 endif
 
 _kernel-modules-install:
-	if [ $(MODULES_EN) -eq 0 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
 
 kernel-modules-install: $(M_I_ROOT)
 	make _kernel-modules-install KM=
@@ -1370,8 +1380,10 @@ $(UKIMAGE):
 	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
 
 U_KERNEL_IMAGE = $(UKIMAGE)
-U_ROOT_IMAGE   = $(shell echo $(ROOTDEV) | grep -q /dev/ram && echo $(UROOTFS))
-U_DTB_IMAGE    = $(shell [ -f "$(DTB)" ] && echo $(DTB))
+ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  U_ROOT_IMAGE = $(UROOTFS)
+endif
+U_DTB_IMAGE    = $(shell if [ -f "$(DTB)" ]; then echo $(DTB); fi)
 
 export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 

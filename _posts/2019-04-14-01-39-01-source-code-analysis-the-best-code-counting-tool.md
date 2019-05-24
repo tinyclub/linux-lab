@@ -5,6 +5,7 @@ layout: post
 draft: false
 album: 源码分析之道
 permalink: /source-code-analysis-the-best-code-counting-tool/
+description: "本文详细介绍了关于源码统计的 7 大工具，8 类数据，准确度相当，效率相差甚远，rust 和 go 语言展现巨大优势。"
 tags:
   - cloc
   - sloccount

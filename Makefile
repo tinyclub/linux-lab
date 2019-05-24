@@ -648,9 +648,9 @@ r-m: root-menuconfig
 ROOT_INSTALL_TOOL = $(TOOL_DIR)/rootfs/install.sh
 
 # Install kernel modules?
-KM ?= 1
+IKM ?= 1
 
-ifeq ($(KM), 1)
+ifeq ($(IKM), 1)
   ifeq ($(KERNEL_OUTPUT)/.modules.order, $(wildcard $(KERNEL_OUTPUT)/.modules.order))
     KERNEL_MODULES_INSTALL = module-install
   endif
@@ -772,17 +772,18 @@ else
 endif
 
 kernel-modules-save:
-	$(Q)[ -n "$(M)" ] && echo $(M) > .module_config
+	$(Q)echo "$(M)" > .module_config
 
 MODULES_EN=$(shell [ -f $(KERNEL_OUTPUT)/.config ] && grep -q MODULES=y $(KERNEL_OUTPUT)/.config; echo $$?)
 
-_M ?= M=$(M_PATH)
+KM ?= M=$(M_PATH)
 
-_kernel-modules:
-	[ $(MODULES_EN) -eq 0 ] && make _kernel KTARGET=modules $(_M)
+ifneq ($(M),)
+  KERNEL_MODULES_DEPS = kernel-modules-save
+endif
 
-kernel-modules: kernel-modules-save
-	make _kernel-modules _M=
+kernel-modules: $(KERNEL_MODULES_DEPS)
+	[ $(MODULES_EN) -eq 0 ] && make kernel KT=modules $(KM)
 
 kernel-modules-list:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
@@ -798,14 +799,14 @@ ifeq ($(PBR), 0)
 endif
 
 kernel-modules-install: $(M_I_ROOT)
-	[ $(MODULES_EN) -eq 0 ] && make _kernel KTARGET=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(_M)
+	[ $(MODULES_EN) -eq 0 ] && make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM)
 
 KERNEL_MODULE_CLEAN = tools/module/clean.sh
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $M
 	$(Q)rm -rf .module_config
 
-module: _kernel-modules plugin-save
+module: kernel-modules plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
 module-install: kernel-modules-install
@@ -959,7 +960,8 @@ ifeq ($(U),1)
   IMAGE=uImage
 endif
 
-KTARGET ?= $(IMAGE)
+# Default kernel target is kernel image
+KT ?= $(IMAGE)
 
 # Allow to accept external kernel compile options, such as XXX_CONFIG=y
 KOPTS ?=
@@ -972,7 +974,7 @@ endif
 
 KMAKE_CMD  = make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
-KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KTARGET)
+KMAKE_CMD += -j$(HOST_CPU_THREADS) $(KT)
 
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
@@ -980,7 +982,7 @@ ifneq ($(DTS),)
 
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
-	$(Q)make _kernel KTARGET=$(DTB_TARGET)
+	$(Q)make kernel KT=$(DTB_TARGET)
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0
@@ -991,15 +993,13 @@ KERNEL_DTB = dtb
   endif
 endif
 
-_kernel:
-	$(C_PATH) $(KMAKE_CMD)
-
-# Ignore DTB and RD dependency if KTARGET specified
-ifeq ($(KTARGET),)
+# Ignore DTB and RD dependency if KT specified
+ifeq ($(KT),)
   KERNEL_DEPS = $(KERNEL_DTB) $(ROOT_RD)
 endif
 
-kernel: $(KERNEL_DEPS) _kernel
+kernel: $(KERNEL_DEPS)
+	$(C_PATH) $(KMAKE_CMD)
 
 kernel-build: kernel
 
@@ -1347,7 +1347,7 @@ $(UROOTFS): $(UROOTFS_SRC)
 	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
 
 $(UKIMAGE):
-	$(Q)[ $(PBK) -eq 0 ] && make $(S) kernel KTARGET=uImage
+	$(Q)[ $(PBK) -eq 0 ] && make $(S) kernel KT=uImage
 
 U_KERNEL_IMAGE = $(UKIMAGE)
 U_ROOT_IMAGE   = $(shell echo $(ROOTDEV) | grep -q /dev/ram && echo $(UROOTFS))

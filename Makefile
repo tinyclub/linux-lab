@@ -776,8 +776,10 @@ ifeq ($(MM), 0)
 endif
 
 ifeq ($(module),)
-  ifneq ($(MODULE_CONFIG),)
-    module = $(MODULE_CONFIG)
+  ifeq ($(ext_single_module),1)
+    ifneq ($(MODULE_CONFIG),)
+      module = $(MODULE_CONFIG)
+    endif
   endif
 endif
 
@@ -1058,59 +1060,55 @@ ifeq ($(KT),)
   KERNEL_DEPS = $(KERNEL_DTB) $(ROOT_RD)
 endif
 
+ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)
+  ksetconfig = 1
+endif
+
 ifeq ($(filter kernel-setconfig,$(MAKECMDGOALS)),kernel-setconfig)
-  ksetconfig = 1
-endif
-ifeq ($(filter kernel-setcfg,$(MAKECMDGOALS)),kernel-setcfg)
-  ksetconfig = 1
-endif
-ifeq ($(filter kernel-config,$(MAKECMDGOALS)),kernel-config)
-  ksetconfig = 1
+  makeclivar = $(-*-command-variables-*-)
 endif
 
 ifeq ($(ksetconfig),1)
+
 # y=MODULE, n=MODULE, m=MODULE, v=VALUE
-y ?= $e
-y ?= $(enable)
-ifneq ($(y),)
-  KCONFIG_SET_OPT = -e $(y)
-  KCONFIG_GET_OPT = -s $(y)
-endif
-
-n ?= $d
-n ?= $(disable)
-ifneq ($(n),)
-  KCONFIG_SET_OPT = -d $(n)
-  KCONFIG_GET_OPT = -s $(n)
-endif
-
-m ?= $(module)
 ifneq ($(m),)
-  KCONFIG_SET_OPT = -m $(m)
-  KCONFIG_GET_OPT = -s $(m)
+  KCONFIG_SET_OPT := -m $(m)
+  KCONFIG_GET_OPT := -s $(m)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(m)
 endif
 
-s ?= $(str)
-s ?= $(setstr)
 ifneq ($(s),)
-  KCONFIG_SET_OPT = --set-str $(s)
-  KCONFIG_GET_OPT = -s $(shell echo $(s) | cut -d' ' -f1)
+  KCONFIG_SET_OPT := --set-str $(shell echo $(s) | tr '=' ' ')
+  KCONFIG_GET_OPT := -s $(shell echo $(s) | cut -d'=' -f1)
+  KCONFIG_OPR := s
+  KCONFIG_OPT := $(shell echo $(s) | cut -d'=' -f1)
 endif
 
-v ?= $(val)
-v ?= $(setval)
 ifneq ($(v),)
-  KCONFIG_SET_OPT = --set-val $(v)
-  KCONFIG_GET_OPT = -s $(shell echo $(v) | cut -d' ' -f1)
+  KCONFIG_SET_OPT = --set-val $(shell echo $(v) | tr '=' ' ')
+  KCONFIG_GET_OPT = -s $(shell echo $(v) | cut -d'=' -f1)
+  KCONFIG_OPR = v
+  KCONFIG_OPT = $(shell echo $(v) | cut -d'=' -f1)
+endif
+
+ifneq ($(y),)
+  KCONFIG_SET_OPT := -e $(y)
+  KCONFIG_GET_OPT := -s $(y)
+  KCONFIG_OPR := y
+  KCONFIG_OPT := $(y)
+endif
+
+ifneq ($(n),)
+  KCONFIG_SET_OPT := -d $(n)
+  KCONFIG_GET_OPT := -s $(n)
+  KCONFIG_OPR := n
+  KCONFIG_OPT := $(n)
 endif
 
 endif #ksetconfig
 
-ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
-  kgetconfig = 1
-endif
-
-ifeq ($(filter kernel-getcfg,$(MAKECMDGOALS)),kernel-getcfg)
+ifeq ($(filter _kernel-getconfig,$(MAKECMDGOALS)),_kernel-getconfig)
   kgetconfig = 1
 endif
 
@@ -1125,16 +1123,29 @@ ifeq ($(kgetconfig),1)
 endif
 
 kernel-getcfg: kernel-getconfig
-kernel-getconfig:
+kernel-getconfig: FORCE
+	$(Q)$(if $(o), $(foreach _o, $(shell echo $(o) | tr ',' ' '), \
+		__o=$(shell echo $(_o) | tr '[a-z]' '[A-Z]') && \
+		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
+
+_kernel-getconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)grep $(o) $(DEFAULT_KCONFIG)
+	$(Q)grep -i $(o) $(DEFAULT_KCONFIG)
 
 kernel-config: kernel-setconfig
 kernel-setcfg: kernel-setconfig
-kernel-setconfig:
+kernel-setconfig: FORCE
+	$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m s v,$(filter $(p)=%,$(makeclivar))), \
+		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
+		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
+		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= $o;), echo '')
+
+_kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)make kernel KT=oldconfig
+	$(Q)grep -i $(KCONFIG_OPT) $(DEFAULT_KCONFIG)
+	@echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)make kernel KT=olddefconfig
 
 kernel-help:
 	$(Q)make kernel KT=help

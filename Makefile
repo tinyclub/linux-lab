@@ -710,7 +710,7 @@ endif
 
 # Specify buildroot target
 
-RT ?= $(cmd)
+RT ?= $(x)
 RT ?=
 ifneq ($(RT),)
   ROOT :=
@@ -1001,7 +1001,7 @@ GIT_FORCE = $(if $(TEST),--force,)
 
 kernel-init:
 	$(Q)make kernel-oldconfig
-	$(Q)make kernel
+	$(Q)make kernel KT=$(IMAGE)
 
 rootdir-init:
 	$(Q)make rootdir-clean
@@ -1009,8 +1009,10 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-	#make kernel-modules
-	#make kernel-modules-install
+ifeq ($(KERNEL_MODULES),all)
+	make kernel-modules
+	make kernel-modules-install
+endif
 	make modules
 	make modules-install
 
@@ -1039,7 +1041,7 @@ ifeq ($(U),1)
 endif
 
 # Default kernel target is kernel image
-KT ?= $(cmd)
+KT ?= $(x)
 KT ?= $(IMAGE)
 
 # Allow to accept external kernel compile options, such as XXX_CONFIG=y
@@ -1267,7 +1269,7 @@ uboot-menuconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig
 
 # Specify uboot targets
-UT ?= $(cmd)
+UT ?= $(x)
 UT ?=
 
 # Build Uboot
@@ -1869,7 +1871,7 @@ BASIC_TARGETS := kernel uboot root
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
 
 $(EXEC_TARGETS):
-	make $(@:-run=) cmd=$(RUN_ARGS)
+	make $(@:-run=) x=$(RUN_ARGS)
 
 FORCE:
 

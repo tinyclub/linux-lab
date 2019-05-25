@@ -936,9 +936,11 @@ kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
 
+kernel-olddefconfig:
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) olddefconfig
+
 kernel-oldconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldconfig
-	@#make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) silentoldconfig
 
 kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig

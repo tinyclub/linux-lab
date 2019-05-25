@@ -20,7 +20,7 @@ title : RSS Feed
 {% if post.draft and post.draft == true %}{% continue %}{% endif %}
   <item>
     <title>{{ post.title }}</title>
-{% capture description %}{{ post.description | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip_html | xml_escape }}{% endcapture %}{% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | strip_xml | xml_escape }}{% endcapture %}{% if content.size != 0 %}<description type="html">{{description}} {{content}}</description>{% endif %}
+{% capture description %}{{ post.description | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip_html | xml_escape }}{% endcapture %}{% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | strip_xml | xml_escape }}{% endcapture %}{% if content.size != 0 %}<description>{{description}} {{content}}</description>{% endif %}
     <link>{{ site.production_url }}{{ post.url }}</link>
     <guid>{{ site.production_url }}{{ post.id }}</guid>
     <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>

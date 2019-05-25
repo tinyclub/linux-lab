@@ -662,7 +662,7 @@ ifeq ($(IKM), 1)
 endif
 
 root-buildroot:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS)
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) $(RT)
 
 # Install system/ to ROOTDIR
 root-install:
@@ -708,10 +708,25 @@ ifeq ($(_PBR), 0)
   endif
 endif
 
+# Specify buildroot target
+
+RT ?= $(cmd)
+RT ?=
+ifneq ($(RT),)
+  ROOT :=
+endif
+
 root: $(ROOT)
+ifneq ($(RT),)
+	$(Q)make root-buildroot RT=$(RT)
+else
 	$(Q)make root-install
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
 	$(Q)make root-rebuild
+endif
+
+root-help:
+	$(Q)make root RT=help
 
 root-build: root
 
@@ -1024,6 +1039,7 @@ ifeq ($(U),1)
 endif
 
 # Default kernel target is kernel image
+KT ?= $(cmd)
 KT ?= $(IMAGE)
 
 # Allow to accept external kernel compile options, such as XXX_CONFIG=y
@@ -1250,9 +1266,16 @@ uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 uboot-menuconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig
 
+# Specify uboot targets
+UT ?= $(cmd)
+UT ?=
+
 # Build Uboot
 uboot:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS)
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS) $(UT)
+
+uboot-help:
+	$(Q)make uboot UT=help
 
 uboot-build: uboot
 
@@ -1823,6 +1846,30 @@ help:
 	$(Q)cat README.md
 
 h: help
+
+# 
+# override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input
+# but warnings exists about 'overriding recipe for target 'xxx' when arguments are existing targets.
+#
+# ref: https://stackoverflow.com/questions/2214575/passing-arguments-to-make-run#
+#
+
+# If the first argument is "xxx-run"...
+first_target := $(firstword $(MAKECMDGOALS))
+reserve_target := $(first_target:-run=)
+
+ifeq ($(findstring -run,$(first_target)),-run)
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  # ...and turn them into do-nothing targets
+  $(eval $(RUN_ARGS):FORCE;@:)
+endif
+
+BASIC_TARGETS := kernel uboot root
+EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
+
+$(EXEC_TARGETS):
+	make $(@:-run=) cmd=$(RUN_ARGS)
 
 FORCE:
 

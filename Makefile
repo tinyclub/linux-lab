@@ -1456,7 +1456,7 @@ else
 
   # Load pflash for booting with uboot every time
   # pflash is at least used as the env storage
-  BOOT_CMD += -pflash $(PFLASH_IMG)
+  BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw
 endif
 
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)

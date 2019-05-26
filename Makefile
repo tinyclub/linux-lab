@@ -2,20 +2,20 @@
 # Core Makefile
 #
 
-TOP_DIR = $(CURDIR)
+TOP_DIR := $(CURDIR)
 
 USER ?= $(shell whoami)
 
 # Current variables: board, plugin, module
-BOARD_CONFIG = $(shell cat .board_config 2>/dev/null)
-PLUGIN_CONFIG = $(shell cat .plugin_config 2>/dev/null)
-MODULE_CONFIG = $(shell cat .module_config 2>/dev/null)
-MPATH_CONFIG = $(shell cat .mpath_config 2>/dev/null)
+BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)
+PLUGIN_CONFIG := $(shell cat .plugin_config 2>/dev/null)
+MODULE_CONFIG := $(shell cat .module_config 2>/dev/null)
+MPATH_CONFIG  := $(shell cat .mpath_config 2>/dev/null)
 
 # Verbose logging control
 ifeq ($V, 1)
-  Q =
-  S =
+  Q :=
+  S :=
 else
   S ?= -s
   Q ?= @
@@ -26,7 +26,7 @@ board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
   ifeq ($(BOARD_CONFIG),)
-    BOARD = vexpress-a9
+    BOARD := vexpress-a9
   else
     BOARD ?= $(BOARD_CONFIG)
   endif
@@ -47,20 +47,20 @@ else
 endif
 
 # Core directories
-TOOL_DIR = tools
-BOARDS_DIR = boards
-BOARD_DIR = $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
-FEATURE_DIR = feature/linux
-TFTPBOOT = tftpboot
+TOOL_DIR    := tools
+BOARDS_DIR  := boards
+BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
+FEATURE_DIR := feature/linux
+TFTPBOOT    := tftpboot
 
 # Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
-PREBUILT_DIR = $(TOP_DIR)/prebuilt
-PREBUILT_TOOLCHAINS = $(PREBUILT_DIR)/toolchains
-PREBUILT_ROOT = $(PREBUILT_DIR)/root
-PREBUILT_KERNEL = $(PREBUILT_DIR)/kernel
-PREBUILT_BIOS = $(PREBUILT_DIR)/bios
-PREBUILT_UBOOT = $(PREBUILT_DIR)/uboot
-PREBUILT_QEMU = $(PREBUILT_DIR)/qemu
+PREBUILT_DIR        := $(TOP_DIR)/prebuilt
+PREBUILT_TOOLCHAINS := $(PREBUILT_DIR)/toolchains
+PREBUILT_ROOT       := $(PREBUILT_DIR)/root
+PREBUILT_KERNEL     := $(PREBUILT_DIR)/kernel
+PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
+PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
+PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
 # Loading board configurations
 ifneq ($(BOARD),)
@@ -111,10 +111,10 @@ ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= buildroot
 
 # Core output: for building in standalone directories
-QEMU_OUTPUT = $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
-UBOOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
-KERNEL_OUTPUT = $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
-ROOT_OUTPUT = $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
+QEMU_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
+UBOOT_OUTPUT := $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
+KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
+ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 # Cross Compiler toolchains
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
@@ -134,7 +134,7 @@ HOST_CPU_THREADS ?= $(shell grep -c processor /proc/cpuinfo)
 
 # Emulator configurations
 ifneq ($(BIOS),)
-  BIOS_ARG = -bios $(BIOS)
+  BIOS_ARG := -bios $(BIOS)
 endif
 
 # Another qemu-system-$(ARCH)
@@ -143,89 +143,89 @@ QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
   PBQ ?= 0
 else
-  PBQ = 1
+  PBQ := 1
 endif
 
 ifeq ($(PBQ), 1)
   ifneq ($(QTOOL),)
     ifeq ($(QTOOL),$(wildcard $(QTOOL)))
-      QEMU_SYSTEM = $(QTOOL)
+      QEMU_SYSTEM := $(QTOOL)
     endif
   endif
 endif
 
 ifneq ($(QEMU),)
   ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
-    QEMU_PATH= env PATH=$(shell dirname $(QEMU_SYSTEM)):$(PATH)
+    QEMU_PATH := env PATH=$(shell dirname $(QEMU_SYSTEM)):$(PATH)
   endif
 endif
 
-EMULATOR = $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
+EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
-LINUX_KIMAGE = $(KERNEL_OUTPUT)/$(ORIIMG)
-LINUX_UKIMAGE= $(KERNEL_OUTPUT)/$(UORIIMG)
+LINUX_KIMAGE  := $(KERNEL_OUTPUT)/$(ORIIMG)
+LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(UORIIMG)
 
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
 else
-  PBK = 1
+  PBK := 1
 endif
 
 ifeq ($(DTS),)
   ifneq ($(ORIDTS),)
-    DTS = $(KERNEL_SRC)/$(ORIDTS)
-    ORIDTB ?= $(shell echo $(ORIDTS) | sed -e "s%.dts%.dtb%g")
+    DTS    := $(KERNEL_SRC)/$(ORIDTS)
+    ORIDTB ?= $(ORIDTS:.dts=.dtb)
   endif
   ifneq ($(ORIDTB),)
-    ORIDTS = $(shell echo $(ORIDTB) | sed -e "s%.dtb%.dts%g")
-    DTS = $(KERNEL_SRC)/$(ORIDTS)
+    ORIDTS := $(ORIDTB:.dtb=.dts)
+    DTS    := $(KERNEL_SRC)/$(ORIDTS)
   endif
 endif
 
 ifneq ($(DTS),)
-  DTB_TARGET ?= $(shell echo $(DTS) | sed -e "s%.*/dts/%%g" | sed -e "s%.dts%.dtb%g")
-  LINUX_DTB    = $(KERNEL_OUTPUT)/$(ORIDTB)
+  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(shell echo $(DTS) | sed -e "s%.*/dts/%%g"))
+  LINUX_DTB  := $(KERNEL_OUTPUT)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     PBD ?= 0
   else
-    PBD = 1
+    PBD := 1
   endif
 endif
 
-KIMAGE ?= $(LINUX_KIMAGE)
+KIMAGE  ?= $(LINUX_KIMAGE)
 UKIMAGE ?= $(LINUX_UKIMAGE)
 DTB     ?= $(LINUX_DTB)
 ifeq ($(PBK),0)
-  KIMAGE = $(LINUX_KIMAGE)
-  UKIMAGE = $(LINUX_UKIMAGE)
+  KIMAGE  := $(LINUX_KIMAGE)
+  UKIMAGE := $(LINUX_UKIMAGE)
 endif
 ifeq ($(PBD),0)
-  DTB = $(LINUX_DTB)
+  DTB := $(LINUX_DTB)
 endif
 
 # Prebuilt path (not top dir) setting
 ifneq ($(_BIMAGE),)
-  PREBUILT_UBOOT_DIR ?= $(shell dirname $(_BIMAGE))
+  PREBUILT_UBOOT_DIR  ?= $(dir $(_BIMAGE))
 endif
 ifneq ($(_KIMAGE),)
-  PREBUILT_KERNEL_DIR ?= $(shell dirname $(_KIMAGE))
+  PREBUILT_KERNEL_DIR ?= $(dir $(_KIMAGE))
 endif
 ifneq ($(_ROOTFS),)
-  PREBUILT_ROOT_DIR ?= $(shell dirname $(_ROOTFS))
+  PREBUILT_ROOT_DIR   ?= $(dir $(_ROOTFS))
 endif
 ifneq ($(_QTOOL),)
-  PREBUILT_QEMU_DIR ?= $(shell dirname $(_QTOOL) | sed -e "s%/bin$$%%g")
+  PREBUILT_QEMU_DIR   ?= $(patsubst %/bin,%,$(dir $(_QTOOL)))
 endif
 
 # Uboot configurations
-UBOOT_BIMAGE = $(UBOOT_OUTPUT)/u-boot
-PREBUILT_BIMAGE = $(PREBUILT_UBOOT_DIR)/u-boot
+UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/u-boot
+PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/u-boot
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
 else
-  PBU = 1
+  PBU := 1
 endif
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
@@ -234,18 +234,18 @@ else
   ifeq ($(PREBUILT_BIMAGE),$(wildcard $(PREBUILT_BIMAGE)))
     U ?= 1
   else
-    U = 0
+    U := 0
   endif
 endif
 
 BIMAGE ?= $(UBOOT_BIMAGE)
 ifeq ($(PBU),0)
-  BIMAGE = $(UBOOT_BIMAGE)
+  BIMAGE := $(UBOOT_BIMAGE)
 endif
 
 # Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
 ifneq ($(U),0)
-  KIMAGE = $(BIMAGE)
+  KIMAGE := $(BIMAGE)
 endif
 
 # Root configurations
@@ -255,20 +255,20 @@ endif
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 
-ROOTFS_UBOOT_SUFFIX   = .cpio.uboot
-ROOTFS_HARDDISK_SUFFIX= .$(FSTYPE)
-ROOTFS_INITRD_SUFFIX  = .cpio.gz
+ROOTFS_UBOOT_SUFFIX    := .cpio.uboot
+ROOTFS_HARDDISK_SUFFIX := .$(FSTYPE)
+ROOTFS_INITRD_SUFFIX   := .cpio.gz
 
-BUILDROOT_ROOTDIR =  $(ROOT_OUTPUT)/images/rootfs
+BUILDROOT_ROOTDIR :=  $(ROOT_OUTPUT)/images/rootfs
 
-BUILDROOT_UROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
-BUILDROOT_HROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
-BUILDROOT_IROOTFS = $(BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+BUILDROOT_UROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+BUILDROOT_HROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+BUILDROOT_IROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
-PREBUILT_ROOT_DIR ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
+PREBUILT_ROOT_DIR   ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
 PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
-PREBUILT_UBOOT_DIR ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
-PREBUILT_QEMU_DIR ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
+PREBUILT_UBOOT_DIR  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
+PREBUILT_QEMU_DIR   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
 
 PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
 
@@ -277,8 +277,8 @@ PREBUILT_HROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
 PREBUILT_IROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
 # Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
-ROOTFS_TYPE_TOOL = tools/rootfs/rootfs_type.sh
-ROOTDEV_TYPE_TOOL = tools/rootfs/rootdev_type.sh
+ROOTFS_TYPE_TOOL  := tools/rootfs/rootfs_type.sh
+ROOTDEV_TYPE_TOOL := tools/rootfs/rootdev_type.sh
 
 PBR ?= 0
 _PBR := $(PBR)
@@ -286,7 +286,7 @@ _PBR := $(PBR)
 ifeq ($(_PBR), 0)
   ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
     ifeq ($(PREBUILT_IROOTFS),$(wildcard $(PREBUILT_IROOTFS)))
-      PBR = 1
+      PBR := 1
     endif
   endif
 endif
@@ -302,8 +302,8 @@ ifeq ($(PBR),0)
   endif
 endif
 
-ROOTFS_TYPE = $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
-ROOTDEV_TYPE = $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
+ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
   $(error $(ROOTFS_TYPE))
@@ -313,16 +313,22 @@ ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
   $(error $(ROOTDEV_TYPE))
 endif
 
-FS_TYPE = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f1)
-FS_PATH = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f2)
-FS_SUFFIX = $(shell echo "$(ROOTFS_TYPE)" | cut -d',' -f3)
+comma := ,
+empty :=
+space := $(empty) $(empty)
+
+_ROOTFS_TYPE=$(subst $(comma),$(space),$(ROOTFS_TYPE))
+
+FS_TYPE   := $(firstword $(_ROOTFS_TYPE))
+FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
+FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
 
 # Buildroot use its own ROOTDIR in /target, not in images/rootfs
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   ifeq ($(FS_TYPE),dir)
     ROOTDIR := $(FS_PATH)
   else
-    ROOTDIR := $(shell echo "$(FS_PATH)" | sed -e "s%$(FS_SUFFIX)%%g")
+    ROOTDIR := $(FS_PATH:$(FS_SUFFIX)=)
   endif
 
   IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
@@ -330,7 +336,8 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
 endif
 
-DEV_TYPE=$(shell echo "$(ROOTDEV_TYPE)" | cut -d',' -f1)
+_ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
+DEV_TYPE      := $(firstword $(_ROOTDEV_TYPE))
 
 # Network configurations
 
@@ -338,22 +345,31 @@ DEV_TYPE=$(shell echo "$(ROOTDEV_TYPE)" | cut -d',' -f1)
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET ?=  -net nic,model=$(NETDEV) -net tap
 
-MACADDR_TOOL = tools/qemu/macaddr.sh
-RANDOM_MACADDR = $(shell $(MACADDR_TOOL))
 ifeq ($(NETDEV), virtio)
+  MACADDR_TOOL   := tools/qemu/macaddr.sh
+  RANDOM_MACADDR := $(shell $(MACADDR_TOOL))
   NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
 endif
 
-ROUTE = $(shell ifconfig br0 | grep "inet addr" | cut -d':' -f2 | cut -d' ' -f1)
-
-TMP = $(shell bash -c 'echo $$(($$RANDOM%230+11))')
-IP = $(shell echo $(ROUTE)END | sed -e 's/\.\([0-9]*\)END/.$(TMP)/g')
-
 # Kernel command line configuration
+CMDLINE :=
 
-CMDLINE = route=$(ROUTE)
-
+# Nfs boot and uboot kernel command line requires ip address
 ifeq ($(ROOTDEV),/dev/nfs)
+  REQUIRE_IP := 1
+endif
+
+ifneq ($(U),)
+  REQUIRE_IP := 1
+endif
+
+ifeq ($(REQUIRE_IP),1)
+  ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g") 
+  TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
+  IP    := $(basename $(ROUTE)).$(TMP)
+
+  CMDLINE += route=$(ROUTE)
+
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
 endif
 
@@ -373,9 +389,14 @@ endif
 # Extra kernel command line
 CMDLINE += $(XKCLI)
 
+
+# Phony targets
+PHONY :=
+
 # Board targets
 
-BOARD_TOOL=${TOOL_DIR}/board/show.sh
+BOARD_TOOL := ${TOOL_DIR}/board/show.sh
+
 export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
@@ -395,19 +416,21 @@ board-clean:
 board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
-	$(Q)echo $(BOARD) > .board_config
+	$(Q)$(file > .board_config,$(BOARD))
   endif
 endif
 
 b-s: board-save
 b-c: board-clean
 
+PHONY += board board-clean board-save b-s b-c
+
 # Plugin targets
 
 plugin-save:
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
-	$(Q)echo $(PLUGIN) > .plugin_config
+	$(Q)$(file > .plugin_config,$(PLUGIN))
   endif
 endif
 
@@ -429,6 +452,10 @@ p-l: plugin-list
 p-l-f: plugin-list-full
 p-c: plugin-clean
 
+PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full p p-s p-l p-l-f p-c
+
+# List targets for boards and plugins
+
 list:
 	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
@@ -446,6 +473,8 @@ l-b: list-base
 l-p: list-plugin
 l-f: list-full
 
+PHONY += list list-base list-plugin list-full l l-b l-p l-f
+
 # Source download
 
 # Please makesure docker, git are installed
@@ -456,6 +485,8 @@ uboot-source:
 download-uboot: uboot-source
 uboot-download: uboot-source
 d-u: uboot-source
+
+PHONY += uboot-source download-uboot uboot-download d-u
 
 qemu-source:
 	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
@@ -476,6 +507,8 @@ qemu-prepare: emulator-prepare
 qemu-auto: emulator-auto
 qemu-full: emulator-full
 
+PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full
+
 kernel-source:
 	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
 
@@ -483,12 +516,16 @@ kernel-download: kernel-source
 download-kernel: kernel-source
 d-k: kernel-source
 
+PHONY += kernel-source kernel-download download-kernel d-k
+
 root-source:
 	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
 
 root-download: root-source
 download-root: root-source
 d-r: root-source
+
+PHONY += root-source root-download download-root d-r
 
 prebuilt-images:
 ifeq ($(PREBUILT),public)
@@ -498,6 +535,8 @@ endif
 prebuilt-download: prebuilt-images
 download-prebuilt: prebuilt-images
 d-p: prebuilt-images
+
+PHONY += prebuilt-images prebuilt-download download-prebuilt d-p
 
 source: prebuilt-images kernel-source root-source
 
@@ -516,12 +555,14 @@ download-all: all-source
 all-download: all-source
 d-a: all-source
 
+PHONY += source download core-source download-core d-c all-source all-download download-all d-a
+
 # Qemu targets
 
 QCO ?= 1
 ifneq ($(QEMU),)
 ifneq ($(QCO),0)
-  EMULATOR_CHECKOUT = emulator-checkout
+  EMULATOR_CHECKOUT := emulator-checkout
 endif
 endif
 emulator-checkout:
@@ -534,7 +575,7 @@ q-o: e-o
 
 QP ?= 0
 
-EMULATOR_PATCH_TOOL = tools/qemu/patch.sh
+EMULATOR_PATCH_TOOL := tools/qemu/patch.sh
 emulator-patch: $(EMULATOR_CHECKOUT)
 	-$(EMULATOR_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
 
@@ -1881,4 +1922,4 @@ $(EXEC_TARGETS):
 
 FORCE:
 
-.PHONY: modules qemu FORCE
+.PHONY: $(PHONY) FORCE

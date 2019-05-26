@@ -220,6 +220,7 @@ endif
 
 # Uboot configurations
 UBOOT_BIMAGE = $(UBOOT_OUTPUT)/u-boot
+PREBUILT_BIMAGE = $(PREBUILT_UBOOT_DIR)/u-boot
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
@@ -230,7 +231,7 @@ endif
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   U ?= 1
 else
-  ifeq ($(PREBUILT_UBOOT_DIR)/u-boot,$(wildcard $(PREBUILT_UBOOT_DIR)/u-boot))
+  ifeq ($(PREBUILT_BIMAGE),$(wildcard $(PREBUILT_BIMAGE)))
     U ?= 1
   else
     U = 0
@@ -242,6 +243,7 @@ ifeq ($(PBU),0)
   BIMAGE = $(UBOOT_BIMAGE)
 endif
 
+# Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
 ifneq ($(U),0)
   KIMAGE = $(BIMAGE)
 endif
@@ -1238,7 +1240,9 @@ endif
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   RDK_ADDR = -
 endif
-DTB_ADDR = $(if $(DTS),,-)
+ifeq ($(DTS),)
+  DTB_ADDR = -
+endif
 
 ifneq ($(U),)
   export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
@@ -1533,7 +1537,9 @@ U_KERNEL_IMAGE = $(UKIMAGE)
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
   U_ROOT_IMAGE = $(UROOTFS)
 endif
-U_DTB_IMAGE    = $(shell if [ -f "$(DTB)" ]; then echo $(DTB); fi)
+ifeq ($(DTB),$(wildcard $(DTB)))
+  U_DTB_IMAGE=$(DTB)
+endif
 
 export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 

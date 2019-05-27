@@ -1568,8 +1568,6 @@ ifeq ($(U),0)
       BOOT_CMD += -dtb $(DTB)
     endif
   endif
-
-  BOOT_CMD += -append '$(CMDLINE)'
 else
   ifeq ($(SD_BOOT),1)
     BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw
@@ -1792,6 +1790,10 @@ ifneq ($(TEST),)
   CMDLINE += $(TEST_KCLI)
 endif
 
+ifeq ($(U),0)
+  BOOT_CMD += -append '$(CMDLINE)'
+endif
+
 BOOT_TEST := default
 ifneq ($(TEST_REBOOT), 0)
   ifeq ($(findstring power,$(REBOOT_TYPE)),power)
@@ -1868,7 +1870,7 @@ _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
 boot: $(BOOT_DEPS)
-	$(Q)make $(S) _boot
+	$(Q)make $(S) _boot $(makeclivar)
 
 t: test
 b: boot

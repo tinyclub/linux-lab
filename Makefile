@@ -821,7 +821,8 @@ else
 endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
-ALL_MODULE_DIR := $(EXT_MODULE_DIR) $(TOP_DIR)/$(KERNEL_SRC)
+KERNEL_MODULE_DIR := $(TOP_DIR)/$(KERNEL_SRC)
+ALL_MODULE_DIR := $(EXT_MODULE_DIR) $(KERNEL_MODULE_DIR)
 
 modules ?= $(m)
 module  ?= $(modules)
@@ -866,12 +867,12 @@ ifeq ($(one_module),1)
       M_PATH ?= $(MPATH_CONFIG)
     endif
   else
-    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+      M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
     endif
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+      M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
     endif
 
     ifeq ($(M_PATH),)
@@ -916,11 +917,17 @@ _kernel-modules: $(KERNEL_MODULES_DEPS)
 kernel-modules:
 	make _kernel-modules KM=
 
+ifneq ($(module),)
+  MF ?= egrep "$(subst $(comma),|,$(module))"
+else
+  MF := cat
+endif
+
 kernel-modules-list:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | $(MF) | cat -n
 
 kernel-modules-list-full:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(MF) | cat -n
 
 PHONY += _kernel-modules kernel-modules kernel-modules-list kernel-modules-list-full
 

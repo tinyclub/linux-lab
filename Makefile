@@ -1337,12 +1337,14 @@ kernel-setconfig: FORCE
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)grep -i $(KCONFIG_OPT) $(DEFAULT_KCONFIG)
+	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG)
 	$(Q)echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
+ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 	$(Q)make kernel KT=olddefconfig
 	$(Q)make kernel KT=prepare
+endif
 
 PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig
 

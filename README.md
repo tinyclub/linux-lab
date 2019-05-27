@@ -259,12 +259,21 @@ Build all internel kernel modules:
     $ make modules-install
     $ make root-rebuild && make boot
 
-Build one kernel module:
+Build one kernel module (e.g. minix.ko, tun.ko):
 
     $ make kernel-setconfig m=minix_fs
-    $ make m M=fs/minix/minix.ko
-    $ make m-i M=fs/minix/minix.ko
-    $ make m-c M=fs/minix/minix.ko
+    $ make m M=fs/minix/
+    $ make m-i M=fs/minix/
+    $ make m-c M=fs/minix/
+
+    $ make kernel-setconfig m=tun
+
+    $ make kernel x=tun.ko M=drivers/net
+    $ make kernel x=drivers/net/tun.ko
+    $ make kernel-run drivers/net/tun.ko
+
+    $ make m-i M=drivers/net
+    $ make m-c M=drivers/net
 
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 

@@ -830,16 +830,31 @@ ifeq ($(module),all)
   module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
 endif
 
+internal_module := 0
 ifneq ($(M),)
+  ifneq ($(M),)
+    override M := $(patsubst %/,%,$(M))
+  endif
   ifeq ($(M),$(wildcard $(M)))
-    M_PATH ?= $(M)
+    ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M)),$(KERNEL_MODULE_DIR))
+      # Convert to relative path: must related to top dir of linux kernel, otherwise, will be compiled in source directory
+      M_PATH = $(subst $(KERNEL_MODULE_DIR)/,,$(M))
+      internal_module := 1
+    else
+      M_PATH ?= $(M)
+    endif
   else
     ifeq ($(KERNEL_MODULE_DIR)/$(M),$(wildcard $(KERNEL_MODULE_DIR)/$(M)))
-      M_PATH ?= $(KERNEL_MODULE_DIR)/$(M)
+      M_PATH ?= $(M)
+      internal_module := 1
     else
       MODULES ?= $(M)
     endif
   endif
+endif
+
+ifneq ($(M_PATH),)
+  M_PATH := $(patsubst %/,%,$(M_PATH))
 endif
 
 MODULE ?= $(MODULES)
@@ -918,7 +933,7 @@ endif
 
 PHONY += modules-prompt kernel-modules-save
 
-ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M_PATH)),$(KERNEL_MODULE_DIR))
+ifeq ($(internal_module),1)
   MODULE_PREPARE := prepare
 else
   MODULE_PREPARE := modules_prepare
@@ -957,9 +972,15 @@ _kernel-modules-install:
 kernel-modules-install: $(M_I_ROOT)
 	make _kernel-modules-install KM=
 
+ifeq ($(internal_module),1)
+  M_ABS_PATH := $(KERNEL_MODULE_DIR)/$(M_PATH)
+else
+  M_ABS_PATH := $(wildcard $(M_PATH))
+endif
+
 KERNEL_MODULE_CLEAN := tools/module/clean.sh
 _kernel-modules-clean:
-	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_PATH)
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_ABS_PATH)
 	$(Q)rm -rf .module_config
 
 kernel-modules-clean:
@@ -1177,7 +1198,7 @@ endif
 KMAKE_CMD := make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
 KMAKE_CMD += -j$(HOST_CPU_THREADS)
-KMAKE_CMD += $(KT)
+KMAKE_CMD += $(KT) $(KM)
 
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)

@@ -1620,20 +1620,24 @@ ifeq ($(U),1)
 UROOTFS_SRC=$(IROOTFS)
 
 $(UROOTFS): $(UROOTFS_SRC)
+ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
 	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
+endif
 
 $(UKIMAGE):
+ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
 	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
+endif
 
 U_KERNEL_IMAGE = $(UKIMAGE)
 ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-  U_ROOT_IMAGE = $(UROOTFS)
+    U_ROOT_IMAGE = $(UROOTFS)
 endif
 ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
 
-PHONY += $(UROOTFS) $(UKIMAGE)
+PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
 
 export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 

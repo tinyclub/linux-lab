@@ -853,10 +853,6 @@ ifneq ($(M),)
   endif
 endif
 
-ifneq ($(M_PATH),)
-  M_PATH := $(patsubst %/,%,$(M_PATH))
-endif
-
 MODULE ?= $(MODULES)
 ifeq ($(MODULE),)
   ifneq ($(module),)
@@ -889,12 +885,26 @@ ifeq ($(one_module),1)
       endif
     endif
   else
-    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+    M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)/Makefile" | head -1))
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+      M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)_" | head -1))
     endif
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+      M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)" | head -1))
+    endif
+    ifeq ($(M_PATH),)
+      KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
+      M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | egrep "/$(module)/Makefile" | head -1))
+      ifneq ($(M_PATH),)
+        M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
+        internal_module :=1
+      else
+        M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i grep -il "^obj-.* $(module).o" {} | head -1))
+        ifneq ($(M_PATH),)
+          M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
+          internal_module :=1
+        endif
+      endif
     endif
 
     ifeq ($(M_PATH),)
@@ -902,6 +912,10 @@ ifeq ($(one_module),1)
     endif
   endif # module not empty
 endif   # ext_one_module = 1
+
+ifneq ($(M_PATH),)
+  M_PATH := $(patsubst %/,%,$(M_PATH))
+endif
 
 SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
 DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
@@ -973,7 +987,7 @@ kernel-modules-install: $(M_I_ROOT)
 	make _kernel-modules-install KM=
 
 ifeq ($(internal_module),1)
-  M_ABS_PATH := $(KERNEL_MODULE_DIR)/$(M_PATH)
+  M_ABS_PATH := $(KERNEL_OUTPUT)/$(M_PATH)
 else
   M_ABS_PATH := $(wildcard $(M_PATH))
 endif

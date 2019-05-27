@@ -364,7 +364,7 @@ ifneq ($(U),)
 endif
 
 ifeq ($(REQUIRE_IP),1)
-  ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g") 
+  ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
   TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
   IP    := $(basename $(ROUTE)).$(TMP)
 
@@ -1987,7 +1987,7 @@ h: help
 
 PHONY += env env-save help h
 
-# 
+#
 # override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input
 # but warnings exists about 'overriding recipe for target 'xxx' when arguments are existing targets.
 #

@@ -871,11 +871,14 @@ endif   # ext_single_module = 1
 
 SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
 DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
-MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
-ifeq ($(MODULES_STATE),y)
-  MODULES_EN := 1
-else
-  MODULES_EN := 0
+
+ifeq ($(findstring _kernel-modules,$(MAKECMDGOALS)),_kernel-modules)
+  MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
+  ifeq ($(MODULES_STATE),y)
+    MODULES_EN := 1
+  else
+    MODULES_EN := 0
+  endif
 endif
 
 ifneq ($(M_PATH),)
@@ -1961,6 +1964,7 @@ g: gcc
 PHONY += gcc g
 
 # Show the variables
+ifeq ($(filter env,$(MAKECMDGOALS)),env)
 VARS := $(shell cat boards/$(BOARD)/Makefile | egrep -v "^ *\#|ifeq|else|endif"| cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
@@ -1969,6 +1973,7 @@ VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
+endif
 
 env:
 	@echo \#[ $(BOARD) ]:

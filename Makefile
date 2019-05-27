@@ -783,7 +783,7 @@ PHONY += root-rd root-rd-rebuild r-p r-B r-i r-r
 # Specify buildroot target
 
 RT ?= $(x)
-RT ?=
+
 ifneq ($(RT),)
   ROOT :=
 endif
@@ -1132,8 +1132,10 @@ ifeq ($(U),1)
 endif
 
 # Default kernel target is kernel image
-KT ?= $(x)
 KT ?= $(IMAGE)
+ifneq ($(x),)
+  KT := $(x)
+endif
 
 # Allow to accept external kernel compile options, such as XXX_CONFIG=y
 KOPTS ?=
@@ -1378,7 +1380,6 @@ uboot-menuconfig:
 
 # Specify uboot targets
 UT ?= $(x)
-UT ?=
 
 # Build Uboot
 uboot:

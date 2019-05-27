@@ -1159,9 +1159,8 @@ ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)
   ksetconfig := 1
 endif
 
-ifeq ($(filter kernel-setconfig,$(MAKECMDGOALS)),kernel-setconfig)
-  makeclivar := $(-*-command-variables-*-)
-endif
+# Caching commandline variables
+makeclivar := $(-*-command-variables-*-)
 
 ifeq ($(ksetconfig),1)
 
@@ -1803,17 +1802,17 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make boot b=$(BOARD) XOPTS="$(TEST_XOPTS)" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
+	$(T_BEFORE) make boot $(MAKECLIVARS) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make boot b=$(BOARD)  XOPTS="$(TEST_XOPTS)" V=$(V) TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
+		$(T_BEFORE) make boot $(MAKECLIVARS) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
 endif
 
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)"
+	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVARS="$(makeclivar)"
 	make boot-finish
 
 PHONY += boot-test test

@@ -860,11 +860,14 @@ endif
 
 ifeq ($(one_module),1)
   ifeq ($(module),)
-    ifneq ($(MODULE_CONFIG),)
-      module = $(MODULE_CONFIG)
-    endif
-    ifneq ($(MPATH_CONFIG),)
-      M_PATH ?= $(MPATH_CONFIG)
+    # Prefer user input instead of preconfigured
+    ifneq ($(M_PATH),$(wildcard $(M_PATH)))
+      ifneq ($(MODULE_CONFIG),)
+        module = $(MODULE_CONFIG)
+      endif
+      ifneq ($(MPATH_CONFIG),)
+        M_PATH ?= $(MPATH_CONFIG)
+      endif
     endif
   else
     M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
@@ -973,14 +976,20 @@ PHONY += _module module-list module-list-full _module-install _module-clean modu
 module: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nBuilding module: $(m) ...\n" && make _module m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nBuilding module: $(_M) ...\n" && make _module M=$(_M);) echo '')
 
 module-install: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nInstalling module: $(m) ...\n" && make _module-install m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nInstalling module: $(_M) ...\n" && make _module-install M=$(_M);) echo '')
 
 module-clean: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nCleaning module: $(m) ...\n" && make _module-clean m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nCleaning module: $(_M) ...\n" && make _module-clean M=$(_M);) echo '')
 
 # If no M, m/module/modules, M_PATH specified, compile internel modules by default
 ifneq ($(module)$(M)$(KM)$(M_PATH),)

@@ -1965,7 +1965,7 @@ PHONY += gcc g
 
 # Show the variables
 ifeq ($(filter env,$(MAKECMDGOALS)),env)
-VARS := $(shell cat boards/$(BOARD)/Makefile | egrep -v "^ *\#|ifeq|else|endif"| cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS := $(shell cat boards/$(BOARD)/Makefile | egrep -v "^ *\#|ifeq|ifneq|else|endif"| cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT

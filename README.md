@@ -261,21 +261,22 @@ Build all internel kernel modules:
 
 Build one kernel module:
 
-    $ make kernel KT=fs/minix/minix.ko
-
-    or
-
-    $ make kernel-run fs/minix/minix.ko
+    $ make kernel-setconfig m=minix_fs
+    $ make m M=fs/minix/minix.ko
+    $ make m-i M=fs/minix/minix.ko
+    $ make m-c M=fs/minix/minix.ko
 
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 
-    $ make modules-list
+    $ make m-l
         1 ldt
+    $ make m-l-f
+        1 /labs/linux-lab/modules/ldt
 
-Build external kernel modules:
+Build external kernel modules (the same as internel modules):
 
-    $ make modules m=ldt
-    $ make modules-install m=ldt
+    $ make m m=ldt
+    $ make m-i m=ldt
     $ make root-rebuild && make boot
 
 Switch compiler version if exists, for example:

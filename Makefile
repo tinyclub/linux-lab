@@ -834,7 +834,11 @@ ifneq ($(M),)
   ifeq ($(M),$(wildcard $(M)))
     M_PATH ?= $(M)
   else
-    MODULES ?= $(M)
+    ifeq ($(KERNEL_MODULE_DIR)/$(M),$(wildcard $(KERNEL_MODULE_DIR)/$(M)))
+      M_PATH ?= $(KERNEL_MODULE_DIR)/$(M)
+    else
+      MODULES ?= $(M)
+    endif
   endif
 endif
 
@@ -1276,7 +1280,7 @@ _kernel-getconfig:
 kernel-config: kernel-setconfig
 kernel-setcfg: kernel-setconfig
 kernel-setconfig: FORCE
-	$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m s v,$(filter $(p)=%,$(makeclivar))), \
+	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m s v,$(filter $(p)=%,$(makeclivar))), \
 		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
 		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
 		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= $o;), echo '')
@@ -1285,7 +1289,7 @@ _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)grep -i $(KCONFIG_OPT) $(DEFAULT_KCONFIG)
-	@echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 	$(Q)make kernel KT=olddefconfig

@@ -802,84 +802,81 @@ r-f: root-full
 PHONY += root root-help root-build root-prepare root-auto root-full r r-b r-P r-a r-f
 
 # Kernel modules
-ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+TOP_MODULE_DIR := $(TOP_DIR)/modules
+ifneq ($(PLUGIN),)
+  PLUGIN_MODULE_DIR := $(TOP_DIR)/boards/$(PLUGIN)/modules
+else
+  PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -type d -name "modules")
+endif
 
-  TOP_MODULE_DIR := $(TOP_DIR)/modules
-  ifneq ($(PLUGIN),)
-    PLUGIN_MODULE_DIR := $(TOP_DIR)/boards/$(PLUGIN)/modules
+EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
+ALL_MODULE_DIR := $(EXT_MODULE_DIR) $(TOP_DIR)/$(KERNEL_SRC)
+
+modules ?= $(m)
+module  ?= $(modules)
+ifeq ($(module),all)
+  module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
+endif
+
+ifneq ($(M),)
+  ifeq ($(M),$(wildcard $(M)))
+    M_PATH ?= $(M)
   else
-    PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -type d -name "modules")
+    MODULES ?= $(M)
   endif
+endif
 
-  EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
-  ALL_MODULE_DIR := $(EXT_MODULE_DIR) $(TOP_DIR)/$(KERNEL_SRC)
-
-  modules ?= $(m)
-  module  ?= $(modules)
-  ifeq ($(module),all)
-    module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
-  endif
-
-  ifneq ($(M),)
-    ifeq ($(M),$(wildcard $(M)))
-      M_PATH ?= $(M)
-    else
-      MODULES ?= $(M)
-    endif
-  endif
-
-  MODULE ?= $(MODULES)
-  ifeq ($(MODULE),)
-    ifneq ($(module),)
-      MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',')
-    endif
-  endif
-
-  # Ignore multiple modules check here
+MODULE ?= $(MODULES)
+ifeq ($(MODULE),)
   ifneq ($(module),)
-    MC ?= $(words $(subst $(comma),$(space),$(module)))
+    MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',')
   endif
+endif
 
-  # Only check module exists for 'module' target
-  ext_single_module := 0
-  ifeq ($(MC),1)
-    ifeq ($(findstring _module,$(MAKECMDGOALS)),_module)
-      ext_single_module := 1
+# Ignore multiple modules check here
+ifneq ($(module),)
+  MC ?= $(words $(subst $(comma),$(space),$(module)))
+endif
+
+# Only check module exists for 'module' target
+ext_single_module := 0
+ifeq ($(MC),1)
+  ifeq ($(findstring _module,$(MAKECMDGOALS)),_module)
+    ext_single_module := 1
+  endif
+endif
+
+ifeq ($(ext_single_module),1)
+  ifeq ($(module),)
+    ifneq ($(MODULE_CONFIG),)
+      module = $(MODULE_CONFIG)
     endif
-  endif
-
-  ifeq ($(ext_single_module),1)
-    ifeq ($(module),)
-      ifneq ($(MODULE_CONFIG),)
-        module = $(MODULE_CONFIG)
-      endif
-      ifneq ($(MPATH_CONFIG),)
-        M_PATH ?= $(MPATH_CONFIG)
-      endif
-    else
-      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
-      ifeq ($(M_PATH),)
-        M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
-      endif
-      ifeq ($(M_PATH),)
-        M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
-      endif
-
-      ifeq ($(M_PATH),)
-        $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
-      endif
-    endif # module not empty
-  endif   # ext_single_module = 1
-
-  SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
-  DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
-  MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
-  ifeq ($(MODULES_STATE),y)
-    MODULES_EN := 1
+    ifneq ($(MPATH_CONFIG),)
+      M_PATH ?= $(MPATH_CONFIG)
+    endif
   else
-    MODULES_EN := 0
-  endif
-endif # Kernel modules related targets init
+    M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)$$" | head -1)
+    ifeq ($(M_PATH),)
+      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)_" | head -1)
+    endif
+    ifeq ($(M_PATH),)
+      M_PATH := $(shell find $(ALL_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | grep "/$(module)" | head -1)
+    endif
+
+    ifeq ($(M_PATH),)
+      $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
+    endif
+  endif # module not empty
+endif   # ext_single_module = 1
+
+SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
+DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
+MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
+ifeq ($(MODULES_STATE),y)
+  MODULES_EN := 1
+else
+  MODULES_EN := 0
+endif
 
 ifneq ($(M_PATH),)
 modules-prompt:

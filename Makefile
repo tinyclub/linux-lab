@@ -1769,6 +1769,7 @@ endif
 # By default, seconds
 TTO ?= 0
 TEST_TIMEOUT ?= $(TTO)
+TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
   TEST_LOGGING    ?= $(TOP_DIR)/logging/$(ARCH)-$(BOARD)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
@@ -1793,6 +1794,9 @@ endif
 	ret=\$$\$$(cat $(TEST_RET)) && [ \$$\$$ret -ne 0 ] && echo \"ERR: Boot timeout in $(TEST_TIMEOUT).\" && exit \$$\$$ret; \
 	echo \"LOG: Boot run successfully.\"
   # If not support netowrk, should use the other root device
+
+  # FIXME: autoboot will be stopped by current timeout implementation, stop uboot test for timeout currently.
+  TEST_UBOOT := 0
 endif
 
 TEST_XOPTS ?= $(XOPTS)
@@ -1802,17 +1806,17 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make boot $(MAKECLIVARS) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
+	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make boot $(MAKECLIVARS) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
+		$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
 endif
 
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVARS="$(makeclivar)"
+	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR="$(makeclivar)"
 	make boot-finish
 
 PHONY += boot-test test

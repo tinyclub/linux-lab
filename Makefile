@@ -354,25 +354,17 @@ endif
 # Kernel command line configuration
 CMDLINE :=
 
-# Nfs boot and uboot kernel command line requires ip address
+# Init route and ip for guest
+ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
+TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
+IP    := $(basename $(ROUTE)).$(TMP)
+
+CMDLINE += route=$(ROUTE)
+
 ifeq ($(ROOTDEV),/dev/nfs)
   ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
-  REQUIRE_IP := 1
-endif
-
-ifneq ($(U),)
-  REQUIRE_IP := 1
-endif
-
-ifeq ($(REQUIRE_IP),1)
-  ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
-  TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
-  IP    := $(basename $(ROUTE)).$(TMP)
-
-  CMDLINE += route=$(ROUTE)
-
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
 endif
 

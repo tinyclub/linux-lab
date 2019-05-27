@@ -79,7 +79,7 @@ F ?= $(f)
 FEATURES ?= $(F)
 FEATURE ?= $(FEATURES)
 ifneq ($(FEATURE),)
-  _BOARD = $(shell basename $(BOARD))
+  _BOARD = $(notdir $(BOARD))
   FEATURE_ENVS = $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ]; then \
 			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD); fi))
@@ -156,7 +156,7 @@ endif
 
 ifneq ($(QEMU),)
   ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
-    QEMU_PATH := env PATH=$(shell dirname $(QEMU_SYSTEM)):$(PATH)
+    QEMU_PATH := env PATH=$(dir $(QEMU_SYSTEM)):$(PATH)
   endif
 endif
 
@@ -1089,7 +1089,7 @@ PHONY += kernel-feature feature features kernel-features k-f f kernel-feature-li
 # Testing targets
 
 TEST ?= $T
-TEST_PREPARE := $(shell echo $(TEST) | tr ',' ' ')
+TEST_PREPARE := $(subst $(comma),$(space),$(TEST))
 
 # Force running git submodule commands
 GIT_FORCE := $(if $(TEST),--force,)
@@ -1196,17 +1196,19 @@ ifneq ($(m),)
 endif
 
 ifneq ($(s),)
-  KCONFIG_SET_OPT := --set-str $(shell echo $(s) | tr '=' ' ')
-  KCONFIG_GET_OPT := -s $(shell echo $(s) | cut -d'=' -f1)
+  tmp := $(subst =,$(space),$(s))
+  KCONFIG_SET_OPT := --set-str $(tmp)
+  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
   KCONFIG_OPR := s
-  KCONFIG_OPT := $(shell echo $(s) | cut -d'=' -f1)
 endif
 
 ifneq ($(v),)
-  KCONFIG_SET_OPT := --set-val $(shell echo $(v) | tr '=' ' ')
-  KCONFIG_GET_OPT := -s $(shell echo $(v) | cut -d'=' -f1)
+  tmp := $(subst =,$(space),$(v))
+  KCONFIG_SET_OPT := --set-val $(tmp)
+  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
   KCONFIG_OPR := v
-  KCONFIG_OPT := $(shell echo $(v) | cut -d'=' -f1)
 endif
 
 ifneq ($(y),)
@@ -1503,7 +1505,7 @@ SHARE_DIR ?= hostshare
 SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
   SHARE_OPT ?= -fsdev local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
-  CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(shell basename $(SHARE_DIR))
+  CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(notdir $(SHARE_DIR))
 endif
 
 # Console configurations

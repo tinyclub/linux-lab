@@ -855,14 +855,14 @@ ifneq ($(module),)
 endif
 
 # Only check module exists for 'module' target
-ext_single_module := 0
+one_module := 0
 ifeq ($(MC),1)
   ifeq ($(findstring _module,$(MAKECMDGOALS)),_module)
-    ext_single_module := 1
+    one_module := 1
   endif
 endif
 
-ifeq ($(ext_single_module),1)
+ifeq ($(one_module),1)
   ifeq ($(module),)
     ifneq ($(MODULE_CONFIG),)
       module = $(MODULE_CONFIG)
@@ -883,12 +883,12 @@ ifeq ($(ext_single_module),1)
       $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
     endif
   endif # module not empty
-endif   # ext_single_module = 1
+endif   # ext_one_module = 1
 
 SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
 DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
 
-ifeq ($(findstring _kernel-modules,$(MAKECMDGOALS)),_kernel-modules)
+ifeq ($(findstring module,$(MAKECMDGOALS)),module)
   MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
   ifeq ($(MODULES_STATE),y)
     MODULES_EN := 1
@@ -968,20 +968,28 @@ modules-test: module-test
 
 PHONY += _module module-list module-list-full _module-install _module-clean modules-list modules-list-full ms-l ms-l-f
 
-modules: module
 module: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nBuilding module: $(m) ...\n" && make _module m=$(m);) echo '')
 
-modules-install: module-install
 module-install: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nInstalling module: $(m) ...\n" && make _module-install m=$(m);) echo '')
 
-modules-clean: module-clean
 module-clean: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
 		echo "\nCleaning module: $(m) ...\n" && make _module-clean m=$(m);) echo '')
+
+# If no M, m/module/modules, M_PATH specified, compile internel modules by default
+ifneq ($(module)$(M)$(KM)$(M_PATH),)
+modules: module
+modules-install: module-install
+modules-clean: module-clean
+else
+modules: kernel-modules FORCE
+modules-install: kernel-modules-install
+modules-clean: kernel-modules-clean
+endif
 
 PHONY += modules modules-install modules-clean module module-install module-clean
 
@@ -1101,10 +1109,6 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-ifeq ($(KERNEL_MODULES),all)
-	make kernel-modules
-	make kernel-modules-install
-endif
 	make modules
 	make modules-install
 

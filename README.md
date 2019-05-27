@@ -282,6 +282,16 @@ Switch compiler version if exists, for example:
 
     $ tools/gcc/switch.sh arm 4.3
 
+### Using more goals
+
+Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
+
+    $ make kernel-run help
+
+    $ make root-run busybox-menuconfig
+
+    $ make uboot-run help
+
 ### Booting
 
 Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff' or 'pkill qemu':

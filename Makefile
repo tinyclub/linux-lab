@@ -416,7 +416,7 @@ board-clean:
 board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
-	$(Q)$(file > .board_config,$(BOARD))
+	$(Q)$(shell echo "$(BOARD)" > .board_config)
   endif
 endif
 
@@ -430,7 +430,7 @@ PHONY += board board-clean board-save b-s b-c
 plugin-save:
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
-	$(Q)$(file > .plugin_config,$(PLUGIN))
+	$(Q)$(shell echo "$(PLUGIN)" > .plugin_config)
   endif
 endif
 
@@ -886,8 +886,8 @@ modules-prompt:
 	@echo
 
 kernel-modules-save:
-	$(Q)$(file > .mpath_config,$(M_PATH))
-	$(Q)$(file > .module_config,$(module))
+	$(Q)$(shell echo "$(M_PATH)" > .mpath_config)
+	$(Q)$(shell echo "$(module)" > .module_config)
 
 
 KM ?= M=$(M_PATH)

@@ -263,6 +263,10 @@ Build one kernel module:
 
     $ make kernel KT=fs/minix/minix.ko
 
+    or
+
+    $ make kernel-run fs/minix/minix.ko
+
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 
     $ make modules-list

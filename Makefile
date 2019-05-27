@@ -893,16 +893,10 @@ ifeq ($(one_module),1)
       M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)" | head -1))
     endif
     ifeq ($(M_PATH),)
-      M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | egrep "/$(module)/Makefile" | head -1))
+      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -il "^obj-.*(CONFIG_$(module)).*[^/]$$" {} | head -1)
       ifneq ($(M_PATH),)
         M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
         internal_module :=1
-      else
-        M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i grep -il "^obj-.* $(module).o" {} | head -1))
-        ifneq ($(M_PATH),)
-          M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
-          internal_module :=1
-        endif
       endif
     endif
 
@@ -959,7 +953,8 @@ kernel-modules:
 	make _kernel-modules KM=
 
 ifneq ($(module),)
-  MF ?= egrep "$(subst $(comma),|,$(module))"
+  IMF ?= $(subst $(comma),|,$(module))
+  MF ?= egrep "$(IMF)"
   internal_search := 1
 else
   MF := cat
@@ -976,13 +971,15 @@ endif
 kernel-modules-list:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
 ifeq ($(internal_search),1)
-	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
+	@#$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[^/]$$" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-.*(CONFIG_\(.*\)).*%\2%g" | tr '[A-Z]' '[a-z]' | cat -n
 endif
 
 kernel-modules-list-full:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | $(MF) | cat -n
 ifeq ($(internal_search),1)
-	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF)| $(MF) | cat -n
+	@#$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | $(MF) | sed -e "s%$(KERNEL_MODULE_DIR)/%%g" | cat -n
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[^/]$$" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-.*(CONFIG_\(.*\)).*%\1 , \2%g" | cat -n
 endif
 
 PHONY += _kernel-modules kernel-modules kernel-modules-list kernel-modules-list-full

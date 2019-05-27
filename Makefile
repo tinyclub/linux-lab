@@ -578,7 +578,7 @@ ifneq ($(QEMU_PATCHED_TAG),$(wildcard $(QEMU_PATCHED_TAG)))
 	-$(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
 	@touch $(QEMU_PATCHED_TAG)
 else
-	@echo "LOG: patchset has been applied already, if want, please do 'make qemu-checkout' at first."
+	@$(error "LOG: patchset has been applied already, if want, please do 'make qemu-checkout' at first.")
 endif
 
 emulator-patch: qemu-patch
@@ -689,7 +689,7 @@ ifneq ($(ROOT_PATCHED_TAG),$(wildcard $(ROOT_PATCHED_TAG)))
 	-$(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT)
 	@touch $(ROOT_PATCHED_TAG)
 else
-	@echo "LOG: patchset has been applied already, if want, please do 'make root-checkout' at first."
+	@$(error "LOG: patchset has been applied already, if want, please do 'make root-checkout' at first.")
 endif
 
 ifeq ($(RP),1)
@@ -1023,7 +1023,7 @@ ifneq ($(LINUX_PATCHED_TAG),$(wildcard $(LINUX_PATCHED_TAG)))
 	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
 	@touch $(LINUX_PATCHED_TAG)
 else
-	@echo "LOG: patchset has been applied already, if want, please do 'make kernel-checkout' at first."
+	@$(error "LOG: patchset has been applied already, if want, please do 'make kernel-checkout' at first.")
 endif
 
 ifeq ($(KP),1)
@@ -1362,7 +1362,7 @@ ifneq ($(UBOOT_PATCHED_TAG),$(wildcard $(UBOOT_PATCHED_TAG)))
 	-$(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT)
 	@touch $(UBOOT_PATCHED_TAG)
 else
-	@echo "LOG: patchset has been applied already, if want, please do 'make uboot-checkout' at first."
+	@$(error "LOG: patchset has been applied already, if want, please do 'make uboot-checkout' at first.")
 endif
 
 ifeq ($(UP),1)

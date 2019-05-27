@@ -356,6 +356,9 @@ CMDLINE :=
 
 # Nfs boot and uboot kernel command line requires ip address
 ifeq ($(ROOTDEV),/dev/nfs)
+  ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
+    $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
+  endif
   REQUIRE_IP := 1
 endif
 

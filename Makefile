@@ -817,7 +817,10 @@ PHONY += root root-help root-build root-prepare root-auto root-full r r-b r-P r-
 # Kernel modules
 TOP_MODULE_DIR := $(TOP_DIR)/modules
 ifneq ($(PLUGIN),)
-  PLUGIN_MODULE_DIR := $(TOP_DIR)/boards/$(PLUGIN)/modules
+  TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
+  ifeq ($(TMP),$(wildcard $(TMP)))
+    PLUGIN_MODULE_DIR := $(TMP)
+  endif
 else
   PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -type d -name "modules")
 endif

@@ -822,7 +822,7 @@ endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
 KERNEL_MODULE_DIR := $(TOP_DIR)/$(KERNEL_SRC)
-ALL_MODULE_DIR := $(EXT_MODULE_DIR) $(KERNEL_MODULE_DIR)
+KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
 
 modules ?= $(m)
 module  ?= $(modules)
@@ -893,7 +893,6 @@ ifeq ($(one_module),1)
       M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)" | head -1))
     endif
     ifeq ($(M_PATH),)
-      KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
       M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | egrep "/$(module)/Makefile" | head -1))
       ifneq ($(M_PATH),)
         M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
@@ -961,15 +960,30 @@ kernel-modules:
 
 ifneq ($(module),)
   MF ?= egrep "$(subst $(comma),|,$(module))"
+  internal_search := 1
 else
   MF := cat
 endif
 
+# If m or M argument specified, search modules in kernel source directory
+ifneq ($(M),)
+  PF ?= egrep "$(subst $(comma),|,$(M))"
+  internal_search := 1
+else
+  PF := cat
+endif
+
 kernel-modules-list:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | $(MF) | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
+ifeq ($(internal_search),1)
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
+endif
 
 kernel-modules-list-full:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(MF) | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | $(MF) | cat -n
+ifeq ($(internal_search),1)
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF)| $(MF) | cat -n
+endif
 
 PHONY += _kernel-modules kernel-modules kernel-modules-list kernel-modules-list-full
 

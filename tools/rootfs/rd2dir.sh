@@ -21,5 +21,5 @@ elif [ -f ${FS_CPIO} ]; then
    sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null 2>&1
 fi
 
-chown ${USER}:${USER} -R ${ROOTDIR}
+sudo chown ${USER}:${USER} -R ${ROOTDIR}
 popd

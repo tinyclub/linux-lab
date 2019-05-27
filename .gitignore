@@ -3,3 +3,4 @@ output
 .orig
 .rej
 logging
+*.patched

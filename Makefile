@@ -914,8 +914,14 @@ endif
 
 PHONY += modules-prompt kernel-modules-save
 
+ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M_PATH)),$(KERNEL_MODULE_DIR))
+  MODULE_PREPARE := prepare
+else
+  MODULE_PREPARE := modules_prepare
+endif
+
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_prepare; make kernel KT=modules $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=modules $(KM); fi
 
 kernel-modules:
 	make _kernel-modules KM=
@@ -1280,7 +1286,10 @@ _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)grep -i $(KCONFIG_OPT) $(DEFAULT_KCONFIG)
 	@echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 	$(Q)make kernel KT=olddefconfig
+	$(Q)make kernel KT=prepare
 
 PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig
 

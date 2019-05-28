@@ -110,8 +110,19 @@ Rapsi3 almost works, but:
   Boot it in Linux Lab, please launch it at fist:
 
     $ make boot ROOTFS=$PWD/prebuilt/fullroot/tmp/arm64v8-ubuntu
-
-
+    hctosys: unable to open rtc device (rtc0)
+    EXT4-fs (vda): mounting ext2 file system using the ext4 subsystem
+    EXT4-fs (vda): mounted filesystem without journal. Opts: (null)
+    VFS: Mounted root (ext2 filesystem) on device 254:0.
+    devtmpfs: mounted
+    Freeing unused kernel memory: 832K
+    Run /sbin/init as init process
+    Run /etc/init as init process
+    Run /bin/init as init process
+    Run /bin/sh as init process
+    /bin/sh: 0: can't access tty; job control turned off
+    # uname -a
+    Linux (none) 5.1.0-dirty #13 SMP Tue May 28 02:17:08 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
 
 # Boot buildroot
 

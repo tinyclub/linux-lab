@@ -257,7 +257,8 @@ Build all internel kernel modules:
 
     $ make modules
     $ make modules-install
-    $ make root-rebuild && make boot
+    $ make root-rebuild     // not need for nfs boot
+    $ make boot
 
 Build one kernel module (e.g. minix.ko, tun.ko):
 

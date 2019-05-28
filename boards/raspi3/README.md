@@ -57,6 +57,10 @@ Rapsi3 almost works, but:
     root@rpi3:~# uname -a
     Linux rpi3 4.14.0-3-arm64 #1 SMP Debian 4.14.12-2 (2018-01-06) aarch64 GNU/Linux
 
+# Boot ubuntu
+
+
+
 # Boot buildroot
 
   Buildroot is able to compile a whole system for raspi3, include kernel image, dtb, initrd and sdcard image, just configure, build and boot:
@@ -79,6 +83,11 @@ Rapsi3 almost works, but:
 * [Raspi3 linux kernel][3]
 * [Raspi3 debian][6]
 * [Raspbian][5]
+* [Ubuntu rootfs][10]
+* [Ubuntu docker image][11]
+* [Debian rootfs][12]
+* [Debian docker image][13]
+* [Reproducible, snapshot-based Debian rootfs builder][14]
 
 [1]: https://github.com/bztsrc/qemu-raspi3
 [2]: https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/
@@ -89,3 +98,8 @@ Rapsi3 almost works, but:
 [7]: https://github.com/Debian/raspi3-image-spec
 [8]: https://people.debian.org/~stapelberg/
 [9]: https://people.debian.org/~gwolf/raspberrypi3/
+[10]: https://partner-images.canonical.com/core/
+[11]: https://hub.docker.com/r/arm64v8/ubuntu
+[12]: https://github.com/debuerreotype/docker-debian-artifacts/tree/dist-arm64v8
+[13]: https://hub.docker.com/r/arm64v8/debian
+[14]: https://github.com/debuerreotype/debuerreotype

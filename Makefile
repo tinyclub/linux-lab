@@ -1168,7 +1168,7 @@ TEST_PREPARE := $(subst $(comma),$(space),$(TEST))
 GIT_FORCE := $(if $(TEST),--force,)
 
 kernel-init:
-	$(Q)make kernel-oldconfig
+	$(Q)make kernel-olddefconfig
 	$(Q)make kernel KT=$(IMAGE)
 
 rootdir-init:

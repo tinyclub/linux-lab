@@ -952,7 +952,7 @@ else
 endif
 
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(m).ko $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
 
 kernel-modules:
 	make _kernel-modules KM=

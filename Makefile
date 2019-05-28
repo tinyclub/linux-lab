@@ -894,15 +894,9 @@ ifeq ($(one_module),1)
       endif
     endif
   else
-    M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)/Makefile" | head -1))
+    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
     ifeq ($(M_PATH),)
-      M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)_" | head -1))
-    endif
-    ifeq ($(M_PATH),)
-      M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)" | head -1))
-    endif
-    ifeq ($(M_PATH),)
-      M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -il "^obj-.*(CONFIG_$(module)).*[^/]$$" {} | head -1))
+      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -iH "^obj-.*[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
       ifneq ($(M_PATH),)
         M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
         internal_module :=1
@@ -910,7 +904,9 @@ ifeq ($(one_module),1)
     endif
 
     ifeq ($(M_PATH),)
-      $(error 'ERROR: No such module found: $(module), list all by: `make modules-list`')
+      $(error 'ERROR: No such module found: $(module), list all by: `make m-l`')
+    else
+      $(info LOG: m=$(module) ; M=$(M_PATH))
     endif
   endif # module not empty
 endif   # ext_one_module = 1
@@ -956,7 +952,7 @@ else
 endif
 
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=modules $(KM); fi
+	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(M_PATH)/$(m).ko; fi
 
 kernel-modules:
 	make _kernel-modules KM=
@@ -966,6 +962,7 @@ ifneq ($(module),)
   MF ?= egrep "$(IMF)"
   internal_search := 1
 else
+  IMF :=.*
   MF := cat
 endif
 
@@ -977,18 +974,12 @@ else
   PF := cat
 endif
 
-kernel-modules-list:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
-ifeq ($(internal_search),1)
-	@#$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | xargs -i basename {} | $(MF) | cat -n
-	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[^/]$$" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-.*(CONFIG_\(.*\)).*%\2%g" | tr '[A-Z]' '[a-z]' | cat -n
-endif
+kernel-modules-list: kernel-modules-list-full
 
 kernel-modules-list-full:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | $(PF) | $(MF) | cat -n
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)/\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=\$$PWD/\1%g" | cat -n
 ifeq ($(internal_search),1)
-	@#$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i dirname {} | $(PF) | $(MF) | sed -e "s%$(KERNEL_MODULE_DIR)/%%g" | cat -n
-	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[^/]$$" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-.*(CONFIG_\(.*\)).*%\1 , \2%g" | cat -n
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | cat -n
 endif
 
 PHONY += _kernel-modules kernel-modules kernel-modules-list kernel-modules-list-full

@@ -1,6 +1,12 @@
 
 # Raspi3 Usage
 
+Rapsi3 almost works, but:
+
+* reboot fails with kernel hang
+* usb not work (qemu not support)
+* network is based on usb, not work, nfs boot not work
+
 ## Boot with graphic
 
   Note: login console is there, but not accept input currently.
@@ -9,19 +15,7 @@
 
 ## Boot with serial
 
-  Note: earlycon works, but no initial console for command line.
-
-    $ make boot V=1        // with mini UART
-
-    or
-
-    $ make boot V=1 UART=0 // with pl011
-
-
-  More:
-
-    $ make kernel ORIDTB=arch/arm64/boot/dts/broadcom/bcm2837-rpi-3-b.dtb
-    $ make boot V=1 ORIDTB=arch/arm64/boot/dts/broadcom/bcm2837-rpi-3-b.dtb UART=0
+    $ make boot V=1        // with pl011, by default
 
 ## Boot debian
 
@@ -29,7 +23,7 @@
 
     $ mkdir debian
     $ cd debian
-    $ wget -c $ wget https://people.debian.org/~stapelberg/raspberrypi3/2018-01-08/2018-01-08-raspberry-pi-3-buster-PREVIEW.img.xz
+    $ wget -c https://people.debian.org/~stapelberg/raspberrypi3/2018-01-08/2018-01-08-raspberry-pi-3-buster-PREVIEW.img.xz
     $ xz -d 2018-01-08-raspberry-pi-3-buster-PREVIEW.img.xz
 
     $ fdisk -l 2018*.img
@@ -83,7 +77,7 @@
 * [Qemu raspi3 support][1]
 * [Raspi3 hardware spec][2]
 * [Raspi3 linux kernel][3]
-* [Raspi3 debian][4]
+* [Raspi3 debian][6]
 * [Raspbian][5]
 
 [1]: https://github.com/bztsrc/qemu-raspi3
@@ -91,3 +85,7 @@
 [3]: https://github.com/raspberrypi/linux
 [4]: https://translatedcode.wordpress.com/2018/04/25/debian-on-qemus-raspberry-pi-3-model/
 [5]: https://www.raspberrypi.org/downloads/
+[6]: https://wiki.debian.org/RaspberryPi3
+[7]: https://github.com/Debian/raspi3-image-spec
+[8]: https://people.debian.org/~stapelberg/
+[9]: https://people.debian.org/~gwolf/raspberrypi3/

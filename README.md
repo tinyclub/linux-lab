@@ -278,14 +278,14 @@ Build one kernel module (e.g. minix.ko, tun.ko):
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 
     $ make m-l
-        1 ldt
+        1 hello
     $ make m-l-f
-        1 /labs/linux-lab/modules/ldt
+        1 /labs/linux-lab/modules/hello
 
 Build external kernel modules (the same as internel modules):
 
-    $ make m m=ldt
-    $ make m-i m=ldt
+    $ make m m=hello
+    $ make m-i m=hello
     $ make root-rebuild && make boot
 
 Switch compiler version if exists, for example:

@@ -16,6 +16,7 @@ arch=$2
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
 qemu_user_static=/usr/bin/qemu-${arch}-static
+user=`whoami`
 
 [ -z "$image" -o -z "$arch" ] && echo "Usage: $0 image arch" && exit 1
 
@@ -35,6 +36,7 @@ mkdir -p $rootdir
 
 echo "LOG: Extract docker image to $rootdir"
 sudo docker cp $id:/ $rootdir/
+sudo chown $user:$user -R $rootdir/
 
 echo "LOG: Removing docker container"
 docker rm -f $id

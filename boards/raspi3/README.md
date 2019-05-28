@@ -59,6 +59,58 @@ Rapsi3 almost works, but:
 
 # Boot ubuntu
 
+  Here introduces how to download and boot ubuntu from docker image, the following steps are done in host system, except the one explicitly said in Linux Lab.
+
+  Check official arm64 ubuntu image:
+
+    $ docker search arm64v8 | grep ubuntu
+    arm64v8/ubuntu Ubuntu is a Debian-based Linux operating system  25
+  Download and extract the rootfs out to `prebuilt/fullroot/tmp`:
+
+    $ cd $(path-to)/linux-lab
+    $ tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64
+    LOG: Pulling arm64v8/ubuntu
+    Using default tag: latest
+    latest: Pulling from arm64v8/ubuntu
+    745b76626a20: Pulling fs layer
+    6ce7a8922cb8: Download complete
+    565a1332f5cd: Download complete
+    ...
+    LOG: Running arm64v8/ubuntu
+    LOG: Creating temporary rootdir: ...linux-lab/prebuilt/fullroot/tmp/arm64v8-ubuntu
+    LOG: Extract docker image to ...linux-lab/prebuilt/fullroot/tmp/arm64v8-ubuntu
+    [sudo] password for falcon:
+    LOG: Removing docker container
+    8c15a9d30b402e46f63227b6286d54c6afdd80d9193c2ee28684395830fef042
+    LOG: Chroot into new rootfs
+    Linux ubuntu 4.4.0-148-generic #174-Ubuntu SMP Tue May 7 12:20:14 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
+    Ubuntu 18.04.2 LTS \n \l
+
+
+  Or pull it and then extract:
+
+    $ docker pull arm64v8/ubuntu
+    $ PULL=0 tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64
+
+  Use it with docker:
+
+    $ sudo apt-get install qemu-user-static
+    $ $ docker run -it -v /usr/bin/qemu-aarch64-static:/usr/bin/qemu-aarch64-static arm64v8/ubuntu
+    root@bceb61278159:/# uname -a
+    Linux bceb61278159 4.4.0-148-generic #174-Ubuntu SMP Tue May 7 12:20:14 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
+    root@bceb61278159:/# cat /etc/issue
+    Ubuntu 18.04.2 LTS \n \l
+
+  Use it with chroot:
+
+    $ tools/rootfs/docker/chroot.sh arm64v8/ubuntu
+    LOG: Chroot into ...linux-lab/prebuilt/fullroot/tmp/arm64v8-ubuntu
+    root@ubuntu:/#
+
+  Boot it in Linux Lab, please launch it at fist:
+
+    $ make boot ROOTFS=$PWD/prebuilt/fullroot/tmp/arm64v8-ubuntu
+
 
 
 # Boot buildroot

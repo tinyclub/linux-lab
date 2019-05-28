@@ -26,7 +26,7 @@ if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
 exec 0</dev/console
 exec 1>/dev/console
 exec 2>/dev/console
-exec /sbin/init "\$@"
+exec /bin/init "\$@"
 EOF
 
   [ ! -d $ROOTDIR/etc/init.d ] && mkdir -p $ROOTDIR/etc/init.d

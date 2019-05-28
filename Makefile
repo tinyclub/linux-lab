@@ -762,6 +762,7 @@ root-rd-rebuild: root-rebuild
 
 root-rebuild:
 ifeq ($(prebuilt_root_dir), 1)
+	@echo "LOG: Generating initrd with $(ROOT_GENRD_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
@@ -1738,6 +1739,7 @@ root-dir:
 root-dir-rebuild: rootdir
 
 rootdir:
+	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
 
 rootdir-install: root-install
@@ -1836,6 +1838,7 @@ root-hd:
 	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
 
 root-hd-rebuild:
+	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 
 ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))

@@ -124,6 +124,42 @@ Rapsi3 almost works, but:
     # uname -a
     Linux (none) 5.1.0-dirty #13 SMP Tue May 28 02:17:08 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
 
+  Similarly, boot another `tinylab/arm64v8-ubuntu` docker image, it is a more powerful ubuntu system, please download and extract it at first:
+
+    $ make boot ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm64-ubuntu
+    ...
+    [  OK  ] Started Set console scheme.
+    [  OK  ] Created slice system-getty.slice.
+    [  OK  ] Started Getty on tty1.
+    [  OK  ] Reached target Login Prompts.
+    [  OK  ] Reached target Multi-User System.
+    [  OK  ] Reached target Graphical Interface.
+             Starting Update UTMP about System Runlevel Changes...
+    [  OK  ] Started Update UTMP about System Runlevel Changes.
+
+    Ubuntu 18.04.2 LTS localhost.localdomain ttyAMA0
+
+    localhost login: root
+    Password:
+    Last login: Wed May 15 04:58:46 UTC 2019 on ttyAMA0
+
+    Welcome to Ubuntu 18.04.2 LTS (GNU/Linux 5.1.0-dirty aarch64)
+
+     * Documentation:  https://help.ubuntu.com
+     * Management:     https://landscape.canonical.com
+     * Support:        https://ubuntu.com/advantage
+
+
+    root@localhost:~#
+    root@localhost:~#
+    root@localhost:~# cat /etc/issue
+    Ubuntu 18.04.2 LTS \n \l
+
+    root@localhost:~# uname -a
+    Linux localhost.localdomain 5.1.0-dirty #13 SMP Tue May 28 02:17:08 UTC 2019 aarch64 aarch64 aarch64 GNU/Linux
+
+Since raspi3 qemu not support network yet, please use chroot or docker to run the rootfs and install necessary packages if required.
+
 # Boot buildroot
 
   Buildroot is able to compile a whole system for raspi3, include kernel image, dtb, initrd and sdcard image, just configure, build and boot:

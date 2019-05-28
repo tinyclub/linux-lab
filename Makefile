@@ -893,7 +893,7 @@ ifeq ($(one_module),1)
       M_PATH := $(dir $(shell find $(EXT_MODULE_DIR) -name "Makefile" | grep "/$(module)" | head -1))
     endif
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -il "^obj-.*(CONFIG_$(module)).*[^/]$$" {} | head -1)
+      M_PATH := $(dir $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -il "^obj-.*(CONFIG_$(module)).*[^/]$$" {} | head -1))
       ifneq ($(M_PATH),)
         M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
         internal_module :=1

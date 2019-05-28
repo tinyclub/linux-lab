@@ -289,6 +289,10 @@ Build external kernel modules (the same as internel modules):
     $ make m-i m=hello
     $ make root-rebuild && make boot
 
+    Or
+
+    $ make k x=$PWD/modules/hello/hello.ko
+
 Switch compiler version if exists, for example:
 
     $ tools/gcc/switch.sh arm 4.3

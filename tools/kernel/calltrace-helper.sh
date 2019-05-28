@@ -8,6 +8,11 @@
 #
 # ref: http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/
 #
+# TODO:
+#
+# 1. add auto-git-blame support, find out who and which version changes this line
+# 2. add auto-git-bisect support, find out which version is the first bad version
+#
 
 #
 ### Kernel must be compiled with debug info and symbols:
@@ -19,6 +24,11 @@
 #   CONFIG_DEBUG_BUGVERBOSE=y
 #   CONFIG_STACKTRACE=y
 #
+### Reconfigure the kernel with debug support:
+#
+# $ make f f=debug
+# $ make kernel-olddefconfig
+# $ make kernel
 
 #
 ### Calltrace example

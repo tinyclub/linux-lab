@@ -570,16 +570,16 @@ q-o: e-o
 
 QP ?= 0
 
-QEMU_PATCH_TOOL := tools/qemu/patch.sh
+QEMU_PATCH_TOOL  := tools/qemu/patch.sh
 QEMU_PATCHED_TAG := $(QEMU_SRC)/.patched
 
 qemu-patch: $(QEMU_CHECKOUT)
-ifneq ($(QEMU_PATCHED_TAG),$(wildcard $(QEMU_PATCHED_TAG)))
-	-$(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT)
-	@touch $(QEMU_PATCHED_TAG)
-else
-	@$(error "LOG: patchset has been applied already, if want, please do 'make qemu-checkout' at first.")
-endif
+	@if [ ! -f $(QEMU_PATCHED_TAG) ]; then \
+	  $(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT); \
+	  touch $(QEMU_PATCHED_TAG);  \
+	else \
+	  echo "ERR: patchset has been applied already, if want, please do 'make qemu-checkout' at first." && exit 1; \
+	fi
 
 emulator-patch: qemu-patch
 
@@ -685,12 +685,12 @@ ROOT_PATCH_TOOL := tools/rootfs/patch.sh
 ROOT_PATCHED_TAG := $(ROOT_SRC)/.patched
 
 root-patch:
-ifneq ($(ROOT_PATCHED_TAG),$(wildcard $(ROOT_PATCHED_TAG)))
-	-$(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT)
-	@touch $(ROOT_PATCHED_TAG)
-else
-	@$(error "LOG: patchset has been applied already, if want, please do 'make root-checkout' at first.")
-endif
+	@if [ ! -f $(ROOT_PATCHED_TAG) ]; then \
+	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
+	  touch $(ROOT_PATCHED_TAG); \
+	else
+	  echo "ERR: patchset has been applied already, if want, please do 'make root-checkout' at first."; \
+	fi
 
 ifeq ($(RP),1)
   ROOT_PATCH := root-patch
@@ -1091,12 +1091,13 @@ LINUX_PATCHED_TAG := $(KERNEL_SRC)/.patched
 
 KP ?= 0
 kernel-patch:
-ifneq ($(LINUX_PATCHED_TAG),$(wildcard $(LINUX_PATCHED_TAG)))
-	-$(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT)
-	@touch $(LINUX_PATCHED_TAG)
-else
-	@$(error "LOG: patchset has been applied already, if want, please do 'make kernel-checkout' at first.")
-endif
+	@if [ ! -f $(LINUX_PATCHED_TAG) ]; then \
+	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
+	  touch $(LINUX_PATCHED_TAG); \
+	else \
+	  echo "ERR: patchset has been applied already, if want, please do 'make kernel-checkout' at first." && exit 1; \
+	fi
+
 
 ifeq ($(KP),1)
   KERNEL_PATCH := kernel-patch
@@ -1434,13 +1435,13 @@ UBOOT_PATCH_TOOL  := tools/uboot/patch.sh
 UBOOT_PATCHED_TAG := $(UBOOT_SRC)/.patched
 
 uboot-patch:
-ifneq ($(UBOOT_PATCHED_TAG),$(wildcard $(UBOOT_PATCHED_TAG)))
-	if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi
-	-$(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT)
-	@touch $(UBOOT_PATCHED_TAG)
-else
-	@$(error "LOG: patchset has been applied already, if want, please do 'make uboot-checkout' at first.")
-endif
+	@if [ ! -f $(UBOOT_PATCHED_TAG) ]; then \
+	  if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi \
+	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
+	  touch $(UBOOT_PATCHED_TAG); \
+	else \
+	  echo "ERR: patchset has been applied already, if want, please do 'make uboot-checkout' at first." && exit 1; \
+	fi
 
 ifeq ($(UP),1)
   UBOOT_PATCH := uboot-patch
@@ -2127,6 +2128,8 @@ $(EXEC_TARGETS):
 
 PHONY += $(EXEC_TARGET))
 
+PHONY += FORCE
+
 FORCE:
 
-.PHONY: $(PHONY) FORCE
+.PHONY: $(PHONY)

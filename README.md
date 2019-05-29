@@ -354,7 +354,22 @@ Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff' o
 
 Boot with graphic:
 
-    $ make boot G=1
+    $ make b=pc boot G=1 LINUX=v5.1
+    $ make b=versatilepb boot G=1 LINUX=v5.1
+    $ make b=g3beige boot G=1 LINUX=v5.1
+    $ make b=malta boot G=1 LINUX=v2.6.36
+    $ make b=vexpress-a9 boot G=1 LINUX=v4.6.7 // LINUX=v3.18.39 works too
+
+  Note: real graphic boot require LCD and keyboard drivers, the above three work well, with linux v5.1,
+  `raspi3`, `malta` has tty0 console but without keyboard input.
+
+  `vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
+  with G=1 and switch to serial console via the 'View' menu, this can not be used to test LCD and
+  keyboard drivers.
+
+    $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
+    $ make b=virt boot G=1 LINUX=v5.1
+    $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
 Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit'):
 

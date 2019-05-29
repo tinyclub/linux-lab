@@ -1541,7 +1541,6 @@ UBOOT_PATCHED_TAG := $(UBOOT_SRC)/.patched
 
 uboot-patch:
 	@if [ ! -f $(UBOOT_PATCHED_TAG) ]; then \
-	  if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi \
 	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
 	  touch $(UBOOT_PATCHED_TAG); \
 	else \

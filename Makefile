@@ -604,8 +604,31 @@ ifneq ($(QP),0)
 endif
 endif
 
+# Notes:
+#
+# 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
+#    deps: sudo apt-get install libncursesw5-dev
+# 2. --enable-sdl is required for G=1, but from v4.0.0, it requires libsdl2-dev,
+#    but it is not available in lower version ubuntu, such as ubuntu 14.04, so, to
+#    using qemu >= v4.0.0 with sdl graphic, must upgrade ubuntu to newer version.
+# 3. --disable-vnc disable vnc graphic support, this is not that friendly because
+#    it requires to install a vnc viewer, such as vinagre.
+#    TODO: start vnc viewer automatically while qemu boots and listen on vnc port.
+# 4. --disable-kvm is used to let qemu boot in docker environment which not have kvm.
+#
+
+
 ifeq ($(QCFG),)
-  QEMU_CONF ?= --disable-kvm --disable-vnc --enable-sdl
+  QEMU_CONF ?= --disable-kvm
+  ifneq ($(QEMU_VNC),1)
+    QEMU_CONF += --disable-vnc
+  endif
+  ifneq ($(QEMU_SDL),0)
+    QEMU_CONF += --enable-sdl
+  endif
+  ifeq ($(QEMU_CURSES),1)
+    QEMU_CONF += --enable-curses
+  endif
 else
   QEMU_CONF := $(QCFG)
 endif

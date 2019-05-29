@@ -278,10 +278,8 @@ Build one kernel module (e.g. minix.ko, tun.ko):
 
 List available modules in `modules/` and `boards/<BOARD>/modules/`:
 
-    $ make m-l
-        1 hello
-    $ make m-l-f
-        1 /labs/linux-lab/modules/hello
+    $ make m-l m=hello
+     1	m=hello ; M=$PWD/modules/hello
 
 Build external kernel modules (the same as internel modules):
 

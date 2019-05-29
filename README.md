@@ -565,6 +565,10 @@ Test multiple kernel modules:
 
     $ make test m=oops_test,kmemleak_test
 
+Test modules with specified ROOTDEV, nfs boot is used by default, but some boards may not support network:
+
+    $ make test m=hello,oops TEST_RD=/dev/ram0
+
 Run test cases while testing kernel modules:
 
     $ make test m=oops,kmemleak TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'

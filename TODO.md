@@ -39,3 +39,4 @@
 28. Create branch for boards to avoid override while checking out source code for boards.
 29. 0day test: https://lkml.org/lkml/2017/11/21/179
 30. module: need to find out module name and module config instead of module directory.
+31. make a list about different boards's ROOTDEV feature

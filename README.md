@@ -387,14 +387,15 @@ Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
 
     $ make boot U=0
 
-Boot with different rootfs:
+Boot with different rootfs (depends on board, check `/dev/` after boot):
 
-    $ make boot ROOTDEV=/dev/ram
-    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=/dev/ram      // support by all boards, basic boot method
+    $ make boot ROOTDEV=/dev/nfs      // depends on network driver, only raspi3 not work
     $ make boot ROOTDEV=/dev/sda
     $ make boot ROOTDEV=/dev/mmcblk0
+    $ make boot ROOTDEV=/dev/vda      // virtio based block device
 
-Boot with extra kernel command line:
+Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 
     $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
 

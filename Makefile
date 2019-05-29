@@ -1358,17 +1358,17 @@ endif
 endif #ksetconfig
 
 ifeq ($(filter _kernel-getconfig,$(MAKECMDGOALS)),_kernel-getconfig)
-  kgetconfig := 1
-endif
-
-ifeq ($(kgetconfig),1)
-  o ?= $m
-  o ?= $(opt)
-  o ?= $(option)
-  o ?= $(config)
   ifneq ($(o),)
     KCONFIG_GET_OPT := -s $(o)
   endif
+endif
+
+ifeq ($(filter k-gc,$(MAKECMDGOALS)),k-gc)
+  o ?= $m
+endif
+
+ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
+  o ?= $m
 endif
 
 kernel-getcfg: kernel-getconfig
@@ -1378,8 +1378,8 @@ kernel-getconfig: FORCE
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 
 _kernel-getconfig:
-	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)grep -i $(o) $(DEFAULT_KCONFIG)
+	$(Q)echo "option state: $(o)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 kernel-config: kernel-setconfig
 kernel-setcfg: kernel-setconfig
@@ -1391,8 +1391,8 @@ kernel-setconfig: FORCE
 
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
-	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG)
+	$(Q)echo "option state: $(KCONFIG_OPT)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 	$(Q)echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
 ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES

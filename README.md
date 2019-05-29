@@ -373,7 +373,7 @@ Boot with graphic:
 
 Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit'):
 
-    $ make boot G=2
+    $ make b=pc boot G=2
 
 Boot with prebuilt kernel and rootfs (if no new available, simple use `make boot`):
 

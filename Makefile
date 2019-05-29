@@ -1401,7 +1401,10 @@ ifeq ($(KCONFIG_OPR),m)
 	$(Q)make kernel KT=prepare
 endif
 
-PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig
+k-sc: kernel-setconfig
+k-gc: kernel-getconfig
+
+PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig k-sc k-gc
 
 kernel-help:
 	$(Q)make kernel KT=help

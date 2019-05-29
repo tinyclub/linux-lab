@@ -417,7 +417,7 @@ Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` b
 
     $ make uboot-patch
 
-Use `tftp`, `sdcard` or `flash` explicitly:
+Use `tftp`, `sdcard` or `flash` explicitly, should run `make uboot-checkout` before a new `uboot-patch`:
 
     $ make uboot-patch BOOTDEV=tftp
     $ make uboot-patch BOOTDEV=sdcard

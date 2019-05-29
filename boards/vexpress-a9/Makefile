@@ -9,6 +9,9 @@ QEMU    ?= v2.12.0
 QEMU_US ?= 0
 UBOOT   ?= v2015.07
 LINUX   ?= v5.1
+ifeq ($(LINUX),v3.18.39)
+  U := 0
+endif
 BUILDROOT?= 2016.05
 KRN_ADDR?= 0x60003000
 KRN_SIZE?= 5

@@ -735,6 +735,12 @@ root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
 
+root-olddefconfig:
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) olddefconfig
+
+root-oldconfig:
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) oldconfig
+
 root-menuconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
 
@@ -1553,6 +1559,12 @@ uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
+
+uboot-olddefconfig:
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) olddefconfig
+
+uboot-oldconfig:
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldconfig
 
 uboot-menuconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig

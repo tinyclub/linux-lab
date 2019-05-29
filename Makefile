@@ -686,7 +686,33 @@ root-checkout:
 ROOT_CONFIG_FILE ?= buildroot_$(CPU)_defconfig
 
 RCFG ?= $(ROOT_CONFIG_FILE)
-ROOT_CONFIG_PATH := $(BOARD_DIR)/$(RCFG)
+ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
+
+ifeq ($(RCFG),$(ROOT_CONFIG_FILE))
+  RCFG_FILE := $(BOARD_DIR)/$(RCFG)
+else
+  ifeq ($(RCFG), $(wildcard $(RCFG)))
+    RCFG_FILE := $(RCFG)
+  else
+    TMP := $(BOARD_DIR)/$(RCFG)
+    ifeq ($(TMP), $(wildcard $(TMP)))
+      RCFG_FILE := $(RCFG)
+    else
+      TMP := $(ROOT_CONFIG_DIR)/$(RCFG)
+      ifeq ($(TMP), $(wildcard $(TMP)))
+        RCFG_FILE := $(TMP)
+      else
+        $(error $(RCFG): can not be found, please pass a valid root defconfig.)
+      endif
+    endif
+  endif
+endif
+
+ifeq ($(findstring $(ROOT_CONFIG_DIR),$(RCFG_FILE)),$(ROOT_CONFIG_DIR))
+  RCFG_BUILTIN := 1
+endif
+
+_RCFG := $(notdir $(RCFG_FILE))
 
 RP ?= 0
 ROOT_PATCH_TOOL := tools/rootfs/patch.sh
@@ -706,8 +732,8 @@ endif
 
 root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
-	$(Q)if [ -f "$(ROOT_CONFIG_PATH)" ]; then cp $(ROOT_CONFIG_PATH) $(ROOT_SRC)/configs; fi
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(RCFG)
+	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
 
 root-menuconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
@@ -1106,13 +1132,38 @@ endif
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
 
 KCFG ?= $(KERNEL_CONFIG_FILE)
-KERNEL_CONFIG_PATH := $(BOARD_DIR)/$(KCFG)
-KERNEL_CONFIG_PATH_TMP := $(KERNEL_SRC)/arch/$(ARCH)/configs/$(KCFG)
+KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs
+
+ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
+  KCFG_FILE := $(BOARD_DIR)/$(KCFG)
+else
+  ifeq ($(KCFG), $(wildcard $(KCFG)))
+    KCFG_FILE := $(KCFG)
+  else
+    TMP := $(BOARD_DIR)/$(KCFG)
+    ifeq ($(TMP), $(wildcard $(TMP)))
+      KCFG_FILE := $(TMP)
+    else
+      TMP := $(KERNEL_CONFIG_DIR)/$(KCFG)
+      ifeq ($(TMP), $(wildcard $(TMP)))
+        KCFG_FILE := $(TMP)
+      else
+        $(error $(KCFG): can not be found, please pass a valid kernel defconfig.)
+      endif
+    endif
+  endif
+endif
+
+ifeq ($(findstring $(KERNEL_CONFIG_DIR),$(KCFG_FILE)),$(KERNEL_CONFIG_DIR))
+  KCFG_BUILTIN := 1
+endif
+
+_KCFG := $(notdir $(KCFG_FILE))
 
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
-	$(Q)if [ -f "$(KERNEL_CONFIG_PATH)" ]; then cp $(KERNEL_CONFIG_PATH) $(KERNEL_CONFIG_PATH_TMP); fi
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KCFG)
+	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(_KCFG)
 
 kernel-olddefconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) olddefconfig
@@ -1162,7 +1213,7 @@ PHONY += kernel-feature feature features kernel-features k-f f kernel-feature-li
 # Testing targets
 
 TEST ?= $T
-TEST_PREPARE := $(subst $(comma),$(space),$(TEST))
+TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
 
 # Force running git submodule commands
 GIT_FORCE := $(if $(TEST),--force,)
@@ -1470,12 +1521,38 @@ endif
 UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
 
 UCFG ?= $(UBOOT_CONFIG_FILE)
-UBOOT_CONFIG_PATH := $(BOARD_DIR)/$(UCFG)
+UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
+
+ifeq ($(UCFG),$(UBOOT_CONFIG_FILE))
+  UCFG_FILE := $(BOARD_DIR)/$(UCFG)
+else
+  ifeq ($(UCFG), $(wildcard $(UCFG)))
+    UCFG_FILE := $(UCFG)
+  else
+    TMP := $(BOARD_DIR)/$(UCFG)
+    ifeq ($(TMP), $(wildcard $(TMP)))
+      UCFG_FILE := $(UCFG)
+    else
+      TMP := $(UBOOT_CONFIG_DIR)/$(UCFG)
+      ifeq ($(TMP), $(wildcard $(TMP)))
+        UCFG_FILE := $(TMP)
+      else
+        $(error $(UCFG): can not be found, please pass a valid uboot defconfig.)
+      endif
+    endif
+  endif
+endif
+
+ifeq ($(findstring $(UBOOT_CONFIG_DIR),$(UCFG_FILE)),$(UBOOT_CONFIG_DIR))
+  UCFG_BUILTIN := 1
+endif
+
+_UCFG := $(notdir $(UCFG_FILE))
 
 uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
-	$(Q)if [ -f "$(UBOOT_CONFIG_PATH)" ]; then cp $(UBOOT_CONFIG_PATH) $(UBOOT_SRC)/configs; fi
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(UCFG)
+	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
 
 uboot-menuconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig

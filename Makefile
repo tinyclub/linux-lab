@@ -475,8 +475,10 @@ l: list
 l-b: list-base
 l-p: list-plugin
 l-f: list-full
+b-l: l
+b-l-f: l-f
 
-PHONY += list list-base list-plugin list-full l l-b l-p l-f
+PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
 
 # Source download
 

@@ -331,15 +331,20 @@ Switch compiler version if exists, for example:
 
     $ tools/gcc/switch.sh arm 4.3
 
-### Using more goals
+### Using more powerful goals
 
 Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
 
     $ make kernel-run help
+    $ make kernel-run menuconfig
 
+    $ make root-run help
     $ make root-run busybox-menuconfig
 
     $ make uboot-run help
+    $ make uboot-run menuconfig
+
+  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
 
 ### Booting
 

@@ -365,7 +365,7 @@ Boot with graphic:
 
   `vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
   with G=1 and switch to serial console via the 'View' menu, this can not be used to test LCD and
-  keyboard drivers.
+  keyboard drivers. `XOPTS` specify the eXtra qemu options.
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=virt boot G=1 LINUX=v5.1

@@ -40,3 +40,4 @@
 29. 0day test: https://lkml.org/lkml/2017/11/21/179
 30. module: need to find out module name and module config instead of module directory.
 31. make a list about different boards's ROOTDEV feature
+32. use expect as interactive test automation: https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile

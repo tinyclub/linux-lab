@@ -11,12 +11,13 @@ pipe_reader_pid=$3
 [ -z "$log_file" ] && pipe_file=tmp.log
 [ -z "$pipe_reader_pid" ] && pipe_reader_pid=fifo.reader.pid
 
-[ ! -p "$pipe_file" ] && mkfifo $pipe_file
+[ ! -p "${pipe_file}.out" ] && mkfifo ${pipe_flie}.out
+[ ! -p "${pipe_file}.in" ] && mkfifo ${pipe_flie}.in
 
 (while :;
 do
 	sleep 1
-	[ -p "$pipe_file" ] && cat $pipe_file | tee -a $log_file
+	[ -p "${pipe_file}.out" ] && cat ${pipe_file}.out | tee -a $log_file
 done)&
 
 reader=$!

@@ -785,7 +785,7 @@ ifeq ($(U),1)
   endif
 endif
 
-ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/dir2rd.sh
+ROOT_GENDISK_TOOL := $(TOOL_DIR)/rootfs/dir2$(DEV_TYPE).sh
 
 root-rd:
 	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rebuild; fi
@@ -794,8 +794,8 @@ root-rd-rebuild: root-rebuild
 
 root-rebuild:
 ifeq ($(prebuilt_root_dir), 1)
-	@echo "LOG: Generating initrd with $(ROOT_GENRD_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
+	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target

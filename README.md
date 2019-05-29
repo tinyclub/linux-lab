@@ -232,15 +232,34 @@ Configure kernel and buildroot with defconfig:
 
     $ make config
 
-Configure one by one:
+Configure one by one, by default, use the defconfig in `boards/<BOARD>/`:
 
     $ make kernel-defconfig
     $ make root-defconfig
+
+Configure with kernel patching:
+
+    $ make kernel-defconfig KP=1
+    $ make root-defconfig RP=1
+
+Configure with specified defconfig:
+
+    $ make B=raspi3
+    $ make kernel-defconfig KCFG=bcmrpi3_defconfig
+    $ make root-defconfig KCFG=raspberrypi3_64_defconfig
+
+If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: buildroot/configs, u-boot/configs, linux-stable/arch/<ARCH>/configs.
 
 ### Manual Configuration
 
     $ make kernel-menuconfig
     $ make root-menuconfig
+
+### Old default configuration
+
+    $ make kernel-olddefconfig
+    $ make root-olddefconfig
+    $ make uboot-oldefconfig
 
 ### Building
 
@@ -260,35 +279,52 @@ Build all internel kernel modules:
     $ make root-rebuild     // not need for nfs boot
     $ make boot
 
-Build one kernel module (e.g. minix.ko, tun.ko):
+List available modules in `modules/`, `boards/<BOARD>/modules/` and `linux-stable/`:
+
+    $ make m-l m=hello
+         1	m=hello ; M=$PWD/modules/hello
+    $ make m-l m=tun,minix
+         1	c=TUN ; m=tun ; M=drivers/net
+         2	c=MINIX_FS ; m=minix ; M=fs/minix
+
+Enable one kernel module:
+
+    $ make kernel-getconfig m=minix_fs
+    Getting kernel config: MINIX_FS ...
+
+    option state: MINIX_FS=m
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     $ make kernel-setconfig m=minix_fs
+    Setting kernel config: m=minix_fs ...
+
+    option state: minix_fs=m
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+
+    Enable new kernel config: minix_fs ...
+
+Build one kernel module (e.g. minix.ko):
+
     $ make m M=fs/minix/
+    Or
+    $ make m m=minix
+
+Install and clean the module:
+
     $ make m-i M=fs/minix/
     $ make m-c M=fs/minix/
 
-    $ make kernel-setconfig m=tun
+More flexible usage:
 
+    $ make kernel-setconfig m=tun
     $ make kernel x=tun.ko M=drivers/net
     $ make kernel x=drivers/net/tun.ko
     $ make kernel-run drivers/net/tun.ko
 
-    $ make m-i M=drivers/net
-    $ make m-c M=drivers/net
-
-List available modules in `modules/` and `boards/<BOARD>/modules/`:
-
-    $ make m-l m=hello
-     1	m=hello ; M=$PWD/modules/hello
-
 Build external kernel modules (the same as internel modules):
 
     $ make m m=hello
-    $ make m-i m=hello
-    $ make root-rebuild && make boot
-
     Or
-
     $ make k x=$PWD/modules/hello/hello.ko
 
 Switch compiler version if exists, for example:

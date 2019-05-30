@@ -17,8 +17,8 @@
 #
 # 2. find out who have broken uboot booting, not the same cause, this wrongly changed if .. fi statements
 #
-#       $ cp tools/uboot/boot-fails.sh .
-#	$ ./bisect.sh efa5cf a61e84 ./boot-fails.sh versatilepb
+#       $ cp tools/uboot/boot-test.sh .
+#	$ ./bisect.sh efa5cf a61e84 ./boot-test.sh versatilepb
 #	d1fccb583bc60c504d7531ffe6c6934ddf960cb4 is the first bad commit
 
 bad=$1

@@ -1,11 +1,11 @@
 #!/bin/bash -e
 #
-# boot-fail.sh -- check uboot autoboot fails, if fails enter into uboot command line
+# boot-test.sh -- check uboot autoboot fails, if fails, will stop at uboot command line and eventually no kernel log output
 #
 # example:
-#	$ tools/uboot/boot-fail.sh versatilepb
+#	$ tools/uboot/boot-test.sh versatilepb
 #
-# 	$ tools/uboot/boot-fail.sh vexpress-a9
+# 	$ tools/uboot/boot-test.sh vexpress-a9
 #
 # this can be used to do tools/git/bisect.sh if uboot autoboot fails.
 #
@@ -14,15 +14,16 @@
 board=$1
 boot_timeout=$2
 
-[ -z "$board" ] && echo "ERR: $0 versatilepb|vexpress-a9 [boot_timeout]" && exit 1
+[ -z "$board" ] && echo "Usage: $0 versatilepb|vexpress-a9 [boot_timeout]" && exit 1
 
 case $board in
   versatilepb)
-	fail_string="VersatilePB #"
+	#fail_string="VersatilePB #"
+	success_string="Booting Linux on"
 	[ -z "$boot_timeout" ] && boot_timeout=10
 	;;
   vexpress-a9)
-	fail_string="VExpress#"
+	success_string="Booting Linux on"
 	[ -z "$boot_timeout" ] && boot_timeout=10
 	;;
 	*)
@@ -30,7 +31,7 @@ case $board in
 	;;
 esac
 
-boot_fail=0
+boot_fail=1
 
 make b=$board uboot-checkout
 make b=$board uboot-patch
@@ -38,13 +39,13 @@ make b=$board uboot-defconfig
 make b=$board uboot
 
 log=`mktemp`
-make b=$board M=512M boot XOPTS="-serial mon:file:$log" &
+make b=$board M=512M boot V=1 XOPTS="-serial mon:file:$log" &
 boot_pid=$!
 
 sleep $boot_timeout
 
 cat $log
-grep --color=always "$fail_string" $log && boot_fail=1
+grep --color=always "$success_string" $log && boot_fail=0
 
 rm $log
 #echo $$ $boot_pid

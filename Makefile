@@ -624,9 +624,14 @@ ifeq ($(QCFG),)
   ifneq ($(QEMU_VNC),1)
     QEMU_CONF += --disable-vnc
   endif
+
+  # Qemu > 4.0 requires libsdl2
+  QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
+  QEMU_SDL ?= $(shell if [ $(QEMU_MAJOR_VER) -ge 4 ];then echo 0; else echo 1; fi)
   ifneq ($(QEMU_SDL),0)
     QEMU_CONF += --enable-sdl
   endif
+
   ifneq ($(QEMU_VIRTFS),0)
     QEMU_CONF += --enable-virtfs
   endif

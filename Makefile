@@ -2129,7 +2129,7 @@ PHONY += all
 
 # Clean up
 
-emulator-clean:
+qemu-clean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
 ifeq ($(QEMU_US), 1)
@@ -2138,6 +2138,8 @@ else
 	-$(Q)make $(S) -C $(QEMU_OUTPUT)/$(XARCH)-softmmu clean
 endif
 endif
+
+emulator-clean: qemu-clean
 
 root-clean:
 ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
@@ -2154,7 +2156,7 @@ ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
 endif
 
-clean: emulator-clean root-clean kernel-clean rootdir-clean uboot-clean
+clean: emulator-clean qemu-clean root-clean kernel-clean rootdir-clean uboot-clean
 
 PHONY += emulator-clean root-clean kernel-clean rootdir-clean uboot-clean clean
 

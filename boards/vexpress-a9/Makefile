@@ -26,6 +26,10 @@ BOOTDEV ?= flash
 PFLASH_BASE ?= 0x40000000
 PFLASH_SIZE ?= 64
 PFLASH_BS   ?= 512
+
+# 9pnet based network filesystem sharing, vexpress-a9 not support virtio-9p-pci, so, the virtio-9p-pci based -virtfs not work
+NET9PDEV ?= virtio-9p-device
+
 NETDEV  ?= lan9118
 SERIAL  ?= ttyAMA0
 #ROOTDEV ?= /dev/mmcblk0

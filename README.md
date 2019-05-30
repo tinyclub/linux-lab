@@ -744,8 +744,10 @@ Qemu Board:
 Verified boards with Linux v5.1:
 
     aarch64/virt: virtio-9p-device + virtio-9p-pci
-    arm/vexpress-a9: should boot without uboot (U=0), only work with virtio-9p-device
+    arm/vexpress-a9: only work with virtio-9p-device and without uboot booting
+    arm/versatilepb: only work with virtio-9p-pci
     x86_64/pc, only work with virtio-9p-pci
+
 
 ## Plugins
 

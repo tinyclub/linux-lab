@@ -15,6 +15,12 @@ BUILDROOT?= 2016.05
 NETDEV  ?= virtio
 SERIAL  ?= ttyAMA0
 
+# ref: https://wiki.qemu.org/Documentation/9psetup
+# 9pnet based network filesystem sharing, aarch64/virt board support both virtio-9p-pci/-virtfs and virtio-9p-device
+# But virtio-9p-device requires less kernel options (no need the PCI related parts in features/linux/9pnet/)
+# To eanble this function, please make sure the 9pnet feature is enabled: make feature f=9pnet && make kernel-olddefconfig
+NET9PDEV ?= virtio-9p-device
+
 # virtio sda: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
 # ROOTDEV ?= /dev/sda
 # virtio vda: https://wiki.debian.org/Arm64Qemu

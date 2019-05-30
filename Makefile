@@ -1742,9 +1742,24 @@ HOST_SHARE_DIR ?= $(SHARE_DIR)
 GUEST_SHARE_DIR ?= /hostshare
 SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
-  # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC, otherwise, please `virtio-9p-device`
-  SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
-  # SHARE_OPT ?= -virtfs local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0,mount_tag=$(SHARE_TAG)
+  # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
+  $(info LOG: file sharing enabled with SHARE=1, disable uboot it breaks sharing.)
+  U := 0
+  export U
+
+  # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC
+  # aarch64/virt supports `virtio-9p-device` and `virtio-9p-pci`
+  # arm/vexpress-a9 only supports `virtio-9p-device`
+  # x86_64/pc only supports `virtio-9p-pci`
+
+  ifeq ($(NET9PDEV),)
+     SHARE_OPT ?= -virtfs local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0,mount_tag=$(SHARE_TAG)
+     # The above equals, NET9PDEV := virtio-9p-pci for below line
+     # SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device $(NET9PDEV),fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  else
+     SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device $(NET9PDEV),fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  endif
+
   CMDLINE += sharetag=$(SHARE_TAG) sharedir=$(GUEST_SHARE_DIR)
 endif
 

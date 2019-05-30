@@ -1746,9 +1746,12 @@ GUEST_SHARE_DIR ?= /hostshare
 SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
   # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
-  $(info LOG: file sharing enabled with SHARE=1, disable uboot it breaks sharing.)
-  U := 0
-  export U
+  #        versatilepb works with 9pnet + uboot?
+  ifeq ($(U),1)
+    $(info LOG: file sharing enabled with SHARE=1, disable uboot for it breaks sharing.)
+    U := 0
+    export U
+  endif
 
   # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC
   # aarch64/virt supports `virtio-9p-device` and `virtio-9p-pci`

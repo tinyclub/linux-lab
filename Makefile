@@ -215,7 +215,7 @@ ifneq ($(_ROOTFS),)
   PREBUILT_ROOT_DIR   ?= $(dir $(_ROOTFS))
 endif
 ifneq ($(_QTOOL),)
-  PREBUILT_QEMU_DIR   ?= $(patsubst %/bin,%,$(dir $(_QTOOL)))
+  PREBUILT_QEMU_DIR   ?= $(patsubst %/bin/,%,$(dir $(_QTOOL)))
 endif
 
 # Uboot configurations
@@ -1662,12 +1662,13 @@ uboot-save: prebuilt-images
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
 
 
-emulator-save: prebuilt-images
+qemu-save: prebuilt-images
+	$(Q)if [ -d "$(PREBUILT_QEMU_DIR)" ]; then rm -rf $(PREBUILT_QEMU_DIR); fi
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
 	$(Q)make -C $(QEMU_OUTPUT)/$(QEMU_TARGET) install V=$(V)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
 
-qemu-save: emulator-save
+emulator-save: qemu-save
 
 r-s: root-save
 k-s: kernel-save

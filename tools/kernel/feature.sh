@@ -41,7 +41,7 @@ do
 
     for d in $KFD_BOARD $KFD
     do
-        for path in $d/$f/$LINUX $d/$f/$LINUX_BASE
+        for path in $d/$f $d/$f/$LINUX $d/$f/$LINUX_BASE
         do
             [ ! -d $path ] && continue
             echo "Appling feature: $f"

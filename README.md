@@ -683,7 +683,7 @@ Qemu Board:
 
 Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
-### Share with 9p virtio (tested on vexpress-a9 and virt board)
+### Share with 9p virtio
 
 To enable 9p virtio for a new board, please refer to [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup). qemu must be compiled with `--enable-virtfs`, and kernel must enable the necessary options.
 
@@ -704,6 +704,11 @@ Reconfigure the kernel with:
     mount: mounting hostshare on /hostshare failed: No such file or directory'
 
   `-device virtio-9p-device` requires less kernel options.
+
+  To enable the above options, please simply type:
+
+   $ make feature f=9pnet
+   $ make kernel-olddefconfig
 
 Docker host:
 
@@ -734,6 +739,13 @@ Qemu Board:
     $ ls /hostshare/       # Access the file in guest
     test
     $ touch /hostshare/guest-test   # Create a file in guest
+
+
+Verified boards with Linux v5.1:
+
+    aarch64/virt: virtio-9p-device + virtio-9p-pci
+    arm/vexpress-a9: should boot without uboot (U=0), only work with virtio-9p-device
+    x86_64/pc, only work with virtio-9p-pci
 
 ## Plugins
 

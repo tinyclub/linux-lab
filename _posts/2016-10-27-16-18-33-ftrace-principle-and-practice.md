@@ -51,16 +51,16 @@ tags:
 
       $ echo 'main(){}' | \
       mipsel-linux-gnu-gcc -x c -S -o - - -pg | grep mcount
-	subu	$sp,$sp,8		# _mcount pops 2 words from  stack
-	jal	_mcount
+        subu	$sp,$sp,8		# _mcount pops 2 words from  stack
+        jal	_mcount
 
 * KFT: `gcc -finstrument-functions`
 
       $ echo 'main(){}' | \
       mipsel-linux-gnu-gcc -x c -S -o - - \
       -finstrument-functions | egrep "enter\)|exit\)"
-	lw	$25,%call16(__cyg_profile_func_enter)($28)
-	lw	$25,%call16(__cyg_profile_func_exit)($28)
+        lw	$25,%call16(__cyg_profile_func_enter)($28)
+        lw	$25,%call16(__cyg_profile_func_exit)($28)
 
 ### Dynamic function tracing
 

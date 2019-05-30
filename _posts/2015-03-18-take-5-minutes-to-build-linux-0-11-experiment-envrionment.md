@@ -151,8 +151,6 @@ categories:
 
 遇到任何问题欢迎参与回复互动，或者关注我们的新浪微博/微信公众号互动：@泰晓科技。
 
-也可以直接到赵老师的站点上参与交流和讨论：<http://www.oldlinux.org/oldlinux/>
-
 
 ![Linux 0.11 Calltree][8]
 
@@ -164,7 +162,7 @@ categories:
  [2]: http://www.oldlinux.org/download/clk011c-3.0.pdf
  [3]: http://oss.lzu.edu.cn
  [4]: #section-4
- [5]: http://www.oldlinux.org/oldlinux/archiver/?tid-11651.html
+ [5]: /build-linux-0-11-lab-with-docker/
  [6]: http://sourceforge.net/projects/schilytools/files/calltree/
  [7]: https://github.com/tinyclub/linux-0.11-lab/blob/master/README.md
  [8]: /wp-content/uploads/2015/03/linux-0.11.jpg

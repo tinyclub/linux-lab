@@ -619,10 +619,13 @@ endif
 #
 
 
-ifeq ($(filter qemu,$(MAKECMDGOALS)),qemu)
+ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
+ ifeq ($(QEMU),)
+  $(error ERR: No qemu version specified, please configure QEMU= in boards/$(BOARD)/Makefile or pass it manually)
+ endif
+
  ifeq ($(QCFG),)
   # Use v2.12.0 by default
-  QEMU ?= v2.12.0
   QEMU_CONF ?= --disable-kvm
 
   # Qemu > 4.0 requires libsdl2, which is not installable in current lab

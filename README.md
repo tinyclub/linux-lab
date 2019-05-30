@@ -460,11 +460,11 @@ At first, build qemu-system-ARCH:
 
     $ make B=vexpress-a9
 
-    $ make emulator-download
-    $ make emulator-patch
-    $ make emulator-defconfig
-    $ make emulator
-    $ make emulator-save
+    $ make qemu-download
+    $ make qemu-patch
+    $ make qemu-defconfig
+    $ make qemu
+    $ make qemu-save
 
 qemu-ARCH-static and qemu-system-ARCH can not be compiled together. to build
 qemu-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and

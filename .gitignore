@@ -5,3 +5,4 @@ output
 logging
 *.patched
 .swp
+hostshare/

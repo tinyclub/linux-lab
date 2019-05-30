@@ -631,8 +631,8 @@ ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
   # Qemu > 4.0 requires libsdl2, which is not installable in current lab
   # (too old ubuntu), use vnc instead
   QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
-  QEMU_SDL ?= $(shell if [ $(QEMU_MAJOR_VER) -ge 4 ];then echo 0; else echo 1; fi)
-  QEMU_VNC ?= $(shell if [ $(QEMU_MAJOR_VER) -ge 4 ];then echo 1; else echo 0; fi)
+  QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
+  QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
   ifneq ($(QEMU_SDL),0)
     QEMU_CONF += --enable-sdl
   endif
@@ -1229,8 +1229,21 @@ kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(_KCFG)
 
+#
+# kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
+# see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
+#
+
+LINUX_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(LINUX))))
+LINUX_MINOR_VER := $(subst v,,$(word 2,$(subst .,$(space),$(LINUX))))
+
+KERNEL_OLDDEFCONFIG := olddefconfig
+ifeq ($(shell [ $(LINUX_MAJOR_VER) -lt 4 -o $(LINUX_MAJOR_VER) -eq 4 -a $(LINUX_MINOR_VER) -le 19 ]; echo $$?),0)
+  KERNEL_OLDDEFCONFIG := oldnoconfig
+endif
+
 kernel-olddefconfig:
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) olddefconfig
+	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_OLDDEFCONFIG)
 
 kernel-oldconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldconfig
@@ -1283,7 +1296,7 @@ TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
 GIT_FORCE := $(if $(TEST),--force,)
 
 kernel-init:
-	$(Q)make kernel-olddefconfig
+	$(Q)make kernel-$(KERNEL_OLDDEFCONFIG)
 	$(Q)make kernel KT=$(IMAGE)
 
 rootdir-init:
@@ -1455,7 +1468,7 @@ _kernel-setconfig:
 ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
-	$(Q)make kernel KT=olddefconfig
+	$(Q)make kernel KT=$(KERNEL_OLDDEFCONFIG)
 	$(Q)make kernel KT=prepare
 endif
 
@@ -1622,7 +1635,7 @@ uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
 
 uboot-olddefconfig:
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) olddefconfig
+	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldefconfig
 
 uboot-oldconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldconfig

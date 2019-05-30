@@ -619,7 +619,10 @@ endif
 #
 
 
-ifeq ($(QCFG),)
+ifeq ($(filter qemu,$(MAKECMDGOALS)),qemu)
+ ifeq ($(QCFG),)
+  # Use v2.12.0 by default
+  QEMU ?= v2.12.0
   QEMU_CONF ?= --disable-kvm
 
   # Qemu > 4.0 requires libsdl2, which is not installable in current lab
@@ -644,8 +647,9 @@ ifeq ($(QCFG),)
   ifeq ($(QEMU_CURSES),1)
     QEMU_CONF += --enable-curses
   endif
-else
+ else
   QEMU_CONF := $(QCFG)
+ endif
 endif
 
 #

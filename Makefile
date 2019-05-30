@@ -621,20 +621,26 @@ endif
 
 ifeq ($(QCFG),)
   QEMU_CONF ?= --disable-kvm
-  ifneq ($(QEMU_VNC),1)
-    QEMU_CONF += --disable-vnc
-  endif
 
-  # Qemu > 4.0 requires libsdl2
+  # Qemu > 4.0 requires libsdl2, which is not installable in current lab
+  # (too old ubuntu), use vnc instead
   QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
   QEMU_SDL ?= $(shell if [ $(QEMU_MAJOR_VER) -ge 4 ];then echo 0; else echo 1; fi)
+  QEMU_VNC ?= $(shell if [ $(QEMU_MAJOR_VER) -ge 4 ];then echo 1; else echo 0; fi)
   ifneq ($(QEMU_SDL),0)
     QEMU_CONF += --enable-sdl
+  endif
+
+  ifeq ($(QEMU_VNC),1)
+    QEMU_CONF += --enable-vnc
+  else
+    QEMU_CONF += --disable-vnc
   endif
 
   ifneq ($(QEMU_VIRTFS),0)
     QEMU_CONF += --enable-virtfs
   endif
+
   ifeq ($(QEMU_CURSES),1)
     QEMU_CONF += --enable-curses
   endif
@@ -1725,12 +1731,17 @@ G ?= 0
 MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
 # Sharing with the 9p virtio protocol
+# ref: https://wiki.qemu.org/Documentation/9psetup
 SHARE ?= 0
 SHARE_DIR ?= hostshare
+HOST_SHARE_DIR ?= $(SHARE_DIR)
+GUEST_SHARE_DIR ?= /hostshare
 SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
-  SHARE_OPT ?= -fsdev local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
-  CMDLINE += sharetag=$(SHARE_TAG) sharedir=/$(notdir $(SHARE_DIR))
+  # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC, otherwise, please `virtio-9p-device`
+  SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device virtio-9p-device,fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  # SHARE_OPT ?= -virtfs local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0,mount_tag=$(SHARE_TAG)
+  CMDLINE += sharetag=$(SHARE_TAG) sharedir=$(GUEST_SHARE_DIR)
 endif
 
 # Console configurations

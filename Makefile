@@ -615,6 +615,7 @@ endif
 #    it requires to install a vnc viewer, such as vinagre.
 #    TODO: start vnc viewer automatically while qemu boots and listen on vnc port.
 # 4. --disable-kvm is used to let qemu boot in docker environment which not have kvm.
+# 5. --enable-virtfs adds 9pnet sharing support, depends on libattr1-dev libcap-dev
 #
 
 
@@ -625,6 +626,9 @@ ifeq ($(QCFG),)
   endif
   ifneq ($(QEMU_SDL),0)
     QEMU_CONF += --enable-sdl
+  endif
+  ifneq ($(QEMU_VIRTFS),0)
+    QEMU_CONF += --enable-virtfs
   endif
   ifeq ($(QEMU_CURSES),1)
     QEMU_CONF += --enable-curses

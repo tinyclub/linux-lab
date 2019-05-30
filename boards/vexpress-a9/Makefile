@@ -42,5 +42,5 @@ UKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/uImage
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 UROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.uboot
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
-QP      ?= 1
+#QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)

@@ -3,10 +3,10 @@
 # hd2rd.sh rootfs initrd -- harddisk fs image to initrd
 #
 
-[ -z "$HHROOTFS" ] && HHROOTFS=$1
+[ -z "$HROOTFS" ] && HROOTFS=$1
 [ -z "$INITRD" ] && INITRD=$2
 
-[ -z "${HROOTFS}" -o "${INITRD}" ] && echo "Usage: $0 rootfs initrd" && exit 1
+[ -z "${HROOTFS}" -o -z "${INITRD}" ] && echo "Usage: $0 hrootfs initrd" && exit 1
 
 [ -z "${USER}" ] && USER=$(whoami)
 
@@ -20,11 +20,12 @@ ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g" | sed -e "s%.cpio%%g")
 mkdir -p ${ROOTDIR}.tmp
 sudo mount ${HROOTFS} ${ROOTDIR}.tmp
 
-cp -ar ${HROOTDIR}.tmp ${ROOTDIR}
+cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
 
 sudo chown ${USER}:${USER} -R ./
 sync
 sudo umount ${ROOTDIR}.tmp
+rmdir ${ROOTDIR}.tmp
 
 # building cpio.gz
 FS_CPIO_GZ=${ROOTDIR}.cpio.gz

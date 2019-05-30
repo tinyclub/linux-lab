@@ -413,7 +413,7 @@ Checkout the specified version:
 
     $ make uboot-checkout
 
-Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` by default:
+Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` by default.
 
     $ make uboot-patch
 
@@ -422,6 +422,8 @@ Use `tftp`, `sdcard` or `flash` explicitly, should run `make uboot-checkout` bef
     $ make uboot-patch BOOTDEV=tftp
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
+
+  `BOOTDEV` is used to specify where to store and load the images for uboot, `ROOTDEV` is used to tell kernel where to load the rootfs.
 
 Configure:
 
@@ -445,6 +447,11 @@ Use `tftp`, `sdcard` or `flash` explicitly:
 We can also change `ROOTDEV` during boot, for example:
 
     $ make boot U=1 BOOTDEV=flash ROOTDEV=/dev/nfs
+
+Clean images if want to update ramdisk, dtb and uImage:
+
+    $ make uboot-images-clean
+    $ make uboot-clean
 
 Save uboot images and configs:
 

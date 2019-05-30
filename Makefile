@@ -832,17 +832,28 @@ ifeq ($(U),1)
   endif
 endif
 
-ROOT_GENDISK_TOOL := $(TOOL_DIR)/rootfs/dir2$(DEV_TYPE).sh
+
+ifeq ($(FS_TYPE),rd)
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/dir2rd.sh
+else
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2rd.sh
+endif
 
 root-rd:
-	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rebuild; fi
+	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rd-rebuild; fi
 
-root-rd-rebuild: root-rebuild
+root-rd-rebuild: FORCE
+	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
 
+ROOT_GENDISK_TOOL := $(TOOL_DIR)/rootfs/dir2$(DEV_TYPE).sh
+
+# This is used to repackage the updated root directory, for example, `make r-i` just executed.
 root-rebuild:
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
+	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
 	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
@@ -1828,7 +1839,7 @@ ifeq ($(U),0)
   endif
 else
   ifeq ($(SD_BOOT),1)
-    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw
+    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw,id=sd0
   endif
 
   # Load pflash for booting with uboot every time
@@ -1849,8 +1860,10 @@ ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
   endif
 endif
 
+# FIXME: Currently, BOOTDEV and ROOTDEV can not be sed to sd/mmc at the same time
+# but it should work when the rootfs is put in a specified partition of the same sdcard.
 ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
-  BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw
+  BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw,id=mmc0
 endif
 
 ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
@@ -1906,22 +1919,24 @@ PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
 
 ifeq ($(U),1)
 
-UROOTFS_SRC=$(IROOTFS)
+root-ud:
+	$(Q)if [ ! -f "$(UROOTFS)" ]; then make root-ud-rebuild; fi
 
-$(UROOTFS): $(UROOTFS_SRC)
-ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
-	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(UROOTFS_SRC) $@
-endif
+_root-ud-rebuild: FORCE
+	@echo "LOG: Generating rootfs image for uboot ..."
+	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $@
 
-$(UKIMAGE):
-ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
+root-ud-rebuild: root-rd-rebuild _root-ud-rebuild
+
+kernel-uimage:
 	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
-endif
 
+$(UROOTFS): root-ud
+$(UKIMAGE): kernel-uimage
+
+U_ROOT_IMAGE = $(UROOTFS)
 U_KERNEL_IMAGE = $(UKIMAGE)
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-    U_ROOT_IMAGE = $(UROOTFS)
-endif
+
 ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
@@ -1935,54 +1950,52 @@ UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
 UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
 UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
 
-ifeq ($(BOOTDEV),tftp)
-tftp-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(Q)$(UBOOT_TFTP_TOOL)
-
-TFTP_IMAGES := tftp-images
-
-PHONY += tftp-images
-endif
+TFTP_IMGS := $(addprefix {TFTPBOOT}/,ramdisk dtb uImage)
 
 # require by env saving, whenever boot from pflash
-ifeq ($(PFLASH_IMG),)
-  PFLASH_IMG := $(TFTPBOOT)/pflash.img
-endif
-ifeq ($(findstring flash,$(BOOTDEV)),flash)
-pflash-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(Q)$(UBOOT_PFLASH_TOOL)
+PFLASH_IMG := $(TFTPBOOT)/pflash.img
 
-PFLASH_IMAGES := pflash-images
-PHONY += pflash-images
-endif
+SD_IMG     := $(TFTPBOOT)/sd.img
+ENV_IMG    := ${TFTPBOOT}/env.img
 
-ifeq ($(SD_BOOT),1)
-  ifeq ($(SD_IMG),)
-
-sd-images: $(U_ROOT_IMAGE) $(U_DTB_IMAGE) $(U_KERNEL_IMAGE)
-	$(Q)$(UBOOT_SD_TOOL)
-
-SD_IMAGES := sd-images
-SD_IMG    = $(TFTPBOOT)/sd.img
-PHONY += sd-images
-
-  endif
-endif
-
-ENV_IMG ?= ${TFTPBOOT}/env.img
 export ENV_IMG
 
-uboot-images: $(TFTP_IMAGES) $(PFLASH_IMAGES) $(SD_IMAGES)
+UBOOT_DEPS := $(U_DTB_IMAGE)
+ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
+  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    UBOOT_DEPS += root-ud
+  endif
+endif
+ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
+  UBOOT_DEPS += kernel-uimage
+endif
+
+_uboot-images: $(UBOOT_DEPS)
+ifeq ($(BOOTDEV),tftp)
+	$(Q)$(UBOOT_TFTP_TOOL)
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+	$(Q)$(UBOOT_PFLASH_TOOL)
+endif
+ifeq ($(SD_BOOT),1)
+	$(Q)$(UBOOT_SD_TOOL)
+endif
+
+
+uboot-images: _uboot-images
 	$(Q)$(UBOOT_CONFIG_TOOL)
 	$(Q)$(UBOOT_ENV_TOOL)
 
 uboot-images-clean:
-	$(Q)rm -rf $(PFLASH_IMG) $(SD_IMG)
+	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
+
+uboot-images-distclean: uboot-images-clean
+	$(Q)rm -rf $(UROOTFS) $(UKIMAGE)
 
 UBOOT_IMGS := uboot-images
-UBOOT_IMGS_CLEAN := uboot-images-clean
+UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
 
-PHONY += uboot-images uboot-images-clean
+PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
 
 endif # Uboot specific part
 
@@ -1991,7 +2004,7 @@ ROOT_GENHD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
 root-hd:
 	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
 
-root-hd-rebuild:
+root-hd-rebuild: FORCE
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 
@@ -2188,7 +2201,7 @@ ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
 endif
 
-uboot-clean: $(UBOOT_IMGS_CLEAN)
+uboot-clean: $(UBOOT_IMGS_DISTCLEAN)
 ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
 	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
 endif

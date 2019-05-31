@@ -1232,6 +1232,7 @@ kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 #
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
+#        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
 #
 
 LINUX_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(LINUX))))
@@ -1242,6 +1243,7 @@ ifeq ($(shell [ $(LINUX_MAJOR_VER) -lt 4 -o $(LINUX_MAJOR_VER) -eq 4 -a $(LINUX_
   KERNEL_OLDDEFCONFIG := oldnoconfig
 endif
 
+kernel-oldnoconfig: kernel-olddefconfig
 kernel-olddefconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_OLDDEFCONFIG)
 
@@ -1252,7 +1254,7 @@ kernel-menuconfig:
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
 
 
-PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
+PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
 
 # Build Kernel
 

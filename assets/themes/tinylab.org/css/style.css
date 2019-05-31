@@ -137,6 +137,14 @@ blockquote p {
 
     overflow: hidden
 }
+div.weekly a {
+    color: #aa6600;
+}
+div.weekly ul li {
+    font-weight: bold;
+    font-style: oblique;
+    color: #0066aa;
+}
 div.weekly blockquote {
     margin-left: 2.4em;
 }
@@ -147,7 +155,7 @@ div.weekly blockquote p {
 div.weekly p {
     padding-left: 2em;
     text-indent: 0;
-    color: #a6aaa9;
+    color: #66aa00;
 }
 div.reward-button {
     font-size: 28px;

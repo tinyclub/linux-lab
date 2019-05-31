@@ -1950,7 +1950,7 @@ root-ud:
 
 _root-ud-rebuild: FORCE
 	@echo "LOG: Generating rootfs image for uboot ..."
-	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $@
+	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
 
 root-ud-rebuild: root-rd-rebuild _root-ud-rebuild
 

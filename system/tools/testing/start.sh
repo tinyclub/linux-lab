@@ -6,7 +6,7 @@
 [ -r /etc/default/testing ] && . /etc/default/testing
 
 # Get feature list from kernel command line
-eval `cat /proc/cmdline | sed -e "s/ [^=]\{2,\} / /g" | sed -e "s/ [^=]\{2,\}$/ /g" | sed -e "s/^[^=]\{2,\} / /g"`
+eval `cat /proc/cmdline | sed -e "s/ [^=]\{2,\} / /g" | sed -e "s/ [^=]\{2,\}$/ /g" | sed -e "s/^[^=]\{2,\} / /g" | tr ' ' '\n' | grep -v "\." | tr '\n' ' '`
 
 FEATURE="$feature"
 CASE="$test_case"

@@ -815,7 +815,7 @@ root-buildroot:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) $(RT)
 
 # Install system/ to ROOTDIR
-root-install:
+root-install: root-dir
 	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 PHONY += root-buildroot root-install

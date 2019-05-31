@@ -33,8 +33,21 @@ do
         [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
         [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
         [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
-    done
-done
+
+        # apply the patchset maintained by multiple xxx.patch
+        for p in `find $path -type f -name "*.patch" | sort`
+        do
+            # Ignore some buggy patch via renaming it with suffix .ignore
+            echo $p | grep -q .ignore$
+            [ $? -eq 0 ] && continue
+
+            echo $p | grep -q \.ignore/
+            [ $? -eq 0 ] && continue
+
+            [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
+        done #p
+    done #f
+done #d
 
 for f in $FEATURE
 do
@@ -51,8 +64,21 @@ do
             [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
             [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
             [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
-        done
-    done
-done
+
+            # apply the patchset maintained by multiple xxx.patch
+            for p in `find $path -type f -name "*.patch" | sort`
+            do
+                # Ignore some buggy patch via renaming it with suffix .ignore
+                echo $p | grep -q .ignore$
+                [ $? -eq 0 ] && continue
+
+                echo $p | grep -q \.ignore/
+                [ $? -eq 0 ] && continue
+
+                [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
+            done #p
+        done #path
+    done #d
+done #f
 
 exit 0

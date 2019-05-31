@@ -30,6 +30,7 @@ do
         echo "Appling feature: $f"
 
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
+        [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
         [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
         [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
     done
@@ -47,6 +48,7 @@ do
             echo "Appling feature: $f"
 
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
+            [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
             [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
             [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
         done

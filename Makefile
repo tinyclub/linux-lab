@@ -588,7 +588,7 @@ qemu-patch: $(QEMU_CHECKOUT)
 	  $(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT); \
 	  touch $(QEMU_PATCHED_TAG);  \
 	else \
-	  echo "ERR: patchset has been applied already, if want, please do 'make qemu-checkout' at first." && exit 1; \
+	  echo "ERR: qemu patchset has been applied, if want, please do 'make qemu-checkout' at first." && exit 1; \
 	fi
 
 emulator-patch: qemu-patch
@@ -770,7 +770,7 @@ root-patch:
 	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
 	  touch $(ROOT_PATCHED_TAG); \
 	else
-	  echo "ERR: patchset has been applied already, if want, please do 'make root-checkout' at first."; \
+	  echo "ERR: root patchset has been applied already, if want, please do 'make root-checkout' at first."; \
 	fi
 
 ifeq ($(RP),1)
@@ -1185,7 +1185,7 @@ kernel-patch:
 	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
 	  touch $(LINUX_PATCHED_TAG); \
 	else \
-	  echo "ERR: patchset has been applied already, if want, please do 'make kernel-checkout' at first." && exit 1; \
+	  echo "ERR: kernel patchset has been applied, if want, please do 'make kernel-checkout' at first." && exit 1; \
 	fi
 
 
@@ -1260,8 +1260,15 @@ PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel
 
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
+FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
+
 kernel-feature:
-	$(Q)$(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"
+	@if [ ! -f $(FEATURE_PATCHED_TAG) ]; then \
+	  $(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
+	  touch $(FEATURE_PATCHED_TAG); \
+	else \
+	  echo "ERR: feature patchset has been applied, if want, please do 'make kernel-checkout' at first." && exit 1; \
+	fi
 
 feature: kernel-feature
 features: feature
@@ -1593,7 +1600,7 @@ uboot-patch:
 	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
 	  touch $(UBOOT_PATCHED_TAG); \
 	else \
-	  echo "ERR: patchset has been applied already, if want, please do 'make uboot-checkout' at first." && exit 1; \
+	  echo "ERR: patchset has been applied, if want, please do 'make uboot-checkout' at first." && exit 1; \
 	fi
 
 ifeq ($(UP),1)

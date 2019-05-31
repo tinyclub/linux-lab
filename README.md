@@ -482,11 +482,12 @@ qemu-ARCH-static and qemu-system-ARCH can not be compiled together. to build
 qemu-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and
 rebuild it.
 
-If QEMU and QTOOL specified, the one in prebuilt will be used in advance.
+If QEMU and QTOOL specified, the one in prebuilt/ will be used in advance of
+one installed in system, but the first used is the one just compiled if exists.
 
 While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
-compiling a newer qemu 2.12.0, no hang exists. please take notice such issue in
-the future kernel upgrade.
+compiling a newer qemu 2.12.0, no hang exists. please take notice of such issue
+in the future kernel upgrade.
 
 ### Using external toolchain
 
@@ -502,7 +503,8 @@ If not external toolchain there, the builtin will be used back.
 
 ### Using external rootfs
 
-Builtin rootfs is minimal, is not enough for complex application development, which requires modern Linux distributions.
+Builtin rootfs is minimal, is not enough for complex application development,
+which requires modern Linux distributions.
 
 Such a type of rootfs has been introduced and has been released as docker
 image, ubuntu 18.04 is added for arm32v7 at first, more later.
@@ -513,8 +515,21 @@ Run it via docker directly:
 
 Extract it out and run in Linux Lab:
 
+  ARM32/vexpress-a9:
+
     $ tools/rootfs/docker/extract.sh tinylab/arm32v7-ubuntu arm
-    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
+    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
+
+  ARM64/raspi3:
+
+    $ tools/rootfs/docker/extract.sh tinylab/arm64v8-ubuntu arm
+    $ make boot B=raspi3 V=1 ROOTDEV=/dev/mmcblk0 ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm64v8-ubuntu
+
+More rootfs from docker can be found:
+
+    $ docker search arm64 | egrep "ubuntu|debian"
+    arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating sys…   25
+    arm64v8/debian   Debian is a Linux distribution that's compos…   20
 
 ### Debugging
 

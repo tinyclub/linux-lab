@@ -834,6 +834,44 @@ Kernel itself also:
 
 Edit the configs and Makefile untill they match our requirements.
 
+The configuration must be put in `boards/<BOARD>/` and named with necessary
+version and arch info, use `raspi3` as an example:
+
+    $ ls boards/raspi3/*defconfig
+    boards/raspi3/buildroot_cortex-a53_defconfig
+    boards/raspi3/linux_v5.1_defconfig
+
+`cortex-a53` is the CPU version, `v5.1` is the kernel version, both of these
+variables should be configured in `boards/<BOARD>/Makefile`.
+
+#### Choose the versions of kernel, rootfs and uboot
+
+Please use 'tag' instead of 'branch', use kernel as an example:
+
+    $ cd linux-stable
+    $ git tag
+    ...
+    v5.0
+    ...
+    v5.1
+    ..
+    v5.1.1
+    v5.1.5
+    ...
+
+If want v5.1 kernel, just put a line "LINUX = v5.1" in `boards/<BOARD>/Makefile`.
+
+#### Configure, build and boot them
+
+Use kernel as an example:
+
+    $ make kernel-defconfig
+    $ make kernel-menuconfig
+    $ make kernel
+    $ make boot
+
+The same to rootfs, uboot and even qemu.
+
 #### Save the images and configs
 
     $ make root-save

@@ -142,7 +142,6 @@ div.weekly a {
 }
 div.weekly ul li {
     font-weight: bold;
-    font-style: oblique;
     color: #0066aa;
 }
 div.weekly blockquote {
@@ -155,7 +154,7 @@ div.weekly blockquote p {
 div.weekly p {
     padding-left: 2em;
     text-indent: 0;
-    color: #66aa00;
+    color: #008888;
 }
 div.reward-button {
     font-size: 28px;

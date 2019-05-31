@@ -2327,6 +2327,7 @@ PHONY += env env-save help h
 # If the first argument is "xxx-run"...
 first_target := $(firstword $(MAKECMDGOALS))
 reserve_target := $(first_target:-run=)
+_reserve_target := $(first_target:-x=)
 
 ifeq ($(findstring -run,$(first_target)),-run)
   # use the rest as arguments for "run"
@@ -2335,13 +2336,25 @@ ifeq ($(findstring -run,$(first_target)),-run)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
+ifeq ($(findstring -x,$(first_target)),-x)
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  # ...and turn them into do-nothing targets
+  $(eval $(RUN_ARGS):FORCE;@:)
+endif
+
 BASIC_TARGETS := kernel uboot root
+_BASIC_TARGETS := k u r
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
+_EXEC_TARGETS  := $(foreach t,$(_BASIC_TARGETS),$(t:=-x))
 
 $(EXEC_TARGETS):
 	make $(@:-run=) x=$(RUN_ARGS)
 
-PHONY += $(EXEC_TARGET))
+$(_EXEC_TARGETS):
+	make $(@:-x=) x=$(RUN_ARGS)
+
+PHONY += $(EXEC_TARGET)) $(_EXEC_TARGETS)
 
 PHONY += FORCE
 

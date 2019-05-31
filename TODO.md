@@ -41,3 +41,4 @@
 30. module: need to find out module name and module config instead of module directory.
 31. make a list about different boards's ROOTDEV feature
 32. use expect as interactive test automation: https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile
+33. List verified rootfs devices in board specific Makefile

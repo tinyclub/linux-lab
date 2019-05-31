@@ -177,6 +177,11 @@ List builtin boards:
           CPU     ?= x86_64
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
+    [ raspi3 ]:
+          ARCH     = arm64
+          CPU     ?= cortex-a53
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/mmcblk0
     [ versatilepb ]:
           ARCH     = arm
           CPU     ?= arm926t
@@ -191,7 +196,7 @@ List builtin boards:
           ARCH     = arm64
           CPU     ?= cortex-a57
           LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
+          ROOTDEV ?= /dev/vda
 
 Check the board specific configuration:
 

@@ -106,7 +106,6 @@ blockquote {
     padding-left: 1.03em;
     padding-right: 1.03em;
     margin: 0 auto;
-    margin-left: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     color: #666
@@ -154,11 +153,13 @@ div.weekly blockquote {
     margin-left: 1.6em;
 }
 div.weekly blockquote p {
+    padding-left: 0;
     color: #53575f;
 }
 div.weekly p {
     text-indent: 0;
     padding-left: 1.16em;
+    padding-right: 1.16em;
     /*color: #008888;*/
 }
 div.reward-button {

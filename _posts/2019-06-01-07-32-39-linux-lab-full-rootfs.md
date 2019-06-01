@@ -122,7 +122,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 另外，考虑到 Ubuntu 本身启动过程的复杂性，先分阶段来验证，先通过内核参数修改 init，直接启动到 `/bin/bash`。
 
-    $ make B=vexpress-a9 boot V=1 ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/arm-ubuntu XKCLI=init=/bin/bash
+    $ make B=vexpress-a9 boot V=1 ROOTDEV=/dev/nfs ROOTFS=$PWD/full-rootfs/arm-ubuntu XKCLI=init=/bin/bash
     ...
     Run /bin/bash as init process
     ...
@@ -136,7 +136,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 - `B=vexpress-a9`，指定开发板
 - `V=1`，显示更多的信息，方便调试
 - `ROOTDEV=/dev/nfs`，通过 NFS 方式挂载根文件系统
-- `ROOTDIR=$PWD/full-rootfs/arm-ubuntu`，指定 NFS 挂载的文件系统所在目录
+- `ROOTFS=$PWD/full-rootfs/arm-ubuntu`，指定 NFS 挂载的文件系统所在目录
 - `XKCLI=init=/bin/bash`，给内核参数追加 `init=/bin/bash`，跑完内核后直接执行 `/bin/bash`
 - `reboot -f`，退出 Qemu，也可以键入 `CTRL + a + x` 强制退出
 
@@ -247,7 +247,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 添加完以后就可以不用传递 `XKCLI` 参数给 `make boot` 了：
 
-    $ make B=vexpress-a9 boot V=1 ROOTDEV=/dev/nfs ROOTDIR=$PWD/full-rootfs/arm-ubuntu MEM=1024M
+    $ make B=vexpress-a9 boot V=1 ROOTDEV=/dev/nfs ROOTFS=$PWD/full-rootfs/arm-ubuntu MEM=1024M
     ...
     Kernel command line: route=172.17.0.5 root=/dev/nfs  nfsroot=172.17.0.5:/labs/linux-lab/full-rootfs/arm-ubuntu/ rw ip=172.17.0.210 console=ttyAMA0
     ...
@@ -343,7 +343,7 @@ Linux Lab 已经预编译了一个放置到了 `prebuilt/qemu/arm/v2.12.0/bin/qe
 
 通过 `make boot` 验证：
 
-    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTDIR=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu/
+    $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu/
 
 完整启动过程录制如下：
 

@@ -138,23 +138,28 @@ blockquote p {
     overflow: hidden
 }
 div.weekly a {
-    color: #aa6600;
+    /*color: #aa6600;*/
 }
 div.weekly ul li {
-    font-weight: bold;
-    color: #0066aa;
+    list-style-type: square;
+    list-style-type: outside;
+    margin-left: -1em;
+    padding-left: 0;
+    padding-top: 2em;
+    font-size: 110%;
+    /*font-weight: bold;*/
+    /*color: #0066aa;*/
 }
 div.weekly blockquote {
-    margin-left: 2.4em;
+    margin-left: 1.6em;
 }
 div.weekly blockquote p {
-    padding-left: 0;
     color: #53575f;
 }
 div.weekly p {
-    padding-left: 2em;
     text-indent: 0;
-    color: #008888;
+    padding-left: 1.16em;
+    /*color: #008888;*/
 }
 div.reward-button {
     font-size: 28px;

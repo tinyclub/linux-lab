@@ -140,8 +140,7 @@ div.weekly a {
     /*color: #aa6600;*/
 }
 div.weekly ul li {
-    list-style-type: square;
-    list-style-type: outside;
+    list-style-type: none;
     margin-left: -1em;
     padding-left: 0;
     padding-top: 2em;
@@ -149,18 +148,23 @@ div.weekly ul li {
     /*font-weight: bold;*/
     /*color: #0066aa;*/
 }
+
+div.weekly li::before {
+    content: "#";
+    font-size: 110%;
+    padding-right: 0.28em;
+    margin-left: -1.16em;
+}
+
 div.weekly blockquote {
-    margin-left: 1.6em;
+    margin-left: 1.3em;
 }
 div.weekly blockquote p {
     padding-left: 0;
     color: #53575f;
 }
 div.weekly p {
-    text-indent: 0;
-    padding-left: 1.16em;
-    padding-right: 1.16em;
-    /*color: #008888;*/
+    text-indent: 1.16em;
 }
 div.reward-button {
     font-size: 28px;
@@ -1033,10 +1037,11 @@ short_prev_next {
 }
 .inline li {
     float: left;
-    position: relative;
     margin-left: 10px;
+    position: relative;
     line-height: 30px
 }
+
 /*  Widgets  */
 
 #tag-cloud,

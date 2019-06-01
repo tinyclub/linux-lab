@@ -109,7 +109,7 @@ tags:
 [5]: http://showterm.io/6fb264246580281d372c6
 [6]: http://showterm.io/1809186b57f904d51aeff
 [7]: http://github.com/tinyclub/cloud-lab.git
-[8]: http://linux-talents.tinylab.org
+[8]: /talents
 [9]: http://weidian.com/?userid=335178200
 [10]: /books
 [11]: /projects

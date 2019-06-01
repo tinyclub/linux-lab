@@ -14,5 +14,5 @@
 <div id="author-box-wrap-footer" class="author-box-wrap">
    {% assign author_box_id = "post_footer" %}
    {% assign author_box_ref = 2 %}
-   {% include widgets/author_box %}
+   {% include widgets/author_box_footer %}
 </div>

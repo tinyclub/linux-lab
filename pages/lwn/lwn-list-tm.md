@@ -3,7 +3,6 @@ title: LWN 中文翻译文章汇总
 tagline: LWN.net 中文翻译计划
 author: Wang Chen
 layout: page
-album: 'LWN 中文翻译'
 group: translation
 update: 2019-1-12
 permalink: /lwn-list-tm/

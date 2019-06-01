@@ -5,7 +5,7 @@ title: 专辑
 tagline: 展示成系列撰写的文章
 header: Post By Albums
 group: navigation
-order: 2
+order: 3
 permalink: /albums/
 comments: false
 ---
@@ -26,7 +26,7 @@ comments: false
 
   {% assign album_url = "" %}
   {% for page in site.pages %}
-    {% if page.path contains '/books/' and page.album %}
+    {% if page.album %}
       {% assign book_title = page.album | remove: " " | upcase %}
       {% assign album_title = album.name | remove: " " | upcase %}
       {% if book_title == album_title %}

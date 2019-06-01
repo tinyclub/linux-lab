@@ -6,7 +6,7 @@ layout: page
 group: navigation
 highlight: true
 permalink: /post/
-order: 30
+order: 1
 ---
 
 泰晓科技 作为一个 Linux 原创交流平台，热烈欢迎大家参与。

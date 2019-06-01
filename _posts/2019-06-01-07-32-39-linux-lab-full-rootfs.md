@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "为 Linux Lab 新增全功能 Rootfs 支持"
+title: "Linux Lab 新增全功能 Rootfs 支持"
 draft: false
 group: 'original'
 license: "cc-by-sa-4.0"

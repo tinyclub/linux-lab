@@ -16,3 +16,7 @@ static void __exit my_hello_exit(void)
 
 module_init(my_hello_init);
 module_exit(my_hello_exit);
+
+MODULE_DESCRIPTION("hello - Linux Lab module example");
+MODULE_AUTHOR("Wu Zhangjin <wuzhangjin@gmail.com>");
+MODULE_LICENSE("GPL");

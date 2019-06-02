@@ -2072,18 +2072,18 @@ ifneq ($(TEST),)
     endif
   endif
   ifneq ($(TEST_BEGIN),)
-    TEST_KCLI += test_begin=$(TEST_BEGIN)
+    TEST_KCLI += test_begin="$(TEST_BEGIN)"
   endif
   ifneq ($(TEST_END),)
-    TEST_KCLI += test_end=$(TEST_END)
+    TEST_KCLI += test_end="$(TEST_END)"
   endif
   ifneq ($(TEST_FINISH),)
-    TEST_KCLI += test_finish=$(TEST_FINISH)
+    TEST_KCLI += test_finish="$(TEST_FINISH)"
   endif
 
   TEST_CASE ?= $(TEST_CASES)
   ifneq ($(TEST_CASE),)
-    TEST_KCLI += test_case=$(TEST_CASE)
+    TEST_KCLI += test_case="$(TEST_CASE)"
   endif
 
   CMDLINE += $(TEST_KCLI)

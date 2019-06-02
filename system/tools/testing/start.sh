@@ -7,7 +7,12 @@
 
 # Get feature list from kernel command line
 
-eval `cat /proc/cmdline | sed -e "s%\([^\\]\) %\1\n%g" | grep "=" | grep -v ".*\..*=" | tr '\n' ' '`
+#
+# Skip: a.yy=b, rw ...
+#
+# Keep: test_case=ls\ /root    test_case="ls /root,echo hello world"
+#
+eval "$(cat /proc/cmdline | tr ' ' '\n' | egrep -v '\..*=|^$' | tr '\n' ' ' | tr '=' '\n' | sed -e '/["\\]/!s/\(.*\) [a-zA-Z_]\{1,\} \(.*\)/\1 \2/g' | tr '\n' '=')"
 
 FEATURE="$feature"
 CASE="$test_case"

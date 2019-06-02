@@ -537,6 +537,9 @@ Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:
 
     $ make BOARD=malta debug
 
+It will open a new terminal, load the scripts from .gdbinit, run gdb
+automatically.
+
 Or debug it in two steps:
 
     $ make BOARD=malta boot DEBUG=1

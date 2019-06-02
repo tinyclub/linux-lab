@@ -1264,12 +1264,18 @@ PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel
 
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
+ifeq ($(FEATURE),module)
+  FPL := 0
+else
+  FPL ?= 1
+endif
+
 FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
 
 kernel-feature:
 	@if [ ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
-	  touch $(FEATURE_PATCHED_TAG); \
+	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
 	  echo "ERR: feature patchset has been applied, if want, please do 'make kernel-checkout' at first." && exit 1; \
 	fi

@@ -11,7 +11,7 @@ echo
 echo "module: Starting testing: $MODULES ..."
 echo
 
-for m in $MODULES 
+for m in $MODULES
 do
 
     echo
@@ -30,17 +30,4 @@ do
     lsmod
     sleep 1
 
-    echo
-    echo "module: rmmod $m"
-    echo
-    rmmod $m
-
-    echo
-    echo "module: Stoping testing module: $m"
-    echo
-
 done
-
-echo
-echo "module: Stoping testing: $MODULES ..."
-echo

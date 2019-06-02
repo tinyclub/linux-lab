@@ -39,6 +39,18 @@ eval $BEGIN
 oldIFS=$IFS
 IFS=","
 
+for f in $FEATURE
+do
+    echo
+    echo "Testing feature (top part): $f"
+    echo
+
+    [ -x ${TOOLS}/$f/test_guest.sh ] && ${TOOLS}/$f/test_guest.sh
+    [ -x ${TOOLS}/$f/test_guest_top.sh ] && ${TOOLS}/$f/test_guest_top.sh
+
+    echo
+done
+
 for c in $CASE
 do
     echo
@@ -54,10 +66,10 @@ done
 for f in $FEATURE
 do
     echo
-    echo "Testing feature: $f"
+    echo "Testing feature (bottom part): $f"
     echo
 
-    [ -x ${TOOLS}/$f/test_guest.sh ] && ${TOOLS}/$f/test_guest.sh
+    [ -x ${TOOLS}/$f/test_guest_bottom.sh ] && ${TOOLS}/$f/test_guest_bottom.sh
 
     echo
 done

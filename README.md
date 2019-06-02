@@ -616,8 +616,8 @@ Extract it out and run in Linux Lab:
 More rootfs from docker can be found:
 
     $ docker search arm64 | egrep "ubuntu|debian"
-    arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating sys…   25
-    arm64v8/debian   Debian is a Linux distribution that's compos…   20
+    arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating system  25
+    arm64v8/debian   Debian is a Linux distribution that's composed  20
 
 ### Debugging
 
@@ -651,6 +651,16 @@ Note: some commands have been already added in `.gdbinit`, you can customize it 
 
 ### Testing
 
+Use 'aarch64/virt' as the demo board here.
+
+    $ make BOARD=virt
+
+Prepare for testing, install necessary files/scripts in `system/`:
+
+    $ make rootdir
+    $ make root-install
+    $ make root-rebuild
+
 Simply boot and poweroff:
 
     $ make test
@@ -665,35 +675,39 @@ Run guest test case:
 
 Run guest test cases (need install new `system/` via `make r-i`):
 
-    $ make test TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='ls /root,echo hello world'
 
 Reboot the guest system for several times:
 
     $ make test TEST_REBOOT=2
 
-Test a feature of a specified linux version on a specified board:
+Test a feature of a specified linux version on a specified board, `prepare` equals checkout, patch and defconfig:
 
-    $ make test FEATURE=kft LINUX=v2.6.36 BOARD=malta TEST=prepare
+    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=prepare
 
 Test a kernel module:
 
-    $ make test m=oops_test
+    $ make test m=hello TEST_PREPARE=prepare
 
 Test multiple kernel modules:
 
-    $ make test m=oops_test,kmemleak_test
+    $ make test m=exception,hello TEST_PREPARE=prepare
 
 Test modules with specified ROOTDEV, nfs boot is used by default, but some boards may not support network:
 
-    $ make test m=hello,oops TEST_RD=/dev/ram0
+    $ make test m=hello,exception TEST_RD=/dev/ram0
 
-Run test cases while testing kernel modules:
+Run test cases while testing kernel modules (test cases run between insmod and rmmod):
 
-    $ make test m=oops,kmemleak TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='"ls /root","echo hello world"'
+    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='ls /root,echo hello world'
+
+Run test cases while testing internal kernel modules and pass kernel arguments:
+
+    $ make test m=lkdtm TEST_BEGIN="mount -t debugfs debugfs /mnt" TEST_CASE="echo EXCEPTION > /mnt/provoke-crash/DIRECT" lkdtm_args="INT_HARDWARE_ENTRY EXCEPTION"
 
 Test a kernel module and make some targets before testing:
 
-    $ make test m=oops_test TEST=kernel-checkout,kernel-patch
+    $ make test m=exception TEST=kernel-checkout,kernel-patch,kernel-defconfig
 
 Test everything in one command (from download to poweroff):
 
@@ -706,6 +720,9 @@ Test everything in one command (with uboot while support, e.g. vexpress-a9):
 Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
 
     $ make test TEST_TIMEOUT=30s
+
+Notes:
+    * If 'poweroff' fails on some boards with bad linux version, 'make test' will hang there.
 
 ### Save images and configs
 
@@ -729,12 +746,15 @@ By default, the default board: 'versatilepb' is used, we can configure, build
 and boot for a specific board with 'BOARD', for example:
 
     $ make BOARD=malta
+
     $ make root-defconfig
     $ make root
+
     $ make kernel-checkout
     $ make kernel-patch
     $ make kernel-defconfig
     $ make kernel
+
     $ make boot U=0
 
 If using `board`, it only works on-the-fly, the setting will not be saved, this
@@ -742,10 +762,12 @@ is helpful to run multiple boards at the same and not to disrupt each other:
 
     $ make board=malta root-defconfig
     $ make board=malta root
+
     $ make board=malta kernel-checkout
     $ make board=malta kernel-patch
     $ make board=malta kernel-defconfig
     $ make board=malta kernel
+
     $ make board=malta boot U=0
 
 This allows to run multi boards in different terminals or background at the

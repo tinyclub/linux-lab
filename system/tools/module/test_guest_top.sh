@@ -18,10 +18,11 @@ do
     echo "module: Starting testing module: $m"
     echo
 
+    m_args=$(eval echo \$${m}_args)
     echo
-    echo "module: modprobe $m"
+    echo "module: modprobe $m $m_args"
     echo
-    modprobe $m
+    modprobe $m $m_args
     sleep 1
 
     echo

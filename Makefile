@@ -2152,7 +2152,7 @@ endif
 test: $(TEST_PREPARE) FORCE
 	$(if $(FEATURE), make feature-init)
 	make boot-init
-	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR="$(makeclivar)"
+	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 	make boot-finish
 
 PHONY += boot-test test

@@ -297,13 +297,11 @@ Enable one kernel module:
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    option state: MINIX_FS=m
     output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    option state: minix_fs=m
     output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
@@ -407,16 +405,16 @@ Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 ### Using kernel options
 
 A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
-config options easily, based on it, both of `kernel-getconfig/k-gc` and
-`kernel-setconfig/k-sc` are added to tune the kernel options, with them, we can
-simply enable/disable/setstr/setval/getstate of a kernel option:
+config options non-interactively, based on it, both of `kernel-getconfig/k-gc`
+and `kernel-setconfig/k-sc` are added to tune the kernel options, with them, we
+can simply "enable/disable/setstr/setval/getstate" of a kernel option or many
+at the same time:
 
 Get state of a kernel module:
 
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    option state: MINIX_FS=m
     output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
 Enable a kernel module:
@@ -424,17 +422,21 @@ Enable a kernel module:
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    option state: minix_fs=m
     output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
 
-More control commands of `kernel-setconfig` include `y, n, s, v`:
+More control commands of `kernel-setconfig` including `y, n, s, v`:
 
     `y`, build the modules in kernel or enable anther kernel options.
     `n`, disable a kernel option
     `s`, `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
     `v`, `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+
+Operates many options in one command line:
+
+    $ make k-sc m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
+    $ make k-gc o=tun,minix,ikconfig,panic_timeout,hostname
 
 ### Using kernel features
 

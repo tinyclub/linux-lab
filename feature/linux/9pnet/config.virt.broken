@@ -1,0 +1,5 @@
+# The following option works for virto-9p-pci/-virtfs, but breaks nfsroot
+# use the common feature/linux/9pnet/config with virtio-9p-device instead
+CONFIG_PCI=y
+CONFIG_VIRTIO_PCI=y
+CONFIG_PCI_HOST_GENERIC=y

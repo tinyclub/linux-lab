@@ -770,7 +770,7 @@ Qemu Board:
 
 Verified boards with Linux v5.1:
 
-    aarch64/virt: virtio-9p-device + virtio-9p-pci
+    aarch64/virt: virtio-9p-device (virtio-9p-pci breaks nfsroot)
     arm/vexpress-a9: only work with virtio-9p-device and without uboot booting
     arm/versatilepb: only work with virtio-9p-pci
     x86_64/pc, only work with virtio-9p-pci

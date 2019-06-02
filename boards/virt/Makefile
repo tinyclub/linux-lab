@@ -19,6 +19,13 @@ SERIAL  ?= ttyAMA0
 # 9pnet based network filesystem sharing, aarch64/virt board support both virtio-9p-pci/-virtfs and virtio-9p-device
 # But virtio-9p-device requires less kernel options (no need the PCI related parts in features/linux/9pnet/)
 # To eanble this function, please make sure the 9pnet feature is enabled: make feature f=9pnet && make kernel-olddefconfig
+#
+# Note: 9pnet pci kernel options has broken nfsroot on virt board, please use virtio-9p-device instead of virtio-9p-pci
+#       and also, must not enable the pci related options in feature/linux/9pnet/
+#
+# TODO: add board specific 9pnet options.
+#
+
 NET9PDEV ?= virtio-9p-device
 
 # virtio sda: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/

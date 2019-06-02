@@ -404,6 +404,92 @@ Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 
     $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
 
+### Using kernel options
+
+A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
+config options easily, based on it, both of `kernel-getconfig/k-gc` and
+`kernel-setconfig/k-sc` are added to tune the kernel options, with them, we can
+simply enable/disable/setstr/setval/getstate of a kernel option:
+
+Get state of a kernel module:
+
+    $ make kernel-getconfig m=minix_fs
+    Getting kernel config: MINIX_FS ...
+
+    option state: MINIX_FS=m
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+
+Enable a kernel module:
+
+    $ make kernel-setconfig m=minix_fs
+    Setting kernel config: m=minix_fs ...
+
+    option state: minix_fs=m
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+
+    Enable new kernel config: minix_fs ...
+
+More control commands of `kernel-setconfig` include `y, n, s, v`:
+
+    `y`, build the modules in kernel or enable anther kernel options.
+    `n`, disable a kernel option
+    `s`, `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
+    `v`, `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+
+### Using kernel features
+
+Kernel features are abstracted in `feature/linux/, including their
+configurations patchset, it can be used to manage both of the out-of-mainline
+and in-mainline features.
+
+    $ make f-l
+    [ feature/linux ]:
+      + 9pnet
+      + core
+        - debug
+        - module
+      + ftrace
+        - v2.6.36
+          * env.g3beige
+          * env.malta
+          * env.pc
+          * env.versatilepb
+        - v2.6.37
+          * env.g3beige
+      + gcs
+        - v2.6.36
+          * env.g3beige
+          * env.malta
+          * env.pc
+          * env.versatilepb
+      + kft
+        - v2.6.36
+          * env.malta
+          * env.pc
+      + uksm
+        - v2.6.38
+
+Verified boards and linux versions are recorded there, so, it should work
+without any issue if the environment not changed.
+
+For example, to enable kernel modules support, simply do:
+
+    $ make f f=module
+    $ make kernel-olddefconfig
+    $ make kernel
+
+For `kft` feature in v2.6.36 for malta board:
+
+    $ make BOARD=malta
+    $ export LINUX=v2.6.36
+    $ make kernel-checkout
+    $ make kernel-patch
+    $ make kernel-defconfig
+    $ make f f=kft
+    $ make kernel-olddefconfig
+    $ make kernel
+    $ make boot
+
 ### Using Uboot
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.

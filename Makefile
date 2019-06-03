@@ -2150,11 +2150,11 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 
 boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE)
+	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=$(if $(FEATURE),$(shell echo $(FEATURE),))boot $(T_AFTRE);)
+		$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE);)
 endif
 
 test: $(TEST_PREPARE) FORCE

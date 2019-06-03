@@ -1408,12 +1408,27 @@ makeclivar := $(-*-command-variables-*-)
 
 ifeq ($(ksetconfig),1)
 
-# y=MODULE, n=MODULE, m=MODULE, v=VALUE
+# y=MODULE, n=MODULE, m=MODULE, c=MODULE, s=STR, v=VALUE
 ifneq ($(m),)
   KCONFIG_SET_OPT := -m $(m)
   KCONFIG_GET_OPT := -s $(m)
   KCONFIG_OPR := m
   KCONFIG_OPT := $(m)
+endif
+
+# c/o added for module option, when it is not the same as module name
+ifneq ($(c),)
+  KCONFIG_SET_OPT := -m $(c)
+  KCONFIG_GET_OPT := -s $(c)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(c)
+endif
+
+ifneq ($(o),)
+  KCONFIG_SET_OPT := -m $(o)
+  KCONFIG_GET_OPT := -s $(o)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(o)
 endif
 
 ifneq ($(s),)
@@ -1475,10 +1490,10 @@ _kernel-getconfig:
 kernel-config: kernel-setconfig
 kernel-setcfg: kernel-setconfig
 kernel-setconfig: FORCE
-	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m s v,$(filter $(p)=%,$(makeclivar))), \
+	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
 		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
 		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
-		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= $o;), echo '')
+		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $o;), echo '')
 
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)

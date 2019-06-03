@@ -426,10 +426,12 @@ Enable a kernel module:
 
     Enable new kernel config: minix_fs ...
 
-More control commands of `kernel-setconfig` including `y, n, s, v`:
+More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 
     `y`, build the modules in kernel or enable anther kernel options.
-    `n`, disable a kernel option
+    `c`, build the modules as pluginable modules, just like `m`.
+    `o`, build the modules as pluginable modules, just like `m`.
+    `n`, disable a kernel option.
     `s`, `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
     `v`, `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
 

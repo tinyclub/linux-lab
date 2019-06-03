@@ -12,7 +12,9 @@
 #
 # Keep: test_case=ls\ /root    test_case="ls /root,echo hello world"
 #
+set -a
 eval "$(cat /proc/cmdline | tr ' ' '\n' | egrep -v '\..*=|^$' | tr '\n' ' ' | tr '=' '\n' | sed -e '/["\\]/!s/\(.*\) [a-zA-Z_]\{1,\} \(.*\)/\1 \2/g' | tr '\n' '=')"
+set +a
 
 FEATURE="$feature"
 CASE="$test_case"
@@ -34,7 +36,7 @@ echo
 echo "Testing begin: Running \"$BEGIN\" ..."
 echo
 
-eval $BEGIN
+sh -c "eval $BEGIN"
 
 oldIFS=$IFS
 IFS=","
@@ -60,7 +62,7 @@ do
     echo "Testing case: \"$c\""
     echo
 
-    eval $c
+    sh -c "eval $c"
 
     echo
 
@@ -83,7 +85,7 @@ echo
 echo "Testing end: Running \"$END\" ..."
 echo
 
-eval $END
+sh -c "eval $END"
 
 echo
 
@@ -111,4 +113,4 @@ echo
 echo "Testing finish: Running \"$FINISH\" ..."
 echo
 
-eval $FINISH
+sh -c "eval $FINISH"

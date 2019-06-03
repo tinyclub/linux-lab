@@ -13,7 +13,8 @@ do
     echo
     echo "module: rmmod $m"
     echo
-    rmmod $m
+    rmmod -f $m &
+    sleep 1
 
     echo
     echo "module: Stoping testing module: $m"

@@ -22,7 +22,7 @@ do
     echo
     echo "module: modprobe $m $m_args"
     echo
-    modprobe $m $m_args
+    modprobe $m $m_args &
     sleep 1
 
     echo

@@ -675,7 +675,7 @@ Run guest test case:
 
 Run guest test cases (need install new `system/` via `make r-i`):
 
-    $ make test TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='ls /root,echo hello world'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
 
 Reboot the guest system for several times:
 
@@ -699,11 +699,11 @@ Test modules with specified ROOTDEV, nfs boot is used by default, but some board
 
 Run test cases while testing kernel modules (test cases run between insmod and rmmod):
 
-    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_FINISH=echo TEST_CASE='ls /root,echo hello world'
+    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
 
-Run test cases while testing internal kernel modules and pass kernel arguments:
+Run test cases while testing internal kernel modules:
 
-    $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT' lkdtm_args='INT_HARDWARE_ENTRY EXCEPTION'
+    $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT'
 
 Test a kernel module and make some targets before testing:
 

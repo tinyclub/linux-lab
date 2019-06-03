@@ -12,18 +12,26 @@
 
     echo 'Hello, World!'
 
+### Run directly
+
     $ chmod a+x hello.sh
     $ ./hello.sh
     Hello, World!
 
+    $ export PATH=.:$PATH
+    $ hello.sh
+    Hello, World!
+
+### Run with shell
+
     $ bash hello.sh
     Hello, World!
-
-    $ . hello.sh
-    Hello, World!
-
     $ dash hello.sh
     Hello, World!
 
-    $ echo 'Hello, World!'
+### Run in current environment
+
+    $ . hello.sh
+    Hello, World!
+    $ source hello.sh
     Hello, World!

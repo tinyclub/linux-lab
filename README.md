@@ -705,6 +705,14 @@ Run test cases while testing internal kernel modules:
 
     $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT'
 
+Run test cases while testing internal kernel modules, pass kernel arguments:
+
+    $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
+
+Run test without feature-init (same time if not necessary, FI=`FEATURE_INIT`):
+
+    $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' FI=0
+
 Test a kernel module and make some targets before testing:
 
     $ make test m=exception TEST=kernel-checkout,kernel-patch,kernel-defconfig

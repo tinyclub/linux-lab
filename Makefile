@@ -2067,6 +2067,7 @@ PHONY += boot-init boot-finish
 
 # Test support
 ifneq ($(TEST),)
+ ifeq ($(filter _boot, $(MAKECMDGOALS)), _boot)
   TEST_KCLI :=
   ifneq ($(FEATURE),)
     TEST_KCLI += feature=$(subst $(space),$(comma),$(strip $(FEATURE)))
@@ -2095,6 +2096,7 @@ ifneq ($(TEST),)
   endif
 
   CMDLINE += $(TEST_KCLI)
+ endif
 endif
 
 ifeq ($(U),0)

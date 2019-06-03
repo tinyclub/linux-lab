@@ -715,6 +715,10 @@ Run test without feature-init (same time if not necessary, FI=`FEATURE_INIT`):
     Or
     $ make raw-test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
 
+Run test without feature-init, boot-init, boot-finish and no `TEST_PREPARE`:
+
+    $ make boot-test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
+
 Test a kernel module and make some targets before testing:
 
     $ make test m=exception TEST=kernel-checkout,kernel-patch,kernel-defconfig

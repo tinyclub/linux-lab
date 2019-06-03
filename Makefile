@@ -2156,6 +2156,9 @@ TEST_RD ?= /dev/nfs
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
+	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+
+_boot-test:
 ifeq ($(BOOT_TEST), default)
 	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
@@ -2175,10 +2178,10 @@ raw-test:
 test: $(TEST_PREPARE) FORCE
 	if [ $(FI) -eq 1 -a -n $(FEATURE) ]; then make feature-init; fi
 	make boot-init
-	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+	make boot-test
 	make boot-finish
 
-PHONY += boot-test test r-t raw-test
+PHONY += _boot-test boot-test test r-t raw-test
 
 # Boot dependencies
 

@@ -712,6 +712,8 @@ Run test cases while testing internal kernel modules, pass kernel arguments:
 Run test without feature-init (same time if not necessary, FI=`FEATURE_INIT`):
 
     $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' FI=0
+    Or
+    $ make raw-test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
 
 Test a kernel module and make some targets before testing:
 

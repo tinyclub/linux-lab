@@ -2168,13 +2168,17 @@ endif
 FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
+r-t: raw-test
+raw-test:
+	make test FI=0
+
 test: $(TEST_PREPARE) FORCE
 	if [ $(FI) -eq 1 -a -n $(FEATURE) ]; then make feature-init; fi
 	make boot-init
 	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 	make boot-finish
 
-PHONY += boot-test test
+PHONY += boot-test test r-t raw-test
 
 # Boot dependencies
 

@@ -2095,6 +2095,11 @@ ifneq ($(TEST),)
     TEST_KCLI += test_case="$(TEST_CASE)"
   endif
 
+  MODULE_ARGS := $(foreach m_args,$(addsuffix _args,$(subst $(comma),$(space),$(MODULE))), \
+	$(shell eval 'echo $(m_args)=\"'\$$$(m_args)'\"'))
+
+  TEST_KCLI += $(MODULE_ARGS)
+
   CMDLINE += $(TEST_KCLI)
  endif
 endif

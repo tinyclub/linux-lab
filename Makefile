@@ -2179,7 +2179,7 @@ _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
 boot: $(BOOT_DEPS)
-	$(Q)make $(S) _boot $(makeclivar)
+	$(Q)make $(S) _boot
 
 t: test
 b: boot

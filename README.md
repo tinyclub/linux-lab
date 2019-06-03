@@ -703,7 +703,7 @@ Run test cases while testing kernel modules (test cases run between insmod and r
 
 Run test cases while testing internal kernel modules and pass kernel arguments:
 
-    $ make test m=lkdtm TEST_BEGIN="mount -t debugfs debugfs /mnt" TEST_CASE="echo EXCEPTION > /mnt/provoke-crash/DIRECT" lkdtm_args="INT_HARDWARE_ENTRY EXCEPTION"
+    $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT' lkdtm_args='INT_HARDWARE_ENTRY EXCEPTION'
 
 Test a kernel module and make some targets before testing:
 

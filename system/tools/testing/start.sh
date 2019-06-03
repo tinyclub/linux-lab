@@ -45,8 +45,11 @@ do
     echo "Testing feature (top part): $f"
     echo
 
-    [ -x ${TOOLS}/$f/test_guest.sh ] && ${TOOLS}/$f/test_guest.sh
-    [ -x ${TOOLS}/$f/test_guest_top.sh ] && ${TOOLS}/$f/test_guest_top.sh
+    if [ -x ${TOOLS}/$f/test_guest_top.sh ]; then
+        ${TOOLS}/$f/test_guest_top.sh
+    else
+        [ -x ${TOOLS}/$f/test_guest.sh ] && ${TOOLS}/$f/test_guest.sh
+    fi
 
     echo
 done

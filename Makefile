@@ -1315,6 +1315,7 @@ TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
 GIT_FORCE := $(if $(TEST),--force,)
 
 kernel-init:
+	$(Q)make kernel-config
 	$(Q)make kernel-$(KERNEL_OLDDEFCONFIG)
 	$(Q)make kernel KT=$(IMAGE)
 
@@ -1324,8 +1325,8 @@ rootdir-init:
 	$(Q)make root-install
 
 module-init:
-	make modules
-	make modules-install
+	$(Q)make modules
+	$(Q)make modules-install
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
@@ -1497,6 +1498,16 @@ k-sc: kernel-setconfig
 k-gc: kernel-getconfig
 
 PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig k-sc k-gc
+
+module-config: module-setconfig
+modules-config: module-setconfig
+
+module-getconfig: kernel-getconfig
+module-setconfig: kernel-setconfig
+m-gc: module-getconfig
+m-sc: module-setconfig
+
+PHONY += module-getconfig module-setconfig m-gc m-sc modules-config module-config
 
 kernel-help:
 	$(Q)make kernel KT=help

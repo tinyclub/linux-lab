@@ -2159,8 +2159,12 @@ else
 		$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE);)
 endif
 
+# Allow to disable feature-init
+FEATURE_INIT ?= 1
+FI ?= $(FEATURE_INIT)
+
 test: $(TEST_PREPARE) FORCE
-	$(if $(FEATURE), make feature-init)
+	if [ $(FI) -eq 1 -a -n $(FEATURE) ]; then make feature-init; fi
 	make boot-init
 	make boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 	make boot-finish

@@ -1292,7 +1292,7 @@ endif
 FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
 
 kernel-feature:
-	@if [ ! -f $(FEATURE_PATCHED_TAG) ]; then \
+	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \

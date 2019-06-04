@@ -42,8 +42,8 @@ ORIIMG  ?= arch/$(ARCH)/boot/Image
 # bcm2837-rpi-3-b.dtb all works, bcm2710-rpi-3-b.dtb has less warnings about therem zone access
 ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2710-rpi-3-b.dtb
 CCPRE   ?= aarch64-linux-gnu-
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/Image
-DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/bcm2710-rpi-3-b.dtb
+KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
+DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bcm2710-rpi-3-b.dtb
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 # Only for current v5.0.10 support

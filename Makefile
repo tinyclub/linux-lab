@@ -26,7 +26,7 @@ board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
   ifeq ($(BOARD_CONFIG),)
-    BOARD := vexpress-a9
+    BOARD := arm/vexpress-a9
   else
     BOARD ?= $(BOARD_CONFIG)
   endif
@@ -52,6 +52,19 @@ BOARDS_DIR  := boards
 BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
+
+# Search board in basic arch list while board name given without arch specified
+BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64
+ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
+  ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
+  ifneq ($(ARCH),)
+    override BOARD     := $(ARCH)/$(BOARD)
+    override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
+    $(info LOG: Current board is $(BOARD).)
+  else
+    $(error Err: $(BOARD) not exist, check available boards in 'make list')
+  endif
+endif
 
 # Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
 PREBUILT_DIR        := $(TOP_DIR)/prebuilt
@@ -266,8 +279,8 @@ BUILDROOT_HROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
 BUILDROOT_IROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
 PREBUILT_ROOT_DIR   ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
-PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)
-PREBUILT_UBOOT_DIR  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(BOARD)/$(UBOOT)/$(LINUX)
+PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)
+PREBUILT_UBOOT_DIR  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)
 PREBUILT_QEMU_DIR   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
 
 PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs

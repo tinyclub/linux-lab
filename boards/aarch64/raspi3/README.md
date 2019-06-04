@@ -187,6 +187,8 @@ Since raspi3 qemu not support network yet, please use chroot or docker to run th
 * [Debian rootfs][12]
 * [Debian docker image][13]
 * [Reproducible, snapshot-based Debian rootfs builder][14]
+* buildroot/configs/raspberrypi3_64_defconfig
+
 
 [1]: https://github.com/bztsrc/qemu-raspi3
 [2]: https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/

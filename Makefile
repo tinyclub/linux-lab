@@ -1816,7 +1816,9 @@ root-saveconfig: rconfig-save
 
 rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
-	$(Q)if [ -f $(ROOT_OUTPUT)/defconfig ]; \
+	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
+	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
+	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
 	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
 	else cp $(ROOT_OUTPUT)/.config $(BOARD_DIR)/buildroot_$(CPU)_defconfig; fi
 

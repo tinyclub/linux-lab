@@ -162,45 +162,49 @@ default `versatilepb` board:
 List builtin boards:
 
     $ make list
-    [ g3beige ]:
-          ARCH     = powerpc
-          CPU     ?= generic
-          LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
-    [ malta ]:
-          ARCH     = mips
-          CPU     ?= mips32r2
-          LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
-    [ pc ]:
-          ARCH     = x86
-          CPU     ?= x86_64
-          LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
-    [ raspi3 ]:
+    [ aarch64/raspi3 ]:
           ARCH     = arm64
           CPU     ?= cortex-a53
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/mmcblk0
-    [ versatilepb ]:
-          ARCH     = arm
-          CPU     ?= arm926t
-          LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
-    [ vexpress-a9 ]:
-          ARCH     = arm
-          CPU     ?= cortex-a9
-          LINUX   ?= v5.1
-          ROOTDEV ?= /dev/ram0
-    [ virt ]:
+    [ aarch64/virt ]:
           ARCH     = arm64
           CPU     ?= cortex-a57
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/vda
+    [ arm/versatilepb ]:
+          ARCH     = arm
+          CPU     ?= arm926t
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
+    [ arm/vexpress-a9 ]:
+          ARCH     = arm
+          CPU     ?= cortex-a9
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
+    [ i386/pc ]:
+          ARCH     = x86
+          CPU     ?= i686
+          LINUX   ?= v4.6.7
+          ROOTDEV ?= /dev/ram0
+    [ mipsel/malta ]:
+          ARCH     = mips
+          CPU     ?= mips32r2
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
+    [ ppc/g3beige ]:
+          ARCH     = powerpc
+          CPU     ?= generic
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
+          ARCH     = x86
+          CPU     ?= x86_64
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/ram0
 
 Check the board specific configuration:
 
-    $ cat boards/versatilepb/Makefile
+    $ cat boards/arm/versatilepb/Makefile
 
 ### Download sources
 
@@ -904,7 +908,6 @@ Verified boards with Linux v5.1:
     arm/versatilepb: only work with virtio-9p-pci
     x86_64/pc, only work with virtio-9p-pci
 
-
 ## Plugins
 
 The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
@@ -930,13 +933,13 @@ list the boards, use arm as an example:
 
 Use `vexpress-a9` as an example:
 
-    $ mkdir boards/vexpress-a9/
+    $ mkdir boards/arm/vexpress-a9/
 
 #### Clone a Makefile from an existing board
 
 Use `versatilepb` as an example:
 
-    $ cp boards/versatilebp/Makefile boards/vexpress-a9/Makefile
+    $ cp boards/arm/versatilebp/Makefile boards/arm/vexpress-a9/Makefile
 
 #### Configure the variables from scratch
 
@@ -966,9 +969,9 @@ Edit the configs and Makefile untill they match our requirements.
 The configuration must be put in `boards/<BOARD>/` and named with necessary
 version and arch info, use `raspi3` as an example:
 
-    $ ls boards/raspi3/*defconfig
-    boards/raspi3/buildroot_cortex-a53_defconfig
-    boards/raspi3/linux_v5.1_defconfig
+    $ ls boards/aarch64/raspi3/*defconfig
+    boards/aarch64/raspi3/buildroot_cortex-a53_defconfig
+    boards/aarch64/raspi3/linux_v5.1_defconfig
 
 `cortex-a53` is the CPU version, `v5.1` is the kernel version, both of these
 variables should be configured in `boards/<BOARD>/Makefile`.

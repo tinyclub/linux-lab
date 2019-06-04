@@ -68,6 +68,9 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   endif
 endif
 
+# Get the machine name for qemu-system-$(XARCH)
+MACH ?= $(notdir $(BOARD))
+
 # Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
 PREBUILT_DIR        := $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS := $(PREBUILT_DIR)/toolchains
@@ -94,10 +97,11 @@ F ?= $(f)
 FEATURES ?= $(F)
 FEATURE ?= $(FEATURES)
 ifneq ($(FEATURE),)
-  _BOARD = $(notdir $(BOARD))
-  FEATURE_ENVS = $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
-			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD) ]; then \
-			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(_BOARD); fi))
+  FEATURE_ENVS := $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH) ]; then \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH); \
+			elif [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH) ]; then \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH); fi))
 
   ifneq ($(FEATURE_ENVS),)
     include $(FEATURE_ENVS)
@@ -127,8 +131,8 @@ ROOT_SRC ?= buildroot
 
 # Core output: for building in standalone directories
 QEMU_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
-UBOOT_OUTPUT := $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(BOARD)
-KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(BOARD)
+UBOOT_OUTPUT := $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)
+KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)
 ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 # Cross Compiler toolchains
@@ -1831,7 +1835,6 @@ PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-savec
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
-MACH ?= $(shell echo $(BOARD) | tr '/' '\n' | tail -1 | cut -d'_' -f1)
 
 # Sharing with the 9p virtio protocol
 # ref: https://wiki.qemu.org/Documentation/9psetup
@@ -2172,7 +2175,7 @@ TEST_TIMEOUT ?= $(TTO)
 TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
-  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(ARCH)-$(BOARD)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
+  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(ARCH)-$(MACH)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
   TEST_ENV        ?= $(TEST_LOGGING)/boot.env
   TEST_LOG        ?= $(TEST_LOGGING)/boot.log
 

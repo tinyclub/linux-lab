@@ -1781,7 +1781,6 @@ uboot-save: prebuilt-images
 
 
 qemu-save: prebuilt-images
-	$(Q)if [ -d "$(PREBUILT_QEMU_DIR)" ]; then rm -rf $(PREBUILT_QEMU_DIR); fi
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
 	$(Q)make -C $(QEMU_OUTPUT)/$(QEMU_TARGET) install V=$(V)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)

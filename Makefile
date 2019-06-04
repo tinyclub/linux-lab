@@ -136,6 +136,7 @@ KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)
 ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 # Cross Compiler toolchains
+CCPRE  ?= $(XARCH)-buildroot-linux-gnu-
 CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
 C_PATH ?= env PATH=$(CCPATH):$(PATH)
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)

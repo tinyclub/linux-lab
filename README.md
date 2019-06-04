@@ -202,6 +202,15 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
+Choose one board:
+
+    $ make BOARD=i386/pc
+
+If the board name is unique, just type the short name, the first one found in
+`boards` will be used:
+
+    $ make BOARD=malta
+
 Check the board specific configuration:
 
     $ cat boards/arm/versatilepb/Makefile

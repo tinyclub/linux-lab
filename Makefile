@@ -329,11 +329,11 @@ ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
-  $(error $(ROOTFS_TYPE))
+  $(warning $(ROOTFS_TYPE))
 endif
 
 ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
-  $(error $(ROOTDEV_TYPE))
+  $(warning $(ROOTDEV_TYPE))
 endif
 
 comma := ,

@@ -283,11 +283,14 @@ ROOTFS_UBOOT_SUFFIX    := .cpio.uboot
 ROOTFS_HARDDISK_SUFFIX := .$(FSTYPE)
 ROOTFS_INITRD_SUFFIX   := .cpio.gz
 
-BUILDROOT_ROOTDIR :=  $(ROOT_OUTPUT)/images/rootfs
+# Real one
+BUILDROOT_ROOTDIR  :=  $(ROOT_OUTPUT)/target
+# As a temp variable
+_BUILDROOT_ROOTDIR :=  $(ROOT_OUTPUT)/images/rootfs
 
-BUILDROOT_UROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
-BUILDROOT_HROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
-BUILDROOT_IROOTFS := $(BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+BUILDROOT_UROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+BUILDROOT_HROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+BUILDROOT_IROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
 PREBUILT_ROOT_DIR   ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
 PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)
@@ -322,7 +325,7 @@ ifeq ($(PBR),0)
     IROOTFS := $(BUILDROOT_IROOTFS)
     UROOTFS := $(BUILDROOT_UROOTFS)
     HROOTFS := $(BUILDROOT_HROOTFS)
-    ROOTDIR := $(ROOT_OUTPUT)/target
+    ROOTDIR := $(BUILDROOT_ROOTDIR)
   endif
 endif
 
@@ -880,7 +883,7 @@ ifeq ($(prebuilt_root_dir), 1)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
 else
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
-	$(Q)chown -R $(USER):$(USER) $(ROOT_OUTPUT)/target
+	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
 endif
 
@@ -1996,8 +1999,10 @@ root-dir:
 root-dir-rebuild: rootdir
 
 rootdir:
+ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
+endif
 
 rootdir-install: root-install
 

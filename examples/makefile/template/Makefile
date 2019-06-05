@@ -2,6 +2,13 @@
 
 override .DEFAULT_GOAL := test2
 
+# Check variables
+ifeq ($(origin a), command line)
+  $(info "a is from command line")
+endif
+
+
+# Check goals
 ifeq ($(filter test1,$(MAKECMDGOALS)),test1)
   $(info "test1: Only execute for test1 goal.")
 endif

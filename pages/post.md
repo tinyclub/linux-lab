@@ -146,6 +146,8 @@ tags:
 |wechat-pay    | wechat-pay-admin-9.68 | 如希望获得微信打赏，请命名二维码图片为：wechat-pay-*author*-*money*
 |sponsor       | wechat-pay            | 选择一种打赏方式（仅用于作者信息栏）
 |sponsor-qrcode| true                  | 图片请存到 `images/sponsor` 并设该项为 true
+|photo         | unicorn-wang          | 图片请存到 `images/photo`
+|avatar        | photo                 | 可设置为 email, weibo, github, wechat, wechat-qrcode, photo
 |info          | ...                   | 建议介绍专业、兴趣、特长等，如较多，请用 `;` 分割，以便自动分段展示
 |--------------|-----------------------|----------------|
 

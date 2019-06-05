@@ -1,4 +1,10 @@
-<p align="center">&copy; {{ site.start }} ~ {{ site.time | date: '%Y' }} {{ site.title }} 
+<p align="center">
+关注我们：
+ {% for about in site.data.about %}
+   <a href="{{ about.url }}" target="_blank" title="{{ about.title }}">{{ about.text }}</a> 
+ {% endfor %}
+<br/><br/>
+&copy; {{ site.start }} ~ {{ site.time | date: '%Y' }} {{ site.title }} 
  {% for footer in site.data.footer %}
     | <a href="{{ footer.url }}" target="_blank" title="{{ footer.title }}">{{ footer.text }}</a>
  {% endfor %}

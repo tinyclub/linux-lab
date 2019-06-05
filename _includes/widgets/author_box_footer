@@ -161,7 +161,7 @@
        {% assign avatar_pic = "photo/" | append: photo %}
   {% endif %}
 
-  <div style="float: left; margin-right: 20px;" id="author_avatar">
+  <div id="author_avatar" style="padding-right: 20px; height: 100%; display: table-cell; vertical-align: middle;">
   {% if avatar and wechat and avatar == 'wechat' %}
      {% assign tool = "—— 扫码加作者微信" %}
      {% assign qrcode_dynamic = wechat %}

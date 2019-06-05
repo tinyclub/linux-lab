@@ -19,9 +19,6 @@ SERIAL  ?= ttyS0
 # But virtio-9p-device requires less kernel options (no need the PCI related parts in features/linux/9pnet/)
 # To eanble this function, please make sure the 9pnet feature is enabled: make feature f=9pnet && make kernel-olddefconfig
 #
-# Note: 9pnet pci kernel options has broken nfsroot on virt board, please use virtio-9p-device instead of virtio-9p-pci
-#       and also, must not enable the pci related options in feature/linux/9pnet/
-#
 # TODO: add board specific 9pnet options.
 #
 
@@ -35,15 +32,23 @@ ROOTDEV ?= /dev/vda
 FSTYPE  ?= ext2
 
 # Proxy kernel image is built in buildroot-output/images/
+# Both of bbl and fw_jump.elf work, but fw_jump.elf is smaller a lot, bbl is deprecated...
+# bbl is from https://github.com/riscv/riscv-pk
+# fw_jump.elf is from https://github.com/riscv/opensbi
+
+#PORIIMG ?= bll
 PORIIMG ?= fw_jump.elf
+#PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bbl
+PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/fw_jump.elf
+
 KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 #CCPRE   ?= $(XARCH)-linux-gnu-
-#PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bbl
-PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/fw_jump.elf
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
+
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+
 #XKCLI   ?= earlycon=sbi
 # Only for current v5.0.10 support
 #KP      ?= 1

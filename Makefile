@@ -1918,7 +1918,7 @@ endif
 SMP ?= 1
 
 # If proxy kernel exists, hack the default -kernel option
-ifneq ($(PKIMAGE),)
+ifneq ($(PORIIMG),)
   KERNEL_OPT ?= -kernel $(PKIMAGE) --device loader,file=$(KIMAGE),addr=$(KRN_ADDR)
 else
   KERNEL_OPT ?= -kernel $(KIMAGE)

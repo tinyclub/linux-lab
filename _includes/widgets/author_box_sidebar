@@ -7,22 +7,11 @@
 
 <a>手机扫码阅读</a>
 
-{% assign author = site.data.people[author_name] %}
-{% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
-
-{% for contact in site.data.contacts %}
-  {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
-    {% continue %}
-  {% endif %}
-
-          {% if contact.name == "article" %}
-              {% assign url_base = site.production_url | append: page.url %}
-              {% assign raw_url = contact.url | append: url_base %}
-              <div style="padding-top: 10px; padding-bottom: 10px;" id="{{ qrcode | append:author_box_ref }}"></div>
-              <script type="text/javascript"> $(document).ready(function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 90, height: 90 }); });</script>
-              {% break %}
-          {% endif %}
-{% endfor %}
+      {% assign page_url = site.production_url | append: page.url %}
+      <div style="padding-top: 10px; padding-bottom: 10px;" id="page_url">
+        <img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/assets/themes/tinylab.org/img/loading.gif"></img>
+      </div>
+      <script async type="text/javascript"> $(window).on('load',function () { $('#loading_img_sidebar').hide(); $('#page_url').qrcode({ text: "{{ page_url }}", width: 90, height: 90 }); });</script>
 </div>
 
 {% assign author = null %}

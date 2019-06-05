@@ -183,6 +183,7 @@ endif
 EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
+LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)
 LINUX_KIMAGE  := $(KERNEL_OUTPUT)/$(ORIIMG)
 LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(UORIIMG)
 
@@ -217,9 +218,16 @@ ifneq ($(DTS),)
   endif
 endif
 
+PKIMAGE ?= $(LINUX_PKIMAGE)
 KIMAGE  ?= $(LINUX_KIMAGE)
 UKIMAGE ?= $(LINUX_UKIMAGE)
 DTB     ?= $(LINUX_DTB)
+
+# Proxy kernel is built in buildroot
+ifeq ($(PBR),0)
+  PKIMAGE  := $(LINUX_PKIMAGE)
+endif
+
 ifeq ($(PBK),0)
   KIMAGE  := $(LINUX_KIMAGE)
   UKIMAGE := $(LINUX_UKIMAGE)
@@ -1769,13 +1777,14 @@ PHONY += checkout config build o c B
 root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
+	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
 
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
 kernel-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
-	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(shell basename $(ORIIMG))
+	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG))
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
@@ -1907,7 +1916,14 @@ endif
 # SMP configuration
 SMP ?= 1
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) -kernel $(KIMAGE) $(EXIT_ACTION)
+# If proxy kernel exists, hack the default -kernel option
+ifneq ($(PKIMAGE),)
+  KERNEL_OPT ?= -kernel $(PKIMAGE) --device loader,file=$(KIMAGE),addr=$(KRN_ADDR)
+else
+  KERNEL_OPT ?= -kernel $(KIMAGE)
+endif
+
+EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one

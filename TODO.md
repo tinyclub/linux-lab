@@ -44,3 +44,4 @@
 33. List verified rootfs devices in board specific Makefile
 34. Add buildroot version in the defconfig file name, or simple add the config in Makefile.
 35. When the module option is not the same as the module name, 'm' option will not work for both kernel config and kernel module, another option may be required for kernel-config/module-config, 'c' may be the right one.
+36. Add Risc hello assembly in examples/assembly, ref: https://wiki.debian.org/RISC-V, see the binfmt related part

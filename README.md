@@ -917,6 +917,7 @@ Verified boards with Linux v5.1:
     arm/versatilepb: only work with virtio-9p-pci
     x86_64/pc, only work with virtio-9p-pci (not work with nfsroot)
     i386/pc, only work with virtio-9p-pci (not work with nfsroot)
+    risc64/virt, work with virtio-9p-pci and virtio-9p-dev, and nfsroot works
 
 ## Plugins
 

@@ -3,16 +3,19 @@
 {% capture author_name %}{% if page.author %}{{ page.author }}{% else %}admin{% endif %}{% endcapture %}
 {% endif %}
 
-<div {{ author_box_visible }}>
+{% capture who %}{% if author_name == "admin" %}我们{% else %}作者{% endif %}{% endcapture %}
+
+{% if author_box_id == "sidebar" %}
+<a class="author-box-header" onclick="common_click('#author-box-{{ author_box_id }}', '#author-box-icon-{{ author_box_id }}', 'heart', 'heart-empty')"><i id="author-box-icon-{{ author_box_id }}" class="icon-fixed-width icon-heart"></i> 联系{{ who }}</a>
+{% endif %}
+
+<div class="author-box" id="author-box-{{ author_box_id }}" {{ author_box_visible }}>
 
 {% assign author = site.data.people[author_name] %}
 {% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
 
 {% for contact in site.data.contacts %}
   {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
-    {% continue %}
-  {% endif %}
-  {% if contact.name == "article" %}
     {% continue %}
   {% endif %}
 
@@ -97,7 +100,7 @@
       <span>
         <strong>{{ tool }}{{ desc }}{{ more_info }}{{ money }}</strong>
         <br/>
-        {% if contact.name == "info" %}<div>{{ author.info | replace:"；","<br/>" | replace:";", "<br/>" }}</div>{% endif %}
+        {% if contact.name == "info" %}<div class="author_info">{{ author.info | replace:"；","<br/>" | replace:";", "<br/>" }}</div>{% endif %}
           {% if contact.name != "info" %}
             {% capture qrcode %}{{ contact.name }}-qrcode{% endcapture %}
             {% assign has_qrcode = author[qrcode] %}

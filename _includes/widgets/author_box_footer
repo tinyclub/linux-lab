@@ -80,6 +80,9 @@
       {% assign raw_url = contact.url | append: url_base %}
       {% capture url %}href="{{ raw_url }}" target="_blank"{% endcapture %}
     {% endif %}
+    {% if contact.name == "wechat" %}
+      {% assign raw_url = url_base %}
+    {% endif %}
 
     {% if contact.name == 'article' %}
       {% assign url_base = "" %}
@@ -108,7 +111,7 @@
               <div><img src="/images/{{ contact.name }}/{{ url_base }}.jpg"></div>
             {% else %}
               <div id="{{ qrcode | append:author_box_ref }}"></div>
-              <script type="text/javascript"> $(document).ready(function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 200, height: 200 }); });</script>
+              <script type="text/javascript"> $(document).ready(function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 110, height: 110 }); });</script>
             {% endif %}
           {% endif %}
       </span>
@@ -118,27 +121,72 @@
 </div>
 
 <div style="margin: 0 auto; border: 1px solid #dcdee0; padding: 10px; overflow:hidden; vertical-align: middle; display: table;">
-{% for contact in site.data.contacts %}
-  {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
-    {% continue %}
-  {% endif %}
 
-  {% capture url_type %}{{ contact.name }}{% endcapture %}
-  {% assign url_base = author[url_type] %}
+  {% assign avatar = author['avatar'] %}
+  {% assign wechat = author['wechat'] %}
+  {% assign github = author['github'] %}
+  {% assign weibo = author['weibo'] %}
+  {% assign email = author['email'] %}
+  {% assign wechat_qrcode = author['wechat-qrcode'] %}
+  {% assign photo = author['photo'] %}
 
-  {% if contact.name == "wechat" or contact.name == "weibo" %}
-    {% assign tool = "—— 扫码加作者微信" %}
-  {% endif %}
+  {% assign avatar_pic = 'photo/empty_avatar' %}
 
-  {% if url_base %}
-    {% capture qrcode %}{{ contact.name }}-qrcode{% endcapture %}
-    {% assign has_qrcode = author[qrcode] %}
-    {% if contact.name == "wechat" and has_qrcode %}
-         <div style="float: left; margin-right: 20px;"><img style="max-height:110px; max-weight:110px" src="/images/{{ contact.name }}/{{ url_base }}.jpg"></div>
+  {% if avatar == null or avatar == empty %}
+    {% if email %}
+      {% assign avatar = 'email' %}
+    {% endif %}
+    {% if weibo %}
+      {% assign avatar = 'weibo' %}
+    {% endif %}
+    {% if weichat %}
+      {% assign avatar = 'wechat' %}
+    {% endif %}
+    {% if github %}
+      {% assign avatar = 'github' %}
+    {% endif %}
+    {% if wechat_qrcode %}
+      {% assign avatar = 'wechat-qrcode' %}
+    {% endif %}
+    {% if photo %}
+      {% assign avatar = 'photo' %}
     {% endif %}
   {% endif %}
-  <div style="text-align: left; vertical-align: middle; display: table-cell;">{% if contact.name == "info" %}{% if author.info %}<strong>{{ author['name'] }}/{{ author['nickname'] }}：</strong><br/><br/>{{ author.info }}<br/><br/>{% if tool %}{{ tool }}{% endif %}{% else %}作者还没自我介绍呢！{% break %}{% endif %}{% endif %}</div>
-{% endfor %}
+
+  {% if avatar and wechat and wechat_qrcode and avatar == 'wechat-qrcode' %}
+       {% assign tool = "—— 扫码加作者微信" %}
+       {% assign avatar_pic = "wechat/" | append: wechat %}
+  {% endif %}
+  {% if avatar and photo and avatar == 'photo' %}
+       {% assign avatar_pic = "photo/" | append: photo %}
+  {% endif %}
+
+  <div style="float: left; margin-right: 20px;" id="author_avatar">
+  {% if avatar and wechat and avatar == 'wechat' %}
+     {% assign tool = "—— 扫码加作者微信" %}
+     {% assign qrcode_dynamic = wechat %}
+  {% endif %}
+  {% if avatar and weibo and avatar == 'weibo' %}
+     {% assign tool = "—— 扫码加作者微博" %}
+     {% assign qrcode_dynamic = "http://weibo.com/" | append: weibo %}
+  {% endif %}
+  {% if avatar and github and avatar == 'github' %}
+     {% assign tool = "—— 扫码访问作者Github" %}
+     {% assign qrcode_dynamic = "https://github.com/" | append: github %}
+  {% endif %}
+  {% if avatar and email and avatar == 'email' %}
+     {% assign tool = "—— 扫码给作者发邮件" %}
+     {% assign qrcode_dynamic = "mailto: " | append: email %}
+  {% endif %}
+
+  {% if avatar and qrcode_dynamic %}
+     <script type="text/javascript"> $(document).ready(function () { $('#author_avatar').qrcode({ text: "{{ qrcode_dynamic }}", width: 110, height: 110 }); });</script>
+  {% else %}
+     <img style="max-height:110px; max-weight:110px" src="/images/{{ avatar_pic }}.jpg">
+  {% endif %}
+  </div>
+
+  <div style="text-align: left; vertical-align: middle; display: table-cell;">{% if author.info %}<strong>{{ author['name'] }} ({{ author['nickname'] }})</strong><br/><br/>{{ author.info }}<br/><br/>{% if tool %}{{ tool }}{% endif %}{% else %}作者还没自我介绍呢！{% endif %}</div>
 </div>
 
 {% assign author = null %}

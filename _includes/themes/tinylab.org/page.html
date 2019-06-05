@@ -19,8 +19,6 @@
       {% include widgets/page_header %}
     {% endif %}
 
-    {% include widgets/contact %}
-
     <div {% if page.group != "home" %} id="main_content_container" {% endif %}>
     {{ content }}
     </div>
@@ -29,7 +27,11 @@
   </article>
 
   <hr>
+{% if page.group != "home" %}
   {% include widgets/sponsor %}
+{% else %}
+  {% include widgets/contact %}
+{% endif %}
 
   {% if page.license != false %}
   <hr>

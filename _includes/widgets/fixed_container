@@ -1,9 +1,9 @@
 <div id="fixed-container">
-  <section id="author_widget" class="active">
+  <section class="active">
     {% assign author_box_visible="style='display:visible'" %}
     {% assign author_box_ref = 0 %}
     {% assign author_box_id = "sidebar" %}
-    {% include widgets/author_box %}
+    {% include widgets/author_box_sidebar %}
     {% assign author_box_visible="" %}
   </section>
 

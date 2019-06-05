@@ -28,6 +28,6 @@
 <div id="author-box-wrap-page" class="author-box-wrap">
    {% assign author_box_id = "page_header" %}
    {% assign author_box_ref = 1 %}
-   {% include widgets/author_box %}
+   {% include widgets/author_box_header %}
 </div>
 {% endif %}

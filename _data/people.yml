@@ -14,7 +14,7 @@ admin :
   wechat-pay: wechat-pay-admin-9.68
   sponsor: wechat-pay
   sponsor-qrcode: true
-  info: 聚焦 Linux -- 追本溯源，见微知著！ 致力于推动业界创造更极致的 Linux 产品。;;1）以用户体验为终极目标;2）主打原创性、专业性;3）聚焦稳定性、功耗、性能、温控等核心技术;4）以开源项目、开源书籍、开放视频、专业文章为特色;5）以开放教程、专业培训、技术方案为服务内容。;欢迎业界一线工程师加盟。
+  info: 聚焦 Linux -- 追本溯源，见微知著！ 致力于推动业界创造更极致的 Linux 产品。
 
 Wu Zhangjin:
   name : Wu Zhangjin
@@ -30,7 +30,7 @@ Wu Zhangjin:
   wechat-pay: wechat-pay-falcon-3.69
   sponsor: wechat-pay
   sponsor-qrcode: true
-  info: 1) 本站创始人; 2) 重度开源践行者；3) Linux 官方社区贡献者，MIPS Ftrace 作者；4) 嵌入式 Linux 和实时 Linux 专家；5) 兰大开源社区初创成员；6）数千万级安卓手机系统研发与体验保障经验；7）上百人研发团队管理经验。
+  info: 重度开源践行者；魅族前 BSP 部技术总监；嵌入式与实时 Linux 系统专家；Linux 官方社区贡献者；MIPS Ftrace 和 Linux Lab 等开源项目作者。
 
 Chen Jie:
   name: Chen Jie
@@ -234,7 +234,7 @@ Wang Chen:
   wechat-pay: wechat-pay-unicornx
   sponsor: wechat-pay
   sponsor-qrcode: true
-  info: Linux fans
+  info: 致力于 Linux 相关知识传播的布道者。泰晓科技 “LWN 中文翻译计划” 主编。
 
 Li Yupeng:
   name: Li Yupeng
@@ -315,4 +315,4 @@ Zhizhou Tian:
   email: zhizhou.tian@gmail.com
   github: zhizhoutian
   wechat: zhizhoutian
-  info: Linux 内核工程师，来自腾讯云虚拟化组。曾就职于展讯、小米。对内核开发、C应用开发都很感兴趣，希望能广交好友
+  info: Linux 内核工程师，来自腾讯云虚拟化组。曾就职于展讯、小米。对内核开发、C应用开发都很感兴趣，希望能广交好友。

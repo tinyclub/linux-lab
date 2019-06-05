@@ -1,6 +1,6 @@
 <div class="post-extra">
   <div class="pull-left">
-    <span><a onclick="common_click('#author-box-wrap-header')" id="author" class="author" title="点击 关注/联系/赞助 作者">{{ page.author }}</a> 创作于 {{ page.date | date: "%Y/%m/%d" }} </span>
+    <span><a id="author" href="#author-footer" class="author" title="点击联系作者">{{ page.author }}</a> 创作于 {{ page.date | date: "%Y/%m/%d" }} </span>
   </div>
   <div class="pull-right">
     <span><a href="#sponsor" style="text-decoration:none;" title="微信扫码，打赏一下">
@@ -8,9 +8,4 @@
     </a>
     </span>
   </div>
-</div>
-<div id="author-box-wrap-header" class="author-box-wrap">
-   {% assign author_box_id = "post_header" %}
-   {% assign author_box_ref = 1 %}
-   {% include widgets/author_box %}
 </div>

@@ -3,9 +3,7 @@
 {% capture author_name %}{% if page.author %}{{ page.author }}{% else %}admin{% endif %}{% endcapture %}
 {% endif %}
 
-{% capture who %}{% if author_name == "admin" %}我们{% else %}作者{% endif %}{% endcapture %}
-
-<div class="author-box" id="author-box-{{ author_box_id }}" {{ author_box_visible }}>
+<div {{ author_box_visible }}>
 
 {% assign author = site.data.people[author_name] %}
 {% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
@@ -99,7 +97,7 @@
       <span>
         <strong>{{ tool }}{{ desc }}{{ more_info }}{{ money }}</strong>
         <br/>
-        {% if contact.name == "info" %}<div class="author_info">{{ author.info | replace:"；","<br/>" | replace:";", "<br/>" }}</div>{% endif %}
+        {% if contact.name == "info" %}<div>{{ author.info | replace:"；","<br/>" | replace:";", "<br/>" }}</div>{% endif %}
           {% if contact.name != "info" %}
             {% capture qrcode %}{{ contact.name }}-qrcode{% endcapture %}
             {% assign has_qrcode = author[qrcode] %}
@@ -114,30 +112,6 @@
       </span>
     </a>
   {% endif %}
-{% endfor %}
-</div>
-
-<div style="margin: 0 auto; border: 1px solid #dcdee0; padding: 10px; overflow:hidden; vertical-align: middle; display: table;">
-{% for contact in site.data.contacts %}
-  {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
-    {% continue %}
-  {% endif %}
-
-  {% capture url_type %}{{ contact.name }}{% endcapture %}
-  {% assign url_base = author[url_type] %}
-
-  {% if contact.name == "wechat" or contact.name == "weibo" %}
-    {% assign tool = "—— 扫码加作者微信" %}
-  {% endif %}
-
-  {% if url_base %}
-    {% capture qrcode %}{{ contact.name }}-qrcode{% endcapture %}
-    {% assign has_qrcode = author[qrcode] %}
-    {% if contact.name == "wechat" and has_qrcode %}
-         <div style="float: left; margin-right: 20px;"><img style="max-height:110px; max-weight:110px" src="/images/{{ contact.name }}/{{ url_base }}.jpg"></div>
-    {% endif %}
-  {% endif %}
-  <div style="text-align: left; vertical-align: middle; display: table-cell;">{% if contact.name == "info" %}{% if author.info %}<strong>{{ author['name'] }}/{{ author['nickname'] }}：</strong><br/><br/>{{ author.info }}<br/><br/>{% if tool %}{{ tool }}{% endif %}{% else %}作者还没自我介绍呢！{% break %}{% endif %}{% endif %}</div>
 {% endfor %}
 </div>
 

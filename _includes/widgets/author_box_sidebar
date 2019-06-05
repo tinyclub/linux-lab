@@ -1,0 +1,32 @@
+
+{% if author_name == null or author_name == empty %}
+{% capture author_name %}{% if page.author %}{{ page.author }}{% else %}admin{% endif %}{% endcapture %}
+{% endif %}
+
+<div style="margin-left: 10px; margin-top: -18px;">
+
+<a>手机扫码阅读</a>
+
+{% assign author = site.data.people[author_name] %}
+{% if author == null %} {% assign author = site.data.people["admin"] %} {% endif %}
+
+{% for contact in site.data.contacts %}
+  {% if page.url == "/authors.html" and (contact.name == "archive" or contact.name == "article") %}
+    {% continue %}
+  {% endif %}
+
+          {% if contact.name == "article" %}
+              {% assign url_base = site.production_url | append: page.url %}
+              {% assign raw_url = contact.url | append: url_base %}
+              <div style="padding-top: 10px; padding-bottom: 10px;" id="{{ qrcode | append:author_box_ref }}"></div>
+              <script type="text/javascript"> $(document).ready(function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 90, height: 90 }); });</script>
+              {% break %}
+          {% endif %}
+{% endfor %}
+</div>
+
+{% assign author = null %}
+{% assign author_name = null %}
+{% assign author_box_visible = "" %}
+{% assign url = "" %}
+{% assign author_box_icon_id = "" %}

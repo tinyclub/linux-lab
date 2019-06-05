@@ -9,7 +9,7 @@
 {% assign license_url = _license['url'] %}
 
 <p>
-  本作品由 <a onclick="common_click('#author-box-wrap-footer')" id="author-footer" title="点击 关注/联系/赞助 作者">{{ page.author }}</a> 创作，采用 <a rel="license" href="{{ license_url }}" title="查看协议详细信息" target="_blank">{{ license_name }} 协议</a> 进行许可。未经授权，谢绝商业使用！
+  本作品由 <a id="author-footer" title="点击下述小图标联系作者">{{ page.author }}</a> 创作，采用 <a rel="license" href="{{ license_url }}" title="查看协议详细信息" target="_blank">{{ license_name }} 协议</a> 进行许可。未经授权，谢绝商业使用！
 </p>
 <div id="author-box-wrap-footer" class="author-box-wrap">
    {% assign author_box_id = "post_footer" %}

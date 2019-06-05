@@ -438,7 +438,7 @@ board: board-save plugin-save
 		| egrep -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep --colour=auto "$(FILTER)"
+		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" | egrep --colour=auto "$(FILTER)"
 
 board-clean:
 	$(Q)rm -rf .board_config

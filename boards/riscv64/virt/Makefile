@@ -43,7 +43,7 @@ PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/fw_jump.elf
 
 KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-#CCPRE   ?= $(XARCH)-linux-gnu-
+CCPRE   ?= $(XARCH)-unknown-elf-
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
 
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
@@ -54,5 +54,5 @@ HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 #KP      ?= 1
 #QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
-#CCVER   ?= 8.3-2019.03
-#CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-arm-$(CCVER)-x86_64-aarch64-linux-gnu/bin/
+CCVER   ?= 8.2.0-2019.02.0
+CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/

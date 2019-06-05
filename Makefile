@@ -495,7 +495,7 @@ PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full p p-s p-l 
 # List targets for boards and plugins
 
 list:
-	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^[ [\./a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
+	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"

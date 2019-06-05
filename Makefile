@@ -1778,6 +1778,7 @@ root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
 	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
+	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))
 
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 

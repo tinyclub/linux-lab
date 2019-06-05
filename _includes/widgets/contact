@@ -2,13 +2,23 @@
 <table>
 <tr><td style="text-align:center;">微信公众号</td><td width='150px' style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center;">知识星球</td></tr>
 <tr>
-  <td style="text-align:center;">
-    <img src='/images/wechat/tinylab-org.jpg' width='120px' />
+  <td style="text-align:center; vertical-align: middle">
+    <img src='/images/wechat/tinylab-org.jpg' width='110px' />
   </td>
   <td style="text-align:center; vertical-align: middle;"><b>关注 @泰晓科技<br/><br/>订阅 Linux 原创<br/>与同行一起成长</b>
   </td>
-  <td>
-    <img src='/images/xingqiu/tinylaborg.jpg' width='120px' />
+  <td style="text-align:center; vertical-align: middle;">
+    <img src='/images/xingqiu/tinylaborg.jpg' width='110px' />
+  </td>
+</tr>
+<tr>
+  <td style="text-align:center; vertical-align: middle">
+   订阅公众号，及时阅读本站推送的文章，并发表评论，赞赏作者。
+  </td>
+  <td style="text-align:center; vertical-align: middle;"></b>
+  </td>
+  <td style="text-align:center; vertical-align: middle;">
+   付费订阅星球成为会员，独享更多优质内容，加入专属 VIP 微信群。
   </td>
   </tr>
 </table>

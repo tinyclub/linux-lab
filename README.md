@@ -185,7 +185,7 @@ List builtin boards:
     [ i386/pc ]:
           ARCH     = x86
           CPU     ?= i686
-          LINUX   ?= v4.6.7
+          LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
     [ mipsel/malta ]:
           ARCH     = mips
@@ -197,6 +197,17 @@ List builtin boards:
           CPU     ?= generic
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
+    [ riscv32/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/vda
+    [ riscv64/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.1
+          ROOTDEV ?= /dev/vda
+    [ x86_64/pc ]:
           ARCH     = x86
           CPU     ?= x86_64
           LINUX   ?= v5.1

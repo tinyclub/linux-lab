@@ -16,7 +16,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Adding a huge zero page](https://lwn.net/Articles/517465/)
 > 原创：By Jonathan Corbet @ Sept. 26, 2012
@@ -75,7 +75,7 @@ There have not been a lot of comments on this patch; the implementation is relat
 
 目前为止针对该补丁还没有很多的评论；由于在实现上相对简单，想必应该不会再有什么太大的变化。鉴于增加一个 huge zero page 可以为内核带来的好处很明显，相信该补丁应该会在不久的将来被合入内核主线；目前看来合理的合入时间点应该会是在 3.8 版本的开发周期期间（译者注，该补丁集最终 [随 3.8 版本合入内核主线][3]）。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/515526/
 [2]: https://en.wikipedia.org/wiki/Resident_set_size

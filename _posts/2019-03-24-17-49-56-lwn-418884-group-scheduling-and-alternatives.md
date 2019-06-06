@@ -16,7 +16,7 @@ tags:
   - schedule
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Group scheduling and alternatives](https://lwn.net/Articles/418884/)
 > 原创：By Jonathan Corbet @ Dec. 6, 2010
@@ -67,7 +67,7 @@ Con 说，所有这些措施其目的都是为了 “`摆脱脆弱的基于试�
 
 所以我们可能不会很快看到 Con 的调节方案被内核所接受，即便有人确实基于他的思路提交了一个补丁。但是，我们可能会看到和该思路类似的另一种实现形式，即可以对进程指定确切的延迟要求和处理器时间要求。这个补丁已经存在，被称之为 [deadline scheduler][7]。如果改进后的组调度还不能解决所有人的问题（这是有可能的，因为总会存在意想不到的情况），我们可能会看到新的推动来请求合入 deadline scheduler 补丁。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: /lwn-415740
 [2]: https://kernelnewbies.org/Linux_2_6_38#Automatic_process_grouping_.28a.k.a._.22the_patch_that_does_wonders.22.29

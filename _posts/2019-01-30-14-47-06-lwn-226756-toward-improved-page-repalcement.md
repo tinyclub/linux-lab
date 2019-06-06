@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Toward improved page replacement](https://lwn.net/Articles/226756/)
 > 原创：By corbet @ Mar. 20, 2007
@@ -64,6 +64,6 @@ Rik van Riel 发布了 [一个补丁](http://lwn.net/Articles/226658/) 试图改
 
 同时，到目前为止，这个拆分链表（list-splitting）补丁还缺乏广泛的测试或基准测试。因此，考虑到这一点，还很难说清楚这个补丁会在何时（或以何种形式）被合入内核主线。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: http://tinylab.org

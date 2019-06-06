@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Transparent hugepages](https://lwn.net/Articles/359158/)
 > 原创：By Jonathan Corbet @ Oct. 28, 2009
@@ -62,7 +62,7 @@ In any case, this patch is an early RFC; it's not headed toward the mainline in 
 
 总之，该补丁仍处于征求意见稿（Request For Comments，简称 RFC）草案阶段；谈论合入主线还为时尚早。但这的确是 Linux 所需要的一个功能；为了充分利用处理器的功能，有必要将大页优先作为内存管理的对象。最终我们都将使用大页，而这对于上层应用来说可能是无感（透明）的。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://www.ibm.com/developerworks/cn/linux/l-cn-hugetlb/
 [2]: https://lwn.net/Articles/358904/

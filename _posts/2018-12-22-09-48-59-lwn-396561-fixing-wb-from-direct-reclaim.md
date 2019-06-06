@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Fixing writeback from direct reclaim](https://lwn.net/Articles/396561/)
 > 原创：By corbet @ Jul. 20, 2010
@@ -74,7 +74,7 @@ Direct reclaim 通常是有效的，当某些进程对内存的需求十分急�
 
 建议所有喜欢深入研究基准测试结果的人都看一下 Mel 发布的补丁，看上去他已经尽了最大的努力，运行了所有可能的测试，对这个补丁系列的运行效果进行了量化和评估。这种广泛的基准测试对于深入修改内存管理方面的代码很有意义，因为即使很小的更改也会由于某些外部运行环境的不同产生令人惊讶的不同结果。就这一点来说，Mel 的补丁修改似乎已经达到了预期的效果，并且已经解决了以前版本中所发现的大多数问题。看起来，这次针对 writeback 的修改已经足够成熟，可以发布用于正式的产品级应用了（译者注，Mel Gorman 的相关补丁修改 [于版本 3.2 合入内核主线][2]）。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/396512/
 [2]: https://kernelnewbies.org/Linux_3.2#I.2FO-less_dirty_throttling.2C_reduce_filesystem_writeback_from_page_reclaim

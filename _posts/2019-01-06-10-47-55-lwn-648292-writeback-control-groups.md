@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Writeback and control groups](https://lwn.net/Articles/648292/)
 > 原创：By corbet @ Jun. 17, 2015
@@ -84,7 +84,7 @@ writeback 机制在设计上一次只操作一个特定的 inode；这么做的�
 
 关于以上所有工作（译者注，指本文介绍的三个补丁集）的状态：Tejun 介绍说它们进展顺利，预计可以随 4.2 的合并窗口合入内核主线。但按照他的说法，补丁仍处于试验阶段，可能还有一些问题需要解决。目前（截至大会演讲时），只支持 ext2 文件系统；会议之后，[对 ext4 的支持][12] 也发布了。为了支持新的 writeback 机制，每个文件系统都需要做相应的修改，但改动都非常小。完成这些小修改应该不会花费太长时间；一旦这项工作稳定下来后，将标志着又一个长期困扰 Linux 内存管理的问题将不复存在。（译者注，针对 cgroups 的 writeback 改造 [随 4.2 版本合入内核主线][1]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://kernelnewbies.org/Linux_4.2#cgroup_writeback_support
 [2]: https://elixir.bootlin.com/linux/v4.1/source/include/linux/mm_types.h#L179

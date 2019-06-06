@@ -17,7 +17,7 @@ tags:
   - realtime
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[A realtime preemption overview](https://lwn.net/Articles/146861/)
 > 原创：By Paul McKenney @ Aug. 10, 2005
@@ -275,7 +275,7 @@ Linux 无法确定对哪个任务提升优先级。当使用可睡眠的锁时�
 
 [感谢 Ingo Molnar 对本文前一稿的全面审查]。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/143323/
 [2]: https://en.wikipedia.org/wiki/Symmetric_multiprocessing

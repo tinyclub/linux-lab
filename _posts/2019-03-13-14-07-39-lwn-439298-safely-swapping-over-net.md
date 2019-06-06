@@ -15,14 +15,14 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Safely swapping over the net](https://lwn.net/Articles/439298/)
 > 原创：By corbet @ Apr. 19, 2011
 > 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Anle Huang](https://github.com/hal0936)
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > Swapping, like page writeback, operates under some severe constraints. The ability to write dirty pages to backing store is critical for memory management; it is the only way those pages can be freed for other uses. So swapping must work well in situations where the system has almost no memory to spare. But writing pages to backing store can, itself, require memory. This problem has been well solved (with mempools) for locally-attached devices, but network-attached devices add some extra challenges which have never been addressed in an entirely satisfactory way.
 
@@ -64,7 +64,7 @@ slab 分配器会提前申请多个连续的页框（组成所谓的 slab）然�
 
 所有以上改动的目标就是使得系统在使用网络块设备（network block device，简称 NBD）实现 swap 时更加安全可靠。至少，只要用于限定保留内存大小的低水印线（low watermark）足够高，那么这么做就应该是安全的。由于通过网络实现交换的系统相对来说会更多地使用保留的内存，因此管理员可能需要适当地提高水印线的标准（通过设置 `/proc/sys/vm/min_free_kbytes`）。为此。该补丁集的最后一个子补丁所做的事情就是在检测到保留内存的容量过低时会主动抑制（throttling）那些运行直接回收（direct reclaim）的进程；其想法就是利用有限的内存确保执行回收的进程中的一小部分能够顺利完成任务（译者注，即避免争抢过于激烈导致谁都无法完成回收的工作，相关提交参考 [“mm: throttle direct reclaimers if PF_MEMALLOC reserves are low and swap is backed by network storage”][7]）。当然，从长远来看，动态调整保留内存的大小可能是更好的解决方案，但是为了避免补丁集改动太大，该特性（指动态调整保留内存大小）暂未实现。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://kernelnewbies.org/Linux_3.6#Safe_swap_over_NFS.2FNBD
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=072bb0aa5e062902968c5c1007bba332c7820cf4

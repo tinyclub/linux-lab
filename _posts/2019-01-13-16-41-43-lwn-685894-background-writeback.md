@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Background writeback](https://lwn.net/Articles/685894/)
 > 原创：By Jake Edge @ May. 4, 2016
@@ -48,7 +48,7 @@ Ted Ts'o 询问当不同的控制组（control group）试图对 I/O 执行按�
 
 David Howells 询问有关多个设备的 writeback 问题。Axboe 说对于这方面还有工作要做。另一些人询问了对后台读取（background reads）的支持，Axboe 说可以添加。目前实现该功能并没有什么困难，需要的只是一点工作量。（译者注，该补丁集最终 [随 4.10 合入内核主线][6]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/616241/
 [2]: https://lwn.net/Articles/685236/

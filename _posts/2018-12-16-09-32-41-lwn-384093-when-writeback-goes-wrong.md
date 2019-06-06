@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[When writeback goes wrong](https://lwn.net/Articles/384093/)
 > 原创：By corbet @ Apr. 20, 2010
@@ -86,7 +86,7 @@ Direct reclaim 处理中也会涉及 [lumpy reclaim](/lwn-211505)。lumpy reclai
 
 因此，如果 Andrew 没说错的话，这项工作的重心将转移到弄清楚究竟是什么导致内存管理代码的行为发生了变化，然后才好去修复它。为此，Dave 为内核增加了 [一组 tracepoints][5]，可以让您了解 writeback 代码的处理细节。这些 tracepoints 已经揭示了一些错误并被及时修复了。但主要问题仍未得到解决。该问题已经被列到即将到来的文件系统，存储和内存管理研讨会的讨论主题中（会议即将在 8 月份于 Linux 大会（LinuxCon）上召开），大部分相关人员都认为这个问题短期内还看不到解决的希望。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/384110/
 [2]: https://lwn.net/Articles/384112/

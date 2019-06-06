@@ -16,7 +16,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Schedulers: the plot thickens](https://lwn.net/Articles/230574/)
 > 原创：By corbet @ Apr. 17, 2007
@@ -123,7 +123,7 @@ CFS 的补丁提交中附带了另一个让几乎所有关注内核开发领域�
 
 所以现在存在三个调度器备选方案：Con Kolivas 的 SD，Ingo Molnar 的 CFS，以及 Nick Piggin 的 “nicksched”（一个长期的项目，也非常值得在这里一并列出）。目前，Con 似乎决定退出。尽管如此，他的补丁（至少目前）还是有很大的机会来替换核心 CPU 调度器。Ingo 的工作虽然受到大家的普遍欢迎，但这并不意味着 Ingo 在这件事情上就能够轻松胜出；在正式决定替换调度器之前必然还要经过一些认真的讨论。以上种种迹象表明，要想在 2.6.22 版本发布周期中替换掉现有的调度器还不太可能。（译者注，笑到最后的是 CFS 调度器，并于 [2.6.23 版本合入内核主线][6]，历经稍后几个版本的修修补补，一直稳定地使用到现在。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://elixir.bootlin.com/linux/v2.6.23/source/Documentation/sched-design-CFS.txt
 [2]: https://elixir.bootlin.com/linux/v2.6.23/source/include/linux/sched.h#L896

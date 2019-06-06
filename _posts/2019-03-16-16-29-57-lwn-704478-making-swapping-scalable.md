@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Making swapping scalable](https://lwn.net/Articles/704478/)
 > 原创：By Jonathan Corbet @ Oct. 26, 2016
@@ -78,7 +78,7 @@ tags:
 
 根据 Chen 的说法，基于当前的内核，每次缺页异常处理过程中为了将数据从基于固态硬盘的交换设备中读取出来，（因为内核代码逻辑的处理原因，去除实际的读取操作所花费的时间）额外会增加大约 15μs 的开销。他说，这额外增加的时间差不多和实际从设备读取数据花费的时间相当。但应用补丁后，额外开销降至 4μs，改进效果还是很明显的。在撰写本文时，对补丁集还没有人给出明确的评论，但看上去通过这类改进，在当代最新的存储设备上，swap 子系统可以工作得更好。（译者注，该补丁集 [随 4.11 版本合入内核主线][9]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://en.wikipedia.org/wiki/Wear_leveling
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2a8f9449343260373398d59228a62a4332ea513a

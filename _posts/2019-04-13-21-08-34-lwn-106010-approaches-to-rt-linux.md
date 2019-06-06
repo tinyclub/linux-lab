@@ -16,7 +16,7 @@ tags:
   - schedule
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Approaches to realtime Linux](https://lwn.net/Articles/106010/)
 > 原创：By Jonathan Corbet @ Oct. 12, 2004
@@ -137,7 +137,7 @@ RTAI 最初也使用了这种方法，但后来又转向基于 [Adeos 内核][18
 
 另一个挑战是如何就围绕主线内核支持硬实时任务的想法达成共识。一般来说，内核开发人员通常会反对那些不考虑所有用户的感受、而只针对满足极少数用户的要求所做出的更改。为了实现实时响应而合入这些改动很大的补丁只会对大多数人造成影响。在 Linux 主线真正支持实时系统之前，相关补丁必须证明自己是高度稳定的，并且不会对 “常规” 用户造成损害。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://en.wikipedia.org/wiki/RTAI
 [2]: https://en.wikipedia.org/wiki/RTLinux

@@ -16,7 +16,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Reliable out-of-memory handling](https://lwn.net/Articles/562211/#oom)
 > 原创：By Jonathan Corbet @ Aug. 6, 2013
@@ -41,7 +41,7 @@ Johannes Weiner 发布了 [一个补丁集][4]，意图解决这个问题。基�
 
 （译者注，该补丁集 [随 3.12 版本合入内核主线][5]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=519e52473ebe9db5cdef44670d5a97f1fd53d721
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3812c8c8f3953921ef18544110dafc3505c1ac62

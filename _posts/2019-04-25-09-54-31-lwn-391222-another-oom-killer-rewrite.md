@@ -16,7 +16,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Another OOM killer rewrite](https://lwn.net/Articles/391222/)
 > 原创：By Jonathan Corbet @ Jun. 7, 2010
@@ -87,7 +87,7 @@ tags:
 
 所以，根据 Andrew 的结论，2.6.36 将引入新的 OOM Killer。对于大多数用户来说，这个新功能的引入可能味同鸡肋，并不能引起大家的兴趣。但是，只要它最终能够帮助大家更好地应对 OOM，或许人们对它的态度还是会有所转变。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7b98c2e402eaa1f2beec18b1bde17f74948a19db
 [2]: https://elixir.bootlin.com/linux/v2.6.36/source/Documentation/vm/numa_memory_policy.txt

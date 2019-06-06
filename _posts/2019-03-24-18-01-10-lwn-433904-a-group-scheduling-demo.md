@@ -16,7 +16,7 @@ tags:
   - schedule
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[A group scheduling demonstration](https://lwn.net/Articles/433904/)
 > 原创：By Jonathan Corbet @ Mar. 16, 2011
@@ -41,6 +41,6 @@ tags:
 
 这种对任务的隔离功能是 “组调度” 所能够提供的最好特性之一；即使系统中存在大量疯狂运行的进程，它们也不会过多地干扰机器上其他任务的正常运行。仅此一点就证明了 “组调度” 这个特性自身的价值。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://fedoraproject.org/wiki/Releases/Rawhide/zh-cn

@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Better active/inactive list balancing](https://lwn.net/Articles/495543/)
 > 原创：By corbet @ May 2, 2012
@@ -64,7 +64,7 @@ list 的方式：对于 file-backed page，当在缺页处理中被调入时，�
 
 所有这些工作所能够带来的改进效果尚不清楚：Johannes 也未提供针对各种工作负荷条件下的基准对比测试结果。当前该补丁还处于早期阶段，距离被内核主线接受还有很长的路要走。因此它可能还会发生显著的变化，更甚至会被完全抛弃。但是，可以预料到的是，一个针对 active 和 inactive list 的更加高级的平衡处理机制正在朝我们走来。（译者注，该补丁集 [随 3.15 合入内核主线][7]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://elixir.bootlin.com/linux/v3.15/source/mm/workingset.c#L19
 [2]: https://en.wikipedia.org/wiki/Page_fault#Minor

@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Flushing out pdflush](https://lwn.net/Articles/326552/)
 > 原创：By Goldwyn Rodrigues @ Apr. 1, 2009
@@ -131,7 +131,7 @@ Jens 通过初步的实验发现，（采用新补丁后）基于简单的 SATA 
 
 致谢：感谢 Jens Axboe 审阅和解释了补丁的相关内容。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/324833/
 [2]: https://elixir.bootlin.com/linux/v2.6.31/source/include/linux/fs.h#L1339

@@ -16,7 +16,7 @@ tags:
   - schedule
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[CFS bandwidth control](https://lwn.net/Articles/428230/)
 > 原创：By Jonathan Corbet @ Feb. 16, 2011
@@ -39,7 +39,7 @@ CFS 调度器会尽最大的努力为相互竞争的进程分配可用的处理�
 
 Paul 的补丁并不是唯一一个旨在解决这个问题的方案；Bharata B Rao 的 [“CFS 强制限制补丁集（CFS hard limits patch set）”][3] 提供了几乎相同的功能。但两者实现的方式完全不同；“强制限制补丁” 尝试复用实时调度程序中的一些带宽限制代码来实现对进程运行的限制。Paul 认为使用这种方法会带来额外的开销并担忧在处理器满负荷状态下该机制是否可以工作。看上去这些担忧是有道理的，因为自 2010 年初以来该 “强制限制补丁” 就一直没有发布过更新。因此，看起来 Paul 的 “CFS 带宽控制补丁” 更有可能为内核主线所接纳（译者注，该补丁 [随 3.2 版本合入内核主线][4]）。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/428175/
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/scheduler/sched-bwc.txt?id=HEAD

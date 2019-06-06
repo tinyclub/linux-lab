@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[No-I/O dirty throttling](https://lwn.net/Articles/456904/)
 > 原创：By corbet @ Aug. 31, 2011
@@ -75,7 +75,7 @@ pause = (HZ * pages_dirtied) / (task_ratelimit | 1);
 
 Fengguang 开发这个补丁已经有一段时间了，无疑非常期望将其合入内核主线。这是很有可能的，但要知道，即使其他人已经可以轻松地理解这个补丁，想给核心的内存管理代码添加功能也绝不是一件容易的事情。稍不注意。内核的性能就可能在某些意想不到的工作负载下出现倒退。总之，为了让大家有信心接受这个补丁，除了开发工作和解释之外，还需要运行大量的测试。但是，如果不出意外的话，该补丁最终应该会被内核接纳并让我们的系统性能变得更好（译者注，该补丁 [随 3.2 版本合入内核主线][9]）。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=143dfe8611a63030ce0c79419dc362f7838be557
 [2]: https://lwn.net/Articles/456503/

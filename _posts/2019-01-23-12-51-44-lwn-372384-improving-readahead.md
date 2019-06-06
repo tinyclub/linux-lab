@@ -16,7 +16,7 @@ tags:
   - readahead
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Improving readahead](https://lwn.net/Articles/372384/)
 > 原创：By Jonathan Corbet @ Feb. 3, 2010
@@ -87,7 +87,7 @@ The stated goal of this patch set is to make readahead more aggressive by increa
 
 这个补丁集既定目标就是通过增加预读窗口的最大值，从而使得预读行为更加激进。但是，实际上，很多工作都是朝着相反的方向进行的，这限制了读取机制，因为在这种情况下，提前读取太多会对系统性能造成损害。新启发式是否能可靠地改善性能？在大量的基准测试完成之前我们还不得而知。
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: http://tinylab.org
 [2]: http://lwn.net/Articles/372281/

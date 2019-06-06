@@ -16,7 +16,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Toward more predictable and reliable out-of-memory handling](https://lwn.net/Articles/668126/)
 > 原创：By Jonathan Corbet @ Dec. 16, 2015
@@ -79,7 +79,7 @@ OOM reaper 作为一个单独的线程实现；这样做是因为 reaper 必须�
 
 众所周知，内存管理相关的补丁很难被内核主线所接纳。对于 “OOM detection” 补丁，Michal 表示，“`已经等待了很长一段时间了，但始终没有收到什么大的反对意见`”。他希望看到它被合入 4.6 版本或者后继的版本。人们也很难找到对 “OOM reaper” 补丁的反对意见，但目前还没有人讨论这个补丁什么时候可以进入主线。一旦这些补丁被合入，OOM 处理子系统的表现应该会变得更好，但要让用户比现在更喜欢它（译者注，“它” 指的是 OOM Killer 及其造成的结果）那是不太可能的事情。（译者注，“OOM reaper” 补丁集最终 [随 4.6 版本合入内核主线][3]，而 “OOM detection” 补丁集则最终随 4.7 版本合入内核主线。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0a0337e0d1d134465778a16f5cbea95086e8e9e0
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aac453635549699c13a84ea1456d5b0e574ef855

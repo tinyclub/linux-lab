@@ -15,7 +15,7 @@ tags:
   - memory
 ---
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 > 原文：[Dynamic writeback throttling](https://lwn.net/Articles/405076/)
 > 原创：By corbet @ Sep. 15, 2010
@@ -62,7 +62,7 @@ Fengguang 提交的补丁集（由 17 个子补丁构成）做了以下改进，
 
 但是，将此补丁代码合入主线还需要一段时间。内核内存子系统的代码本身已经十分复杂，而该补丁的修改也不简单；这给其他人的审查工作带来了困难。也有些人对补丁中采用的估算方式的细节提出了一些担忧。除此之外，我们还需要经过大量的性能测试验证才能将这个更改最终合入主线。总之我们还要再等待一段时间，但相信该补丁合入后对 writeback 的性能提升应该会有更大的帮助。（译者注，该补丁最终 [随 3.1 版本合入主线][4]。）
 
-**了解更多有关 “LWN 中文翻译计划”，请点击 [这里](/lwn/)**
+**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
 [1]: https://lwn.net/Articles/404612/
 [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e98be2d599207c6b31e9bb340d52a231b2f3662d

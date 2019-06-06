@@ -1776,6 +1776,7 @@ PHONY += checkout config build o c B
 # Save the built images
 root-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
+	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
 	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))

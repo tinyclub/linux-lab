@@ -145,11 +145,11 @@
     {% if github %}
       {% assign avatar = 'github' %}
     {% endif %}
-    {% if wechat_qrcode %}
-      {% assign avatar = 'wechat-qrcode' %}
-    {% endif %}
     {% if photo %}
       {% assign avatar = 'photo' %}
+    {% endif %}
+    {% if wechat_qrcode %}
+      {% assign avatar = 'wechat-qrcode' %}
     {% endif %}
   {% endif %}
 

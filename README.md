@@ -616,7 +616,7 @@ Download, decompress and enable the external toolchain:
 If not external toolchain there, the builtin will be used back.
 
 If no builtin toolchain exists, please must use this external toolchain
-feature, currently, aarch64, arm, riscv, x86_64 support such feature.
+feature, currently, aarch64, arm, riscv, i386, x86_64 support such feature.
 
 ### Using external rootfs
 

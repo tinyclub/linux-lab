@@ -200,7 +200,7 @@ List builtin boards:
     [ riscv32/virt ]:
           ARCH     = riscv
           CPU     ?= any
-          LINUX   ?= v5.1
+          LINUX   ?= v5.0.13
           ROOTDEV ?= /dev/vda
     [ riscv64/virt ]:
           ARCH     = riscv
@@ -928,7 +928,8 @@ Verified boards with Linux v5.1:
     arm/versatilepb: only work with virtio-9p-pci
     x86_64/pc, only work with virtio-9p-pci (not work with nfsroot)
     i386/pc, only work with virtio-9p-pci (not work with nfsroot)
-    risc64/virt, work with virtio-9p-pci and virtio-9p-dev, and nfsroot works
+    riscv64/virt, work with virtio-9p-pci and virtio-9p-dev, and nfsroot works
+    riscv32/virt, work with virtio-9p-pci and virtio-9p-dev, and nfsroot works
 
 ## Plugins
 

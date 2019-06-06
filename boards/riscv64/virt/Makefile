@@ -36,10 +36,10 @@ FSTYPE  ?= ext2
 # bbl is from https://github.com/riscv/riscv-pk
 # fw_jump.elf is from https://github.com/riscv/opensbi
 
-#PORIIMG ?= bll
+#PORIIMG ?= bbl
 PORIIMG ?= fw_jump.elf
-#PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bbl
-PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/fw_jump.elf
+#PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
+PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
 
 KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image

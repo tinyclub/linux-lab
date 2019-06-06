@@ -19,6 +19,15 @@ ifeq ($(filter test3,$(MAKECMDGOALS)),test3)
   $(info "test3: Only execute for test3 goal.")
 endif
 
+# warning and error
+
+ifeq ($(ERROR_TEST),1)
+  $(error Logging with 'error' function)
+endif
+ifeq ($(WARN_TEST),1)
+  $(warning Warning with 'warning' function)
+endif
+
 test1:
 	@echo Run $@
 	@echo "Command line variables:" $(MAKEOVERRIDES)

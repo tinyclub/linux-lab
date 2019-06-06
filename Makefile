@@ -743,7 +743,7 @@ PHONY += qemu qemu-build emulator emulator-build q e e-b q-b
 
 toolchain:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-	$(Q)make $(S) -C $(TOOLCHAIN) VERSION=$(CCVER)
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),VERSION=$(CCVER))
 endif
 
 toolchain-clean:

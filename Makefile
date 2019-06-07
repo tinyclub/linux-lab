@@ -2229,7 +2229,7 @@ else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
-  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
   TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); kill -9 \$$\$$(cat $(TEST_LOG_PID)); \

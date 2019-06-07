@@ -44,5 +44,7 @@ XKCLI   ?= earlycon
 #KP      ?= 1
 #QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
+
+# To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER   ?= 8.3-2019.03
 CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-arm-$(CCVER)-x86_64-aarch64-linux-gnu/bin/

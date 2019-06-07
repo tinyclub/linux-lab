@@ -48,3 +48,7 @@ UROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.uboot
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 #QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
+
+# To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
+CCVER  ?= 7.4.1-2019.02
+CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-linaro-$(CCVER)-x86_64_$(XARCH)-linux-gnueabi/bin/

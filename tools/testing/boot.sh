@@ -11,11 +11,15 @@
 #      1. every release should pass this basic test
 #      2. some boards may fail, should be fixed if possible, for example, raspi3 hang at reboot issued
 #
+# Known failures:
+#
+#      1. these boards hang after send 'poweroff' or 'reboot' command: aarch64/raspi3, arm/verstailpb, mipsel/malta
+#
 
 BOARDS=$1
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
-[ -z "$TEST_TIMEOUT" ] && TEST_TIMEOUT=30
+[ -z "$TEST_TIMEOUT" ] && TEST_TIMEOUT=40
 
 TEST_CASE="boot-test"
 TEST_VERBOSE=1
@@ -34,6 +38,8 @@ do
 
 	echo -e "\nBOARD: [ $b ]"
 	echo -e "\n... [ $b ] $TEST_CASE START...\n"
+
+	sleep 2
 
         if [ "$b" == "aarch64/raspi3" ]; then
 		TEST_RD=/dev/ram0

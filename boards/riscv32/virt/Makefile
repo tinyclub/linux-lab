@@ -54,6 +54,7 @@ HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 #QP      ?= 1
 QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
 
+# To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 # Use the prebuilt riscv64 toolchain with multilib support for riscv32, so, no need to prepare two toolchains
 CCPRE   ?= riscv64-unknown-elf-
 CCVER   ?= 8.2.0-2019.02.0

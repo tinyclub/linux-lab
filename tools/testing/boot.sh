@@ -19,7 +19,7 @@
 BOARDS=$1
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
-[ -z "$TEST_TIMEOUT" ] && TEST_TIMEOUT=40
+[ -z "$TEST_TIMEOUT" ] && TEST_TIMEOUT=50
 [ -z "$TEST_PREBUILT" ] && TEST_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 
 TEST_CASE="boot-test"

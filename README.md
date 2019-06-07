@@ -24,7 +24,7 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 * Boards
 
-  Qemu based, 4 main Architectures, 6 popular Boards, more available, one `make boot` target for all boards, qemu options are hidden.
+  Qemu based, 5 main Architectures, 10 popular Boards, more available, one `make boot` target for all boards, qemu options are hidden.
 
 * Components
 

@@ -1906,7 +1906,7 @@ endif
 # Some boards not support 'reboot' test, please use 'power' instead.
 #
 # reboot means run reboot command in Qemu guest
-# power means rn poweroff command in Qemu guest and poweron it via host
+# power means run poweroff command in Qemu guest and poweron it via host
 #
 REBOOT_TYPE ?= power
 TEST_REBOOT ?= 0

@@ -1,7 +1,8 @@
 _BASE    = 1
 ARCH     = x86
 XARCH    = i386
-CPU     ?= i686
+# qemu-system-i386 -M pc -cpu ?
+CPU     ?= qemu32
 MEM     ?= 1024M
 QEMU    ?= v0.10.6
 SMP     ?= 4

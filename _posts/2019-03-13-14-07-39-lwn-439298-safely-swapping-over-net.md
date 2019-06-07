@@ -22,8 +22,6 @@ tags:
 > 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Anle Huang](https://github.com/hal0936)
 
-**请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
-
 > Swapping, like page writeback, operates under some severe constraints. The ability to write dirty pages to backing store is critical for memory management; it is the only way those pages can be freed for other uses. So swapping must work well in situations where the system has almost no memory to spare. But writing pages to backing store can, itself, require memory. This problem has been well solved (with mempools) for locally-attached devices, but network-attached devices add some extra challenges which have never been addressed in an entirely satisfactory way.
 
 与 “页回写”（writeback）一样，“页交换”（swapping，译者注，下文直接使用不再翻译）会在一些内存紧张的情况下被执行。将脏页（dirty pages）写入后备存储设备（译者注，譬如磁盘，针对本文的 swapping 操作我们一般称该设备为 “页交换设备”）的能力对于内存管理至关重要；因为这是唯一可以将这些页框（释放出来）用于其他用途的方法。因此，在系统空闲内存极度紧张的情况下，swap 必须确保能够正常工作。但是，将页框上的数据写入磁盘这个操作本身也可能需要内存。当（页交换设备是）本地连接的设备时，这个问题已经被很好地解决了（通过使用 mempools 技术），但是对于（页交换设备是）网络连接设备时，实现的难度变得更大，而且面对这些困难，目前还未找到完全令人满意的解决方法。

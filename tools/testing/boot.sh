@@ -20,6 +20,7 @@ BOARDS=$1
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
 [ -z "$TEST_TIMEOUT" ] && TEST_TIMEOUT=40
+[ -z "$TEST_PREBUILT" ] && TEST_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 
 TEST_CASE="boot-test"
 TEST_VERBOSE=1
@@ -45,7 +46,7 @@ do
 		TEST_RD=/dev/ram0
 	fi
 
-	make $TEST_CASE b=$b TEST_TIMEOUT=$TEST_TIMEOUT TEST_RD=$TEST_RD V=$TEST_VERBOSE
+	make $TEST_CASE b=$b TEST_TIMEOUT=$TEST_TIMEOUT TEST_RD=$TEST_RD V=$TEST_VERBOSE $TEST_PREBUILT
 
 	if [ $? -eq 0 ]; then
 		echo -e "\n... [ $b ] $TEST_CASE PASS...\n"

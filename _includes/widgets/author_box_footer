@@ -111,7 +111,7 @@
               <div><img src="/images/{{ contact.name }}/{{ url_base }}.jpg"></div>
             {% else %}
               <div id="{{ qrcode | append:author_box_ref }}"></div>
-              <script type="text/javascript"> $(window).on('load', function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 110, height: 110 }); });</script>
+              <script async type="text/javascript">$(document).ready(function () { $('#{{ qrcode | append: author_box_ref }}').qrcode({ text: "{{ raw_url }}", width: 110, height: 110 }); });</script>
             {% endif %}
           {% endif %}
       </span>

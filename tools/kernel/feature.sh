@@ -15,6 +15,9 @@ KFD_CORE=${TOP_DIR}/feature/linux/core
 
 LINUX_BASE=${LINUX%.*}
 
+XARCH=$(dirname $BOARD)
+MACH=$(basename $BOARD)
+
 KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux
 KFD=${TOP_DIR}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
@@ -30,9 +33,11 @@ do
         echo "Appling feature: $f"
 
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
-        [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
+        [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
+        [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
         [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-        [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
+        [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
+        [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
         # apply the patchset maintained by multiple xxx.patch
         for p in `find $path -type f -name "*.patch" | sort`
@@ -61,9 +66,11 @@ do
             echo "Appling feature: $f"
 
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
-            [ -f "$path/patch.$BOARD" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$BOARD
+            [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
+            [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
             [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-            [ -f "$path/config.$BOARD" ] && cat $path/config.$BOARD >> ${KERNEL_OUTPUT}/.config
+            [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
+            [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
             # apply the patchset maintained by multiple xxx.patch
             for p in `find $path -type f -name "*.patch" | sort`

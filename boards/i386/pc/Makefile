@@ -2,18 +2,28 @@ _BASE    = 1
 ARCH     = x86
 XARCH    = i386
 CPU     ?= i686
-MEM     ?= 128M
+MEM     ?= 1024M
 QEMU    ?= v0.10.6
-SMP     ?= 2
+SMP     ?= 4
 LINUX   ?= v5.1
 BUILDROOT?= 2019.02.2
-NETDEV  ?= ne2k_pci
+
+# Check qemu support:
+# $ qemu-system-i386 -net nic,model=?
+#   qemu: Supported NIC models: ne2k_pci,i82551,i82557b,i82559er,rtl8139,e1000,pcnet,virtio
+#
+# Kernel enabled: ne2k_pci, e1000, rtl8139, pcnet
+NETDEV  ?= pcnet
+
+# Verified ROOTDEV: /dev/ram0, /dev/nfs, /dev/hda
+ROOTDEV ?= /dev/ram0
+
 SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage
-ROOTDEV ?= /dev/ram0
 #CCPRE   = i686-pc-linux-gnu-
 KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bzImage
 ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.ext2
 # Fixup: MP-BIOS bug: 8254 timer not connected to IO-APIC
+# No such issue in newer kernels??
 XKCLI   ?= noapic

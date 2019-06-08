@@ -140,20 +140,13 @@ div.weekly a {
     /*color: #aa6600;*/
 }
 div.weekly ul li {
-    list-style-type: none;
+    list-style-type: circle;
     margin-left: -1em;
     padding-left: 0;
-    padding-top: 2em;
+    padding-top: 1.16em;
     font-size: 110%;
     /*font-weight: bold;*/
     /*color: #0066aa;*/
-}
-
-div.weekly li::before {
-    content: "#";
-    font-size: 110%;
-    padding-right: 0.28em;
-    margin-left: -1.16em;
 }
 
 div.weekly blockquote {

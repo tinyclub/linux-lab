@@ -136,9 +136,11 @@ blockquote p {
 
     overflow: hidden
 }
-div.weekly a {
-    /*color: #aa6600;*/
+
+div.weekly ul li a {
+	text-decoration: underline;
 }
+
 div.weekly ul li {
     list-style-type: circle;
     margin-left: -1em;
@@ -1186,9 +1188,6 @@ short_prev_next {
     #wrap,
     #top {
         width: 100%
-    }
-    div.weekly ul li a {
-        text-decoration: underline;
     }
     table {
         width: 100%

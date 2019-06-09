@@ -1585,15 +1585,16 @@ kernel-build: kernel
 C_PATH_PREFIX  ?= $(C_PATH) $(CCPRE)
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
-ifeq ($(filter kernel-calltrace,$(MAKECMDGOALS)),kernel-calltrace)
+ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
   ifneq ($(lastcall),)
     LASTCALL ?= $(lastcall)
   endif
   ifeq ($(LASTCALL),)
-    $(error make kernel-calltracel lastcall=func+offset/length)
+    $(error make kernel-calltrace lastcall=func+offset/length)
   endif
 endif
 
+calltrace: kernel-calltrace
 kernel-calltrace:
 ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
 	$(Q)$(KERNEL_CALLTRACE_TOOL) "$(C_PATH_PREFIX)" $(VMLINUX) $(LASTCALL)
@@ -1601,6 +1602,7 @@ else
 	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
 endif
 
+PHONY += kernel-calltrace calltrace
 
 k-h: kernel-help
 k-d: kernel-source

@@ -3,11 +3,12 @@
 # kernel-feature.sh -- Apply the available kernel features
 #
 
-BOARD=$1
-LINUX=$2
-KERNEL_SRC=$3
-KERNEL_OUTPUT=$4
-FEATURE="$5"
+XARCH=$1
+BOARD=$2
+LINUX=$3
+KERNEL_SRC=$4
+KERNEL_OUTPUT=$5
+FEATURE="$6"
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
@@ -15,7 +16,6 @@ KFD_CORE=${TOP_DIR}/feature/linux/core
 
 LINUX_BASE=${LINUX%.*}
 
-XARCH=$(dirname $BOARD)
 MACH=$(basename $BOARD)
 
 KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux

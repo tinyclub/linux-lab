@@ -96,6 +96,8 @@ calltrace_lastcall=$3
   echo "Usage: $0 cross_compiler_pre vmlinux_debuginfo calltrace_lastcall" && exit 1
 
 cc_nm=${cross_compiler_pre}nm
+cc_addr2line=${cross_compiler_pre}addr2line
+cc_gdb=${cross_compiler_pre}gdb
 cc_objdump=${cross_compiler_pre}objdump
 
 func=$(echo $calltrace_lastcall | cut -d'+' -f1)
@@ -122,7 +124,20 @@ stopaddr=${addrprefix}$(echo "obase=16;ibase=10;$((0x$addrreal+$func_len))" | bc
 erraddr=${addrprefix}$(echo "obase=16;ibase=10;$((0x$addrreal+$err_offset))" | bc)
 
 echo "start: $startaddr stop: $stopaddr err: $erraddr"
+
+echo
+echo "[ addr2line ]:"
+echo
+${cc_addr2line} -e ${vmlinux_debuginfo} ${erraddr}
+
+echo
+echo "[   objdump ]:"
 echo
 
 ${cc_objdump} -dS ${vmlinux_debuginfo} --start-address=0x${startaddr} --stop-address=0x${stopaddr} \
   | grep -i --color=always -A $AFTER_LINES -B $BEFORE_LINES ${erraddr}
+
+echo
+echo "[      gdb  ]:"
+echo
+${cc_gdb} -nh -nx -q -ex "list *(0x$erraddr)" -ex "quit" ${vmlinux_debuginfo}

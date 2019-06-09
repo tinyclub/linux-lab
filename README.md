@@ -738,11 +738,15 @@ Run test cases while testing internal kernel modules, pass kernel arguments:
 
     $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
 
-Run test without feature-init (same time if not necessary, FI=`FEATURE_INIT`):
+Run test without feature-init (save time if not necessary, FI=`FEATURE_INIT`):
 
     $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' FI=0
     Or
     $ make raw-test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
+
+Run test with module and the module's necessary dependencies (check with `make kernel-menuconfig`):
+
+    $ make test m=lkdtm y=runtime_testing_menu,debug_fs lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
 
 Run test without feature-init, boot-init, boot-finish and no `TEST_PREPARE`:
 

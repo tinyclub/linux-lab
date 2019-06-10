@@ -134,7 +134,7 @@ echo
 echo "[   objdump ]:"
 echo
 
-${cc_objdump} -dS ${vmlinux_debuginfo} --start-address=0x${startaddr} --stop-address=0x${stopaddr} \
+${cc_objdump} -dlS ${vmlinux_debuginfo} --start-address=0x${startaddr} --stop-address=0x${stopaddr} \
   | grep -i --color=always -A $AFTER_LINES -B $BEFORE_LINES ${erraddr}
 
 echo

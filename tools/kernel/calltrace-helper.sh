@@ -91,8 +91,9 @@ BEFORE_LINES=8
 cross_compiler_pre=$1
 vmlinux_debuginfo=$2
 calltrace_lastcall=$3
+kernel_src=$4
 
-[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" ] && \
+[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" -z "$kernel_src" ] && \
   echo "Usage: $0 cross_compiler_pre vmlinux_debuginfo calltrace_lastcall" && exit 1
 
 cc_nm=${cross_compiler_pre}nm
@@ -141,3 +142,22 @@ echo
 echo "[      gdb  ]:"
 echo
 ${cc_gdb} -nh -nx -q -ex "list *(0x$erraddr)" -ex "quit" ${vmlinux_debuginfo}
+
+
+echo
+echo "[ git blame ]:"
+echo
+
+file_line=$(${cc_addr2line} -e ${vmlinux_debuginfo} ${erraddr} | cut -d' ' -f1)
+line=$(echo $file_line | cut -d ':' -f2)
+file=$(echo $file_line | cut -d ':' -f1)
+file=$(echo $file | sed -e "s%${kernel_src}/%%g")
+
+pushd $kernel_src
+blame_info=$(git blame -L $line,$line $file)
+blame_commit=$(echo $blame_info | cut -d' ' -f1)
+echo $blame_info
+echo
+git show $blame_commit
+echo
+popd

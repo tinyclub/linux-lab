@@ -1597,7 +1597,7 @@ endif
 calltrace: kernel-calltrace
 kernel-calltrace:
 ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-	$(Q)$(KERNEL_CALLTRACE_TOOL) "$(C_PATH_PREFIX)" $(VMLINUX) $(LASTCALL)
+	$(Q)$(KERNEL_CALLTRACE_TOOL) "$(C_PATH_PREFIX)" $(VMLINUX) $(LASTCALL) $(TOP_DIR)/$(KERNEL_SRC)
 else
 	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
 endif

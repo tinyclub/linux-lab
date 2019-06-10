@@ -41,7 +41,7 @@ tags:
           * [Linux 进阶用法](https://v.qq.com/x/page/y0543o6zlh5.html)
           * [Uboot 基本用法](https://v.qq.com/x/page/l0549rgi54e.html)
       * 其他
-          * [Linux Lab v0.1-rc1 的所有板子启动测试结果](http://showterm.io/c351abb6b1967859b7061)
+          * [Linux Lab v0.1-rc1 的所有板子启动测试结果](http://showterm.io/8cd2babf19e0e4f90897e)
           * [在 arm/vexpress-a9 上运行 Ubuntu 18.04 LTS](http://showterm.io/c351abb6b1967859b7061)
           * [使用 riscv32/virt 和 riscv64/virt 开发板](http://showterm.io/37ce75e5f067be2cc017f)
           * [一条命令测试和体验某个内核特性](http://showterm.io/7edd2e51e291eeca59018)

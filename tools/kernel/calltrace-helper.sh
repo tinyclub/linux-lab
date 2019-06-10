@@ -4,13 +4,13 @@
 #
 # calltrace-helper.sh -- analyze calltrace result, find out the issue lines and changes.
 #
-# Usage: calltrace-helper.sh cross_compiler_pre vmlinux_debuginfo calltrace_lastcall
+# Usage: calltrace-helper.sh cross_compiler_pre vmlinux_debuginfo calltrace_lastcall kernel_gitsrc
 #
 # ref: http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/
 #
 # TODO:
 #
-# 1. add auto-git-blame support, find out who and which version changes this line
+# 1. add auto-git-blame support, find out who and which version changes this line`
 # 2. add auto-git-bisect support, find out which version is the first bad version
 #
 
@@ -91,10 +91,10 @@ BEFORE_LINES=8
 cross_compiler_pre=$1
 vmlinux_debuginfo=$2
 calltrace_lastcall=$3
-kernel_src=$4
+kernel_gitsrc=$4
 
-[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" -z "$kernel_src" ] && \
-  echo "Usage: $0 cross_compiler_pre vmlinux_debuginfo calltrace_lastcall" && exit 1
+[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" -z "$kernel_gitsrc" ] && \
+  echo "Usage: $0 cross_compiler_pre vmlinux_debuginfo calltrace_lastcall kernel_gitsrc" && exit 1
 
 cc_nm=${cross_compiler_pre}nm
 cc_addr2line=${cross_compiler_pre}addr2line
@@ -151,9 +151,9 @@ echo
 file_line=$(${cc_addr2line} -e ${vmlinux_debuginfo} ${erraddr} | cut -d' ' -f1)
 line=$(echo $file_line | cut -d ':' -f2)
 file=$(echo $file_line | cut -d ':' -f1)
-file=$(echo $file | sed -e "s%${kernel_src}/%%g")
+file=$(echo $file | sed -e "s%${kernel_gitsrc}/%%g")
 
-pushd $kernel_src
+pushd $kernel_gitsrc
 blame_info=$(git blame -L $line,$line $file)
 blame_commit=$(echo $blame_info | cut -d' ' -f1)
 echo $blame_info

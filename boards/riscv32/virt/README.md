@@ -1,5 +1,5 @@
 
-# Risc64 Virt Usage
+# Risc32 Virt Usage
 
 Works perfectly:
 
@@ -10,7 +10,7 @@ Works perfectly:
     $ make boot ROOTDEV=/dev/nfs
 
 Buildroot provides rootfs config and toolchain, mainline linux provides the
-official kernel config, everything goes well. Qemu v4.0.0 has the risc64 board
+official kernel config, everything goes well. Qemu v4.0.0 has the risc32 board
 support.
 
 The only difference is riscv32 requires a proxy kernel to do some prepare

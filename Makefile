@@ -1534,7 +1534,7 @@ kernel-getconfig: FORCE
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 
 _kernel-getconfig:
-	@#echo "option state: $(o)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)echo "option state: $(o)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
 	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 kernel-config: kernel-setconfig
@@ -1547,9 +1547,7 @@ kernel-setconfig: FORCE
 
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
-	@#echo "option state: $(KCONFIG_OPT)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
-	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
-	$(Q)echo "\nEnable new kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)echo "Enabling new kernel config: $(KCONFIG_OPT) ..."
 ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
@@ -1558,6 +1556,9 @@ ifeq ($(KCONFIG_OPR),m)
 else
 	$(Q)make kernel KT=$(KERNEL_OLDDEFCONFIG)
 endif
+	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)echo "option state: $(KCONFIG_OPT)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 k-sc: kernel-setconfig
 k-gc: kernel-getconfig

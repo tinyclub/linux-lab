@@ -15,6 +15,8 @@ tags:
   - objdump
   - addr2line
   - git blame
+  - calltrace
+  - WARN_ON
 ---
 
 > By Falcon of [TinyLab.org][1]

@@ -93,7 +93,7 @@ vmlinux_debuginfo=$2
 calltrace_lastcall=$3
 kernel_gitsrc=$4
 
-[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" -z "$kernel_gitsrc" ] && \
+[ -z "$calltrace_lastcall" -o -z "$vmlinux_debuginfo" -o -z "$cross_compiler_pre" -o -z "$kernel_gitsrc" ] && \
   echo "Usage: $0 cross_compiler_pre vmlinux_debuginfo calltrace_lastcall kernel_gitsrc" && exit 1
 
 cc_nm=${cross_compiler_pre}nm

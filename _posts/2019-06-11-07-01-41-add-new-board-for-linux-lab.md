@@ -27,17 +27,17 @@ tags:
 
 ## 简介
 
-Linux Lab 是一套极速的 Linux 内核学习、开发和测试环境。它本身不是操作系统，也不是什么发行版，只是一套工具集，一个学习 Linux 内核的实验室，只是实验室的很多工具都是已经准备好的，可以立即上手做实验，不需要做大量繁杂的准备工作。
+Linux Lab 是一套极速的 Linux 内核学习、开发和测试环境。它本身不是操作系统，也不是什么发行版，只是一套工具集，或者说是一个学习 Linux 内核的“实验室”，而且这套实验室里的很多工具都是已经准备好的，可以立即上手做实验，不需要做大量繁杂的准备工作。
 
 ## 组织架构
 
 Linux Lab 由三大组件构成：
 
-- [Cloud Lab](/cloud-lab)：基于 Docker 构建的实验环境，包含 Linux 内核实验所需的Qemu虚拟机、工具链、编辑器等，并提供了本地和远程的 ssh/vnc 登陆方式。
+- [Cloud Lab](/cloud-lab)：基于 Docker 构建的实验环境，包含 Linux 内核实验所需的 Qemu虚拟机、工具链、编辑器等，并提供了本地和远程的 ssh/vnc 登陆方式。
 
-- [Linux Lab](/linux-lab)：Linux 内核实验相关的配置工具、脚本、patch等，也是 Linux Lab 的核心模块。
+- [Linux Lab](/linux-lab)：Linux 内核实验相关的配置工具、脚本、patch 等，也是 Linux Lab 的核心模块。
 
-- [Prebuilt](https://github.com/tinyclub/prebuilt)：预编译好的内核、文件系统以及实验环境中未支持的新版本Qemu、更新的工具链等。
+- [Prebuilt](https://github.com/tinyclub/prebuilt)：预编译好的内核、文件系统以及实验环境中未支持的新版 Qemu、更新的工具链等。
 
 ## 目录结构
 
@@ -52,10 +52,10 @@ Linux Lab 由三大组件构成：
     ├── prebuilt     -- prebuit submodule，预编译好的文件所在目录
     ├── COPYING      -- 版权声明
     ├── doc          -- 综合性文档
-    ├── examples     -- 实践案例，含汇编、Shell、Makefile等
+    ├── examples     -- 实践案例，含汇编、Shell、Makefile 等
     ├── modules      -- 内核模块管理目录，用于管理各种内核模块学习案例
     ├── feature      -- 内核特性管理目录，含相关的配置、patch、环境需求
-    ├── hostshare    -- 9pnet 共享协议默认共享目录，可通过 SHAREDIR 修改
+    ├── hostshare    -- 9pnet 共享协议默认共享目录，可通过 SHARE_DIR 修改
     ├── logging      -- 测试结果保存的路径
     ├── output       -- 所有构建的部分都在这里
     ├── patch        -- 用于管理共性的各种 patchset
@@ -159,14 +159,14 @@ Linux Lab 由三大组件构成：
 
     $ mkdir boards/riscv64/virt
 
-参考资料：
+可立即复用的参考资料有：
 
 - buildroot: [board/qemu/riscv64-virt/](https://github.com/buildroot/buildroot/tree/master/board/qemu/riscv64-virt)
 - buildroot: [configs/qemu_riscv64_virt_defconfig](https://github.com/buildroot/buildroot/blob/master/configs/qemu_riscv64_virt_defconfig)
 
 ## 准备一个极简的板子配置文件
 
-可以基于最相近的板子复制一份配置文件，我们从 aarch64/virt 作为模板：
+可以基于最相近的板子复制一份配置文件，这里可以把 aarch64/virt 作为模板：
 
     $ cp boards/aarch64/virt/Makefile boards/riscv64/virt/
 
@@ -259,7 +259,7 @@ Linux Lab 由三大组件构成：
 引导正常，立即保存编译好的文件系统、proxy kernel 以及配置文件，保存之前先在板子 Makefile 中对 proxy kernel 做个配置（目前只要 riscv 需要）：
 
     PORIIMG ?= fw_jump.elf
-    PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
+    PKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
 
 接着保存即可：
 
@@ -289,10 +289,10 @@ Buildroot 生成的交叉编译工具链放在 `output/riscv64/buildroot-2019.05
 
 接下来编译内核，首先在板子 Makefile 中配置内核为最新的 v5.1，并配置好基本的参数：
 
-    LINUX ?= v5.1
+    LINUX    ?= v5.1
     KRN_ADDR ?= 0x80200000
-    ORIIMG  ?= arch/$(ARCH)/boot/Image
-    KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
+    ORIIMG   ?= arch/$(ARCH)/boot/Image
+    KIMAGE   ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
 
 接着开始下载、配置和编译：
 
@@ -330,9 +330,9 @@ TODO
 配置完以后在板子配置文件中指定板子：
 
     # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
-    CCPRE   ?= $(XARCH)-unknown-elf-
-    CCVER   ?= 8.2.0-2019.02.0
-    CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/
+    CCPRE  ?= $(XARCH)-unknown-elf-
+    CCVER  ?= 8.2.0-2019.02.0
+    CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/
 
 使用的时候，先执行如下命令自动下载和解压 toolchain，之后就可以默认使用：
 

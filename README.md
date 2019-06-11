@@ -77,6 +77,10 @@ Basic:
 * [Learning Assembly](http://showterm.io/0f0c2a6e754702a429269)
 * [Boot ARM Ubuntu 18.04 on Vexpress-a9 board](http://showterm.io/c351abb6b1967859b7061)
 * [Boot Linux v5.1 on ARM64/Virt board](http://showterm.io/9275515b44d208d9559aa)
+* [Boot Riscv32/virt and Riscv64/virt boards](http://showterm.io/37ce75e5f067be2cc017f)
+* [One command of testing a specified kernel feature](http://showterm.io/7edd2e51e291eeca59018)
+* [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
+* [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
 
 More:
 

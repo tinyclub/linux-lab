@@ -1534,7 +1534,7 @@ kernel-getconfig: FORCE
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 
 _kernel-getconfig:
-	$(Q)echo "option state: $(o)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)echo "option state: $(o)=" | tr -d '\n' && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 kernel-config: kernel-setconfig
@@ -1557,7 +1557,7 @@ else
 	$(Q)make kernel KT=$(KERNEL_OLDDEFCONFIG)
 endif
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
-	$(Q)echo "option state: $(KCONFIG_OPT)=$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT))"
+	$(Q)echo "option state: $(KCONFIG_OPT)=" | tr -d '\n' && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 k-sc: kernel-setconfig

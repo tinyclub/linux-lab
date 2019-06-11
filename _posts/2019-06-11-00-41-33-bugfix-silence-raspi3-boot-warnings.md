@@ -9,6 +9,7 @@ permalink: /bugfix-silence-raspi3-boot-warnings/
 description: "Linux Lab 已经支持 aarch64/raspi3，但是启动过程有一些警告，这里介绍如何临时关闭这些 warnings。"
 category:
   - Linux Lab
+  - 调试技巧
 tags:
   - qemu
   - raspi3

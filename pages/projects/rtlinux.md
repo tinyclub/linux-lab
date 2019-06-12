@@ -7,6 +7,7 @@ draft: true
 permalink: /rtlinux/
 album: '实时 Linux'
 description: '为国内实时 Linux 开发者系统地收集和整理相关资料。'
+toc: false
 update: 2019-06-12
 categories:
   - 开源项目
@@ -56,7 +57,7 @@ tags:
   * [Porting RT-preempt to Loongson2F][1]
   * [Research and Practice on Preempt-RT Patch of Linux][2]
 
-**更多**
+**更多文章**
 
 <hr>
 

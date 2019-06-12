@@ -15,7 +15,7 @@ linux foundation, therefore I have worked on this project for serveral months.
 During the project cycle, several scripts written to verify if the adding tiny features (e.g. [gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf))
 breaks the other kernel features on the main cpu architectures.
 
-These scripts uses qemu-system-ARCH as the cpu/board emulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
+These scripts uses qemu-system-ARCH as the cpu/board simulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
 rootfs, test scripts have been prepared, at that time, all of them were simply put in a directory, without a design or holistic consideration.
 
 They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
@@ -24,11 +24,11 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 * Boards
 
-  Qemu based, 5 main Architectures, 10 popular Boards, more available, one `make boot` target for all boards, qemu options are hidden.
+  Qemu based, 6+ main Architectures, 10+ popular boards, one `make list` command for all boards, qemu options are hidden.
 
 * Components
 
-  Uboot, Linux / Modules, Buildroot, Qemu, all of them are configurable, patchable, compilable, buildable, Linux v5.1 supported.
+  Uboot, Linux / Modules, Buildroot, Qemu are configurable, patchable, compilable, buildable, Linux v5.1 supported.
 
 * Prebuilt
 
@@ -36,15 +36,15 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 * Rootfs
 
-  Buildtin ramfs, harddisk, mmc, nfs rootfs booting support, configurable via ROOTDEV/ROOTDIR, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
+  Builtin rootfs support include initrd, harddisk, mmc and nfs, configurable via ROOTDEV/ROOTFS, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
 
 * Docker
 
-  Environment (cross toolchains) available in one command in serveral minutes, 4 main architectures have builtin support, external ones configurable via `make toolchain`.
+  Environment (cross toolchains) available in one command in serveral minutes, 5 main architectures have builtin support, external ones configurable via `make toolchain`.
 
 * Browser
 
-  usable via modern web browsers, once installed in a internet server, available everywhere via novnc or web ssh.
+  usable via modern web browsers, once installed in a internet server, available everywhere via web vnc or web ssh.
 
 * Network
 

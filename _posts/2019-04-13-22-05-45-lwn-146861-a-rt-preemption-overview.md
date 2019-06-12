@@ -11,6 +11,8 @@ description: "LWN 中文翻译，实时抢占补丁综述"
 category:
   - 进程调度
   - LWN
+  - 实时抢占
+  - 实时性
 tags:
   - Linux
   - schedule

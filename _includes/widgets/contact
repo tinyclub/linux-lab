@@ -1,6 +1,6 @@
 <br>
 <table>
-<tr><td style="text-align:center;">微信公众号</td><td width='150px' style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center;">知识星球</td></tr>
+<tr><td style="text-align:center;">微信公众号</td><td style="text-align:center;color:red;width:110px;">{{ contact_info }}</td><td style="text-align:center">知识星球</td></tr>
 <tr>
   <td style="text-align:center; vertical-align: middle">
     <img src='/images/wechat/tinylab-org.jpg' width='110px' />

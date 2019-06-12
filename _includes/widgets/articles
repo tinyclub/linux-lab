@@ -12,6 +12,12 @@
   {% endif %}
 {% endif %}
 
+{% if article.draft and article.draft == true %}
+   {% if condition != 'draft' and value != true %}
+     {% continue %}
+   {% endif %}
+{% endif %}
+
 <article>
   <header>
 

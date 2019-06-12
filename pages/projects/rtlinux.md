@@ -1,12 +1,12 @@
 ---
+layout: page
 title: '实时 Linux'
 tagline: '实时 Linux 相关资源汇集'
 author: Wu Zhangjin
-layout: page
 draft: true
 permalink: /rtlinux/
 album: '实时 Linux'
-description: '为国内实时 Linux 开发者系统地收集和整理相关资料'。
+description: '为国内实时 Linux 开发者系统地收集和整理相关资料。'
 update: 2019-06-12
 categories:
   - 开源项目
@@ -23,13 +23,13 @@ tags:
 
 ## 项目首页
 
-   * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/start)
-   * [早期 RT Wiki](http://rt.wiki.kernel.org/)，已不再更新，但也有很多有价值的材料。
+  * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/start)
+  * [早期 RT Wiki](http://rt.wiki.kernel.org/)，已不再更新，但也有很多有价值的材料。
 
 ## 代码仓库
 
-  * [linux rt 开发仓库](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git)
-  * [linux rt 稳定版](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git/)
+  * [Linux RT 开发版](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git)
+  * [Linux RT 稳定版](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git/)
 
 ## 版本发布
 
@@ -38,7 +38,7 @@ tags:
 
 ## 邮件列表
 
-  * [Rt maillist](https://wiki.linuxfoundation.org/realtime/communication/mailinglists)
+  * [RT Maillist](https://wiki.linuxfoundation.org/realtime/communication/mailinglists)
 
 ## 相关文档
 

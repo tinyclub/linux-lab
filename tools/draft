@@ -33,6 +33,10 @@ title=`grep "^title:" $post | cut -d':' -f2-`
 echo "Selected: $title"
 echo
 
+egrep "^author|^permalink|^title|^album|^description" $post
+
+echo
+
 # Publish it or not, say Y for release it
 publish="N"
 read -p "Publish it? (Y/N) " publish

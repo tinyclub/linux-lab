@@ -47,7 +47,7 @@ tags:
 
 
  [1]: http://lwn.net/images/conf/rtlws11/papers/proc/p14.pdf
- [2]: http://www.docin.com/p-170582115.html
+ [2]: /wp-content/uploads/2015/11/linux-preempt-rt-research-and-practice.pdf
  [3]: /how-to-make-a-linux-system-real-time/
  [4]: http://rt.wiki.kernel.org/index.php/Main_Page
  [5]: http://www.elinux.org/Real_Time

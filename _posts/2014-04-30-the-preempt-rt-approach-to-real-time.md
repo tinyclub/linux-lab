@@ -2,6 +2,7 @@
 title: The PREEMPT_RT Approach To Real Time
 author: Wu Zhangjin
 layout: post
+album: '实时 Linux'
 permalink: /the-preempt-rt-approach-to-real-time/
 tags:
   - PREEMPT_RT

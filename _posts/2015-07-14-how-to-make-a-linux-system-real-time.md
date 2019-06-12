@@ -2,6 +2,7 @@
 title: 嵌入式 Linux 系统怎样保证实时性
 author: Wu Zhangjin
 layout: post
+album: '实时 Linux'
 permalink: /how-to-make-a-linux-system-real-time/
 tags:
   - 硬实时

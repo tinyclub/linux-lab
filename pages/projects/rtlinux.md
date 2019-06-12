@@ -3,7 +3,7 @@ layout: page
 title: '实时 Linux'
 tagline: '实时 Linux 相关资源汇集'
 author: Wu Zhangjin
-draft: true
+draft: false
 permalink: /rtlinux/
 album: '实时 Linux'
 description: '为国内实时 Linux 开发者系统地收集和整理相关资料。'
@@ -22,28 +22,26 @@ tags:
 
 该页面汇总跟实时 Linux 项目相关的资源，方便国内从事这块的同学们作为参考。
 
-## 项目首页
+- 项目首页
 
   * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/start)，不是很活跃。
   * [早期 RT Wiki](http://rt.wiki.kernel.org/)，已不再更新，但有很多重要材料。
 
-## 代码仓库
+- 代码仓库
 
   * [Linux RT 开发版](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git)
   * [Linux RT 稳定版](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git/)
 
-## 版本发布
+- 版本发布
 
   * [发布地址](https://cdn.kernel.org/pub/linux/kernel/projects/rt/)
   * [版本介绍](https://wiki.linuxfoundation.org/realtime/preempt_rt_versions)
 
-## 邮件列表
+- 邮件列表
 
   * [RT Maillist](https://wiki.linuxfoundation.org/realtime/communication/mailinglists)
 
-## 相关文档
-
-### 入口页面
+- 相关文档
 
   * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/documentation/start)
     * [RT blog](https://wiki.linuxfoundation.org/realtime/rtl/blog)
@@ -52,7 +50,7 @@ tags:
   * [OSADL RT 页面](https://www.osadl.org/Realtime-Linux.projects-realtime-linux.0.html)
   * [龙芯 RT 页面](/preempt-rt-4-loongson/)
 
-### 本站文章
+- 本站文章
 
   * [Porting RT-preempt to Loongson2F][1]
   * [Research and Practice on Preempt-RT Patch of Linux][2]

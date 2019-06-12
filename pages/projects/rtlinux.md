@@ -24,8 +24,8 @@ tags:
 
 ## 项目首页
 
-  * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/start)
-  * [早期 RT Wiki](http://rt.wiki.kernel.org/)，已不再更新，但也有很多有价值的材料。
+  * [最新 RT Wiki](https://wiki.linuxfoundation.org/realtime/start)，不是很活跃。
+  * [早期 RT Wiki](http://rt.wiki.kernel.org/)，已不再更新，但有很多重要材料。
 
 ## 代码仓库
 

@@ -9,8 +9,8 @@ draft_on="draft:.*true"
 draft_off="draft: false"
 
 # List all drafts
-grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | xargs -I{} grep "^title:" {} | cut -d':' -f2- | cat -n
-total=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | wc -l | tr -d ' '`
+grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2- | cat -n
+total=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | wc -l | tr -d ' '`
 post=""
 if [ $total -gt 1 ]; then
         # Select the one for publishing
@@ -18,11 +18,11 @@ if [ $total -gt 1 ]; then
 	read -p "Select(0~$total): " post_num
 	if [ -n "$post_num" ]; then
            if [ $post_num -le $total -a $post_num -ge 1 ]; then
-		post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1 | head -$post_num | tail -1`
+		post=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | head -$post_num | tail -1`
            fi
 	fi
 else
-	post=`grep -ur "$draft_on" $TOP_DIR/../_posts/ | cut -d':' -f1| head -1`
+	post=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | head -1`
 fi
 
 # Choose it?

@@ -49,10 +49,11 @@ Linux Engineer 一枚，重度开源践行者，[兰州大学开源社区][3]初
 
   * 联系方式
       * 微信/Wechat：lzufalcon（添加时请注明原因）
-      * 邮箱：wuzhangjin [AT] gmail [dot] com
+      * 邮箱：lzufalcon [AT] 163 [dot] com
 
   * 简历
-      * 2016 至今，[魅族科技][6]，手机研发中心 BSP 部，技术总监
+      * 2019.5至今，赋闲在家，思考人生 ^_^
+      * 2016~2019，[魅族科技][6]，手机研发中心 BSP 部，技术总监
       * 2011~2016，[魅族科技][6]，历任 Linux Engineer、高级经理
       * 2010~2011 年，[Wind River][7]，Linux Department，BSP 工程师
       * 2009~2009 年，[Lemote][8]，实习生

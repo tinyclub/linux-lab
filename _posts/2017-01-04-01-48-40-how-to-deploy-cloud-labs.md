@@ -151,11 +151,6 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
       $ echo example.com > .host_name
       $ tools/deploy/release
 
-## 在线体验
-
-如果想快速体验 Cloud Lab，可以添加笔者微信号（lzufalcon）申请一天的免费在线体验帐号，添加时请备注：`Cloud Lab`。
-
-也可以直接在[泰晓开源小店](http://weidian.com/?userid=335178200)赞助我们并免费获得一周的在线体验帐号。
 
 ## 总结
 

@@ -66,8 +66,10 @@ categories:
 
 热烈欢迎更多同学加入泰晓原创和翻译团队，参与相关文章的撰写和翻译或者书籍的整理。参与方式非常简单：
 
-  1. 通过微信直接联系我：lzufalcon。
-  2. 或者直接在 [Github.com/tinyclub][9] 上 Start/Fork 我们的任意一个项目，发送 Pull Request 提交任何修订。
+1. 直接在 [Github.com/tinyclub][9] 上 Start/Fork 我们的任意一个项目，发送 Pull Request 提交任何修订。
+2. 通过微信直接联系我们，扫码加我们微信吧：
+
+![tinylab wechat](/images/wechat/tinylab.jpg)
 
 ## 赞助我们
 

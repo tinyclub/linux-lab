@@ -28,9 +28,9 @@ tags:
 
 ## 报名
 
-欢迎各位致力于研究操作系统的同学们加入“考古队”，报名请通过扫描下方二维码联系这次考古行动的项目经理 Keven。
+欢迎各位致力于研究操作系统的同学们加入“考古队”，报名请通过扫描下方二维码联系我们，加微信时请注明原因。
 
-<img width='150px' src='/images/wechat/keven.jpg'>
+<img width='150px' src='/images/wechat/tinylab.jpg'>
 
 ## 编译
 

@@ -616,7 +616,7 @@ ald的命令很少，而且跟gdb很类似，比如这个几个命令用法和�
  [7]: ftp://ftp.berlios.de/pub/calltree/calltree-2.3.tar.bz2
  [8]: http://www.linuxjournal.com/article/6758
  [9]: https://code.google.com/p/jrfonseca/wiki/Gprof2Dot
- [10]: http://www.sfr-fresh.com/linux/misc/libsafe-2.0-16.tgz
+ [10]: https://github.com/tagatac/libsafe-CVE-2005-1125
  [11]: http://www.ibm.com/developerworks/linux/library/l-debug/
  [12]: http://www.xfocus.net/articles/200208/423.html
  [13]: http://www.xfocus.net/articles/200103/78.html

@@ -13,7 +13,7 @@ tags:
   - System Size
 ---
 
-> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://eLinux.org/System_Size "http://eLinux.org/System_Size")
 > 翻译：[@wengpingbo](https://github.com/wengpingbo)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

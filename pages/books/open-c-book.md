@@ -46,7 +46,7 @@ tags:
 自由书籍将会维护在 TinyLab 的[项目仓库][14]中。项目相关信息如下：
 
 * 在线阅读
-  * <https://gitbook.com/book/tinylab/cbook>
+  * <https://tinylab.gitbooks.io/cbook>
 * 代码仓库
   * [https://github.com/tinyclub/open-c-book.git][14]
 * 项目首页
@@ -122,7 +122,7 @@ tags:
 如果有时间和兴趣，欢迎参与，可以[联系我们][16]，也可以直接在 [TinyLab.org][17] 相关页面进行评论回复。
 
  [1]: http://oss.lzu.edu.cn
- [2]: https://gitbook.com/book/tinylab/shellbook
+ [2]: https://tinylab.gitbooks.io/shellbook
  [3]: /shell-programming-paradigm-of-process-operations/
  [4]: /wp-content/uploads/2014/03/c_dev_procedure.jpg
  [5]: /make-vim-source-code-editor/
@@ -135,6 +135,6 @@ tags:
  [12]: /testing-debugging-and-optimization-of-code-summary/
  [13]: /
  [14]: https://github.com/tinyclub/open-c-book
- [15]: https://www.gitbook.com/download/pdf/book/tinylab/cbook
+ [15]: https://legacy.gitbook.com/download/pdf/book/tinylab/cbook
  [16]: /about/
  [17]: /the-c-programming-language-insight-publishing-version-0-01/

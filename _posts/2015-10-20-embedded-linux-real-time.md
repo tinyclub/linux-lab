@@ -20,7 +20,7 @@ tags:
 > By yuanbin of TinyLab.org
 > 2015-10-20
 
-> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Real_Time "http://eLinux.org/Real_Time")
 > 翻译：[@hduffddybz](https://github.com/hduffddybz)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

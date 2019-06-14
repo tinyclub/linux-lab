@@ -321,8 +321,8 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
  [15]: http://www.cs.usfca.edu/~cruse/
  [16]: http://c-faq.com/
  [17]: http://blog.linux.org.tw/~jserv/archives/001844.html
- [19]: https://gitbook.com/book/tinylab/cbook
- [20]: https://gitbook.com/book/tinylab/shellbook
+ [19]: https://tinylab.gitbooks.io/cbook
+ [20]: https://tinylab.gitbooks.io/shellbook
  [22]: http://bellard.org/tcc/
  [23]: https://en.wikipedia.org/wiki/Comparison_of_source_code_hosting_facilities
  [24]: http://tinylab.org/markdown-lab

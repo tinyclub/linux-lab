@@ -20,7 +20,7 @@ tags:
   - UBIFS
 ---
 
-> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://eLinux.org/File_Systems "http://eLinux.org/File_Systems")
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 

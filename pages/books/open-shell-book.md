@@ -30,7 +30,7 @@ tags:
 因为 Shell 非常流行并且在日常工作和生活中广泛使用，所以计划把整个系列重写并作为开源书籍发布，以便让更多的同学获益。
 
 * 在线阅读
-  * <https://gitbook.com/book/tinylab/shellbook>
+  * <https://tinylab.gitbooks.io/shellbook>
 * 仓库地址
   * <https://github.com/tinyclub/open-shell-book>
 * 项目首页
@@ -50,7 +50,7 @@ tags:
 
 ## 下载 pdf 版本
 
-下载地址： <a href="https://www.gitbook.com/download/pdf/book/tinylab/shellbook" target="_blank">《Shell 编程范例》</a>.
+下载地址： <a href="https://legacy.gitbook.com/download/pdf/book/tinylab/shellbook" target="_blank">《Shell 编程范例》</a>.
 
  [1]: /shell-programming-paradigm-series-index-review/
  [3]: /the-sequence-of-shell-programming-paradigm-free-book-plans/

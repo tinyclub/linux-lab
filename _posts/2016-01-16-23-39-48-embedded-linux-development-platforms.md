@@ -16,7 +16,7 @@ tags:
   - i386
 ---
 
-> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Development_Platforms "http://eLinux.org/Development_Platforms")
 > 翻译：[@lzufalcon](https://github.com/lzufalcon)
 

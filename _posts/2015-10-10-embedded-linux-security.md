@@ -21,7 +21,7 @@ tags:
 > By Jason Lee of TinyLab.org
 > 2015-10-10
 
-> 书籍：[嵌入式 Linux 知识库](https://gitbook.com/book/tinylab/elinux)
+> 书籍：[嵌入式 Linux 知识库](https://tinylab.gitbooks.io/elinux)
 > 原文：[eLinux.org](http://eLinux.org/Security)
 > 翻译：[@lzz5235](https://github.com/lzz5235)
 > 校订：[@lzufalcon](https://github.com/lzufalcon)

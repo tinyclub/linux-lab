@@ -20,7 +20,7 @@ tags:
 
 ## 课程简介
 
-**嵌入式 Linux 系统开发公开课** 是由 **兰州大学** [**DSLab**](http://dslab.lzu.edu.cn/ "DSLab") 实验室联合 **泰晓科技** 借助 [**泰晓实验云台—— Cloud Lab**](http://tinylab.org/cloud-lab/ "Cloud Lab") 发起的嵌入式 Linux 系统开发课程，该课程也会结合业内最前沿的技术进行技术讲解。
+**嵌入式 Linux 系统开发公开课** 是由 **泰晓科技** 借助 [**泰晓实验云台—— Cloud Lab**](http://tinylab.org/cloud-lab/ "Cloud Lab") 发起的嵌入式 Linux 系统开发课程，该课程也会结合业内最前沿的技术进行技术讲解。
 
 本课程会省去繁杂的环境配置，为初学者提供最方便的学习方式，课程内容的展现方式包括：
 

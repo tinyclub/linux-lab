@@ -50,6 +50,12 @@
   description: 操作系统内核开发知识库。
   group: links
 
+- title: Hacker News
+  permalink: https://news.ycombinator.com/
+  description: News for hackers
+  group: links
+
+
 - title: Linaro
   permalink: https://www.linaro.org/
   description: ARM 开源组织。

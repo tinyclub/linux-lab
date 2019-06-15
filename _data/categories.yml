@@ -170,6 +170,7 @@
             - name: Gcc
             - name: 交叉编译
         - name: 装载与链接
+          categories:
             - name: Loader
             - name: Linker
         - name: 调试和优化

@@ -733,7 +733,7 @@ article img {
     margin-left: auto;
     margin-right: auto;
     padding: 0;
-    background-color: #fff;
+    background-color: transparent;
     border: 0 solid #b3b3b3
 }
 /*  Input  */

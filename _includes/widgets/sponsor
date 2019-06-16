@@ -30,7 +30,7 @@
   <td style="text-align:center; vertical-align: middle;">
     <img src='/images/sponsor/{{ ali_pay }}.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;"/>
   </td>
-  <td style="text-align:center;vertical-align:middle;color:#ca6c39;width:150px"><img style="margin-top: auto; margin-bottom: auto; max-width:100%;" src="/images/sponsor/coffee.png" /><br/>请作者喝杯咖啡吧
+  <td style="text-align:center;vertical-align:middle;color:#ca6c39;width:110px"><img style="margin-top: auto; margin-bottom: auto; max-width:100%;" src="/images/sponsor/coffee.png" /><br/>请作者喝杯咖啡吧
   </td>
   <td style="text-align:center; vertical-align: middle;">
     <img src='/images/sponsor/{{ wechat_pay }}.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;"/>

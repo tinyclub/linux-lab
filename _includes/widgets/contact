@@ -1,14 +1,14 @@
 <br>
 <table>
-<tr><td style="text-align:center;">微信公众号</td><td style="text-align:center;color:red;width:110px;">{{ contact_info }}</td><td style="text-align:center">知识星球</td></tr>
+<tr><td style="text-align:center;">微信公众号</td><td style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center">知识星球</td></tr>
 <tr>
   <td style="text-align:center; vertical-align: middle">
-    <img src='/images/wechat/tinylab-org.jpg' width='110px' />
+    <img src='/images/wechat/tinylab-org.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;" />
   </td>
-  <td style="text-align:center; vertical-align: middle;"><strong>关注 @泰晓科技</strong><br/><br/>订阅 Linux 原创<br/>与同行一起成长
+  <td style="text-align:center; vertical-align: middle; width: 150px;"><strong>关注 @泰晓科技</strong><br/><br/>订阅 Linux 原创<br/>与同行一起成长
   </td>
   <td style="text-align:center; vertical-align: middle;">
-    <img src='/images/xingqiu/tinylaborg.jpg' width='110px' />
+    <img src='/images/xingqiu/tinylaborg.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;" />
   </td>
 </tr>
 <tr>

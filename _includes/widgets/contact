@@ -1,24 +1,24 @@
 <br>
 <table>
-<tr><td style="text-align:center;">微信公众号</td><td style="text-align:center;color:red">{{ contact_info }}</td><td style="text-align:center">知识星球</td></tr>
+<tr><td style="text-align:center;width:33.3%">微信公众号</td><td style="text-align:center;color:red;width:33.4%;">{{ contact_info }}</td><td style="text-align:center;width: 33.3%">知识星球</td></tr>
 <tr>
   <td style="text-align:center; vertical-align: middle">
     <img src='/images/wechat/tinylab-org.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;" />
   </td>
-  <td style="text-align:center; vertical-align: middle; width: 110px;"><strong>关注 @泰晓科技</strong><br/><br/>订阅 Linux 原创<br/>与同行一起成长
+  <td style="text-align:center; vertical-align: middle;"><strong>关注 @泰晓科技</strong><br/><br/>订阅 Linux 原创<br/>与同行一起成长
   </td>
-  <td style="text-align:center; vertical-align: middle;">
+  <td style="text-align:center; vertical-align: middle">
     <img src='/images/xingqiu/tinylaborg.jpg' width='110px' style="margin-top: auto; margin-bottom: auto; max-width:100%;" />
   </td>
 </tr>
 <tr>
   <td style="text-align:center; vertical-align: middle">
-   订阅公众号，阅读原创，发表评论，赞赏作者。
+   订阅公众号，及时阅读 Linux 原创文章。
   </td>
   <td style="text-align:center; vertical-align: middle;">
   </td>
   <td style="text-align:center; vertical-align: middle;">
-   订阅星球，分享经验，加入 VIP 微信群。
+   订阅星球，可获邀加入 VIP 微信群。
   </td>
   </tr>
 </table>

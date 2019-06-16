@@ -136,12 +136,36 @@ KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)
 ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
 
 # Cross Compiler toolchains
-# Our Lab's host machine is x86
-ifneq ($(ARCH), x86)
-  CCPRE  ?= $(XARCH)-buildroot-linux-gnu-
+ifneq ($(XARCH), i386)
+  BUILDROOT_CCPRE  = $(XARCH)-linux-
+else
+  BUILDROOT_CCPRE  = i686-linux-
 endif
-CCPATH ?= $(ROOT_OUTPUT)/host/usr/bin
-C_PATH ?= env PATH=$(CCPATH):$(PATH)
+BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
+
+# If external toolchain not exists, just ignore them
+ifneq ($(CCPRE),)
+  ifneq ($(CCPATH),)
+    ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+       override CCPATH :=
+    endif
+  endif
+endif
+
+# If no external toolchain, use buildroot version if exists
+ifeq ($(CCPATH),)
+  ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    override CCPATH := $(BUILDROOT_CCPATH)
+    override CCPRE  := $(BUILDROOT_CCPRE)
+  endif
+endif
+
+ifneq ($(CCPATH),)
+  C_PATH ?= env PATH=$(CCPATH):$(PATH)
+endif
+
+#$(info Using gcc: $(CCPATH)/$(CCPRE)gcc)
+
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 # Parallel Compiling threads

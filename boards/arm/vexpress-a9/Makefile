@@ -47,7 +47,7 @@ ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
 UROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.uboot
 HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
 #QP      ?= 1
-QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL   ?= $(PREBUILT_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER  ?= 7.4.1-2019.02

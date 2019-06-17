@@ -43,7 +43,7 @@ XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 #KP      ?= 1
 #QP      ?= 1
-QTOOL   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL   ?= $(PREBUILT_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER   ?= 8.3-2019.03

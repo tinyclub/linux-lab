@@ -330,7 +330,7 @@ BUILDROOT_IROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 PREBUILT_ROOT_DIR   ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
 PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)
 PREBUILT_UBOOT_DIR  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)
-PREBUILT_QEMU_DIR   ?= $(PREBUILT_QEMU)/$(XARCH)/$(QEMU)
+PREBUILT_QEMU_DIR   ?= $(PREBUILT_QEMU)/$(QEMU)
 
 PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
 
@@ -734,13 +734,21 @@ endif
 # -static and put in /usr/bin of chroot's target directory
 #
 
+# Current supported architectures
+ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
+ifeq ($(QEMU_ALL),1)
+  QEMU_ARCH = $(ARCH_LIST)
+else
+  QEMU_ARCH = $(XARCH)
+endif
+
 ifeq ($(QEMU_US), 1)
-  QEMU_TARGET ?= $(XARCH)-linux-user
+  QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -linux-user,$(QEMU_ARCH)))
   QEMU_CONF   += --enable-linux-user --static
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
   QEMU_CONF   += --disable-system
 else
-  QEMU_TARGET ?= $(XARCH)-softmmu
+  QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -softmmu,$(QEMU_ARCH)))
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
 endif
 
@@ -1833,7 +1841,7 @@ uboot-save: prebuilt-images
 
 qemu-save: prebuilt-images
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
-	$(Q)make -C $(QEMU_OUTPUT)/$(QEMU_TARGET) install V=$(V)
+	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
 
 emulator-save: qemu-save
@@ -2354,11 +2362,6 @@ PHONY += all
 qemu-clean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
 	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
-ifeq ($(QEMU_US), 1)
-	-$(Q)make $(S) -C $(QEMU_OUTPUT)/$(XARCH)-linux-user clean
-else
-	-$(Q)make $(S) -C $(QEMU_OUTPUT)/$(XARCH)-softmmu clean
-endif
 endif
 
 emulator-clean: qemu-clean

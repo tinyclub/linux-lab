@@ -2,16 +2,18 @@
 #
 # build.sh -- build all of the supported qemu-system-$(XARCH) and $(XARCH)-linux-user
 #
-# Usage: build.sh VERSION QEMU_ALL
+# Usage: build.sh VERSION QEMU_ALL ARCH_LIST
 #
 
 VERSION=$1
 QEMU_ALL=$2
+ARCH_LIST="$3"
 
 [ -z "$VERSION" ] && VERSION=v4.0.0
 [ -z "$QEMU_ALL" ] && QEMU_ALL=1
+[ -z "$ARCH_LIST" ] && ARCH_LIST="arm aarch64 riscv32 riscv64"
 
-export QEMU=$VERSION QEMU_ALL=$QEMU_ALL
+export QEMU=$VERSION QEMU_ALL=$QEMU_ALL ARCH_LIST="$ARCH_LIST"
 
 # clean up at first
 make qemu-clean QEMU_US=1

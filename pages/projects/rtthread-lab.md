@@ -99,6 +99,15 @@ RT-Thread 是一套国产 IoT 操作系统。
 
     $ make init
 
+### Checkout 验证过的版本
+
+  说明：新的版本可能要更新编译器或者调整 Makefile，具体请参考 README_zh.md 和 [RT-Thread ENV工具](https://www.rt-thread.org/page/download.html)。
+
+    $ pushd rt-thread
+    $ git checkout d629a3c87f
+    $ git clean -fdx
+    $ popd
+
 ### 配置 RT-Thread
 
     $ make config

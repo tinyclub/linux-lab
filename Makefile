@@ -677,8 +677,6 @@ endif
 # 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
 #    deps: sudo apt-get install libncursesw5-dev
 # 2. --enable-sdl is required for G=1, but from v4.0.0, it requires libsdl2-dev,
-#    but it is not available in lower version ubuntu, such as ubuntu 14.04, so, to
-#    using qemu >= v4.0.0 with sdl graphic, must upgrade ubuntu to newer version.
 # 3. --disable-vnc disable vnc graphic support, this is not that friendly because
 #    it requires to install a vnc viewer, such as vinagre.
 #    TODO: start vnc viewer automatically while qemu boots and listen on vnc port.
@@ -692,34 +690,11 @@ ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
   $(error ERR: No qemu version specified, please configure QEMU= in boards/$(BOARD)/Makefile or pass it manually)
  endif
 
- ifeq ($(QCFG),)
-  # Use v2.12.0 by default
-  QEMU_CONF ?= --disable-kvm
-
-  # Qemu > 4.0 requires libsdl2, which is not installable in current lab
-  # (too old ubuntu), use vnc instead
-  QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
-  QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
-  QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
-  ifneq ($(QEMU_SDL),0)
-    QEMU_CONF += --enable-sdl
-  endif
-
-  ifeq ($(QEMU_VNC),1)
-    QEMU_CONF += --enable-vnc
-  else
-    QEMU_CONF += --disable-vnc
-  endif
-
-  ifneq ($(QEMU_VIRTFS),0)
-    QEMU_CONF += --enable-virtfs
-  endif
-
-  ifeq ($(QEMU_CURSES),1)
-    QEMU_CONF += --enable-curses
-  endif
+ ifneq ($(QCFG),)
+   QEMU_CONF := $(QCFG)
  else
-  QEMU_CONF := $(QCFG)
+   # Use v2.12.0 by default
+   QEMU_CONF ?= --disable-kvm
  endif
 endif
 
@@ -748,6 +723,32 @@ ifeq ($(QEMU_US), 1)
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
   QEMU_CONF   += --disable-system
 else
+  ifeq ($(QCFG),)
+    # Qemu > 4.0 requires libsdl2, which is not installable in current lab
+    # (too old ubuntu), use vnc instead
+    #QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
+    #QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
+    #QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
+    QEMU_SDL ?= 1
+    ifneq ($(QEMU_SDL),0)
+      QEMU_CONF += --enable-sdl
+    endif
+
+    ifeq ($(QEMU_VNC),1)
+      QEMU_CONF += --enable-vnc
+    else
+      QEMU_CONF += --disable-vnc
+    endif
+
+    ifneq ($(QEMU_VIRTFS),0)
+      QEMU_CONF += --enable-virtfs
+    endif
+
+    ifeq ($(QEMU_CURSES),1)
+      QEMU_CONF += --enable-curses
+    endif
+  endif
+
   QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -softmmu,$(QEMU_ARCH)))
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
 endif

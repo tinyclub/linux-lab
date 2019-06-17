@@ -729,7 +729,8 @@ else
     #QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
     #QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
     #QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
-    QEMU_SDL ?= 1
+    QEMU_SDL    ?= 1
+    QEMU_CURSES ?= 1
     ifneq ($(QEMU_SDL),0)
       QEMU_CONF += --enable-sdl
     endif

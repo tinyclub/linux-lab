@@ -30,3 +30,7 @@
 	ignore = all
 	path = boards/arm/versatilepb/bsp
 	url = https://github.com/tinyclub/qemu-arm-versatilepb.git
+[submodule "boards/arm/vexpress-a9/bsp"]
+	ignore = all
+	path = boards/arm/vexpress-a9/bsp
+	url = https://github.com/tinyclub/qemu-arm-vexpress-a9.git

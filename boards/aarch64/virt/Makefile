@@ -36,14 +36,14 @@ ROOTDEV ?= /dev/vda
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 CCPRE   ?= aarch64-linux-gnu-
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
-ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 #KP      ?= 1
 #QP      ?= 1
-QTOOL   ?= $(PREBUILT_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER   ?= 8.3-2019.03

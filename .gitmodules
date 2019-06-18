@@ -18,3 +18,6 @@
 	path = prebuilt
 	url = https://github.com/tinyclub/prebuilt.git
 	ignore = all
+[submodule "boards/aarch64/raspi3/bsp"]
+	path = boards/aarch64/raspi3/bsp
+	url = https://github.com/tinyclub/qemu-aarch64-raspi3/

@@ -870,7 +870,7 @@ root-patch:
 	@if [ ! -f $(ROOT_PATCHED_TAG) ]; then \
 	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
 	  touch $(ROOT_PATCHED_TAG); \
-	else
+	else \
 	  echo "ERR: root patchset has been applied already, if want, please do 'make root-checkout' at first."; \
 	fi
 

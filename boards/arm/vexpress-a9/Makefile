@@ -39,15 +39,15 @@ ORIIMG  ?= arch/$(ARCH)/boot/zImage
 UORIIMG ?= arch/$(ARCH)/boot/uImage
 ORIDTB  ?= arch/$(ARCH)/boot/dts/vexpress-v2p-ca9.dtb
 CCPRE   ?= arm-linux-gnueabi-
-BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/u-boot
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
-DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/vexpress-v2p-ca9.dtb
-UKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/uImage
-ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-UROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.uboot
-HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
+DTB     ?= $(BSP_KERNEL)/$(LINUX)/vexpress-v2p-ca9.dtb
+UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/uImage
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 #QP      ?= 1
-QTOOL   ?= $(PREBUILT_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER  ?= 7.4.1-2019.02

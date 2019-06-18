@@ -2335,13 +2335,22 @@ _BOOT_DEPS ?=
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 
+_boot: $(_BOOT_DEPS)
+	$(BOOT_CMD)
+
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
 BOOT_DEPS += $(PREBUILT_IMAGES)
 BOOT_DEPS += $(BOOT_DTB)
 
-_boot: $(_BOOT_DEPS)
-	$(BOOT_CMD)
+ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
+  ifeq ($(INVALID_ROOTFS),1)
+    $(error rootfs is invalid)
+  endif
+  ifeq ($(INVALID_ROOTDEV),1)
+    $(error rootdev is invalid)
+  endif
+endif
 
 boot: $(BOOT_DEPS)
 	$(Q)make $(S) _boot

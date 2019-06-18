@@ -37,17 +37,17 @@ endif
 
 ifeq ($(HAS_DTS), 1)
   ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb
-  BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/u-boot
+  BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 else
-  BIMAGE  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)/u-boot
+  BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)/u-boot
 endif
 
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/zImage
-DTB     ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/versatile-pb.dtb
-UKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/uImage
-ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-UROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.uboot
-HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
+DTB     ?= $(BSP_KERNEL)/$(LINUX)/versatile-pb.dtb
+UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/uImage
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCVER  ?= 7.4.1-2019.02

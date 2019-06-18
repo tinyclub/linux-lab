@@ -38,21 +38,21 @@ FSTYPE  ?= ext2
 
 #PORIIMG ?= bbl
 PORIIMG ?= fw_jump.elf
-#PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
-PKIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
+#PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
+PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
 
 KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 
-ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.$(FSTYPE)
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 #XKCLI   ?= earlycon=sbi
 # Only for current v5.0.10 support
 #KP      ?= 1
 #QP      ?= 1
-QTOOL   ?= $(PREBUILT_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 CCPRE   ?= $(XARCH)-unknown-elf-

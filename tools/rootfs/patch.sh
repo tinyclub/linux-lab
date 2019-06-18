@@ -10,11 +10,13 @@ ROOT_OUTPUT=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
-RPD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/patch/buildroot/${BUILDROOT}/
+RPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/buildroot/${BUILDROOT}/
+
+RPD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/patch/buildroot/${BUILDROOT}/
 
 RPD=${TOP_DIR}/patch/buildroot/${BUILDROOT}/
 
-for d in $RPD_BOARD $RPD
+for d in $RPD_BOARD $RPD_BSP $RPD
 do
     echo $d
     [ ! -d $d ] && continue

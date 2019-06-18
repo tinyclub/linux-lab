@@ -12,13 +12,16 @@ TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 QEMU_BASE=${QEMU%.*}
 
-QPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU_BASE}/
-QPD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU}/
+QPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/qemu/${QEMU_BASE}/
+QPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/qemu/${QEMU}/
+
+QPD_BSP_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU_BASE}/
+QPD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU}/
 
 QPD_BASE=${TOP_DIR}/patch/qemu/${QEMU_BASE}/
 QPD=${TOP_DIR}/patch/qemu/${QEMU}/
 
-for d in $QPD_BOARD_BASE $QPD_BOARD $QPD_BASE $QPD
+for d in $QPD_BOARD_BASE $QPD_BOARD $QPD_BSP_BASE $QPD_BSP $QPD_BASE $QPD
 do
     echo $d
     [ ! -d $d ] && continue

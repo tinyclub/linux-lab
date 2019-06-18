@@ -18,7 +18,8 @@ LINUX_BASE=${LINUX%.*}
 
 MACH=$(basename $BOARD)
 
-KFD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/feature/linux
+KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux
+KFD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/feature/linux
 KFD=${TOP_DIR}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 
@@ -58,7 +59,7 @@ for f in $FEATURE
 do
     f=$(echo $f | tr 'A-Z' 'a-z')
 
-    for d in $KFD_BOARD $KFD
+    for d in $KFD_BOARD $KFD_BSP $KFD
     do
         for path in $d/$f $d/$f/$LINUX $d/$f/$LINUX_BASE
         do

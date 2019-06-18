@@ -50,3 +50,7 @@
 	ignore = all
 	path = boards/riscv32/virt/bsp
 	url = https://github.com/tinyclub/qemu-riscv32-virt.git
+[submodule "boards/riscv64/virt/bsp"]
+	ignore = all
+	path = boards/riscv64/virt/bsp
+	url = https://github.com/tinyclub/qemu-riscv64-virt.git

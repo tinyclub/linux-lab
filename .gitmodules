@@ -46,3 +46,7 @@
 	ignore = all
 	path = boards/ppc/g3beige/bsp
 	url = https://github.com/tinyclub/qemu-ppc-g3beige.git
+[submodule "boards/riscv32/virt/bsp"]
+	ignore = all
+	path = boards/riscv32/virt/bsp
+	url = https://github.com/tinyclub/qemu-riscv32-virt.git

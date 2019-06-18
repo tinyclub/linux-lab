@@ -152,10 +152,12 @@ ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= buildroot
 
 # Core output: for building in standalone directories
-QEMU_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)-$(MACH)
-UBOOT_OUTPUT := $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)
-KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)
-ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(MACH)
+TOP_OUTPUT      := $(TOP_DIR)/output
+TOP_OUTPUT_ARCH := $(TOP_OUTPUT)/$(XARCH)
+QEMU_OUTPUT     := $(TOP_OUTPUT_ARCH)/qemu-$(QEMU)-$(MACH)
+UBOOT_OUTPUT    := $(TOP_OUTPUT_ARCH)/uboot-$(UBOOT)-$(MACH)
+KERNEL_OUTPUT   := $(TOP_OUTPUT_ARCH)/linux-$(LINUX)-$(MACH)
+ROOT_OUTPUT     := $(TOP_OUTPUT_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
@@ -731,6 +733,8 @@ endif
 # Current supported architectures
 ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
 ifeq ($(QEMU_ALL),1)
+  PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
+  QEMU_OUTPUT := $(TOP_OUTPUT)/qemu-$(QEMU)-all
   QEMU_ARCH = $(ARCH_LIST)
 else
   QEMU_ARCH = $(XARCH)
@@ -771,10 +775,6 @@ else
 
   QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -softmmu,$(QEMU_ARCH)))
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
-endif
-
-ifeq ($(QEMU_ALL),1)
-  PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
 endif
 
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)

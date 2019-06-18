@@ -2099,7 +2099,7 @@ _root-ud-rebuild: FORCE
 	@echo "LOG: Generating rootfs image for uboot ..."
 	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
 
-root-ud-rebuild: root-rd-rebuild _root-ud-rebuild
+root-ud-rebuild: root-rd _root-ud-rebuild
 
 kernel-uimage:
 	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi

@@ -773,6 +773,10 @@ else
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
 endif
 
+ifeq ($(QEMU_ALL),1)
+  PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
+endif
+
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 qemu-defconfig: $(QEMU_PATCH)

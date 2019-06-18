@@ -68,12 +68,20 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   endif
 endif
 
+# add board directories
+BOARD_ROOT ?= $(BOARD_DIR)/root
+BOARD_KERNEL ?= $(BOARD_DIR)/kernel
+BOARD_UBOOT ?= $(BOARD_DIR)/uboot
+BOARD_QEMU ?= $(BOARD_DIR)/qemu
+BOARD_TOOLCHAIN ?= $(BOARD_DIR)/toolchains
+
 # add a standlaone bsp directory
 BSP_DIR ?= $(BOARD_DIR)/bsp
 BSP_ROOT ?= $(BSP_DIR)/root
 BSP_KERNEL ?= $(BSP_DIR)/kernel
 BSP_UBOOT ?= $(BSP_DIR)/uboot
 BSP_QEMU ?= $(BSP_DIR)/qemu
+BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
 
 # Get the machine name for qemu-system-$(XARCH)
 MACH ?= $(notdir $(BOARD))

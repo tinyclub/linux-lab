@@ -610,6 +610,9 @@ d-r: root-source
 
 PHONY += root-source root-download download-root d-r
 
+bsp:
+	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
+
 prebuilt-images:
 ifeq ($(PREBUILT),public)
 	git submodule update $(GIT_FORCE) --init --remote prebuilt
@@ -2182,6 +2185,10 @@ ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
   PREBUILT_IMAGES := prebuilt-images
 endif
 
+ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+  BOARD_BSP := bsp
+endif
+
 PHONY += root-hd root-hd-rebuild
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
@@ -2326,6 +2333,7 @@ _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 
 BOOT_DEPS ?=
+BOOT_DEPS += $(BOARD_BSP)
 BOOT_DEPS += $(PREBUILT_IMAGES)
 BOOT_DEPS += $(BOOT_DTB)
 

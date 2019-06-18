@@ -22,3 +22,7 @@
 	ignore = all
 	path = boards/aarch64/raspi3/bsp
 	url = https://github.com/tinyclub/qemu-aarch64-raspi3/
+[submodule "boards/aarch64/virt/bsp"]
+	ignore = all
+	path = boards/aarch64/virt/bsp
+	url = https://github.com/tinyclub/qemu-aarch64-virt.git

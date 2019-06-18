@@ -83,6 +83,13 @@ BSP_UBOOT ?= $(BSP_DIR)/uboot
 BSP_QEMU ?= $(BSP_DIR)/qemu
 BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
 
+# Support old directory arch
+ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+  _BSP_DIR := $(BSP_DIR)
+else
+  _BSP_DIR := $(BOARD_DIR)
+endif
+
 # Get the machine name for qemu-system-$(XARCH)
 MACH ?= $(notdir $(BOARD))
 
@@ -837,12 +844,12 @@ RCFG ?= $(ROOT_CONFIG_FILE)
 ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 
 ifeq ($(RCFG),$(ROOT_CONFIG_FILE))
-  RCFG_FILE := $(BSP_DIR)/$(RCFG)
+  RCFG_FILE := $(_BSP_DIR)/$(RCFG)
 else
   ifeq ($(RCFG), $(wildcard $(RCFG)))
     RCFG_FILE := $(RCFG)
   else
-    TMP := $(BSP_DIR)/$(RCFG)
+    TMP := $(_BSP_DIR)/$(RCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       RCFG_FILE := $(RCFG)
     else
@@ -1300,12 +1307,12 @@ KCFG ?= $(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs
 
 ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
-  KCFG_FILE := $(BSP_DIR)/$(KCFG)
+  KCFG_FILE := $(_BSP_DIR)/$(KCFG)
 else
   ifeq ($(KCFG), $(wildcard $(KCFG)))
     KCFG_FILE := $(KCFG)
   else
-    TMP := $(BSP_DIR)/$(KCFG)
+    TMP := $(_BSP_DIR)/$(KCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       KCFG_FILE := $(TMP)
     else
@@ -1762,12 +1769,12 @@ UCFG ?= $(UBOOT_CONFIG_FILE)
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
 ifeq ($(UCFG),$(UBOOT_CONFIG_FILE))
-  UCFG_FILE := $(BSP_DIR)/$(UCFG)
+  UCFG_FILE := $(_BSP_DIR)/$(UCFG)
 else
   ifeq ($(UCFG), $(wildcard $(UCFG)))
     UCFG_FILE := $(UCFG)
   else
-    TMP := $(BSP_DIR)/$(UCFG)
+    TMP := $(_BSP_DIR)/$(UCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       UCFG_FILE := $(UCFG)
     else
@@ -1885,8 +1892,8 @@ uboot-saveconfig: uconfig-save
 uconfig-save:
 	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
-	then cp $(UBOOT_OUTPUT)/defconfig $(BSP_DIR)/$(UBOOT_CONFIG_FILE); \
-	else cp $(UBOOT_OUTPUT)/.config $(BSP_DIR)/$(UBOOT_CONFIG_FILE); fi
+	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_DIR)/$(UBOOT_CONFIG_FILE); \
+	else cp $(UBOOT_OUTPUT)/.config $(_BSP_DIR)/$(UBOOT_CONFIG_FILE); fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
@@ -1894,8 +1901,8 @@ kernel-saveconfig: kconfig-save
 kconfig-save:
 	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
-	then cp $(KERNEL_OUTPUT)/defconfig $(BSP_DIR)/$(KERNEL_CONFIG_FILE); \
-	else cp $(KERNEL_OUTPUT)/.config $(BSP_DIR)/$(KERNEL_CONFIG_FILE); fi
+	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_DIR)/$(KERNEL_CONFIG_FILE); \
+	else cp $(KERNEL_OUTPUT)/.config $(_BSP_DIR)/$(KERNEL_CONFIG_FILE); fi
 
 root-saveconfig: rconfig-save
 
@@ -1904,8 +1911,8 @@ rconfig-save:
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(BSP_DIR)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
-	then cp $(ROOT_OUTPUT)/defconfig $(BSP_DIR)/$(ROOT_CONFIG_FILE); \
-	else cp $(ROOT_OUTPUT)/.config $(BSP_DIR)/$(ROOT_CONFIG_FILE); fi
+	then cp $(ROOT_OUTPUT)/defconfig $(_BSP_DIR)/$(ROOT_CONFIG_FILE); \
+	else cp $(ROOT_OUTPUT)/.config $(_BSP_DIR)/$(ROOT_CONFIG_FILE); fi
 
 r-c-s: rconfig-save
 u-c-s: uconfig-save

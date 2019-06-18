@@ -220,6 +220,9 @@ else
   PBK := 1
 endif
 
+# Customize DTS?
+_DTS := $(DTS)
+
 ifeq ($(DTS),)
   ifneq ($(ORIDTS),)
     DTS    := $(KERNEL_SRC)/$(ORIDTS)
@@ -1456,9 +1459,10 @@ KMAKE_CMD += $(KT) $(KM)
 ifneq ($(DTS),)
   ifeq ($(DTS),$(wildcard $(DTS)))
 
+# FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
 dtb: $(DTS)
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
-ifneq ($(PBD),1)
+ifeq ($(_DTS),)
 	$(Q)make kernel KT=$(DTB_TARGET)
 else
 	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
@@ -1478,8 +1482,8 @@ PHONY += dtb
   endif
 endif
 
-# Ignore DTB and RD dependency if KT specified
-ifeq ($(KT),)
+# Ignore DTB and RD dependency if KT is not kernel image
+ifeq ($(KT),$(IMAGE))
   KERNEL_DEPS := $(KERNEL_DTB) $(ROOT_RD)
 endif
 

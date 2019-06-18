@@ -837,12 +837,12 @@ RCFG ?= $(ROOT_CONFIG_FILE)
 ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 
 ifeq ($(RCFG),$(ROOT_CONFIG_FILE))
-  RCFG_FILE := $(BOARD_DIR)/$(RCFG)
+  RCFG_FILE := $(BSP_DIR)/$(RCFG)
 else
   ifeq ($(RCFG), $(wildcard $(RCFG)))
     RCFG_FILE := $(RCFG)
   else
-    TMP := $(BOARD_DIR)/$(RCFG)
+    TMP := $(BSP_DIR)/$(RCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       RCFG_FILE := $(RCFG)
     else

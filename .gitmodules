@@ -38,3 +38,7 @@
 	ignore = all
 	path = boards/i386/pc/bsp
 	url = https://github.com/tinyclub/qemu-i386-pc.git
+[submodule "boards/mipsel/malta/bsp"]
+	ignore = all
+	path = boards/mipsel/malta/bsp
+	url = https://github.com/tinyclub/qemu-mipsel-malta.git

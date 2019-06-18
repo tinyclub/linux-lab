@@ -34,3 +34,7 @@
 	ignore = all
 	path = boards/arm/vexpress-a9/bsp
 	url = https://github.com/tinyclub/qemu-arm-vexpress-a9.git
+[submodule "boards/i386/pc/bsp"]
+	ignore = all
+	path = boards/i386/pc/bsp
+	url = https://github.com/tinyclub/qemu-i386-pc.git

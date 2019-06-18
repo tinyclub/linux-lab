@@ -611,7 +611,9 @@ d-r: root-source
 PHONY += root-source root-download download-root d-r
 
 bsp:
+ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
 	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
+endif
 
 prebuilt-images:
 ifeq ($(PREBUILT),public)

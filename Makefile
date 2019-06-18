@@ -630,18 +630,7 @@ ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
 	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
 endif
 
-prebuilt-images:
-ifeq ($(PREBUILT),public)
-	git submodule update $(GIT_FORCE) --init --remote prebuilt
-endif
-
-prebuilt-download: prebuilt-images
-download-prebuilt: prebuilt-images
-d-p: prebuilt-images
-
-PHONY += prebuilt-images prebuilt-download download-prebuilt d-p
-
-source: prebuilt-images kernel-source root-source
+source: kernel-source root-source
 
 download: source
 d: source
@@ -1851,7 +1840,7 @@ B: build
 PHONY += checkout config build o c B
 
 # Save the built images
-root-save: prebuilt-images
+root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
@@ -1860,19 +1849,19 @@ root-save: prebuilt-images
 
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
-kernel-save: prebuilt-images
+kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG))
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
-uboot-save: prebuilt-images
+uboot-save:
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
 
 
-qemu-save: prebuilt-images
+qemu-save:
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
 	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
@@ -2201,10 +2190,6 @@ root-hd-rebuild: FORCE
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 
-ifneq ($(PREBUILT_ROOT),$(wildcard $(PREBUILT_ROOT)))
-  PREBUILT_IMAGES := prebuilt-images
-endif
-
 ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
   BOARD_BSP := bsp
 endif
@@ -2357,7 +2342,6 @@ _boot: $(_BOOT_DEPS)
 
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
-BOOT_DEPS += $(PREBUILT_IMAGES)
 BOOT_DEPS += $(BOOT_DTB)
 
 ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)

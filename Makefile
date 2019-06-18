@@ -378,11 +378,11 @@ ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
-  $(warning $(ROOTFS_TYPE))
+  INVALID_ROOTFS := 1
 endif
 
 ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
-  $(warning $(ROOTDEV_TYPE))
+  INVALID_ROOTDEV := 1
 endif
 
 comma := ,
@@ -2104,10 +2104,13 @@ root-ud-rebuild: root-rd _root-ud-rebuild
 kernel-uimage:
 	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
 
+ifneq ($(INVALID_ROOTFS),1)
 $(UROOTFS): root-ud
+U_ROOT_IMAGE = $(UROOTFS)
+endif
+
 $(UKIMAGE): kernel-uimage
 
-U_ROOT_IMAGE = $(UROOTFS)
 U_KERNEL_IMAGE = $(UKIMAGE)
 
 ifeq ($(DTB),$(wildcard $(DTB)))

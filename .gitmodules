@@ -26,3 +26,7 @@
 	ignore = all
 	path = boards/aarch64/virt/bsp
 	url = https://github.com/tinyclub/qemu-aarch64-virt.git
+[submodule "boards/arm/versatilepb/bsp"]
+	ignore = all
+	path = boards/arm/versatilepb/bsp
+	url = https://github.com/tinyclub/qemu-arm-versatilepb.git

@@ -12,8 +12,8 @@ TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 LINUX_BASE=${LINUX%.*}
 
-KPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX_BASE}/
-KPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX}/
+KPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/linux/${LINUX_BASE}/
+KPD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/patch/linux/${LINUX}/
 
 KPD_BASE=${TOP_DIR}/patch/linux/${LINUX_BASE}/
 KPD=${TOP_DIR}/patch/linux/${LINUX}/

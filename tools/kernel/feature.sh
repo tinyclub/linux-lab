@@ -18,7 +18,7 @@ LINUX_BASE=${LINUX%.*}
 
 MACH=$(basename $BOARD)
 
-KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux
+KFD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/feature/linux
 KFD=${TOP_DIR}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 

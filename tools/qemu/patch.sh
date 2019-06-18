@@ -12,8 +12,8 @@ TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 QEMU_BASE=${QEMU%.*}
 
-QPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/qemu/${QEMU_BASE}/
-QPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/qemu/${QEMU}/
+QPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU_BASE}/
+QPD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU}/
 
 QPD_BASE=${TOP_DIR}/patch/qemu/${QEMU_BASE}/
 QPD=${TOP_DIR}/patch/qemu/${QEMU}/

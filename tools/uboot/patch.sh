@@ -12,8 +12,8 @@ TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 UBOOT_BASE=${UBOOT%.*}
 
-UPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/uboot/${UBOOT_BASE}/
-UPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/uboot/${UBOOT}/
+UPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/uboot/${UBOOT_BASE}/
+UPD_BOARD=${TOP_DIR}/boards/${BOARD}/bsp/patch/uboot/${UBOOT}/
 
 UPD_BASE=${TOP_DIR}/patch/uboot/${UBOOT_BASE}/
 UPD=${TOP_DIR}/patch/uboot/${UBOOT}/

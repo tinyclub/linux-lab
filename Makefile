@@ -68,6 +68,13 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   endif
 endif
 
+# add a standlaone bsp directory
+BSP_DIR ?= $(BOARD_DIR)/bsp
+BSP_ROOT ?= $(BSP_DIR)/root
+BSP_KERNEL ?= $(BSP_DIR)/kernel
+BSP_UBOOT ?= $(BSP_DIR)/uboot
+BSP_QEMU ?= $(BSP_DIR)/qemu
+
 # Get the machine name for qemu-system-$(XARCH)
 MACH ?= $(notdir $(BOARD))
 
@@ -130,10 +137,10 @@ ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_SRC ?= buildroot
 
 # Core output: for building in standalone directories
-QEMU_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)
+QEMU_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/qemu-$(QEMU)-$(MACH)
 UBOOT_OUTPUT := $(TOP_DIR)/output/$(XARCH)/uboot-$(UBOOT)-$(MACH)
 KERNEL_OUTPUT:= $(TOP_DIR)/output/$(XARCH)/linux-$(LINUX)-$(MACH)
-ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(CPU)
+ROOT_OUTPUT  := $(TOP_DIR)/output/$(XARCH)/buildroot-$(BUILDROOT)-$(MACH)
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
@@ -330,10 +337,10 @@ BUILDROOT_UROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
 BUILDROOT_HROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
 BUILDROOT_IROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
-PREBUILT_ROOT_DIR   ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)
-PREBUILT_KERNEL_DIR ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)
-PREBUILT_UBOOT_DIR  ?= $(PREBUILT_UBOOT)/$(XARCH)/$(MACH)/$(UBOOT)/$(LINUX)
-PREBUILT_QEMU_DIR   ?= $(PREBUILT_QEMU)/$(QEMU)
+PREBUILT_ROOT_DIR   ?= $(BSP_ROOT)/$(BUILDROOT)
+PREBUILT_KERNEL_DIR ?= $(BSP_KERNEL)/$(LINUX)
+PREBUILT_UBOOT_DIR  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)
+PREBUILT_QEMU_DIR   ?= $(BSP_QEMU)/$(QEMU)
 
 PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
 
@@ -811,7 +818,7 @@ endif
 root-checkout:
 	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx && cd $(TOP_DIR)
 
-ROOT_CONFIG_FILE ?= buildroot_$(CPU)_defconfig
+ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
 
 RCFG ?= $(ROOT_CONFIG_FILE)
 ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
@@ -1280,12 +1287,12 @@ KCFG ?= $(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs
 
 ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
-  KCFG_FILE := $(BOARD_DIR)/$(KCFG)
+  KCFG_FILE := $(BSP_DIR)/$(KCFG)
 else
   ifeq ($(KCFG), $(wildcard $(KCFG)))
     KCFG_FILE := $(KCFG)
   else
-    TMP := $(BOARD_DIR)/$(KCFG)
+    TMP := $(BSP_DIR)/$(KCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       KCFG_FILE := $(TMP)
     else
@@ -1742,12 +1749,12 @@ UCFG ?= $(UBOOT_CONFIG_FILE)
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
 ifeq ($(UCFG),$(UBOOT_CONFIG_FILE))
-  UCFG_FILE := $(BOARD_DIR)/$(UCFG)
+  UCFG_FILE := $(BSP_DIR)/$(UCFG)
 else
   ifeq ($(UCFG), $(wildcard $(UCFG)))
     UCFG_FILE := $(UCFG)
   else
-    TMP := $(BOARD_DIR)/$(UCFG)
+    TMP := $(BSP_DIR)/$(UCFG)
     ifeq ($(TMP), $(wildcard $(TMP)))
       UCFG_FILE := $(UCFG)
     else
@@ -1865,8 +1872,8 @@ uboot-saveconfig: uconfig-save
 uconfig-save:
 	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
-	then cp $(UBOOT_OUTPUT)/defconfig $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; \
-	else cp $(UBOOT_OUTPUT)/.config $(BOARD_DIR)/uboot_$(UBOOT)_defconfig; fi
+	then cp $(UBOOT_OUTPUT)/defconfig $(BSP_DIR)/$(UBOOT_CONFIG_FILE); \
+	else cp $(UBOOT_OUTPUT)/.config $(BSP_DIR)/$(UBOOT_CONFIG_FILE); fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
@@ -1874,18 +1881,18 @@ kernel-saveconfig: kconfig-save
 kconfig-save:
 	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
-	then cp $(KERNEL_OUTPUT)/defconfig $(BOARD_DIR)/linux_$(LINUX)_defconfig; \
-	else cp $(KERNEL_OUTPUT)/.config $(BOARD_DIR)/linux_$(LINUX)_defconfig; fi
+	then cp $(KERNEL_OUTPUT)/defconfig $(BSP_DIR)/$(KERNEL_CONFIG_FILE); \
+	else cp $(KERNEL_OUTPUT)/.config $(BSP_DIR)/$(KERNEL_CONFIG_FILE); fi
 
 root-saveconfig: rconfig-save
 
 rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
-	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
+	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(BSP_DIR)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
-	then cp $(ROOT_OUTPUT)/defconfig $(BOARD_DIR)/buildroot_$(CPU)_defconfig; \
-	else cp $(ROOT_OUTPUT)/.config $(BOARD_DIR)/buildroot_$(CPU)_defconfig; fi
+	then cp $(ROOT_OUTPUT)/defconfig $(BSP_DIR)/$(ROOT_CONFIG_FILE); \
+	else cp $(ROOT_OUTPUT)/.config $(BSP_DIR)/$(ROOT_CONFIG_FILE); fi
 
 r-c-s: rconfig-save
 u-c-s: uconfig-save

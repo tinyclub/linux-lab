@@ -21,6 +21,6 @@ ORIIMG  ?= arch/$(ARCH)/boot/bzImage
 # Verified ROOTDEV: /dev/ram0, /dev/nfs, /dev/hda
 ROOTDEV ?= /dev/ram0
 
-KIMAGE  ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/bzImage
-ROOTFS  ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.cpio.gz
-HROOTFS ?= $(PREBUILT_ROOT)/$(XARCH)/$(CPU)/rootfs.ext2
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/bzImage
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2

@@ -2362,7 +2362,7 @@ ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
 endif
 
 boot: $(BOOT_DEPS)
-	$(Q)make $(S) _boot
+	$(Q)make _boot
 
 t: test
 b: boot

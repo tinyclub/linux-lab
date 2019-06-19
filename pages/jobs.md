@@ -17,6 +17,11 @@ order: 10
 
 ![tinylab wechat](/images/wechat/tinylab.jpg)
 
+加入以后，您所在团队将获得如下益处：
+
+1. 免费在泰晓科技的 [机会](/jobs) 页面向各大 Linux/开源 高校社团、一线工程师进行充分地展示和宣传，从而吸纳兴趣与经验更为匹配的合作伙伴。
+2. 免费加入“校企 Linux 团队直通车” 微信群，直接与大中华区数十家高校的 Linux/开源 社团负责人面对面沟通和交流，大大提升寻找 Linux 新人的效率。
+
 <hr>
 
 <section id="home">

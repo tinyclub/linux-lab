@@ -1409,8 +1409,12 @@ PHONY += kernel-feature feature features kernel-features k-f f kernel-feature-li
 
 # Testing targets
 
-TEST ?= $T
+TEST ?= $(PREPARE)
 TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
+
+ifeq ($(UBOOT),)
+  override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))
+endif
 
 # Force running git submodule commands
 GIT_FORCE := $(if $(TEST),--force,)
@@ -2268,8 +2272,8 @@ ifneq ($(TEST_REBOOT), 0)
 endif
 
 # By default, seconds
-TTO ?= 0
-TEST_TIMEOUT ?= $(TTO)
+TIMEOUT ?= 0
+TEST_TIMEOUT ?= $(TIMEOUT)
 TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)

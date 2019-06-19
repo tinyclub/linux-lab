@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "bugfix: 消除 qemu/raspi3 启动过程的一堆警告"
-draft: true
+draft: false
 license: "cc-by-sa-4.0"
 album: "Debugging+Tracing"
 permalink: /bugfix-silence-raspi3-boot-warnings/

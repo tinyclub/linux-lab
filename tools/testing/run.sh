@@ -27,7 +27,7 @@
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
 [ -z "$TIMEOUT" ] && TIMEOUT=50
-[ -z "$CASE" ] && CASE="boot"
+[ -z "$CASE" ] && CASE="release"
 [ -z "$FEATURE" ] && FEATURE=""
 [ -z "$VERBOSE" ] && VERBOSE=0
 [ -z "$MODULE" ] && MODULE=""
@@ -39,11 +39,15 @@ else
   [ -n "$MODULE" ] && FEATURE="boot,module"
 fi
 
+[ "$CASE" == "release" ] && PREBUILT=1
+
 # Run for release, please issue: PREBUILT=1 ./run.sh boot
 if [ $PREBUILT -eq 1 ]; then
   PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 fi
 
+# external case in this script
+echo -e "\nRunning [$CASE]\n"
 
 _CASE="test"
 
@@ -74,11 +78,15 @@ case $CASE in
 	boot)
 		_CASE="boot-test"
 		;;
+	release)
+		_CASE="boot-test"
+		;;
 	*)
 		_CASE="boot-test"
 		;;
 esac
 
+# Internal case
 CASE=$_CASE
 
 PASS_BOARDS=""

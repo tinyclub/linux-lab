@@ -43,7 +43,7 @@ fi
 
 # Run for release, please issue: PREBUILT=1 ./run.sh boot
 if [ $PREBUILT -eq 1 ]; then
-  PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+  _PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 fi
 
 _CASE="test"
@@ -119,7 +119,7 @@ do
 		TEST_RD=/dev/ram0
 	fi
 
-	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $PREBUILT m=$MODULE $CFGS $ARGS
+	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $_PREBUILT m=$MODULE $CFGS $ARGS
 
 	if [ $? -eq 0 ]; then
 		echo -e "\n... [ $b ] $CASE PASS...\n"

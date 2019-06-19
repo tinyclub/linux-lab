@@ -1365,10 +1365,13 @@ PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel
 
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
+FPL ?= 1
 ifeq ($(FEATURE),module)
   FPL := 0
-else
-  FPL ?= 1
+endif
+
+ifeq ($(FEATURE),boot,module)
+  FPL := 0
 endif
 
 FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched

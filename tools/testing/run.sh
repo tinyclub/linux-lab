@@ -16,59 +16,64 @@
 #      1. these boards hang after send 'poweroff' or 'reboot' command: aarch64/raspi3, arm/verstailpb, mipsel/malta
 #
 
-BOARDS=$1
-CASE=$2
-VERBOSE=$3
-FEATURE=$4
-MODULE=$5
-CFGS=$6
-ARGS=$7
+[ -n "$1" ] && BOARDS=$1
+[ -n "$2" ] && CASE=$2
+[ -n "$3" ] && VERBOSE=$3
+[ -n "$4" ] && FEATURE=$4
+[ -n "$5" ] && MODULE=$5
+[ -n "$6" ] && CFGS=$6
+[ -n "$7" ] && ARGS=$7
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
 [ -z "$TIMEOUT" ] && TIMEOUT=50
 [ -z "$CASE" ] && CASE="boot"
 [ -z "$FEATURE" ] && FEATURE=""
 [ -z "$VERBOSE" ] && VERBOSE=0
-[ -z "$MODULE"] && MODULE=""
+[ -z "$MODULE" ] && MODULE=""
+
+if [ -n "$FEATURE" ]; then
+  [ -n "$MODULE" ] && FEATURE="boot,module,$FEATURE"
+else
+  [ -n "$MODULE" ] && FEATURE="boot,module"
+fi
+
+_CASE="test"
 
 case $CASE in
 	kernel)
-		CASE="test"
 		PREPARE="kernel-full"
 		;;
 	root)
-		CASE="test"
 		PREPARE="root-full"
 		;;
 	qemu)
-		CASE="test"
 		PREPARE="qemu-full"
 		;;
 	uboot)
-		CASE="test"
 		PREPARE="uboot-full"
 		;;
+	module)
+		;;
 	base)
-		CASE="test"
 		PREPARE="uboot-full,kernel-full"
 		;;
 	core)
-		CASE="test"
 		PREPARE="uboot-full,kernel-full,root-full"
 		;;
 	all)
-		CASE="test"
 		PREPARE="kernel-full,root-full,qemu-full,uboot-full"
 		;;
 	boot)
-		CASE="boot-test"
+		_CASE="boot-test"
 		PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 	*)
-		CASE="boot-test"
+		_CASE="boot-test"
 		PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 esac
+
+CASE=$_CASE
 
 PASS_BOARDS=""
 FAIL_BOARDS=""

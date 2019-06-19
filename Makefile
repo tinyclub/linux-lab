@@ -1415,6 +1415,9 @@ TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
 ifeq ($(UBOOT),)
   override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))
 endif
+ifeq ($(QEMU),)
+  override TEST_PREPARE := $(patsubst qemu%,,$(TEST_PREPARE))
+endif
 
 # Force running git submodule commands
 GIT_FORCE := $(if $(TEST),--force,)

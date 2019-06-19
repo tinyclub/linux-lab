@@ -52,25 +52,53 @@ case $CASE in
 	kernel)
 		PREPARE="kernel-full"
 		;;
+	kernel-release)
+		PREPARE="kernel-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		;;
 	root)
 		PREPARE="root-full"
+		;;
+	root-release)
+		PREPARE="root-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 	qemu)
 		PREPARE="qemu-full"
 		;;
+	qemu-release)
+		PREPARE="qemu-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		;;
 	uboot)
 		PREPARE="uboot-full"
+		;;
+	uboot-release)
+		PREPARE="uboot-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 	module)
 		;;
 	base)
 		PREPARE="uboot-full,kernel-full"
 		;;
+	base-release)
+		PREPARE="uboot-all,kernel-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		;;
 	core)
 		PREPARE="uboot-full,kernel-full,root-full"
 		;;
-	all)
-		PREPARE="kernel-full,root-full,qemu-full,uboot-full"
+	core-release)
+		PREPARE="uboot-all,kernel-all,root-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		;;
+	full)
+		PREPARE="uboot-full,kernel-full,root-full,qemu-full"
+		;;
+	full-release)
+		PREPARE="uboot-all,kernel-all,root-all,qemu-all"
+		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 	boot)
 		_CASE="boot-test"

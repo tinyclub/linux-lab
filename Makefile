@@ -606,8 +606,9 @@ emulator-full: emulator-download emulator-prepare emulator
 qemu-prepare: emulator-prepare
 qemu-auto: emulator-auto
 qemu-full: emulator-full
+qemu-all: qemu-full qemu-save
 
-PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full
+PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
 kernel-source:
 	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
@@ -1000,6 +1001,7 @@ root-build: root
 root-prepare: root-checkout root-patch root-defconfig
 root-auto: root-prepare root
 root-full: root-download root-prepare root
+root-all: root-full root-save root-saveconfig
 
 r: root
 r-b: root
@@ -1007,7 +1009,7 @@ r-P: root-prepare
 r-a: root-auto
 r-f: root-full
 
-PHONY += root root-help root-build root-prepare root-auto root-full r r-b r-P r-a r-f
+PHONY += root root-help root-build root-prepare root-auto root-full r r-b r-P r-a r-f root-all
 
 # Kernel modules
 TOP_MODULE_DIR := $(TOP_DIR)/modules
@@ -1686,13 +1688,14 @@ k: kernel
 kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
 kernel-auto: kernel-prepare kernel
 kernel-full: kernel-download kernel-prepare kernel
+kernel-all: kernel-full kernel-save kernel-saveconfig
 
 # Simplify testing
 prepare: kernel-prepare
 auto: kernel-auto
 full: kernel-full
 
-PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k kernel-prepare kernel-auto kernel-full prepare auto full
+PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k kernel-prepare kernel-auto kernel-full prepare auto full kernel-all
 
 # Uboot targets
 
@@ -1826,6 +1829,7 @@ uboot-build: uboot
 uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
 uboot-auto: uboot-prepare uboot
 uboot-full: uboot-download uboot-prepare uboot
+uboot-all: uboot-full uboot-save uboot-saveconfig
 
 u-d: uboot-source
 u-o: uboot-checkout
@@ -1835,7 +1839,7 @@ u-m: uboot-menuconfig
 u-b: uboot
 u: uboot
 
-PHONY += uboot-patch uboot-help uboot-build uboot-prepare uboot-auto uboot-full u-d u-o u-p u-c -u-m u-b u
+PHONY += uboot-patch uboot-help uboot-build uboot-prepare uboot-auto uboot-full u-d u-o u-p u-c -u-m u-b u uboot-all
 
 # Checkout kernel and Rootfs
 checkout: kernel-checkout root-checkout

@@ -46,9 +46,6 @@ if [ $PREBUILT -eq 1 ]; then
   PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 fi
 
-# external case in this script
-echo -e "\nRunning [$CASE]\n"
-
 _CASE="test"
 
 case $CASE in
@@ -86,13 +83,15 @@ case $CASE in
 		;;
 esac
 
+# external case in this script
+echo -e "\nRunning [$CASE $_CASE]\n"
+
 # Internal case
 CASE=$_CASE
 
 PASS_BOARDS=""
 FAIL_BOARDS=""
 
-echo -e "\nRunning [$CASE]\n"
 echo -e "\nTesting boards: $BOARDS"
 echo
 echo -e "\n       prepare: $PREPARE"

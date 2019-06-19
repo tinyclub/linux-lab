@@ -23,6 +23,7 @@
 [ -n "$5" ] && MODULE=$5
 [ -n "$6" ] && CFGS=$6
 [ -n "$7" ] && ARGS=$7
+[ -n "$8" ] && PREBUILT=$8
 
 [ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
 [ -z "$TIMEOUT" ] && TIMEOUT=50
@@ -30,12 +31,19 @@
 [ -z "$FEATURE" ] && FEATURE=""
 [ -z "$VERBOSE" ] && VERBOSE=0
 [ -z "$MODULE" ] && MODULE=""
+[ -z "$PREBUILT" ] && PREBUILT=0
 
 if [ -n "$FEATURE" ]; then
   [ -n "$MODULE" ] && FEATURE="boot,module,$FEATURE"
 else
   [ -n "$MODULE" ] && FEATURE="boot,module"
 fi
+
+# Run for release, please issue: PREBUILT=1 ./run.sh boot
+if [ $PREBUILT -eq 1 ]; then
+  PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+fi
+
 
 _CASE="test"
 
@@ -65,11 +73,9 @@ case $CASE in
 		;;
 	boot)
 		_CASE="boot-test"
-		PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 	*)
 		_CASE="boot-test"
-		PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
 		;;
 esac
 

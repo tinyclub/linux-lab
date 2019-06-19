@@ -884,6 +884,16 @@ root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
 
+ifneq ($(BUILDROOT_NEW),)
+ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
+NEW_RCFG_FILE=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(RCFG_FILE))
+
+root-cloneconfig:
+	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
+	$(Q)sed -i -e "s%^\(BUILDROOT.*?=.*\)$(BUILDROOT)%\1$(BUILDROOT_NEW)%g" $(BOARD_DIR)/Makefile
+endif
+endif
+
 root-olddefconfig:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) olddefconfig
 
@@ -1331,6 +1341,16 @@ kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(_KCFG)
+
+ifneq ($(LINUX_NEW),)
+ifneq ($(LINUX_NEW),$(LINUX))
+NEW_KCFG_FILE=$(subst $(LINUX),$(LINUX_NEW),$(KCFG_FILE))
+
+kernel-cloneconfig:
+	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
+	$(Q)sed -i -e "s%^\(LINUX.*?=.*\)$(LINUX)%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
+endif
+endif
 
 #
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
@@ -1804,6 +1824,17 @@ uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
+
+ifneq ($(UBOOT_NEW),)
+ifneq ($(UBOOT_NEW),$(UBOOT))
+NEW_UCFG_FILE=$(subst $(UBOOT),$(UBOOT_NEW),$(UCFG_FILE))
+
+uboot-cloneconfig:
+	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
+	$(Q)sed -i -e "s%^\(UBOOT.*?=.*\)$(UBOOT)%\1$(UBOOT_NEW)%g" $(BOARD_DIR)/Makefile
+endif
+endif
+
 
 uboot-olddefconfig:
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldefconfig

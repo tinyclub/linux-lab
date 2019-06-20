@@ -604,7 +604,7 @@ d-b: bsp-source
 
 PHONY += bsp-source bsp-download download-bsp d-b bsp
 
-source: kernel-source root-source
+source: bsp-source kernel-source root-source
 
 download: source
 d: source

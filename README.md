@@ -3,7 +3,7 @@
 
 This project aims to create a Qemu-based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
 
-For Linux 0.11, please try our [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab).
+For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab).
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
@@ -18,7 +18,7 @@ breaks the other kernel features on the main cpu architectures.
 These scripts uses qemu-system-ARCH as the cpu/board simulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
 rootfs, test scripts have been prepared, at that time, all of them were simply put in a directory, without a design or holistic consideration.
 
-They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://github.com/tinyclub/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
+They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
 
 Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
 
@@ -32,7 +32,7 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 * Prebuilt
 
-  all of above components have been prebuilt for instant using, see [prebuilt](https://github.com/tinyclub/prebuilt), qemu v2.12.0 prebuilt for arm/arm64.
+  all of above components have been prebuilt and put in board specific bsp submodule for instant using, qemu v2.12.0 prebuilt for arm/arm64.
 
 * Rootfs
 
@@ -139,7 +139,7 @@ Use Ubuntu system as an example:
 
 Download cloud lab framework, pull images and checkout linux-lab repository:
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
 ## Run and login the lab
@@ -232,13 +232,13 @@ Check the board specific configuration:
 
 ### Download sources
 
-Download prebuilt images and the kernel, buildroot source code:
+Download board specific package and the kernel, buildroot source code:
 
     $ make core-source -j3
 
 Download one by one:
 
-    $ make prebuilt-images
+    $ make bsp-source
     $ make kernel-source
     $ make root-source
 
@@ -255,7 +255,7 @@ Checkout them one by one:
 
 ### Patching
 
-Apply available patches in `boards/<BOARD>/patch/linux` and `patch/linux/`:
+Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
     $ make kernel-patch
 
@@ -265,7 +265,7 @@ Configure kernel and buildroot with defconfig:
 
     $ make config
 
-Configure one by one, by default, use the defconfig in `boards/<BOARD>/`:
+Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
 
     $ make kernel-defconfig
     $ make root-defconfig
@@ -600,7 +600,7 @@ qemu-ARCH-static and qemu-system-ARCH can not be compiled together. to build
 qemu-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and
 rebuild it.
 
-If QEMU and QTOOL specified, the one in prebuilt/ will be used in advance of
+If QEMU and QTOOL specified, the one in bsp submodule will be used in advance of
 one installed in system, but the first used is the one just compiled if exists.
 
 While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
@@ -781,12 +781,10 @@ Save all of the configs and rootfs/kernel/dtb images:
 
     $ make save
 
-Save configs to `boards/<BOARD>/`:
+Save configs and images to `boards/<BOARD>/bsp/`:
 
     $ make kconfig-save
     $ make rconfig-save
-
-Save images to `prebuilt/`:
 
     $ make root-save
     $ make kernel-save
@@ -851,7 +849,7 @@ Boot/Qemu Board:
 Host:
 
     $ make env | grep ROOTDIR
-    ROOTDIR = /linux-lab/prebuilt/root/mipsel/mips32r2/rootfs
+    ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
 
 ### Transfer via tftp
 
@@ -950,8 +948,8 @@ Book examples or the boards with a whole new cpu architecture benefit from such 
 
 Here maintains the available plugins:
 
-- [C-Sky Linux](https://github.com/tinyclub/csky)
-- [RLK4.0 Book Examples](https://github.com/tinyclub/rlk4.0)
+- [C-Sky Linux](https://gitee.com/tinylab/csky)
+- [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
 
 ## More
 
@@ -1050,10 +1048,9 @@ The same to rootfs, uboot and even qemu.
 
 #### Upload everything
 
-At last, upload the images to the `prebuilt/` repository and the new board directory to the `linux-lab` repository.
+At last, upload the images, defconfigs, patchset to board specific bsp submodule repository.
 
-* prebuilt: <https://github.com/tinyclub/prebuilt>
-* linux-lab: <https://github.com/tinyclub/linux-lab>
+* linux-lab: <https://gitee.com/tinylab/linux-lab>
 
 ### Learning Assembly
 

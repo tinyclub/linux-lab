@@ -448,7 +448,12 @@ FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
 
-board: board-save plugin-save
+# board bsp
+ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+  BOARD_BSP := bsp
+endif
+
+board: board-save plugin-save $(BOARD_BSP)
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
 		| egrep -v "/module" \
@@ -581,11 +586,6 @@ download-root: root-source
 d-r: root-source
 
 PHONY += root-source root-download download-root d-r
-
-# board bsp
-ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-  BOARD_BSP := bsp
-endif
 
 bsp:
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
@@ -826,7 +826,7 @@ RP ?= 0
 ROOT_PATCH_TOOL := tools/rootfs/patch.sh
 ROOT_PATCHED_TAG := $(ROOT_SRC)/.patched
 
-root-patch:
+root-patch: $(BOARD_BSP)
 	@if [ ! -f $(ROOT_PATCHED_TAG) ]; then \
 	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
 	  touch $(ROOT_PATCHED_TAG); \
@@ -838,7 +838,7 @@ ifeq ($(RP),1)
   ROOT_PATCH := root-patch
 endif
 
-root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
+root-defconfig: $(ROOT_CHECKOUT) $(BOARD_BSP) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
@@ -847,7 +847,7 @@ ifneq ($(BUILDROOT_NEW),)
 ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
 NEW_RCFG_FILE=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(RCFG_FILE))
 
-root-cloneconfig:
+root-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
 	$(Q)sed -i -e "s%^\(BUILDROOT.*?=.*\)$(BUILDROOT)%\1$(BUILDROOT_NEW)%g" $(BOARD_DIR)/Makefile
 endif
@@ -1287,7 +1287,7 @@ KERNEL_PATCH_TOOL := tools/kernel/patch.sh
 LINUX_PATCHED_TAG := $(KERNEL_SRC)/.patched
 
 KP ?= 0
-kernel-patch:
+kernel-patch: $(BOARD_BSP)
 	@if [ ! -f $(LINUX_PATCHED_TAG) ]; then \
 	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
 	  touch $(LINUX_PATCHED_TAG); \
@@ -1331,7 +1331,7 @@ endif
 
 _KCFG := $(notdir $(KCFG_FILE))
 
-kernel-defconfig:  $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
+kernel-defconfig:  $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
 	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(_KCFG)
@@ -1340,7 +1340,7 @@ ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
 NEW_KCFG_FILE=$(subst $(LINUX),$(LINUX_NEW),$(KCFG_FILE))
 
-kernel-cloneconfig:
+kernel-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
 	$(Q)sed -i -e "s%^\(LINUX.*?=.*\)$(LINUX)%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
 endif
@@ -1755,7 +1755,7 @@ UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_TOOL  := tools/uboot/patch.sh
 UBOOT_PATCHED_TAG := $(UBOOT_SRC)/.patched
 
-uboot-patch:
+uboot-patch: $(BOARD_BSP)
 	@if [ ! -f $(UBOOT_PATCHED_TAG) ]; then \
 	  if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi; \
 	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
@@ -1799,7 +1799,7 @@ endif
 
 _UCFG := $(notdir $(UCFG_FILE))
 
-uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
+uboot-defconfig: $(UBOOT_CHECKOUT) $(BOARD_BSP) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
@@ -1808,7 +1808,7 @@ ifneq ($(UBOOT_NEW),)
 ifneq ($(UBOOT_NEW),$(UBOOT))
 NEW_UCFG_FILE=$(subst $(UBOOT),$(UBOOT_NEW),$(UCFG_FILE))
 
-uboot-cloneconfig:
+uboot-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
 	$(Q)sed -i -e "s%^\(UBOOT.*?=.*\)$(UBOOT)%\1$(UBOOT_NEW)%g" $(BOARD_DIR)/Makefile
 endif
@@ -1955,7 +1955,7 @@ B: build
 PHONY += checkout config build o c B
 
 # Save the built images
-root-save:
+root-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
@@ -1964,19 +1964,19 @@ root-save:
 
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
-kernel-save:
+kernel-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG))
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
-uboot-save:
+uboot-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
 
 
-qemu-save:
+qemu-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
 	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
@@ -1993,7 +1993,7 @@ PHONY += root-save kernel-save uboot-save emulator-save qemu-save r-s k-s u-s e-
 
 uboot-saveconfig: uconfig-save
 
-uconfig-save:
+uconfig-save: $(BOARD_BSP)
 	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_DIR)/$(UBOOT_CONFIG_FILE); \
@@ -2002,7 +2002,7 @@ uconfig-save:
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
 
-kconfig-save:
+kconfig-save: $(BOARD_BSP)
 	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_DIR)/$(KERNEL_CONFIG_FILE); \
@@ -2010,7 +2010,7 @@ kconfig-save:
 
 root-saveconfig: rconfig-save
 
-rconfig-save:
+rconfig-save: $(BOARD_BSP)
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(BSP_DIR)/$(ROOT_CONFIG_FILE); \

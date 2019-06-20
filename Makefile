@@ -1767,7 +1767,7 @@ UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_TOOL  := tools/uboot/patch.sh
 UBOOT_PATCHED_TAG := $(UBOOT_SRC)/.patched
 
-uboot-patch: $(BOARD_BSP)
+_uboot-patch:
 	@if [ ! -f $(UBOOT_PATCHED_TAG) ]; then \
 	  if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi; \
 	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
@@ -1775,6 +1775,9 @@ uboot-patch: $(BOARD_BSP)
 	else \
 	  echo "ERR: patchset has been applied, if want, please do 'make uboot-checkout' at first." && exit 1; \
 	fi
+
+uboot-patch: $(BOARD_BSP)
+	@make $(S) _uboot-patch
 
 ifeq ($(UP),1)
   UBOOT_PATCH := uboot-patch

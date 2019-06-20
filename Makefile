@@ -449,8 +449,15 @@ FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 BTYPE    ?= ^_BASE|^_PLUGIN
 
 # board bsp
-ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-  BOARD_BSP := bsp
+#
+# only trigger bsp downloading while the bsp submodule path is there and nothing download
+#
+# to force download it, just issue 'make bsp'
+#
+ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+  ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+    BOARD_BSP := bsp
+  endif
 endif
 
 board: board-save plugin-save $(BOARD_BSP)
@@ -587,10 +594,15 @@ d-r: root-source
 
 PHONY += root-source root-download download-root d-r
 
-bsp:
-ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+bsp-source:
 	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
-endif
+
+bsp-download: bsp-source
+download-bsp: bsp-source
+bsp: bsp-source
+d-b: bsp-source
+
+PHONY += bsp-source bsp-download download-bsp d-b bsp
 
 source: kernel-source root-source
 

@@ -436,52 +436,6 @@ endif
 _ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
 DEV_TYPE      := $(firstword $(_ROOTDEV_TYPE))
 
-# Network configurations
-
-# TODO: net driver for $BOARD
-#NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
-NET ?=  -net nic,model=$(NETDEV) -net tap
-
-ifeq ($(NETDEV), virtio)
-  MACADDR_TOOL   := tools/qemu/macaddr.sh
-  RANDOM_MACADDR := $(shell $(MACADDR_TOOL))
-  NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
-endif
-
-# Kernel command line configuration
-CMDLINE :=
-
-# Init route and ip for guest
-ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
-TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
-IP    := $(basename $(ROUTE)).$(TMP)
-
-CMDLINE += route=$(ROUTE)
-
-ifeq ($(ROOTDEV),/dev/nfs)
-  ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
-    $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
-  endif
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
-endif
-
-ifeq ($(DEV_TYPE),hd)
-  CMDLINE += rw fsck.repair=yes rootwait
-endif
-
-# Ramdisk init configuration
-RDINIT ?= /init
-
-ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  CMDLINE += rdinit=$(RDINIT)
-else
-  CMDLINE += root=$(ROOTDEV)
-endif
-
-# Extra kernel command line
-CMDLINE += $(XKCLI)
-
-
 # Phony targets
 PHONY :=
 
@@ -627,6 +581,11 @@ download-root: root-source
 d-r: root-source
 
 PHONY += root-source root-download download-root d-r
+
+# board bsp
+ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+  BOARD_BSP := bsp
+endif
 
 bsp:
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
@@ -944,7 +903,7 @@ ifeq ($(U),1)
   endif
 endif
 
-
+# root ramdisk image
 ifeq ($(FS_TYPE),rd)
   ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/dir2rd.sh
 else
@@ -1020,6 +979,41 @@ r-a: root-auto
 r-f: root-full
 
 PHONY += root root-help root-build root-prepare root-auto root-full r r-b r-P r-a r-f root-all
+
+# root directory
+ifneq ($(FS_TYPE),dir)
+  ROOT_GENDIR_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2dir.sh
+endif
+
+root-dir:
+	$(Q)if [ ! -d "${ROOTDIR}" ]; then make root-dir-rebuild; fi
+
+root-dir-rebuild: rootdir
+
+rootdir:
+ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
+	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
+endif
+
+rootdir-install: root-install
+
+rootdir-clean:
+	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
+
+
+PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
+
+ROOT_GENHD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
+
+root-hd:
+	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
+
+root-hd-rebuild: FORCE
+	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
+
+PHONY += root-hd root-hd-rebuild
 
 # Kernel modules
 TOP_MODULE_DIR := $(TOP_DIR)/modules
@@ -1431,21 +1425,6 @@ ifneq ($(module),)
 endif
 
 PHONY += kernel-feature feature features kernel-features k-f f kernel-feature-list kernel-features-list features-list k-f-l f-l
-
-# Testing targets
-
-TEST ?= $(PREPARE)
-TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
-
-ifeq ($(UBOOT),)
-  override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))
-endif
-ifeq ($(QEMU),)
-  override TEST_PREPARE := $(patsubst qemu%,,$(TEST_PREPARE))
-endif
-
-# Force running git submodule commands
-GIT_FORCE := $(if $(TEST),--force,)
 
 kernel-init:
 	$(Q)make kernel-config
@@ -1872,6 +1851,93 @@ u: uboot
 
 PHONY += uboot-patch uboot-help uboot-build uboot-prepare uboot-auto uboot-full u-d u-o u-p u-c -u-m u-b u uboot-all
 
+# uboot specific part
+ifeq ($(U),1)
+
+# root uboot image
+root-ud:
+	$(Q)if [ ! -f "$(UROOTFS)" ]; then make root-ud-rebuild; fi
+
+_root-ud-rebuild: FORCE
+	@echo "LOG: Generating rootfs image for uboot ..."
+	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
+
+root-ud-rebuild: root-rd _root-ud-rebuild
+
+kernel-uimage:
+	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
+
+ifneq ($(INVALID_ROOTFS),1)
+$(UROOTFS): root-ud
+U_ROOT_IMAGE = $(UROOTFS)
+endif
+
+$(UKIMAGE): kernel-uimage
+
+U_KERNEL_IMAGE = $(UKIMAGE)
+
+ifeq ($(DTB),$(wildcard $(DTB)))
+  U_DTB_IMAGE=$(DTB)
+endif
+
+PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
+
+export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+
+UBOOT_TFTP_TOOL   := $(TOOL_DIR)/uboot/tftp.sh
+UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
+UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
+UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
+
+TFTP_IMGS := $(addprefix {TFTPBOOT}/,ramdisk dtb uImage)
+
+# require by env saving, whenever boot from pflash
+PFLASH_IMG := $(TFTPBOOT)/pflash.img
+
+SD_IMG     := $(TFTPBOOT)/sd.img
+ENV_IMG    := ${TFTPBOOT}/env.img
+
+export ENV_IMG
+
+UBOOT_DEPS := $(U_DTB_IMAGE)
+ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
+  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    UBOOT_DEPS += root-ud
+  endif
+endif
+ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
+  UBOOT_DEPS += kernel-uimage
+endif
+
+_uboot-images: $(UBOOT_DEPS)
+ifeq ($(BOOTDEV),tftp)
+	$(Q)$(UBOOT_TFTP_TOOL)
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+	$(Q)$(UBOOT_PFLASH_TOOL)
+endif
+ifeq ($(SD_BOOT),1)
+	$(Q)$(UBOOT_SD_TOOL)
+endif
+
+uboot-images: _uboot-images
+	$(Q)$(UBOOT_CONFIG_TOOL)
+	$(Q)$(UBOOT_ENV_TOOL)
+
+uboot-images-clean:
+	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
+
+uboot-images-distclean: uboot-images-clean
+	$(Q)rm -rf $(UROOTFS) $(UKIMAGE)
+
+UBOOT_IMGS := uboot-images
+UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
+
+PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
+
+endif # Uboot specific part
+
+
 # Checkout kernel and Rootfs
 checkout: kernel-checkout root-checkout
 
@@ -1964,6 +2030,51 @@ PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-savec
 
 # Qemu options and kernel command lines
 
+# Network configurations
+
+# TODO: net driver for $BOARD
+#NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
+NET ?=  -net nic,model=$(NETDEV) -net tap
+
+ifeq ($(NETDEV), virtio)
+  MACADDR_TOOL   := tools/qemu/macaddr.sh
+  RANDOM_MACADDR := $(shell $(MACADDR_TOOL))
+  NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
+endif
+
+# Kernel command line configuration
+CMDLINE :=
+
+# Init route and ip for guest
+ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
+TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
+IP    := $(basename $(ROUTE)).$(TMP)
+
+CMDLINE += route=$(ROUTE)
+
+ifeq ($(ROOTDEV),/dev/nfs)
+  ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
+    $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
+  endif
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
+endif
+
+ifeq ($(DEV_TYPE),hd)
+  CMDLINE += rw fsck.repair=yes rootwait
+endif
+
+# Ramdisk init configuration
+RDINIT ?= /init
+
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  CMDLINE += rdinit=$(RDINIT)
+else
+  CMDLINE += root=$(ROOTDEV)
+endif
+
+# Extra kernel command line
+CMDLINE += $(XKCLI)
+
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
 
@@ -2008,6 +2119,20 @@ ifeq ($(G),0)
 else
   CMDLINE += console=$(CONSOLE)
 endif
+
+# Testing support
+TEST ?= $(PREPARE)
+TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
+
+ifeq ($(UBOOT),)
+  override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))
+endif
+ifeq ($(QEMU),)
+  override TEST_PREPARE := $(patsubst qemu%,,$(TEST_PREPARE))
+endif
+
+# Force running git submodule commands
+GIT_FORCE := $(if $(TEST),--force,)
 
 # Some boards not support 'reboot' test, please use 'power' instead.
 #
@@ -2121,129 +2246,6 @@ ifneq ($(V), 1)
   QUIET_OPT ?= 2>/dev/null
 endif
 BOOT_CMD += $(QUIET_OPT)
-
-ifneq ($(FS_TYPE),dir)
-  ROOT_GENDIR_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2dir.sh
-endif
-
-root-dir:
-	$(Q)if [ ! -d "${ROOTDIR}" ]; then make root-dir-rebuild; fi
-
-root-dir-rebuild: rootdir
-
-rootdir:
-ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
-	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
-endif
-
-rootdir-install: root-install
-
-rootdir-clean:
-	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
-
-
-PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
-
-ifeq ($(U),1)
-
-root-ud:
-	$(Q)if [ ! -f "$(UROOTFS)" ]; then make root-ud-rebuild; fi
-
-_root-ud-rebuild: FORCE
-	@echo "LOG: Generating rootfs image for uboot ..."
-	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
-
-root-ud-rebuild: root-rd _root-ud-rebuild
-
-kernel-uimage:
-	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
-
-ifneq ($(INVALID_ROOTFS),1)
-$(UROOTFS): root-ud
-U_ROOT_IMAGE = $(UROOTFS)
-endif
-
-$(UKIMAGE): kernel-uimage
-
-U_KERNEL_IMAGE = $(UKIMAGE)
-
-ifeq ($(DTB),$(wildcard $(DTB)))
-  U_DTB_IMAGE=$(DTB)
-endif
-
-PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
-
-export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
-
-UBOOT_TFTP_TOOL   := $(TOOL_DIR)/uboot/tftp.sh
-UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
-UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
-UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
-
-TFTP_IMGS := $(addprefix {TFTPBOOT}/,ramdisk dtb uImage)
-
-# require by env saving, whenever boot from pflash
-PFLASH_IMG := $(TFTPBOOT)/pflash.img
-
-SD_IMG     := $(TFTPBOOT)/sd.img
-ENV_IMG    := ${TFTPBOOT}/env.img
-
-export ENV_IMG
-
-UBOOT_DEPS := $(U_DTB_IMAGE)
-ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
-  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-    UBOOT_DEPS += root-ud
-  endif
-endif
-ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
-  UBOOT_DEPS += kernel-uimage
-endif
-
-_uboot-images: $(UBOOT_DEPS)
-ifeq ($(BOOTDEV),tftp)
-	$(Q)$(UBOOT_TFTP_TOOL)
-endif
-ifeq ($(findstring flash,$(BOOTDEV)),flash)
-	$(Q)$(UBOOT_PFLASH_TOOL)
-endif
-ifeq ($(SD_BOOT),1)
-	$(Q)$(UBOOT_SD_TOOL)
-endif
-
-
-uboot-images: _uboot-images
-	$(Q)$(UBOOT_CONFIG_TOOL)
-	$(Q)$(UBOOT_ENV_TOOL)
-
-uboot-images-clean:
-	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
-
-uboot-images-distclean: uboot-images-clean
-	$(Q)rm -rf $(UROOTFS) $(UKIMAGE)
-
-UBOOT_IMGS := uboot-images
-UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
-
-PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
-
-endif # Uboot specific part
-
-ROOT_GENHD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
-
-root-hd:
-	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
-
-root-hd-rebuild: FORCE
-	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
-
-ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-  BOARD_BSP := bsp
-endif
-
-PHONY += root-hd root-hd-rebuild
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards

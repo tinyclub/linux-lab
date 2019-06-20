@@ -1,56 +1,56 @@
 [submodule "qemu"]
 	path = qemu
-	url = https://github.com/qemu/qemu.git
+	url = https://gitee.com/tinylab/qemu.git
 	ignore = all
 [submodule "buildroot"]
 	path = buildroot
-	url = https://github.com/buildroot/buildroot
+	url = https://gitee.com/tinylab/buildroot
 	ignore = all
 [submodule "linux-stable"]
 	path = linux-stable
-	url = https://github.com/tinyclub/linux-stable.git
+	url = https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
 	ignore = all
 [submodule "u-boot"]
 	path = u-boot
-	url = https://github.com/u-boot/u-boot.git
+	url = https://gitee.com/tinylab/u-boot.git
 	ignore = all
 [submodule "boards/aarch64/raspi3/bsp"]
 	ignore = all
 	path = boards/aarch64/raspi3/bsp
-	url = https://github.com/tinyclub/qemu-aarch64-raspi3/
+	url = https://gitee.com/tinylab/qemu-aarch64-raspi3/
 [submodule "boards/aarch64/virt/bsp"]
 	ignore = all
 	path = boards/aarch64/virt/bsp
-	url = https://github.com/tinyclub/qemu-aarch64-virt.git
+	url = https://gitee.com/tinylab/qemu-aarch64-virt.git
 [submodule "boards/arm/versatilepb/bsp"]
 	ignore = all
 	path = boards/arm/versatilepb/bsp
-	url = https://github.com/tinyclub/qemu-arm-versatilepb.git
+	url = https://gitee.com/tinylab/qemu-arm-versatilepb.git
 [submodule "boards/arm/vexpress-a9/bsp"]
 	ignore = all
 	path = boards/arm/vexpress-a9/bsp
-	url = https://github.com/tinyclub/qemu-arm-vexpress-a9.git
+	url = https://gitee.com/tinylab/qemu-arm-vexpress-a9.git
 [submodule "boards/i386/pc/bsp"]
 	ignore = all
 	path = boards/i386/pc/bsp
-	url = https://github.com/tinyclub/qemu-i386-pc.git
+	url = https://gitee.com/tinylab/qemu-i386-pc.git
 [submodule "boards/mipsel/malta/bsp"]
 	ignore = all
 	path = boards/mipsel/malta/bsp
-	url = https://github.com/tinyclub/qemu-mipsel-malta.git
+	url = https://gitee.com/tinylab/qemu-mipsel-malta.git
 [submodule "boards/ppc/g3beige/bsp"]
 	ignore = all
 	path = boards/ppc/g3beige/bsp
-	url = https://github.com/tinyclub/qemu-ppc-g3beige.git
+	url = https://gitee.com/tinylab/qemu-ppc-g3beige.git
 [submodule "boards/riscv32/virt/bsp"]
 	ignore = all
 	path = boards/riscv32/virt/bsp
-	url = https://github.com/tinyclub/qemu-riscv32-virt.git
+	url = https://gitee.com/tinylab/qemu-riscv32-virt.git
 [submodule "boards/riscv64/virt/bsp"]
 	ignore = all
 	path = boards/riscv64/virt/bsp
-	url = https://github.com/tinyclub/qemu-riscv64-virt.git
+	url = https://gitee.com/tinylab/qemu-riscv64-virt.git
 [submodule "boards/x86_64/pc/bsp"]
 	ignore = all
 	path = boards/x86_64/pc/bsp
-	url = https://github.com/tinyclub/qemu-x86_64-pc.git
+	url = https://gitee.com/tinylab/qemu-x86_64-pc.git

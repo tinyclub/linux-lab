@@ -2357,7 +2357,7 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 boot-test:
 	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
-_boot-test:
+_boot-test: $(BOARD_BSP)
 ifeq ($(BOOT_TEST), default)
 	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
@@ -2395,7 +2395,7 @@ BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
 BOOT_DEPS += $(BOOT_DTB)
 
-ifeq ($(findstring _boot,$(MAKECMDGOALS)),_boot)
+ifeq ($(filter _boot,$(MAKECMDGOALS)),_boot)
   ifeq ($(INVALID_ROOTFS),1)
     $(error rootfs: $(ROOTFS) is invalid or not exists)
   endif

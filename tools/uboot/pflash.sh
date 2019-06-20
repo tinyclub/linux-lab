@@ -20,9 +20,9 @@ if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
 
   dd if=/dev/zero of=$PFLASH_IMG status=none bs=${PFLASH_BS}K count=$((PFLASH_SIZE * 1024 / PFLASH_BS))
 
-  [ -n "$KERNEL_IMAGE" ] && dd if=$KERNEL_IMAGE of=$PFLASH_IMG status=none conv=notrunc bs=${PFLASH_BS}K
-  [ -n "$ROOT_IMAGE" ] && dd if=$ROOT_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$((KRN_SIZE * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
-  [ -n "$DTB_IMAGE" ] && dd if=$DTB_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$(((KRN_SIZE+RDK_SIZE) * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
+  [ -n "$KERNEL_IMAGE" -a -f "$KERNEL_IMAGE" ] && dd if=$KERNEL_IMAGE of=$PFLASH_IMG status=none conv=notrunc bs=${PFLASH_BS}K
+  [ -n "$ROOT_IMAGE" -a -f "$ROOT_IMAGE" ] && dd if=$ROOT_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$((KRN_SIZE * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
+  [ -n "$DTB_IMAGE" -a -f "$DTB_IMAGE" ] && dd if=$DTB_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$(((KRN_SIZE+RDK_SIZE) * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
 
   sync
 fi

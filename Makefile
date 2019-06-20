@@ -2393,12 +2393,12 @@ BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
 BOOT_DEPS += $(BOOT_DTB)
 
-ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
+ifeq ($(findstring _boot,$(MAKECMDGOALS)),_boot)
   ifeq ($(INVALID_ROOTFS),1)
-    $(error rootfs is invalid)
+    $(error rootfs: $(ROOTFS) is invalid or not exists)
   endif
   ifeq ($(INVALID_ROOTDEV),1)
-    $(error rootdev is invalid)
+    $(error rootdev: $(ROOTDEV) is invalid or not exists)
   endif
 endif
 

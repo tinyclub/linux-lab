@@ -168,22 +168,48 @@ else
 endif
 BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
 
-# If external toolchain not exists, just ignore them
+CC_TYPE ?= null
+# Check if there is a local toolchain
+ifneq ($(CCPRE),)
+  ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    CC_TYPE := internal
+  endif
+endif
+
+# Check if buildroot version exists
+ifeq ($(CCPATH),)
+  ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    CC_TYPE := buildroot
+  endif
+endif
+
+# Check if external toolchain downloaded
 ifneq ($(CCPRE),)
   ifneq ($(CCPATH),)
-    ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-       override CCPATH :=
+    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CC_TYPE := external
+    else
+      # If no buildroot version, no internal version, just download one
+      ifeq ($(CC_TYPE),null)
+        CC_TYPE := external
+        ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+          CC_TOOLCHAIN := toolchain-source
+        else
+          $(error No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+        endif
+      endif
     endif
   endif
 endif
 
-# If no external toolchain, use buildroot version if exists
-ifeq ($(CCPATH),)
-  ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    override CCPATH := $(BUILDROOT_CCPATH)
-    override CCPRE  := $(BUILDROOT_CCPRE)
-  endif
+# If buildroot exists, switch CCPRE and CCPATH to buildroot
+ifeq ($(CC_TYPE),buildroot)
+  override CCPATH := $(BUILDROOT_CCPATH)
+  override CCPRE  := $(BUILDROOT_CCPRE)
 endif
+
+# If no external toolchain download, no buildroot version, and no internal one, just download the external one
+
 
 ifneq ($(CCPATH),)
   C_PATH ?= env PATH=$(CCPATH):$(PATH)
@@ -780,17 +806,19 @@ PHONY += qemu qemu-build emulator emulator-build q e e-b q-b
 
 # Toolchains targets
 
+toolchain-source: toolchain
+download-toolchain: toolchain
+d-t: toolchain
+
 toolchain:
-ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),VERSION=$(CCVER))
-endif
 
 toolchain-clean:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
 endif
 
-PHONY += toolchain toolchain-clean
+PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t
 
 # Rootfs targets
 
@@ -1528,7 +1556,7 @@ endif
 
 # Ignore DTB and RD dependency if KT is not kernel image
 ifeq ($(KT),$(IMAGE))
-  KERNEL_DEPS := $(KERNEL_DTB) $(ROOT_RD)
+  KERNEL_DEPS := $(CC_TOOLCHAIN) $(KERNEL_DTB) $(ROOT_RD)
 endif
 
 ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)

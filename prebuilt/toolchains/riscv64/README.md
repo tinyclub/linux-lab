@@ -1,7 +1,7 @@
 
 # Riscv toolchain for riscv64/32
 
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.2.0-2019.02.0-x86_64-linux-ubuntu14.tar.gz
+https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases
 
 ## Download & Decompress
 

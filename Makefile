@@ -2419,7 +2419,7 @@ raw-test:
 	make test FI=0
 
 test: $(BOARD_BSP) $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n $(FEATURE) ]; then make feature-init; fi
+	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init; fi
 	make boot-init
 	make boot-test
 	make boot-finish

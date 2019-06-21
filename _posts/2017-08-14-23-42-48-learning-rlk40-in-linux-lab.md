@@ -65,13 +65,13 @@ tags:
 
 在 Figo 撰写本书的过程中，笔者刚好正在开发一个开放源代码的 Linux 内核学习和实验环境：[Linux Lab](http://tinylab.org/linux-lab)，这个环境通过 Docker 容器化技术大大地简化了实验环境的构建过程，并结合笔者早年的社区工作经验设计了一个 Qemu 虚拟化实验框架，可以大大简化内核编译、文件系统制作、内核调试和内核测试等工作。Figo 很果断地在书中给读者们做了推荐。
 
-为了更加地便利各位读者，笔者通过两天的努力，为本书的实验环境制作了一套独立的 Linux Lab 插件：<https://github.com/tinyclub/rlk4.0>，这个插件可以直接放置到 Linux Lab 的 `boards/` 目录下使用。
+为了更加地便利各位读者，笔者通过两天的努力，为本书的实验环境制作了一套独立的 Linux Lab 插件：<https://gitee.com/tinylab/rlk4.0>，这个插件可以直接放置到 Linux Lab 的 `boards/` 目录下使用。
 
 除了撰写使用文档外，笔者又另外挤了点时间录制了该实验环境的使用视频，完整的使用文档和实验演示视频如下：
 
 * 使用文档
     * [Linux Lab 使用文档](http://tinylab.org/linux-lab)
-    * [RLK4.0 插件 for Linux Lab 使用文档](https://github.com/tinyclub/rlk4.0)
+    * [RLK4.0 插件 for Linux Lab 使用文档](https://gitee.com/tinylab/rlk4.0)
 * 《奔跑吧Linux内核》实验演示视频
     * [桌面视频（用showdesk.io录制）](http://showdesk.io/2017-08-20-15-15-09-using-rlk4.0-in-linux-lab-00-15-58/)
     * [命令行视频（用showterm.io录制）](http://showterm.io/e786d08e0ea0964f3efb1)

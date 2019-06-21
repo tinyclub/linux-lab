@@ -32,7 +32,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 日前，基于 [C-SKY Linux](https://github.com/c-sky) 的开源成果，与 Guo Ren 同学通过 [Cloud Lab](http://tinylab.cloud:6080/) 在线协作，经过大约一周多的努力，终于以插件的方式在 Linux Lab 中添加了对 C-SKY ck810 处理器 Linux 开发环境的支持：
 
-- [Linux Lab C-SKY Plugin](https://github.com/tinyclub/csky)
+- [Linux Lab C-SKY Plugin](https://gitee.com/tinylab/csky)
 
 ## 用法
 
@@ -56,10 +56,10 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 ### 本地使用
 
-如果想在本地使用，也很方便，参考 [Linux Lab](http://tinylab.org/linux-lab) 先下载和安装好 [Cloud Lab](http://tinylab.org/cloud-lab) 和 Linux Lab，然后参考 [csky 插件](https://github.com/tinyclub/csky) 的文档完成下述过程。
+如果想在本地使用，也很方便，参考 [Linux Lab](http://tinylab.org/linux-lab) 先下载和安装好 [Cloud Lab](http://tinylab.org/cloud-lab) 和 Linux Lab，然后参考 [csky 插件](https://gitee.com/tinylab/csky) 的文档完成下述过程。
 
     $ cd boards/
-    $ git clone https://github.com/tinyclub/csky.git
+    $ git clone https://gitee.com/tinylab/csky.git
     $ cd ../
     $ make list
     $ make BOARD=csky/virt
@@ -87,7 +87,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 由于该插件新增的 `csky/virt` 虚拟开发板完美支持 Linux Lab 的绝大部分功能（目前暂时不支持Uboot），所以用法跟其他已有的虚拟开发板类似。
 
-更多具体的用法请直接参考 [Linux Lab](http://tinylab.org/linux-lab) 以及 Linux Lab 源码中的 [README.md](https://github.com/tinyclub/linux-lab/blob/master/README.md)。
+更多具体的用法请直接参考 [Linux Lab](http://tinylab.org/linux-lab) 以及 Linux Lab 源码中的 [README.md](https://gitee.com/tinylab/linux-lab/blob/master/README.md)。
 
 ## 后记
 
@@ -95,7 +95,7 @@ Linux Lab 一开始就加入了 4 大处理器架构和 6 款虚拟开发板，�
 
 前不久，恰好有一天，[C-SKY Linux](https://c-sky.github.io) 的维护人员 Guo Ren 同学联系到我，希望能够在 Linux Lab 中加入 C-SKY 支持，两个人一拍即合。
 
-上上周，笔者通过 Cloud Lab 搭建了一套用于协作的在线 Linux Lab，与 Guo Ren 同学通过大约一周多的协力，终于为 Linux Lab 添加了 [C-SKY](https://github.com/tinyclub/csky) 插件。
+上上周，笔者通过 Cloud Lab 搭建了一套用于协作的在线 Linux Lab，与 Guo Ren 同学通过大约一周多的协力，终于为 Linux Lab 添加了 [C-SKY](https://gitee.com/tinylab/csky) 插件。
 
 在这一周多的时间内，通过深入研究 [C-SKY Buildroot](https://github.com/c-sky/buildroot)，发现该项目架构清晰、文档健全、更新活跃，深切感受到中天微在 Linux 开源方面的工作成果非常突出，令人为之赞叹。
 

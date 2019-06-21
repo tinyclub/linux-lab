@@ -49,6 +49,7 @@ tags:
 
   * 代码仓库
       * [https://github.com/tinyclub/linux-lab.git][3]
+      * [https://gitee.com/tinylab/linux-lab.git][10]
 
   * 基本特性：
       * 跨平台，支持 Linux, Windows 和 Mac OSX。
@@ -225,8 +226,9 @@ tags:
 
 <iframe src="http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
- [2]: https://github.com/tinyclub/linux-lab/blob/master/README.md
+ [2]: https://gitee.com/tinylab/linux-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/linux-lab
+[10]: https://gitee.com/tinylab/linux-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: http://tinylab.org/docker-qemu-linux-lab/

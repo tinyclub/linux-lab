@@ -104,7 +104,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose linux-lab
 
 
@@ -207,7 +207,7 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 [1]: http://oss.lzu.edu.cn
 [2]: http://tinylab.org/linux-0.11-lab
 [3]: http://elinux.org/Work_on_Tiny_Linux_Kernel
-[4]: https://github.com/tinyclub/linux-lab.git
+[4]: https://gitee.com/tinylab/linux-lab.git
 [5]: http://tinylab.org/linux-lab
 [6]: https://buildroot.org/
 [7]: http://wiki.qemu.org/Main_Page
@@ -215,5 +215,5 @@ Linux 0.11 很适合操作系统基本原理的学习，但是要搞嵌入式开
 [9]: http://www.kernel.org
 [10]: http://www.oldlinux.org
 [11]: http://tinylab.org/tinylinux/
-[12]: https://github.com/tinyclub/linux-lab/blob/master/README.md
+[12]: https://gitee.com/tinylab/linux-lab/blob/master/README.md
 [30]: http://user-mode-linux.sourceforge.net/

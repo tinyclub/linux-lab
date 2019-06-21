@@ -64,7 +64,7 @@ tags:
     $ cd /mnt/sda1
 
     // 下载 cloud-lab，主要是一系列管理实验环境的脚本
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/
 
     // 查看现在已经支持的实验环境
@@ -108,7 +108,7 @@ tags:
 [4]: http://showterm.io/ffb67385a07fd3fcec182
 [5]: http://showterm.io/6fb264246580281d372c6
 [6]: http://showterm.io/1809186b57f904d51aeff
-[7]: http://github.com/tinyclub/cloud-lab.git
+[7]: http://gitee.com/tinylab/cloud-lab.git
 [8]: /talents
 [9]: http://weidian.com/?userid=335178200
 [10]: /books

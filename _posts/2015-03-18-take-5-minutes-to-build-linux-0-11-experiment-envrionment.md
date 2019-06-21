@@ -95,7 +95,7 @@ categories:
 
 ### 下载
 
-    git clone https://github.com/tinyclub/linux-0.11-lab.git
+    git clone https://gitee.com/tinylab/linux-0.11-lab.git
 
 
 ### 编译
@@ -164,5 +164,5 @@ categories:
  [4]: #section-4
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: http://sourceforge.net/projects/schilytools/files/calltree/
- [7]: https://github.com/tinyclub/linux-0.11-lab/blob/master/README.md
+ [7]: https://gitee.com/tinylab/linux-0.11-lab/blob/master/README.md
  [8]: /wp-content/uploads/2015/03/linux-0.11.jpg

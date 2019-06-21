@@ -70,7 +70,7 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose markdown-lab
 
 ### 安装
@@ -123,8 +123,8 @@ Docker 安装/启动：
 
 
 [1]: http://tinylab.org/markdown-lab
-[2]: https://github.com/tinyclub/markdown-lab/blob/master/README.md
-[3]: https://github.com/tinyclub/markdown-lab
+[2]: https://gitee.com/tinylab/markdown-lab/blob/master/README.md
+[3]: https://gitee.com/tinylab/markdown-lab
 [4]: http://tinylab.org/use-markdown-to-write-document/
 [5]: http://tinylab.org/write-resume-with-markdown/
 [6]: http://tinylab.org/use-markdown-to-write-slides/

@@ -28,7 +28,9 @@ tags:
   * 使用文档：[README.md][2]
   * 在线实验：<http://tinylab.cloud:6080/labs>
   * 在线演示：<http://showterm.io/1809186b57f904d51aeff>
-  * 代码仓库：[https://github.com/tinyclub/markdown-lab.git][3]
+  * 代码仓库：
+      * [https://github.com/tinyclub/markdown-lab.git][3]
+      * [https://gitee.com/tinylab/markdown-lab.git][10]
   * 基本特性：
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
@@ -83,10 +85,6 @@ tags:
 Docker 安装：
 
     $ tools/docker/pull    # Pull from docker hub
-    or
-    $ tools/docker/build   # Build from source
-
-    
     $ tools/docker/run
 
 通过 Docker 安装后，上述命令或者 `tools/docker/vnc` 会打开一个 VNC 页面，从控制台日志中获取密码并登陆后，会看到桌面的 "Markdown Lab" 图标，点击后即可进入操作终端。
@@ -143,8 +141,9 @@ Docker 安装：
 
 ![Markdown Lab Demo](/wp-content/uploads/2016/08/30/markdown-lab-demo.jpg)
 
- [2]: https://github.com/tinyclub/markdown-lab/blob/master/README.md
+ [2]: https://gitee.com/tinylab/markdown-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/markdown-lab
+[10]: https://gitee.com/tinylab/markdown-lab
  [4]: http://tinylab.org/use-markdown-to-write-document/
  [5]: http://tinylab.org/write-resume-with-markdown/
  [6]: http://tinylab.org/use-markdown-to-write-slides/

@@ -55,7 +55,7 @@ categories:
 
 ## 拉下 Linux 0.11 实验环境
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose linux-0.11-lab
 
 ## 通过 Docker 构建一个独立的实验环境

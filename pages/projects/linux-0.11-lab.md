@@ -32,6 +32,7 @@ tags:
       * [视频演示](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
 
   * 代码仓库
+      * [https://gitee.com/tinylab/linux-0.11-lab.git][7]
       * [https://github.com/tinyclub/linux-0.11-lab.git][3]
 
   * 基本特性：
@@ -66,7 +67,11 @@ tags:
 
 ### 下载
 
-    git clone https://github.com/tinyclub/linux-0.11-lab.git
+    git clone https://gitee.com/tinylab/linux-0.11-lab.git
+
+    Or
+
+    git clone https://gitee.com/tinylab/linux-0.11-lab.git
     
 
 ### 编译
@@ -123,8 +128,9 @@ See:
 <iframe src="http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
  [1]: http://www.oldlinux.org/download/clk011c-3.0.pdf
- [2]: https://github.com/tinyclub/linux-0.11-lab/blob/master/README.md
+ [2]: https://gitee.com/tinylab/linux-0.11-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/linux-0.11-lab
+ [7]: https://gitee.com/tinylab/linux-0.11-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: /wp-content/uploads/2015/03/linux-0.11.jpg

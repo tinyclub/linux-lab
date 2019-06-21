@@ -35,13 +35,16 @@ tags:
 
 ## 实验代码
 
+  * 用法：[README.md](https://gitee.com/tinylab/cs630-qemu-lab/blob/master/README.md)
+
   * 仓库地址
 
-    [https://github.com/tinyclub/cs630-qemu-lab.git][3]
+      * [https://github.com/tinyclub/cs630-qemu-lab.git][3]
+      * [https://gitee.com/tinylab/cs630-qemu-lab.git][5]
 
   * 下载源码
 
-        $ git clone https://github.com/tinyclub/cs630-qemu-lab.git
+        $ git clone https://gitee.com/tinylab/cs630-qemu-lab.git
 
   * 安装 qemu 和编译环境（本地使用才需要，通过 Docker 使用不需要）
 
@@ -90,7 +93,7 @@ tags:
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose cs630-qemu-lab
 
 ### 安装
@@ -149,3 +152,4 @@ tags:
  [2]: http://wiki.qemu.org/Main_Page
  [3]: https://github.com/tinyclub/cs630-qemu-lab
  [4]: /wp-content/uploads/2014/03/cs630-qemu-pmrtc.png
+ [5]: https://gitee.com/tinylab/cs630-qemu-lab

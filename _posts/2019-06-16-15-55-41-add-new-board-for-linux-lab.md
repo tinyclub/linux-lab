@@ -37,7 +37,7 @@ Linux Lab 由三大组件构成：
 
 - [Linux Lab](/linux-lab)：Linux 内核实验相关的配置工具、脚本、patch 等，也是 Linux Lab 的核心模块。
 
-- [Prebuilt](https://github.com/tinyclub/prebuilt)：预编译好的内核、文件系统以及实验环境中未支持的新版 Qemu、更新的工具链等。
+- 板级 BSP：含内核、文件系统、Uboot 等配置文件，预编译好的内核、文件系统以及实验环境中未支持的新版 Qemu、更新的工具链，代码补丁等。
 
 ## 目录结构
 
@@ -82,66 +82,62 @@ Linux Lab 由三大组件构成：
 
     $ tree boards/arm/ -L 2
     boards/arm/
-    ├── versatilepb                        -- Versatilepb 板子
-    │   ├── buildroot_arm926t_defconfig    -- buildroot 配置文件
-    │   ├── uboot_v2015.07_defconfig       -- uboot 配置文件
-    │   ├── linux_v2.6.36_defconfig        -- linux 配置文件
-    │   ├── linux_v4.6.7_defconfig
-    │   ├── linux_v5.0.13_defconfig
-    │   ├── linux_v5.1_defconfig
-    │   └── Makefile                       -- 板子配置信息
-    └── vexpress-a9                        -- Vexpress-a9 板子
-        ├── buildroot_cortex-a9_defconfig
-        ├── linux_v3.18.39_defconfig
-        ├── linux_v4.6.7_defconfig
-        ├── linux_v5.0.10_defconfig
-        ├── linux_v5.1_defconfig
-        ├── Makefile
-        └── uboot_v2015.07_defconfig
+    ├── versatilepb
+    │   ├── bsp					-- 板级目录，以子仓库存在
+    │   │   ├── README.md			-- 说明文档
+    │   │   ├── boot.sh				-- 启动脚本
+    │   │   ├── kernel				-- 内核预编译镜像，含kernel, dtb 等
+    │   │   ├── qemu				-- qemu system 和 qemu user static
+    │   │   ├── root				-- 用 buildroot 预编译好的 mini rootfs
+    │   │   ├── uboot				-- uboot 镜像
+    │   │   ├── buildroot_2016.05_defconfig	-- 以下为验证过的配置文件，含buildroot, linux 和 uboot
+    │   │   ├── linux_v2.6.36_defconfig
+    │   │   ├── linux_v4.6.7_defconfig
+    │   │   ├── linux_v5.0.13_defconfig
+    │   │   ├── linux_v5.1_defconfig
+    │   │   ├── uboot_v2015.07_defconfig
+    │   │   └── uboot_v2019.05_defconfig
+    │   └── Makefile
+    └── vexpress-a9
+        ├── bsp
+        │   ├── README.md
+        │   ├── boot.sh
+        │   ├── kernel
+        │   ├── qemu
+        │   ├── root
+        │   ├── uboot
+        │   ├── buildroot_2016.05_defconfig
+        │   ├── linux_v3.18.39_defconfig
+        │   ├── linux_v4.6.7_defconfig
+        │   ├── linux_v5.0.10_defconfig
+        │   ├── linux_v5.1_defconfig
+        │   └── uboot_v2015.07_defconfig
+        └── Makefile
 
 ## Prebuilt 目录
 
     $ tree prebuilt/ -L 2
     prebuilt/
     ├── README.md
-    ├── bios            -- 部分板子需要加载特定的 bios
-    │   └── ppc
-    ├── fullroot        -- fullroot 所在目录，目前主要指发布到 docker 的 ubuntu 镜像
-    │   ├── build       -- 构建 docker 镜像所需的 Dockerfile 等
+    ├── fullroot		-- 用于存放/构建发布为 docker image 的全功能文件系统
+    │   ├── build		-- 存放构建用的 Dockerfile
+    │   └── README.md
+    ├── kernel			-- 已经废弃，相关目录已经转到板级 bsp 子仓库
+    │   └── README.md
+    ├── qemu			-- 目前仅用于存放临时编译多个架构的 qemu，编译脚本见 tools/qemu/build.sh
     │   ├── README.md
-    │   └── tmp         -- 所有 docker 镜像抽取出来的文件系统临时存放路径
-    ├── kernel          -- 所有板子预先编译好的内核、dtb 等内核相关镜像
-    │   ├── aarch64
-    │   ├── arm
-    │   ├── i386
-    │   ├── mipsel
-    │   ├── ppc
-    │   ├── riscv32
-    │   ├── riscv64
-    │   └── x86_64
-    ├── qemu            -- 预编译好的 Qemu 虚拟机，包括 qemu-system-XARCH 和 qemu-XARCH-static
-    │   ├── aarch64
-    │   ├── arm
-    │   ├── README.md
-    │   ├── riscv32
-    │   └── riscv64
-    ├── root            -- 用 buildroot 制作的 mini rootfs: xxx.cpio.tar.gz
-    │   ├── aarch64
-    │   ├── arm
-    │   ├── i386
-    │   ├── mipsel
-    │   ├── ppc
-    │   ├── riscv32
-    │   ├── riscv64
-    │   └── x86_64
-    ├── toolchains      -- 第三方平台预先编译好的交叉编译器
+    │   └── v4.0.0		-- 本地编译某个版本后的目录效果
+    ├── root			-- 已经废弃，相关目录已经转到板级 bsp 子仓库
+    │   └── README.md
+    ├── toolchains		-- 存放交叉编译工具的下载和解压脚本以及解压后的临时目录
     │   ├── aarch64
     │   ├── arm
     │   ├── i386
     │   ├── riscv64
     │   └── x86_64
-    └── uboot           -- 预编译好的 Uboot 镜像文件
-        └── arm
+    └── uboot			-- 已经废弃，相关目录已经转到板级 bsp 子仓库
+        └── README.md
+
 
 ## 选择处理器架构
 
@@ -157,7 +153,8 @@ Linux Lab 由三大组件构成：
 
 综合两个信息，可以选择一款能够快速支持的板子，那就是 riscv64/virt。
 
-    $ mkdir boards/riscv64/virt
+    $ mkdir -p boards/riscv64/virt
+    $ mkdir -p boards/riscv64/virt/bsp
 
 可立即复用的参考资料有：
 
@@ -201,11 +198,11 @@ Linux Lab 由三大组件构成：
     $ make qemu
     $ make qemu-save
 
-请务必记得做完 `make qemu-save` 再 `make qemu-clean`，确保编译完的已经安装到 `prebuilt` 目录下。
+请务必记得做完 `make qemu-save` 再 `make qemu-clean`，确保编译完的已经安装到 `boards/riscv64/virt/bsp` 目录下。
 
 编译完 Qemu 以后可以查看其支持的板子信息。
 
-    $ ./prebuilt/qemu/riscv64/v4.0.0/bin/qemu-system-riscv64 -M ?
+    $ ./boards/riscv64/virt/bsp/qemu/v4.0.0/bin/qemu-system-riscv64 -M ?
     Supported machines are:
     none                 empty machine
     sifive_e             RISC-V Board compatible with SiFive E SDK
@@ -216,7 +213,7 @@ Linux Lab 由三大组件构成：
 
 可以看到 `riscv64/virt` 支持 Privileged ISA v1.10，查看该板子下支持的 CPU 类型：
 
-    $ ./prebuilt/qemu/riscv64/v4.0.0/bin/qemu-system-riscv64 -M virt -cpu ?
+    $ ./boards/riscv64/virt/bsp/qemu/v4.0.0/bin/qemu-system-riscv64 -M virt -cpu ?
     any
     rv64gcsu-v1.10.0
     rv64gcsu-v1.9.1
@@ -243,10 +240,10 @@ Linux Lab 由三大组件构成：
     $ make root-defconfig RCFG=qemu_riscv64_virt_defconfig
     $ make root
 
-编译完以后，会在 `output/riscv64/buildroot-2019.05-any/images` 目录下生成相应的镜像文件：
+编译完以后，会在 `output/riscv64/buildroot-2019.05-virt/images` 目录下生成相应的镜像文件：
 
-    $ tree output/riscv64/buildroot-2019.05-any/images/
-    output/riscv64/buildroot-2019.05-any/images/
+    $ tree output/riscv64/buildroot-2019.05-virt/images/
+    output/riscv64/buildroot-2019.05-virt/images/
     ├── fw_jump.elf	-- riscv 特有的 proxy kernel，用于切换处理器模式并加载真正的内核
     ├── Image           -- 内核镜像文件
     ├── rootfs.ext2     -- 根文件系统镜像, ext2 格式
@@ -254,12 +251,12 @@ Linux Lab 由三大组件构成：
 
 之后，可以立马参考 [board/qemu/riscv64-virt/readme.txt](https://github.com/buildroot/buildroot/tree/master/board/qemu/riscv64-virt/readme.txt) 中的 qemu 脚本做启动验证。
 
-    $ ./prebuilt/qemu/riscv64/v4.0.0/bin/qemu-system-riscv64 -M virt -kernel output/riscv64/buildroot-2019.05-any/images/fw_jump.elf -device loader,file=output/riscv64/buildroot-2019.05-any/images/Image,addr=0x80200000 -drive file=output/riscv64/buildroot-2019.05-any/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0  -nographic -append "root=/dev/vda ro"
+    $ ./boards/riscv64/virt/bsp/qemu/v4.0.0/bin/qemu-system-riscv64 -M virt -kernel output/riscv64/buildroot-2019.05-virt/images/fw_jump.elf -device loader,file=output/riscv64/buildroot-2019.05-virt/images/Image,addr=0x80200000 -drive file=output/riscv64/buildroot-2019.05-virt/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0  -nographic -append "root=/dev/vda ro"
 
 引导正常，立即保存编译好的文件系统、proxy kernel 以及配置文件，保存之前先在板子 Makefile 中对 proxy kernel 做个配置（目前只要 riscv 需要）：
 
     PORIIMG ?= fw_jump.elf
-    PKIMAGE ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/$(PORIIMG)
+    PKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
 
 接着保存即可：
 
@@ -267,7 +264,7 @@ Linux Lab 由三大组件构成：
     $ make root-saveconfig
 
 
-会自动生成一份 `boards/riscv64/virt/buildroot_any_defconfig`，在这个基础上增加几个基础配置：
+会自动生成一份 `boards/riscv64/virt/bsp/buildroot_2019.05_defconfig`，在这个基础上增加几个基础配置：
 
     # System
     BR2_WGET="wget -c --passive-ftp -nd -t 3"
@@ -281,7 +278,7 @@ Linux Lab 由三大组件构成：
 
 另外，Kernel 相关的编译配置只要保留头文件，无需编译内核，内核可以独立配置。
 
-Buildroot 生成的交叉编译工具链放在 `output/riscv64/buildroot-2019.05-any/host/bin/`。Linux Lab 会默认引用该工具链。
+Buildroot 生成的交叉编译工具链放在 `output/riscv64/buildroot-2019.05-virt/host/bin/`。Linux Lab 会默认引用该工具链。
 
 说明：这里的 RCFG 和后面的 KCFG，都只需要在首次配置时使用，不指定的时候就会用板子目录下默认的配置。
 
@@ -292,7 +289,7 @@ Buildroot 生成的交叉编译工具链放在 `output/riscv64/buildroot-2019.05
     LINUX    ?= v5.1
     KRN_ADDR ?= 0x80200000
     ORIIMG   ?= arch/$(ARCH)/boot/Image
-    KIMAGE   ?= $(PREBUILT_KERNEL)/$(XARCH)/$(MACH)/$(LINUX)/Image
+    KIMAGE   ?= $(BSP_KERNEL)/$(LINUX)/Image
 
 接着开始下载、配置和编译：
 
@@ -304,7 +301,7 @@ Buildroot 生成的交叉编译工具链放在 `output/riscv64/buildroot-2019.05
 
 编译完以后，立马验证：
 
-    $ ./prebuilt/qemu/riscv64/v4.0.0/bin/qemu-system-riscv64 -M virt -kernel output/riscv64/buildroot-2019.05-any/images/fw_jump.elf -device loader,file=output/riscv64/linux-v5.1-virt/arch/riscv/boot/Image,addr=0x80200000 -drive file=output/riscv64/buildroot-2019.05-any/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0  -nographic -append "root=/dev/vda ro"
+    $ ./boards/riscv64/virt/bsp/qemu/v4.0.0/bin/qemu-system-riscv64 -M virt -kernel output/riscv64/buildroot-2019.05-virt/images/fw_jump.elf -device loader,file=output/riscv64/linux-v5.1-virt/arch/riscv/boot/Image,addr=0x80200000 -drive file=output/riscv64/buildroot-2019.05-virt/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0  -nographic -append "root=/dev/vda ro"
 
 接着就是根据 Linux Lab 的需要进行更细粒度的内核配置，后续这部分可以完全通过 `make feature` 完成，目前只完成了一部分，比如 9pnet、debug 等。
 
@@ -382,9 +379,13 @@ TODO
 
 ## 提交代码入库
 
-之后，把板级目录 `boards/riscv64/virt` 和核心 Makefile 的相关变更提交进 [Linux Lab 仓库](https://github.com/tinyclub/linux-lab)。
+之后，把板级目录 `boards/riscv64/virt/` 中的 Makefile 的相关变更提交进 [Linux Lab 仓库](https://gitee.com/tinylab/linux-lab)。
 
-而 prebuilt 相关的代码请提交进 [Prebuilt repo](https://github.com/tinyclub/prebuilt)。
+而 prebuilt 相关的配置文件、镜像都请提交进板子所属的 bsp 目录下，以独立仓库提交，例如：[riscv64/virt bsp](https://gitee.com/tinylab/qemu-riscv64-virt.git)，并作为子仓库加入 [Linux Lab](https://gitee.com/tinylab/linux-lab)。
+
+    $ git submodule add https://gitee.com/tinylab/qemu-riscv64-virt.git boards/riscv64/virt/bsp
+
+然后把相应仓库和修改发送 Pull Request 提交到相应上游仓库和组织。
 
 至此，一款新的板子开发完成。
 

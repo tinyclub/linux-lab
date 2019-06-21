@@ -46,7 +46,7 @@ categories:
 很令人鼓舞，后面我把那些脚本上传到了 [兰大开源社区][5] 的论坛，今天，为了让更多的学生能够分享到这门课程，我把当时的脚本和相应的文档做了简单地整理，并在 [https://github.com/][6] 上创建了源码仓库：
 
   * 项目首页：[CS630-Qemu: Learn CS630 on Qemu][7]
-  * 源码仓库：[https://github.com/tinyclub/cs630-qemu-lab.git][6]
+  * 源码仓库：[https://gitee.com/tinylab/cs630-qemu-lab.git][6]
 
 ## 准备工作
 
@@ -54,7 +54,7 @@ categories:
 
 先 clone 项目源码：
 
-<pre>$ git clone https://github.com/tinyclub/cs630-qemu-lab.git
+<pre>$ git clone https://gitee.com/tinylab/cs630-qemu-lab.git
 </pre>
 
 接着，安装 Qemu:
@@ -111,6 +111,6 @@ $ make update
  [3]: http://www.cs.usfca.edu/~cruse/cs630f06/
  [4]: http://www.cs.usfca.edu/~cruse/
  [5]: http://oss.lzu.edu.cn
- [6]: https://github.com/tinyclub/cs630-qemu-lab/
+ [6]: https://gitee.com/tinylab/cs630-qemu-lab/
  [7]: /cs630-qemu-lab/
  [8]: /wp-content/uploads/2014/03/cs630-qemu-pmrtc.png

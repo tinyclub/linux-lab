@@ -70,7 +70,7 @@ tags:
 
 接下来，首先把 Linux Lab 下载下来：
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose linux-lab
 
 由于 Linux Lab 把所有的环境 docker 容器化了，只需要一条命令即可构建，以 Ubuntu 为例：
@@ -117,9 +117,9 @@ tags:
 
 源码从如下镜像站获取：
 
-* u-boot: https://github.com/u-boot/u-boot.git
-* linux-stable: https://github.com/tinyclub/linux-stable.git
-* buildroot: https://github.com/buildroot/buildroot.git
+* u-boot: https://gitee.com/tinylab/u-boot.git
+* linux-stable: https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
+* buildroot: https://gitee.com/tinylab/buildroot.git
 
 说明：
 

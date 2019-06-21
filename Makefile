@@ -794,7 +794,7 @@ PHONY += toolchain toolchain-clean
 # Rootfs targets
 
 RCO ?= 0
-BUILDROOT ?= master
+#BUILDROOT ?= master
 ifeq ($(RCO),1)
   ROOT_CHECKOUT := root-checkout
 endif
@@ -1290,7 +1290,7 @@ kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fdx && cd $(TOP_DIR)
 
 KCO ?= 0
-LINUX ?= master
+#LINUX ?= master
 ifeq ($(KCO),1)
   KERNEL_CHECKOUT := kernel-checkout
 endif
@@ -1718,7 +1718,7 @@ uboot-checkout:
 PHONY += uboot-checkout
 
 BCO ?= 0
-UBOOT ?= master
+#UBOOT ?= master
 ifeq ($(BCO),1)
   UBOOT_CHECKOUT := uboot-checkout
 endif

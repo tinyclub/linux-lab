@@ -90,13 +90,7 @@ Linux Lab 由三大组件构成：
     │   │   ├── qemu				-- qemu system 和 qemu user static
     │   │   ├── root				-- 用 buildroot 预编译好的 mini rootfs
     │   │   ├── uboot				-- uboot 镜像
-    │   │   ├── buildroot_2016.05_defconfig	-- 以下为验证过的配置文件，含buildroot, linux 和 uboot
-    │   │   ├── linux_v2.6.36_defconfig
-    │   │   ├── linux_v4.6.7_defconfig
-    │   │   ├── linux_v5.0.13_defconfig
-    │   │   ├── linux_v5.1_defconfig
-    │   │   ├── uboot_v2015.07_defconfig
-    │   │   └── uboot_v2019.05_defconfig
+    │   │   └── configs				-- 以下为验证过的配置文件，含buildroot, linux 和 uboot
     │   └── Makefile
     └── vexpress-a9
         ├── bsp
@@ -106,12 +100,7 @@ Linux Lab 由三大组件构成：
         │   ├── qemu
         │   ├── root
         │   ├── uboot
-        │   ├── buildroot_2016.05_defconfig
-        │   ├── linux_v3.18.39_defconfig
-        │   ├── linux_v4.6.7_defconfig
-        │   ├── linux_v5.0.10_defconfig
-        │   ├── linux_v5.1_defconfig
-        │   └── uboot_v2015.07_defconfig
+        │   └── configs
         └── Makefile
 
 ## Prebuilt 目录
@@ -264,7 +253,7 @@ Linux Lab 由三大组件构成：
     $ make root-saveconfig
 
 
-会自动生成一份 `boards/riscv64/virt/bsp/buildroot_2019.05_defconfig`，在这个基础上增加几个基础配置：
+会自动生成一份 `boards/riscv64/virt/bsp/configs/buildroot_2019.05_defconfig`，在这个基础上增加几个基础配置：
 
     # System
     BR2_WGET="wget -c --passive-ftp -nd -t 3"

@@ -487,7 +487,7 @@ ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
   endif
 endif
 
-board: board-save plugin-save $(BOARD_BSP)
+board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
 		| egrep -v "/module" \
@@ -2398,10 +2398,10 @@ TEST_RD ?= /dev/nfs
 
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
-boot-test:
+boot-test: $(BOARD_BSP)
 	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
-_boot-test: $(BOARD_BSP)
+_boot-test:
 ifeq ($(BOOT_TEST), default)
 	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
@@ -2418,7 +2418,7 @@ r-t: raw-test
 raw-test:
 	make test FI=0
 
-test: $(TEST_PREPARE) FORCE
+test: $(BOARD_BSP) $(TEST_PREPARE) FORCE
 	if [ $(FI) -eq 1 -a -n $(FEATURE) ]; then make feature-init; fi
 	make boot-init
 	make boot-test

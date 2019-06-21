@@ -3,6 +3,7 @@ layout: post
 author: "Yang Bodong"
 title: "西邮 Linux 兴趣小组"
 group: "team"
+album: 校企 Linux 团队直通车
 permalink: /xiyoulinuxgroup/
 description: '西邮linux兴趣小组直属于西安邮电大学计算机学院，由王亚刚老师,王聪,刘洋等同学于2006年9月策划并组建,现已成为陕西省具有深远影响力的开源技术社区。小组本着"学习Linux系统，崇尚自由软件，宣传开源文化"的精神，为推广开源文化做出了自己的贡献。'
 category:

@@ -5,6 +5,7 @@ toc: false
 title: 人才
 author: Wu Zhangjin
 tagline: 大中华区 Linux 人才名录
+ablum: 校企 Linux 团队直通车
 permalink: /talents/
 keywords: Linux, Team, 团队, Talents, 人才, 简历, Resume
 description: 来自高校或者企业的 Linux 团队。

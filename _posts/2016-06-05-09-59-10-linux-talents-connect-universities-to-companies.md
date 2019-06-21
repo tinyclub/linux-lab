@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "Linux Talents: 连接高校和企业 Linux 团队"
 group: team
+ablum: 校企 Linux 团队直通车
 permalink: /linux-talents-connect-universities-to-companies/
 description: "Linux Talents 致力于促进高校和企业 Linux 团队的直接联系，交流和合作。"
 category:

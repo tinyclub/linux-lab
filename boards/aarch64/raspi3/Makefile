@@ -35,6 +35,9 @@ BUILDROOT?= 2019.02.2
 #NETDEV  ?= smc91c111
 NET     ?=
 
+# No network exists in raspi3 currently, use mmc as the testing rootfs disk
+TEST_RD ?= /dev/mmcblk0
+
 # ROOTDEV = /dev/ram0
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext2

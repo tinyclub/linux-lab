@@ -14,7 +14,7 @@ order: 9
 
 为了更好地对接企业和高校 Linux 人才，该页面将持续收录大中华区各大高校 Linux&开源 社区、社团、用户爱好者等团队。
 
-欢迎各团队负责人[投递](/post)团队信息，也可以直接扫码联系我们加入微信群——“校企 Linux 团队直通车”：
+欢迎各团队负责人 [提交](https://github.com/tinyclub/tinylab.org/issues/333) 团队信息，也可以直接扫码联系我们加入微信群——“校企 Linux 团队直通车”：
 
 ![tinylab wechat](/images/wechat/tinylab.jpg)
 

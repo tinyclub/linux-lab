@@ -55,6 +55,6 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
-CCPRE   ?= $(XARCH)-unknown-elf-
-CCVER   ?= 8.2.0-2019.02.0
-CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/
+CCPRE  ?= riscv-none-embed-
+CCVER  ?= 8.2.0-2.2-20190521-0004
+CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)/bin/

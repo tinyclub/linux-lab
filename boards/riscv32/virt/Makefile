@@ -56,8 +56,8 @@ QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
 # Use the prebuilt riscv64 toolchain with multilib support for riscv32, so, no need to prepare two toolchains
-CCPRE   ?= riscv64-unknown-elf-
-CCVER   ?= 8.2.0-2019.02.0
-CCPATH  ?= $(PREBUILT_TOOLCHAINS)/riscv64/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/
+CCPRE  ?= riscv-none-embed-
+CCVER  ?= 8.2.0-2.2-20190521-0004
+CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)/bin/
 # Force use riscv64 toolchain for us
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/riscv64

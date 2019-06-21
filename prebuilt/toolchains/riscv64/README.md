@@ -10,9 +10,9 @@ https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.2.0-2019.02.0-
 ## Configure and use it
 
     $ vim boards/virt/Makefile
-    CCPRE  ?= riscv64-unknown-elf-
-    CCVER  ?= 8.2.0-2019.02.0
-    CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/riscv64-unknown-elf-gcc-$(CCVER)-x86_64-linux-ubuntu14/bin/
+    CCPRE  ?= riscv-none-embed-
+    CCVER  ?= 8.2.0-2.2-20190521-0004
+    CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)/bin/
 
 ## Use it
 

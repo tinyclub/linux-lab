@@ -1,9 +1,15 @@
 # ref: https://sifive.com/boards
+#      https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases/download/v8.2.0-2.2-20190521/gnu-mcu-eclipse-riscv-none-gcc-8.2.0-2.2-20190521-0004-centos64.tgz
 
-VERSION ?= 8.2.0-2019.02.0
+VERSION ?= 8.2.0-2.2-20190521-0004
 
-TC_BASE = riscv64-unknown-elf-gcc-$(VERSION)-x86_64-linux-ubuntu14
-TC_URL  = https://static.dev.sifive.com/dev-tools/$(TC_BASE).tar.gz
+empty =
+space = $(empty) $(empty)
+tmp = $(subst -,$(space),$(VERSION))
+_VERSION = v$(subst -$(lastword $(tmp)),,$(VERSION))
+
+TC_BASE = gnu-mcu-eclipse-riscv-none-gcc-$(VERSION)-centos64
+TC_URL  = https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases/download/$(_VERSION)/$(TC_BASE).tgz
 TC_TAR  = $(notdir $(TC_URL))
 
 all:

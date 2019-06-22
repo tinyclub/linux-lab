@@ -24,16 +24,11 @@ categories:
       
       # 教育网
       http://mirrors.ustc.edu.cn/
-      http://ubuntu.uestc.edu.cn/
       http://ftp.sjtu.edu.cn/
 
 * 香港
 
       http://ftp.cuhk.edu.hk/pub/Linux/ubuntu/
-
-* 台湾
-
-      http://ftp.isu.edu.tw/pub/Linux/Ubuntu/ubuntu/
 
 * [Ubuntu 官方源列表][3]
 

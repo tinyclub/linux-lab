@@ -1431,6 +1431,9 @@ PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
 FPL ?= 1
+ifeq ($(FEATURE),debug)
+  FPL := 0
+endif
 ifeq ($(FEATURE),module)
   FPL := 0
 endif

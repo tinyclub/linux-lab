@@ -235,6 +235,14 @@ ifneq ($(BIOS),)
   BIOS_ARG := -bios $(BIOS)
 endif
 
+# KVM speedup for x86 architecture, assume our host is x86 currently
+KVM_DEV ?= /dev/kvm
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
+    KVM_ARG := -enable-kvm
+  endif
+endif
+
 # Another qemu-system-$(ARCH)
 QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 
@@ -258,7 +266,7 @@ ifneq ($(QEMU),)
   endif
 endif
 
-EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
+EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG) $(KVM_ARG)
 
 # Linux configurations
 LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)

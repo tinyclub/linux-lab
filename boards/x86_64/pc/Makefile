@@ -3,7 +3,7 @@ ARCH     = x86
 XARCH    = x86_64
 # qemu-system-x86_64 -M pc -cpu ?
 CPU     ?= qemu64
-MEM     ?= 1024M
+MEM     ?= 128M
 QEMU    ?= v0.10.6
 SMP     ?= 4
 LINUX   ?= v5.1

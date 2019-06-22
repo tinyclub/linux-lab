@@ -3,7 +3,7 @@ ARCH     = x86
 XARCH    = i386
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
-MEM     ?= 1024M
+MEM     ?= 128M
 QEMU    ?= v0.10.6
 SMP     ?= 4
 LINUX   ?= v5.1

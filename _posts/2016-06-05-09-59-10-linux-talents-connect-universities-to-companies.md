@@ -15,6 +15,7 @@ tags:
   - 企业
   - Linux
   - 人才
+  - LUG
 ---
 
 > By Falcon of TinyLab.org

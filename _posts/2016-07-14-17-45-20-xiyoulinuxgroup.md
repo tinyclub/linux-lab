@@ -11,6 +11,7 @@ category:
 tags:
   - 西安邮电大学
   - 西邮Linux兴趣小组
+  - LUG
 ---
 
 ## 团队简介

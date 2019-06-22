@@ -235,14 +235,6 @@ ifneq ($(BIOS),)
   BIOS_ARG := -bios $(BIOS)
 endif
 
-# KVM speedup for x86 architecture, assume our host is x86 currently
-KVM_DEV ?= /dev/kvm
-ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-  ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
-    KVM_ARG := -enable-kvm
-  endif
-endif
-
 # Another qemu-system-$(ARCH)
 QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 
@@ -266,7 +258,7 @@ ifneq ($(QEMU),)
   endif
 endif
 
-EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG) $(KVM_ARG)
+EMULATOR := $(QEMU_PATH) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
 LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)
@@ -2292,8 +2284,28 @@ D ?= 0
 ifeq ($(D),1)
   DEBUG := 1
 endif
+
+# Must disable the kaslr feature while debugging, otherwise, breakpoint will not stop and just continue
+# ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
+#      https://www.spinics.net/lists/newbies/msg59708.html
 ifeq ($(DEBUG),1)
-  BOOT_CMD += -s -S
+  BOOT_CMD += -s
+  # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
+  ifneq ($(XARCH),x86_64)
+    BOOT_CMD += -S
+  endif
+  CMDLINE  += nokaslr
+endif
+
+# Debug not work with -enable-kvm
+# KVM speedup for x86 architecture, assume our host is x86 currently
+ifneq ($(DEBUG),1)
+  KVM_DEV ?= /dev/kvm
+  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+    ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
+      BOOT_CMD += -enable-kvm
+    endif
+  endif
 endif
 
 # Silence qemu warnings

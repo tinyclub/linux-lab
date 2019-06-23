@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "为什么 Shell 脚本不工作，语法之外的那些事儿"
-draft: true
+draft: false
 album: 'Debugging+Tracing'
 license: "cc-by-sa-4.0"
 permalink: /why-shell-scripts-fails/

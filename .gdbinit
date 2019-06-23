@@ -1,30 +1,31 @@
-python import time; print ("\nWaiting for 1 secs..."); time.sleep(1)
-python print ("\nExecuting gdb commands in local .gdbinit ...")
+shell echo -e "\nWaiting for 1 secs..."
+shell sleep 1
+shell echo -e "\nExecuting gdb commands in local .gdbinit ..."
 
-python print ("\n(gdb) target remote :1234")
+shell echo -e  "\ngdb target remote :1234"
 target remote :1234
 
-python import time; time.sleep(1)
-python print ("\n(gdb) break start_kernel")
+shell sleep 1
+shell echo -e  "\ngdb break start_kernel"
 break start_kernel
 
-python import time; time.sleep(1)
-python print ("\n(gdb) break time_init")
+shell sleep 1
+shell echo -e  "\ngdb break time_init"
 break time_init
 
-python import time; time.sleep(1)
-python print ("\n(gdb) break do_fork")
+shell sleep 1
+shell echo -e  "\ngdb break do_fork"
 break do_fork
 break _do_fork
 
-python import time; time.sleep(1)
-python print ("\n(gdb) c")
+shell sleep 1
+shell echo -e  "\ngdb c"
 c
 
-python import time; time.sleep(1)
-python print ("\n(gdb) c")
+shell sleep 1
+shell echo -e  "\ngdb c"
 c
 
-python import time; time.sleep(1)
-python print ("\n(gdb) bt")
+shell sleep 1
+shell echo -e  "\ngdb bt"
 bt

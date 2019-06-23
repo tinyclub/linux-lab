@@ -2460,6 +2460,7 @@ PHONY += _boot-test boot-test test r-t raw-test
 XTERM        ?= $(shell tools/xterm.sh lxterminal)
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
 GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb --quiet $(VMLINUX)
+GDB_INIT     ?= $(TOP_DIR)/.gdbinit
 # Testing should use non-interactive mode, otherwise, enable interactive.
 ifneq ($(TEST),)
   XTERM_CMD    ?= /bin/bash -c "$(GDB_CMD)"
@@ -2473,16 +2474,29 @@ else
   DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
 endif
 
-
-_debug:
+# FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
+#        just ignore the do_fork breakpoint to workaround it.
+_debug: _debug_init
 	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
 	$(Q)$(DEBUG_CMD) &
 
-ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-  DEBUG_CLIENT := _debug
+_debug_init:
+	$(Q)sed -i -e "/do_fork/s/^/#/g" $(GDB_INIT)
+
+_debug_finish:
+	$(Q)sed -i -e "/do_fork/s/^#//g" $(GDB_INIT)
+
+ifeq ($(DEBUG),1)
+  ifneq ($(TEST_TIMEOUT),0)
+    DEBUG_INIT := _debug_init
+    DEBUG_FINISH := _debug_finish
+  endif
+  ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
+    DEBUG_CLIENT := _debug_init _debug
+  endif
 endif
 
-PHONY += _debug
+PHONY += _debug _debug_init _debug_finish
 
 _BOOT_DEPS ?=
 _BOOT_DEPS += root-$(DEV_TYPE)
@@ -2491,6 +2505,7 @@ _BOOT_DEPS += $(DEBUG_CLIENT)
 
 _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
+	$(Q)$(if $(DEBUG_FINISH),make $(DEBUG_FINISH),)
 
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)

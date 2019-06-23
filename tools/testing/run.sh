@@ -16,7 +16,9 @@
 #      1. these boards hang after send 'poweroff' or 'reboot' command: aarch64/raspi3, arm/verstailpb, mipsel/malta
 #
 
-[ -n "$1" ] && BOARDS=$1
+TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
+
+[ -n "$1" ] && BOARD=$1
 [ -n "$2" ] && CASE=$2
 [ -n "$3" ] && VERBOSE=$3
 [ -n "$4" ] && FEATURE=$4
@@ -24,26 +26,33 @@
 [ -n "$6" ] && CFGS=$6
 [ -n "$7" ] && ARGS=$7
 [ -n "$8" ] && PREBUILT=$8
+[ -n "$9" ] && DEBUG=$9
 
-[ -z "$BOARDS" ] && BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
 [ -z "$TIMEOUT" ] && TIMEOUT=50
 [ -z "$CASE" ] && CASE="release"
 [ -z "$FEATURE" ] && FEATURE=""
 [ -z "$VERBOSE" ] && VERBOSE=0
 [ -z "$MODULE" ] && MODULE=""
 [ -z "$PREBUILT" ] && PREBUILT=0
+[ -z "$DEBUG" ] && DEBUG=0
 
-if [ -n "$FEATURE" ]; then
-  [ -n "$MODULE" ] && FEATURE="boot,module,$FEATURE"
-else
-  [ -n "$MODULE" ] && FEATURE="boot,module"
+if [ -z "$BOARD" -a -f "$TOP_DIR/.board_config" ]; then
+	BOARD=$(cat $TOP_DIR/.board_config)
 fi
 
-[ "$CASE" == "release" ] && PREBUILT=1
+[ -z "$BOARD" ] && BOARD=all
 
-# Run for release, please issue: PREBUILT=1 ./run.sh boot
-if [ $PREBUILT -eq 1 ]; then
-  _PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+if [ "$BOARD" = "all" ]; then
+	unset BOARD
+	BOARDS=`make list-board | grep -v ARCH | tr -d ':' | tr -d '[' | tr -d ']' | tr '\n' ' ' | tr -s ' '`
+else
+	BOARDS="$BOARD"
+fi
+
+if [ -n "$FEATURE" ]; then
+	[ -n "$MODULE" ] && FEATURE="boot,module,$FEATURE"
+else
+	[ -n "$MODULE" ] && FEATURE="boot,module"
 fi
 
 _CASE="test"
@@ -54,28 +63,28 @@ case $CASE in
 		;;
 	kernel-release)
 		PREPARE="kernel-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	root)
 		PREPARE="root-full"
 		;;
 	root-release)
 		PREPARE="root-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	qemu)
 		PREPARE="qemu-full"
 		;;
 	qemu-release)
 		PREPARE="qemu-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	uboot)
 		PREPARE="uboot-full"
 		;;
 	uboot-release)
 		PREPARE="uboot-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	module)
 		;;
@@ -84,32 +93,48 @@ case $CASE in
 		;;
 	base-release)
 		PREPARE="uboot-all,kernel-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	core)
 		PREPARE="uboot-full,kernel-full,root-full"
 		;;
 	core-release)
 		PREPARE="uboot-all,kernel-all,root-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
 		;;
 	full)
 		PREPARE="uboot-full,kernel-full,root-full,qemu-full"
 		;;
 	full-release)
 		PREPARE="uboot-all,kernel-all,root-all,qemu-all"
-		_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+		PREBUILT=1
+		;;
+	debug)
+		_CASE="boot-test"
+		DEBUG=1
 		;;
 	boot)
 		_CASE="boot-test"
 		;;
 	release)
 		_CASE="boot-test"
+		PREBUILT=1
 		;;
 	*)
 		_CASE="boot-test"
 		;;
 esac
+
+if [ $DEBUG -eq 1 ]; then
+	_DEBUG=D=1
+	#TEST_RD=/dev/ram0
+fi
+
+# Run for release, please issue: PREBUILT=1 ./run.sh boot
+if [ $PREBUILT -eq 1 ]; then
+	_PREBUILT="PBK=1 PBR=1 PBU=1 PBD=1 PBQ=1"
+fi
+
 
 # external case in this script
 echo -e "\nRunning [$CASE $_CASE]\n"
@@ -130,13 +155,14 @@ echo -e "\n      features: $FEATURE"
 echo -e "\n       modules: $MODULE"
 echo -e "\n          args: $ARGS"
 echo -e "\n          cfgs: $CFGS"
+echo -e "\n         debug: $DEBUG"
 echo
 
 sleep 2
 
 for b in $BOARDS
 do
-	TEST_RD=/dev/nfs
+	[ -z "$TEST_RD" ] && TEST_RD=/dev/nfs
 
 	echo -e "\nBOARD: [ $b ]"
 	echo -e "\n... [ $b ] $CASE START...\n"
@@ -147,7 +173,7 @@ do
 		TEST_RD=/dev/ram0
 	fi
 
-	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $_PREBUILT m=$MODULE $CFGS $ARGS
+	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $_PREBUILT $_DEBUG m=$MODULE $CFGS $ARGS
 
 	if [ $? -eq 0 ]; then
 		echo -e "\n... [ $b ] $CASE PASS...\n"

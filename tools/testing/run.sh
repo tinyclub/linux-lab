@@ -18,6 +18,9 @@
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
+# Kill old gdb and qemu if exists
+CLEAN=$TOP_DIR/tools/testing/kill.sh
+
 [ -n "$1" ] && BOARD=$1
 [ -n "$2" ] && CASE=$2
 [ -n "$3" ] && VERBOSE=$3
@@ -173,8 +176,10 @@ do
 		TEST_RD=/dev/ram0
 	fi
 
-	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $_PREBUILT $_DEBUG m=$MODULE $CFGS $ARGS
+	$CLEAN
+	sleep 2
 
+	make $CASE b=$b TIMEOUT=$TIMEOUT TEST_RD=$TEST_RD V=$VERBOSE PREPARE=$PREPARE FEATURE=$FEATURE $_PREBUILT $_DEBUG m=$MODULE $CFGS $ARGS
 	if [ $? -eq 0 ]; then
 		echo -e "\n... [ $b ] $CASE PASS...\n"
 		PASS_BOARDS="${PASS_BOARDS} $b"

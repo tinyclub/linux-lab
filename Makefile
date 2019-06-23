@@ -2461,6 +2461,7 @@ XTERM        ?= $(shell tools/xterm.sh lxterminal)
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
 GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb $(VMLINUX)
 GDB_INIT     ?= $(TOP_DIR)/.gdbinit
+HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
 GDB_USER     ?= ubuntu
 # Testing should use non-interactive mode, otherwise, enable interactive.
@@ -2479,11 +2480,11 @@ endif
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
-	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
+	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
 	$(Q)$(DEBUG_CMD) &
 
 _debug_init_1:
-	$(Q)sed -i -e "/do_fork/s/^#*//g" $(GDB_INIT)
+	$(Q)sudo -u $(GDB_USER) sed -i -e "/do_fork/s/^#*//g" $(GDB_INIT)
 
 _debug_init_2:
 	$(Q)sed -i -e "/do_fork/s/^#*/#/g" $(GDB_INIT)

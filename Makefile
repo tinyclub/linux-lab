@@ -2506,13 +2506,13 @@ _BOOT_DEPS ?=
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
+_BOOT_DEPS += $(BOOT_DTB)
 
 _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
-BOOT_DEPS += $(BOOT_DTB)
 
 ifeq ($(filter _boot,$(MAKECMDGOALS)),_boot)
   ifeq ($(INVALID_ROOTFS),1)

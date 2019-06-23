@@ -2289,12 +2289,16 @@ endif
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
 #      https://www.spinics.net/lists/newbies/msg59708.html
 ifeq ($(DEBUG),1)
-  BOOT_CMD += -s
-  # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
-  ifneq ($(XARCH),x86_64)
-    BOOT_CMD += -S
+  ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
+    BOOT_CMD += -s
+    # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
+    ifneq ($(XARCH),x86_64)
+      BOOT_CMD += -S
+    endif
+    CMDLINE  += nokaslr
+  else
+    $(error "ERROR: No $(VMLINUX) found, please compile with 'make kernel'")
   endif
-  CMDLINE  += nokaslr
 endif
 
 # Debug not work with -enable-kvm
@@ -2451,9 +2455,39 @@ PHONY += _boot-test boot-test test r-t raw-test
 
 # Boot dependencies
 
+# Debug support
+# Xterm: lxterminal, terminator
+XTERM        ?= $(shell tools/xterm.sh lxterminal)
+VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
+GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb --quiet $(VMLINUX)
+# Testing should use non-interactive mode, otherwise, enable interactive.
+ifneq ($(TEST),)
+  XTERM_CMD    ?= /bin/bash -c "$(GDB_CMD)"
+else
+  XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+endif
+XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
+ifeq ($(XTERM_STATUS), 0)
+  DEBUG_CMD  := $(XTERM_CMD)
+else
+  DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
+endif
+
+
+_debug:
+	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
+	$(Q)$(DEBUG_CMD) &
+
+ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
+  DEBUG_CLIENT := _debug
+endif
+
+PHONY += _debug
+
 _BOOT_DEPS ?=
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
+_BOOT_DEPS += $(DEBUG_CLIENT)
 
 _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
@@ -2479,27 +2513,8 @@ b: boot
 
 PHONY += boot-test test _boot boot t b
 
-# Debug
-# Xterm: lxterminal, terminator
-XTERM        ?= $(shell tools/xterm.sh lxterminal)
-VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
-GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb --quiet $(VMLINUX)
-XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
-XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
-ifeq ($(XTERM_STATUS), 0)
-  DEBUG_CMD  := $(XTERM_CMD)
-else
-  DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
-endif
-
 debug:
-ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
-	$(Q)$(DEBUG_CMD) &
-	$(Q)make boot DEBUG=1
-else
-	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
-endif
+	$(Q)make boot D=1
 
 PHONY += debug
 

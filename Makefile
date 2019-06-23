@@ -2391,7 +2391,7 @@ TEST_TIMEOUT ?= $(TIMEOUT)
 TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
-  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(ARCH)-$(MACH)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
+  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
   TEST_ENV        ?= $(TEST_LOGGING)/boot.env
   TEST_LOG        ?= $(TEST_LOGGING)/boot.log
 
@@ -2411,7 +2411,7 @@ else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
-  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
   TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); sudo kill -9 \$$\$$(cat $(TEST_LOG_PID)); \

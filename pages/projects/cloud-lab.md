@@ -28,8 +28,8 @@ tags:
   * 在线实验：[泰晓实验云台][10]
   * 注册帐号：[泰晓开源小店][11]
   * 代码仓库：
-      * [https://github.com/tinyclub/cloud-lab.git][3]
       * [https://gitee.com/tinylab/cloud-lab.git][8]
+      * [https://github.com/tinyclub/cloud-lab.git][3]
   * 基本特性：
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 通过 Docker CE 和 Docker Toolbox 支持所有 Linux，Windows，Mac OSX 平台
@@ -359,8 +359,6 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
         tinylab/linux-lab ...
         tinylab/cs630-qemu-lab ...
         tinylab/cloud-ubuntu-dev ...
-
-    如果添加 Docker 镜像很通用，也可以直接往 [Cloud Ubuntu](https://github.com/tinyclub/cloud-ubuntu.git) 提交源码。
 
 * `docker/`
 

@@ -29,8 +29,8 @@ tags:
   * 在线实验：<http://tinylab.cloud:6080/labs>
   * 在线演示：<http://showterm.io/1809186b57f904d51aeff>
   * 代码仓库：
-      * [https://github.com/tinyclub/markdown-lab.git][3]
       * [https://gitee.com/tinylab/markdown-lab.git][10]
+      * [https://github.com/tinyclub/markdown-lab.git][3]
   * 基本特性：
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
@@ -77,7 +77,7 @@ tags:
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose markdown-lab
 
 ### 安装

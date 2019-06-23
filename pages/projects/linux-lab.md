@@ -48,8 +48,8 @@ tags:
           * [一条命令配置、编译和测试内核模块](http://showterm.io/26b78172aa926a316668d)
 
   * 代码仓库
-      * [https://github.com/tinyclub/linux-lab.git][3]
       * [https://gitee.com/tinylab/linux-lab.git][10]
+      * [https://github.com/tinyclub/linux-lab.git][3]
 
   * 基本特性：
       * 跨平台，支持 Linux, Windows 和 Mac OSX。
@@ -68,8 +68,8 @@ tags:
       * 正在添加 树莓派raspi3 和 risc-v 支持。
 
   * 插件
-      * [RLK4.0](https://github.com/tinyclub/rlk4.0)：《奔跑吧Linux内核 4.0》一书课程实验
-      * [CSKY](https://github.com/tinyclub/csky)：中天微国产处理器 [C-SKY Linux](https://c-sky.github.io) 开发插件
+      * [RLK4.0](https://gitee.com/tinylab/rlk4.0)：《奔跑吧Linux内核 4.0》一书课程实验
+      * [CSKY](https://gitee.com/tinylab/csky)：中天微国产处理器 [C-SKY Linux](https://c-sky.github.io) 开发插件
 
 ## 相关文章
 
@@ -127,7 +127,7 @@ tags:
 
 ### 下载
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab && tools/docker/choose linux-lab
 
 ### 安装

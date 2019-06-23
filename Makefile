@@ -2459,11 +2459,13 @@ PHONY += _boot-test boot-test test r-t raw-test
 # Xterm: lxterminal, terminator
 XTERM        ?= $(shell tools/xterm.sh lxterminal)
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
-GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb --quiet $(VMLINUX)
+GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb $(VMLINUX)
 GDB_INIT     ?= $(TOP_DIR)/.gdbinit
+# Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
+GDB_USER     ?= ubuntu
 # Testing should use non-interactive mode, otherwise, enable interactive.
 ifneq ($(TEST),)
-  XTERM_CMD    ?= /bin/bash -c "$(GDB_CMD)"
+  XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
 else
   XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
 endif

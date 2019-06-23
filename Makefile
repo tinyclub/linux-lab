@@ -2476,23 +2476,24 @@ endif
 
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
-_debug: _debug_init
+_debug:
 	$(Q)echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
 	$(Q)$(DEBUG_CMD) &
 
-_debug_init:
-	$(Q)sed -i -e "/do_fork/s/^/#/g" $(GDB_INIT)
+_debug_init_1:
+	$(Q)sed -i -e "/do_fork/s/^#*//g" $(GDB_INIT)
 
-_debug_finish:
-	$(Q)sed -i -e "/do_fork/s/^#//g" $(GDB_INIT)
+_debug_init_2:
+	$(Q)sed -i -e "/do_fork/s/^#*/#/g" $(GDB_INIT)
 
 ifeq ($(DEBUG),1)
   ifneq ($(TEST_TIMEOUT),0)
-    DEBUG_INIT := _debug_init
-    DEBUG_FINISH := _debug_finish
+    DEBUG_INIT := _debug_init_2
+  else
+    DEBUG_INIT := _debug_init_1
   endif
   ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-    DEBUG_CLIENT := _debug_init _debug
+    DEBUG_CLIENT := $(DEBUG_INIT) _debug
   endif
 endif
 
@@ -2505,7 +2506,6 @@ _BOOT_DEPS += $(DEBUG_CLIENT)
 
 _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
-	$(Q)$(if $(DEBUG_FINISH),make $(DEBUG_FINISH),)
 
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)

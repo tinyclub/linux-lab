@@ -20,7 +20,7 @@
     {% endif %}
 
     {% unless page.url contains "/about" %}
-      {% include widgets/contat %}
+      {% include widgets/contact %}
     {% endunless %}
     <div {% if page.group != "home" %} id="main_content_container" {% endif %}>
     {{ content }}

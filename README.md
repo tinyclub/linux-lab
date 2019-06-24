@@ -1119,7 +1119,9 @@ Linux Lab is designed to use pre-installed environment with the docker technolog
 
 ### Why not kvm speed up disabled
 
-kvm only supports both of qemu-system-i386 and qemu-system-x86_64 currently, and it also requires the cpu and bios support.
+kvm only supports both of qemu-system-i386 and qemu-system-x86_64 currently, and it also requires the cpu and bios support, otherwise, you may get this error log:
+
+    modprobe: ERROR: could not insert 'kvm_intel': Operation not supported
 
 Check cpu virtualization support, if nothing output, then, cpu not support virtualization:
 

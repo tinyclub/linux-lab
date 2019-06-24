@@ -1063,31 +1063,45 @@ Linux Lab has added many assembly examples in `examples/assembly`:
     Hello, ARM64!
 
 
-## Notes
+## FAQs
 
-### Note1
+### VNC login with password failure
 
-Different qemu version uses different kernel VERSION, so, to find the suitable
-kernel version, we can checkout different git tags.
+This happens rarely, but simply fix it up by removing the containers (especially the clound-ubuntu-web container) and re-run your lab, it is safe
+to the data in lab directories.
 
-### Note2
+    $ tools/docker/rm-all
+    $ tools/docker/run linux-lab
 
-If nfs or tftpboot not work, please run `modprobe nfsd` in host side and
-restart the net services via `/configs/tools/restart-net-servers.sh` and please
+### Boot with missing sdl2 libraries failure
+
+That's because the docker image is not updated, just rerun the lab (please must not use 'tools/docker/restart' here for it not using the new docker image):
+
+    $ tools/docker/pull linux-lab
+    $ tools/docker/rerun linux-lab
+
+    Or
+
+    $ tools/docker/update linux-lab
+
+With 'tools/docker/update', every docker images and source code will be updated, it is preferred.
+
+### NFS/tftpboot not work
+
+If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` and please
 make sure not use `tools/docker/trun`.
 
-### Note3
+### Run tools without sudo
 
-To use the tools under `tools` without sudo, please make sure add your account
-to the docker group and reboot your system to take effect:
+To use the tools under `tools` without sudo, please make sure add your account to the docker group and reboot your system to take effect:
 
     $ sudo usermod -aG docker $USER
 
-### Note4
+### Speed up docker images downloading
 
 To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/default/docker` via referring to `tools/docker/install`.
 
-### Note5
+### Docker network conflicts with LAN
 
 We assume the docker network is `10.66.0.0/16`, if not, we'd better change it.
 
@@ -1096,3 +1110,19 @@ We assume the docker network is `10.66.0.0/16`, if not, we'd better change it.
 
     $ cat /lib/systemd/system/docker.service | grep bip
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16
+
+### Why not allow running Linux Lab in local host
+
+The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab](http://tinylab.org/cloud-lab), so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
+
+Linux Lab is designed to use pre-installed environment with the docker technology and save our life by avoiding the packages installation issues in different systems, so, Linux Lab would never support local host using even in the future.
+
+### Why not kvm speed up disabled
+
+kvm only supports both of qemu-system-i386 and qemu-system-x86_64 currently, and it also requires the cpu and bios support.
+
+Check cpu virtualization support, if nothing output, then, cpu not support virtualization:
+
+    $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
+
+If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.

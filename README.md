@@ -152,6 +152,20 @@ Re-login the lab via web browser:
 
     $ tools/docker/vnc linux-lab
 
+## Update and rerun the lab
+
+If want a newer version, we **must** back up any local changes at first, and then update everything:
+
+    $ tools/docker/update linux-lab
+
+If fails, please try to clean up the containers:
+
+    $ tools/docker/rm-full
+
+Or even clean up the whole environments:
+
+   $ tools/docker/clean-all
+
 ## Quickstart: Boot a board
 
 Issue the following command to boot the prebuilt kernel and rootfs on the
@@ -1070,7 +1084,7 @@ Linux Lab has added many assembly examples in `examples/assembly`:
 This happens rarely, but simply fix it up by removing the containers (especially the clound-ubuntu-web container) and re-run your lab, it is safe
 to the data in lab directories.
 
-    $ tools/docker/rm-all
+    $ tools/docker/rm-full
     $ tools/docker/run linux-lab
 
 ### Boot with missing sdl2 libraries failure

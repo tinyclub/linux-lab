@@ -1142,3 +1142,9 @@ Check cpu virtualization support, if nothing output, then, cpu not support virtu
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
 If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
+
+<hr>
+
+** Contact us and Sponsor via wechat **
+
+![contact-sponsor](doc/contact-sponsor.png)

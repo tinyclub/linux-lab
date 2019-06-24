@@ -6,6 +6,12 @@ TOP_DIR := $(CURDIR)
 
 USER ?= $(shell whoami)
 
+# Check running host
+LAB_ENV_ID=/home/ubuntu/Desktop/lab.desktop
+ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
+  $(error ERR: Please not try Linux Lab in local host, but use it with Cloud Lab, please refer to 'Run and login the lab' part of README.md)
+endif
+
 # Current variables: board, plugin, module
 BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)
 PLUGIN_CONFIG := $(shell cat .plugin_config 2>/dev/null)

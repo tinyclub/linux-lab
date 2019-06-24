@@ -7,6 +7,71 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
+## Contents
+
+- [Why](#why)
+- [Homepage](#homepage)
+- [Demonstration](#demonstration)
+- [Install docker](#install-docker)
+- [Choose a working directory](#choose-a-working-directory)
+- [Download the lab](#download-the-lab)
+- [Run and login the lab](#run-and-login-the-lab)
+- [Update and rerun the lab](#update-and-rerun-the-lab)
+- [Quickstart: Boot a board](#quickstart-boot-a-board)
+- [Usage](#usage)
+   - [Using boards](#using-boards)
+      - [List available boards](#list-available-boards)
+      - [Choosing a board](#choosing-a-board)
+      - [Using as plugins](#using-as-plugins)
+   - [Downloading](#downloading)
+   - [Checking out](#checking-out)
+   - [Patching](#patching)
+   - [Configuration](#configuration)
+      - [Default Configuration](#default-configuration)
+      - [Manual Configuration](#manual-configuration)
+      - [Old default configuration](#old-default-configuration)
+   - [Building](#building)
+   - [Saving](#saving)
+   - [Booting](#booting)
+   - [Using](#using)
+      - [Linux](#linux)
+        - [non-interactive configuration](#non-interactive-configuration)
+        - [using kernel features](#using-kernel-features)
+      - [Uboot](#uboot)
+      - [Qemu](#qemu)
+      - [Toolchain](#toolchain)
+      - [Rootfs](#rootfs)
+   - [Debugging](#debugging)
+   - [Testing](#testing)
+   - [Sharing](#sharing)
+      - [Install files to rootfs](#install-files-to-rootfs)
+      - [Share with NFS](#share-with-nfs)
+      - [Transfer via tftp](#transfer-via-tftp)
+      - [Share with 9p virtio](#share-with-9p-virtio)
+- [More](#more)
+   - [Add a new board](#add-a-new-board)
+      - [Chooose a board supported by qemu](#chooose-a-board-supported-by-qemu)
+      - [Create the board directory](#create-the-board-directory)
+      - [Clone a Makefile from an existing board](#clone-a-makefile-from-an-existing-board)
+      - [Configure the variables from scratch](#configure-the-variables-from-scratch)
+      - [At the same time, prepare the configs](#at-the-same-time,-prepare-the-configs)
+      - [Choose the versions of kernel, rootfs and uboot](#choose-the-versions-of-kernel,-rootfs-and-uboot)
+      - [Configure, build and boot them](#configure,-build-and-boot-them)
+      - [Save the images and configs](#save-the-images-and-configs)
+      - [Upload everything](#upload-everything)
+   - [Learning Assembly](#learning-assembly)
+   - [Running any make goals](#running-any-make-goals)
+- [FAQs](#faqs)
+   - [VNC login with password failure](#vnc-login-with-password-failure)
+   - [Boot with missing sdl2 libraries failure](#boot-with-missing-sdl2-libraries-failure)
+   - [NFS/tftpboot not work](#nfstftpboot-not-work)
+   - [Run tools without sudo](#run-tools-without-sudo)
+   - [Speed up docker images downloading](#speed-up-docker-images-downloading)
+   - [Docker network conflicts with LAN](#docker-network-conflicts-with-lan)
+   - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
+   - [Why not kvm speed up disabled](#why-not-kvm-speed-up-disabled)
+- [Contact and Sponsor](#contact-and-sponsor)
+
 ## Why
 
 About 9 years ago, a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by embedded
@@ -22,45 +87,16 @@ They have slept in my harddisk for several years without any attention, untill o
 
 Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
 
-* Boards
-
-  Qemu based, 6+ main Architectures, 10+ popular boards, one `make list` command for all boards, qemu options are hidden.
-
-* Components
-
-  Uboot, Linux / Modules, Buildroot, Qemu are configurable, patchable, compilable, buildable, Linux v5.1 supported.
-
-* Prebuilt
-
-  all of above components have been prebuilt and put in board specific bsp submodule for instant using, qemu v2.12.0 prebuilt for arm/arm64.
-
-* Rootfs
-
-  Builtin rootfs support include initrd, harddisk, mmc and nfs, configurable via ROOTDEV/ROOTFS, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
-
-* Docker
-
-  Environment (cross toolchains) available in one command in serveral minutes, 5 main architectures have builtin support, external ones configurable via `make toolchain`.
-
-* Browser
-
-  usable via modern web browsers, once installed in a internet server, available everywhere via web vnc or web ssh.
-
-* Network
-
-  Builtin bridge networking support, every board support network.
-
-* Boot
-
-  Support serial port, curses (ssh friendly) and graphic booting.
-
-* Testing
-
-  Support automatic testing via `make test` target.
-
-* Debugging
-
-  debuggable via `make debug` target.
+**Boards**: Qemu based, 6+ main Architectures, 10+ popular boards, one `make list` command for all boards, qemu options are hidden.
+**Components**: Uboot, Linux / Modules, Buildroot, Qemu are configurable, patchable, compilable, buildable, Linux v5.1 supported.
+**Prebuilt**: all of above components have been prebuilt and put in board specific bsp submodule for instant using, qemu v2.12.0 prebuilt for arm/arm64.
+**Rootfs**: Builtin rootfs support include initrd, harddisk, mmc and nfs, configurable via ROOTDEV/ROOTFS, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
+**Docker**: Environment (cross toolchains) available in one command in serveral minutes, 5 main architectures have builtin support, external ones configurable via `make toolchain`.
+**Browser**: usable via modern web browsers, once installed in a internet server, available everywhere via web vnc or web ssh.
+**Network**: Builtin bridge networking support, every board support network.
+**Boot**: Support serial port, curses (ssh friendly) and graphic booting.
+**Testing**: Support automatic testing via `make test` target.
+**Debugging**: debuggable via `make debug` target.
 
 Continue reading for more features and usage.
 
@@ -81,6 +117,7 @@ Basic:
 * [One command of testing a specified kernel feature](http://showterm.io/7edd2e51e291eeca59018)
 * [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
 * [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
+* [Batch testing the debug function of all boards](http://showterm.io/0255c6a8b7d16dc116cbe)
 
 More:
 
@@ -168,14 +205,15 @@ Or even clean up the whole environments:
 
 ## Quickstart: Boot a board
 
-Issue the following command to boot the prebuilt kernel and rootfs on the
-default `versatilepb` board:
+Issue the following command to boot the prebuilt kernel and rootfs on the default `vexpress-a9` board:
 
     $ make boot
 
 ## Usage
 
-### Available boards
+### Using boards
+
+#### List available boards
 
 List builtin boards:
 
@@ -231,20 +269,35 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-Choose one board:
+#### Choosing a board
 
-    $ make BOARD=i386/pc
-
-If the board name is unique, just type the short name, the first one found in
-`boards` will be used:
+By default, the default board: 'vexpress-a9' is used, we can configure, build and boot for a specific board with 'BOARD', for example:
 
     $ make BOARD=malta
+    $ make boot
+
+If using `board`, it only works on-the-fly, the setting will not be saved, this is helpful to run multiple boards at the same and not to disrupt each other:
+
+    $ make board=malta boot
+
+This allows to run multi boards in different terminals or background at the same time.
 
 Check the board specific configuration:
 
-    $ cat boards/arm/versatilepb/Makefile
+    $ cat boards/arm/vexpress-a9/Makefile
 
-### Download sources
+#### Using as plugins
+
+The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
+
+Book examples or the boards with a whole new cpu architecture benefit from such feature a lot, for book examples may use many boards and a new cpu architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
+
+Here maintains the available plugins:
+
+- [C-Sky Linux](https://gitee.com/tinylab/csky)
+- [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
+
+### Downloading
 
 Download board specific package and the kernel, buildroot source code:
 
@@ -256,7 +309,7 @@ Download one by one:
     $ make kernel-source
     $ make root-source
 
-### Checkout target versions
+### Checking out
 
 Checkout the target version of kernel and builroot:
 
@@ -273,7 +326,9 @@ Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
     $ make kernel-patch
 
-### Default Configuration
+### Configuration
+
+#### Default Configuration
 
 Configure kernel and buildroot with defconfig:
 
@@ -297,12 +352,12 @@ Configure with specified defconfig:
 
 If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: buildroot/configs, u-boot/configs, linux-stable/arch/<ARCH>/configs.
 
-### Manual Configuration
+#### Manual Configuration
 
     $ make kernel-menuconfig
     $ make root-menuconfig
 
-### Old default configuration
+#### Old default configuration
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
@@ -376,20 +431,19 @@ Switch compiler version if exists, for example:
 
     $ tools/gcc/switch.sh arm 4.3
 
-### Using more powerful goals
+### Saving
 
-Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
+Save all of the configs and rootfs/kernel/dtb images:
 
-    $ make kernel-run help
-    $ make kernel-run menuconfig
+    $ make save
 
-    $ make root-run help
-    $ make root-run busybox-menuconfig
+Save configs and images to `boards/<BOARD>/bsp/`:
 
-    $ make uboot-run help
-    $ make uboot-run menuconfig
+    $ make kconfig-save
+    $ make rconfig-save
 
-  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+    $ make root-save
+    $ make kernel-save
 
 ### Booting
 
@@ -444,7 +498,11 @@ Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 
     $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
 
-### Using kernel options
+### Using
+
+#### Linux
+
+##### non-interactive configuration
 
 A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
 config options non-interactively, based on it, both of `kernel-getconfig/k-gc`
@@ -482,7 +540,7 @@ Operates many options in one command line:
     $ make k-sc m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
     $ make k-gc o=tun,minix,ikconfig,panic_timeout,hostname
 
-### Using kernel features
+##### using kernel features
 
 Kernel features are abstracted in `feature/linux/, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
@@ -536,7 +594,7 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
-### Using Uboot
+#### Uboot
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.
 
@@ -595,7 +653,7 @@ Save uboot images and configs:
     $ make uboot-save
     $ make uconfig-save
 
-### Using external qemu
+#### Qemu
 
 Builtin qemu may not work with the newest linux kernel, so, we need compile and
 add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
@@ -621,7 +679,7 @@ While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
 compiling a newer qemu 2.12.0, no hang exists. please take notice of such issue
 in the future kernel upgrade.
 
-### Using external toolchain
+#### Toolchain
 
 The pace of Linux mainline is very fast, builtin toolchains can not keep up, to
 reduce the maintaining pressure, external toolchain feature is added. for
@@ -636,7 +694,7 @@ If not external toolchain there, the builtin will be used back.
 If no builtin toolchain exists, please must use this external toolchain
 feature, currently, aarch64, arm, riscv, i386, x86_64 support such feature.
 
-### Using external rootfs
+#### Rootfs
 
 Builtin rootfs is minimal, is not enough for complex application development,
 which requires modern Linux distributions.
@@ -789,59 +847,12 @@ Test kernel hang during boot, allow to specify a timeout, timeout must happen wh
 Notes:
     * If 'poweroff' fails on some boards with bad linux version, 'make test' will hang there.
 
-### Save images and configs
-
-Save all of the configs and rootfs/kernel/dtb images:
-
-    $ make save
-
-Save configs and images to `boards/<BOARD>/bsp/`:
-
-    $ make kconfig-save
-    $ make rconfig-save
-
-    $ make root-save
-    $ make kernel-save
-
-### Choose a new board
-
-By default, the default board: 'versatilepb' is used, we can configure, build
-and boot for a specific board with 'BOARD', for example:
-
-    $ make BOARD=malta
-
-    $ make root-defconfig
-    $ make root
-
-    $ make kernel-checkout
-    $ make kernel-patch
-    $ make kernel-defconfig
-    $ make kernel
-
-    $ make boot U=0
-
-If using `board`, it only works on-the-fly, the setting will not be saved, this
-is helpful to run multiple boards at the same and not to disrupt each other:
-
-    $ make board=malta root-defconfig
-    $ make board=malta root
-
-    $ make board=malta kernel-checkout
-    $ make board=malta kernel-patch
-    $ make board=malta kernel-defconfig
-    $ make board=malta kernel
-
-    $ make board=malta boot U=0
-
-This allows to run multi boards in different terminals or background at the
-same time.
-
-### Files transfering
+### Sharing
 
 To transfer files between Qemu Board and Host, three methods are supported by
 default:
 
-### Install files to rootfs
+#### Install files to rootfs
 
 Simply put the files with a relative path in `system/`, install and rebuild the rootfs:
 
@@ -852,7 +863,7 @@ Simply put the files with a relative path in `system/`, install and rebuild the 
     $ make root-rebuild
     $ make boot G=1
 
-### Share with NFS
+#### Share with NFS
 
 Boot the board with `ROOTDEV=/dev/nfs`,
 
@@ -865,7 +876,7 @@ Host:
     $ make env | grep ROOTDIR
     ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
 
-### Transfer via tftp
+#### Transfer via tftp
 
 Using tftp server of host from the Qemu board with the `tftp` command.
 
@@ -886,7 +897,7 @@ Qemu Board:
 
 Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
-### Share with 9p virtio
+#### Share with 9p virtio
 
 To enable 9p virtio for a new board, please refer to [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup). qemu must be compiled with `--enable-virtfs`, and kernel must enable the necessary options.
 
@@ -953,17 +964,6 @@ Verified boards with Linux v5.1:
     i386/pc, only work with virtio-9p-pci
     riscv64/virt, work with virtio-9p-pci and virtio-9p-dev
     riscv32/virt, work with virtio-9p-pci and virtio-9p-dev
-
-## Plugins
-
-The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
-
-Book examples or the boards with a whole new cpu architecture benefit from such feature a lot, for book examples may use many boards and a new cpu architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
-
-Here maintains the available plugins:
-
-- [C-Sky Linux](https://gitee.com/tinylab/csky)
-- [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
 
 ## More
 
@@ -1076,6 +1076,21 @@ Linux Lab has added many assembly examples in `examples/assembly`:
     $ make -s -C aarch64/
     Hello, ARM64!
 
+### Running any make goals
+
+Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
+
+    $ make kernel-run help
+    $ make kernel-run menuconfig
+
+    $ make root-run help
+    $ make root-run busybox-menuconfig
+
+    $ make uboot-run help
+    $ make uboot-run menuconfig
+
+  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+
 
 ## FAQs
 
@@ -1131,7 +1146,7 @@ The full function of Linux Lab depends on the full docker environment managed by
 
 Linux Lab is designed to use pre-installed environment with the docker technology and save our life by avoiding the packages installation issues in different systems, so, Linux Lab would never support local host using even in the future.
 
-### Why not kvm speed up disabled
+### Why kvm speedding up is disabled
 
 kvm only supports both of qemu-system-i386 and qemu-system-x86_64 currently, and it also requires the cpu and bios support, otherwise, you may get this error log:
 
@@ -1143,7 +1158,7 @@ Check cpu virtualization support, if nothing output, then, cpu not support virtu
 
 If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
 
-<hr>
+## Contact and Sponsor
 
 ** Contact us and Sponsor via wechat **
 

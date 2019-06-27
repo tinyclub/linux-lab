@@ -22,10 +22,6 @@ Usage:
 {% else %}
   {% for post in posts_collate  %}
 
-    {% if post.draft and post.draft == true %}
-      {% continue %}
-    {% endif %}
-
     {% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
     {% capture this_month %}{{ post.date | date: "%B" }}{% endcapture %}
     {% capture next_year %}{{ post.previous.date | date: "%Y" }}{% endcapture %}
@@ -37,6 +33,10 @@ Usage:
       <ul>
     {% endif %}
   
+    {% if post.draft and post.draft == true %}
+      {% continue %}
+    {% endif %}
+
     <li><span>{{ post.date | date: "%Y-%m-%d" }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
   
     {% if forloop.last %}

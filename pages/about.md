@@ -29,16 +29,16 @@ order: 50
 每天会推送 Linux 原创技术文章和资讯，周一到周五的文章推送计划为：
 
 * 周一
-  * [原创文章](/archive)：读者和编辑们撰写的 Linux 文章
+  * [原创文章](/archive)：由读者投稿或编辑们撰写
 
 * 周二
   * [LWN 翻译](/lwn)：按专题持续翻译 [LWN](http://lwn.net) 文章
 
 * 周三
-  * [专辑连载](/albums)：Shell、C、Real Time 等专题
+  * [专辑连载](/albums)：各类Linux/开源技术专题
 
 * 周四
-  * [产品实战](/albums#Debugging+Tracing)：Debugging, Tracing, Testing
+  * [产品实战](/albums#Debugging+Tracing)：Debugging,Tracing,Testing
 
 * 周五
   * [业界资讯](/news)：Linux & 开源业界最新消息
@@ -50,13 +50,13 @@ order: 50
 星球当前分享的主要内容类别：
 
 * Linux 项目
-  * 开发实录：Linux Lab, Linux 0.11 Lab 等[开源项目](/projects)跟踪，全网独家发布各类信息。
+  * 开发实录：Linux Lab, Linux 0.11 Lab 等[开源项目](/projects)跟踪，全网独家发布。
 
 * Linux 内核
   * 理论分析+产品实战：包括源码分析、调试与跟踪、内核特性开发等，大部分内容仅发表在星球内。
 
 * LWN   翻译
-  * 国内独家 [LWN](http://lwn.net) 专题翻译：翻译优先在星球发表，延后两周发布到网站和公众号。
+  * 国内独家 [LWN](http://lwn.net) 专题翻译：优先在星球发表，延后两周发布到网站和公众号。
 
 * Tips & Tricks
   * 技巧速记：Git、Shell、Makefile、Docker 等 Linux Tools 日常深度用法和技巧。仅发表在星球内。

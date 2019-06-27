@@ -14,7 +14,7 @@ order: 50
 
 ## 联系
 
-扫码加微信后可申请加入本站专属讨论群，该群已汇集数百位来自各企业的一线 Linux 工程师，气氛轻松活跃，交流畅通愉悦。
+扫码加微信后可申请加入本站专属讨论群，该群已汇集数百位来自各企业的一线 Linux 工程师，气氛轻松活跃，交流专业透彻。
 
 ![tinylab wechat](/images/wechat/tinylab.jpg)
 
@@ -28,11 +28,20 @@ order: 50
 
 每天会推送 Linux 原创技术文章和资讯，周一到周五的文章推送计划为：
 
-* 周一：原创文章（读者和本站编译撰写的原创 Linux 文章）
-* 周二：LWN 翻译（按专题翻译 LWN 历史文章）
-* 周三：专辑连载（Shell、C、Real Time 等)）
-* 周四：产品实战（Debugging, Tracing, Testing ...）
-* 周五：业界资讯（Linux & 开源业界最新消息）
+* 周一
+  * [原创文章](/archive)：读者和编辑们撰写的 Linux 文章
+
+* 周二
+  * [LWN 翻译](/lwn)：按专题持续翻译 [LWN](http://lwn.net) 文章
+
+* 周三
+  * [专辑连载](/albums)：Shell、C、Real Time 等专题
+
+* 周四
+  * [产品实战](/albums#Debugging+Tracing)：Debugging, Tracing, Testing
+
+* 周五
+  * [业界资讯](/news)：Linux & 开源业界最新消息
 
 **知识星球**：
 
@@ -40,11 +49,20 @@ order: 50
 
 星球当前分享的主要内容类别：
 
-* Linux Lab：项目开发实录，这是一个 Linux 内核学习的效能工具，详情请看[项目首页](/linux-lab)，`全网独家发布该项目信息。
-* Linux 内核：Linux 内核理论分析以及产品开发实战经验，包括源码分析、调试与跟踪、内核特性开发等，大部分内容只发表在星球内。
-* LWN   翻译：国内独家 [LWN](http://lwn.net) 专题翻译，翻译优先在知识星球发表，延后两周以上才发布到网站和公众号。
-* Tips & Tricks：Git、Shell、Makefile、Docker 等日常深度用法和技巧。这部分内容将仅发表在知识星球内。
-* Linux 其他：Linux 社区文化；Linux 业界前沿资讯；持续邀请业界 Linux 技术专家入驻，可提问切磋，会规划线下交流。
+* Linux 项目
+  * 开发实录：Linux Lab, Linux 0.11 Lab 等[开源项目](/projects)跟踪，全网独家发布各类信息。
+
+* Linux 内核
+  * 理论分析+产品实战：包括源码分析、调试与跟踪、内核特性开发等，大部分内容仅发表在星球内。
+
+* LWN   翻译
+  * 国内独家 [LWN](http://lwn.net) 专题翻译：翻译优先在星球发表，延后两周发布到网站和公众号。
+
+* Tips & Tricks
+  * 技巧速记：Git、Shell、Makefile、Docker 等 Linux Tools 日常深度用法和技巧。仅发表在星球内。
+
+* Linux 其他
+  * Linux 社区文化；Linux 业界前沿资讯；业界 Linux 专家持续入驻，可提问切磋，将规划线下交流。
 
 
 ## 投稿

@@ -201,7 +201,7 @@ ifneq ($(CCPRE),)
         ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
           CC_TOOLCHAIN := toolchain-source
         else
-          $(error No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+          $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
         endif
       endif
     endif
@@ -1148,7 +1148,7 @@ ifeq ($(one_module),1)
     endif
 
     ifeq ($(M_PATH),)
-      $(error 'ERROR: No such module found: $(module), list all by: `make m-l`')
+      $(error 'ERR: No such module found: $(module), list all by: `make m-l`')
     else
       $(info LOG: m=$(module) ; M=$(M_PATH))
     endif
@@ -1714,13 +1714,16 @@ ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
   endif
 endif
 
+vmlinux:
+	@if [ ! -f $(VMLINUX) ]; then \
+	  echo "ERR: No $(VMLINUX) found, please compile with 'make kernel'" && exit 1; \
+	fi
+
+PHONY += vmlinux
+
 calltrace: kernel-calltrace
-kernel-calltrace:
-ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
+kernel-calltrace: vmlinux
 	$(Q)$(KERNEL_CALLTRACE_TOOL) "$(C_PATH_PREFIX)" $(VMLINUX) $(LASTCALL) $(TOP_DIR)/$(KERNEL_SRC)
-else
-	$(Q)echo "ERROR: No $(VMLINUX) found, please compile with 'make kernel'"
-endif
 
 PHONY += kernel-calltrace calltrace
 
@@ -2295,16 +2298,12 @@ endif
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
 #      https://www.spinics.net/lists/newbies/msg59708.html
 ifeq ($(DEBUG),1)
-  ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
     BOOT_CMD += -s
     # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
     ifneq ($(XARCH),x86_64)
       BOOT_CMD += -S
     endif
     CMDLINE  += nokaslr
-  else
-    $(error "ERROR: No $(VMLINUX) found, please compile with 'make kernel'")
-  endif
 endif
 
 # Debug not work with -enable-kvm
@@ -2501,9 +2500,7 @@ ifeq ($(DEBUG),1)
   else
     DEBUG_INIT := _debug_init_1
   endif
-  ifeq ($(VMLINUX),$(wildcard $(VMLINUX)))
-    DEBUG_CLIENT := $(DEBUG_INIT) _debug
-  endif
+  DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
 endif
 
 PHONY += _debug _debug_init _debug_finish
@@ -2538,7 +2535,7 @@ b: boot
 PHONY += boot-test test _boot boot t b
 
 debug:
-	$(Q)make boot D=1
+	$(Q)make $(S) boot D=1
 
 PHONY += debug
 

@@ -726,33 +726,25 @@ More rootfs from docker can be found:
 
 ### Debugging
 
-Compile the kernel with `CONFIG_DEBUG_INFO=y` and debug it directly:
+Compile the kernel with debugging options:
 
-    $ make BOARD=malta debug
+    $ make feature feature=debug
+    $ make kernel-olddefconfig
+    $ make kernel
 
-It will open a new terminal, load the scripts from .gdbinit, run gdb
-automatically.
+And then debug it directly:
 
-Or debug it in two steps:
+    $ make debug
 
-    $ make BOARD=malta boot DEBUG=1
+It will open a new terminal, load the scripts from .gdbinit, run gdb automatically.
 
-Open a new terminal:
+It equals to:
 
-    $ make env | grep KERNEL_OUTPUT
-    /labs/linux-lab/output/mipsel/linux-4.6-malta/
+   $ make boot DEBUG=1
 
-    $ mipsel-linux-gnu-gdb output/mipsel/linux-4.6-malta/vmlinux
-    (gdb) target remote :1234
-    (gdb) b kernel_entry
-    (gdb) b start_kernel
-    (gdb) b do_fork
-    (gdb) c
-    (gdb) c
-    (gdb) c
-    (gdb) bt
+to automate debug testing:
 
-Note: some commands have been already added in `.gdbinit`, you can customize it for yourself.
+   $ make test DEBUG=1
 
 ### Testing
 
@@ -843,6 +835,10 @@ Test everything in one command (with uboot while support, e.g. vexpress-a9):
 Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
 
     $ make test TEST_TIMEOUT=30s
+
+Test kernel debug:
+
+    $ make test DEBUG=1
 
 Notes:
     * If 'poweroff' fails on some boards with bad linux version, 'make test' will hang there.

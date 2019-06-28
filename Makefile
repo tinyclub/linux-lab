@@ -487,7 +487,9 @@ BTYPE    ?= ^_BASE|^_PLUGIN
 #
 # to force download it, just issue 'make bsp'
 #
-ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+
+BSP_SUBMODULE=$(shell grep $(BOARD)/bsp -q $(TOP_DIR)/.gitmodules; echo $$?)
+ifeq ($(BSP_SUBMODULE),0)
   ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
     BOARD_BSP := bsp
   endif

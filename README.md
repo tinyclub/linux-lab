@@ -50,7 +50,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
       - [Share with 9p virtio](#share-with-9p-virtio)
 - [More](#more)
    - [Add a new board](#add-a-new-board)
-      - [Chooose a board supported by qemu](#chooose-a-board-supported-by-qemu)
+      - [Choose a board supported by qemu](#choose-a-board-supported-by-qemu)
       - [Create the board directory](#create-the-board-directory)
       - [Clone a Makefile from an existing board](#clone-a-makefile-from-an-existing-board)
       - [Configure the variables from scratch](#configure-the-variables-from-scratch)
@@ -69,7 +69,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Speed up docker images downloading](#speed-up-docker-images-downloading)
    - [Docker network conflicts with LAN](#docker-network-conflicts-with-lan)
    - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
-   - [Why not kvm speed up disabled](#why-not-kvm-speed-up-disabled)
+   - [Why kvm speedding up is disabled](#why-kvm-speedding-up-is-disabled)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -965,7 +965,7 @@ Verified boards with Linux v5.1:
 
 ### Add a new board
 
-#### Chooose a board supported by qemu
+#### Choose a board supported by qemu
 
 list the boards, use arm as an example:
 

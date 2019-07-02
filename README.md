@@ -36,6 +36,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Using](#using)
       - [Linux](#linux)
         - [non-interactive configuration](#non-interactive-configuration)
+        - [using kernel modules](#using-kernel-modules)
         - [using kernel features](#using-kernel-features)
       - [Uboot](#uboot)
       - [Qemu](#qemu)
@@ -374,59 +375,6 @@ Build them one by one:
     $ make kernel
     $ make root
 
-Build all internel kernel modules:
-
-    $ make modules
-    $ make modules-install
-    $ make root-rebuild     // not need for nfs boot
-    $ make boot
-
-List available modules in `modules/`, `boards/<BOARD>/modules/` and `linux-stable/`:
-
-    $ make m-l m=hello
-         1	m=hello ; M=$PWD/modules/hello
-    $ make m-l m=tun,minix
-         1	c=TUN ; m=tun ; M=drivers/net
-         2	c=MINIX_FS ; m=minix ; M=fs/minix
-
-Enable one kernel module:
-
-    $ make kernel-getconfig m=minix_fs
-    Getting kernel config: MINIX_FS ...
-
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
-
-    $ make kernel-setconfig m=minix_fs
-    Setting kernel config: m=minix_fs ...
-
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
-
-    Enable new kernel config: minix_fs ...
-
-Build one kernel module (e.g. minix.ko):
-
-    $ make m M=fs/minix/
-    Or
-    $ make m m=minix
-
-Install and clean the module:
-
-    $ make m-i M=fs/minix/
-    $ make m-c M=fs/minix/
-
-More flexible usage:
-
-    $ make kernel-setconfig m=tun
-    $ make kernel x=tun.ko M=drivers/net
-    $ make kernel x=drivers/net/tun.ko
-    $ make kernel-run drivers/net/tun.ko
-
-Build external kernel modules (the same as internel modules):
-
-    $ make m m=hello
-    Or
-    $ make k x=$PWD/modules/hello/hello.ko
-
 Switch compiler version if exists, for example:
 
     $ tools/gcc/switch.sh arm 4.3
@@ -539,6 +487,66 @@ Operates many options in one command line:
 
     $ make k-sc m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
     $ make k-gc o=tun,minix,ikconfig,panic_timeout,hostname
+
+##### using kernel modules
+
+Build all internel kernel modules:
+
+    $ make modules
+    $ make modules-install
+    $ make root-rebuild     // not need for nfs boot
+    $ make boot
+
+List available modules in `modules/`, `boards/<BOARD>/bsp/modules/`:
+
+    $ make m-l
+
+If `m` argument specified, list available modules in `modules/`, `boards/<BOARD>/bsp/modules/` and `linux-stable/`:
+
+    $ make m-l m=hello
+         1	m=hello ; M=$PWD/modules/hello
+    $ make m-l m=tun,minix
+         1	c=TUN ; m=tun ; M=drivers/net
+         2	c=MINIX_FS ; m=minix ; M=fs/minix
+
+Enable one kernel module:
+
+    $ make kernel-getconfig m=minix_fs
+    Getting kernel config: MINIX_FS ...
+
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+
+    $ make kernel-setconfig m=minix_fs
+    Setting kernel config: m=minix_fs ...
+
+    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+
+    Enable new kernel config: minix_fs ...
+
+Build one kernel module (e.g. minix.ko):
+
+    $ make m M=fs/minix/
+    Or
+    $ make m m=minix
+
+Install and clean the module:
+
+    $ make m-i M=fs/minix/
+    $ make m-c M=fs/minix/
+
+More flexible usage:
+
+    $ make kernel-setconfig m=tun
+    $ make kernel x=tun.ko M=drivers/net
+    $ make kernel x=drivers/net/tun.ko
+    $ make kernel-run drivers/net/tun.ko
+
+Build external kernel modules (the same as internel modules):
+
+    $ make m m=hello
+    Or
+    $ make k x=$PWD/modules/hello/hello.ko
+
 
 ##### using kernel features
 

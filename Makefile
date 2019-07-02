@@ -1072,7 +1072,7 @@ ifneq ($(PLUGIN),)
     PLUGIN_MODULE_DIR := $(TMP)
   endif
 else
-  PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -maxdepth 4 -type d -name "modules")
+  PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -maxdepth 5 -type d -name "modules")
 endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)

@@ -82,11 +82,10 @@ Linux 0.11 Lab 的主要特性如下：
 
 ## 致谢
 
-本次直播在原 [泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 的基础上，增加另外一种直播方式，那就是直接采用 [泰晓实验云台/Cloud Lab][4] + 微信语音，该实验云台由 [青云QingCloud][5] 赞助服务器。
+本次直播在原 [泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 的基础上，增加另外一种直播方式，那就是直接采用 [泰晓实验云台/Cloud Lab](/cloud-lab) + 微信语音。
 
 
 [1]: http://tinylab.org
 [2]: http://tinylab.org/linux-0.11-lab
 [3]: https://weidian.com/i/1487448443
-[4]: http://tinylab.cloud:6080
 [5]: https://www.qingcloud.com/

@@ -255,18 +255,16 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 ## 在线实验
 
-实验环节往往是继续深入计算机课程的拦路虎。为了更快更高效地做实验，泰晓科技开发了一套开源的在线[实验云台](http://tinylab.cloud:6080)。
+实验环节往往是继续深入计算机课程的拦路虎。为了更快更高效地做实验，泰晓科技开发了一套开源的在线[实验云台](/cloud-lab)。
 
 这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux 等在内的实验环境，更多环境正在陆续开发中。欢迎提出更多想法、需求和建议。
 
-* 实验云台：<http://tinylab.cloud:6080>
 * 项目首页：<http://tinylab.org/cloud-lab>
 * 代码仓库：<https://github.com/tinyclub/cloud-lab>
-* [获取帐号](http://weidian.com/?userid=335178200)
 
-购买帐号后通过浏览器登陆 [实验云台](http://tinylab.cloud:6080) 即可实验，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
+有了 Cloud Lab，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
-[![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)](http://tinylab.cloud:6080)
+![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)
 
 ## 演示视频
 

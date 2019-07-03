@@ -288,7 +288,6 @@ tags:
 * 基于 Docker/Qemu 的嵌入式 Linux 开发环境
 * 首页：<http://tinylab.org/linux-lab>
 * 仓库：<https://github.com/tinyclub/linux-lab>
-* 访问：<http://tinylab.cloud:6080/labs>
 * 特性
     * Docker 容器化
     * 可通过 Web 访问的 LXDE Desktop（基于noVNC）

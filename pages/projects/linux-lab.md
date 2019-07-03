@@ -25,9 +25,6 @@ tags:
 
   * 使用文档：[README.md][2]
 
-  * 在线实验
-      * [泰晓实验云台](http://tinylab.cloud:6080/labs/)
-
   * 在线演示
       * 命令行
           * [Linux 快速上手](http://showterm.io/6fb264246580281d372c6)

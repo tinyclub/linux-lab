@@ -22,10 +22,9 @@ tags:
 
 ## 项目描述
 
-[泰晓实验云台][10] 项目致力于创建一套计算机课程的在线实验平台。
+泰晓实验云台 项目致力于创建一套计算机课程的在线实验平台。
 
   * 使用文档：[README.md][2]
-  * 在线实验：[泰晓实验云台][10]
   * 注册帐号：[泰晓开源小店][11]
   * 代码仓库：
       * [https://gitee.com/tinylab/cloud-lab.git][8]
@@ -414,7 +413,6 @@ Cloud Lab 支持自动录制实验过程。登陆进去之前，进行如下设�
  [5]: /build-linux-0-11-lab-with-docker/
  [6]: http://tinylab.org/docker-qemu-linux-lab/
  [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
-[10]: http://tinylab.cloud:6080/labs/
 [11]: http://weidian.com/?userid=335178200
 [12]: http://tinylab.org/how-to-deploy-cloud-labs/
 [13]: http://tinylab.org/showdesk-record-and-share-your-desktop/

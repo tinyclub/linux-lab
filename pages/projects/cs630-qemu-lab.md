@@ -29,10 +29,6 @@ tags:
 * [命令行视频](http://showterm.io/547ccaae139df14c3deec)
 * [桌面演示视频](http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/)
 
-## 在线实验
-
-* [泰晓实验云台](http://tinylab.cloud:6080/labs/)
-
 ## 实验代码
 
   * 用法：[README.md](https://gitee.com/tinylab/cs630-qemu-lab/blob/master/README.md)

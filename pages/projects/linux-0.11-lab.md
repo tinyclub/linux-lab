@@ -19,9 +19,6 @@ tags:
 
   * 使用文档：[README.md][2]
 
-  * 在线实验
-      * [泰晓实验云台](http://tinylab.cloud:6080/labs/)
-
   * 考古计划
       * [Linux 考古笔记](http://tinylab.org/lad-book)
 

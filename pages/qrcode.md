@@ -13,7 +13,7 @@ order: 500
 
 <div style="height:20px;"></div>
 
-<form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:268px" placeholder="请输入任意合法网址"></form>
+<form id="qrcode-form" style="text-align:center;"><input id="qrcode-text" type="text" style="text-align:center;height:28px;width:95%" placeholder="请输入任意合法网址"></form>
 
 <br/>
 <div style="text-align:center">

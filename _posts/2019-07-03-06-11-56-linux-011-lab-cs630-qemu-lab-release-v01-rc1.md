@@ -66,7 +66,7 @@ Linux 0.11 Lab v0.1 rc1 已经具备如下功能：
 
 这门课程非常精彩，推荐给所有高校计算机专业的老师和学生。
 
-经过了数年的开发和迭代，这个 Lab 也已经非常完善，是时候发布 v0.1 了，先发布 v0.1 rc1，方便接收更多测试和验证：
+经过了数年的开发和迭代，这个 Lab 也已经非常完善，是时候发布 v0.1 了，先发布 [v0.1 rc1](https://gitee.com/tinylab/cs630-qemu-lab/tree/v0.1-rc1/)，方便接收更多测试和验证：
 
 1. 基于 Docker，支持在 Windows, Linux 和 Mac OSX 下做实验。
 2. 预安装了编译器和 Qemu，支持直接编译和启动：make boot

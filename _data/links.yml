@@ -55,6 +55,10 @@
   description: News for hackers
   group: links
 
+- title: Embedded Linux and kernel engineering
+  permalink: https://bootlin.com/
+  description: Embedded Linux and kernel engineering, training
+  group: links
 
 - title: Linaro
   permalink: https://www.linaro.org/

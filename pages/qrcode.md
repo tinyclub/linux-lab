@@ -7,6 +7,8 @@ permalink: /qrcode/
 update: 2016-03-02
 tags: 字符串,网址,二维码,生成器
 comments: false
+contact: false
+sponsor: true
 order: 500
 ---
 {% include JB/setup %}

@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Linux 0.11 Lab 和 CS630 Qemu Lab 同时发布 v0.1 rc1"
-draft: true
+draft: false
 license: "cc-by-sa-4.0"
 permalink: /linux-0.11-lab-cs630-qemu-lab-release-v0.1-rc1/
 description: "Linux 0.11 Lab 是 Linux 0.11 操作系统的实验环境，CS630 Qemu Lab 是 X86 Linux 汇编语言实验环境，两个环境于 2019年7月3日 同时发布 v0.1 rc1"

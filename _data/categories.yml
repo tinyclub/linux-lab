@@ -234,6 +234,7 @@
           categories:
             - name: 流量监控
         - name: 开发 Linux 应用
+        - name: 制作 Linux 启动盘
 
 - name: Android 开发
   categories:

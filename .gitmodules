@@ -1,10 +1,10 @@
 [submodule "qemu"]
 	path = qemu
-	url = https://gitee.com/tinylab/qemu.git
+	url = https://gitee.com/mirrors/qemu.git
 	ignore = all
 [submodule "buildroot"]
 	path = buildroot
-	url = https://gitee.com/tinylab/buildroot
+	url = https://gitee.com/mirrors/buildroot.git
 	ignore = all
 [submodule "linux-stable"]
 	path = linux-stable
@@ -12,7 +12,7 @@
 	ignore = all
 [submodule "u-boot"]
 	path = u-boot
-	url = https://gitee.com/tinylab/u-boot.git
+	url = https://gitee.com/mirrors/u-boot.git
 	ignore = all
 [submodule "boards/aarch64/raspi3/bsp"]
 	ignore = all

@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "从 Docker 镜像中随时抓取想要的 Linux Rootfs"
-draft: true
+draft: false
 license: "cc-by-sa-4.0"
 permalink: /grab-multiarch-linux-rootfs-from-docker-registry/
 description: "Rootfs 是学习嵌入式 Linux 不可或缺的，对于一个全新处理器架构而言，快速获得一个可用的 Rootfs 非常关键，本文介绍如何从 Docker 镜像库中获取这样的资源。"

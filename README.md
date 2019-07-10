@@ -1179,7 +1179,7 @@ Long keypress not work in novnc client currently, so, long 'Delete' not work, pl
 
 * Vim
   * ^/$ (begin/end)
-  * ctrl+home/end (forward/backward)
+  * w/b; ctrl+home/end (forward/backward)
   * db (delete one word backward)
   * dw (delete one word forward)
   * d^/d$ (delete all to begin, delete all to end)

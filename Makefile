@@ -2319,11 +2319,11 @@ ifneq ($(DEBUG),1)
   endif
 endif
 
-# Silence qemu warnings
-ifneq ($(V), 1)
-  QUIET_OPT ?= 2>/dev/null
-endif
-BOOT_CMD += $(QUIET_OPT)
+# Silence qemu warnings and errors
+#ifneq ($(V), 1)
+#  QUIET_OPT ?= 2>/dev/null
+#endif
+#BOOT_CMD += $(QUIET_OPT)
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards

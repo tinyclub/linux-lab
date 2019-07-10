@@ -1169,7 +1169,7 @@ If cpu supports, we also need to make sure it is enabled in bios features, simpl
 
 ### How to switch windows in vim
 
-`CTRL+w` is used in both of browser and vim, to switch from one window to another, please use 'W' key instead, Linux Lab has remapped 'W' to `CTRL+w`.
+`CTRL+w` is used in both of browser and vim, to switch from one window to another, please use 'CTRL+Left' or 'CTRL+Right' key instead, Linux Lab has remapped 'CTRL+Right' to `CTRL+w` and 'CTRL+Left' to `CTRL+p`.
 
 ### How to delete typo in shell command line
 

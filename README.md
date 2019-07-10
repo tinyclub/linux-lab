@@ -72,6 +72,9 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
    - [Why kvm speedding up is disabled](#why-kvm-speedding-up-is-disabled)
    - [How to delete typo in shell command line](#how-to-delete-typo-in-shell-command-line)
+   - [How to tune the screen size](#how-to-tune-the-screen-size)
+   - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
+   - [How to record video](#how-to-record-video)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1179,6 +1182,74 @@ Long keypress not work in novnc client currently, so, long 'Delete' not work, pl
   * db (delete one word backward)
   * dw (delete one word forward)
   * d^/d$ (delete all to begin, delete all to end)
+
+### How to tune the screen size
+
+The screen size of lab is captured by xrandr, if not work, please check and set your own, for example:
+
+Get available screen size values:
+
+    $ xrandr --current
+    Screen 0: minimum 1 x 1, current 1916 x 891, maximum 16384 x 16384
+    Virtual1 connected primary 1916x891+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
+       1916x891      60.00*+
+       2560x1600     59.99
+       1920x1440     60.00
+       1856x1392     60.00
+       1792x1344     60.00
+       1920x1200     59.88
+       1600x1200     60.00
+       1680x1050     59.95
+       1400x1050     59.98
+       1280x1024     60.02
+       1440x900      59.89
+       1280x960      60.00
+       1360x768      60.02
+       1280x800      59.81
+       1152x864      75.00
+       1280x768      59.87
+       1024x768      60.00
+       800x600       60.32
+       640x480       59.94
+
+Choose one and configure it:
+
+    $ cd /path/to/cloud-lab
+    $ tools/docker/rm-all
+    $ SCREEN_SIZE=800x600 tools/docker/run linux-lab
+
+If want the default one, please remove the manual setting at first:
+
+    $ cd /path/to/cloud-lab
+    $ rm configs/linux-lab/docker/.screen_size
+    $ tools/docker/rm-all
+    $ tools/docker/run linux-lab
+
+### How to work in fullscreen mode
+
+Open the left sidebar, press the 'Fullscreen' button.
+
+### How to record video
+
+* Enable recording
+
+  Open the left sidebar, press the 'Settings' button, config 'File/Title/Author/Category/Tags/Description' and enable the 'Record Screen' option.
+
+* Start recording
+
+  Press the 'Connect' button.
+
+* Stop recording
+
+  Press the 'Disconnect' button.
+
+* Replay recorded video
+
+  Press the 'Play' button.
+
+* Share it
+
+  Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io](http://showdesk.io/post).
 
 ## Contact and Sponsor
 

@@ -48,6 +48,7 @@ tags:
   * [早期 RT Wiki](http://rt.wiki.kernel.org/)
   * [elinux RT 页面](https://elinux.org/Real_Time)
   * [OSADL RT 页面](https://www.osadl.org/Realtime-Linux.projects-realtime-linux.0.html)
+  * [OSADL RT QA Farm 页面](https://www.osadl.org/?id=1223)
   * [龙芯 RT 页面](/preempt-rt-4-loongson/)
 
 - 本站文章

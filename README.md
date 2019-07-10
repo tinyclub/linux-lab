@@ -71,6 +71,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Docker network conflicts with LAN](#docker-network-conflicts-with-lan)
    - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
    - [Why kvm speedding up is disabled](#why-kvm-speedding-up-is-disabled)
+   - [How to delete typo in shell command line](#how-to-delete-typo-in-shell-command-line)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1161,6 +1162,23 @@ Check cpu virtualization support, if nothing output, then, cpu not support virtu
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
 If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
+
+### How to delete typo in shell command line
+
+Long keypress not work in novnc client currently, so, long 'Delete' not work, please use 'alt+delete' or 'alt+backspace' instead, more tips:
+
+* Bash
+  * ctrl+a/e (begin/end)
+  * ctrl+home/end (forward/backward)
+  * alt+delete/backspace (delete one word backward)
+  * alt+d (delete one word forward)
+
+* Vim
+  * ^/$ (begin/end)
+  * ctrl+home/end (forward/backward)
+  * db (delete one word backward)
+  * dw (delete one word forward)
+  * d^/d$ (delete all to begin, delete all to end)
 
 ## Contact and Sponsor
 

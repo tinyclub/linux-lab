@@ -71,6 +71,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Docker network conflicts with LAN](#docker-network-conflicts-with-lan)
    - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
    - [Why kvm speedding up is disabled](#why-kvm-speedding-up-is-disabled)
+   - [How to switch windows in vim](#how-to-switch-windows-in-vim)
    - [How to delete typo in shell command line](#how-to-delete-typo-in-shell-command-line)
    - [How to tune the screen size](#how-to-tune-the-screen-size)
    - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
@@ -1165,6 +1166,10 @@ Check cpu virtualization support, if nothing output, then, cpu not support virtu
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
 If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
+
+### How to switch windows in vim
+
+`CTRL+w` is used in both of browser and vim, to switch from one window to another, please use 'W' key instead, Linux Lab has remapped 'W' to `CTRL+w`.
 
 ### How to delete typo in shell command line
 

@@ -581,6 +581,7 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
 uboot-source:
+	@echo "Downloading u-boot source ..."
 	git submodule update $(GIT_FORCE) --init --remote $(UBOOT_SRC)
 
 download-uboot: uboot-source
@@ -590,6 +591,7 @@ d-u: uboot-source
 PHONY += uboot-source download-uboot uboot-download d-u
 
 qemu-source:
+	@echo "Downloading qemu source ..."
 	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
 
 qemu-download: qemu-source
@@ -612,6 +614,7 @@ qemu-all: qemu-full qemu-save
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
 kernel-source:
+	@echo "Downloading kernel source ..."
 	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
 
 kernel-download: kernel-source
@@ -621,6 +624,7 @@ d-k: kernel-source
 PHONY += kernel-source kernel-download download-kernel d-k
 
 root-source:
+	@echo "Downloading buildroot source ..."
 	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
 
 root-download: root-source
@@ -630,6 +634,7 @@ d-r: root-source
 PHONY += root-source root-download download-root d-r
 
 bsp-source:
+	@echo "Downloading board bsp ..."
 	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
 
 bsp-download: bsp-source
@@ -819,6 +824,7 @@ download-toolchain: toolchain
 d-t: toolchain
 
 toolchain:
+	@echo "Downloading external toolchain ..."
 	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),VERSION=$(CCVER))
 
 toolchain-clean:

@@ -2637,13 +2637,14 @@ ifneq ($(GCC),)
 	$(Q)$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
 endif
 
+gcc-switch: gcc
 g: gcc
 
 gcc-version:
 	$(Q)$(C_PATH) which $(CCPRE)gcc
 	$(Q)$(C_PATH) $(CCPRE)gcc --version
 
-PHONY += gcc g gcc-version
+PHONY += gcc g gcc-switch gcc-version
 
 # Show the variables
 ifeq ($(filter env,$(MAKECMDGOALS)),env)

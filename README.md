@@ -63,6 +63,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Learning Assembly](#learning-assembly)
    - [Running any make goals](#running-any-make-goals)
 - [FAQs](#faqs)
+   - [Poweroff hang](#poweroff-hang)
    - [VNC login with password failure](#vnc-login-with-password-failure)
    - [Boot with missing sdl2 libraries failure](#boot-with-missing-sdl2-libraries-failure)
    - [NFS/tftpboot not work](#nfstftpboot-not-work)
@@ -400,7 +401,7 @@ Save configs and images to `boards/<BOARD>/bsp/`:
 
 ### Booting
 
-Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff' or 'pkill qemu':
+Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff', 'reboot' or 'pkill qemu' (See [poweroff hang](#poweroff-hang)):
 
     $ make boot
 
@@ -771,7 +772,7 @@ Prepare for testing, install necessary files/scripts in `system/`:
     $ make root-install
     $ make root-rebuild
 
-Simply boot and poweroff:
+Simply boot and poweroff (See [poweroff hang](#poweroff-hang)):
 
     $ make test
 
@@ -837,7 +838,7 @@ Test a kernel module and make some targets before testing:
 
     $ make test m=exception TEST=kernel-checkout,kernel-patch,kernel-defconfig
 
-Test everything in one command (from download to poweroff):
+Test everything in one command (from download to poweroff, see [poweroff hang](#poweroff-hang)):
 
     $ make test TEST=kernel-full,root-full
 
@@ -852,9 +853,6 @@ Test kernel hang during boot, allow to specify a timeout, timeout must happen wh
 Test kernel debug:
 
     $ make test DEBUG=1
-
-Notes:
-    * If 'poweroff' fails on some boards with bad linux version, 'make test' will hang there.
 
 ### Sharing
 
@@ -1102,6 +1100,20 @@ Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
 
 
 ## FAQs
+
+### Poweroff hang
+
+Both of the 'poweroff' and 'reboot' commands not work on these boards currently (LINUX=v5.1):
+
+  * mipsel/malta (exclude LINUX=v2.6.36)
+  * aarch64/raspi3
+  * arm/versatilepb
+
+System will directly hang there while running 'poweroff' or 'reboot', to exit qemu, please pressing 'CTRL+a x' or using 'pkill qemu'.
+
+To test such boards automatically, please make sure setting 'TEST_TIMEOUT', e.g. `make test TEST_TIMEOUT=50`.
+
+Welcome to fix up them.
 
 ### VNC login with password failure
 

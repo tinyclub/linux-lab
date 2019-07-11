@@ -15,10 +15,16 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
-# builtin toolchain
-# CCPRE   ?= mipsel-linux-gnu-
+CC_TYPE ?= internal
 
+ifeq ($(CC_TYPE), internal)
+# builtin toolchain
+CCPRE   ?= mipsel-linux-gnu-
+endif
+
+ifeq ($(CC_TYPE), external)
 # external toolchain, please download it while: make toolchain
 CCPRE  ?= mips-linux-
 CCVER  ?= 2018.11-1
 CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/mips32--uclibc--stable-$(CCVER)/bin/
+endif

@@ -2639,7 +2639,11 @@ endif
 
 g: gcc
 
-PHONY += gcc g
+gcc-version:
+	$(Q)$(C_PATH) which $(CCPRE)gcc
+	$(Q)$(C_PATH) $(CCPRE)gcc --version
+
+PHONY += gcc g gcc-version
 
 # Show the variables
 ifeq ($(filter env,$(MAKECMDGOALS)),env)

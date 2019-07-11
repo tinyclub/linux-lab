@@ -11,7 +11,14 @@ SERIAL  ?= ttyS0
 FSTYPE  ?= ext2
 ORIIMG  ?= vmlinuz
 ROOTDEV ?= /dev/ram0
-CCPRE   ?= mipsel-linux-gnu-
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
+
+# builtin toolchain
+# CCPRE   ?= mipsel-linux-gnu-
+
+# external toolchain, please download it while: make toolchain
+CCPRE  ?= mips-linux-
+CCVER  ?= 2018.11-1
+CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/mips32--uclibc--stable-$(CCVER)/bin/

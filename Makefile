@@ -2058,7 +2058,7 @@ PHONY += root-save kernel-save uboot-save emulator-save qemu-save r-s k-s u-s e-
 uboot-saveconfig: uconfig-save
 
 uconfig-save: $(BOARD_BSP)
-	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
@@ -2067,7 +2067,7 @@ uconfig-save: $(BOARD_BSP)
 kernel-saveconfig: kconfig-save
 
 kconfig-save: $(BOARD_BSP)
-	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi

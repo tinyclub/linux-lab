@@ -11,7 +11,14 @@ SERIAL  ?= ttyS0
 ORIIMG  ?= vmlinux
 ROOTDEV ?= /dev/ram0
 BIOS    ?= $(BSP_QEMU)/v4.0.0/share/qemu/openbios-ppc
-CCPRE   ?= powerpc-linux-gnu-
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinux
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
+
+# builtin toolchain
+#CCPRE   ?= powerpc-linux-gnu-
+
+# external toolchain, please download it while: make toolchain
+CCPRE   ?= powerpc-linux-
+CCVER   ?= 2018.11-1
+CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/powerpc-e500mc--uclibc--stable-$(CCVER)/bin/

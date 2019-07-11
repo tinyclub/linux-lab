@@ -1389,7 +1389,7 @@ _KCFG := $(notdir $(KCFG_FILE))
 kernel-defconfig:  $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(_KCFG)
+	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(_KCFG)
 
 ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
@@ -1421,13 +1421,13 @@ endif
 
 kernel-oldnoconfig: kernel-olddefconfig
 kernel-olddefconfig:
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) $(KERNEL_OLDDEFCONFIG)
+	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(KERNEL_OLDDEFCONFIG)
 
 kernel-oldconfig:
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) oldconfig
+	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldconfig
 
 kernel-menuconfig:
-	make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) menuconfig
+	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) menuconfig
 
 
 PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
@@ -1880,13 +1880,13 @@ endif
 
 
 uboot-olddefconfig:
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldefconfig
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldefconfig
 
 uboot-oldconfig:
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) oldconfig
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldconfig
 
 uboot-menuconfig:
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) menuconfig
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) menuconfig
 
 # Specify uboot targets
 UT ?= $(x)

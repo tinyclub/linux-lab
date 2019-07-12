@@ -1710,7 +1710,6 @@ kernel: $(KERNEL_DEPS)
 
 kernel-build: kernel
 
-C_PATH_PREFIX  ?= $(C_PATH) $(CCPRE)
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
 ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
@@ -1731,7 +1730,7 @@ PHONY += vmlinux
 
 calltrace: kernel-calltrace
 kernel-calltrace: vmlinux
-	$(Q)$(KERNEL_CALLTRACE_TOOL) "$(C_PATH_PREFIX)" $(VMLINUX) $(LASTCALL) $(TOP_DIR)/$(KERNEL_SRC)
+	$(Q)$(KERNEL_CALLTRACE_TOOL) $(VMLINUX) $(LASTCALL) $(TOP_DIR)/$(KERNEL_SRC) "$(C_PATH)" "$(CCPRE)"
 
 PHONY += kernel-calltrace calltrace
 

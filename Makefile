@@ -1408,14 +1408,10 @@ endif
 #
 
 ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
-  ifneq ($(LINUX),)
-    LINUX_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(LINUX))))
-    LINUX_MINOR_VER := $(subst v,,$(word 2,$(subst .,$(space),$(LINUX))))
-
+  ifeq ($(shell grep olddefconfig -q $(KERNEL_SRC)/scripts/kconfig/Makefile; echo $$?),0)
     KERNEL_OLDDEFCONFIG := olddefconfig
-    ifeq ($(shell [ $(LINUX_MAJOR_VER) -lt 4 -o $(LINUX_MAJOR_VER) -eq 4 -a $(LINUX_MINOR_VER) -le 19 ]; echo $$?),0)
-      KERNEL_OLDDEFCONFIG := oldnoconfig
-    endif
+  else
+    KERNEL_OLDDEFCONFIG := oldnoconfig
   endif
 endif
 

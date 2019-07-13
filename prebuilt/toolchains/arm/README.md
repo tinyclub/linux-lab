@@ -1,6 +1,8 @@
 
 # arm toolchain
 
+https://toolchains.bootlin.com/
+
 https://releases.linaro.org/components/toolchain/binaries/
 
 ## Download & Decompress
@@ -9,10 +11,11 @@ https://releases.linaro.org/components/toolchain/binaries/
 
 ## Configure and use it
 
+  Available CCORI: bootlin, arm, linaro.
+
     $ vim boards/arm/versatilepb/Makefile
-    CCPRE  ?= arm-linux-gnueabi-
-    CCVER  ?= 7.4.1-2019.02
-    CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-linaro-$(CCVER)-x86_64_$(XARCH)-linux-gnueabi/bin/
+    CCORI ?= bootlin
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
 
 ## Use it
 

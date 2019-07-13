@@ -1,7 +1,7 @@
 
 # ppc toolchain
 
-https://toolchains.bootlin.com/downloads/releases/toolchains/powerpc-e500mc/tarballs/powerpc-e500mc--uclibc--stable-2018.11-1.tar.bz2
+https://toolchains.bootlin.com/
 
 ## Download & Decompress
 
@@ -9,10 +9,10 @@ https://toolchains.bootlin.com/downloads/releases/toolchains/powerpc-e500mc/tarb
 
 ## Configure and use it
 
+  Available CCORI: bootlin.
+
     $ vim boards/ppc/g3beige/Makefile
-    CCPRE  ?= powerpc-linux-
-    CCVER  ?= 2018.11-1
-    CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/powerpc-e500mc--uclibc--stable-$(CCVER)/bin/
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
 
 ## Use it
 

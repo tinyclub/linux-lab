@@ -1,6 +1,6 @@
-VERSION ?= gcc-8
+TC_VERSION ?= gcc-8
 
-TC = $(VERSION)
+TC = $(TC_VERSION)
 
 all:
 	add-apt-repository -y ppa:ubuntu-toolchain-r/test

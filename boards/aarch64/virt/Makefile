@@ -35,7 +35,6 @@ ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-CCPRE   ?= aarch64-linux-gnu-
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
@@ -45,6 +44,16 @@ XKCLI   ?= earlycon
 #QP      ?= 1
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
-# To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
-CCVER   ?= 8.3-2019.03
-CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-arm-$(CCVER)-x86_64-aarch64-linux-gnu/bin/
+CCTYPE ?= internal
+
+ifeq ($(CCTYPE), internal)
+  # builtin toolchain
+  CCPRE   ?= aarch64-linux-gnu-
+endif
+
+ifeq ($(CCTYPE), external)
+  # external toolchain, please download it while: make toolchain
+  # Available origin: bootlin, arm, linaro
+  CCORI ?= bootlin
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+endif

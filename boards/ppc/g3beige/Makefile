@@ -15,16 +15,16 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinux
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 
-CC_TYPE ?= internal
+CCTYPE ?= internal
 
-ifeq ($(CC_TYPE), internal)
-# builtin toolchain
-CCPRE   ?= powerpc-linux-gnu-
+ifeq ($(CCTYPE), internal)
+  # builtin toolchain
+  CCPRE   ?= powerpc-linux-gnu-
 endif
 
-ifeq ($(CC_TYPE), external)
-# external toolchain, please download it while: make toolchain
-CCPRE   ?= powerpc-linux-
-CCVER   ?= 2018.11-1
-CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/powerpc-e500mc--uclibc--stable-$(CCVER)/bin/
+ifeq ($(CCTYPE), external)
+  # external toolchain, please download it while: make toolchain
+  # Available CCORI: bootlin
+  CCORI ?= bootlin
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
 endif

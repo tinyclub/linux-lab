@@ -1,1 +1,2 @@
-gcc-arm-*-x86_64-aarch64-linux-gnu*
+gcc-*
+aarch64*

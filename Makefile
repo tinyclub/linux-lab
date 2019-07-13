@@ -174,48 +174,72 @@ else
 endif
 BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
 
-CC_TYPE ?= null
-# Check if there is a local toolchain
-ifneq ($(CCPRE),)
-  ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    CC_TYPE := internal
-  endif
-endif
+CCTYPE ?= null
 
-# Check if buildroot version exists
-ifeq ($(CCPATH),)
-  ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    CC_TYPE := buildroot
+# If no CCTYPE specified, check the internal one first
+ifeq ($(CCTYPE), null)
+  # Check if there is a local toolchain
+  ifneq ($(CCPRE),)
+    ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCTYPE := internal
+    endif
   endif
-endif
 
-# Check if external toolchain downloaded
-ifneq ($(CCPRE),)
-  ifneq ($(CCPATH),)
-    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CC_TYPE := external
-    else
-      # If no buildroot version, no internal version, just download one
-      ifeq ($(CC_TYPE),null)
-        CC_TYPE := external
-        ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-          CC_TOOLCHAIN := toolchain-source
-        else
-          $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+  # Check if buildroot version exists
+  ifeq ($(CCPATH),)
+    ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCTYPE := buildroot
+    endif
+  endif
+
+  # Check if external toolchain downloaded
+  ifneq ($(CCPRE),)
+    ifneq ($(CCPATH),)
+      ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+        CCTYPE := external
+      else
+        # If no buildroot version, no internal version, just download one
+        ifeq ($(CCTYPE),null)
+          CCTYPE := external
+          ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+            CC_TOOLCHAIN := toolchain-source
+          else
+            $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+          endif
         endif
       endif
     endif
   endif
+endif # CCTYPE = null
+
+# Check if external toolchain is there
+ifeq ($(CCTYPE), external)
+  ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+      CC_TOOLCHAIN := toolchain-source
+    else
+      $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+    endif
+  endif
+endif
+
+# Check if internal toolchain is there
+ifeq ($(CCTYPE), internal)
+  ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one.)
+  endif
+endif
+
+# If none exists
+ifeq ($(CCTYPE), null)
+  $(error ERR: No toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one.)
 endif
 
 # If buildroot exists, switch CCPRE and CCPATH to buildroot
-ifeq ($(CC_TYPE),buildroot)
+ifeq ($(CCTYPE),buildroot)
   override CCPATH := $(BUILDROOT_CCPATH)
   override CCPRE  := $(BUILDROOT_CCPRE)
 endif
-
-# If no external toolchain download, no buildroot version, and no internal one, just download the external one
-
 
 ifneq ($(CCPATH),)
   C_PATH ?= env PATH=$(CCPATH):$(PATH)
@@ -825,7 +849,7 @@ d-t: toolchain
 
 toolchain:
 	@echo "Downloading external toolchain ..."
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),VERSION=$(CCVER))
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),TC_VERSION=$(CCVER)) $(if $(CCORI),TC_ORIG=$(CCORI))
 
 toolchain-clean:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))

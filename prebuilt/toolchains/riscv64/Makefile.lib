@@ -1,0 +1,15 @@
+# Makefile.lib
+
+CCORI ?= gnu-mcu-eclipse
+
+ifeq ($(CCORI), bootlin)
+  CCPRE  ?= riscv64-linux-
+  CCVER  ?= 2018.11-1
+  CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/riscv64--glibc--bleeding-edge-$(CCVER)/bin
+endif
+
+ifeq ($(CCORI), gnu-mcu-eclipse)
+  CCPRE  ?= riscv-none-embed-
+  CCVER  ?= 8.2.0-2.2-20190521-0004
+  CCPATH ?= $(PREBUILT_TOOLCHAINS)/riscv64/gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)/bin
+endif

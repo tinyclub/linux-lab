@@ -1,7 +1,9 @@
 
 # mipsel toolchain
 
-https://toolchains.bootlin.com/downloads/releases/toolchains/mips32/tarballs/mips32--uclibc--stable-2018.11-1.tar.bz2
+https://codescape.mips.com/
+
+https://toolchains.bootlin.com/
 
 ## Download & Decompress
 
@@ -9,10 +11,11 @@ https://toolchains.bootlin.com/downloads/releases/toolchains/mips32/tarballs/mip
 
 ## Configure and use it
 
+  Available CCORI: bootlin, mips
+
     $ vim boards/mipsel/malta/Makefile
-    CCPRE  ?= mips-linux-
-    CCVER  ?= 2018.11-1
-    CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/mips32--uclibc--stable-$(CCVER)/bin/
+    CCORI ?= bootlin
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
 
 ## Use it
 

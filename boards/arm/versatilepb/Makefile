@@ -27,7 +27,6 @@ ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/zImage
 UORIIMG ?= arch/$(ARCH)/boot/uImage
-CCPRE   ?= arm-linux-gnueabi-
 
 # Old Linux kernel don't support dts
 # FIXME: check which version is the first one support dts
@@ -49,6 +48,17 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
-# To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
-CCVER  ?= 7.4.1-2019.02
-CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-linaro-$(CCVER)-x86_64_$(XARCH)-linux-gnueabi/bin/
+CCTYPE ?= internal
+
+ifeq ($(CCTYPE), internal)
+  # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
+  CCPRE   ?= arm-linux-gnueabi-
+endif
+
+ifeq ($(CCTYPE), external)
+  # external toolchain, please download it while: make toolchain
+  # Available CCORI: bootlin, arm
+  CCORI  ?= bootlin
+
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+endif

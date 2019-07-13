@@ -44,7 +44,6 @@ FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 # bcm2837-rpi-3-b.dtb all works, bcm2710-rpi-3-b.dtb has less warnings about therem zone access
 ORIDTB  ?= arch/$(ARCH)/boot/dts/broadcom/bcm2710-rpi-3-b.dtb
-CCPRE   ?= aarch64-linux-gnu-
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/bcm2710-rpi-3-b.dtb
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
@@ -53,5 +52,17 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 #KP      ?= 1
 #QP      ?= 1
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
-CCVER   ?= 8.3-2019.03
-CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-arm-$(CCVER)-x86_64-aarch64-linux-gnu/bin/
+
+CCTYPE ?= internal
+
+ifeq ($(CCTYPE), internal)
+  # builtin toolchain
+  CCPRE   ?= aarch64-linux-gnu-
+endif
+
+ifeq ($(CCTYPE), external)
+  # external toolchain, please download it while: make toolchain
+  # Available origin: bootlin, arm, linaro
+  CCORI ?= arm
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+endif

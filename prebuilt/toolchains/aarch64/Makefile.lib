@@ -1,0 +1,21 @@
+# Makefile.lib
+
+CCORI ?= bootlin
+
+ifeq ($(CCORI), bootlin)
+  CCVER   ?= 2018.11-1
+  CCPRE   ?= $(XARCH)-linux-
+  CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/aarch64--uclibc--stable-$(CCVER)/bin
+endif
+
+ifeq ($(CCORI), linaro)
+  CCVER   ?= 7.4.1-2019.02
+  CCPRE   ?= $(XARCH)-linux-gnu-
+  CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-linaro-$(CCVER)-x86_64_aarch64-linux-gnu/bin
+endif
+
+ifeq ($(CCORI), arm)
+  CCVER   ?= 8.3-2019.03
+  CCPRE   ?= $(XARCH)-linux-gnu-
+  CCPATH  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/gcc-arm-$(CCVER)-x86_64-aarch64-linux-gnu/bin
+endif

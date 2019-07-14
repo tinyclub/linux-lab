@@ -183,6 +183,12 @@ ifeq ($(CCTYPE), null)
     ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
       CCTYPE := internal
     endif
+  else
+    ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+      ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+        CCTYPE := internal
+      endif
+    endif
   endif
 
   # Check if buildroot version exists

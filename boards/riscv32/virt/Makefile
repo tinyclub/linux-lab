@@ -11,6 +11,7 @@ QEMU    ?= v4.0.0
 QEMU_US ?= 0
 LINUX   ?= v5.0.13
 BUILDROOT?= 2019.05
+NETDEV_LIST := virtio
 NETDEV  ?= virtio
 SERIAL  ?= ttyS0
 
@@ -24,9 +25,8 @@ SERIAL  ?= ttyS0
 
 NET9PDEV ?= virtio-9p-device
 
-# virtio sda: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
-# ROOTDEV ?= /dev/sda
 # virtio vda: https://wiki.debian.org/Arm64Qemu
+ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2

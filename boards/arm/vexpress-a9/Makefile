@@ -20,7 +20,7 @@ RDK_SIZE?= 4
 DTB_ADDR?= 0x60500000
 DTB_SIZE?= 1
 UCONFIG ?= vexpress_common.h
-# tftp, sdcard/sd/mmc, flash/pflash
+BOOTDEV_LIST := tftp sdcard sd mmc flash pflash
 BOOTDEV ?= flash
 # 64M pflash0@0x40000000, 64M pflash1@0x44000000
 PFLASH_BASE ?= 0x40000000
@@ -30,9 +30,12 @@ PFLASH_BS   ?= 512
 # 9pnet based network filesystem sharing, vexpress-a9 not support virtio-9p-pci, so, the virtio-9p-pci based -virtfs not work
 NET9PDEV ?= virtio-9p-device
 
+NETDEV_LIST := lan9118
 NETDEV  ?= lan9118
 SERIAL  ?= ttyAMA0
-#ROOTDEV ?= /dev/mmcblk0
+
+ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
+
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/zImage

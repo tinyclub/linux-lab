@@ -18,11 +18,13 @@ RDK_ADDR?= 0x607fc0
 RDK_SIZE?= 4
 DTB_ADDR?= 0xa07fc0
 DTB_SIZE?= 1
-# tftp, flash/pflash
+BOOTDEV_LIST := tftp flash pflash
 BOOTDEV ?= flash
 UCONFIG ?= versatile.h
+NETDEV_LIST := smc91c111 rtl8139
 NETDEV  ?= smc91c111
 SERIAL  ?= ttyAMA0
+ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/zImage

@@ -114,12 +114,50 @@ ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
 endif
 
-# Using prebuilt repo or not:
-#
-# private: for only using their own git repo, plugin boards may use their own repo
-# public: for using prebuilt git repo
-#
-PREBUILT ?= public
+# Verify LINUX argument
+ifneq ($(LINUX),)
+  LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
+  ifneq ($(LINUX_LIST),)
+    ifneq ($(filter $(LINUX), $(LINUX_LIST)), $(LINUX))
+      $(error Supported LINUX list: $(LINUX_LIST))
+    endif
+  endif
+endif
+
+# Verify ROOT argument
+ifneq ($(ROOT),)
+  ROOT_LIST ?= $(shell ls $(BSP_ROOT))
+  ifneq ($(ROOT_LIST),)
+    ifneq ($(filter $(ROOT), $(ROOT_LIST)), $(ROOT))
+      $(error Supported ROOT list: $(ROOT_LIST))
+    endif
+  endif
+endif
+
+# Verify UBOOT argument
+ifneq ($(UBOOT),)
+  UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
+  ifneq ($(UBOOT_LIST),)
+    ifneq ($(filter $(UBOOT), $(UBOOT_LIST)), $(UBOOT))
+      $(error Supported UBOOT list: $(UBOOT_LIST))
+    endif
+  endif
+endif
+
+# Verify UBOOT argument
+ifneq ($(QEMU),)
+  QEMU_LIST ?= $(shell ls $(BSP_QEMU))
+  # If Linux version specific qemu list defined, use it
+   _QEMU_LIST=$\$(QEMU_LIST[LINUX_$(LINUX)])
+  ifneq ($(_QEMU_LIST),)
+    override QEMU_LIST := $(_QEMU_LIST)
+  endif
+  ifneq ($(QEMU_LIST),)
+    ifneq ($(filter $(QEMU), $(QEMU_LIST)), $(QEMU))
+      $(error Supported QEMU list: $(QEMU_LIST))
+    endif
+  endif
+endif
 
 # Kernel features configuration, e.g. kft, gcs ...
 F ?= $(f)
@@ -400,6 +438,20 @@ endif
 # Root configurations
 
 # TODO: buildroot defconfig for $ARCH
+
+# Verify rootdev argument
+ifneq ($(ROOTDEV),)
+  # If Linux version specific rootdev list defined, use it
+   _ROOTDEV_LIST=$\$(ROOTDEV_LIST[LINUX_$(LINUX)])
+  ifneq ($(_ROOTDEV_LIST),)
+    override ROOTDEV_LIST := $(_ROOTDEV_LIST)
+  endif
+  ifneq ($(ROOTDEV_LIST),)
+    ifneq ($(filter $(ROOTDEV), $(ROOTDEV_LIST)), $(ROOTDEV))
+      $(error Supported ROOTDEV list: $(ROOTDEV_LIST))
+    endif
+  endif
+endif
 
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
@@ -1819,6 +1871,20 @@ endif
 
 UP ?= 0
 
+# Verify BOOTDEV argument
+ifneq ($(BOOTDEV),)
+  # If Uboot version specific bootdev list defined, use it
+   _BOOTDEV_LIST=$\$(BOOTDEV_LIST[UBOOT_$(UBOOT)])
+  ifneq ($(_BOOTDEV_LIST),)
+    override BOOTDEV_LIST := $(_BOOTDEV_LIST)
+  endif
+  ifneq ($(BOOTDEV_LIST),)
+    ifneq ($(filter $(BOOTDEV), $(BOOTDEV_LIST)), $(BOOTDEV))
+      $(error Supported BOOTDEV list: $(BOOTDEV_LIST))
+    endif
+  endif
+endif
+
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
 BOOTDEV ?= flash
@@ -2146,6 +2212,20 @@ PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-savec
 
 # Network configurations
 
+# Verify NETDEV argument
+ifneq ($(NETDEV),)
+  # If Linux version specific netdev list defined, use it
+   _NETDEV_LIST=$\$(NETDEV_LIST[LINUX_$(LINUX)])
+  ifneq ($(_NETDEV_LIST),)
+    override NETDEV_LIST := $(_NETDEV_LIST)
+  endif
+  ifneq ($(NETDEV_LIST),)
+    ifneq ($(filter $(NETDEV), $(NETDEV_LIST)), $(NETDEV))
+      $(error Supported NETDEV list: $(NETDEV_LIST))
+    endif
+  endif
+endif
+
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET ?=  -net nic,model=$(NETDEV) -net tap
@@ -2318,7 +2398,7 @@ endif
 
 ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
   # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
-  ifeq ($(BOARD), virt)
+  ifeq ($(MACH), virt)
     BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
   else
     BOOT_CMD += -hda $(HROOTFS)

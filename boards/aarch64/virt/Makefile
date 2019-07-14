@@ -6,12 +6,14 @@ SMP     ?= 2
 MEM     ?= 128M
 XOPTS   ?= -cpu $(CPU)
 # v2.12.0 has sdl based graphic, boots with G=1, v4.0.0 with vnc output
-#QEMU    ?= v2.12.0
 QEMU    ?= v4.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
 LINUX   ?= v5.1
 BUILDROOT?= 2016.05
+
+NETDEV_LIST := virtio 
+
 NETDEV  ?= virtio
 SERIAL  ?= ttyAMA0
 
@@ -31,6 +33,9 @@ NET9PDEV ?= virtio-9p-device
 # virtio sda: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
 # ROOTDEV ?= /dev/sda
 # virtio vda: https://wiki.debian.org/Arm64Qemu
+
+ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
+
 ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2

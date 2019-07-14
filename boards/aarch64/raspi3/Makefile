@@ -22,11 +22,12 @@ else
   SERIAL  ?= ttyAMA0,115200
 endif
 
-# QEMU    ?= v3.1.0
 QEMU    ?= v2.12.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
+
 LINUX   ?= v5.1
+
 BUILDROOT?= 2019.02.2
 
 # NOTE: No network support currently
@@ -38,7 +39,10 @@ NET     ?=
 # No network exists in raspi3 currently, use mmc as the testing rootfs disk
 TEST_RD ?= /dev/mmcblk0
 
-# ROOTDEV = /dev/ram0
+# Verified root devices
+ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0
+ROOTDEV_LIST[LINUX_v5.1] := /dev/mmcblk0 /dev/ram0
+
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image

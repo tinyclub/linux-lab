@@ -58,6 +58,7 @@ endif
 ifeq ($(CCTYPE), external)
   # external toolchain, please download it while: make toolchain
   # Available CCORI: bootlin, arm
+  # Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
   CCORI  ?= bootlin
 
   include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib

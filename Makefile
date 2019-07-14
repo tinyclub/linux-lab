@@ -448,7 +448,7 @@ ifneq ($(ROOTDEV),)
   endif
   ifneq ($(ROOTDEV_LIST),)
     ifneq ($(filter $(ROOTDEV), $(ROOTDEV_LIST)), $(ROOTDEV))
-      $(error Supported ROOTDEV list: $(ROOTDEV_LIST))
+      $(error Kernel Supported ROOTDEV list: $(ROOTDEV_LIST))
     endif
   endif
 endif
@@ -1880,7 +1880,7 @@ ifneq ($(BOOTDEV),)
   endif
   ifneq ($(BOOTDEV_LIST),)
     ifneq ($(filter $(BOOTDEV), $(BOOTDEV_LIST)), $(BOOTDEV))
-      $(error Supported BOOTDEV list: $(BOOTDEV_LIST))
+      $(error Uboot Supported BOOTDEV list: $(BOOTDEV_LIST))
     endif
   endif
 endif
@@ -2221,7 +2221,13 @@ ifneq ($(NETDEV),)
   endif
   ifneq ($(NETDEV_LIST),)
     ifneq ($(filter $(NETDEV), $(NETDEV_LIST)), $(NETDEV))
-      $(error Supported NETDEV list: $(NETDEV_LIST))
+      ifeq ($(MACH), malta)
+        EMULATOR += -kernel $(_KIMAGE)
+      endif
+      ifneq ($(filter $(XARCH),riscv32 riscv64), $(XARCH))
+        $(shell $(EMULATOR) -M $(MACH) -net nic,model=?)
+      endif
+      $(error Kernel Supported NETDEV list: $(NETDEV_LIST))
     endif
   endif
 endif

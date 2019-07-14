@@ -1,9 +1,0 @@
-# Makefile.lib
-
-CCORI ?= bootlin
-
-ifeq ($(CCORI), bootlin)
-  CCPRE  ?= powerpc-linux-
-  CCVER  ?= 2018.11-1
-  CCPATH ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)/powerpc-e500mc--uclibc--stable-$(CCVER)/bin
-endif

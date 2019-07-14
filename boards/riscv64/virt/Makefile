@@ -58,6 +58,6 @@ CCTYPE ?= external
 ifeq ($(CCTYPE), external)
   # external toolchain, please download it while: make toolchain
   # Available CCORI: bootlin, gnu-mcu-eclipse
-  CCORI  ?= bootlin
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+  CCORI  ?= gnu-mcu-eclipse
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
 endif

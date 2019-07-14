@@ -55,5 +55,5 @@ ifeq ($(CCTYPE), external)
   # external toolchain, please download it while: make toolchain
   # Available origin: bootlin, arm, linaro
   CCORI ?= bootlin
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
 endif

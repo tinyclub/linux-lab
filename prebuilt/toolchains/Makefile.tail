@@ -1,0 +1,39 @@
+# Core Makefile.lib
+
+CCTAR = $(notdir $(CCURL))
+
+ifeq ($(findstring .tar.xz, $(CCTAR)),.tar.xz)
+  TAR_OPTS = Jxvf
+endif
+
+ifeq ($(findstring .tar.bz2, $(CCTAR)),.tar.bz2)
+  TAR_OPTS = jxvf
+endif
+
+ifeq ($(findstring .tar.gz, $(CCTAR)),.tar.gz)
+  TAR_OPTS = zxvf
+endif
+
+ifeq ($(findstring .tgz, $(CCTAR)),.tgz)
+  TAR_OPTS = zxvf
+endif
+
+all:
+	wget -c $(CCURL)
+	tar $(TAR_OPTS) $(CCTAR)
+
+show:
+	@echo
+	@echo [ $(CCORI) $(CCVER) ]:
+	@echo
+	@echo Remote: $(CCURL)
+	@echo Local.: $(CCPATH)/
+	@echo Tool..: $(CCPRE)gcc
+	@echo
+	@$(CCPATH)/$(CCPRE)gcc --version
+
+list:
+	@$(foreach ccori, $(CCORI_LIST), make -s -C $(TOOLCHAIN)/ show CCORI=$(ccori);)
+
+clean:
+	rm -rf $(CCBASE)

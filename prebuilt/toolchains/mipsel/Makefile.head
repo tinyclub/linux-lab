@@ -1,0 +1,25 @@
+# Makefile.lib
+
+CCORI ?= bootlin
+CCORI_LIST := bootlin mips
+TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mipsel
+
+ifeq ($(CCORI), bootlin)
+  CCPRE  ?= mips-linux-
+  CCVER  ?= 2018.11-1
+  CCBASE  = mips32--uclibc--stable-$(CCVER)
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
+  CCURL   = https://toolchains.bootlin.com/downloads/releases/toolchains/mips32/tarballs/$(CCBASE).tar.bz2
+endif
+
+ifeq ($(CCORI), mips)
+  CCPRE  ?= mips-img-elf-
+  CCVER  ?= 2018.09-03
+  CCPATH ?= $(TOOLCHAIN)/mips-img-elf/2018.09-03/bin
+  CCBASE  = Codescape.GNU.Tools.Package.$(CCVER).for.MIPS.IMG.Bare.Metal.CentOS-6.x86
+  CCURL   = https://codescape.mips.com/components/toolchain/$(CCVER)/$(CCBASE).tar.gz
+endif
+
+ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+  $(error Supported gcc original list: $(CCORI_LIST))
+endif

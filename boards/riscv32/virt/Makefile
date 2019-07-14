@@ -61,7 +61,7 @@ ifeq ($(CCTYPE), external)
   # external toolchain, please download it while: make toolchain
   # Available CCORI: bootlin, gnu-mcu-eclipse
   CCORI  ?= gnu-mcu-eclipse
-  include $(PREBUILT_TOOLCHAINS)/riscv64/Makefile.lib
+  include $(PREBUILT_TOOLCHAINS)/riscv64/Makefile.head
 endif
 
 # Force use riscv64 toolchain for us

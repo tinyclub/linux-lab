@@ -61,5 +61,5 @@ ifeq ($(CCTYPE), external)
   # Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
   CCORI  ?= bootlin
 
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
 endif

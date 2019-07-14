@@ -605,7 +605,9 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
 # Please makesure docker, git are installed
 # TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
 uboot-source:
+	@echo
 	@echo "Downloading u-boot source ..."
+	@echo
 	git submodule update $(GIT_FORCE) --init --remote $(UBOOT_SRC)
 
 download-uboot: uboot-source
@@ -615,7 +617,9 @@ d-u: uboot-source
 PHONY += uboot-source download-uboot uboot-download d-u
 
 qemu-source:
+	@echo
 	@echo "Downloading qemu source ..."
+	@echo
 	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
 
 qemu-download: qemu-source
@@ -638,7 +642,9 @@ qemu-all: qemu-full qemu-save
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
 kernel-source:
+	@echo
 	@echo "Downloading kernel source ..."
+	@echo
 	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
 
 kernel-download: kernel-source
@@ -648,7 +654,9 @@ d-k: kernel-source
 PHONY += kernel-source kernel-download download-kernel d-k
 
 root-source:
+	@echo
 	@echo "Downloading buildroot source ..."
+	@echo
 	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
 
 root-download: root-source
@@ -658,7 +666,9 @@ d-r: root-source
 PHONY += root-source root-download download-root d-r
 
 bsp-source:
+	@echo
 	@echo "Downloading board bsp ..."
+	@echo
 	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
 
 bsp-download: bsp-source
@@ -848,15 +858,25 @@ download-toolchain: toolchain
 d-t: toolchain
 
 toolchain:
+	@echo
 	@echo "Downloading external toolchain ..."
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),TC_VERSION=$(CCVER)) $(if $(CCORI),TC_ORIG=$(CCORI))
+	@echo
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) XARCH=$(XARCH)
+
+toolchain-list:
+	@echo
+	@echo "Listing external toolchain ..."
+	@echo
+	$(Q)make -s list -C $(TOOLCHAIN) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
+
+gcc-list: toolchain-list
 
 toolchain-clean:
 ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
 endif
 
-PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t
+PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list
 
 # Rootfs targets
 

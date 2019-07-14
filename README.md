@@ -699,14 +699,17 @@ The pace of Linux mainline is very fast, builtin toolchains can not keep up, to
 reduce the maintaining pressure, external toolchain feature is added. for
 example, ARM64/virt, CCVER and CCPATH has been added for it.
 
+List available external toolchains:
+
+    $ make toolchain-list
+
 Download, decompress and enable the external toolchain:
 
     $ make toolchain
 
 If not external toolchain there, the builtin will be used back.
 
-If no builtin toolchain exists, please must use this external toolchain
-feature, currently, aarch64, arm, riscv, i386, x86_64 support such feature.
+If no builtin toolchain exists, please must use this external toolchain feature, currently, aarch64, arm, riscv, mipsel, ppc, i386, x86_64 support such feature.
 
 #### Rootfs
 

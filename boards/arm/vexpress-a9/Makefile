@@ -60,5 +60,5 @@ ifeq ($(CCTYPE), external)
   # Available CCORI: bootlin, arm
   CCORI  ?= bootlin
 
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
 endif

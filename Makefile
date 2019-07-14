@@ -1948,7 +1948,9 @@ _root-ud-rebuild: FORCE
 root-ud-rebuild: root-rd _root-ud-rebuild
 
 kernel-uimage:
-	$(Q)if [ $(PBK) -eq 0 ]; then make $(S) kernel KT=uImage; fi
+ifeq ($(PBK), 0)
+	make kernel KT=uImage
+endif
 
 ifneq ($(INVALID_ROOTFS),1)
 $(UROOTFS): root-ud
@@ -1972,13 +1974,13 @@ UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
 UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
 UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
 
-TFTP_IMGS := $(addprefix {TFTPBOOT}/,ramdisk dtb uImage)
+TFTP_IMGS := $(addprefix $(TFTPBOOT)/,ramdisk dtb uImage)
 
 # require by env saving, whenever boot from pflash
 PFLASH_IMG := $(TFTPBOOT)/pflash.img
 
 SD_IMG     := $(TFTPBOOT)/sd.img
-ENV_IMG    := ${TFTPBOOT}/env.img
+ENV_IMG    := $(TFTPBOOT)/env.img
 
 export ENV_IMG
 
@@ -2011,7 +2013,10 @@ uboot-images-clean:
 	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
 
 uboot-images-distclean: uboot-images-clean
-	$(Q)rm -rf $(UROOTFS) $(UKIMAGE)
+	$(Q)rm -rf $(UROOTFS)
+ifeq ($(PBK), 0)
+	$(Q)rm -rf $(UKIMAGE)
+endif
 
 UBOOT_IMGS := uboot-images
 UBOOT_IMGS_DISTCLEAN := uboot-images-distclean

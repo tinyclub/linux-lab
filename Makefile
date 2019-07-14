@@ -914,16 +914,17 @@ PHONY += qemu qemu-build emulator emulator-build q e e-b q-b
 toolchain-source: toolchain
 download-toolchain: toolchain
 d-t: toolchain
+gcc: toolchain
 
 toolchain:
 	@echo
-	@echo "Downloading external toolchain ..."
+	@echo "Downloading prebuilt toolchain ..."
 	@echo
 	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
 
 toolchain-list:
 	@echo
-	@echo "Listing external toolchain ..."
+	@echo "Listing prebuilt toolchain ..."
 	@echo
 	$(Q)make -s list -C $(TOOLCHAIN) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
 
@@ -934,7 +935,28 @@ ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
 	$(Q)make $(S) -C $(TOOLCHAIN) clean
 endif
 
-PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list
+gcc-clean: toolchain-clean
+
+PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list gcc-clean gcc
+
+toolchain-switch:
+ifneq ($(filter $(GCC),$(CCORI_LIST)), $(GCC))
+	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
+else
+	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
+	$(Q)sed -i -e "s%^\(CCORI.*?=\).*%\1 $(CCORI)%g" $(BOARD_DIR)/Makefile
+	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
+endif
+
+gcc-switch: toolchain-switch
+
+gcc-version: toolchain-version
+
+toolchain-version:
+	$(Q)$(C_PATH) which $(CCPRE)gcc | tr -s '/'
+	$(Q)$(C_PATH) $(CCPRE)gcc --version | head -1
+
+PHONY += toolchain-switch gcc-switch toolchain-version gcc-version
 
 # Rootfs targets
 
@@ -2764,23 +2786,6 @@ fullclean: distclean
 	$(Q)git clean -fdx
 
 PHONY += c-e c-r c-u c-k c dc-e dc-r dc-u dc-k dc distclean
-
-# GCC targets
-
-GCC_SWITCH_TOOL := tools/gcc/switch.sh
-gcc:
-ifneq ($(GCC),)
-	$(Q)$(GCC_SWITCH_TOOL) $(ARCH) $(GCC)
-endif
-
-gcc-switch: gcc
-g: gcc
-
-gcc-version:
-	$(Q)$(C_PATH) which $(CCPRE)gcc | tr -s '/'
-	$(Q)$(C_PATH) $(CCPRE)gcc --version | head -1
-
-PHONY += gcc g gcc-switch gcc-version
 
 # Show the variables
 ifeq ($(filter env,$(MAKECMDGOALS)),env)

@@ -381,10 +381,6 @@ Build them one by one:
     $ make kernel
     $ make root
 
-Switch compiler version if exists, for example:
-
-    $ tools/gcc/switch.sh arm 4.3
-
 ### Saving
 
 Save all of the configs and rootfs/kernel/dtb images:
@@ -699,13 +695,19 @@ The pace of Linux mainline is very fast, builtin toolchains can not keep up, to
 reduce the maintaining pressure, external toolchain feature is added. for
 example, ARM64/virt, CCVER and CCPATH has been added for it.
 
-List available external toolchains:
+List available prebuilt toolchains:
 
-    $ make toolchain-list
+    $ make gcc-list
 
 Download, decompress and enable the external toolchain:
 
-    $ make toolchain
+    $ make gcc
+
+Switch compiler version if exists, for example:
+
+    $ make gcc-switch CCORI=internal GCC=4.7
+
+    $ make gcc-switch CCORI=linaro
 
 If not external toolchain there, the builtin will be used back.
 

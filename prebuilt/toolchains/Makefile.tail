@@ -44,6 +44,9 @@ ifneq ($(CCBASE), $(wildcard $(CCBASE)))
 else
 	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
 endif
+ifeq ($(CCORI), internal)
+	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
+endif
 
 list:
 	@$(foreach ccori, $(CCORI_LIST), make -s -C $(TOOLCHAIN)/ show CCORI=$(ccori);)

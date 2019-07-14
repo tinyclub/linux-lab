@@ -919,7 +919,7 @@ toolchain:
 	@echo
 	@echo "Downloading external toolchain ..."
 	@echo
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) XARCH=$(XARCH)
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
 
 toolchain-list:
 	@echo
@@ -2777,8 +2777,8 @@ gcc-switch: gcc
 g: gcc
 
 gcc-version:
-	$(Q)$(C_PATH) which $(CCPRE)gcc
-	$(Q)$(C_PATH) $(CCPRE)gcc --version
+	$(Q)$(C_PATH) which $(CCPRE)gcc | tr -s '/'
+	$(Q)$(C_PATH) $(CCPRE)gcc --version | head -1
 
 PHONY += gcc g gcc-switch gcc-version
 

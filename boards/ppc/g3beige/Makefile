@@ -17,16 +17,7 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinux
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 
-CCTYPE ?= internal
-
-ifeq ($(CCTYPE), internal)
-  # builtin toolchain
-  CCPRE   ?= powerpc-linux-gnu-
-endif
-
-ifeq ($(CCTYPE), external)
-  # external toolchain, please download it while: make toolchain
-  # Available CCORI: bootlin
-  CCORI ?= bootlin
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
-endif
+# prebuilt toolchain, please download it if not internal via: make toolchain
+# Available CCORI: internal bootlin
+CCORI ?= bootlin
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

@@ -1,8 +1,16 @@
 # Makefile.lib
 
 CCORI ?= bootlin
-CCORI_LIST := bootlin mips
+CCORI_LIST := internal bootlin mips
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mipsel
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= mipsel-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+  CCTYPPE := internal
+else
+  CCTYPPE := external
+endif
 
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= mips-linux-

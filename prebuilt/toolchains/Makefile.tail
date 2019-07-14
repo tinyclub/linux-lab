@@ -1,5 +1,7 @@
 # Core Makefile.lib
 
+ifneq ($(CCURL),)
+
 CCTAR = $(notdir $(CCURL))
 
 ifeq ($(findstring .tar.xz, $(CCTAR)),.tar.xz)
@@ -18,19 +20,30 @@ ifeq ($(findstring .tgz, $(CCTAR)),.tgz)
   TAR_OPTS = zxvf
 endif
 
-all:
+ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+all: download decompress
+
+download:
 	wget -c $(CCURL)
+
+decompress:
 	tar $(TAR_OPTS) $(CCTAR)
+endif
+
+endif # CCURL not empty
 
 show:
 	@echo
 	@echo [ $(CCORI) $(CCVER) ]:
 	@echo
-	@echo Remote: $(CCURL)
-	@echo Local.: $(CCPATH)/
-	@echo Tool..: $(CCPRE)gcc
-	@echo
-	@$(CCPATH)/$(CCPRE)gcc --version
+	@echo Remote.: $(CCURL)
+	@echo Local..: $(CCPATH)
+	@echo Tool...: $(CCPRE)gcc
+ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
+else
+	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
+endif
 
 list:
 	@$(foreach ccori, $(CCORI_LIST), make -s -C $(TOOLCHAIN)/ show CCORI=$(ccori);)

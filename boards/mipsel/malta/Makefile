@@ -17,17 +17,8 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
-CCTYPE ?= internal
+# prebuilt toolchain, please download it if not internal via: make toolchain
+# Available CCORI: internal, bootlin, mips
 
-ifeq ($(CCTYPE), internal)
-  # builtin toolchain
-  CCPRE   ?= mipsel-linux-gnu-
-endif
-
-ifeq ($(CCTYPE), external)
-  # external toolchain, please download it while: make toolchain
-  # Available CCORI: bootlin, mips
-
-  CCORI  ?= bootlin
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
-endif
+CCORI  ?= internal
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

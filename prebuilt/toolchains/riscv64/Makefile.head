@@ -4,6 +4,10 @@ CCORI ?= gnu-mcu-eclipse
 CCORI_LIST := bootlin gnu-mcu-eclipse
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
 
+ifneq ($(CCORI), internal)
+  CCTYPPE := external
+endif
+
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= riscv64-linux-
   CCVER  ?= 2018.11-1
@@ -15,15 +19,16 @@ endif
 ifeq ($(CCORI), gnu-mcu-eclipse)
   CCPRE  ?= riscv-none-embed-
   CCVER  ?= 8.2.0-2.2-20190521-0004
-  CCPATH ?= $(TOOLCHAIN)/gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)/bin
+  CCBASE  = gnu-mcu-eclipse/riscv-none-gcc/$(CCVER)
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
 
   empty   =
   space   = $(empty) $(empty)
   tmp     = $(subst -,$(space),$(CCVER))
   _CCVER  = v$(subst -$(lastword $(tmp)),,$(CCVER))
 
-  CCBASE  = gnu-mcu-eclipse-riscv-none-gcc-$(CCVER)-centos64
-  CCURL   = https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases/download/$(_CCVER)/$(CCBASE).tgz
+  _CCBASE  = gnu-mcu-eclipse-riscv-none-gcc-$(CCVER)-centos64
+  CCURL   = https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases/download/$(_CCVER)/$(_CCBASE).tgz
 endif
 
 ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))

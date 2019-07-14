@@ -54,10 +54,7 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 #QP      ?= 1
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
-CCTYPE ?= external
-ifeq ($(CCTYPE), external)
-  # external toolchain, please download it while: make toolchain
-  # Available CCORI: bootlin, gnu-mcu-eclipse
-  CCORI  ?= gnu-mcu-eclipse
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
-endif
+# external toolchain, please download it while: make toolchain
+# Available CCORI: bootlin, gnu-mcu-eclipse
+CCORI  ?= gnu-mcu-eclipse
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

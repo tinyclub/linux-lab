@@ -50,18 +50,8 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
-CCTYPE ?= internal
-
-ifeq ($(CCTYPE), internal)
-  # To use this prebuilt toolchain, please run `make toolchain` before `make kernel`
-  CCPRE   ?= arm-linux-gnueabi-
-endif
-
-ifeq ($(CCTYPE), external)
-  # external toolchain, please download it while: make toolchain
-  # Available CCORI: bootlin, arm
-  # Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
-  CCORI  ?= bootlin
-
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
-endif
+# prebuilt toolchain, please download it if not internal via: make toolchain
+# Available CCORI: internal bootlin, arm
+# Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
+CCORI  ?= internal
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

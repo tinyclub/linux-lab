@@ -1,8 +1,16 @@
 # Makefile.head
 
 CCORI ?= bootlin
-CCORI_LIST := bootlin linaro arm
+CCORI_LIST := internal bootlin linaro arm
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= aarch64-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+  CCTYPPE := internal
+else
+  CCTYPPE := external
+endif
 
 ifeq ($(CCORI), bootlin)
   CCVER   ?= 2018.11-1

@@ -1,8 +1,16 @@
 # Makefile.lib
 
 CCORI ?= bootlin
-CCORI_LIST := bootlin
+CCORI_LIST := internal bootlin
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= powerpc-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+  CCTYPPE := internal
+else
+  CCTYPPE := external
+endif
 
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= powerpc-linux-

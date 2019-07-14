@@ -57,16 +57,7 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 #QP      ?= 1
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
-CCTYPE ?= internal
-
-ifeq ($(CCTYPE), internal)
-  # builtin toolchain
-  CCPRE   ?= aarch64-linux-gnu-
-endif
-
-ifeq ($(CCTYPE), external)
-  # external toolchain, please download it while: make toolchain
-  # Available origin: bootlin, arm, linaro
-  CCORI ?= arm
-  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
-endif
+# prebuilt toolchains, please download it while: make toolchain
+# Available origin: internal, bootlin, arm, linaro
+CCORI ?= internal
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

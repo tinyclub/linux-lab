@@ -1,5 +1,5 @@
 
-## Hello C
+# Hello C
 
 * Basic Usage: <http://showterm.io/a98435fb1b79b83954775>
 * Advanced Usage: <http://showterm.io/887b5ee77e3f377035d01>
@@ -13,6 +13,9 @@
     $ gcc -o hello hello.c
     $ ./hello
     Hello, World!
+
+    // Build intermediate files
+    $ make hello.{i,s,o}
 
     // Build with make
     $ make
@@ -53,3 +56,16 @@
     	Inferior 1 [process 32518] will be killed.
     
     Quit anyway? (y or n) y
+
+## Options introduction
+
+* -fno-stack-protector, no stack overwrite protecting
+* -fomit-frame-pointer, not use frame pointer
+* -fno-asynchronous-unwind-tables, no .eh_frame, only required for DWARF-based unwinding
+* -fno-pie -no-pie, use original 32bit address
+* -m32, compile for i386
+
+## References
+
+* [why .eh_frame](https://stackoverflow.com/questions/26300819/why-gcc-compiled-c-program-needs-eh-frame-section)
+* [32bit abs addr](https://stackoverflow.com/questions/43367427/32-bit-absolute-addresses-no-longer-allowed-in-x86-64-linux)

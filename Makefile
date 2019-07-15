@@ -1562,10 +1562,12 @@ endif
 #
 
 ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
-  ifeq ($(shell grep olddefconfig -q $(KERNEL_SRC)/scripts/kconfig/Makefile; echo $$?),0)
-    KERNEL_OLDDEFCONFIG := olddefconfig
-  else
-    KERNEL_OLDDEFCONFIG := oldnoconfig
+  KCONFIG_MAKEFILE := $(KERNEL_SRC)/scripts/kconfig/Makefile
+  KERNEL_OLDDEFCONFIG := olddefconfig
+  ifeq ($(KCONFIG_MAKEFILE), $(wildcard $(KCONFIG_MAKEFILE)))
+    ifneq ($(shell grep olddefconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
+      KERNEL_OLDDEFCONFIG := oldnoconfig
+    endif
   endif
 endif
 

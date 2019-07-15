@@ -93,8 +93,10 @@ BSP_CONFIG = $(BSP_DIR)/configs
 # Support old directory arch
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
   _BSP_CONFIG := $(BSP_CONFIG)
+  _BSP_DIR    := $(BSP_DIR)
 else
   _BSP_CONFIG := $(BOARD_DIR)
+  _BSP_DIR    := $(BOARD_DIR)
 endif
 
 # Get the machine name for qemu-system-$(XARCH)
@@ -183,18 +185,22 @@ _QTOOL  := $(QTOOL)
 
 # Core source: remote and local
 QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_SRC ?= qemu
+_QEMU_SRC ?= qemu
+QEMU_SRC ?= $(_QEMU_SRC)
 
 UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
-UBOOT_SRC ?= u-boot
+_UBOOT_SRC ?= u-boot
+UBOOT_SRC ?= $(_UBOOT_SRC)
 
 KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-KERNEL_SRC ?= linux-stable
+_KERNEL_SRC = linux-stable
+KERNEL_SRC ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
 ROOT_GIT ?= https://github.com/buildroot/buildroot
-ROOT_SRC ?= buildroot
+_ROOT_SRC ?= buildroot
+ROOT_SRC ?= $(_ROOT_SRC)
 
 # Core output: for building in standalone directories
 TOP_OUTPUT      := $(TOP_DIR)/output
@@ -666,7 +672,13 @@ uboot-source:
 	@echo
 	@echo "Downloading u-boot source ..."
 	@echo
+ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
+	cd $(_BSP_DIR) && \
+	git submodule update $(GIT_FORCE) --init --remote $(notdir $(UBOOT_SRC)) && \
+	cd $(TOP_DIR)
+else
 	git submodule update $(GIT_FORCE) --init --remote $(UBOOT_SRC)
+endif
 
 download-uboot: uboot-source
 uboot-download: uboot-source
@@ -678,7 +690,13 @@ qemu-source:
 	@echo
 	@echo "Downloading qemu source ..."
 	@echo
+ifneq ($(_QEMU_SRC), $(QEMU_SRC))
+	cd $(_BSP_DIR) && \
+	git submodule update $(GIT_FORCE) --init --remote $(notdir $(QEMU_SRC)) && \
+	cd $(TOP_DIR)
+else
 	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
+endif
 
 qemu-download: qemu-source
 download-qemu: qemu-source
@@ -703,7 +721,13 @@ kernel-source:
 	@echo
 	@echo "Downloading kernel source ..."
 	@echo
+ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
+	cd $(_BSP_DIR) && \
+	git submodule update $(GIT_FORCE) --init --remote $(notdir $(KERNEL_SRC)) && \
+	cd $(TOP_DIR)
+else
 	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
+endif
 
 kernel-download: kernel-source
 download-kernel: kernel-source
@@ -715,7 +739,13 @@ root-source:
 	@echo
 	@echo "Downloading buildroot source ..."
 	@echo
+ifneq ($(_ROOT_SRC), $(ROOT_SRC))
+	cd $(_BSP_DIR) && \
+	git submodule update $(GIT_FORCE) --init --remote $(notdir $(ROOT_SRC)) && \
+	cd $(TOP_DIR)
+else
 	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
+endif
 
 root-download: root-source
 download-root: root-source

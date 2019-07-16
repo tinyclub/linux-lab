@@ -51,7 +51,6 @@ UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 # prebuilt toolchain, please download it if not internal via: make toolchain
-# Available CCORI: internal bootlin, arm
-# Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
-CCORI  ?= linaro
+# Available CCORI: internal, bootlin, arm
+CCORI   ?= internal
 include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

@@ -60,7 +60,7 @@ FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
 
 # Search board in basic arch list while board name given without arch specified
-BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64
+BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64 loongson csky
 ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
   ifneq ($(ARCH),)

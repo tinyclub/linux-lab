@@ -969,7 +969,9 @@ gcc-clean: toolchain-clean
 
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list gcc-clean gcc
 
-_CCORI := $(shell grep --color=always ^CCORI $(BOARD_DIR)/Makefile | cut -d '=' -f2 | tr -d ' ')
+ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
+  _CCORI := $(shell grep --color=always ^CCORI $(BOARD_DIR)/Makefile | cut -d '=' -f2 | tr -d ' ')
+endif
 toolchain-switch:
 ifneq ($(filter $(GCC),$(CCORI_LIST)), $(GCC))
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)

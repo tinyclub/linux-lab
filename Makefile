@@ -2292,7 +2292,7 @@ ifneq ($(NETDEV),)
         EMULATOR += -kernel $(_KIMAGE)
       endif
       ifneq ($(filter $(XARCH),riscv32 riscv64), $(XARCH))
-        $(shell $(EMULATOR) -M $(MACH) -net nic,model=?)
+        $(info $(shell $(EMULATOR) -M $(MACH) -net nic,model=?))
       endif
       $(error Kernel Supported NETDEV list: $(NETDEV_LIST))
     endif

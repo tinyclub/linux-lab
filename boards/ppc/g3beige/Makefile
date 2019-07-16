@@ -18,6 +18,6 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 
 # prebuilt toolchain, please download it if not internal via: make toolchain
-# Available CCORI: internal bootlin
-CCORI ?= bootlin
+# Available CCORI: internal, bootlin
+CCORI   ?= bootlin
 include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

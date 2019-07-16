@@ -56,7 +56,7 @@ QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # external toolchain, please download it while: make toolchain
 # Available CCORI: bootlin, gnu-mcu-eclipse
-CCORI  ?= gnu-mcu-eclipse
+CCORI   ?= gnu-mcu-eclipse
 # Force use riscv64 toolchain for us
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/riscv64
 include $(TOOLCHAIN)/Makefile.head

@@ -20,5 +20,5 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 # prebuilt toolchain, please download it if not internal via: make toolchain
 # Available CCORI: internal, bootlin, mips
 
-CCORI  ?= internal
+CCORI   ?= internal
 include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

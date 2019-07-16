@@ -52,7 +52,7 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # prebuilt toolchain, please download it if not internal via: make toolchain
-# Available CCORI: internal bootlin, arm
+# Available CCORI: internal, bootlin, arm
 # Notes: Uboot compiled with Linaro toolchain can not boot, simply hang there.
-CCORI  ?= internal
+CCORI   ?= internal
 include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head

@@ -118,7 +118,9 @@ endif
 
 # Verify LINUX argument
 ifneq ($(LINUX),)
-  LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
+  ifeq ($(BSP_KERNEL), $(wildcard $(BSP_KERNEL)))
+    LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
+  endif
   ifneq ($(LINUX_LIST),)
     ifneq ($(filter $(LINUX), $(LINUX_LIST)), $(LINUX))
       $(error Supported LINUX list: $(LINUX_LIST))
@@ -128,7 +130,9 @@ endif
 
 # Verify ROOT argument
 ifneq ($(ROOT),)
-  ROOT_LIST ?= $(shell ls $(BSP_ROOT))
+  ifeq ($(BSP_ROOT), $(wildcard $(BSP_ROOT)))
+    ROOT_LIST ?= $(shell ls $(BSP_ROOT))
+  endif
   ifneq ($(ROOT_LIST),)
     ifneq ($(filter $(ROOT), $(ROOT_LIST)), $(ROOT))
       $(error Supported ROOT list: $(ROOT_LIST))
@@ -138,7 +142,9 @@ endif
 
 # Verify UBOOT argument
 ifneq ($(UBOOT),)
-  UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
+  ifeq ($(BSP_UBOOT), $(wildcard $(BSP_UBOOT)))
+    UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
+  endif
   ifneq ($(UBOOT_LIST),)
     ifneq ($(filter $(UBOOT), $(UBOOT_LIST)), $(UBOOT))
       $(error Supported UBOOT list: $(UBOOT_LIST))
@@ -148,7 +154,9 @@ endif
 
 # Verify UBOOT argument
 ifneq ($(QEMU),)
-  QEMU_LIST ?= $(shell ls $(BSP_QEMU))
+  ifeq ($(BSP_QEMU), $(wildcard $(BSP_QEMU)))
+    QEMU_LIST ?= $(shell ls $(BSP_QEMU))
+  endif
   # If Linux version specific qemu list defined, use it
    _QEMU_LIST=$\$(QEMU_LIST[LINUX_$(LINUX)])
   ifneq ($(_QEMU_LIST),)

@@ -1,4 +1,4 @@
-# Makefile.lib
+# Makefile.head
 
 CCORI ?= bootlin
 CCORI_LIST := internal bootlin

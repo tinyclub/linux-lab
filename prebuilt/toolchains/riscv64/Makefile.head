@@ -1,4 +1,4 @@
-# Makefile.lib
+# Makefile.head
 
 CCORI ?= gnu-mcu-eclipse
 CCORI_LIST := bootlin gnu-mcu-eclipse

@@ -673,11 +673,9 @@ uboot-source:
 	@echo "Downloading u-boot source ..."
 	@echo
 ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
-	cd $(_BSP_DIR) && \
-	git submodule update $(GIT_FORCE) --init --remote $(notdir $(UBOOT_SRC)) && \
-	cd $(TOP_DIR)
+	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(UBOOT_SRC)) && cd $(TOP_DIR)
 else
-	git submodule update $(GIT_FORCE) --init --remote $(UBOOT_SRC)
+	$(UPDATE_GITMODULE) $(UBOOT_SRC)
 endif
 
 download-uboot: uboot-source
@@ -691,11 +689,9 @@ qemu-source:
 	@echo "Downloading qemu source ..."
 	@echo
 ifneq ($(_QEMU_SRC), $(QEMU_SRC))
-	cd $(_BSP_DIR) && \
-	git submodule update $(GIT_FORCE) --init --remote $(notdir $(QEMU_SRC)) && \
-	cd $(TOP_DIR)
+	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(QEMU_SRC)) && cd $(TOP_DIR)
 else
-	git submodule update $(GIT_FORCE) --init --remote $(QEMU_SRC)
+	$(UPDATE_GITMODULE) $(QEMU_SRC)
 endif
 
 qemu-download: qemu-source
@@ -722,11 +718,9 @@ kernel-source:
 	@echo "Downloading kernel source ..."
 	@echo
 ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-	cd $(_BSP_DIR) && \
-	git submodule update $(GIT_FORCE) --init --remote $(notdir $(KERNEL_SRC)) && \
-	cd $(TOP_DIR)
+	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(KERNEL_SRC)) && cd $(TOP_DIR)
 else
-	git submodule update $(GIT_FORCE) --init --remote $(KERNEL_SRC)
+	$(UPDATE_GITMODULE) $(KERNEL_SRC)
 endif
 
 kernel-download: kernel-source
@@ -740,11 +734,9 @@ root-source:
 	@echo "Downloading buildroot source ..."
 	@echo
 ifneq ($(_ROOT_SRC), $(ROOT_SRC))
-	cd $(_BSP_DIR) && \
-	git submodule update $(GIT_FORCE) --init --remote $(notdir $(ROOT_SRC)) && \
-	cd $(TOP_DIR)
+	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(ROOT_SRC)) && cd $(TOP_DIR)
 else
-	git submodule update $(GIT_FORCE) --init --remote $(ROOT_SRC)
+	$(UPDATE_GITMODULE) $(ROOT_SRC)
 endif
 
 root-download: root-source
@@ -757,7 +749,7 @@ bsp-source:
 	@echo
 	@echo "Downloading board bsp ..."
 	@echo
-	git submodule update $(GIT_FORCE) --init --remote $(BSP_DIR)
+	$(UPDATE_GITMODULE) $(BSP_DIR)
 
 bsp-download: bsp-source
 download-bsp: bsp-source
@@ -2396,6 +2388,7 @@ endif
 
 # Force running git submodule commands
 GIT_FORCE := $(if $(TEST),--force,)
+UPDATE_GITMODULE := git submodule update $(GIT_FORCE) --init --remote
 
 # Some boards not support 'reboot' test, please use 'power' instead.
 #

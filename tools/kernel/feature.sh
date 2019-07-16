@@ -31,6 +31,12 @@ do
 
         path=$d/$f
         [ ! -d $path ] && continue
+
+        echo "$path"
+
+        echo "Downloading feature: $f"
+        [ -x "$path/download.sh" ] && $path/download.sh
+
         echo "Appling feature: $f"
 
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
@@ -41,7 +47,9 @@ do
         [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
         # apply the patchset maintained by multiple xxx.patch
-        for p in `find $path -type f -name "*.patch" | sort`
+        patchset="`find $path $MAXDEPTH -type f -name "*.patch" | sort`"
+
+        for p in $patchset
         do
             # Ignore some buggy patch via renaming it with suffix .ignore
             echo $p | grep -q .ignore$
@@ -61,9 +69,15 @@ do
 
     for d in $KFD_BOARD $KFD_BSP $KFD
     do
-        for path in $d/$f $d/$f/$LINUX $d/$f/$LINUX_BASE
+        for path in $d/$f/$LINUX_BASE $d/$f/$LINUX $d/$f
         do
             [ ! -d $path ] && continue
+
+            echo "$path"
+
+            echo "Downloading feature: $f"
+            [ -x "$path/download.sh" ] && $path/download.sh
+
             echo "Appling feature: $f"
 
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
@@ -74,8 +88,14 @@ do
             [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
             # apply the patchset maintained by multiple xxx.patch
-            for p in `find $path -type f -name "*.patch" | sort`
+            MAXDEPTH=""
+            [ $d/$f == $path ] && MAXDEPTH=" -maxdepth 1 "
+            patchset="`find $path $MAXDEPTH -type f -name "*.patch" | sort`"
+
+            for p in $patchset
             do
+                # echo $p
+
                 # Ignore some buggy patch via renaming it with suffix .ignore
                 echo $p | grep -q .ignore$
                 [ $? -eq 0 ] && continue

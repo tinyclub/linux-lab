@@ -969,13 +969,22 @@ gcc-clean: toolchain-clean
 
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list gcc-clean gcc
 
+_CCORI := $(shell grep --color=always ^CCORI $(BOARD_DIR)/Makefile | cut -d '=' -f2 | tr -d ' ')
 toolchain-switch:
 ifneq ($(filter $(GCC),$(CCORI_LIST)), $(GCC))
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 else
+  ifneq ($(_CCORI), $(CCORI))
 	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
 	$(Q)sed -i -e "s%^\(CCORI.*?=\).*%\1 $(CCORI)%g" $(BOARD_DIR)/Makefile
 	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
+  else
+	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
+	@echo "       e.g. make toolchain-switch CCORI=bootlin"
+	@echo "            make toolchain-switch CCORI=internal GCC=4.9.3"
+	@echo "            make toolchain-switch CC=4.9.3       # If CCORI is already internal"
+	$(Q)make $(S) toolchain-list
+  endif
 endif
 
 gcc-switch: toolchain-switch

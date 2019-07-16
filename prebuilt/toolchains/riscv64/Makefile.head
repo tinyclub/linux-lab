@@ -1,7 +1,7 @@
 # Makefile.head
 
 CCORI ?= gnu-mcu-eclipse
-CCORI_LIST := bootlin gnu-mcu-eclipse
+CCORI_LIST ?= bootlin gnu-mcu-eclipse
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
 
 ifneq ($(CCORI), internal)

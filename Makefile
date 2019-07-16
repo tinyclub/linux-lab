@@ -950,13 +950,15 @@ toolchain:
 	@echo
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) \
+		$(if $(CCORI_LIST),CCORI_LIST="$(CCORI_LIST)") XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
 
 toolchain-list:
 	@echo
 	@echo "Listing prebuilt toolchain ..."
 	@echo
-	$(Q)make -s list -C $(TOOLCHAIN) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
+	$(Q)make -s list -C $(TOOLCHAIN) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN) \
+		$(if $(CCORI_LIST),CCORI_LIST="$(CCORI_LIST)") $(if $(CCORI),CCORI=$(CCORI))
 
 gcc-list: toolchain-list
 

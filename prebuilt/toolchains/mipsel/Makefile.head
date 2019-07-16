@@ -1,7 +1,7 @@
 # Makefile.head
 
 CCORI ?= bootlin
-CCORI_LIST := internal bootlin mips
+CCORI_LIST ?= internal bootlin mips
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mipsel
 
 ifeq ($(CCORI), internal)

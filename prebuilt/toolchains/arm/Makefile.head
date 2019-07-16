@@ -1,7 +1,7 @@
 # Makefile.head
 
 CCORI ?= bootlin
-CCORI_LIST := internal bootlin arm
+CCORI_LIST ?= internal bootlin arm
 
 # FIXME: Uboot hang on versatilepb with linaro toolchain
 ifneq ($(filter $(MACH), versatilepb), $(MACH))

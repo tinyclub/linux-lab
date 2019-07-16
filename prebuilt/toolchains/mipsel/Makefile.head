@@ -23,9 +23,10 @@ endif
 ifeq ($(CCORI), mips)
   CCPRE  ?= mips-img-elf-
   CCVER  ?= 2018.09-03
-  CCPATH ?= $(TOOLCHAIN)/mips-img-elf/2018.09-03/bin
-  CCBASE  = Codescape.GNU.Tools.Package.$(CCVER).for.MIPS.IMG.Bare.Metal.CentOS-6.x86
-  CCURL   = https://codescape.mips.com/components/toolchain/$(CCVER)/$(CCBASE).tar.gz
+  CCBASE ?= mips-img-elf/2018.09-03
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
+  _CCBASE  = Codescape.GNU.Tools.Package.$(CCVER).for.MIPS.IMG.Bare.Metal.CentOS-6.x86
+  CCURL   = https://codescape.mips.com/components/toolchain/$(CCVER)/$(_CCBASE).tar.gz
 endif
 
 ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))

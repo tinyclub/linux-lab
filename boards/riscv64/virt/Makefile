@@ -4,8 +4,6 @@ XARCH    = riscv64
 CPU     ?= any
 SMP     ?= 4
 MEM     ?= 128M
-# v2.12.0 has sdl based graphic, boots with G=1, v4.0.0 with vnc output
-#QEMU    ?= v2.12.0
 QEMU    ?= v4.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 1
@@ -38,7 +36,6 @@ FSTYPE  ?= ext2
 
 #PORIIMG ?= bbl
 PORIIMG ?= fw_jump.elf
-#PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
 PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
 
 KRN_ADDR ?= 0x80200000
@@ -49,9 +46,6 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 #XKCLI   ?= earlycon=sbi
-# Only for current v5.0.10 support
-#KP      ?= 1
-#QP      ?= 1
 QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # external toolchain, please download it while: make toolchain

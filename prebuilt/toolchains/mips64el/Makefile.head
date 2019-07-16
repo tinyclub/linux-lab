@@ -1,0 +1,27 @@
+# Makefile.head
+
+CCORI ?= bootlin
+CCORI_LIST ?= bootlin lemote
+TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mips64el
+
+ifeq ($(CCORI), bootlin)
+  CCPRE  ?= mips64el-linux-
+  CCVER  ?= 2018.11-1
+  CCBASE  = mips64el-n32--uclibc--stable-$(CCVER)
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
+  CCURL   = https://toolchains.bootlin.com/downloads/releases/toolchains/mips64el-n32/tarballs/$(CCBASE).tar.bz2
+endif
+
+ifeq ($(CCORI), lemote)
+  CCPRE  ?= mips64el-unknown-linux-gnu-
+  CCVER  ?= 10
+  CCBASE ?= opt/mips64el-toolchain
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
+  LDPATH ?= $(TOOLCHAIN)/$(CCBASE)/x86_64-unknown-linux-gnu/mips64el-unknown-linux-gnu/lib
+  _CCBASE ?= mips64el-toolchain-$(CCVER).x64
+  CCURL   = http://mirror.lemote.com:8000/loongson3-toolchain/binaries/v$(CCVER)/$(_CCBASE).tar.xz
+endif
+
+ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+  $(error Supported gcc original list: $(CCORI_LIST))
+endif

@@ -1,8 +1,16 @@
 # Makefile.head
 
 CCORI ?= bootlin
-CCORI_LIST ?= bootlin lemote
+CCORI_LIST ?= internal bootlin lemote
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mips64el
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= mipsel-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+  CCTYPPE := internal
+else
+  CCTYPPE := external
+endif
 
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= mips64el-linux-

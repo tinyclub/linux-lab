@@ -67,7 +67,7 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
     override BOARD     := $(ARCH)/$(BOARD)
     override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
     ifeq ($(filter _boot, $(MAKECMDGOALS)), _boot)
-      $(info LOG: Current board is $(BOARD).)
+      $(info LOG: Current board is $(BOARD))
     endif
   else
     $(error ERR: $(BOARD) not exist, check available boards in 'make list')
@@ -262,7 +262,7 @@ ifeq ($(CCTYPE), null)
           ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
             CC_TOOLCHAIN := toolchain-source
           else
-            $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+            $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one)
           endif
         endif
       endif
@@ -276,7 +276,7 @@ ifeq ($(CCTYPE), external)
     ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
       CC_TOOLCHAIN := toolchain-source
     else
-      $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one.)
+      $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one)
     endif
   endif
 endif
@@ -284,13 +284,13 @@ endif
 # Check if internal toolchain is there
 ifeq ($(CCTYPE), internal)
   ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one.)
+    $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
   endif
 endif
 
 # If none exists
 ifeq ($(CCTYPE), null)
-  $(error ERR: No toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one.)
+  $(info ERR: No toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
 endif
 
 # If buildroot exists, switch CCPRE and CCPATH to buildroot
@@ -1028,7 +1028,7 @@ else
       ifeq ($(TMP), $(wildcard $(TMP)))
         RCFG_FILE := $(TMP)
       else
-        $(error $(RCFG): can not be found, please pass a valid root defconfig.)
+        $(error $(RCFG): can not be found, please pass a valid root defconfig)
       endif
     endif
   endif
@@ -1537,7 +1537,7 @@ else
       ifeq ($(TMP), $(wildcard $(TMP)))
         KCFG_FILE := $(TMP)
       else
-        $(error $(KCFG): can not be found, please pass a valid kernel defconfig.)
+        $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
       endif
     endif
   endif
@@ -2025,7 +2025,7 @@ else
       ifeq ($(TMP), $(wildcard $(TMP)))
         UCFG_FILE := $(TMP)
       else
-        $(error $(UCFG): can not be found, please pass a valid uboot defconfig.)
+        $(error $(UCFG): can not be found, please pass a valid uboot defconfig)
       endif
     endif
   endif
@@ -2352,7 +2352,7 @@ ifneq ($(SHARE),0)
   # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
   #        versatilepb works with 9pnet + uboot?
   ifeq ($(U),1)
-    $(info LOG: file sharing enabled with SHARE=1, disable uboot for it breaks sharing.)
+    $(info LOG: file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
     U := 0
     export U
   endif

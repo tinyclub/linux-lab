@@ -300,7 +300,7 @@ ifeq ($(CCTYPE),buildroot)
 endif
 
 ifneq ($(CCPATH),)
-  C_PATH ?= env PATH=$(CCPATH):$(PATH) LD_LIBRARY_PATH=$(LDPATH):$(LD_LIBRARY_PATH)
+  C_PATH ?= env PATH=$(CCPATH):$(PATH) LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
 endif
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc)

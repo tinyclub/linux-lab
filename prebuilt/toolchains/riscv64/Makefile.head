@@ -5,7 +5,7 @@ CCORI_LIST ?= bootlin gnu-mcu-eclipse
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
 
 ifneq ($(CCORI), internal)
-  CCTYPPE := external
+  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)

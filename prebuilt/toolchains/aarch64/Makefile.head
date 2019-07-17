@@ -7,9 +7,9 @@ TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 ifeq ($(CCORI), internal)
   CCPRE   ?= aarch64-linux-gnu-
   CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
-  CCTYPPE := internal
+  CCTYPE  := internal
 else
-  CCTYPPE := external
+  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)

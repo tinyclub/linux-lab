@@ -11,6 +11,7 @@
   * Use board specific linux submodule (in bsp/), customize KERNEL_SRC, update kernel-source
 * Replace submodules with regular git repo for easier customization
 * Upgrade docker image to ubuntu 18.04 LTS and reduce the size a lot
+* Merge buildroot to external toolchain, do we need to share CCTYPE and CCORI?
 
 ## Future
 

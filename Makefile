@@ -77,6 +77,18 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   endif
 endif
 
+# Check if it is a plugin
+BOARD_PREFIX:= $(subst /,,$(dir $(BOARD)))
+PLUGIN_DIR  := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
+PLUGIN_FLAG := $(PLUGIN_DIR)/.plugin
+
+ifneq ($(PLUGIN_FLAG), $(wildcard $(PLUGIN_FLAG)))
+  PLUGIN_DIR:=
+  _PLUGIN   := 0
+else
+  _PLUGIN   := 1
+endif
+
 # add board directories
 BOARD_ROOT ?= $(BOARD_DIR)/root
 BOARD_KERNEL ?= $(BOARD_DIR)/kernel
@@ -96,10 +108,8 @@ BSP_CONFIG = $(BSP_DIR)/configs
 # Support old directory arch
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
   _BSP_CONFIG := $(BSP_CONFIG)
-  _BSP_DIR    := $(BSP_DIR)
 else
   _BSP_CONFIG := $(BOARD_DIR)
-  _BSP_DIR    := $(BOARD_DIR)
 endif
 
 # Get the machine name for qemu-system-$(XARCH)
@@ -594,6 +604,13 @@ ifeq ($(BSP_SUBMODULE),0)
   endif
 endif
 
+# board specific src submodule parent
+ifeq ($(_PLUGIN), 1)
+  BSP_SROOT = $(PLUGIN_DIR)
+else
+  BSP_SROOT = $(BSP_DIR)
+endif
+
 board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
@@ -683,14 +700,14 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
 
 # Source download
 
-# Please makesure docker, git are installed
-# TODO: Use gitsubmodule instead, ref: http://tinylab.org/nodemcu-kickstart/
+UBOOT_SPATH := $(subst $(BSP_SROOT)/,,$(UBOOT_SRC))
+
 uboot-source:
 	@echo
 	@echo "Downloading u-boot source ..."
 	@echo
 ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
-	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(UBOOT_SRC)) && cd $(TOP_DIR)
+	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(UBOOT_SPATH) && cd $(TOP_DIR)
 else
 	$(UPDATE_GITMODULE) $(UBOOT_SRC)
 endif
@@ -701,12 +718,14 @@ d-u: uboot-source
 
 PHONY += uboot-source download-uboot uboot-download d-u
 
+QEMU_SPATH := $(subst $(BSP_SROOT)/,,$(QEMU_SRC))
+
 qemu-source:
 	@echo
 	@echo "Downloading qemu source ..."
 	@echo
 ifneq ($(_QEMU_SRC), $(QEMU_SRC))
-	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(QEMU_SRC)) && cd $(TOP_DIR)
+	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(QEMU_SPATH) && cd $(TOP_DIR)
 else
 	$(UPDATE_GITMODULE) $(QEMU_SRC)
 endif
@@ -730,12 +749,14 @@ qemu-all: qemu-full qemu-save
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
+KERNEL_SPATH := $(subst $(BSP_SROOT)/,,$(KERNEL_SRC))
+
 kernel-source:
 	@echo
 	@echo "Downloading kernel source ..."
 	@echo
 ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(KERNEL_SRC)) && cd $(TOP_DIR)
+	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(KERNEL_SPATH) && cd $(TOP_DIR)
 else
 	$(UPDATE_GITMODULE) $(KERNEL_SRC)
 endif
@@ -746,12 +767,14 @@ d-k: kernel-source
 
 PHONY += kernel-source kernel-download download-kernel d-k
 
+ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
+
 root-source:
 	@echo
 	@echo "Downloading buildroot source ..."
 	@echo
 ifneq ($(_ROOT_SRC), $(ROOT_SRC))
-	cd $(_BSP_DIR) && $(UPDATE_GITMODULE) $(notdir $(ROOT_SRC)) && cd $(TOP_DIR)
+	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(ROOT_SPATH)) && cd $(TOP_DIR)
 else
 	$(UPDATE_GITMODULE) $(ROOT_SRC)
 endif

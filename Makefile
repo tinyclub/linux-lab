@@ -996,6 +996,7 @@ gcc-switch: toolchain-switch
 gcc-version: toolchain-version
 
 toolchain-version:
+	@echo "CCORI: $(CCORI)"
 	$(Q)$(C_PATH) which $(CCPRE)gcc | tr -s '/'
 	$(Q)$(C_PATH) $(CCPRE)gcc --version | head -1
 

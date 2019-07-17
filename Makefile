@@ -44,12 +44,15 @@ endif
 plugin ?= $(p)
 P ?= $(plugin)
 ifeq ($(P),)
-  ifneq ($(PLUGIN_CONFIG),)
-    PLUGIN ?= $(PLUGIN_CONFIG)
+  ifeq ($(origin P), command line)
+    PLUGIN :=
+  else
+    ifneq ($(PLUGIN_CONFIG),)
+      PLUGIN ?= $(PLUGIN_CONFIG)
+    endif
   endif
 else
   PLUGIN := $(P)
-  _plugin := $(PLUGIN)
 endif
 
 # Core directories
@@ -593,7 +596,7 @@ endif
 
 board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(_plugin) \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
@@ -616,7 +619,13 @@ PHONY += board board-clean board-save b-s b-c
 
 # Plugin targets
 
-plugin-save:
+ifeq ($(filter command line, $(origin P) $(origin PLUGIN)), command line)
+  ifeq ($(PLUGIN),)
+    PLUGIN_CLEAN = plugin-clean
+  endif
+endif
+
+plugin-save: $(PLUGIN_CLEAN)
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
 	$(Q)$(shell echo "$(PLUGIN)" > .plugin_config)

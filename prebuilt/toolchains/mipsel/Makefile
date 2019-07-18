@@ -1,7 +1,7 @@
 # Makefile
 
 CCORI ?= bootlin
-CCORI_LIST ?= internal bootlin mips
+CCORI_LIST ?= internal bootlin mips loongnix
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mipsel
 
 ifeq ($(CCORI), internal)
@@ -24,4 +24,15 @@ ifeq ($(CCORI), mips)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   _CCBASE = Codescape.GNU.Tools.Package.$(CCVER).for.MIPS.IMG.Bare.Metal.CentOS-6.x86_64
   CCURL   = https://codescape.mips.com/components/toolchain/$(CCVER)/$(_CCBASE).tar.gz
+endif
+
+# Ref: http://www.loongnix.org/index.php/Cross-compile
+ifeq ($(CCORI), loongnix)
+  CCPRE  ?= mipsel-linux-
+  CCVER  ?= 4.3
+  CCBASE ?= opt/gcc-$(CCVER)-ls232
+  CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
+  LLPATH ?= $(TOOLCHAIN)/$(CCBASE)/i486-pc-linux-gnu/mipsel-linux/lib:$(TOOLCHAIN)/$(CCBASE)/lib:$(TOOLCHAIN)/$(CCBASE)/mipsel-linux/lib:$(TOOLCHAIN)/$(CCBASE)/sysroot/lib::$(TOOLCHAIN)/$(CCBASE)/sysroot/usr/lib
+  _CCBASE ?= opt/gcc-$(CCVER)-ls232
+  CCURL  ?= http://ftp.loongnix.org/toolchain/gcc/release/$(_CCBASE).tar.gz
 endif

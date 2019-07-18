@@ -245,9 +245,11 @@ ifneq ($(CCPRE),)
     CCORI_INTERNAL := 1
   endif
   # Add builtin toolchain to list (the one builtin the bsp or plugin)
-  ifneq ($(CCPATH),)
-    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CCORI_LIST += builtin
+  ifeq ($(CCORI),)
+    ifneq ($(CCPATH),)
+      ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+        CCORI_LIST += builtin
+      endif
     endif
   endif
 else

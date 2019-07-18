@@ -271,7 +271,9 @@ ifeq ($(CCORI), null)
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
     ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CCORI := buildroot
+      CCORI  := buildroot
+      CCPATH := $(BUILDROOT_CCPATH)
+      CCPRE  := $(BUILDROOT_CCPRE)
     endif
   endif
 

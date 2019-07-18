@@ -1748,6 +1748,9 @@ ifneq ($(DTS),)
 
 # FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
 dtb: $(DTS)
+	@echo "Building dtb ..."
+	@echo "  DTS: $(DTS)"
+	@echo "  DTB: $(DTB)"
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
 ifeq ($(_DTS),)
 	$(Q)make kernel KT=$(DTB_TARGET)

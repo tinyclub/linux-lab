@@ -12,7 +12,7 @@ https://toolchains.bootlin.com/
   Available CCORI: bootlin.
 
     $ vim boards/ppc/g3beige/Makefile
-    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ## Use it
 

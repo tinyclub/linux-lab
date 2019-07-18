@@ -15,7 +15,7 @@ https://toolchains.bootlin.com/
 
     $ vim boards/mipsel/malta/Makefile
     CCORI ?= bootlin
-    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ## Use it
 

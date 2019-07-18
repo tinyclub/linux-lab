@@ -7,9 +7,6 @@ TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mipsel
 ifeq ($(CCORI), internal)
   CCPRE   ?= mipsel-linux-gnu-
   CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
-  CCTYPE  := internal
-else
-  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)
@@ -27,8 +24,4 @@ ifeq ($(CCORI), mips)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   _CCBASE = Codescape.GNU.Tools.Package.$(CCVER).for.MIPS.IMG.Bare.Metal.CentOS-6.x86_64
   CCURL   = https://codescape.mips.com/components/toolchain/$(CCVER)/$(_CCBASE).tar.gz
-endif
-
-ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
-  $(error Supported gcc original list: $(CCORI_LIST))
 endif

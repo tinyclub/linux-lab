@@ -13,9 +13,6 @@ TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 ifeq ($(CCORI), internal)
   CCPRE   ?= arm-linux-gnueabi-
   CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
-  CCTYPE  := internal
-else
-  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)
@@ -46,8 +43,4 @@ ifeq ($(CCORI), arm)
   CCBASE   = gcc-arm-$(CCVER)-x86_64-$(XARCH)-linux-gnueabi
   CCPATH  ?= $(TOOLCHAIN)/$(CCBASE)/bin
   CCURL    = https://developer.arm.com/-/media/Files/downloads/gnu-a/$(CCVER)/binrel/$(CCBASE).tar.xz
-endif
-
-ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
-  $(error Supported gcc original list: $(CCORI_LIST))
 endif

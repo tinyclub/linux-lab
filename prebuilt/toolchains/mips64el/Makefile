@@ -7,9 +7,6 @@ TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/mips64el
 ifeq ($(CCORI), internal)
   CCPRE   ?= mipsel-linux-gnu-
   CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
-  CCTYPE  := internal
-else
-  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)
@@ -45,8 +42,4 @@ ifeq ($(CCORI), loongnix)
   #_CCBASE ?= mips-loongson-gcc7.3-2019.06-29-linux-gnu
   #CCURL  ?= http://ftp.loongnix.org/toolchain/gcc/release/$(_CCBASE).tar.gz
   #TAR_OPTS ?= jxvf
-endif
-
-ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
-  $(error Supported gcc original list: $(CCORI_LIST))
 endif

@@ -4,10 +4,6 @@ CCORI ?= gnu-mcu-eclipse
 CCORI_LIST ?= bootlin gnu-mcu-eclipse
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
 
-ifneq ($(CCORI), internal)
-  CCTYPE  := external
-endif
-
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= riscv64-linux-
   CCVER  ?= 2018.11-1

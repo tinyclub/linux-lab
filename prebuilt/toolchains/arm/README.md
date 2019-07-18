@@ -15,7 +15,7 @@ https://releases.linaro.org/components/toolchain/binaries/
 
     $ vim boards/arm/versatilepb/Makefile
     CCORI ?= bootlin
-    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ## Use it
 

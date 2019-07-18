@@ -15,7 +15,7 @@ https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases
 
     $ vim boards/virt/Makefile
     CCORI ?= bootlin
-    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ## Use it
 

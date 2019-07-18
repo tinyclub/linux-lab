@@ -18,7 +18,7 @@ https://developer.arm.com/tools-and-software/open-source-software/developer-tool
 
     $ vim boards/aarch64/raspi3/Makefile
     CCORI ?= arm
-    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.lib
+    include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
   Available 'CCORI's are bootlin, arm, linaro.
 

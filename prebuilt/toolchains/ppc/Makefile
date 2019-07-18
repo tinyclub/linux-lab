@@ -7,9 +7,6 @@ TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 ifeq ($(CCORI), internal)
   CCPRE   ?= powerpc-linux-gnu-
   CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
-  CCTYPE  := internal
-else
-  CCTYPE  := external
 endif
 
 ifeq ($(CCORI), bootlin)
@@ -18,8 +15,4 @@ ifeq ($(CCORI), bootlin)
   CCBASE  = powerpc-e500mc--uclibc--stable-$(CCVER)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   CCURL   = https://toolchains.bootlin.com/downloads/releases/toolchains/powerpc-e500mc/tarballs/$(CCBASE).tar.bz2
-endif
-
-ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
-  $(error Supported gcc original list: $(CCORI_LIST))
 endif

@@ -250,21 +250,20 @@ ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc 
   endif
 endif
 
-CCORI ?= internal
-CCORI_LIST ?= $(CCORI)
-CCTYPE ?= null
+CCORI ?= null
 
-# If no CCTYPE specified, check the internal one first
-ifeq ($(CCTYPE), null)
+# If no CCORI specified, check internal, buildroot, external one by one
+ifeq ($(CCORI), null)
+
   # Check if there is a local toolchain
   ifneq ($(CCPRE),)
     ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CCTYPE := internal
+      CCORI := internal
     endif
   else
     ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
       ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
-        CCTYPE := internal
+        CCORI := internal
       endif
     endif
   endif
@@ -272,19 +271,25 @@ ifeq ($(CCTYPE), null)
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
     ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CCTYPE := buildroot
+      CCORI := buildroot
+    endif
+  endif
+
+else # CCORI != null
+
+  # Check if internal toolchain is there
+  ifeq ($(CCORI), internal)
+    ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
     endif
   endif
 
   # Check if external toolchain downloaded
-  ifneq ($(CCPRE),)
-    ifneq ($(CCPATH),)
-      ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-        CCTYPE := external
-      else
-        # If no buildroot version, no internal version, just download one
-        ifeq ($(CCTYPE),null)
-          CCTYPE := external
+  ifneq ($(filter $(CCORI), buildroot), $(CCORI))
+    ifneq ($(CCPRE),)
+      ifneq ($(CCPATH),)
+        ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+          # If CCORI specified and it is not there, just download one
           ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
             CC_TOOLCHAIN := toolchain-source
           else
@@ -294,36 +299,15 @@ ifeq ($(CCTYPE), null)
       endif
     endif
   endif
-endif # CCTYPE = null
 
-# Check if external toolchain is there
-ifeq ($(CCTYPE), external)
-  ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-      CC_TOOLCHAIN := toolchain-source
-    else
-      $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one)
-    endif
-  endif
-endif
-
-# Check if internal toolchain is there
-ifeq ($(CCTYPE), internal)
-  ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-    $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
-  endif
-endif
+endif # CCORI = null
 
 # If none exists
-ifeq ($(CCTYPE), null)
-  $(info ERR: No toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
+ifeq ($(CCORI), null)
+  $(info ERR: No toolchain exists, please prefer to prebuilt/toolchains/ and prepare one)
 endif
 
-# If buildroot exists, switch CCPRE and CCPATH to buildroot
-ifeq ($(CCTYPE),buildroot)
-  override CCPATH := $(BUILDROOT_CCPATH)
-  override CCPRE  := $(BUILDROOT_CCPRE)
-endif
+CCORI_LIST ?= $(CCORI)
 
 ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
   $(error Supported gcc original list: $(CCORI_LIST))
@@ -1008,7 +992,7 @@ else
 	$(Q)wget -c $(CCURL)
 	$(Q)tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
   else
-	$(Q)make $(S) gcc-show
+	$(Q)make $(S) gcc-info
   endif
 endif
 
@@ -1016,11 +1000,11 @@ toolchain-list:
 	@echo
 	@echo "Listing prebuilt toolchain ..."
 	@echo
-	$(Q)$(foreach ccori, $(CCORI_LIST), make $(S) gcc-show CCORI=$(ccori);)
+	$(Q)$(foreach ccori, $(CCORI_LIST), make $(S) gcc-info CCORI=$(ccori);)
 
 gcc-list: toolchain-list
 
-toolchain-show:
+toolchain-info:
 	@echo
 	@echo [ $(CCORI) $(CCVER) ]:
 	@echo
@@ -1036,7 +1020,9 @@ ifeq ($(CCORI), internal)
 	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
 endif
 
-gcc-show: toolchain-show
+gcc-info: toolchain-info
+gcc-version: toolchain-info
+toolchain-version: toolchain-info
 
 toolchain-clean:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
@@ -1074,13 +1060,6 @@ else
 endif
 
 gcc-switch: toolchain-switch
-
-gcc-version: toolchain-version
-
-toolchain-version:
-	@echo "CCORI: $(CCORI)"
-	$(Q)$(C_PATH) which $(CCPRE)gcc | tr -s '/'
-	$(Q)$(C_PATH) $(CCPRE)gcc --version | head -1
 
 PHONY += toolchain-switch gcc-switch toolchain-version gcc-version
 

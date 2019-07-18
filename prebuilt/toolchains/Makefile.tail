@@ -4,6 +4,8 @@ ifneq ($(CCURL),)
 
 CCTAR = $(notdir $(CCURL))
 
+ifeq ($(TAR_OPTS),)
+
 ifeq ($(findstring .tar.xz, $(CCTAR)),.tar.xz)
   TAR_OPTS = Jxvf
 endif
@@ -19,6 +21,8 @@ endif
 ifeq ($(findstring .tgz, $(CCTAR)),.tgz)
   TAR_OPTS = zxvf
 endif
+
+endif # TAR_OPTS undef
 
 ifneq ($(CCBASE), $(wildcard $(CCBASE)))
 all: download decompress

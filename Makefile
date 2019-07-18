@@ -1004,7 +1004,7 @@ toolchain:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
 	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
 else
-  ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+  ifneq ($(CCPATH), $(wildcard $(CCPATH)))
 	$(Q)wget -c $(CCURL)
 	$(Q)tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
   else
@@ -1027,7 +1027,7 @@ toolchain-show:
 	@echo Remote.: $(CCURL)
 	@echo Local..: $(CCPATH)
 	@echo Tool...: $(CCPRE)gcc
-ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+ifneq ($(CCPATH), $(wildcard $(CCPATH)))
 	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
 else
 	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`

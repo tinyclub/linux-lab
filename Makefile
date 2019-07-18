@@ -239,6 +239,19 @@ else
 endif
 BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
 
+# Add buidroot toolchain to list
+ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+  ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
+    CCORI_LIST += buildroot
+  endif
+  ifeq ($(CCORI), buildroot)
+    CCPATH := $(BUILDROOT_CCPATH)
+    CCPRE  := $(BUILDROOT_CCPRE)
+  endif
+endif
+
+CCORI ?= internal
+CCORI_LIST ?= $(CCORI)
 CCTYPE ?= null
 
 # If no CCTYPE specified, check the internal one first
@@ -310,6 +323,10 @@ endif
 ifeq ($(CCTYPE),buildroot)
   override CCPATH := $(BUILDROOT_CCPATH)
   override CCPRE  := $(BUILDROOT_CCPRE)
+endif
+
+ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+  $(error Supported gcc original list: $(CCORI_LIST))
 endif
 
 ifneq ($(CCPATH),)
@@ -978,25 +995,58 @@ download-toolchain: toolchain
 d-t: toolchain
 gcc: toolchain
 
+include $(PREBUILT_TOOLCHAINS)/Makefile
+
 toolchain:
 	@echo
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER)) $(if $(CCORI),CCORI=$(CCORI)) \
-		$(if $(CCORI_LIST),CCORI_LIST="$(CCORI_LIST)") XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN)
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
+else
+  ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+	$(Q)wget -c $(CCURL)
+	$(Q)tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
+  else
+	$(Q)make $(S) gcc-show
+  endif
+endif
 
 toolchain-list:
 	@echo
 	@echo "Listing prebuilt toolchain ..."
 	@echo
-	$(Q)make -s list -C $(TOOLCHAIN) XARCH=$(XARCH) TOOLCHAIN=$(TOOLCHAIN) \
-		$(if $(CCORI_LIST),CCORI_LIST="$(CCORI_LIST)") $(if $(CCORI),CCORI=$(CCORI))
+	$(Q)$(foreach ccori, $(CCORI_LIST), make $(S) gcc-show CCORI=$(ccori);)
 
 gcc-list: toolchain-list
 
+toolchain-show:
+	@echo
+	@echo [ $(CCORI) $(CCVER) ]:
+	@echo
+	@echo Remote.: $(CCURL)
+	@echo Local..: $(CCPATH)
+	@echo Tool...: $(CCPRE)gcc
+ifneq ($(CCBASE), $(wildcard $(CCBASE)))
+	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
+else
+	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
+endif
+ifeq ($(CCORI), internal)
+	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
+endif
+
+gcc-show: toolchain-show
+
 toolchain-clean:
-ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-	$(Q)make $(S) -C $(TOOLCHAIN) clean
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+	$(Q)make $(S) clean -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
+else
+  ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+     ifneq ($(CCBASE),)
+	$(Q)rm -rf $(TOOLCHAIN)/$(CCBASE)
+     endif
+  endif
 endif
 
 gcc-clean: toolchain-clean

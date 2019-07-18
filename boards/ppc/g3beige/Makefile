@@ -20,4 +20,4 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 # prebuilt toolchain, please download it if not internal via: make toolchain
 # Available CCORI: internal, bootlin
 CCORI   ?= bootlin
-include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile

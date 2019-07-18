@@ -52,4 +52,4 @@ QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 # prebuilt toolchains, please download it if not internal via: make toolchain
 # Available origin: internal, bootlin, arm, linaro
 CCORI   ?= internal
-include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile.head
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile

@@ -8,8 +8,7 @@ all:
 	update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
 endif
 
-list:
-	update-alternatives --list gcc
+dummy:
 
 clean:
 	apt-get remove --purge $(CCVER)

@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-# extract-ikconfig -- a more human readable script
+# extract-ikconfig -- a more human readable script to extract kernel config.gz
 #
 # Author: Wu Zhangjin <lzufalcon@163.com>, 2019.07.19
 #
-# ref: kernel/configs.c: asm ( ... IKCFG_ST ... IKCFG_ED )
+# ref: kernel/configs.c: .rodata ( ... IKCFG_ST....................IKCFG_ED ... )
+#                                              ^ kernel/config.gz ^
 #      scripts/extract-ikconfig
 #
 

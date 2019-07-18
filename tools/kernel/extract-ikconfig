@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# extract-ikconfig -- a more human readable script
+#
+# Author: Wu Zhangjin <lzufalcon@163.com>, 2019.07.19
+#
+# ref: kernel/configs.c: asm ( ... IKCFG_ST ... IKCFG_ED )
+#      scripts/extract-ikconfig
+#
+
+# Check invocation:
+me=${0##*/}
+img=$1
+if [ $# -ne 1 -o ! -s "$img" ]; then
+  echo "Usage: $me <kernel-image>" >&2
+  exit 2
+fi
+
+pos=$(grep -abo "IKCFG_ST" $img)
+[ $? -ne 0 ] && echo "$me: Cannot find kernel config." >&2 && exit 1
+
+pos=${pos%%:*}
+kcfg_start=$(($pos+8))
+
+pos=$(grep -abo "IKCFG_ED" $img)
+pos=${pos%%:*}
+kcfg_end=$(($pos-1))
+
+kcfg_bytes=$(($kcfg_end-$kcfg_start+1))
+
+dd if=$img bs=1 skip=$kcfg_start count=$kcfg_bytes | zcat

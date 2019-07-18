@@ -239,6 +239,31 @@ else
 endif
 BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
 
+# Add internal toolchain to list (the one installed in docker image)
+ifneq ($(CCPRE),)
+  ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    CCORI_INTERNAL := 1
+  endif
+  # Add builtin toolchain to list (the one builtin the bsp or plugin)
+  ifneq ($(CCPATH),)
+    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI_LIST += builtin
+    endif
+  endif
+else
+  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+    ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI_INTERNAL := 1
+    endif
+  endif
+endif
+
+ifeq ($(CCORI_INTERNAL), 1)
+  ifneq ($(filter internal, $(CCORI_LIST)), internal)
+    CCORI_LIST += internal
+  endif
+endif
+
 # Add buidroot toolchain to list
 ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
   ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
@@ -275,6 +300,10 @@ ifeq ($(CCORI), null)
       CCPATH := $(BUILDROOT_CCPATH)
       CCPRE  := $(BUILDROOT_CCPRE)
     endif
+  else
+    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI := builtin
+    endif
   endif
 
 else # CCORI != null
@@ -282,7 +311,7 @@ else # CCORI != null
   # Check if internal toolchain is there
   ifeq ($(CCORI), internal)
     ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      $(error ERR: No internal toolchain exists, please use CCTYPE=external, prefer to prebuilt/toolchains/ and prepare one)
+      $(error ERR: No internal toolchain found, please find one via: make toolchain-list)
     endif
   endif
 
@@ -295,7 +324,7 @@ else # CCORI != null
           ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
             CC_TOOLCHAIN := toolchain-source
           else
-            $(error ERR: No internal and external toolchain provided, please refer to prebuilt/toolchains/ and prepare one)
+            $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
           endif
         endif
       endif
@@ -306,7 +335,7 @@ endif # CCORI = null
 
 # If none exists
 ifeq ($(CCORI), null)
-  $(info ERR: No toolchain exists, please prefer to prebuilt/toolchains/ and prepare one)
+  $(info ERR: No toolchain found, please refer to prebuilt/toolchains/ and prepare one)
 endif
 
 CCORI_LIST ?= $(CCORI)

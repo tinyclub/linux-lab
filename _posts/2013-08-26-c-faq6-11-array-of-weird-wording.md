@@ -27,7 +27,7 @@ categories:
     int main(int argc, char *argv[])
     {
           char *tmp = "abcdssdc";
-          printf("%c\n", tmp+5);
+          printf("%c\n", *(tmp+5));
           return 0;
     }
 

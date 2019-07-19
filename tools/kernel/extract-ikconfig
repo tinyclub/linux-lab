@@ -4,8 +4,8 @@
 #
 # Author: Wu Zhangjin <lzufalcon@163.com>, 2019.07.19
 #
-# ref: kernel/configs.c: .rodata ( ... IKCFG_ST....................IKCFG_ED ... )
-#                                              ^ kernel/config.gz ^
+# ref: kernel/configs.c: .rodata ( ... IKCFG_ST.........................IKCFG_ED ... )
+#                                              ^ kernel/config_data.gz ^
 #      scripts/extract-ikconfig
 #
 

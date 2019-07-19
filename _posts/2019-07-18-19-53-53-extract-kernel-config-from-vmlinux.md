@@ -30,7 +30,7 @@ tags:
 
 在张老师准备的内核 vmlinux 中，确实有一个 `/proc/config.gz`，说明内核配置文件已经编译到内核了，但是由于内核没有配置 nfs，尝试了几次没 dump 出来。
 
-当然，其实也可以用 zcat 打印 `/proc/config.gz` 到控制台，然后再复制出来，这个时候要把控制台的 scrollback lines 设置大一些，但是没那么方便。
+当然，其实也可以用 `zcat /proc/config.gz` 打印到控制台，然后再复制出来，这个时候要把控制台的 scrollback lines 设置大一些，但是没那么方便。
 
 ## 极速体验
 

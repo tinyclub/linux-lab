@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "bugfix: 使用 git bisect 自动定位 uboot 启动失败问题"
-draft: true
+draft: false
 album: "Debugging+Tracing"
 license: "cc-by-sa-4.0"
 permalink: /bugfix-git-bisect-uboot-failure/

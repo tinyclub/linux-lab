@@ -41,7 +41,7 @@ TEST_RD ?= /dev/mmcblk0
 
 # Verified root devices
 ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0
-ROOTDEV_LIST[LINUX_v5.1] := /dev/mmcblk0 /dev/ram0
+# ROOTDEV_LIST[LINUX_v5.1] := /dev/mmcblk0 /dev/ram0
 
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext2

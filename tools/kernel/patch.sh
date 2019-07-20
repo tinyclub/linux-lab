@@ -10,16 +10,16 @@ KERNEL_OUTPUT=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
-LINUX_BASE=${LINUX%.*}
-
-KPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX_BASE}/
 KPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX}/
-
-KPD_BSP_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/linux/${LINUX_BASE}/
 KPD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/patch/linux/${LINUX}/
-
-KPD_BASE=${TOP_DIR}/patch/linux/${LINUX_BASE}/
 KPD=${TOP_DIR}/patch/linux/${LINUX}/
+
+LINUX_BASE=${LINUX%.*}
+if [ $LINUX_BASE != $LINUX ]; then
+  KPD_BOARD_BASE=${TOP_DIR}/boards/${BOARD}/patch/linux/${LINUX_BASE}/
+  KPD_BSP_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/linux/${LINUX_BASE}/
+  KPD_BASE=${TOP_DIR}/patch/linux/${LINUX_BASE}/
+fi
 
 for d in $KPD_BOARD_BASE $KPD_BOARD $KPD_BSP_BASE $KPD_BSP $KPD_BASE $KPD
 do

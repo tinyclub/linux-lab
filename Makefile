@@ -129,7 +129,34 @@ ifneq ($(BOARD),)
   include $(BOARD_DIR)/Makefile
 endif
 
+# board specific src submodule parent
+ifeq ($(_PLUGIN), 1)
+  BSP_SROOT = $(PLUGIN_DIR)
+else
+  BSP_SROOT = $(BSP_DIR)
+endif
+
+# Core source: remote and local
+QEMU_GIT ?= https://github.com/qemu/qemu.git
+_QEMU_SRC ?= qemu
+QEMU_SRC ?= $(_QEMU_SRC)
+
+UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+_UBOOT_SRC ?= u-boot
+UBOOT_SRC ?= $(_UBOOT_SRC)
+
+KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
+# git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+_KERNEL_SRC = linux-stable
+KERNEL_SRC ?= $(_KERNEL_SRC)
+
+# Use faster mirror instead of git://git.buildroot.net/buildroot.git
+ROOT_GIT ?= https://github.com/buildroot/buildroot
+_ROOT_SRC ?= buildroot
+ROOT_SRC ?= $(_ROOT_SRC)
+
 # Verify LINUX argument
+KERNEL_SPATH := $(subst $(BSP_SROOT)/,,$(KERNEL_SRC))
 ifneq ($(LINUX),)
   ifeq ($(BSP_KERNEL), $(wildcard $(BSP_KERNEL)))
     LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
@@ -142,6 +169,7 @@ ifneq ($(LINUX),)
 endif
 
 # Verify ROOT argument
+ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
 ifneq ($(ROOT),)
   ifeq ($(BSP_ROOT), $(wildcard $(BSP_ROOT)))
     ROOT_LIST ?= $(shell ls $(BSP_ROOT))
@@ -154,6 +182,7 @@ ifneq ($(ROOT),)
 endif
 
 # Verify UBOOT argument
+UBOOT_SPATH := $(subst $(BSP_SROOT)/,,$(UBOOT_SRC))
 ifneq ($(UBOOT),)
   ifeq ($(BSP_UBOOT), $(wildcard $(BSP_UBOOT)))
     UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
@@ -166,6 +195,7 @@ ifneq ($(UBOOT),)
 endif
 
 # Verify QEMU argument
+QEMU_SPATH := $(subst $(BSP_SROOT)/,,$(QEMU_SRC))
 ifneq ($(QEMU),)
   ifeq ($(BSP_QEMU), $(wildcard $(BSP_QEMU)))
     QEMU_LIST ?= $(shell ls $(BSP_QEMU))
@@ -203,25 +233,6 @@ _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
-
-# Core source: remote and local
-QEMU_GIT ?= https://github.com/qemu/qemu.git
-_QEMU_SRC ?= qemu
-QEMU_SRC ?= $(_QEMU_SRC)
-
-UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
-_UBOOT_SRC ?= u-boot
-UBOOT_SRC ?= $(_UBOOT_SRC)
-
-KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
-# git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-_KERNEL_SRC = linux-stable
-KERNEL_SRC ?= $(_KERNEL_SRC)
-
-# Use faster mirror instead of git://git.buildroot.net/buildroot.git
-ROOT_GIT ?= https://github.com/buildroot/buildroot
-_ROOT_SRC ?= buildroot
-ROOT_SRC ?= $(_ROOT_SRC)
 
 # Core output: for building in standalone directories
 TOP_OUTPUT      := $(TOP_DIR)/output
@@ -638,13 +649,6 @@ ifeq ($(BSP_SUBMODULE),0)
   endif
 endif
 
-# board specific src submodule parent
-ifeq ($(_PLUGIN), 1)
-  BSP_SROOT = $(PLUGIN_DIR)
-else
-  BSP_SROOT = $(BSP_DIR)
-endif
-
 board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
@@ -734,8 +738,6 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
 
 # Source download
 
-UBOOT_SPATH := $(subst $(BSP_SROOT)/,,$(UBOOT_SRC))
-
 uboot-source:
 	@echo
 	@echo "Downloading u-boot source ..."
@@ -751,8 +753,6 @@ uboot-download: uboot-source
 d-u: uboot-source
 
 PHONY += uboot-source download-uboot uboot-download d-u
-
-QEMU_SPATH := $(subst $(BSP_SROOT)/,,$(QEMU_SRC))
 
 qemu-source:
 	@echo
@@ -783,8 +783,6 @@ qemu-all: qemu-full qemu-save
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
-KERNEL_SPATH := $(subst $(BSP_SROOT)/,,$(KERNEL_SRC))
-
 kernel-source:
 	@echo
 	@echo "Downloading kernel source ..."
@@ -800,8 +798,6 @@ download-kernel: kernel-source
 d-k: kernel-source
 
 PHONY += kernel-source kernel-download download-kernel d-k
-
-ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
 
 root-source:
 	@echo
@@ -1590,9 +1586,16 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
 
+# Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
+ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
+  _LINUX=$(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
+else
+  _LINUX=$(LINUX)
+endif
+
 # Configure Kernel
 kernel-checkout:
-	cd $(KERNEL_SRC) && git checkout -f $(LINUX) && git clean -fdx && cd $(TOP_DIR)
+	cd $(KERNEL_SRC) && git checkout -f $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
 
 KCO ?= 0
 #LINUX ?= master

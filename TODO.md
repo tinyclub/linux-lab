@@ -27,3 +27,4 @@
 * Do we need to save/restore every checking out of source code
 * Find out kernel option dependencies for non-interactive config method
 * Add dhcp support
+* Update coreutils to add realpath for latest v5.2

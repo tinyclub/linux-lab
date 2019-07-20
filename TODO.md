@@ -26,3 +26,4 @@
   * [use expect as interactive test automation](https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile)
 * Do we need to save/restore every checking out of source code
 * Find out kernel option dependencies for non-interactive config method
+* Add dhcp support

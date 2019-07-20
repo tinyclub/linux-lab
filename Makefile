@@ -165,7 +165,7 @@ ifneq ($(UBOOT),)
   endif
 endif
 
-# Verify UBOOT argument
+# Verify QEMU argument
 ifneq ($(QEMU),)
   ifeq ($(BSP_QEMU), $(wildcard $(BSP_QEMU)))
     QEMU_LIST ?= $(shell ls $(BSP_QEMU))

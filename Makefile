@@ -2392,7 +2392,7 @@ ifneq ($(NETDEV),)
       ifeq ($(MACH), malta)
         EMULATOR += -kernel $(_KIMAGE)
       endif
-      ifneq ($(filter $(XARCH),riscv32 riscv64), $(XARCH))
+      ifneq ($(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k), $(BOARD))
         $(info $(shell $(EMULATOR) -M $(MACH) -net nic,model=?))
       endif
       $(error Kernel Supported NETDEV list: $(NETDEV_LIST))

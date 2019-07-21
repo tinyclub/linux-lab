@@ -2815,12 +2815,16 @@ _debug_init_2:
 	$(Q)sed -i -e "/do_fork/s/^#*/#/g" $(GDB_INIT)
 
 ifeq ($(DEBUG),1)
-  ifneq ($(TEST_TIMEOUT),0)
-    DEBUG_INIT := _debug_init_2
+  ifeq ($(shell $(C_PATH) $(CCPRE)gdb --version >/dev/null 2>&1; echo $$?), 0)
+    ifneq ($(TEST_TIMEOUT),0)
+      DEBUG_INIT := _debug_init_2
+    else
+      DEBUG_INIT := _debug_init_1
+    endif
+    DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
   else
-    DEBUG_INIT := _debug_init_1
+     $(error $(shell $(CCPATH)/$(CCPRE)gdb || echo "ERR: $(CCPRE)gdb is not valid or not exists"))
   endif
-  DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
 endif
 
 PHONY += _debug _debug_init _debug_finish

@@ -2427,14 +2427,17 @@ IP    := $(basename $(ROUTE)).$(TMP)
 
 CMDLINE += route=$(ROUTE)
 
+# Default iface
+IFACE   ?= eth0
+CMDLINE += iface=$(IFACE)
+
 ifeq ($(ROOTDEV),/dev/nfs)
   ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
   # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
   # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
-  IFACE   ?= eth0
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP):::::$(IFACE):off
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP):$(ROUTE):$(ROUTE):255.255.255.0:linux-lab:$(IFACE):off
 endif
 
 ifeq ($(DEV_TYPE),hd)

@@ -1,14 +1,22 @@
 #!/bin/sh
 #
-# buildroot/output/target/etc/network/if-up.d/config_iface
+# /etc/network/if-pre-up.d/config_iface
 #
 
+cmdline=/proc/cmdline
 eth=eth0
-route=`cat /proc/cmdline | sed -e "s/.*route=\([0-9.]*\).*/\1/g"`
-ip=`echo $route | sed -e 's/\.\([0-9]*\)$/.'$(($RANDOM%230+11))'/g'`
 
-echo "IP: $ip"
-echo "Route: $route"
+grep -q "iface=" $cmdline && eth=`cat $cmdline | sed -e "s/.*iface=\([a-zA-Z0-9]*\).*/\1/g"`
+grep -q "route=" $cmdline && route=`cat $cmdline | sed -e "s/.*route=\([0-9.]*\).*/\1/g"`
+grep -q "ip="    $cmdline && ip=`cat $cmdline | sed -e "s/.*ip=\([0-9.]*\).*/\1/g"`
 
-ifconfig $eth $ip up
-route add default gw $route $eth
+if [ -z "$ip" ]; then
+  ip=`echo $route | sed -e 's/\.\([0-9]*\)$/.'$(($RANDOM%230+11))'/g'`
+
+  if [ `route -n | wc -l` -eq 2 ]; then
+    ifconfig $eth $ip up
+    route add default gw $route $eth
+  fi
+fi
+
+echo "eth: $eth, ip: $ip, gw: $route"

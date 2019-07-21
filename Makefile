@@ -975,9 +975,16 @@ endif
 
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
+ifneq ($(_QEMU_SRC), $(QEMU_SRC))
+  QEMU_CONF_CMD := $(QEMU_SRC)/configure
+else
+  QEMU_CONF_CMD := $(TOP_DIR)/$(QEMU_SRC)/configure
+endif
+QEMU_CONF_CMD += $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
+
 qemu-defconfig: $(QEMU_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(TOP_DIR)/$(QEMU_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX) && cd $(TOP_DIR)
+	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 emulator-defconfig: qemu-defconfig
 

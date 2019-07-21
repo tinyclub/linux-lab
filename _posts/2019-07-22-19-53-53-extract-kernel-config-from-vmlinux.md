@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "探索从 vmlinux 中抓取 Linux 内核 config 文件"
-draft: true
+draft: false
 license: "cc-by-sa-4.0"
 album: "Debugging+Tracing"
 permalink: /extract-kernel-config-from-vmlinux/
@@ -26,7 +26,7 @@ tags:
 
 最近两周在忙活 [Linux Lab](/linux-lab) V0.2 RC1，其中一个很重要的目标是添加国产龙芯处理器支持。
 
-在添加龙芯 ls2k 平台的过程中，张老师已经准备了 vmlinux 和 dtb，还需要添加配置文件和源代码，但源码中默认的配置编译完无法启动，所以需要找一个可复用的内核配置文件。
+在添加龙芯 ls2k 平台的过程中，来自龙芯的张老师已经准备了 vmlinux 和 dtb，还需要添加配置文件和源代码，但源码中默认的配置编译完无法启动，所以需要找一个可复用的内核配置文件。
 
 在张老师准备的内核 vmlinux 中，确实有一个 `/proc/config.gz`，说明内核配置文件已经编译到内核了，但是由于内核没有配置 nfs，尝试了几次没 dump 出来。
 

@@ -2431,7 +2431,8 @@ ifeq ($(ROOTDEV),/dev/nfs)
   ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)
+  # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)::$(ROUTE):255.255.255.0:linux-lab:eth0:off
 endif
 
 ifeq ($(DEV_TYPE),hd)

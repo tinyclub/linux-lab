@@ -2432,7 +2432,9 @@ ifeq ($(ROOTDEV),/dev/nfs)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
   # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP)::$(ROUTE):255.255.255.0:linux-lab:eth0:off
+  # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
+  IFACE   ?= eth0
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP):::::$(IFACE):off
 endif
 
 ifeq ($(DEV_TYPE),hd)

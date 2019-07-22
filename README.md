@@ -302,6 +302,7 @@ Book examples or the boards with a whole new cpu architecture benefit from such 
 Here maintains the available plugins:
 
 - [C-Sky Linux](https://gitee.com/tinylab/csky)
+- [Loongson Linux](https://gitee.com/loongsonlab/loongson)
 - [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
 
 ### Downloading

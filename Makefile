@@ -1707,13 +1707,9 @@ PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
 FPL ?= 1
-ifeq ($(FEATURE),debug)
+ifeq ($(filter $(FEATURE),debug module boot nfsroot initrd), $(FEATURE))
   FPL := 0
 endif
-ifeq ($(FEATURE),module)
-  FPL := 0
-endif
-
 ifeq ($(FEATURE),boot,module)
   FPL := 0
 endif

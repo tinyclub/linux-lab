@@ -2783,10 +2783,28 @@ PHONY += _boot-test boot-test test r-t raw-test
 # Boot dependencies
 
 # Debug support
+ifeq ($(DEBUG),1)
+
+GDB         ?= $(C_PATH) $(CCPRE)gdb
+ifeq ($(shell which gdb-multiarch >/dev/null 2>&1; echo $$?), 0)
+  GDB_MARCH ?= 1
+endif
+ifeq ($(shell $(GDB) --version >/dev/null 2>&1; echo $$?), 0)
+  GDB_ARCH  ?= 1
+endif
+ifneq ($(GDB_ARCH), 1)
+  ifeq ($(GDB_MARCH), 1)
+     GDB := gdb-multiarch
+  else
+     $(error ERR: Both of $(CCPATH)/$(CCPRE)gdb and gdb-multiarch not exist or not valid)))
+  endif
+endif
+
 # Xterm: lxterminal, terminator
 XTERM        ?= $(shell tools/xterm.sh lxterminal)
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
-GDB_CMD      ?= $(C_PATH) $(CCPRE)gdb $(VMLINUX)
+
+GDB_CMD      ?= $(GDB) $(VMLINUX)
 GDB_INIT     ?= $(TOP_DIR)/.gdbinit
 HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
@@ -2816,20 +2834,16 @@ _debug_init_1:
 _debug_init_2:
 	$(Q)sed -i -e "/do_fork/s/^#*/#/g" $(GDB_INIT)
 
-ifeq ($(DEBUG),1)
-  ifeq ($(shell $(C_PATH) $(CCPRE)gdb --version >/dev/null 2>&1; echo $$?), 0)
-    ifneq ($(TEST_TIMEOUT),0)
-      DEBUG_INIT := _debug_init_2
-    else
-      DEBUG_INIT := _debug_init_1
-    endif
-    DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
-  else
-     $(error $(shell $(CCPATH)/$(CCPRE)gdb || echo "ERR: $(CCPRE)gdb is not valid or not exists"))
-  endif
+ifneq ($(TEST_TIMEOUT),0)
+  DEBUG_INIT := _debug_init_2
+else
+  DEBUG_INIT := _debug_init_1
 endif
+DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
 
-PHONY += _debug _debug_init _debug_finish
+PHONY += _debug _debug_init_1 _debug_init_2
+
+endif # DEBUG = 1
 
 _BOOT_DEPS ?=
 _BOOT_DEPS += root-$(DEV_TYPE)

@@ -49,13 +49,13 @@ tags:
 
 大概的原理我们来剖析一下。
 
-** Makefile **
+**Makefile**
 
   初始化 `KCONFIG_CONFIG`：
 
     KCONFIG_CONFIG ?= .config
 
-** kernel/Makefile **
+**kernel/Makefile**
 
   把 `.config` 用 gzip 压缩了一份，放到了 `kernel/config_data.gz`：
 
@@ -65,7 +65,7 @@ tags:
     $(obj)/config_data.gz: $(KCONFIG_CONFIG) FORCE
     	$(call if_changed,gzip)
 
-** kernel/configs.c**
+**kernel/configs.c**
 
   把 `kernel/config_data.gz` 放到 `.rodata` section，并在前后加了字符串标记：`IKCFG_ST` 和 `IKCFG_ED`：
 
@@ -85,7 +85,7 @@ tags:
     "       .popsection                             \n"
     );
 
-** scripts/extract-ikconfig **
+**scripts/extract-ikconfig**
 
   通过 `grep -abo` 去找到 kconfig data 的位置。`-abo` 的意思是：`-a` 把二进制文件当 text 处理，`-b` 打印字节偏移，`-o` 只打印要匹配的字符串：
 
@@ -103,7 +103,7 @@ tags:
             fi
     }
 
-  这个脚本写得有点晦涩，大体意思是先找到 IKCFG_ST，算出 kconfig data 位置，再用 tail 取出来。
+  这个脚本写得有点晦涩，大体意思是先找到 "IKCFG_ST"，算出 kconfig data 位置，再用 tail 取出来。
 
 
 ## 换个思路

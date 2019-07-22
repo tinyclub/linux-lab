@@ -28,3 +28,4 @@
 * Find out kernel option dependencies for non-interactive config method
 * Add dhcp support
 * Update coreutils to add realpath for latest v5.2
+* Add gdb-multiarch in docker image

@@ -1803,6 +1803,8 @@ ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
   ROOT_RD := root-rd
   # directory is ok, but is not compressed cpio
   KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
+else
+  KOPTS   += CONFIG_INITRAMFS_SOURCE=
 endif
 
 KMAKE_CMD := make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)

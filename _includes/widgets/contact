@@ -1,7 +1,5 @@
 {% if page.contact != false %}
 
-<hr>
-
 <br>
 <table>
 <tr><td style="text-align:center;width:30%">微信公众号</td><td style="text-align:center;color:red;width:40%;">{{ contact_info }}</td><td style="text-align:center;width: 30%">知识星球</td></tr>

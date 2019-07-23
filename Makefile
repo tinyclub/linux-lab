@@ -404,7 +404,7 @@ ifneq ($(QEMU),)
   endif
 endif
 
-EMULATOR := $(QEMU_PATH) $(XQENV) qemu-system-$(XARCH) $(BIOS_ARG)
+EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
 LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)

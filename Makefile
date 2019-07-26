@@ -366,7 +366,8 @@ endif
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 # Parallel Compiling threads
-HOST_CPU_THREADS ?= $(shell grep -c processor /proc/cpuinfo)
+HOST_CPU_THREADS := $(shell grep -c processor /proc/cpuinfo)
+JOBS ?= $(HOST_CPU_THREADS)
 
 #
 # Prefer new binaries to the prebuilt ones control
@@ -2364,7 +2365,7 @@ kconfig-save: $(BOARD_BSP)
 root-saveconfig: rconfig-save
 
 rconfig-save: $(BOARD_BSP)
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) savedefconfig
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(JOBS) savedefconfig
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \

@@ -168,6 +168,15 @@ ifneq ($(LINUX),)
   endif
 endif
 
+# Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
+ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
+  _LINUX=$(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
+  KERNEL_ABS_SRC := $(KERNEL_SRC)
+else
+  _LINUX=$(LINUX)
+  KERNEL_ABS_SRC := $(TOP_DIR)/$(KERNEL_SRC)
+endif
+
 # Verify ROOT argument
 ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
 ifneq ($(ROOT),)
@@ -181,6 +190,12 @@ ifneq ($(ROOT),)
   endif
 endif
 
+ifneq ($(_ROOT_SRC), $(ROOT_SRC))
+  ROOT_ABS_SRC := $(ROOT_SRC)
+else
+  ROOT_ABS_SRC := $(TOP_DIR)/$(ROOT_SRC)
+endif
+
 # Verify UBOOT argument
 UBOOT_SPATH := $(subst $(BSP_SROOT)/,,$(UBOOT_SRC))
 ifneq ($(UBOOT),)
@@ -192,6 +207,12 @@ ifneq ($(UBOOT),)
       $(error Supported UBOOT list: $(UBOOT_LIST))
     endif
   endif
+endif
+
+ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
+  UBOOT_ABS_SRC := $(UBOOT_SRC)
+else
+  UBOOT_ABS_SRC := $(TOP_DIR)/$(UBOOT_SRC)
 endif
 
 # Verify QEMU argument
@@ -210,6 +231,12 @@ ifneq ($(QEMU),)
       $(error Supported QEMU list: $(QEMU_LIST))
     endif
   endif
+endif
+
+ifneq ($(_QEMU_SRC), $(QEMU_SRC))
+  QEMU_ABS_SRC := $(QEMU_SRC)
+else
+  QEMU_ABS_SRC := $(TOP_DIR)/$(QEMU_SRC)
 endif
 
 # Kernel features configuration, e.g. kft, gcs ...
@@ -976,12 +1003,7 @@ endif
 
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
-ifneq ($(_QEMU_SRC), $(QEMU_SRC))
-  QEMU_CONF_CMD := $(QEMU_SRC)/configure
-else
-  QEMU_CONF_CMD := $(TOP_DIR)/$(QEMU_SRC)/configure
-endif
-QEMU_CONF_CMD += $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
+QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 
 qemu-defconfig: $(QEMU_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
@@ -1348,7 +1370,7 @@ else
 endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
-KERNEL_MODULE_DIR := $(TOP_DIR)/$(KERNEL_SRC)
+KERNEL_MODULE_DIR := $(KERNEL_ABS_SRC)
 KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
 
 modules ?= $(m)
@@ -1433,7 +1455,7 @@ ifneq ($(M_PATH),)
   M_PATH := $(patsubst %/,%,$(M_PATH))
 endif
 
-SCRIPTS_KCONFIG := ${TOP_DIR}/$(KERNEL_SRC)/scripts/config
+SCRIPTS_KCONFIG := tools/kernel/config
 DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
 
 ifeq ($(findstring module,$(MAKECMDGOALS)),module)
@@ -1443,6 +1465,7 @@ ifeq ($(findstring module,$(MAKECMDGOALS)),module)
   else
     MODULES_EN := 0
   endif
+  $(info $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
 endif
 
 ifneq ($(M_PATH),)
@@ -1594,13 +1617,6 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
 
-# Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
-ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-  _LINUX=$(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
-else
-  _LINUX=$(LINUX)
-endif
-
 # Configure Kernel
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
@@ -1685,7 +1701,11 @@ ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
   KERNEL_OLDDEFCONFIG := olddefconfig
   ifeq ($(KCONFIG_MAKEFILE), $(wildcard $(KCONFIG_MAKEFILE)))
     ifneq ($(shell grep olddefconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
-      KERNEL_OLDDEFCONFIG := oldnoconfig
+      ifneq ($(shell grep oldnoconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
+        KERNEL_OLDDEFCONFIG := oldconfig
+      else
+        KERNEL_OLDDEFCONFIG := oldnoconfig
+      endif
     endif
   endif
 endif
@@ -1719,7 +1739,7 @@ FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
 
 kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
-	  $(KERNEL_FEATURE_TOOL) $(XARCH) $(BOARD) $(LINUX) $(TOP_DIR)/$(KERNEL_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
+	  $(KERNEL_FEATURE_TOOL) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
 	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-checkout' at first." && exit 1; \
@@ -2002,7 +2022,7 @@ PHONY += vmlinux
 
 calltrace: kernel-calltrace
 kernel-calltrace: vmlinux
-	$(Q)$(KERNEL_CALLTRACE_TOOL) $(VMLINUX) $(LASTCALL) $(TOP_DIR)/$(KERNEL_SRC) "$(C_PATH)" "$(CCPRE)"
+	$(Q)$(KERNEL_CALLTRACE_TOOL) $(VMLINUX) $(LASTCALL) $(KERNEL_ABS_SRC) "$(C_PATH)" "$(CCPRE)"
 
 PHONY += kernel-calltrace calltrace
 

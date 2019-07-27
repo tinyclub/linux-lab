@@ -2724,6 +2724,9 @@ ifneq ($(TEST),)
  endif
 endif
 
+# Strip begin,end and duplicated spaces
+CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
+
 ifeq ($(U),0)
   BOOT_CMD += -append '$(CMDLINE)'
 endif

@@ -26,7 +26,7 @@ categories:
 
 ![image](/wp-content/uploads/2019/07/Linux-profiling-overview.jpg)
 
-为方便介绍期间，将 Linux Profiling 手段分为两大类：
+为方便介绍，将 Linux Profiling 手段分为两大类：
 
 - 软件埋点：
 

@@ -22,7 +22,7 @@ categories:
 > by Chen Jie of [TinyLab.org][1]
 > 2019/07/20
 
-## 图 1：Linux profiling 手段一览
+## 图 1 Linux profiling 手段一览
 
 ![image](/wp-content/uploads/2019/07/Linux-profiling-overview.jpg)
 

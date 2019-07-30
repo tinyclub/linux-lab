@@ -163,7 +163,7 @@ task :post do
     post.puts "#{tagline}"
     post.puts "#{album}"
     post.puts "#{group}"
-    post.puts 'license: "cc-by-sa-4.0"'
+    post.puts 'license: "cc-by-nc-nd-4.0"'
     post.puts "#{permalink}"
     post.puts 'description: " 文章摘要 "'
     post.puts "category:#{category_list}"

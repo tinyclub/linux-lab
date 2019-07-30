@@ -4,7 +4,6 @@ author: 'Wu Zhangjin'
 title: "为什么 Shell 脚本不工作，语法之外的那些事儿"
 draft: false
 album: 'Debugging+Tracing'
-license: "cc-by-sa-4.0"
 permalink: /why-shell-scripts-fails/
 description: "当一个 Shell 程序的语法确认无误后，还可能有什么原因导致它不能正常工作？有搜索路径、搜索类型、执行权限、不匹配的解释器、平台差异等。"
 category:

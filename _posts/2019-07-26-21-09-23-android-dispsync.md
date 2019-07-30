@@ -1088,5 +1088,5 @@ Date:   Tue Jul 30 15:10:32 2013 -0700
 [4]: https://www.jianshu.com/p/d3e4b1805c92
 [5]: http://echuang54.blogspot.com/2015/01/dispsync.html
 [6]: https://source.android.google.cn/devices/graphics/implement-vsync.html#explicit_synchronization
-[7]: /wp-content/uploads/2019/07/dispsync-init.jpg
-[8]: /wp-content/uploads/2019/07/dispsync-notification.jpg
+[7]: /wp-content/uploads/2019/07/dispsync-init.png
+[8]: /wp-content/uploads/2019/07/dispsync-notification.png

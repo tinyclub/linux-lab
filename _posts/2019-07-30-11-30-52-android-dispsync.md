@@ -4,7 +4,6 @@ author: 'simowce'
 title: "Android DispSync 详解"
 draft: false
 mathjax: true
-license: "cc-by-sa-4.0"
 permalink: /android-dispsync/
 description: "对 Android DispSync 的初始化，分发，作用和意义进行了详细的分析描述"
 category:

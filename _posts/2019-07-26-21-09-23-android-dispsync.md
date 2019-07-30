@@ -3,6 +3,7 @@ layout: post
 author: 'simowce'
 title: "Android DispSync 详解"
 draft: true
+mathjax: true
 license: "cc-by-sa-4.0"
 permalink: /android-dispsync/
 description: "对 Android DispSync 的初始化，分发，作用和意义进行了详细的分析描述"
@@ -914,7 +915,7 @@ mPeriod 的计算十分简单，把所有的 HW-VSYNC 前后相减算出 HW-VSYN
 
 而 mPhase 最终是根据下面的等比公式计算出来的：
 
-$ \frac{2\pi}{mPeriod} = \frac{Angle}{mPhase} $
+$$ \frac{2\pi}{mPeriod} = \frac{Angle}{mPhase} $$
 
 最后，看一下 `DispSync::addResyncSample` 这个函数的返回值，这个返回值非常重要，当通过统计 SW-VSYNC 的误差小于阈值的时候（这个误差的计算涉及到了 Fence，目前我对这部分内容理解得还不是很透彻，等彻底理解了以后再来填坑），返回 true 给 SurfaceFlinger 的时候，SurfaceFlinger 则会调用 `SurfaceFlinger::disableHardwareVsync` 把 HW-VSYNC 给关了。
 

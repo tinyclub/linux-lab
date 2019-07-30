@@ -149,6 +149,8 @@
 
   {% if page.plugin %}<script src="{{ ASSET_PATH }}/js/{{ page.plugin }}{{ css_js_compress_tag }}.js"></script>{% endif %}
 
+  {% include widgets/mathjax %}
+
   {% include JB/analytics %}
 
 </body>

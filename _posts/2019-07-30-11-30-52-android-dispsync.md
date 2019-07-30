@@ -2,7 +2,7 @@
 layout: post
 author: 'simowce'
 title: "Android DispSync 详解"
-draft: true
+draft: false
 mathjax: true
 license: "cc-by-sa-4.0"
 permalink: /android-dispsync/

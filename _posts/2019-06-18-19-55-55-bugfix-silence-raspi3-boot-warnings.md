@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "bugfix: 消除 qemu/raspi3 启动过程的一堆警告"
 draft: false
+license: "cc-by-nc-nd-4.0"
 album: "Debugging+Tracing"
 permalink: /bugfix-silence-raspi3-boot-warnings/
 description: "Linux Lab 已经支持 aarch64/raspi3，但是启动过程有一些警告，这里介绍如何临时关闭这些 warnings。"

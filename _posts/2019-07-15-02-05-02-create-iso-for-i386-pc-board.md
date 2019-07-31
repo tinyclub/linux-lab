@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "如何创建一个可启动光盘（ISO文件）"
 draft: false
+license: "cc-by-nc-nd-4.0"
 permalink: /create-iso-for-i386-pc-board/
 description: "本文介绍如何使用 mkisofs 制作一个可以通过 qemu-system-x86 启动的光盘，用于启动的 Linux 内核和文件系统源自 Linux Lab 的板级支持包 qemu-i386-pc。"
 category:

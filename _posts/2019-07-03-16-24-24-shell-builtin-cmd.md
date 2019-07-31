@@ -3,6 +3,7 @@ layout: post
 author: 'Wang Chen'
 title: "Shell 的内置（builtin）命令是什么，常常傻傻分不清"
 draft: false
+license: "cc-by-nc-nd-4.0"
 permalink: /shell-builtin-command/
 description: "什么是 Shell 的 builtin 命令，常常傻傻分不清，这次彻底搞清楚了"
 category:

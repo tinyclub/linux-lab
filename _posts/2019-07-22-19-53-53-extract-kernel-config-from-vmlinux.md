@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "探索从 vmlinux 中抓取 Linux 内核 config 文件"
 draft: false
+license: "cc-by-nc-nd-4.0"
 album: "Debugging+Tracing"
 permalink: /extract-kernel-config-from-vmlinux/
 description: "如果编译 Linux 内核时打开了 CONFIG_IKCONFIG 选项，那么没有原始的 .config 文件，我们也可以从 vmlinux 中抓取出来，方法是 scripts/extract-ikconfig"

@@ -3,7 +3,7 @@ layout: post
 author: 'Sheng Yong'
 title: "华为 OS 内核实验室诚邀您的加盟（实习生同步招聘中）"
 group: "jobs"
-license: "cc-by-sa-4.0"
+license: "cc-by-nc-nd-4.0"
 permalink: /huawei-oslab-developer-job.md/
 description: "华为 OS 内核实验室诚招操作系统开发工程师、操作系统测试工程师、形式化技术研究员、实习生"
 plugin: mermaid

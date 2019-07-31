@@ -4,6 +4,7 @@ author: 'Wu Zhangjin'
 title: "bugfix: 使用 git bisect 自动定位 uboot 启动失败问题"
 draft: false
 album: "Debugging+Tracing"
+license: "cc-by-nc-nd-4.0"
 permalink: /bugfix-git-bisect-uboot-failure/
 description: "git bisect 可以用于快速定位引入衰退的变更"
 category:

@@ -4,6 +4,7 @@ author: 'Wu Zhangjin'
 title: "Linux Lab 新开发板添加指南"
 tagline: 如何成为 Linux Lab Developer
 draft: false
+license: "cc-by-nc-nd-4.0"
 permalink: /add-new-board-for-linux-lab/
 description: "Linux Lab 的可扩展性很强，添加一款新板子轻而易举。"
 category:

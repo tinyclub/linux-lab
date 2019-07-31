@@ -19,6 +19,8 @@ tags:
   - Bootlin
   - Linaro
   - Buildroot
+  - 工具链
+  - 嵌入式开发
 ---
 
 > By Falcon of [TinyLab.org][1]

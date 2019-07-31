@@ -87,7 +87,7 @@ draft: true
 # tagline: " 子标题，如果存在的话 "
 # album: " 所属文章系列/专辑，如果有的话"
 # group: " 默认为 original，也可选 translation, news, resume or jobs, 详见 _data/groups.yml"
-license: "cc-by-sa-4.0"
+license: "cc-by-nc-nd-4.0"
 permalink: /this-is-my-link/
 description: " 文章摘要 "
 category:

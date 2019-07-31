@@ -109,11 +109,11 @@ tags:
 
 编译和运行，确保可以生成 coredump：
 
-$ gcc -o demo demo.c
-$ ulimit -c unlimited
-$ ./demo
-*** stack smashing detected ***: ./demo terminated
-hello.worldAborted (core dumped)
+    $ gcc -o demo demo.c
+    $ ulimit -c unlimited
+    $ ./demo
+    *** stack smashing detected ***: ./demo terminated
+    hello.worldAborted (core dumped)
 
 用 gdb 分析 coredump：
 

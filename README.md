@@ -78,6 +78,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [How to tune the screen size](#how-to-tune-the-screen-size)
    - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
    - [How to record video](#how-to-record-video)
+   - [Linux Lab not response](#linux-lab-not-response)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1276,6 +1277,10 @@ Open the left sidebar, press the 'Fullscreen' button.
 * Share it
 
   Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io](http://showdesk.io/post).
+
+### Linux Lab not response
+
+The VNC connection may hang for some unknown reasons and therefore Linux Lab may not response sometimes, to restore it, please press the flush button of web browser or re-connect after explicitly disconnect.
 
 ## Contact and Sponsor
 

@@ -2,7 +2,7 @@
 
 CURDIR=$(cd $(dirname $0)/ && pwd)
 
-patchset=https://cdn.kernel.org/pub/linux/kernel/projects/rt/5.0/patch-5.0.21-rt16.patch.xz
+patchset=https://cdn.kernel.org/pub/linux/kernel/projects/rt/5.2/patch-5.2-rt1.patch.xz
 
 cd $CURDIR
 if [ ! -f feature.downloaded ]; then

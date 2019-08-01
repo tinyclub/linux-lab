@@ -340,6 +340,7 @@
   categories:
     - name: 开放服务
     - name: 开源社区
+    - name: 开源文化
     - name: 版权协议
       categories:
         - name: GPL

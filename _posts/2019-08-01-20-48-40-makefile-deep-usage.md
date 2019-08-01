@@ -431,5 +431,61 @@ Makefile 中有类似 Shell 的 `dirname` 和 `basename` 命令，它们是：`d
 
 第二种方法比较自由，可以扩展用来检查文件是否可执行，也可以调用 grep 做更多复杂的文本内容检查。在复杂场景下，通过第二种方法调用 Shell 是比较好的选择。
 
+## 如何类似普通程序一样把目标当变量使用
+
+如果执行 `make test-run arg1 arg2` 想达到把 `arg1 arg2` 作为 `test-run` 目标的参数这样的效果该怎么做呢？可以用 `eval` 指令，它能够动态构建编译目标。
+
+通过 eval 指令把 `arg1 arg2` 这两个目标变成空操作，即使有 `arg1 arg2` 这样的目标也不再执行,  然后执行 `test-run` 运行。
+
+大概实现为：
+
+    $ cat Makefile
+
+    # Must put this at the end of Makefile, to make sure override the targets before here
+    # If the first argument is "xxx-run"...
+    first_target := $(firstword $(MAKECMDGOALS))
+    reserve_target := $(first_target:-run=)
+
+    ifeq ($(findstring -run,$(first_target)),-run)
+      # use the rest as arguments for "run"
+      RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+      # ...and turn them into do-nothing targets
+      $(eval $(RUN_ARGS):;@:)
+    endif
+
+    test-run:
+        @echo $(RUN_ARGS)
+
+
+    $ make test-run test1 test2
+
+这个的实际应用场景有，比如说想在外面的目标中调用内核的编译目标，通常得进入内核源码，再执行 `make target`，可能得写很多条这样的目标：
+
+    kernel-target1:
+    	@make target1 -C /path/to/linux-src
+
+    kernel-target2:
+    	@make target2 -C /path/to/linux-src
+
+有了上面的支持，就可以实现成这样：
+
+    kernel-run:
+    	@make $(arg1) -C /path/to/linux-src
+
+使用时也不复杂，内核的各种目标都可以作为参数传递进去：
+
+    $ make kernel-run target1
+    $ make kernel-run target2
+
+虽然说，上述 arg1，也可以这样写：
+
+    $ make kernel-run arg1=target1
+    $ make kernel-run arg1=target2
+
+但是在使用效率上明显不如前者来得直接。
+
+## Makefile 实例模板
+
+本文的内容大部分都汇整到了 [Linux Lab: examples/makefile/template](https://gitee.com/tinylab/linux-lab/tree/master/examples/makefile/template)。
 
 [1]: http://tinylab.org

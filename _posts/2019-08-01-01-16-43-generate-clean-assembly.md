@@ -136,4 +136,6 @@ tags:
 
 可以粗略定位到有 Stack Overflow 的函数，但不能定位到具体哪一行踩了数据。
 
+本文的例子汇整在 [Linux Lab: examples/c/hello](https://gitee.com/tinylab/linux-lab/tree/master/examples/c/hello)。
+
 [1]: http://tinylab.org

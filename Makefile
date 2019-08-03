@@ -124,9 +124,11 @@ PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
 PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
 PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
+BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
+
 # Loading board configurations
 ifneq ($(BOARD),)
-  include $(BOARD_DIR)/Makefile
+  include $(BOARD_MAKEFILE)
 endif
 
 # board specific src submodule parent
@@ -699,6 +701,11 @@ b-s: board-save
 b-c: board-clean
 
 PHONY += board board-clean board-save b-s b-c
+
+board-config:
+	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE);)
+
+PHONY += board-config
 
 # Plugin targets
 

@@ -129,6 +129,7 @@
             - name: X86
             - name: PowerPC
             - name: Denver
+            - name: Risc-V
         - name: GPU
           categories:
             - name: Mali

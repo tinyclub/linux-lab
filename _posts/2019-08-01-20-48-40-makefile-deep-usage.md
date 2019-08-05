@@ -398,6 +398,51 @@ Makefile 中有类似 Shell 的 `dirname` 和 `basename` 命令，它们是：`d
 
 可以看到，改造完以后，结果跟 Shell 结果对齐了。
 
+## 在 Makefile 表达式中使用逗号和空格变量
+
+逗号和空格是 Makefile 表达式中的特殊符号，如果要用它们的愿意，需要特别处理。
+
+    empty :=
+    space := $(empty) $(empty)
+    comma := ,
+
+## 在 Makefile 中对软件版本号做差异化处理
+
+Makefile 通常需要根据软件版本传递不同的参数，所以经常需要对软件版本号做比较。
+
+例如，在 Linux 4.19 之后删除了 oldnoconfig，并替换为了 olddefconfig，所以之前用到的 oldnoconfig 在新版本用不了，直接改掉老版本又用不了，得做差异化处理。
+
+大家觉得应该怎么处理呢？先思考一下再看答案吧。
+
+下面贴出关键片段，详细代码见：linux-lab/Makefile
+
+    LINUX_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(LINUX))))
+    LINUX_MINOR_VER := $(subst v,,$(word 2,$(subst .,$(space),$(LINUX))))
+
+    ifeq ($(shell [ $(LINUX_MAJOR_VER) -lt 4 -o $(LINUX_MAJOR_VER) -eq 4 -a $(LINUX_MINOR_VER) -le 19 ]; echo $$?),0)
+        KERNEL_OLDDEFCONFIG := oldnoconfig
+    else
+        KERNEL_OLDDEFCONFIG := olddefconfig
+    endif
+
+类似地，如果要同时兼容不同版本的 GCC，得根据 GCC 版本传递不同的编译选项，也可以像上面这样去做识别，Linux 源码下就有很多这样的需求。
+
+不过它用了 `try-run` 的方式实现了一个 `cc-option-yn` （见 `linux-stable/scripts/Kbuild.include`），它是试错的方式，避免了堆积大量的判断代码，不过这里用的版本判断不多，而且调用这类 target 开销较大，没必要，直接加判断即可。
+
+需要注意的是，考虑到版本号命名的潜在不一致性，比如说，后面加个 `-rc1`，再加点别的什么，判断的复杂度会增加不少，所以，这类逻辑可以替换为其他方式，比如说，这里可以直接去 `linux-stable/scripts/Makefile` 下用 grep 查询 `olddefconfig` 是否存在：
+
+    KCONFIG_MAKEFILE := $(KERNEL_SRC)/scripts/kconfig/Makefile
+    KERNEL_OLDDEFCONFIG := olddefconfig
+    ifeq ($(KCONFIG_MAKEFILE), $(wildcard $(KCONFIG_MAKEFILE)))
+      ifneq ($(shell grep olddefconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
+        ifneq ($(shell grep oldnoconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
+          KERNEL_OLDDEFCONFIG := oldconfig
+        else
+          KERNEL_OLDDEFCONFIG := oldnoconfig
+        endif
+      endif
+    endif
+
 ## 修改默认执行目标的简单方法
 
 如果不指定目标直接敲击 make 的话，Makefile 中的第一个目标会被执行到。这个是比较自然的逻辑，但是有些情况下，比如说，在代码演化以后，如果需要调整执行目标的话，得把特定目标以及相应代码从 Makefile 中搬到文件开头，这个改动会比较大，这个时候，就可以用 Makefile 提供的机制来修改默认执行目标。

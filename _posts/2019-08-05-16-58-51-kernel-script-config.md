@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "通过命令行工具快速修改某个内核配置"
+title: "通过命令行工具修改内核配置"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /kernel-script-config/

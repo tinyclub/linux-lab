@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "Makefile 进阶用法"
+title: "11 个 Makefile 进阶用法"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /makefile-deep-usage/

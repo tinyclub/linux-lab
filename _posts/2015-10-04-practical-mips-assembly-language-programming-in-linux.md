@@ -438,16 +438,16 @@ booth.s:
 Addressing modes include immediate address, IP related address, direct,
 indirect & indexed addressing.
 
-| Mode      | Example            |MIPS instruction(s)  | Remark [Address]
-|-----------|--------------------|---------------------|--------------------
-|immediate  | andi $t0, $t0, 0x03|                     | 16-bit constant embedded in instruction
-|IP related | beqz $t0, done     |                     | signed 16-bit jump offset o embedded in instruction [IP + 4 × o]
-|direct     | lw $t0, 0x11223344 | lui $at, 0x1122     | [0x11223344]
-|           |                    | lw $t0, 0x3344($at) |
-|indirect   | lw $t0, ($t1)      | lw   $t0, 0($t1)    | [$t1]
-|indexed    | lw $t0, 0x11223344($t1)| lui $at, 0x1122  | [0x11223344 + $t1]
-|           |                        | addu $at, $at, $t1 |
-|           |                        | lw $t0, 0x3344($at) |
+  Mode       | Example            |MIPS instruction(s)  | Remark [Address]
+  -----------|--------------------|---------------------|--------------------
+  immediate  | andi $t0, $t0, 0x03|                     | 16-bit constant embedded in instruction
+  IP related | beqz $t0, done     |                     | signed 16-bit jump offset o embedded in instruction [IP + 4 × o]
+  direct     | lw $t0, 0x11223344 | lui $at, 0x1122     | [0x11223344]
+             |                    | lw $t0, 0x3344($at) |
+  indirect   | lw $t0, ($t1)      | lw   $t0, 0($t1)    | [$t1]
+  indexed    | lw $t0, 0x11223344($t1)| lui $at, 0x1122  | [0x11223344 + $t1]
+             |                        | addu $at, $at, $t1 |
+             |                        | lw $t0, 0x3344($at) |
 
 Here is the very classical example of copy data from the first memory area to
 another.
@@ -596,9 +596,9 @@ need to save & restore the `$ra` ourselves.
 
 The basic solution is like this:
 
-|    MIPS             |   X86     | pseudo code  |     stack
-|---------------------|-----------|--------------|----------------
-|    jal proc         | call proc | push done    |     \|/
+|MIPS                 |   X86     | pseudo code  |     stack
+|---------------------|-----------|--------------|-------------
+|    jal proc         | call proc | push done    |     \/
 |done:                |           | jmp  to proc |    done
 |    <sys_exit>       |           |              |
 |proc:                |           |              |
@@ -609,7 +609,7 @@ The basic solution is like this:
 |return:              |           |              |
 |    lw   $ra, 4($sp) |           |              |
 |    addu $sp, $sp, 4 |           | pop          |    done
-|    j    $ra         | ret       | jmp to done  |    /|\
+|    j    $ra         | ret       | jmp to done  |     /\
 
 ok, let's implement the binary search algorithm in MIPS Assembly Language.
 
@@ -678,16 +678,16 @@ ok, let's implement the binary search algorithm in MIPS Assembly Language.
 The system calls usage in Linux / MIPS is something like in Linux / i386, we
 use `sys_write` as an examples for showing the "likeness":
 
-| Linux / MIPS   |    Linux / i386   |
-|----------------|-------------------|--------------------------------
-| li $a0, 1      |movl $1, %ebx      | # arg1
-| la $a1, stradr |movl $stradr, %ecx | # arg2
-| lw $a2, strlen |movl $strlen, %edx | # arg3
-| li $v0, 4004   |movl $4, %eax      | # syscall no.
-|                |                   | # defined in /usr/include/asm/unistd*.h
-|                |
-| syscall        |int $0x80          | # activate the system call and
-|                |                   | # enter into the kernel space
+  Linux / MIPS   |    Linux / i386   |
+  ---------------|-------------------|--------------------------------
+  li $a0, 1      |movl $1, %ebx      | # arg1
+  la $a1, stradr |movl $stradr, %ecx | # arg2
+  lw $a2, strlen |movl $strlen, %edx | # arg3
+  li $v0, 4004   |movl $4, %eax      | # syscall no.
+                 |                   | # defined in /usr/include/asm/unistd*.h
+                 |
+  syscall        |int $0x80          | # activate the system call and
+                 |                   | # enter into the kernel space
 
 Here is a complete demo for showing how to use system call in Linux / i386.
 

@@ -44,9 +44,9 @@ The standard Markdown allows to add tables in HTML format, for exampe:
 
 And it looks like:
 
-| Head row1    | Head row2    |
-| ------------ | ------------ |
-| Content row1 | Content row2 |
+  Head row1    | Head row2
+  -------------|-------------
+  Content row1 | Content row2
 
 But Pandoc doesn&#8217;t support it, Pandoc need pure text table, see the *Tables* section in [Pandoc&#8217;s User Guide][3].
 

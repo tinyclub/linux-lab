@@ -14,7 +14,7 @@ BUILDROOT?= 2019.02.2
 #   qemu: Supported NIC models: ne2k_pci,i82551,i82557b,i82559er,rtl8139,e1000,pcnet,virtio
 #
 NETDEV_LIST := ne2k_pci e1000 rtl8139 pcnet
-NETDEV  ?= pcnet
+NETDEV  ?= e1000
 
 ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0

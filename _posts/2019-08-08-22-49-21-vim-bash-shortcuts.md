@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Vim & Bash 常用快捷键"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /vim-bash-shortcuts/
 description: "Vim 和 Bash 是 Linux 下最常用的两个工具，本文介绍她们最常用功能的快捷键，以便提升工作效率。"

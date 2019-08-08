@@ -296,6 +296,7 @@
     - name: 性能优化
       categories:
         - name: 启动速度
+        - name: Latency
     - name: 系统裁剪
     - name: 实时性
     - name: 功耗优化

@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 517465: 为 “巨页”（huge page）增加一个 “零页”（zero page）"
 album: 'LWN 中文翻译'

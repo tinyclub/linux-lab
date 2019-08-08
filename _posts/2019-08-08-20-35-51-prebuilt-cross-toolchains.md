@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "全网可用交叉编译工具链大全"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /prebuilt-cross-toolchains/
 description: "本文收录全网可下载的交叉编译工具链，方便大家做嵌入式 Linux 开发。"

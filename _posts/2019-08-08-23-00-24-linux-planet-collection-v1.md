@@ -153,11 +153,6 @@ tags:
   * 07月 / 第二期
   * 07月 / 第三期
   * 07月 / 第一期
-  * 06月 / 第四期
-  * 06月 / 第二期
-  * 06月 / 第三期
-  * 06月 / 第一期
-  * 05月 / 第四期
 
 * LWN 翻译
   * LWN 106010: 实现 “实时（realtime）” Linux 的多种方法
@@ -406,7 +401,7 @@ tags:
 
 #### 被 kinggo “忽悠” 了
 
-由于兰大开源社区的这段经历，有幸结识了 DSLab 的 kinggo 老师，也参加了 DSLab 组织的几次 “Summer School”，这个完全向本科生免费开放，由 Nicholas 教授上课。
+由于兰大开源社区的这段经历，有幸结识了 DSLab 的 kinggo 老师，也参加了 DSLab 组织的几次 “Summer School”，这个完全向本科生免费开放，由 Nicholas Mc Guire 教授上课。我们都亲切地称呼他 Nico。
 
 所以到本科毕业的时候，刚好那个时候还进了基地班，积分合计下来能排到专业前三，自己有保送的机会，就跟 kinggo 老师联系，请他帮忙推荐国内的高校实验室，后来，总之是被 “忽悠”（也确实有主观觉得 Linux 前景很赞，老师们也比较 Nice） 直接去 DSLab 实验室，跟 Nico 和 Kinggo 老师学习和研究实时系统和安全关键系统。
 
@@ -454,7 +449,11 @@ tags:
 
 #### 去德累斯顿做报告
 
-这个实时 Linux 的工作搞得七七八八以后，写了一篇论文投到了 RTLWS，然后在 Nico 的资助下还去德累斯顿做了一个[报告](http://lwn.net/images/conf/rtlws11/papers/proc/p14.pdf)。
+这个实时 Linux 的工作搞得七七八八以后，写了一篇论文投到了 RTLWS，然后在 Nico 的资助下还跟在那边读博士的 “黄天” 师兄去德累斯顿做了一个[报告](http://lwn.net/images/conf/rtlws11/papers/proc/p14.pdf)。
+
+报告完，Ftrace Maintainer Steven 指出 function graph tracer 实现不完整，讨论完发现确实有 Bug，回来继续完善，最后搞了 12 个版本才把 MIPS Ftrace 提交进官方 Linux 社区。
+
+在这次会议上，有见了很多大神真身，除了 Ftrace Steven，还有 Lwn Cobert, RT Thomas，RCU Paul，Scheduler Ingo，跟 Thomas 拍了合照，估计找不到了，然后还有跟 20 多个内核 Maintainers 一起喝大杯啤酒，都忘记聊了些啥，印象是挺 happy 的。
 
 #### RSM 用了我维护的内核
 
@@ -555,6 +554,22 @@ tags:
   - 再一方面，建立项目数据运营系统，完善研发流程的各个环节，完善各环节数据监控指标，避免死角，创新性地引入 “未更新”、“未解决”，“未验证” 三项指标来避免错过一些关键问题、关键时间点，从而避免项目管理、研发和测试任何一个环节的疏忽大意，并借此调度资源，保障进度和质量。与此同时，还引入了一个 “低概率问题占比” 这个指标来论证越到上市环节，留下的问题，90% 以上都是低概率问题，也就是不易复现的问题，所以，最关键的部分，是需要开发和测试一起不断去完善测试用例，确保问题是可以有效发现的，这样才有办法去定位问题，进而尝试解决方案是否有效。对于这种问题，通常需要强有力的 Leader 去把各个部门，各个课题组，包括研发、测试、项目，甚至技术委员会的技术专家喊进来，一起分析探讨，制定 Roadmap，设计修复方案，制定验证策略，反复迭代，直到问题收敛。
 
 这个期间，由于涉及到资源，涉及到进度，如果足够真诚和有力量，基本上还是能大家协调一致，但是也不排除有人只顾自己的利益，在背后放枪，所以搞技术的同时也要稍微提防一下。
+
+#### 推掉了德国的工作机会
+
+刚毕业那段，跟 Nico 聊过，请他帮忙问问 Thomas 那边是否有工作机会，2012 年的时候，Thomas 回复说可以去了。
+
+不过那段时间，在魅族自己有一些规划正在实施，还没有成果，不希望半途而废，所以，暂时推掉了 Thomas 的邀请。后面忙起来，也忘记再联络了。
+
+现在想起来，既错过了去那边读博，也错过了去那边工作，或许是些许的遗憾吧。
+
+#### 攒到第一笔外快
+
+2011 年向 elinux 基金会提交了一个 [TinyLinux proposal](https://elinux.org/Work_on_Tiny_Linux_Kernel)，然后陆陆续续完成了 50% 的工作量，拿了一半的费用。这期间，在五一还是十一，有几天就一直窝在家里做实验，测衰退，测数据，最后赶出来了。这篇论文是 [Tiny Linux Kernel Project: Section Garbage Collection Patchset](https://static.lwn.net/images/conf/rtlws-2011/proc/Yong.pdf)。这是第一次有收入的开源活动，期间喊了一个师弟参加，每周参加两个晚上，不仅亲自指导，还每个月发给他 1000 大洋 ;-)
+
+这个 gc-section patchset 基本是 ok 了，但是有部分平台依赖比较新的 binutils，而且牵涉到的代码改动比较多，所以当时放弃了 Upstream。
+
+这个项目其实还是有不少成果，相关成果列在 [TinyLinux](http://tinylab.org/tinylinux)，我记得当时在龙芯 2F 上有做到一个 [386k](https://github.com/tinyclub/linux-loongson-community/tree/tiny36) 的 vmlinuz 。还有一个附带的成果就是 [Linux Lab](http://tinylab.org/linux-lab)，这个项目源自当时测试验证的一堆脚本。
 
 ### 赋闲在家的这几个月
 

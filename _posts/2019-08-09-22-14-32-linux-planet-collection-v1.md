@@ -62,7 +62,7 @@ tags:
 
 泰晓科技早先只有 2 个发布渠道，一个是 Web 网站：<http://tinylab.org>，一个是公众号：泰晓科技 / TinyLab-Org。公众号在今年重启，*坚持在工作日每天推送一篇文章*，从周一到周五分别推送读者原创、LWN 翻译、专辑连载、产品实践、业界资讯。
 
-![泰晓科技 微信公众号：TinyLab-Org](/images/wechat/tinylab-org.jpg)
+![泰晓科技 微信公众号：TinyLab-Org](http://tinylab.org/images/wechat/tinylab-org.jpg)
 <p style="text-align: center;">（扫码关注『泰晓科技』公众号）</p>
 
 上述工作得到了读者们广泛的支持和好评。今年 4 月份，笔者经过审慎地考虑，为了让这些工作能够更持久高质量地做下去，在坚持公益的同时，我们做了两件事。
@@ -247,6 +247,7 @@ tags:
 - 继续开放邀请更多的行业专家加入，包括跨行业的专家，比如说云计算、存储、AIoT、芯片设计、知识产权，ID 设计、UI/UE 设计，GUI 系统开发、团队运营，配置管理，领导力培养等
 
 - 系统性地总结自己读书、工作多年来的一些心得，比如说：
+  - 如何熟练地使用 git 代码版本管理工具
   - 如何创建和管理一个校园开源社团
   - 如何规划校园学习生涯
   - 如何择业就业
@@ -296,14 +297,14 @@ tags:
 
 扫描下方二维码，设为星标，更及时获得原创文章推送，通过留言发表自己的看法，对好看的文章点击 “在看” 并通过朋友圈分享给周边的同学。
 
-![泰晓科技 微信公众号：TinyLab-Org](/images/wechat/tinylab-org.jpg)
+![泰晓科技 微信公众号：TinyLab-Org](http://tinylab.org/images/wechat/tinylab-org.jpg)
 <p style="text-align:center">（扫码关注『泰晓科技』公众号）</p>
 
 ### 订阅『Linux 知识星球』
 
 以实际行动支持作者们的原创工作，因此收获大家分享的技术干货和各类思考，结识来自各个企业的一线工程师与技术专家，让整个圈子能够更良性的运转起来。
 
-![Linux 知识星球](/images/xingqiu/tinylaborg.jpg)
+![Linux 知识星球](http://tinylab.org/images/xingqiu/tinylaborg.jpg)
 <p style="text-align:center">（扫码关注『Linux 知识星球』）</p>
 
 
@@ -343,13 +344,13 @@ tags:
 
 那段时间成就感满满，因为可以看到实实在在有很多同学在用，各种五花八门的搜索内容都有，然后为了避免那啥，自己还因此建立了敏感词库等功能，后来陆陆续续迭代，一直到后面在 Linux 平台用 C+MySQL+PHP 重构了一遍。那个时候，跟隔壁班的 Tom 同学一起搞，他负责 UI 设计，我负责剩下的部分，搞出来有模有样。
 
-![FTP Search Engine HomePage](/wp-content/uploads/2019/07/falcon-search-engine.jpg)
+![FTP Search Engine HomePage](http://tinylab.org/wp-content/uploads/2019/07/falcon-search-engine.jpg)
 
 #### 被 “rm -rf" 伤到
 
 只可惜，大四毕业那年，需要把电脑转给弟弟用，在整理数据时，一条 `rm -rf` 结束了一切。
 
-只留下在实验楼 502 室无数个通宵达旦 debugging 的夜晚以及相关的 debugging 文章，比如说 [Linux 段错误详解](http://tinylab.org/explore-linux-segmentation-fault/)，当然，还有那篇基于 VB+Access+ASP 版本写的论文（没有在任何杂志发表，直接放到了网络上）：[FTP搜索引擎的设计与实现（优化版）](/wp-content/uploads/papers/ftp-search-engine-design-and-implementation.pdf)，至今还在网络流传。
+只留下在实验楼 502 室无数个通宵达旦 debugging 的夜晚以及相关的 debugging 文章，比如说 [Linux 段错误详解](http://tinylab.org/explore-linux-segmentation-fault/)，当然，还有那篇基于 VB+Access+ASP 版本写的论文（没有在任何杂志发表，直接放到了网络上）：[FTP搜索引擎的设计与实现（优化版）](http://tinylab.org/wp-content/uploads/papers/ftp-search-engine-design-and-implementation.pdf)，至今还在网络流传。
 
 那个时候，有几年，陆陆续续有很多高校的应届毕业生找过来，要帮忙写论文，由于鄙视这种学术作风，所以一一拒绝了，虽然当时一个月才拿实验室 200 块，但是不为这点小钱折腰的精神至今还是赞赏的。
 
@@ -583,9 +584,7 @@ tags:
 
 #### 注册了一家公司
 
-离职后很快注册了一家自己的公司：深圳市儒码科技有限公司。
-
-公司目前还没有正式开始运营。主要规划的业务方向是技术咨询，但是 ODM 的活拒了好几个，觉得这块不是最能体现价值的方向，对个人来讲，陷入进去，还不如去公司做单一产品，对企业来讲，解决了一个问题还会有另外一个问题。
+离职后很快注册了一家自己的公司，公司目前还没有正式开始运营。主要规划的业务方向是技术咨询，但是 ODM 的活拒了好几个，觉得这块不是最能体现价值的方向，对个人来讲，陷入进去，还不如去公司做单一产品，对企业来讲，解决了一个问题还会有另外一个问题。
 
 如果是技术咨询，提供方法论，指导建立体系，引荐招到合适的人，并完善团队技能培训，这个是比较契合的，对笔者和企业其实都是具有更长远意义的。
 

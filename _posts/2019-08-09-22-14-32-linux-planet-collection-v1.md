@@ -30,7 +30,7 @@ tags:
 
 这个合集**共 106 篇，合计 529 页，5.8M**。内容横跨项目实录、内核开发、效率工具、程序开发、泰晓资讯、LWN 翻译，社区与文化、思维碰撞等几个大的类别。
 
-<img src="/images/xingqiu/planet-collection.jpg" height="600px" title="Linux Planet Collection Cover Page">
+<img src="http://tinylab.org/images/xingqiu/planet-collection.jpg" height="600px" title="Linux Planet Collection Cover Page">
 
 **扫描上述二维码订阅，即可获得该合集**，也能持续获得后续全年所有星球原创内容，还能受邀加入专属微信群，与数十位 Linux 一线工程师和技术专家们面对面交流。
 
@@ -626,7 +626,7 @@ tags:
 
 非常感谢您能耐心读到这里，下面奉上一张免费体验卡，可以多人使用，也欢迎转赠给周边的朋友。
 
-<img src="/images/xingqiu/planet-free-card.jpg" height="600px" title="『Linux 知识星球』免费体验卡">
+<img src="http://tinylab.org/images/xingqiu/planet-free-card.jpg" height="600px" title="『Linux 知识星球』免费体验卡">
 
 ## 寄语
 

@@ -231,7 +231,7 @@ tags:
 
 - 梳理出几个主题，跟会员们和读者们讨论，选出大家感兴趣的主题连载，目前计划连载的内容包括
   - 基于 Linux 0.11 Lab 的 Linux 0.11 阅读与实战，甚至可能往 Risc-V Porting？
-  - 基于 CS630 Qemu Lab 的 X86 Linux AT&T 汇编语言开发时间，甚至可能往 ARM Porting?
+  - 基于 CS630 Qemu Lab 的 X86 Linux AT&T 汇编语言开发实践，甚至可能往 ARM Porting?
   - 基于 Linux Lab 的嵌入式 Linux 系统开发，选一个开发板，比较系统地介绍如何从 0 ~ 1 ~ n 做嵌入式 Linux 开发
   - Linux 手机驱动开发，介绍现代嵌入式平台上重要设备的驱动开发
   - Linux 各大子系统深度解读，基于 Linux Lab，一方面解读 Linux 新版本的功能，另外一方面分析各个核心子系统

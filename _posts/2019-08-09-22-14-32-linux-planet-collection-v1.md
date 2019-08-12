@@ -30,7 +30,7 @@ tags:
 
 这个合集**共 106 篇，合计 529 页，5.8M**。内容横跨项目实录、内核开发、效率工具、程序开发、泰晓资讯、LWN 翻译，社区与文化、思维碰撞等几个大的类别。
 
-<img src="http://tinylab.org/images/xingqiu/planet-collection.jpg" height="600px" title="Linux Planet Collection Cover Page">
+![Linux 知识星球海报](http://tinylab.org/images/xingqiu/planet-collection.jpg)
 
 **扫描上述二维码订阅，即可获得该合集**，也能持续获得后续全年所有星球原创内容，还能受邀加入专属微信群，与数十位 Linux 一线工程师和技术专家们面对面交流。
 
@@ -310,7 +310,9 @@ tags:
 
 ## 星主与 Linux 的那些故事
 
-大学毕业的时候想着要 “轰轰烈烈地” 写一写  “我的大学”，工作了以后慢慢地觉得好像也没什么好写的，工作八、九年后，现在离职了，接触了知乎、泰晓原创团队微信群等各个渠道大家提出的问题后，觉得似乎可以简单回顾一下，所以，下面简单回顾一下 “我的大学” 以及 “我的工作”，这些基本都围绕 Linux，希望可以打发一下碎片时间。
+大学毕业的时候想着要 “轰轰烈烈地” 写一写  “我的大学”，工作了以后慢慢地觉得好像也没什么好写的，工作八、九年后，现在离职了，接触了知乎、泰晓原创团队微信群等各个渠道大家提出的问题后，觉得似乎可以简单回顾一下。
+
+所以，下面简单回顾一下 “我的大学” 以及 “我的工作”，这些基本都围绕 Linux，希望可以打发一下大家的碎片时间。
 
 ### 在黄土高原萃英山下组建 Linux 社团
 
@@ -626,7 +628,7 @@ tags:
 
 非常感谢您能耐心读到这里，下面奉上一张免费体验卡，可以多人使用，也欢迎转赠给周边的朋友。
 
-<img src="http://tinylab.org/images/xingqiu/planet-free-card.jpg" height="600px" title="『Linux 知识星球』免费体验卡">
+![『Linux 知识星球』免费体验卡](http://tinylab.org/images/xingqiu/planet-free-card.jpg)
 
 ## 寄语
 

@@ -5,6 +5,8 @@ CFLAGS+= -fomit-frame-pointer
 CFLAGS+= -fno-asynchronous-unwind-tables
 CFLAGS+= -fno-pie -no-pie
 CFLAGS+= -m32
+CFLAGS+= -Wall -Werror
+#CFLAGS+= -std=c89
 
 CC    += $(CFLAGS)
 

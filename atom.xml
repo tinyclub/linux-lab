@@ -24,8 +24,7 @@ title : Atom Feed
     <title>{% capture post_title %}{{ post.title | strip_html | xml_escape | strip }}{%endcapture%}{{post_title}}</title>
     <link href="{{ site.production_url }}{{ post.url }}"/>
     <updated>{{ post.date | date_to_xmlschema }}</updated>
-    <id>{{ site.production_url }}{{ post.url }}</id>
-	{% capture summary %}{% assign tags = post.tags | join: "," %}{% assign addrs = post.addrs | join: "," %}{{ post.categories | join: "," | append: "," | append: post.keywords | append:"," | append:post.album | append:"," | append: tags | append: ',' | append: addrs | strip_html | xml_escape | downcase | split:"," | sort | uniq | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{summary | prepend:"pLACeHoldER," | replace: ",,,", "," | replace: ",,", "," | remove:'pLACeHoldER,' | strip_html }}</summary>{%endif%}
+    <id>{{ site.production_url }}{{ post.url }}</id>{% capture description %}{{ post.description | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip_html | xml_escape }}{% endcapture %}{% capture summary %}{% assign tags = post.tags | join: "," %}{% assign addrs = post.addrs | join: "," %}{{ post.categories | join: "," | append: "," | append: post.keywords | append:"," | append:post.album | append:"," | append: tags | append: ',' | append: addrs | strip_html | xml_escape | downcase | split:"," | sort | uniq | join:"," }}{% endcapture %}{% if summary.size != 0 %}<summary>{{description}} {{summary | prepend:"pLACeHoldER," | replace: ",,,", "," | replace: ",,", "," | remove:'pLACeHoldER,' | strip_html }}</summary>{%endif%}
     {% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content>{{content}}</content>{% endif %}
   </entry>
 {% endfor %}

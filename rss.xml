@@ -19,7 +19,7 @@ title : RSS Feed
 {% for post in site.posts %}
 {% if post.draft and post.draft == true %}{% continue %}{% endif %}
   <item>
-    <title>{{ post.title }}</title>
+    <title>{% capture post_title %}{{ post.title | strip_html | xml_escape | strip }}{%endcapture%}{{post_title}}</title>
 {% capture description %}{{ post.description | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip_html | xml_escape }}{% endcapture %}{% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | strip_xml | xml_escape }}{% endcapture %}{% if content.size != 0 %}<description>{{description}} {{content}}</description>{% endif %}
     <link>{{ site.production_url }}{{ post.url }}</link>
     <guid>{{ site.production_url }}{{ post.id }}</guid>

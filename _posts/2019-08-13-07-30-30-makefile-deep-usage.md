@@ -28,6 +28,10 @@ tags:
 
 本文汇总了诸多 Makefile 进阶用法，提升 Makefile 阅读和编写效率。
 
+更多 Linux 精彩欢迎透过下方免费体验卡访问『Linux 知识星球』：
+
+![『Linux 知识星球』免费体验卡](http://tinylab.org/images/xingqiu/planet-free-card.jpg)
+
 ## 立即赋值（:=）和延迟赋值（=）
 
 * `:=`： 强制按先后顺序执行，立即赋值。

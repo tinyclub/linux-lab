@@ -2,6 +2,8 @@
 {% assign icon_right = "<i class='icon-large icon-fixed-width icon-right-open'></i>" %}
 {% assign visible = "" %}
 {% assign invisible = "class='invisible'" %}
+
+
 <div id="prev">
   <!-- Previous Page -->
   {% if paginator.previous_page %}
@@ -13,12 +15,23 @@
      {% assign title = paginator.previous_page | prepend: "第 " | append: " 页" %}
     {% endif %}
   {% else %}
-     {% if page.previous %}
-       {% assign href = BASE_PATH | append: page.previous.url %}
-       {% assign title = page.previous.title %}
+
+     {% assign previous = page.previous %}
+
+     {% for i in (0..10000) %}
+       {% if previous and previous.draft and previous.draft == true %}
+         {% assign previous = previous.previous %}
+       {% else %}
+         {% break %}
+       {% endif %}
+     {% endfor %}
+
+     {% if previous %}
+       {% assign href = BASE_PATH | append: previous.url %}
+       {% assign title = previous.title %}
      {% else %}
-   {% assign title = "最后一篇" %}
-   {% assign href = "#" %}
+       {% assign title = "最后一篇" %}
+       {% assign href = "#" %}
        {% assign visible = invisible %}
      {% endif %}
   {% endif %}
@@ -31,12 +44,23 @@
      {% assign href = paginator.next_page | prepend: "/page" %}
      {% assign title = paginator.next_page | prepend: "第 " | append: " 页" %}
   {% else %}
-     {% if page.next %}
-       {% assign href = BASE_PATH | append: page.next.url %}
-       {% assign title = page.next.title %}
+
+     {% assign next = page.next %}
+
+     {% for i in (0..10000) %}
+       {% if next and next.draft and next.draft == true %}
+         {% assign next = next.next %}
+       {% else %}
+         {% break %}
+       {% endif %}
+     {% endfor %}
+
+     {% if next %}
+       {% assign href = BASE_PATH | append: next.url %}
+       {% assign title = next.title %}
      {% else %}
-   {% assign title = "最后一篇" %}
-   {% assign href = "#" %}
+       {% assign title = "最后一篇" %}
+       {% assign href = "#" %}
        {% assign visible = invisible %}
      {% endif %}
   {% endif %}

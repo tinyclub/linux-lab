@@ -1,14 +1,36 @@
 <div class="pagination" align="center">
   <ul>
    {% assign title_length = site.JB.posts.title_length %}
-   {% if page.previous %}
-   <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}"><long_prev_next>&larr; {{ page.previous.title | truncate: title_length, '...'  }}</long_prev_next><short_prev_next>&larr; 上一页</short_prev_next></a></li>
+
+   {% assign previous = page.previous %}
+
+   {% for i in (0..10000) %}
+     {% if previous and previous.draft and previous.draft == true %}
+       {% assign previous = previous.previous %}
+     {% else %}
+       {% break %}
+     {% endif %}
+   {% endfor %}
+
+   {% if previous %}
+   <li class="prev"><a href="{{ BASE_PATH }}{{ previous.url }}" title="{{ previous.title }}"><long_prev_next>&larr; {{ previous.title | truncate: title_length, '...'  }}</long_prev_next><short_prev_next>&larr; 上一页</short_prev_next></a></li>
    {% else %}
    <li class="prev disabled"><a>&larr; 上一页</a></li>
    {% endif %}
    <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">所有文章</a></li>
-   {% if page.next %}
-   <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}"><long_prev_next>{{ page.next.title | truncate: title_length '...' }} &rarr;</long_prev_next><short_prev_next>下一页 &rarr;</short_prev_next></a></li>
+
+   {% assign next = page.next %}
+
+   {% for i in (0..10000) %}
+     {% if next and next.draft and next.draft == true %}
+       {% assign next = next.next %}
+     {% else %}
+       {% break %}
+     {% endif %}
+   {% endfor %}
+
+   {% if next %}
+   <li class="next"><a href="{{ BASE_PATH }}{{ next.url }}" title="{{ next.title }}"><long_prev_next>{{ next.title | truncate: title_length '...' }} &rarr;</long_prev_next><short_prev_next>下一页 &rarr;</short_prev_next></a></li>
    {% else %}
    <li class="next disabled"><a>下一页 &rarr;</a>
    {% endif %}

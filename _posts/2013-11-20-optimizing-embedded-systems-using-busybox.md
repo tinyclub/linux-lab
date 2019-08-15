@@ -32,7 +32,7 @@ This book will teach you how to build an embedded (Android Linux) system withBus
 
 ## Cover of this book 
 
-![The cover of the book: Instant Optimizing Embedded Systems using Busybox [Instant]](http://www.packtpub.com/sites/default/files/9851OS_cov.jpg)
+![The cover of the book: Instant Optimizing Embedded Systems using Busybox [Instant]](http://tinylab.org/wp-content/uploads/2019/08/busybox-cover.gif)
 
 ## Overview 
 

@@ -44,6 +44,8 @@ Plan to restart the whole project on Android emulator, see our previous work 
   * [Quick Benchmark: Gzip vs Bzip2 vs LZMA vs XZ vs LZ4 vs LZO](https://catchchallenger.first-world.info/wiki/Quick_Benchmark:_Gzip_vs_Bzip2_vs_LZMA_vs_XZ_vs_LZ4_vs_LZO)
   * [Embedded Linux System Size Optimization](http://tinylab.org/embedded-linux-system-size-optimization/)
   * [Library Optimizer Tool](http://libraryopt.sourceforge.net/)
+  * [Comparison of C/POSIX standard library implementations for Linux](http://www.etalabs.net/compare_libcs.html)
+  * [Buildroot v.s. Openembedded/Yocto](https://events.static.linuxfound.org/sites/events/files/slides/belloni-petazzoni-buildroot-oe_0.pdf)
 
  [1]: http://elinux.org/Work_on_Tiny_Linux_Kernel
  [2]: https://github.com/tinyclub/tinylinux

@@ -57,6 +57,6 @@ categories:
 
         $ adb usb
 
-  也可以在系统启动后直接通过网络使用 adb，用 `setprop` 设置 `persist.adb.tcp.port` 属性即可，这种 persist 属性设置一次就永久生效，不需要改 init 脚本。
+  也可以在系统启动后直接通过网络使用 adb，用 `setprop` 设置 `persist.adb.tcp.port` 属性即可，这种 persist 属性设置一次就永久生效，这里需要 root 权限。也可以把配置直接写到 init 脚本。
 
-        $ setprop persist.adb.tcp.port 5555
+        # setprop persist.adb.tcp.port 5555

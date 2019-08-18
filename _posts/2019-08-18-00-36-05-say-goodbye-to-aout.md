@@ -19,7 +19,7 @@ tags:
 
 ## v5.1 开始剔除 a.out 格式
 
-在 [Linux 发布 5.1, Linux Lab 同步支持](http://tinylab.org//linux-5.1/) 一文中，首次得知了 Linux 移除 a.out 格式的消息，这个消息着实令人感叹，因为 a.out 伴随 Linux 的诞生至今在 Linux 中有将近 ~28 的历史，而 a.out 本身则要追溯到更早的 Unix 时代。
+在 [Linux 发布 5.1, Linux Lab 同步支持](http://tinylab.org//linux-5.1/) 一文中，首次得知了 Linux 移除 a.out 格式的消息，这个消息着实令人感叹，因为 a.out 伴随 Linux 的诞生至今在 Linux 中有将近 ~28 年的历史，而 a.out 本身则要追溯到更早的 Unix 时代。
 
 下面是 v5.1 中两笔剔除 a.out 的动作：
 
@@ -27,7 +27,7 @@ tags:
     eac6165 x86: Deprecate a.out support
     08300f4 a.out: remove core dumping support
 
-第 2 笔是 Linus 亲自改的，理由是 a.out 的 core dumping 功能年久失修了，而更进一步，因为 ELF 自 1994 年进入 Linux 1.0 以来，已经 ~25 年了，而且现在基本上找不到能产生 a.out 格式的编译器，所以 Borislav Petkov 直接在 x86 上把 `HAVE_AOUT` 这个功能 “干掉” 了，因此没法打开配置了。
+第 2 笔是 Linus 亲自改的，理由是 a.out 的 core dumping 功能年久失修了，而更进一步，因为 ELF 自 1994 年进入 Linux 1.0 以来，已经 ~25 年了，而且现在基本上找不到能产生 a.out 格式的编译器，所以 Borislav Petkov 直接在 x86 上把 `HAVE_AOUT` “干掉”，因此没法打开配置了。
 
 ## a.out 核心代码还在
 
@@ -59,7 +59,7 @@ tags:
 
     $ make BOARD=i386/pc
 
-并开始内核的下载、配置、编译和运行：
+并开始内核的下载、检出、配置、编译和运行：
 
     $ make kernel-download
     $ make kernel-checkout
@@ -69,6 +69,7 @@ tags:
 上述命令会启动配置，在配置里头打开：
 
 > Executable file formats --->
+>
 >   Kernel support for a.out and ECOFF binaries
 
 接着完成编译并通过 nfsroot 启动：
@@ -88,7 +89,9 @@ tags:
 
 ## 尝试运行 a.out 格式
 
-不过未来两三个版本以后，a.out 可能很快就被完全移除掉。在彻底被删除之前，来做一个告别式：尝试在 Linux v5.1 上跑一个真正的 a.out 格式的可执行文件。
+不过未来两三个版本以后，a.out 可能很快就被完全移除掉。
+
+**在彻底被删除之前，来做一个告别式吧**：那就是尝试在 Linux v5.1 上跑一个真正的 a.out 格式的可执行文件。
 
 既然 Linus 都说已经没有工具链默认能够生成 a.out 可执行文件，那怎么办呢？
 
@@ -104,11 +107,13 @@ gcc 默认生成的 a.out 的实际格式是 ELF：
 
 为什么 gcc 默认把 ELF 格式的可执行文件也默认取名为 a.out 呢？这个主要是历史沿革。
 
-a.out 作为最早的可执行文件格式，其本意是 Assembler Output 的缩写。虽然，现如今，汇编完还加入了链接环节，甚至还有动态链接环节，伴随着地是可执行文件格式从 a.out, COFF 到 ELF 一路演化下来，但是长久以来，这个 a.out 的默认名字却保留了了下来。
+a.out 作为最早的可执行文件格式，其本意是 Assembler Output 的缩写。
+
+虽然，现如今，汇编完还加入了链接环节，甚至还有动态链接环节，伴随着地是可执行文件格式从 a.out, COFF 到 ELF 一路演化下来，但是长久以来，这个 a.out 的默认名字却保留了下来。
 
 ### gcc 不行，试试 objcopy 格式转换
 
-既然 gcc 默认不支持 a.out，那尝试用 objcopy 转换看看，发现也不成功。
+既然现在的 gcc 默认不支持生成 a.out 格式，那尝试用 objcopy 转换看看，发现也不成功。
 
     $ objcopy -O a.out-i386-linux a.out a.out-elf
     objcopy: a.out-elf: can not represent section `.interp' in a.out object file format
@@ -126,7 +131,7 @@ a.out 作为最早的可执行文件格式，其本意是 Assembler Output 的�
     $ ./x86-hello-a.out
     ./x86-hello-a.out: line 1: syntax error: unterminated quoted string
 
-这说明 ZMAGIC a.out 不知道哪天开始已经失效了。那 QMAGIC 呢，可是，目前没找到合适的方法强制转换为 QMAGIC 类型。
+这说明 ZMAGIC a.out 不知道哪天开始已经失效了。那 QMAGIC 呢，可是，目前没找到合适的方法强制转换为 QMAGIC 类型，欢迎读者们反馈补充。
 
 关于 ZMAGIC 和 QMAGIC 的说明如下，摘自 [A.OUT Manual page](https://nxmnpg.lemoda.net/5/a.out)：
 
@@ -153,7 +158,9 @@ Linux 0.11 Lab 可以直接在 Linux Lab 下跑，可以在 Linux Lab 中把它�
 接着先准备好一个可以在 Linux 0.11 编译的程序，可以直接用标准的 hello.c，也可以用汇编，这里直接复用上面的 `examples/assembly/x86/x86-hello.s`，把它复制到 Linux 0.11 的磁盘中，并稍作改动即可：
 
     $ make mount-hd
+
     $ sudo cp ../linux-lab/examples/assembly/x86/x86-hello.s rootfs/_hda/usr/root/
+
     $ sudo diff -Nubr ../linux-lab/examples/assembly/x86/x86-hello.s rootfs/_hda/usr/root/x86-hello.s
     --- ../linux-lab/examples/assembly/x86/x86-hello.s	2019-04-27 03:02:26.685203102 +0000
     +++ rootfs/_hda/usr/root/x86-hello.s	2019-08-17 21:28:25.000000000 +0000
@@ -177,9 +184,11 @@ Linux 0.11 Lab 可以直接在 Linux Lab 下跑，可以在 Linux Lab 中把它�
     $ sync
     $ make umount-hd
 
+主要老版本 gcc 不支持 `.string`，需要用 `.ascii` 替换，另外默认入口需要改为 `_main`，而不再是 `_start`。
+
 #### 在 Linux 0.11 中编译 Hello.s
 
-之后进入 Linux 0.11 Lab 并启动 Linux 0.11，从硬盘加载文件系统：
+之后进入 Linux 0.11 Lab 并启动 Linux 0.11，这里选择从硬盘加载文件系统，其他文件系统不带编译器：
 
     $ cd linux-0.11-lab
     $ make boot-hd
@@ -190,7 +199,7 @@ Linux 0.11 Lab 可以直接在 Linux Lab 下跑，可以在 Linux Lab 中把它�
     $ ./a.out
     Hello, world!
 
-如果需要编辑，记得创建一个 `/tmp` 目录，然后就可以用 vi 直接在 Linux 0.11 编辑代码了。
+如果需要编辑，记得通过 `mkdir /tmp` 创建一个 `/tmp` 目录，然后就可以用 vi 直接在 Linux 0.11 编辑代码了。
 
 ### 在 Linux Lab 中运行 QMAGIC a.out
 
@@ -210,8 +219,32 @@ Linux 0.11 Lab 可以直接在 Linux Lab 下跑，可以在 Linux Lab 中把它�
     fd_offset is not page aligned. Please convert program: a.out
     Hello, world!
 
+### 试试从 a.out 到 ELF 的转换
+
+虽然上面的 ELF 转换成 ZMAGIC a.out，无法正常运行，但是反过来呢？试着从 QMAGIC a.out 转换为 ELF，竟然可以运行成功：
+
+    $ objcopy -O elf32-i386 a.out elf-hello
+    $ file ./elf-hello
+    elf-hello: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, not stripped
+    $ sudo ./elf-hello
+    Hello, world!
+
+补充一下，用 `objcopy --info` 可以列出支持的所有格式：
+
+    $ objcopy --info
+           a.out-i386-linux pei-i386 pei-x86-64 elf64-l1om elf64-k1om
+      i386 a.out-i386-linux pei-i386 pei-x86-64 ---------- ----------
+      l1om ---------------- -------- ---------- elf64-l1om ----------
+      k1om ---------------- -------- ---------- ---------- elf64-k1om
+     iamcu ---------------- -------- ---------- ---------- ----------
+    plugin ---------------- -------- ---------- ---------- ----------
+
+需要补充一点，上面如果直接运行 `./elf-hello`，会出现段错误，留待后续分解吧。
+
+## 小结
+
 到这里为止，经过诸多努力，终于在 a.out 彻底被从官方 Linux 剔除之前，完成了一次运行的尝试。
 
-在这个基础上，未来，有机会更深度地回顾 a.out，COFF 到 ELF 的演化。
+在这个基础上，未来，就有机会更深度地分析 a.out，COFF 到 ELF 三种格式以及它们的演进历程。
 
 [1]: http://tinylab.org

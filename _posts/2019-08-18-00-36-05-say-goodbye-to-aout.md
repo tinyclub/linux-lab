@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "与 a.out 做一个正式的告别"
+title: "为 a.out 举行一个特殊的告别仪式"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /goodbye-a.out/
@@ -91,7 +91,7 @@ tags:
 
 不过未来两三个版本以后，a.out 可能很快就被完全移除掉。
 
-**在彻底被删除之前，来做一个告别式吧**：那就是尝试在 Linux v5.1 上跑一个真正的 a.out 格式的可执行文件。
+**在 a.out 彻底被删除之前，来举行一个告别仪式吧**：那就是尝试在 Linux v5.1 上跑一个真正的 a.out 格式的可执行文件。
 
 既然 Linus 都说已经没有工具链默认能够生成 a.out 可执行文件，那怎么办呢？
 

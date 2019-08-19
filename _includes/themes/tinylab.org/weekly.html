@@ -1,3 +1,12 @@
+<section id="home">
+  {% assign articles = site.posts %}
+  {% assign condition = 'top' %}
+  {% assign value = true %}
+  {% assign style = "tiny" %}
+  {% include widgets/articles %}
+  {% assign style = null %}
+</section>
+
 <section id="content">
   <article>
     <header>

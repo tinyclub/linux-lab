@@ -23,7 +23,7 @@
 {% assign top_style="" %}
 
 {% if article.top and article.top == true %}
-   {% if condition != 'top' %}
+   {% if condition != 'top' or article.title == page.title %}
      {% continue %}
    {% else %}
      {% assign top_style="style='color:#fb6362'" %}
@@ -35,6 +35,8 @@
 <article>
   <header>
 
+    {% if style != "tiny" %}
+
     {% assign article_date = nil %}
     {% if article.date %}
        {% assign article_date = article.date %}
@@ -45,6 +47,8 @@
     {% endif %}
     {% if article_date %}
     <time>{{ article_date | date: "%Y-%m-%d" }}</time>
+    {% endif %}
+
     {% endif %}
 
     <h2>

@@ -26,8 +26,8 @@
    {% if condition != 'top' or article.title == page.title %}
      {% continue %}
    {% else %}
-     {% assign top_style="style='color:#fb6362'" %}
-     {% assign top_start="[置顶] " %}
+     {% assign top_style="" %}
+     {% assign top_start="<span style='color:#fb8685'>[置顶]</span> " %}
      {% assign top_end="" %}
    {% endif %}
 {% endif %}
@@ -52,7 +52,7 @@
     {% endif %}
 
     <h2>
-        <a class="tooltip article" href="{{ article.url }}" {{ top_style}}>{% if article.desc %}<span>{{ article.desc }}</span>{% endif %}{{ top_start }}{{ article.title }}{{ top_end }}</a>
+        {{ top_start }}<a class="tooltip article" href="{{ article.url }}" {{ top_style}}>{% if article.desc %}<span>{{ article.desc }}</span>{% endif %}{{ article.title }}{{ top_end }}</a>
     </h2>
 
     {% if style != "tiny" %}

@@ -1,0 +1,20 @@
+
+<div id="footer_layer" style="text-align: center; max-width='100%';">
+<p style="text-align: right; margin-right: 5%;"><a href="javascript:;" onclick="javascript:document.getElementById('footer_layer').style.display='none';">关闭广告</a></p>
+
+<script type="text/javascript">
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div style="" id="' + s + '"></div>');
+            (window.slotbydup = window.slotbydup || []).push({
+                id: "u4485471",
+                container: s
+            });
+        })();
+</script>
+<!-- 多条广告如下脚本只需引入一次 -->
+<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" >
+</script>
+
+<br/>
+</div>

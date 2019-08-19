@@ -15,9 +15,12 @@ description: 泰晓科技 -- 聚焦 Linux，致力于推动业界打造更极致
 
 <!-- Recent Posts  -->
 <section id="home">
-  {% assign articles = site.posts %}
+  {% assign articles = site.pages %}
   {% assign condition = 'top' %}
   {% assign value = true %}
+  {% include widgets/articles %}
+
+  {% assign articles = site.posts %}
   {% include widgets/articles %}
 
   {% assign articles = paginator.posts %}

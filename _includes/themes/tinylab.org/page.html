@@ -1,10 +1,14 @@
 {% if page.group != "home" %}
-<section id="home">
+<section id="content">
   {% assign articles = site.pages %}
   {% assign condition = 'top' %}
   {% assign value = true %}
   {% assign style = "tiny" %}
   {% include widgets/articles %}
+
+  {% assign articles = site.posts %}
+  {% include widgets/articles %}
+
   {% assign style = null %}
 </section>
 {% endif %}

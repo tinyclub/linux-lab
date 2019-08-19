@@ -3,7 +3,6 @@ layout: post
 author: 'Wu Zhangjin'
 title: "11 个 Makefile 进阶用法"
 draft: false
-top: true
 license: "cc-by-nc-nd-4.0"
 permalink: /makefile-deep-usage/
 description: "本文汇总了诸多 Makefile 进阶用法，提升 Makefile 阅读和编写效率。"

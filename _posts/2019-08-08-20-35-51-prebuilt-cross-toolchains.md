@@ -8,7 +8,6 @@ permalink: /prebuilt-cross-toolchains/
 description: "本文收录全网可下载的交叉编译工具链，方便大家做嵌入式 Linux 开发。"
 category:
   - 交叉编译
-  - Linux 开发
 tags:
   - GCC
   - Cross Toolchains

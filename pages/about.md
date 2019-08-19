@@ -72,6 +72,14 @@ order: 50
 * 首次发表原创文章：200 RMB。
 * 首次发表翻译文章：100 RMB。
 
+## 福利
+
+为感谢新老读者的支持，本站特别送出一份『Linux 知识星球』免费体验卡。
+
+该体验卡可以多人使用，欢迎转赠给周边朋友。
+
+![『Linux 知识星球』免费体验卡](http://tinylab.org/images/xingqiu/planet-free-card.jpg)
+
 ## 打赏
 
 <!-- {% include widgets/sponsor %} -->

@@ -5,8 +5,13 @@
         (function() {
             var s = "_" + Math.random().toString(36).slice(2);
             document.write('<div style="" id="' + s + '"></div>');
+            if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+              var id = "u4485687";
+            } else {
+              var id = "u4485471";
+            }
             (window.slotbydup = window.slotbydup || []).push({
-                id: "u4485471",
+                id: id,
                 container: s
             });
         })();

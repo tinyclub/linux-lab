@@ -1,6 +1,5 @@
 
 <div id="footer_layer" style="text-align: center; max-width='100%';">
-<p style="text-align: right; margin-right: 5%;"><a href="javascript:;" onclick="javascript:document.getElementById('footer_layer').style.display='none';">关闭广告</a></p>
 
 <script type="text/javascript">
         (function() {
@@ -16,5 +15,4 @@
 <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" >
 </script>
 
-<br/>
 </div>

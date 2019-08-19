@@ -1,5 +1,7 @@
 {% if page.contact != false %}
 
+<a target="_blank" href="https://www.yomocode.com/courses/9"><img src="/images/courses/360_elf.jpg" title="泰晓科技 首次与 “阅码场” 合作推出《360° 剖析 Linux ELF》视频课程，火热报名中……" width="95%"/></a>
+
 <br>
 <table>
 <tr><td style="text-align:center;width:30%">微信公众号</td><td style="text-align:center;color:red;width:40%;">{{ contact_info }}</td><td style="text-align:center;width: 30%">知识星球</td></tr>

@@ -389,6 +389,8 @@
     - name: 泰晓沙龙
     - name: 泰晓福利
     - name: 泰晓资讯
+    - name: 视频课程
+    - name: 视频直播
     - name: Linux 知识星球
     - name: 关于我们
 
@@ -402,4 +404,3 @@
         - name: Web 建站系统
           categories:
             - name: Wordpress
-    - name: 视频直播

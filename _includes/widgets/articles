@@ -25,7 +25,7 @@
 {% assign top_style="" %}
 
 {% if article.top and article.top == true %}
-   {% if condition == 'top' and value == true %}
+   {% if condition == 'top' and value == true and page.title != article.title %}
      {% assign top_style="" %}
      {% assign top_start="<span style='color:#fb8685'>[置顶]</span> " %}
      {% assign top_end="" %}

@@ -13,7 +13,9 @@
 {% endif %}
 
 {% if article.draft and article.draft == true %}
-   {% if condition != 'draft' and value != true %}
+   {% if condition == 'draft' and value == true %}
+     {% assign dummy = null %}
+   {% else %}
      {% continue %}
    {% endif %}
 {% endif %}
@@ -23,12 +25,14 @@
 {% assign top_style="" %}
 
 {% if article.top and article.top == true %}
-   {% if condition != 'top' or article.title == page.title %}
-     {% continue %}
-   {% else %}
+   {% if condition == 'top' and value == true %}
      {% assign top_style="" %}
      {% assign top_start="<span style='color:#fb8685'>[置顶]</span> " %}
      {% assign top_end="" %}
+   {% else %}
+     {% if condition != 'draft' or article.draft != true %}
+       {% continue %}
+     {% endif %}
    {% endif %}
 {% endif %}
 

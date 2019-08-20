@@ -2829,7 +2829,7 @@ ifneq ($(GDB_ARCH), 1)
   ifeq ($(GDB_MARCH), 1)
      GDB := gdb-multiarch
   else
-     $(error ERR: Both of $(CCPATH)/$(CCPRE)gdb and gdb-multiarch not exist or not valid)))
+     $(error ERR: Both of $(CCPATH)/$(CCPRE)gdb and gdb-multiarch not exist or not valid)
   endif
 endif
 

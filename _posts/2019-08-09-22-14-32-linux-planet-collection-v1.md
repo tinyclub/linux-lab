@@ -3,7 +3,6 @@ layout: post
 author: 'Wu Zhangjin'
 title: "『Linux 知识星球』发布第 1 个合集，106 篇, 529 页, 5.8 M"
 draft: false
-top: true
 album: Linux 知识星球
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-planet-v1/

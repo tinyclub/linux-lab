@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 391222: 重写（rewrite）OOM Killer"
 album: 'LWN 中文翻译'

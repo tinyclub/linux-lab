@@ -242,6 +242,7 @@ else
 endif
 
 # Kernel features configuration, e.g. kft, gcs ...
+f ?= $(feature)
 F ?= $(f)
 FEATURES ?= $(F)
 FEATURE ?= $(FEATURES)

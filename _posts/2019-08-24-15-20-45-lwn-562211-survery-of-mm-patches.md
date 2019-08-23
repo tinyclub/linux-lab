@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 562211: 更加可靠的 OOM 处理"
 album: 'LWN 中文翻译'

@@ -1140,7 +1140,7 @@ endif
 
 # Configure Buildroot
 root-checkout:
-	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx && cd $(TOP_DIR)
+	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
 

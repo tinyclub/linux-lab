@@ -481,11 +481,6 @@ KIMAGE  ?= $(LINUX_KIMAGE)
 UKIMAGE ?= $(LINUX_UKIMAGE)
 DTB     ?= $(LINUX_DTB)
 
-# Proxy kernel is built in buildroot
-ifeq ($(PBR),0)
-  PKIMAGE  := $(LINUX_PKIMAGE)
-endif
-
 ifeq ($(PBK),0)
   KIMAGE  := $(LINUX_KIMAGE)
   UKIMAGE := $(LINUX_UKIMAGE)
@@ -596,6 +591,11 @@ ifeq ($(_PBR), 0)
       PBR := 1
     endif
   endif
+endif
+
+# Proxy kernel is built in buildroot
+ifeq ($(PBR),0)
+  PKIMAGE   := $(LINUX_PKIMAGE)
 endif
 
 # Prefer ROOTFS: command line > environment override > buildroot > prebuilt

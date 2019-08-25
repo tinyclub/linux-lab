@@ -75,6 +75,8 @@ tags:
 
 一种是直接在相应 Makefile 打印 `KBUILD_CFLAGS`，例如：`$(error $(KBUILD_CFLAGS))`，另外一种是 `make /path/to/xxx.o V=1` 查看。在 Linux Lab 里头可以用 `make k-x /path/to/xxx.o V=1`。
 
+除了直接拿掉，也可以考虑替换成 `-Og`，这个更适合调试需要。
+
 ## 怎么去掉隐式优化
 
 第二个，也来看看实例：

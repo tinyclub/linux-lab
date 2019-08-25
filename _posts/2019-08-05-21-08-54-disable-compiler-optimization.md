@@ -13,7 +13,6 @@ tags:
   - volatile
   - -O2
   - -Os
-  - CFLAGS
   - CFLAGS_REMOVE
   - KBUILD_CFLAGS
 ---
@@ -50,14 +49,6 @@ tags:
 
     $ grep CFLAGS_REMOVE -ur linux-stable/scripts/Makefile.lib
     _c_flags       = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(orig_c_flags))
-
-**注意**：对于早期内核版本，可能没有上述支持，需要用以下方案，也就是直接替换，例如：
-
-    CFLAGS_mmu.o := $(filter-out -O2, $(CFLAGS_mmu.o))
-
-或者是
-
-    CFLAGS_mmu.o := $(subst -O2,, $(CFLAGS_mmu.o))
 
 **目录级**：`KBUILD_CFLAGS := $(filter-out -O2, $(KBUILD_CFLAGS))`
 

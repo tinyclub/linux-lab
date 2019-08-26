@@ -123,7 +123,8 @@ a.out 作为最早的可执行文件格式，其本意是 Assembler Output 的�
 
     $ cd (linux-lab)/examples/assembly/x86
     $ make
-    $ objcopy -O a.out-i386-linux x86-hello x86-hello-a.out$ file x86-hello-a.out
+    $ objcopy -O a.out-i386-linux x86-hello x86-hello-a.out
+    $ file x86-hello-a.out
     x86-hello-a.out: Linux/i386 demand-paged executable (ZMAGIC)
 
 不幸地是，转换成功了，但是并不能执行。

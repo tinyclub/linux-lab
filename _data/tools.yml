@@ -48,3 +48,8 @@
   permalink: https://validator.w3.org/feed/
   description: a free service that checks the syntax of Atom or RSS feeds.
   group: tools
+
+- title: 在线 Markdown 转换工具
+  permalink: http://md.aclickall.com/
+  description: 支持把 Markdown 转换为公众号支持的格式，比 Markdown Here 要友好
+  group: tools

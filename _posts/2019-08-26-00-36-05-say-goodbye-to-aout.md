@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "为 a.out 举行一个特殊的告别仪式"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /goodbye-a.out/
 description: "Linux v5.1 启动了告别 a.out 的第一步，已经无法通过内核配置简单启用 a.out，另外 a.out 的 coredump 代码已经全部被移除。这么一个 Linux 最早支持的执行文件格式即将退出历史舞台，令人感叹。"

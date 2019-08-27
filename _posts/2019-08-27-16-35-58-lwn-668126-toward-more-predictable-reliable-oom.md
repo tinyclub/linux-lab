@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 668126: 更加可靠（reliable）和更可预期（predictable）的 OOM 处理机制"
 album: 'LWN 中文翻译'

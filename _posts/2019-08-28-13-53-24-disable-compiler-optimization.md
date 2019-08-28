@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Linux 下如何绕过编译器优化"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /disable-compiler-optimization/
 description: "编译器优化效果通常是正向的，但是有些情况下确不希望编译器启动优化动作，比如说在调试的时候。"

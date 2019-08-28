@@ -16,18 +16,16 @@ tags:
 
 [返回 “LWN 中文翻译计划” 翻译文章列表汇总][2]
 
-以下列表包含本 LWN 翻译计划中所有已经 **被认领** 的文章、及其翻译状态等其他信息（翻译状态包括"翻译中"，"校对中"，"已发表"）。
-
 ## 虚拟化
 
 ### Namespaces
 
-| 状态   | 译作者    | 校对      | 文章  |原文发表时间|
-|--------|-----------|-----------|-------|------------|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 1: namespaces overview](/lwn-531114) |January 4, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 2: the namespaces API](/lwn-531381) |January 8, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 3: PID namespaces](/lwn-531419) |January 16, 2013|
-| 已发表 | unicornx  | w-simon   |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748) |January 23, 2013|
+| 译作者    | 校对      | 文章  |原文发表时间|
+|-----------|-----------|-------|------------|
+| unicornx  | w-simon   |[Namespaces in operation, part 1: namespaces overview](/lwn-531114) |January 4, 2013|
+| unicornx  | w-simon   |[Namespaces in operation, part 2: the namespaces API](/lwn-531381) |January 8, 2013|
+| unicornx  | w-simon   |[Namespaces in operation, part 3: PID namespaces](/lwn-531419) |January 16, 2013|
+| unicornx  | w-simon   |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748) |January 23, 2013|
 
 ## 赞助我们
 
@@ -40,5 +38,5 @@ tags:
 [返回 “LWN 中文翻译计划” 翻译文章列表汇总][2]
 
 [1]: http://tinylab.org
-[2]: /lwn-list
+[2]: /lwn#翻译成果
 

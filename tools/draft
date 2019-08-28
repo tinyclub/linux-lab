@@ -5,24 +5,54 @@
 
 TOP_DIR=$(cd $(dirname $0) && pwd)
 
+# Check default branch
+#
+# for normal pull request, default branch should not be 'gh-pages'
+#
+default=gh-pages
+current=`git branch | grep ^* | cut -d ' ' -f2`
+if [ "$current" == "$default" ]; then
+	echo
+	echo "LOG: For normal pull request, please create a new branch, e.g. upstream."
+	echo
+	echo "     git checkout -b upstream"
+	echo
+	exit 0
+fi
+
 draft_on="draft:.*true"
 draft_off="draft: false"
 
 # List all drafts
 grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2- | sort | cat -n
-total=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | wc -l | tr -d ' '`
+total=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | wc -l | tr -d ' '`
 post=""
 if [ $total -gt 1 ]; then
         # Select the one for publishing
-        post_num=0
-	read -p "Select(0~$total): " post_num
+	post_num=""
+	read -p "Select (1~$total): " post_num
 	if [ -n "$post_num" ]; then
            if [ $post_num -le $total -a $post_num -ge 1 ]; then
-                post_title=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2- | sort | head -$post_num | tail -1`
+               post_title=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2- | sort | head -$post_num | tail -1`
+           else
+	       echo
+               echo "LOG: Select $post_num is not in the range: (1 ~ $total)."
+	       echo
+               exit 0
            fi
+        else
+	    echo
+	    echo "LOG: Nothing selected, exit."
+	    echo
+	    exit 0
 	fi
+elif [ $total -eq 1 ]; then
+	post_title=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2-`
 else
-	post_title=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | head -1 | grep "^title:" {} | cut -d':' -f2-`
+	echo
+	echo "LOG: No draft exists."
+	echo
+	exit 0
 fi
 
 post=`grep -ur "^title:.*$post_title.*" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | head -1`

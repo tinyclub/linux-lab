@@ -20,12 +20,28 @@ tags:
 
 ### Namespaces
 
-| 译作者    | 校对      | 文章  |原文发表时间|
-|-----------|-----------|-------|------------|
-| unicornx  | w-simon   |[Namespaces in operation, part 1: namespaces overview](/lwn-531114) |January 4, 2013|
-| unicornx  | w-simon   |[Namespaces in operation, part 2: the namespaces API](/lwn-531381) |January 8, 2013|
-| unicornx  | w-simon   |[Namespaces in operation, part 3: PID namespaces](/lwn-531419) |January 16, 2013|
-| unicornx  | w-simon   |[Namespaces in operation, part 4: more on PID namespaces](/lwn-532748) |January 23, 2013|
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-531114">Namespaces in operation, part 1: namespaces overview</a></td>
+		<td>January 4, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-531381">Namespaces in operation, part 2: the namespaces API</a></td>
+		<td>January 8, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-531419">Namespaces in operation, part 3: PID namespaces</a></td>
+		<td>January 16, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-532748">Namespaces in operation, part 4: more on PID namespaces</a></td>
+		<td>January 23, 2013</td>
+	</tr>
+</table>
 
 ## 赞助我们
 

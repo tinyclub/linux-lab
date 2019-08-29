@@ -20,16 +20,16 @@ tags:
 
 ### Debugging
 
-| 译作者  | 校对      | 文章  |原文发表时间|
-|---------|-----------|-------|------------|
-| darmac  | unicornx  |[Bringing kgdb into 2.6](/lwn-70465) |February 10, 2004|
-
-### Development tools
-
-| 译作者    | 校对      | 文章  |原文发表时间|
-|-----------|-----------|-------|------------|
-| unicornx  | lzufalcon |[Device resource management](/lwn-215996)|January 2, 2007|
-
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-70465">Bringing kgdb into 2.6</a></td>
+		<td>February 10, 2004</td>
+	</tr>
+</table>
 
 ## 赞助我们
 

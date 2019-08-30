@@ -18,9 +18,22 @@ tags:
 
 ## 中断管理
 
-| 译作者    | 校对            | 文章  |原文发表时间|
-|-----------|-----------------|-------|------------|
-| unicornx  | guojian-at-wowo |[A new generic IRQ layer](/lwn-184750) |May 23, 2006|
+### Interrupts
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-184750">A new generic IRQ layer</a></td>
+		<td>May 23, 2006</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-302043">Moving interrupts to threads</a></td>
+		<td>October 8, 2008</td>
+	</tr>
+</table>
 
 ## 赞助我们
 

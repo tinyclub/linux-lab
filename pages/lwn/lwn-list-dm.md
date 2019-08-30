@@ -18,34 +18,100 @@ tags:
 
 ## 设备管理
 
-### Device drivers
-
-| 译作者      | 校对                 | 文章  |原文发表时间|
-|-------------|----------------------|-------|------------|
-| unicornx    | Tacinight, lzufalcon |[The pin control subsystem](/lwn-468759)|November 22, 2011|
-| unicornx    | lzufalcon            |[The platform device API](/lwn-448499)|June 21, 2011|
-| unicornx    | maxiao1993           |[(Partially) graduating IIO](/lwn-465358) |November 2, 2011|
-
 ### Device tree
 
-| 译作者     | 校对      | 文章  |原文发表时间|
-|------------|-----------|-------|------------|
-| unicornx   | WH2136    |[KS2009: Generic device trees](/lwn-357487) |October 19, 2009|
-| unicornx   | lzufalcon |[Platform devices and device trees](/lwn-448502)|June 21, 2011|
-| unicornx   | w-simon   |[Device tree overlays](/lwn-616859) |October 22, 2014|
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-357487">KS2009: Generic device trees</a></td>
+		<td>October 19, 2009</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-448502">Platform devices and device trees</a></td>
+		<td>June 21, 2011</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-616859">Device tree overlays</a></td>
+		<td>October 22, 2014</td>
+	</tr>
+</table>
+
 
 ### General-purpose I/O
 
-| 译作者    | 校对             | 文章  |原文发表时间|
-|-----------|------------------|-------|------------|
-| unicornx  | cee1, norlanjame | [GPIO in the kernel: an introduction](/lwn-532714)|January 16, 2013|
-| unicornx  | lljgithub        | [GPIO in the kernel: future directions](/lwn-533632) |January 23, 2013|
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-532714">GPIO in the kernel: an introduction</a></td>
+		<td>January 16, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-533632">GPIO in the kernel: future directions</a></td>
+		<td>January 23, 2013</td>
+	</tr>
+</table>
+
+### Industrial I/O
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-465358">(Partially) graduating IIO</a></td>
+		<td>November 2, 2011</td>
+	</tr>
+</table>
+
+### Pin controller
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-468759">The pin control subsystem</a></td>
+		<td>November 22, 2011</td>
+	</tr>
+</table>
+
+### Platform data
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-448499">The platform device API</a></td>
+		<td>June 21, 2011</td>
+	</tr>
+</table>
 
 ### Resources
 
-| 译作者    | 校对      | 文章  |原文发表时间|
-|-----------|-----------|-------|------------|
-| unicornx  | lzufalcon |[The managed resource API](/lwn-222860)|February 20, 2007|
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-215996">Device resource management</a></td>
+		<td>January 2, 2007</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-222860">The managed resource API</a></td>
+		<td>February 20, 2007</td>
+	</tr>
+</table>
 
 ## 赞助我们
 

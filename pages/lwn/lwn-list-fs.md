@@ -16,14 +16,43 @@ tags:
 
 [返回 “LWN 中文翻译计划” 翻译文章列表汇总][2]
 
-## 设备管理
+## 文件系统
 
-| 译作者    | 校对            | 文章  |原文发表时间|
-|-----------|-----------------|-------|------------|
-| Tacinight | unicornx        |[The Btrfs filesystem: An introduction](/lwn-576276)|December 11, 2013|
-| Tacinight | guojian-at-wowo |[Btrfs: Getting started](/lwn-577218) |December 17, 2013|
-| Tacinight | fan-xin         |[Btrfs: Working with multiple devices](/lwn-577961) |December 30, 2013|
-| Tacinight | cee1            |[Filesystem management interfaces](/lwn-718803) |April 5, 2017|
+### Btrfs
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-576276">The Btrfs filesystem: An introduction</a></td>
+		<td>December 11, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-577218">Btrfs: Getting started</a></td>
+		<td>December 17, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-577961">Btrfs: Working with multiple devices</a></td>
+		<td>December 30, 2013</td>
+	</tr>
+</table>
+
+### Filesystems
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-718803">Filesystem management interfaces</a></td>
+		<td>April 5, 2017</td>
+	</tr>
+</table>
+
+
 
 ## 赞助我们
 

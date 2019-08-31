@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "分享两部 Linux 纪录片：The Code, Revolution OS"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /the-code-and-revolution-os/
 description: "本文分享了在 2002 年上映的两部 Linux 纪录片，这两部纪录片回顾了 Linux 的发展历程，以及相关的自由软件和开源软件运动，值得所有 Linux 开发人员欣赏。"

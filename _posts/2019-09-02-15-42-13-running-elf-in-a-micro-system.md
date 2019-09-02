@@ -2,7 +2,8 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "在 498 行极小系统跑标准 ELF 程序"
-draft: true
+draft: false
+top: true
 license: "cc-by-nc-nd-4.0"
 permalink: /running-elf/
 description: "CS630 是旧金山大学的一个高级微机编程课程，它提供了很多非常好的实验案例，本文介绍如何极速使用其中的 ELF 装载和运行案例。"

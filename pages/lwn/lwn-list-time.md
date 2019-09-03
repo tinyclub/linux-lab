@@ -36,6 +36,14 @@ tags:
 		<th width="50%" style="text-align: center;">原文发表时间</th>
 	</tr>
 	<tr>
+		<td><a href="/lwn-138969">The dynamic tick patch</a></td>
+		<td>June 7, 2005</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-149877">The state of the dynamic tick patch</a></td>
+		<td>August 31, 2005</td>
+	</tr>
+	<tr>
 		<td><a href="/lwn-223185">Clockevents and dyntick</a></td>
 		<td>February 21, 2007</td>
 	</tr>
@@ -70,16 +78,8 @@ tags:
 		<th width="50%" style="text-align: center;">原文发表时间</th>
 	</tr>
 	<tr>
-		<td><a href="/lwn-138969">The dynamic tick patch</a></td>
-		<td>June 7, 2005</td>
-	</tr>
-	<tr>
 		<td><a href="/lwn-145973">How fast should HZ be?</a></td>
 		<td>August 2, 2005</td>
-	</tr>
-	<tr>
-		<td><a href="/lwn-149877">The state of the dynamic tick patch</a></td>
-		<td>August 31, 2005</td>
 	</tr>
 </table>
 

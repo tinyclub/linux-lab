@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 230574: 内核调度器替换方案的激烈竞争"
 album: 'LWN 中文翻译'

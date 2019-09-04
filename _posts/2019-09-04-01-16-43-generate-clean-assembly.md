@@ -2,7 +2,8 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "如何生成干净可阅读的汇编代码"
-draft: true
+draft: false
+top: true
 license: "cc-by-nc-nd-4.0"
 permalink: /generate-clean-assembly/
 description: "本文介绍在用新版的 GCC 编译 C 语言时如何生成干净可阅读的汇编代码，从而方便学习和理解汇编语言。"

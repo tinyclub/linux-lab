@@ -158,6 +158,8 @@
     - name: 模拟器
       categories:
         - name: Qemu
+        - name: Unicorn
+        - name: Bochs
         - name: Javascript Emulator
     - name: 开发环境
       categories:

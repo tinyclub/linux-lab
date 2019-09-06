@@ -6,7 +6,7 @@ pre .com, code .com { color: #32cd32; font-style: italic; } /* comment - green *
 pre .typ, code .typ { color: #6ecbcc; } /* type - turq green */
 pre .lit, code .lit { color: #d06; } /* literal - cherry red */
 pre .pun, code .pun { color: #8B8970;  } /* punctuation - lemon chiffon4  */
-pre .pln, code .pln { color: #f0f0f0; } /* plaintext - white */
+pre .pln, code .pln { color: #f0f0f0; white-space: pre } /* plaintext - white */
 pre .tag, code .tag { color: #9c9cff; } /* html/xml tag  (bluey)  */
 pre .htm, code .htm { color: #dda0dd; } /* html tag  light purply*/
 pre .xsl, code .xsl { color: #d0a0d0; } /* xslt tag  light purply*/
@@ -22,19 +22,22 @@ pre.prettyprint, code.prettyprint {
   font-weight: bold;
   font-size: 90%;
   background-color: #0f0f0f;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -o-border-radius: 8px;
-  -ms-border-radius: 8px;
-  -khtml-border-radius: 8px;
-  border-radius: 8px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  border-radius: 2px;
+  white-space: nowrap
 }  /*  background is black (well, just a tad less dark )  */
 
 pre.prettyprint {
-  width: 92%;
+  width: 95%;
   margin: 0 auto;
   margin-bottom: .67em;
   padding: 2px;
+  white-space: nowrap;
+  overflow-x: auto
 }
 
 pre.prettyprint a, code.prettyprint a {
@@ -72,5 +75,15 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
   }
   pre.prettyprint, code.prettyprint {
     font-size: 80%
+  }
+}
+
+@media print {
+  pre.prettyprint {
+    overflow-x: visible;
+    white-space: pre-wrap;
+  }
+  pre.prettyprint, code.prettyprint {
+    white-space: pre-wrap;
   }
 }

@@ -1,7 +1,7 @@
 /* Pretty printing styles. Used with prettify.js. */
 
 /* SPAN elements with the classes below are added by prettyprint. */
-.pln { color: #000 }  /* plain text */
+.pln { color: #000; white-space: pre }  /* plain text */
 
 @media screen {
   .str { color: #080 }  /* string content */
@@ -35,21 +35,24 @@ pre.prettyprint, code.prettyprint {
   font-family:'Droid Sans Mono','CPMono_v07 Bold','Droid Sans';
   font-weight: 500;
   font-size: 90%;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -o-border-radius: 8px;
-  -ms-border-radius: 8px;
-  -khtml-border-radius: 8px;
-  border-radius: 8px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  border-radius: 2px;
+  white-space: nowrap
 }  /*  background is black (well, just a tad less dark )  */
 
 /* Put a border around prettyprinted code snippets. */
 pre.prettyprint {
-  width: 92%;
+  width: 95%;
   margin: 0 auto;
   margin-bottom: .67em;
   padding: 2px;
-  border: 1px solid #ccc
+  border: 1px solid #ccc;
+  white-space: nowrap;
+  overflow-x: auto
 }
 
 /* Specify class=linenums on a pre to get line numbering */
@@ -74,9 +77,21 @@ li.L9 { background: #eee }
     width: 98%;
     padding-left: 2px;
     padding-right: 2px;
-    margin-left: 0
+    margin-left: 0;
+    white-space: nowrap
   }
   pre.prettyprint, code.prettyprint {
-    font-size: 80%
+    font-size: 80%;
+    white-space: nowrap
+  }
+}
+
+@media print {
+  pre.prettyprint {
+    overflow-x: visible;
+    white-space: pre-wrap;
+  }
+  pre.prettyprint, code.prettyprint {
+    white-space: pre-wrap;
   }
 }

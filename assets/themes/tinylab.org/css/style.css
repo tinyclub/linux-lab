@@ -600,6 +600,9 @@ article section ul li {
 article section ol li {
     line-height: 180%
 }
+article section pre ol li {
+    line-height: 120%
+}
 #wrap footer p {
     color: #345
 }
@@ -802,9 +805,7 @@ pre {
     margin-bottom: 1em;
     margin-left: 1.16em;
     line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    white-space: nowrap;
     background-color: #f5f5f5;
     border: 1px solid rgba(0, 0, 0, 0.15);
     -webkit-border-radius: 4px;
@@ -815,8 +816,9 @@ pre code {
     padding: 0;
     margin: 0;
     color: inherit;
-    white-space: pre-wrap;
+    white-space: nowrap;
     background-color: transparent;
+    display: inline-block;
     border: 0
 }
 /*  Search Box  */
@@ -1371,5 +1373,16 @@ short_prev_next {
     }
     .author-box-wrap {
         display: none
+    }
+    pre {
+        word-break: break-all;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    pre code {
+        white-space: pre-wrap;
+    }
+    code {
+        white-space: pre-wrap;
     }
 }

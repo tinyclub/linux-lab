@@ -65,7 +65,7 @@ JB :
     categories_limit: 3
 
   code_prettify:
-    theme: prettify
+    theme: doxy
 
   comments :
     provider : changyan

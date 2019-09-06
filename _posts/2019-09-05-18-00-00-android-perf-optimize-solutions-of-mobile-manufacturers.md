@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Weilin'
 title: "那些年，我们一起经历过的 Android 系统性能优化"
 draft: false
-top: true
+top: false
 permalink: /android-perf-optimize-solutions-of-mobile-manufacturers/
 description: "本文梳理了近年来手机厂商重点宣传的系统性能优化方案"
 category:

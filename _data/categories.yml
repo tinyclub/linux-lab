@@ -93,6 +93,7 @@
             - name: RunTime PM
             - name: Wakelocks
         - name: 安全管理
+        - name: 实时系统
         - name: 实时抢占
         - name: 内核虚拟化
         - name: 内核函数库
@@ -317,7 +318,7 @@
     - name: 设计规范
       categories:
         - name: UML
-    - name: 变更管理
+    - name: 版本管理
       categories:
         - name: Git
         - name: SVN

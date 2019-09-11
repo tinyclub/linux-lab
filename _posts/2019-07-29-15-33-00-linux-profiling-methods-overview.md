@@ -12,7 +12,7 @@ tags:
   - uretprobe
   - PMU
 categories:
-  - Linux
+  - Linux 系统
 ---
 
 <!-- 好几张图看懂 Linux profiling 机制 -->

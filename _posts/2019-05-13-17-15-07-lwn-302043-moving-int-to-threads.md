@@ -9,7 +9,7 @@ license: "cc-by-sa-4.0"
 permalink: /lwn-302043/
 description: "LWN 中文翻译，中断线程化"
 category:
-  - 中断子系统
+  - 中断与异常
   - LWN
 tags:
   - Linux

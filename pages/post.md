@@ -26,7 +26,7 @@ order: 60
 
 首先下载文章仓库：
 
-    $ git clone https://github.com/tinyclub/tinylab.org
+    $ git clone https://gitee.com/tinylab/tinylab.org
     $ cd tinylab.org
 
 然后生成文章模板, slug 为泰晓科技站内链接（字符中间请使用 `-` 连接），title 为标题。举例如下
@@ -58,11 +58,11 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 ## 递送稿件
 
-撰写完后即可通过 Github 发送 Pull Request 进行投稿。
+撰写完后即可通过 Github/Gitee 发送 Pull Request 进行投稿。
 
 这一步要求事先做如下准备：
 
-  * 在 Github [Fork][3] 上述 [文章仓库][1]
+  * 在 Github [Fork][3] 上述 [文章仓库][1]，也可以在 [Gitee](https://gitee.com/tinylab/tinylab.org) Fork 并发送 Pull Request
   * 您在本地修改后先提交到刚 Fork 的仓库
   * 然后再进入自己仓库，选择合并到 [文章仓库][1] 的 gh-pages 分支
 
@@ -157,7 +157,7 @@ tags:
 
 ### 网站内
 
-一个是 “泰晓科技” 网站上的二维码收款。文章在 “泰晓科技” 网站上发表后，读者可以通过扫描文章末尾的 “支付宝打赏” 或者 “微信打赏” 二维码给心仪的读者打赏。效果见本文末尾的 [打赏](#sponsor)。
+一个是 “泰晓科技” 网站上的二维码收款。文章在 “泰晓科技” 网站上发表后，读者可以通过扫描文章末尾的 “支付宝打赏” 或者 “微信打赏” 二维码给心仪的作者打赏。效果见本文末尾的 [打赏](#sponsor)。
 
 <div class="reward-button">[赏](#sponsor)</div>
 
@@ -173,7 +173,7 @@ tags:
 
 ### 公众号
 
-另外一个是 “泰晓科技” 公众号上的 “赞赏用户”。所有文章在 “泰晓科技” 网站上发表后，我们会一并推送到 “泰晓科技” 的微信公众号上，公众号的读者也可以通过点击文章末尾的 “喜欢读者” 给心仪的读者打赏，效果如：
+另外一个是 “泰晓科技” 公众号上的 “赞赏用户”。所有文章在 “泰晓科技” 网站上发表后，我们会一并推送到 “泰晓科技” 的微信公众号上，公众号的读者也可以通过点击文章末尾的 “喜欢读者” 给心仪的作者打赏，效果如：
 
 ![tools/post4](/wp-content/uploads/2019/05/post4.png)
 
@@ -228,7 +228,7 @@ tags:
 
 之后即可下载并运行：
 
-    $ git clone https://github.com/tinyclub/cloud-lab.git
+    $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose tinylab.org
     $ tools/docker/run tinylab.org
 

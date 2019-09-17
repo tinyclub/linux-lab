@@ -218,6 +218,15 @@ Issue the following command to boot the prebuilt kernel and rootfs on the defaul
 
     $ make boot
 
+Login as 'root' user without password, just input 'root' and press Enter:
+
+    Welcome to Linux Lab
+
+    linux-lab login: root
+
+    # uname -a
+    Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
+
 ## Usage
 
 ### Using boards

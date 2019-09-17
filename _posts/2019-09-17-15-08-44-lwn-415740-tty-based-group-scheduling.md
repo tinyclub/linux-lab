@@ -1,6 +1,7 @@
 ---
 layout: post
-draft: true
+draft: false
+top: true
 author: 'Wang Chen'
 title: "LWN 415740: 基于 TTY 的组调度"
 album: 'LWN 中文翻译'

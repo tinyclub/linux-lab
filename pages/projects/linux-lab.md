@@ -138,6 +138,15 @@ tags:
 
     $ make boot
 
+启动后，会打印如下登陆提示符，输入 root，无需密码直接按下 Enter 键即可。
+
+    Welcome to Linux Lab
+
+    linux-lab login: root
+
+    # uname -a
+    Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
+
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
 
     $ make list                   # 查看支持的列表

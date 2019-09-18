@@ -35,7 +35,7 @@ tags:
 
 截屏后的数据格式通常是 `png`，可以做一些转换，主要是调整大小什么的。通常用 `gimp` 也可以搞定，如果要用命令行，可以用 `imagemagick` 提供的 `convert` 工具，可以直接转，它提供比较丰富的命令行选项。如果不想这么麻烦，还是 `gimp` 省事。
 
-  $ convert xxx.png convert.jpg
+    $ convert xxx.png convert.jpg
 
 ## 动态录制桌面
 

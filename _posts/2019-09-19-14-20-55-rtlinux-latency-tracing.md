@@ -2,7 +2,8 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "实时 Linux 抖动分析 Step by step"
-draft: true
+draft: false
+top: true
 album: '实时 Linux'
 license: "cc-by-nc-nd-4.0"
 permalink: /rtlinux-latency-tracing/

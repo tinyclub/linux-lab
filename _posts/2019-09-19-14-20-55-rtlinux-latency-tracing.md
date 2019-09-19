@@ -41,7 +41,7 @@ tags:
 
     CONFIG_PREEMPT=y
 
-从问题来看，已经是已经用上了实时抢占内核，这时需要打开如下配置：
+从问题来看，应该是已经用上了实时抢占内核，这时需要打开如下配置：
 
     CONFIG_PREEMPT_RT_FULL=y
 

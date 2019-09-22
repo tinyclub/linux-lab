@@ -285,6 +285,7 @@
         - name: Android 触摸屏
         - name: Android Recovery
         - name: Android 安全服务
+        - name: Android 签名
     - name: Android 应用
       categories:
         - name: Google Play

@@ -1,3 +1,10 @@
+<br/>
+
+{% include widgets/courses/360-elf %}
+
+<br/>
+<br/>
+
 {% if page.sponsor != false %}
 
 {% if author_name == null or author_name == empty %}

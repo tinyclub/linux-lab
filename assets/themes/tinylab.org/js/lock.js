@@ -73,7 +73,6 @@ $(articleSelector).ready(function () {
           console.log('Detecting Token', token);
           for (var i = 0; i < u.length; i ++) {
              var user = $(u[i]).text();
-             console.log('Registered user', user);
              if (user == token) {
                 console.log('Detected Token', token);
                 locked = false;

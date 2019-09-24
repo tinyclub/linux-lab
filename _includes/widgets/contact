@@ -1,4 +1,6 @@
-{% if page.contact != false %}
+{% assign contact = false %}
+
+{% if page.contact != false and contact != false %}
 
 <br>
 <table>

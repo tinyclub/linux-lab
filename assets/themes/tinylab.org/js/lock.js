@@ -45,6 +45,10 @@ $(articleSelector).ready(function () {
     var token = getToken();
     $('#locker').find('.token').text(token);
 
+    var home = false;
+    if (window.location.href.split('/').length <= 4)
+       home = true;
+
     console.log('articleElement is there, halfheight is', halfHeight);
 
     function update() {
@@ -89,16 +93,21 @@ $(articleSelector).ready(function () {
       });
     }
 
-    if (os.isPc && halfHeight > 800) {
+    var once = 0;
+    $('#locker').mouseover(function (){
+      if (once == 0) {
+         console.log('unlocking in 30 seconds ...');
+         once = 1;
+         setTimeout(function () {
+           console.log('unlock it now ...');
+           locked = false;
+           update();
+        }, 30000);
+      }
+    });
 
+    if (os.isPc && halfHeight > 800 && !home) {
       detect();
-
-      setTimeout(function () {
-        console.log('Allow normal users access after 30 seconds');
-        locked = false;
-        update();
-      }, 30000);
-
     } else {
       console.log('Lock did not work at', os);
     }

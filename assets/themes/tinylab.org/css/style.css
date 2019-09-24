@@ -526,6 +526,35 @@ a:active {
 #content {
     margin-bottom: 35px
 }
+/*  Locker */
+#locker {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: none;
+    z-index: 10000;
+}
+
+#locker .mask {
+    height: 240px;
+    width: 100%;
+    background: -webkit-gradient(linear, 0 top, 0 bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+}
+
+#locker .info {
+    background: white;
+    height: 400px;
+    padding-bottom: 50px;
+    text-align: center;
+}
+
+.lock {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+
 /*  Articles  */
 
 article {

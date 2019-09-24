@@ -59,6 +59,7 @@
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/iframeResizer{{ css_js_compress_tag }}.js"></script>
   <script type="text/javascript" src="{{ ASSET_PATH }}/qrcode/jquery.qrcode{{ css_js_compress_tag }}.js"></script>
   <script type="text/javascript" src="{{ ASSET_PATH }}/js/core{{ css_js_compress_tag }}.js"></script>
+  <script type="text/javascript" src="{{ ASSET_PATH }}/js/lock{{ css_js_compress_tag }}.js"></script>
   <script>
     function resize_iframe() {
 	iFrameResize({
@@ -122,6 +123,13 @@
 
         <div id="loader"><img src="{{ ASSET_PATH }}/img/loading.gif" alt="请稍侯"></div>
         <div id="main-content">
+          <div id="locker">
+	    <div class="mask">
+            </div>
+	    <div class="info">
+            {% include widgets/lock_info %}
+	    </div>
+          </div>
           {{ content }}
         </div>
       </div>

@@ -1,9 +1,10 @@
 <div>
  <div>
+  <p style="margin-bottom: 20px; padding-top: 20px;">本文将在 <span style="color: #e9415a; font-weight: bold;">30秒后</span> 解锁！</p>
   <p style="margin-bottom: 10px;">微信扫码关注：<span style="color: #E9405A; font-weight: bold; font-size: 17px;">泰晓科技</span>，并发送 <span class="token" style="color: #e9415a; font-weight: bold; font-size: 17px; margin-bottom: 45px;">tinylab</span></p>
   <p style="margin-bottom: 10px;">一天后，即可 <span style="color: #e9415a; font-weight: bold;">永久解锁</span> 本站全部文章！</p>
   <p style="margin-bottom: 20px;">如有疑问，请咨询微信：<span style="color: #e9415a; font-weight: bold;">tinylab</span></p>
-  <p style="margin-bottom: 10px;">本文将在 <span style="color: #e9415a; font-weight: bold;">30秒后</span> 解锁，请您耐心等待！</p>
+  <p style="margin-bottom: 10px;">手机浏览时，先截图发往微信，再扫码！</p>
  </div>
  <div>
   <img class="code-img" style="width: 300px" src="/images/wechat/tinylab-org-big.jpg"/>

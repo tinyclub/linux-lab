@@ -93,7 +93,7 @@ $(articleSelector).ready(function () {
     }
 
     var once = 0;
-    $('#locker').mouseover(function (){
+    function unlock() {
       if (once == 0) {
          console.log('unlocking in 30 seconds ...');
          once = 1;
@@ -103,9 +103,28 @@ $(articleSelector).ready(function () {
            update();
         }, 30000);
       }
+    }
+
+    $('#locker').mouseover(function (){
+        unlock();
     });
 
-    if (os.isPc && halfHeight > 800 && !home) {
+    document.getElementById('locker').addEventListener('click', function (e){
+        e.preventDefault();
+        unlock();
+    }, false);
+
+    document.getElementById('locker').addEventListener('touchstart', function (e){
+        e.preventDefault();
+        unlock();
+    }, false);
+
+    document.getElementById('locker').addEventListener('touchmove', function (e){
+        e.preventDefault();
+        unlock();
+    }, false);
+
+    if (halfHeight > 800 && !home) {
       detect();
     } else {
       console.log('Lock did not work at', os);

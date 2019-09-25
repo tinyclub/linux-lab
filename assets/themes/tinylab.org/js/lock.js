@@ -110,17 +110,10 @@ $(articleSelector).ready(function () {
     });
 
     document.getElementById('locker').addEventListener('click', function (e){
-        e.preventDefault();
         unlock();
     }, false);
 
     document.getElementById('locker').addEventListener('touchstart', function (e){
-        e.preventDefault();
-        unlock();
-    }, false);
-
-    document.getElementById('locker').addEventListener('touchmove', function (e){
-        e.preventDefault();
         unlock();
     }, false);
 

@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "如何匹配字符或字符串的多次出现"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /characters-match-in-shell/
 description: "本文介绍如何用 grep 匹配某个字符或者字符串的多次出现。"

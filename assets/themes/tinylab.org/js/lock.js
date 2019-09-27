@@ -93,28 +93,26 @@ $(articleSelector).ready(function () {
     }
 
     var once = 0;
-    function unlock() {
+    var unlock_delay = 30000;
+
+    function unlock(delay) {
       if (once == 0) {
-         console.log('unlocking in 30 seconds ...');
+         console.log('unlocking in ', delay);
          once = 1;
          setTimeout(function () {
            console.log('unlock it now ...');
            locked = false;
            update();
-        }, 30000);
+        }, delay);
       }
     }
 
-    $('#locker').mouseover(function (){
-        unlock();
-    });
-
-    document.getElementById('locker').addEventListener('click', function (e){
-        unlock();
+    document.getElementById('unlocker').addEventListener('click', function (e){
+        unlock(0);
     }, false);
 
-    document.getElementById('locker').addEventListener('touchstart', function (e){
-        unlock();
+    document.getElementById('unlocker').addEventListener('touchstart', function (e){
+        unlock(0);
     }, false);
 
     if (halfHeight > 800 && !home) {

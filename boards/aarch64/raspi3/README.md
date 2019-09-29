@@ -65,6 +65,7 @@ Rapsi3 almost works, but:
 
     $ docker search arm64v8 | grep ubuntu
     arm64v8/ubuntu Ubuntu is a Debian-based Linux operating system  25
+
   Download and extract the rootfs out to `prebuilt/fullroot/tmp`:
 
     $ cd $(path-to)/linux-lab

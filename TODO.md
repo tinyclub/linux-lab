@@ -30,3 +30,4 @@
 * Update coreutils to add realpath for latest v5.2
 * Add gdb-multiarch in docker image
 * Add elixir cli, web and vim plugin support, github.com/bootlin/elixir
+* Autoload host kernel modules, use /etc/modules-load.d/ for linux and learn how for win and mac

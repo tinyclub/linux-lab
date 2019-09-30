@@ -2,7 +2,8 @@
 layout: post
 author: 'simowce'
 title: "Android 签名那些事"
-draft: true
+draft: false
+top: true
 license: "cc-by-sa-4.0"
 permalink: /android-signature/
 description: "不涉及代码，介绍 Android 签名的那些事儿"

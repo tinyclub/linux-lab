@@ -60,6 +60,7 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 
 * [The RISC-V Analysis (in Chinese)](https://medium.com/@yuxing.tang/the-risc-v-analysis-in-chinese-a26abaac03f3)
 * [Risc-V 开放源码首页](https://github.com/riscv)
+* [Risc-V 发展迅猛，正是关注好时机](http://tinylab.org/riscv-overview/)
 
 ### 引导程序
 

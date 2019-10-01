@@ -3,7 +3,7 @@ title: '草稿箱'
 author: Wu Zhangjin
 layout: page
 draft: true
-permalink: /draft/
+permalink: /tfard/
 toc: false
 ---
 

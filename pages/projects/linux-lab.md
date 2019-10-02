@@ -53,8 +53,8 @@ tags:
       * Qemu 支持的大量虚拟开发板，统统免费，免费，免费。
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
-      * 已内置支持 5 大架构：ARM, MIPS, PowerPC, X86, Risc-V。
-      * 已内置支持 10 款开发板：i386+X86_64/PC, PowerPC/G3beige, MIPS/Malta, ARM/versatilepb, ARM/vexpress-a9, ARM64/Virt, ARM64/Raspi3, Riscv32+64/Virt 全部升级到了最新的 v5.1（其中 Riscv32/Virt 仅支持 V5.0）。
+      * 已内置支持 7 大架构：ARM, MIPS, PowerPC, X86, Risc-V, Loongson, Csky。
+      * 已内置支持 15 款开发板：i386+X86_64/PC, PowerPC/G3beige, MIPS/Malta, ARM/versatilepb, ARM/vexpress-a9, ARM64/Virt, ARM64/Raspi3, Riscv32+64/Virt, Loongson/{ls1b, ls232, ls2k, ls3a7a}, Csky/ck810 全部升级到了最新的 v5.1（其中 Riscv32/Virt 仅支持 V5.0）。
       * 已内置支持从 Ramfs, Harddisk, NFS rootfs 启动。
       * 一键即可启动，支持 串口 和 图形 启动。
       * 已内建网络支持，可以直接 ping 到外网。

@@ -13,7 +13,7 @@ tags:
   - Revolution OS
   - 操作系统革命
   - Linus
-  - RSM
+  - RMS
 ---
 
 > By Falcon of [TinyLab.org][1]

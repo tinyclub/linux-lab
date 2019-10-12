@@ -409,3 +409,9 @@
         - name: Web 建站系统
           categories:
             - name: Wordpress
+
+- name: Linux 运维
+  categories:
+    - name: 远程访问
+      categories:
+        - name: VNC

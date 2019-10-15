@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 106010: 实现 “实时（realtime）” Linux 的多种方法"
 album: 'LWN 中文翻译'

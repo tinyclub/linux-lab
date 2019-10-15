@@ -141,7 +141,7 @@ Rapsi3 almost works, but:
     Ubuntu 18.04.2 LTS localhost.localdomain ttyAMA0
 
     localhost login: root
-    Password:
+    Password:                                 <------ input root as password
     Last login: Wed May 15 04:58:46 UTC 2019 on ttyAMA0
 
     Welcome to Ubuntu 18.04.2 LTS (GNU/Linux 5.1.0-dirty aarch64)

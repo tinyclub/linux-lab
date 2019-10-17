@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 top: false
 author: 'Wang Chen'
 title: "“LWN 中文翻译计划” 二周年工作小结"

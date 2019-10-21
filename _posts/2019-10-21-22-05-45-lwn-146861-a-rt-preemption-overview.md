@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 146861: 实时抢占补丁综述"
 album: 'LWN 中文翻译'

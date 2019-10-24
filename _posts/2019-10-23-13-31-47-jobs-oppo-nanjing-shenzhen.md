@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Tianguo Xu'
 title: "OPPO 南京、深圳两地岗位招聘"
 group: "jobs"

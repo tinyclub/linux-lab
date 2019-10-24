@@ -5,7 +5,7 @@ author: 'Tianguo Xu'
 title: "OPPO 南京、深圳两地岗位招聘"
 group: "jobs"
 license: "cc-by-nc-nd-4.0"
-permalink: /oppo-nanjing-shenzhen-job.md/
+permalink: /oppo-nanjing-shenzhen-job/
 description: "OPPO 南京、深圳两地以下岗位招聘"
 plugin: mermaid
 category:

@@ -33,7 +33,6 @@ function getToken() {
 
 var locked = false;
 var articleSelector = '#main-content';
-var toc = '#toc_widget_container';
 var defaultToken = 'tinylab';
 
 $(articleSelector).ready(function () {
@@ -56,12 +55,10 @@ $(articleSelector).ready(function () {
         $(articleSelector).css('height', halfHeight + 'px');
         $(articleSelector).addClass('lock');
         $('#locker').css('display', 'block');
-        $(toc).css('display', 'none');
       } else {
         $(articleSelector).css('height', 'initial');
         $(articleSelector).removeClass('lock');
         $('#locker').css('display', 'none');
-        $(toc).css('display', 'block');
       }
     }
 

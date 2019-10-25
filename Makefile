@@ -2486,6 +2486,15 @@ CMDLINE += $(XKCLI)
 # Graphic output? we prefer Serial port ;-)
 G ?= 0
 
+# Force using curses based graphic mode for bash/ssh login
+ifneq ($(shell env | grep -q ^XDG; echo $$?), 0)
+  XTERM := null
+
+  ifeq ($(G), 1)
+    G := 2
+  endif
+endif
+
 # Sharing with the 9p virtio protocol
 # ref: https://wiki.qemu.org/Documentation/9psetup
 SHARE ?= 0
@@ -2834,8 +2843,6 @@ ifneq ($(GDB_ARCH), 1)
   endif
 endif
 
-# Xterm: lxterminal, terminator
-XTERM        ?= $(shell tools/xterm.sh lxterminal)
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
 
 GDB_CMD      ?= $(GDB) $(VMLINUX)
@@ -2843,13 +2850,21 @@ GDB_INIT     ?= $(TOP_DIR)/.gdbinit
 HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
 GDB_USER     ?= ubuntu
-# Testing should use non-interactive mode, otherwise, enable interactive.
-ifneq ($(TEST),)
-  XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
+
+# Xterm: lxterminal, terminator
+ifeq ($(XTERM), null)
+  XTERM_STATUS := 1
 else
-  XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+  XTERM ?= $(shell tools/xterm.sh lxterminal)
+  # Testing should use non-interactive mode, otherwise, enable interactive.
+  ifneq ($(TEST),)
+    XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
+  else
+    XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+  endif
+  XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
 endif
-XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
+
 ifeq ($(XTERM_STATUS), 0)
   DEBUG_CMD  := $(XTERM_CMD)
 else

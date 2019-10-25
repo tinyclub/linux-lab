@@ -76,6 +76,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [How to switch windows in vim](#how-to-switch-windows-in-vim)
    - [How to delete typo in shell command line](#how-to-delete-typo-in-shell-command-line)
    - [How to tune the screen size](#how-to-tune-the-screen-size)
+   - [How to exit qemu](#how-to-exit-qemu)
    - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
    - [How to record video](#how-to-record-video)
    - [Linux Lab not response](#linux-lab-not-response)
@@ -413,7 +414,7 @@ Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff', 
 
     $ make boot
 
-Boot with graphic:
+Boot with graphic (Exit with 'CTRL+ALT+2 quit'):
 
     $ make b=pc boot G=1 LINUX=v5.1
     $ make b=versatilepb boot G=1 LINUX=v5.1
@@ -431,7 +432,7 @@ Boot with graphic:
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
-Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit'):
+Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit' or 'ALT+2 quit'):
 
     $ make b=pc boot G=2
 
@@ -1259,6 +1260,12 @@ If want the default one, please remove the manual setting at first:
     $ rm configs/linux-lab/docker/.screen_size
     $ tools/docker/rm-all
     $ tools/docker/run linux-lab
+
+### How to exit qemu
+
+1. Serial Port Console: Exit with 'CTRL+A X'
+2. Curses based Graphic: Exit with 'ESC+2 quit' Or 'ALT+2 quit'
+3. X based Graphic: Exit with 'CTRL+ALT+2 quit'
 
 ### How to work in fullscreen mode
 

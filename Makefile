@@ -2491,7 +2491,7 @@ ifneq ($(shell env | grep -q ^XDG; echo $$?), 0)
   XTERM := null
 
   ifeq ($(G), 1)
-    G := 2
+    override G := 2
   endif
 endif
 

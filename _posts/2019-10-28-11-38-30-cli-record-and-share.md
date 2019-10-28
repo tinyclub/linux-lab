@@ -1,8 +1,8 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "记录和分享命令行的 n 重境界"
-draft: true
+title: "记录和分享命令行的 4 重境界"
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /cli-record-and-share/
 description: "本文介绍了记录和分享命令行的若干工具，包括 script, screen, ttyrec/ttyplay, tmux, showterm 等。"

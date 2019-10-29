@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 178253: 内核中的 “优先级继承（Priority Inheritance）”"
 album: 'LWN 中文翻译'

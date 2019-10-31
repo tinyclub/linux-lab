@@ -80,6 +80,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
    - [How to record video](#how-to-record-video)
    - [Linux Lab not response](#linux-lab-not-response)
+   - [Language input switch shortcuts](#language-input-switch-shortcuts)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1296,6 +1297,10 @@ Open the left sidebar, press the 'Fullscreen' button.
 ### Linux Lab not response
 
 The VNC connection may hang for some unknown reasons and therefore Linux Lab may not response sometimes, to restore it, please press the flush button of web browser or re-connect after explicitly disconnect.
+
+### Language input switch shortcuts
+
+In order to switch English/Chinese input method, please use 'CTRL+s' shortcuts.
 
 ## Contact and Sponsor
 

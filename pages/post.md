@@ -17,7 +17,7 @@ order: 60
 
 * 首次发表的 **原创** 文章：**¥ 200**
 * 首次发表的 **翻译** 文章：**¥ 100**
-* 参与 **文章校对** 3 次（含）以上：**¥ 9.9 送一年 “Linux 知识星球” 会员（原价 ¥ 199）**
+* 参与 **文章校对** 3 次（含）以上：**¥ 9.9 送一年 [“Linux 知识星球”][4] 会员（原价 ¥ 199）**
 
 为了提高内容质量，我们也会安排严格的评审。
 
@@ -241,3 +241,4 @@ tags:
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: https://www.w3cschool.cn/markdownyfsm/
  [3]: https://github.com/tinyclub/tinylab.org#fork-destination-box
+ [4]: https://wx.zsxq.com/dweb2/index/group/455128114458

@@ -1300,7 +1300,7 @@ The VNC connection may hang for some unknown reasons and therefore Linux Lab may
 
 ### Language input switch shortcuts
 
-In order to switch English/Chinese input method, please use 'CTRL+s' shortcuts.
+In order to switch English/Chinese input method, please use 'CTRL+s' shortcuts, it is used instead of 'CTRL+space' to avoid conflicts with local system.
 
 ## Contact and Sponsor
 

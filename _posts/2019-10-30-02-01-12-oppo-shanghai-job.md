@@ -6,7 +6,7 @@ title: "OPPO 上海软件、算法、IC等岗位招聘"
 group: "jobs"
 license: "cc-by-nc-nd-4.0"
 permalink: /oppo-shanghai-job/
-description: "OPPO上海岗位招聘"
+description: "OPPO 上海岗位招聘"
 plugin: mermaid
 category:
   - Linux 职位
@@ -22,7 +22,7 @@ addrs:
   - 上海
 ---
 
-## CV算法工程师
+## CV 算法工程师
 
 * __岗位职责__
 
@@ -32,8 +32,8 @@ addrs:
 
 * __岗位要求__
 
-1. 本科及以上学历，2年以上计算机视觉／图像视频处理开发经验；
-2. 熟悉 C/C++、Python等至少一种开发语言，熟悉TensorFlow、PyTorch、MXNet、Caffe等至少一种深度学习框架；
+1. 本科及以上学历，2 年以上计算机视觉／图像视频处理开发经验；
+2. 熟悉 C/C++、Python 等至少一种开发语言，熟悉 TensorFlow、PyTorch、MXNet、Caffe 等至少一种深度学习框架；
 
    
 
@@ -43,29 +43,26 @@ addrs:
 
 * __岗位职责__
 
-1. 负责 Android 平台native/framework的相关开发，维护工作。
+1. 负责 Android 平台native/framework 的相关开发，维护工作。
 
 * __岗位要求__
 
 1. 本科以上学历，3 年以上工作经验，精通 C、C++ 等一种及以上语言；
-2. 具备Android Service研发经验者优先；
+2. 具备 Android Service 研发经验者优先；
 
 * __工作地点__：上海
 
 ## 其他岗位也大量招人
 
-* 系统开发/内核开发/linux/RTthread/图形开发/驱动
-* /camera/ISP算法/机器学习
-* /UX/PM/
+* 系统开发/内核开发/linux/RT-Thread/图形开发/驱动
+* Camera/ISP算法/机器学习
+* UX/PM
 * SOC前端/验证/后端/模拟电路等
 
 ## 联系方式
 
-有意者，可以将简历发送至,标注泰晓科技+岗位名称：
+有意者，可以将简历发送至下述邮箱，标注泰晓科技+岗位名称：
 
 * 邮箱：__jishuaiqiang@oppo.com__
 
 有其他岗位意向者也欢迎随时邮件附送简历咨询。
-
-
-

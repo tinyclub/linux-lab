@@ -54,7 +54,12 @@
   description: a free service that checks the syntax of Atom or RSS feeds.
   group: tools
 
-- title: 在线 Markdown 转换工具
+- title: 在线 Markdown 转换工具（1)
   permalink: http://md.aclickall.com/
   description: 支持把 Markdown 转换为公众号支持的格式，比 Markdown Here 要友好
+  group: tools
+
+- title: 在线 Markdown 转换工具（2)
+  permalink: https://mdnice.com/
+  description: 支持自定义样式的 Markdown 编辑器，支持微信公众号、知乎、开源中国、稀土掘金、博客园和 CSDN 等平台
   group: tools

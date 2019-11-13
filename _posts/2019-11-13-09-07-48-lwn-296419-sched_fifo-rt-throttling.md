@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: 'Wang Chen'
 title: "LWN 296419: SCHED_FIFO 和实时任务抑制（throttling）"
 album: 'LWN 中文翻译'

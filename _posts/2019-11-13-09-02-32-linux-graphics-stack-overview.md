@@ -3,7 +3,7 @@ title: Linux 图形栈一览：基于 DRM 和 Wayland
 author: Chen Jie
 layout: post
 draft: false
-top: true
+top: false
 album:
 permalink: /linux-graphics-stack-overview
 tags:

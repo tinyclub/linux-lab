@@ -24,7 +24,8 @@ draft_on="draft:.*true"
 draft_off="draft: false"
 
 # List all drafts
-grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | cut -d':' -f2- | sort | cat -n
+grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} egrep "^title:|^permalink:" {} \
+	| cut -d':' -f2- | tr -d '\n' | sed -e "s%/ %/\n%g;s% /%NEWLINEhttp://tinylab.org/%g" | sort | cat -n | sed -e "s%NEWLINE%\n\t%g"
 total=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | wc -l | tr -d ' '`
 post=""
 if [ $total -gt 1 ]; then

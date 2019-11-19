@@ -105,8 +105,16 @@ tags:
 		<td>January 16, 2006</td>
 	</tr>
 	<tr>
+		<td><a href="/lwn-228143">Deferrable timers</a></td>
+		<td>March 28, 2007</td>
+	</tr>
+	<tr>
 		<td><a href="/lwn-574962">The tick broadcast framework</a></td>
 		<td>November 26, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-646950">Reinventing the timer wheel</a></td>
+		<td>June 3, 2015</td>
 	</tr>
 </table>
 

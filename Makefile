@@ -2343,8 +2343,10 @@ root-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
+ifneq ($(PORIIMG),)
 	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))
+endif
 
 kernel-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)

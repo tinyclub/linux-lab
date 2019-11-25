@@ -32,3 +32,4 @@
 * Add elixir cli, web and vim plugin support, github.com/bootlin/elixir
 * Autoload host kernel modules, use /etc/modules-load.d/ for linux and learn how for win and mac
 * Instruction encoding/decoding support should be added to easier ISA understanding: utds3lab/multiverse, unicorn
+* Reuse linux-stable, uboot and qemu source code in buildroot?

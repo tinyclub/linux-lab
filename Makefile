@@ -2336,6 +2336,8 @@ B: build
 
 PHONY += checkout config build o c B
 
+STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
+
 # Save the built images
 root-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
@@ -2343,8 +2345,6 @@ root-save: $(BOARD_BSP)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
 	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))
-
-STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
 kernel-save: $(BOARD_BSP)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)

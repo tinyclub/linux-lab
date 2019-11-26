@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "LXR 在线服务和搭建工具"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /lxr-services-and-tools/
 description: "本文收集了几个可用的 Linux 在线交叉检索服务和搭建工具"

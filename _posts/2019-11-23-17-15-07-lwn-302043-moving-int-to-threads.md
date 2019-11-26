@@ -1,7 +1,7 @@
 ---
 layout: post
 draft: false
-top: true
+top: false
 author: 'Wang Chen'
 title: "LWN 302043: 中断线程化"
 album: 'LWN 中文翻译'

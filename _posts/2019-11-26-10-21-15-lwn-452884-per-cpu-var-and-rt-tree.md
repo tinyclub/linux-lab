@@ -1,6 +1,7 @@
 ---
 layout: post
-draft: true
+draft: false
+top: true
 author: 'Wang Chen'
 title: "LWN 452884: 实时 Linux 中的 Per-CPU 变量处理"
 album: 'LWN 中文翻译'

@@ -1,4 +1,4 @@
-- name: 硬件基础
+﻿- name: 硬件基础
   categories:
     - name: 基础电路
     - name: 常见总线
@@ -117,6 +117,7 @@
       categories:
         - name: Ubuntu
         - name: 在线 Linux
+    - name: LiteOS
 
 - name: Linux 开发
   categories:

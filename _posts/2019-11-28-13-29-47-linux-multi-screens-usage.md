@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "在 Linux 下使用分屏提升工作效能"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-multi-screens-usage/
 description: "本文介绍了包括 vim, terminator, tmux 在内的几种支持分屏显示的工具，分屏可以提升很多工作的效能，比如说比对代码。"

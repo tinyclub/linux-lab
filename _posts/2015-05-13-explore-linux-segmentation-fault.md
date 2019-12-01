@@ -268,7 +268,7 @@ Trap 为 0xe，即 14，也就是 Page Fault。
 
 ### catchsegv 原理
 
-该工具就是用来扑获段错误的，它通过动态加载器（ld-linux.so）的预加载机制（PRELOAD）把一个事先写好的库（/lib/libSegFault.so）加载上，用于捕捉断错误的出错信息。
+该工具就是用来扑获段错误的，它通过动态加载器（ld-linux.so）的预加载机制（PRELOAD）把一个事先写好的库（/lib/libSegFault.so）加载上，用于捕捉段错误的出错信息。
 
 ### gdb 调试
 
@@ -373,6 +373,7 @@ Trap 为 0xe，即 14，也就是 Page Fault。
     #include <stdlib.h>
     #include <signal.h>
     #include <string.h>
+    #include <execinfo.h>
     
     void dump(int signo)
     {
@@ -407,6 +408,7 @@ Trap 为 0xe，即 14，也就是 Page Fault。
 
 用法如下：
 
+    $ gcc -rdynamic -o ./segfault-scanf segfault-scanf.c
     $ ./segfault-scanf
     100
     Obtained 7 stack frames.

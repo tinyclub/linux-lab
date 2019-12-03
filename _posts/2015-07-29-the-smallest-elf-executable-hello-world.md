@@ -35,16 +35,25 @@ categories:
 
 其中 52 字节的突破主要借鉴 [A Whirlwind Tutorial on Creating Really Teensy ELF Executables for Linux][4] 关于把 ELF 程序头完全合并进 ELF 文件头的努力，而 45 字节的突破除了继承自己早期那篇文章的用参数赋值的想法外，还有些幸运的因素在（通过非法系统调用可以正常退出程序）。
 
-最后，不仅获得了一个二进制只有 8 字节的 `hello.s`：
+最后，不仅获得了一个二进制只有 10 字节的 `hello.s`：
 
-<pre>.file "hello.s"
-.global _start
-_start:
-    popl %eax
-    popl %ecx
-    mov $5, %dl
-    int $0x80
-    loop _start
+<pre>
+    .text
+    .global _start      # stack differ from main()
+_start:                 # stack: argc, argv[0], argv[1], argv[2]
+    pop    %edx         # argc, number of argv[]
+                        # 3rd arg: string length: $len
+    pop    %ecx         # argv[0], program name with path
+                        # 2rd arg: string to write
+
+    #xor   %ebx, %ebx   # 1st arg: output: stdout:1, use stdin:0
+                        # 1st arg: exit code for sys_exit
+    mov     $4, %al     # (1) write our string to stdout
+                        # sys_write: syscall number = 4
+    int    $0x80        # call kernel
+    mov     $1, %al     # (2) and exit
+                        # sys_exit:  syscall number = 1
+    int    $0x80        # call kernel
 </pre>
 
 最后，完全把 ELF 程序头和代码合并进了 ELF 文件头，而且可以打印字符串。

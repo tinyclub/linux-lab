@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 top: false
 author: 'Wang Chen'
 title: "LiteOS 内核初探 - 任务管理"

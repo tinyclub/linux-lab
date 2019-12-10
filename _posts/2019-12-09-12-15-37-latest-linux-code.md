@@ -1,11 +1,11 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "如何获取 Linux 某个子系统上游最新代码"
+title: "如何获取某个 Linux 子系统上游的最新代码"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /latest-linux-code/
-description: ""
+description: "本文介绍了如何获取某个 Linux 子系统的最新代码。"
 category:
   - 技术动态
 tags:
@@ -32,7 +32,7 @@ tags:
 
 在 [如何往官方 Linux 社区贡献代码](http://tinylab.org/contribute-source-code-to-linux-mainline/) 一文中，我们介绍了 Linux 的开发模型和 Upstream 流程。
 
-![官方 Linux 开发模型](http://tinylab.org/wp-content/uploads/2019/12/latest-linux-code/linux-dev-model.jpg)
+![官方 Linux 开发模型](/wp-content/uploads/2019/12/latest-linux-code/linux-dev-model.jpg)
 
 这里做个回顾：
 

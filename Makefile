@@ -749,10 +749,10 @@ list:
 	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-board:
-	$(Q)make $(S) board BOARD= BTYPE="^_BASE" FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
+	$(Q)make $(S) board BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
 
 list-short:
-	$(Q)make $(S) board BOARD= BTYPE="^_BASE" FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
+	$(Q)make $(S) board BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
 
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"

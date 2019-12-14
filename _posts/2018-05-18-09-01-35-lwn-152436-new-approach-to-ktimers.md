@@ -17,7 +17,7 @@ tags:
 
 > 原文：[A new approach to kernel timers](https://lwn.net/Articles/152436/)
 > 原创：By corbet @ Sept 20, 2005
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [guojian-at-wowo](https://github.com/guojian-at-wowo)
 
 > The kernel internal API includes a flexible mechanism for requesting that events happen at some point in the future. This timer subsystem is relatively easy to work with and efficient, but it has always suffered from a fundamental limitation: it is tied to the kernel clock interrupt, with the result that the resolution of timers is limited to the clock interrupt period. For a 2.6.13 kernel, on the i386 architecture, using the default clock interval, timers can be no more precise than 4ms. For many applications, that resolution is adequate, but some others (including real time work and some desktop multimedia applications) require the ability to sleep reliably for shorter periods. Thus, a number of developers have produced high-resolution timer patches over the years, but none of them have been merged into the mainline.
@@ -26,7 +26,7 @@ tags:
 
 > Ingo Molnar's recently-released [2.6.13-rt6 tree](http://lwn.net/Articles/152266/), which contains the realtime preemption patch set, brought a surprise in the form of a new high-resolution timer implementation by Thomas Gleixner. Ingo has stated his intention to merge this new code ("ktimers") upstream, so it merits a look.
 
-Ingo Molnar 最近发布了[版本为 2.6.13-rt6 的实时抢占内核源码树 ](http://lwn.net/Articles/152266/)，其中包含了一个由 Thomas Gleixner 提供的高精度定时器补丁，该定时器实现巧妙，看上去很不错。Ingo 已经表示他打算将这部分新代码合并到内核主线，因此值得给大家介绍一下（译者注：原文中有时用 “ktimers” 指代该内核定时器补丁，有时用 “ktimers” 直接作为内核定时器（kernel timers）的缩写。为不引起混淆，本文翻译时用“ktimers 补丁”指代该内核定时器补丁，而谈到内核定时器时则不再用 “ktimers” 而直接翻译为“内核定时器” ）。
+Ingo Molnar 最近发布了[版本为 2.6.13-rt6 的实时抢占内核源码树 ][1]，其中包含了一个由 Thomas Gleixner 提供的高精度定时器补丁，该定时器实现巧妙，看上去很不错。Ingo 已经表示他打算将这部分新代码合并到内核主线，因此值得给大家介绍一下（译者注：原文中有时用 “ktimers” 指代该内核定时器补丁，有时用 “ktimers” 直接作为内核定时器（kernel timers）的缩写。为不引起混淆，本文翻译时用“ktimers 补丁”指代该内核定时器补丁，而谈到内核定时器时则不再用 “ktimers” 而直接翻译为“内核定时器” ）。
 
 > The ktimer implementation starts with the view that there are two fundamentally different types of timers used in the system. They are (using the terms adopted by the patch):
 
@@ -42,7 +42,7 @@ Ingo Molnar 最近发布了[版本为 2.6.13-rt6 的实时抢占内核源码树 
 
 目前内核定时器的实现主要面向 **Timeouts** 类型的应用场景。我们通过下面的图来解释其内部管理定时器的数据结构，该设计有点复杂，可能需要各位读者稍微发挥一下你们的想象力：
 
-![Timer wheel diagram](https://static.lwn.net/images/ns/kernel/Timers.png)
+![Timer wheel diagram](/wp-content/uploads/2018/05/lwn-152436/timer-wheel-diagram.png)
 
 > At the right side of the diagram is an array (tv1) containing a set of 256 (in most configurations) linked lists of upcoming timer events. This array is indexed directly by the bottom bits of a `jiffies` value to find the next set of events to execute. When the kernel has, over the course of 256 jiffies, cycled through the entire `tv1` array, that array must be replenished with the next 256 jiffies worth of events. That is done by using the next set of jiffies bits (six, normally) to index into the next array (`tv2`), which points to those 256 jiffies of timer entries. Those entries are "cascaded" down to `tv1` and distributed into the appropriate slots depending on their expiration times. When `tv2` is exhausted, it is replenished from `tv3` in the same way. This process continues up to `tv5`. The final entry in `tv5` is special, in that it holds all of the far-future events which do not otherwise fit into this hierarchy.
 
@@ -148,7 +148,7 @@ ktimers 补丁还提供了一个函数方便进程利用内核定时器进行睡
 
 > The [standalone ktimers patch](http://lwn.net/Articles/152435/) posted by Thomas is the version most likely to be merged. This patch runs ktimers from the normal clock interrupt, with the result that it provides no better resolution than the existing timer API. All of the structure is there to do better, however, once the low-level timer code and architecture specific support is in place. A separate patch exists which enables ktimers to provide high-resolution timers on the i386 architecture.
 
-Thomas 提交的 [ktimers 补丁](http://lwn.net/Articles/152435/) 是独立发布的，目前看起来最有可能被合入内核主线。该补丁基于正常的时钟中断实现内核定时器，和内核现有的定时器实现相比，在运行精度上并无特别的优势。但是，一旦底层的定时器和体系架构相关的配合代码就绪，在整体上该新框架会表现得更好。社区已经基于该方案在 i386 架构上提供了一个独立的补丁用于实现高分辨率定时器的支持。
+Thomas 提交的 [ktimers 补丁][2] 是独立发布的，目前看起来最有可能被合入内核主线。该补丁基于正常的时钟中断实现内核定时器，和内核现有的定时器实现相比，在运行精度上并无特别的优势。但是，一旦底层的定时器和体系架构相关的配合代码就绪，在整体上该新框架会表现得更好。社区已经基于该方案在 i386 架构上提供了一个独立的补丁用于实现高分辨率定时器的支持。
 
 > So far, the largest objection to the ktimer implementation is the use of nanoseconds for time values. Nanosecond timekeeping requires 64-bit variables, which will slow things down a little on 32-bit systems. The response from the developers is that the additional overhead is almost zero and not worth worrying about. So, unless some other surprise turns up, ktimers could find their way into the kernel not too long after 2.6.14 comes out.
 
@@ -156,6 +156,8 @@ Thomas 提交的 [ktimers 补丁](http://lwn.net/Articles/152435/) 是独立发�
 
 > (See also: [this posting from Thomas](http://lwn.net/Articles/152363/), which describes the motivation behind ktimers and its relation to other timing patches in detail).
 
-（另见：[Thomas 发表的这篇文章](http://lwn.net/Articles/152363/)，其中详细描述了 ktimers 补丁 背后的开发动机及其与其他计时相关补丁的关系）。
+（另见：[Thomas 发表的这篇文章][3]，其中详细描述了 ktimers 补丁 背后的开发动机及其与其他计时相关补丁的关系）。
 
-[1]: http://tinylab.org
+[1]: http://lwn.net/Articles/152266/
+[2]: http://lwn.net/Articles/152435/
+[3]: http://lwn.net/Articles/152363/

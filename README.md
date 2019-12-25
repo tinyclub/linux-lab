@@ -1172,13 +1172,20 @@ To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/def
 
 ### Docker network conflicts with LAN
 
-We assume the docker network is `10.66.0.0/16`, if not, we'd better change it.
+We assume the docker network is `10.66.0.0/16`, if not, we'd better change it as following:
 
-    $ cat /etc/default/docker | grep bip
+    $ sudo vim /etc/default/docker
     DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
 
-    $ cat /lib/systemd/system/docker.service | grep bip
+    $ sudo vim /lib/systemd/system/docker.service
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16
+
+Please restart docker service and lab container to make this change works:
+
+    $ sudo service docker restart
+    $ tools/docker/rerun linux-lab
+
+If lab network still not work, please try another private network address and eventually to avoid conflicts with LAN address.
 
 ### Why not allow running Linux Lab in local host
 

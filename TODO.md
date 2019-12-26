@@ -25,3 +25,5 @@
 * Add elixir cli, web and vim plugin support, github.com/bootlin/elixir
 * Reuse linux-stable, uboot and qemu source code in buildroot?
 * Allow terminal users to share their own boards online
+* Fix up network issue introduced by /etc/resolv.conf
+* Fix up filesystem issue while rootfs.ext2 is broken (verify and re-generate it)

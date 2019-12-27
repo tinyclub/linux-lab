@@ -81,6 +81,9 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [How to record video](#how-to-record-video)
    - [Linux Lab not response](#linux-lab-not-response)
    - [Language input switch shortcuts](#language-input-switch-shortcuts)
+   - [No working init found](#no-working-init-found)
+   - [linux/compiler-gcc7.h: No such file or directory](#linuxcompiler-gcc7.h-no-such-file-or-directory)
+   - [Network not work](#network-not-work)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1322,7 +1325,38 @@ The VNC connection may hang for some unknown reasons and therefore Linux Lab may
 
 In order to switch English/Chinese input method, please use 'CTRL+s' shortcuts, it is used instead of 'CTRL+space' to avoid conflicts with local system.
 
+
+### No working init found
+
+This means the rootfs.ext2 image may be broken, please remove it and try `make boot` again, for example:
+
+    $ rm boards/aarch64/raspi3/bsp/root/2019.02.2/rootfs.ext2
+    $ make boot
+
+`make boot` command can create this image automatically.
+
+### linux/compiler-gcc7.h: No such file or directory
+
+This means using a newer gcc than the one linux kernel version supported, there are two solutions, one is [switching to an older gcc version](#toolchain) with 'make gcc-switch':
+
+    $ make gcc-switch CORI=internal GCC=4.7
+
+Another solution is overriding the `include/linux/compiler-gcc.h` with the one in latest linux kernel.
+
+    $ git show v5.4:include/linux/compiler-gcc.h > include/linux/compiler-gcc.h
+
+
+### Network not work
+
+If ping not work, please check one by one:
+
+**DNS issue**: if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration or simply reserve the line: `nameserver 8.8.8.8`.
+
+**IP issue**: if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
+
 ## Contact and Sponsor
+
+Our contact wechat is **tinylab**, welcome to join our user & developer discussion group.
 
 ** Contact us and Sponsor via wechat **
 

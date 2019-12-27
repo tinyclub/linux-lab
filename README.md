@@ -1350,7 +1350,7 @@ Another solution is overriding the `include/linux/compiler-gcc.h` with the one i
 
 If ping not work, please check one by one:
 
-**DNS issue**: if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration or simply reserve the line: `nameserver 8.8.8.8`.
+**DNS issue**: if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
 
 **IP issue**: if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
 

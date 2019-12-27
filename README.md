@@ -1041,11 +1041,10 @@ Edit the configs and Makefile untill they match our requirements.
 The configuration must be put in `boards/<BOARD>/` and named with necessary
 version and arch info, use `raspi3` as an example:
 
-    $ ls boards/aarch64/raspi3/*defconfig
-    boards/aarch64/raspi3/buildroot_cortex-a53_defconfig
-    boards/aarch64/raspi3/linux_v5.1_defconfig
+    $ ls boards/aarch64/raspi3/bsp/configs/
+    buildroot_2019.02.2_defconfig  linux_v5.1_defconfig
 
-`cortex-a53` is the CPU version, `v5.1` is the kernel version, both of these
+`2019.02.2` is the buildroot version, `v5.1` is the kernel version, both of these
 variables should be configured in `boards/<BOARD>/Makefile`.
 
 #### Choose the versions of kernel, rootfs and uboot
@@ -1090,7 +1089,21 @@ The same to rootfs, uboot and even qemu.
 
 At last, upload the images, defconfigs, patchset to board specific bsp submodule repository.
 
-* linux-lab: <https://gitee.com/tinylab/linux-lab>
+Firstly, get the remote bsp repository address as following:
+
+    $ git remote show origin
+    * remote origin
+      Fetch URL: https://gitee.com/tinylab/qemu-aarch64-raspi3/
+      Push  URL: https://gitee.com/tinylab/qemu-aarch64-raspi3/
+      HEAD branch: master
+      Remote branch:
+        master tracked
+      Local branch configured for 'git pull':
+        master merges with remote master
+      Local ref configured for 'git push':
+        master pushes to master (local out of date)
+
+Then, fork this repository from gitee.com, upload your changes, and send your pull request.
 
 ### Learning Assembly
 

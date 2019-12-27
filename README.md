@@ -82,7 +82,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Linux Lab not response](#linux-lab-not-response)
    - [Language input switch shortcuts](#language-input-switch-shortcuts)
    - [No working init found](#no-working-init-found)
-   - [linux/compiler-gcc7.h: No such file or directory](#linuxcompiler-gcc7.h-no-such-file-or-directory)
+   - [linux/compiler-gcc7.h: No such file or directory](#linuxcompiler-gcc7h-no-such-file-or-directory)
    - [Network not work](#network-not-work)
 - [Contact and Sponsor](#contact-and-sponsor)
 

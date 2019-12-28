@@ -7,6 +7,7 @@ This is based on buildroot/target/device/x86/i686/linux-2.6.21.5.config, with nf
 
 At first, set ARCH to i386 for all kernel versions <= v2.6.23:
 
+    $ mkdir boards/i386/pc/bsp/kernel/v2.6.21.5
     $ make board-config ARCH=i386 LINUX=v2.6.21.5
 
 Second, Create a missing /dev/null device:
@@ -43,6 +44,7 @@ Note, to compile old kernel, please switch to older gcc version as following:
 
 For this old kernel version, please make sure apply the prepared patchset:
 
+    $ mkdir boards/i386/pc/bsp/kernel/v2.6.12.6
     $ make board-config ARCH=i386 LINUX=v2.6.12.6
     $ make kernel-checkout
     $ make kernel-patch
@@ -53,3 +55,22 @@ For this old kernel version, please make sure apply the prepared patchset:
     $ make boot ROOTDEV=/dev/hda
 
 Note: the second patch for mm/page_alloc.c is not the last solution, it is just a workaround for booting.
+
+## Linux v2.6.11.12
+
+There is no valid 2.6.11 tags currently, create one:
+
+    $ pushd linux-stable
+    $ git log remotes/origin/linux-2.6.11.y
+    $ git tag v2.6.11.12 remotes/origin/linux-2.6.11.y
+    $ popd
+
+    $ make board-config ARCH=i386 LINUX=v2.6.11.12
+    $ make kernel-cloneconfig LINUX=v2.6.12.6 LINUX_NEW=v2.6.11.12
+    $ make kernel-checkout
+    $ make kernel-patch
+    $ make kernel-defconfig
+    $ make kernel
+    $ make boot
+    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=/dev/hda

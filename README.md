@@ -84,6 +84,8 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [No working init found](#no-working-init-found)
    - [linux/compiler-gcc7.h: No such file or directory](#linuxcompiler-gcc7h-no-such-file-or-directory)
    - [Network not work](#network-not-work)
+   - [linux-lab/configs: Permission denied](#linux-labconfigs-permission-denied)
+   - [Client.Timeout exceeded while waiting headers](#clienttimeout-exceeded-while-waiting-headers)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1337,14 +1339,10 @@ This means the rootfs.ext2 image may be broken, please remove it and try `make b
 
 ### linux/compiler-gcc7.h: No such file or directory
 
-This means using a newer gcc than the one linux kernel version supported, there are two solutions, one is [switching to an older gcc version](#toolchain) with 'make gcc-switch':
+This means using a newer gcc than the one linux kernel version supported, there are two solutions, one is [switching to an older gcc version](#toolchain) with 'make gcc-switch', use `i386/pc` board as an example:
 
-    $ make gcc-switch CORI=internal GCC=4.7
-
-Another solution is overriding the `include/linux/compiler-gcc.h` with the one in latest linux kernel.
-
-    $ git show v5.4:include/linux/compiler-gcc.h > include/linux/compiler-gcc.h
-
+    $ make gcc-list
+    $ make gcc-switch CORI=internal GCC=4.4
 
 ### Network not work
 
@@ -1353,6 +1351,30 @@ If ping not work, please check one by one:
 **DNS issue**: if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
 
 **IP issue**: if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
+
+
+### linux-lab/configs: Permission denied
+
+This may happen at `make boot` while the repository is cloned with `root` user, please simply update the owner of `cloud-lab/` directory:
+
+    $ cd /path/to/cloud-lab
+    $ sudo chown $USER:$USER -R ./
+    $ tools/docker/rerun linux-lab
+
+Or directly use `sudo make boot`.
+
+### Client.Timeout exceeded while waiting headers
+
+This means must configure one of the following docker images mirror sites:
+
+* Docker China: https://registry.docker-cn.com
+* USTC: https://docker.mirrors.ustc.edu.cn
+* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
+
+Configuration in Ubuntu:
+
+    $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
+    $ sudo service docker restart
 
 ## Contact and Sponsor
 

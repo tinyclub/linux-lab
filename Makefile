@@ -612,6 +612,12 @@ endif
 ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
+# FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
+ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+  ROOTFS := $(dir $(ROOTFS))
+  ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+endif
+
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
   INVALID_ROOTFS := 1
 endif

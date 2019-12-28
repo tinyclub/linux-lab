@@ -1031,7 +1031,7 @@ e-c: emulator-defconfig
 PHONY += qemu-defconfig emulator-defconfig q-c e-c
 
 qemu:
-	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(HOST_CPU_THREADS) V=$(V)
+	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
 
 qemu-build: qemu
 emulator: qemu
@@ -1240,7 +1240,7 @@ ifeq ($(IKM), 1)
 endif
 
 root-buildroot:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(HOST_CPU_THREADS) $(RT)
+	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(JOBS) $(RT)
 
 # Install system/ to ROOTDIR
 root-install: root-dir
@@ -1847,7 +1847,7 @@ endif
 
 KMAKE_CMD := make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
 KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
-KMAKE_CMD += -j$(HOST_CPU_THREADS)
+KMAKE_CMD += -j$(JOBS)
 KMAKE_CMD += $(KT) $(KM)
 
 # Update bootargs in dts if exists, some boards not support -append
@@ -2215,7 +2215,7 @@ UT ?= $(x)
 
 # Build Uboot
 uboot:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(HOST_CPU_THREADS) $(UT)
+	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(UT)
 
 uboot-help:
 	$(Q)make uboot UT=help

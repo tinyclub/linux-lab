@@ -1,4 +1,5 @@
 _BASE    = 1
+# This must be changed to i386 for kernel version <= 2.6.23
 ARCH     = x86
 XARCH    = i386
 # qemu-system-i386 -M pc -cpu ?
@@ -28,3 +29,5 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 # Fixup: MP-BIOS bug: 8254 timer not connected to IO-APIC
 # No such issue in newer kernels??
 XKCLI   ?= noapic
+#
+# -m32 must be added to CFLAGS and AFLAGS in linux-stable/arch/i386/Makefile for kernel version <= 2.6.23

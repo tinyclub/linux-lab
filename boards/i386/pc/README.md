@@ -62,7 +62,7 @@ There is no valid 2.6.11 tags currently, create one:
 
     $ pushd linux-stable
     $ git log remotes/origin/linux-2.6.11.y
-    $ git tag v2.6.11.12 remotes/origin/linux-2.6.11.y
+    $ git tag v2.6.11.12 8e63197f
     $ popd
 
     $ make board-config ARCH=i386 LINUX=v2.6.11.12

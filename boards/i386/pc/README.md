@@ -25,3 +25,16 @@ Third, boot it normally:
     #
     # uname -a
     Linux linux-lab 2.6.21.5-dirty #4 Sat Dec 28 17:36:27 UTC 2019 i686 GNU/Linux
+
+Note, to compile old kernel, please switch to older gcc version as following:
+
+    $ make gcc-list
+    Listing prebuilt toolchain ...
+    [ internal ]:
+    Remote.:
+    Local..:
+    Tool...: gcc
+    Version: gcc (Ubuntu/Linaro 4.4.7-8ubuntu1) 4.4.7
+    More...: /usr/bin/gcc-4.4 /usr/bin/gcc-4.8 /usr/bin/gcc-8
+
+    $ make gcc-switch CORI=internal GCC=4.4

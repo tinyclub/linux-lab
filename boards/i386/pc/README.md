@@ -38,3 +38,18 @@ Note, to compile old kernel, please switch to older gcc version as following:
     More...: /usr/bin/gcc-4.4 /usr/bin/gcc-4.8 /usr/bin/gcc-8
 
     $ make gcc-switch CORI=internal GCC=4.4
+
+## Linux v2.6.12.6
+
+For this old kernel version, please make sure apply the prepared patchset:
+
+    $ make board-config ARCH=i386 LINUX=v2.6.12.6
+    $ make kernel-checkout
+    $ make kernel-patch
+    $ make kernel-defconfig
+    $ make kernel
+    $ make boot
+    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=/dev/hda
+
+Note: the second patch for mm/page_alloc.c is not the last solution, it is just a workaround for booting.

@@ -1681,7 +1681,12 @@ else
       ifeq ($(TMP), $(wildcard $(TMP)))
         KCFG_FILE := $(TMP)
       else
-        $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
+        TMP := $(KERNEL_SRC)/arch/$(ARCH)/$(KCFG)
+        ifeq ($(TMP), $(wildcard $(TMP)))
+          KCFG_FILE := $(TMP)
+        else
+          $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
+        endif
       endif
     endif
   endif
@@ -1700,13 +1705,22 @@ kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
 
 ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
-NEW_KCFG_FILE=$(subst $(LINUX),$(LINUX_NEW),$(KCFG_FILE))
+NEW_KCFG_FILE=$(_BSP_CONFIG)/linux_$(LINUX_NEW)_defconfig
+NEW_PREBUILT_KERNEL_DIR=$(subst $(LINUX),$(LINUX_NEW),$(PREBUILT_KERNEL_DIR))
 
 kernel-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
-	$(Q)sed -i -e "s%^\(LINUX.*?=.*\)$(LINUX)%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)sed -i -e "s%^\(LINUX.*?= \).*%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)mkdir -p $(NEW_PREBUILT_KERNEL_DIR)
+else
+kernel-cloneconfig:
+	$(Q)echo $(LINUX_NEW) already exists!
 endif
+kernel-new: kernel-clone
+kernel-clone: kernel-cloneconfig
 endif
+
+PHONY += kernel-new kernel-clone kernel-cloneconfig
 
 #
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,

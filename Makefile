@@ -818,7 +818,7 @@ emulator-prepare: emulator-checkout emulator-patch emulator-defconfig
 emulator-auto: emulator-prepare emulator
 emulator-full: emulator-download emulator-prepare emulator
 
-qemu-prepare: emulator-prepare
+qemu-prepare: qemu-env emulator-prepare
 qemu-auto: emulator-auto
 qemu-full: emulator-full
 qemu-all: qemu-full qemu-save
@@ -1019,7 +1019,7 @@ QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 
-qemu-defconfig: $(QEMU_PATCH)
+qemu-defconfig: qemu-env $(QEMU_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
@@ -1195,7 +1195,7 @@ ifeq ($(RP),1)
   ROOT_PATCH := root-patch
 endif
 
-root-defconfig: $(ROOT_CHECKOUT) $(BOARD_BSP) $(ROOT_PATCH)
+root-defconfig: root-env $(ROOT_CHECKOUT) $(BOARD_BSP) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
@@ -1692,7 +1692,7 @@ endif
 
 _KCFG := $(notdir $(KCFG_FILE))
 
-kernel-defconfig:  $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
+kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
 	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(_KCFG)
@@ -2053,13 +2053,13 @@ k-m: kernel-menuconfig
 k-b: kernel
 k: kernel
 
-kernel-prepare: gcc kernel-checkout kernel-patch kernel-defconfig
+kernel-prepare: kernel-env kernel-checkout kernel-patch kernel-defconfig
 kernel-auto: kernel-prepare kernel
 kernel-full: kernel-download kernel-prepare kernel
 kernel-all: kernel-full kernel-save kernel-saveconfig
 
 # Simplify testing
-prepare: env-prepare kernel-prepare
+prepare: kernel-prepare
 auto: kernel-auto
 full: kernel-full
 
@@ -2185,7 +2185,7 @@ endif
 
 _UCFG := $(notdir $(UCFG_FILE))
 
-uboot-defconfig: $(UBOOT_CHECKOUT) $(BOARD_BSP) $(UBOOT_PATCH)
+uboot-defconfig: uboot-env $(UBOOT_CHECKOUT) $(BOARD_BSP) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
@@ -2222,7 +2222,7 @@ uboot-help:
 
 uboot-build: uboot
 
-uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
+uboot-prepare: uboot-env uboot-checkout uboot-patch uboot-defconfig
 uboot-auto: uboot-prepare uboot
 uboot-full: uboot-download uboot-prepare uboot
 uboot-all: uboot-full uboot-save uboot-saveconfig
@@ -3034,19 +3034,54 @@ VARS += TEST_TIMEOUT TEST_RD
 endif
 
 # Prepare build environment
-ifneq ($(GCC),)
+GCC_LINUX  := $\$(GCC[LINUX_$(LINUX)])
+CORI_LINUX := $\$(CORI[LINUX_$(LINUX)])
+
+GCC_UBOOT  := $\$(GCC[UBOOT_$(UBOOT)])
+CORI_UBOOT := $\$(CORI[UBOOT_$(UBOOT)])
+
+GCC_QEMU  := $\$(GCC[QEMU_$(QEMU)])
+CORI_QEMU := $\$(CORI[QEMU_$(QEMU)])
+
+GCC_ROOT  := $\$(GCC[ROOT_$(ROOT)])
+CORI_ROOT := $\$(CORI[ROOT_$(ROOT)])
+
+ifneq ($(GCC)$(CORI),)
   GCC_SWITCH := 1
 endif
-ifneq ($(CORI),)
-  GCC_SWITCH := 1
+ifneq ($(CORI_LINUX)$(GCC_LINUX),)
+  GCC_LINUX_SWITCH := 1
+endif
+
+kernel-env: kernel-env-prepare
+kernel-env-prepare: env-prepare
+ifeq ($(GCC_LINUX_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CORI_LINUX),CORI=$(CORI_LINUX)) $(if $(GCC_LINUX),GCC=$(GCC_LINUX))
+endif
+
+uboot-env: uboot-env-prepare
+uboot-env-prepare: env-prepare
+ifeq ($(GCC_UBOOT_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CORI_UBOOT),CORI=$(CORI_UBOOT)) $(if $(GCC_UBOOT),GCC=$(GCC_UBOOT))
+endif
+
+qemu-env: qemu-env-prepare
+qemu-env-prepare: env-prepare
+ifeq ($(GCC_QEMU_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CORI_QEMU),CORI=$(CORI_QEMU)) $(if $(GCC_QEMU),GCC=$(GCC_QEMU))
+endif
+
+root-env: root-env-prepare
+root-env-prepare: env-prepare
+ifeq ($(GCC_ROOT_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CORI_ROOT),CORI=$(CORI_ROOT)) $(if $(GCC_ROOT),GCC=$(GCC_ROOT))
 endif
 
 env: env-prepare
-env-prepare:
+env-prepare: toolchain
 ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CORI),CORI=$(CORI)) $(if $(GCC),GCC=$(GCC))
 endif
-
 
 env-dump:
 	@echo \#[ $(BOARD) ]:
@@ -3062,7 +3097,7 @@ help:
 
 h: help
 
-PHONY += env env-save help h
+PHONY += env env-prepare kernel-env kernel-env-prepare uboot-env uboot-env-prepare qemu-env qemu-env-prepare env-dump env-save help h
 
 #
 # override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input

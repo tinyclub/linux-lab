@@ -3034,17 +3034,17 @@ VARS += TEST_TIMEOUT TEST_RD
 endif
 
 # Prepare build environment
-GCC_LINUX  := $\$(GCC[LINUX_$(LINUX)])
-CORI_LINUX := $\$(CORI[LINUX_$(LINUX)])
+GCC_LINUX  ?= $\$(GCC[LINUX_$(LINUX)])
+CORI_LINUX ?= $\$(CORI[LINUX_$(LINUX)])
 
-GCC_UBOOT  := $\$(GCC[UBOOT_$(UBOOT)])
-CORI_UBOOT := $\$(CORI[UBOOT_$(UBOOT)])
+GCC_UBOOT  ?= $\$(GCC[UBOOT_$(UBOOT)])
+CORI_UBOOT ?= $\$(CORI[UBOOT_$(UBOOT)])
 
-GCC_QEMU  := $\$(GCC[QEMU_$(QEMU)])
-CORI_QEMU := $\$(CORI[QEMU_$(QEMU)])
+GCC_QEMU  ?= $\$(GCC[QEMU_$(QEMU)])
+CORI_QEMU ?= $\$(CORI[QEMU_$(QEMU)])
 
-GCC_ROOT  := $\$(GCC[ROOT_$(ROOT)])
-CORI_ROOT := $\$(CORI[ROOT_$(ROOT)])
+GCC_ROOT  ?= $\$(GCC[ROOT_$(ROOT)])
+CORI_ROOT ?= $\$(CORI[ROOT_$(ROOT)])
 
 ifneq ($(GCC)$(CORI),)
   GCC_SWITCH := 1

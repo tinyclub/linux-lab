@@ -771,6 +771,10 @@ Compile the kernel with debugging options:
     $ make kernel-olddefconfig
     $ make kernel
 
+Compile with one thread:
+
+    $ make kernel JOBS=1
+
 And then debug it directly:
 
     $ make debug

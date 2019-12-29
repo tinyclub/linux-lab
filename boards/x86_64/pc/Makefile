@@ -6,6 +6,7 @@ CPU     ?= qemu64
 MEM     ?= 128M
 SMP     ?= 4
 LINUX   ?= v5.1
+GCC[LINUX_v3.2] = 4.8
 BUILDROOT?= 2019.02.2
 
 # Check qemu support:
@@ -18,6 +19,7 @@ SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage
 
 ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
+ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0
 
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/bzImage

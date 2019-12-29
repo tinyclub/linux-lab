@@ -3,7 +3,7 @@ ARCH     = x86
 XARCH    = i386
 
 # Force change ARCH for kernel version <= 2.6.23
-ARCH_SRC = $(KERNEL_ABS_SRC)/arch/$(ARCH)
+ARCH_SRC = $(KERNEL_ABS_SRC)/arch/$(ARCH)/boot
 ifneq ($(ARCH_SRC),$(wildcard $(ARCH_SRC)))
   ARCH  := $(XARCH)
 endif

@@ -1630,6 +1630,10 @@ ms-c: modules-clean
 PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
+COMMIT_LINUX  ?= $\$(COMMIT[LINUX_$(LINUX)])
+ifneq ($(COMMIT_LINUX),)
+  _LINUX := $(COMMIT_LINUX)
+endif
 
 # Configure Kernel
 kernel-checkout:

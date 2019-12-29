@@ -3073,11 +3073,22 @@ CORI_QEMU ?= $\$(CORI[QEMU_$(QEMU)])
 GCC_ROOT  ?= $\$(GCC[ROOT_$(ROOT)])
 CORI_ROOT ?= $\$(CORI[ROOT_$(ROOT)])
 
-ifneq ($(GCC)$(CORI),)
+ifneq ($(GCC),)
+  # Force using internal CORI if GCC specified
+  CORI := internal
   GCC_SWITCH := 1
 endif
 ifneq ($(CORI_LINUX)$(GCC_LINUX),)
   GCC_LINUX_SWITCH := 1
+endif
+ifneq ($(CORI_ROOT)$(GCC_ROOT),)
+  GCC_ROOT_SWITCH := 1
+endif
+ifneq ($(CORI_UBOOT)$(GCC_UBOOT),)
+  GCC_UBOOT_SWITCH := 1
+endif
+ifneq ($(CORI_QEMU)$(GCC_QEMU),)
+  GCC_QEMU_SWITCH := 1
 endif
 
 kernel-env: kernel-env-prepare

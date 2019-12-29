@@ -86,6 +86,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Network not work](#network-not-work)
    - [linux-lab/configs: Permission denied](#linux-labconfigs-permission-denied)
    - [Client.Timeout exceeded while waiting headers](#clienttimeout-exceeded-while-waiting-headers)
+   - [VNC login fails with wrong password](#vnc-login-fails-with-wrong-password)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -1375,6 +1376,13 @@ Configuration in Ubuntu:
 
     $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
     $ sudo service docker restart
+
+### VNC login fails with wrong password
+
+VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
+
+    $ tools/docker/clean-all
+    $ tools/docker/rerun linux-lab
 
 ## Contact and Sponsor
 

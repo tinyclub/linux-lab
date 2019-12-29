@@ -1199,12 +1199,18 @@ root-defconfig: root-env $(ROOT_CHECKOUT) $(BOARD_BSP) $(ROOT_PATCH)
 
 ifneq ($(BUILDROOT_NEW),)
 ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
-NEW_RCFG_FILE=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(RCFG_FILE))
+NEW_RCFG_FILE=$(_BSP_CONFIG)/buildroot_$(BUILDROOT_NEW)_defconfig
+NEW_PREBUILT_ROOT_DIR=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(PREBUILT_ROOT_DIR))
 
 root-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
-	$(Q)sed -i -e "s%^\(BUILDROOT.*?=.*\)$(BUILDROOT)%\1$(BUILDROOT_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)sed -i -e "s%^\(BUILDROOT.*?= \).*%\1$(BUILDROOT_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)mkdir -p $(NEW_PREBUILT_ROOT_DIR)
 endif
+root-new: root-clone
+root-clone: root-cloneconfig
+
+PHONY += root-new root-clone root-cloneconfig
 endif
 
 root-olddefconfig:
@@ -2207,12 +2213,18 @@ uboot-defconfig: uboot-env $(UBOOT_CHECKOUT) $(BOARD_BSP) $(UBOOT_PATCH)
 
 ifneq ($(UBOOT_NEW),)
 ifneq ($(UBOOT_NEW),$(UBOOT))
-NEW_UCFG_FILE=$(subst $(UBOOT),$(UBOOT_NEW),$(UCFG_FILE))
+NEW_UCFG_FILE=$(_BSP_CONFIG)/uboot_$(UBOOT_NEW)_defconfig
+NEW_PREBUILT_UBOOT_DIR=$(subst $(UBOOT),$(UBOOT_NEW),$(PREBUILT_UBOOT_DIR))
 
 uboot-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
 	$(Q)sed -i -e "s%^\(UBOOT.*?=.*\)$(UBOOT)%\1$(UBOOT_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)mkdir -p $(NEW_PREBUILT_UBOOT_DIR)
 endif
+uboot-new: uboot-clone
+uboot-clone: uboot-cloneconfig
+
+PHONY += uboot-new uboot-clone uboot-cloneconfig
 endif
 
 

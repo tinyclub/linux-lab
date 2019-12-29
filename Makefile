@@ -1663,7 +1663,7 @@ KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
 KCFG ?= $(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs
 ifneq ($(KERNEL_CONFIG_DIR), $(wildcard $(KERNEL_CONFIG_DIR)))
-  $(shell mkdir $(KERNEL_CONFIG_DIR))
+  $(shell mkdir -p $(KERNEL_CONFIG_DIR))
 endif
 
 ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))

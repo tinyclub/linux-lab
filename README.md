@@ -904,7 +904,7 @@ Boot/Qemu Board:
 
 Host:
 
-    $ make env | grep ROOTDIR
+    $ make env-dump | grep ROOTDIR
     ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
 
 #### Transfer via tftp

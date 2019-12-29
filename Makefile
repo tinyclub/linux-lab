@@ -2792,7 +2792,7 @@ else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
-  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env > $(TEST_ENV) \
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
   TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); sudo kill -9 \$$\$$(cat $(TEST_LOG_PID)); \
@@ -3041,13 +3041,14 @@ ifneq ($(CORI),)
   GCC_SWITCH := 1
 endif
 
+env: env-prepare
 env-prepare:
 ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CORI),CORI=$(CORI)) $(if $(GCC),GCC=$(GCC))
 endif
 
 
-env:
+env-dump:
 	@echo \#[ $(BOARD) ]:
 	@echo -n " "
 	-@echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'

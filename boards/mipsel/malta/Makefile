@@ -4,6 +4,7 @@ XARCH    = mipsel
 CPU     ?= mips32r2
 #LINUX   ?= v4.6.7
 LINUX   ?= v5.1
+GCC[LINUX_v2.6.36] = 4.3
 BUILDROOT?= 2016.05
 MEM     ?= 128M
 NETDEV_LIST := pcnet

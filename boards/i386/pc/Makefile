@@ -1,13 +1,25 @@
 _BASE    = 1
-# This must be changed to i386 for kernel version <= 2.6.23
 ARCH     = x86
 XARCH    = i386
+
+# Force change ARCH for kernel version <= 2.6.23
+ARCH_SRC = $(KERNEL_ABS_SRC)/arch/$(ARCH)
+ifneq ($(ARCH_SRC),$(wildcard $(ARCH_SRC)))
+  ARCH  := $(XARCH)
+endif
+
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
 MEM     ?= 128M
 #QEMU    ?= v0.10.6
 SMP     ?= 4
 LINUX   ?= v5.1
+
+COMMIT[LINUX_v2.6.11.12] = 8e63197f
+GCC[LINUX_v2.6.11.12] = 4.4
+GCC[LINUX_v2.6.12] = 4.4
+GCC[LINUX_v2.6.21] = 4.4
+
 BUILDROOT?= 2019.02.2
 
 # Check qemu support:
@@ -31,3 +43,4 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.ext2
 XKCLI   ?= noapic
 #
 # -m32 must be added to CFLAGS and AFLAGS in linux-stable/arch/i386/Makefile for kernel version <= 2.6.23
+# see boards/i386/pc/bsp/patch/linux/v2.6.12/0001-v2.6.12-i386-force-using-m32-for-x86_64-host.patch

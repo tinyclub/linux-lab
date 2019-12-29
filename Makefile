@@ -3055,8 +3055,7 @@ env-dump:
 
 ENV_SAVE_TOOL := $(TOOL_DIR)/save-env.sh
 
-env-save:
-	$(Q)$(ENV_SAVE_TOOL) $(BOARD_DIR)/Makefile "$(VARS)"
+env-save: board-config
 
 help:
 	$(Q)cat README.md

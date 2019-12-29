@@ -4,6 +4,7 @@ XARCH    = $(ARCH)
 CPU     ?= arm926t
 MEM     ?= 128M
 UBOOT   ?= v2015.07
+GCC[UBOOT_v2015.07] = 4.3
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1

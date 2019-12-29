@@ -256,6 +256,11 @@ ifneq ($(FEATURE),)
 endif
 
 # Core images: qemu, bootloader, kernel and rootfs
+ROOTFS_LINUX ?= $\$(ROOTFS[LINUX_$(LINUX)])
+ifneq ($(ROOTFS_LINUX),)
+  ROOTFS := $(ROOTFS_LINUX)
+endif
+
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)

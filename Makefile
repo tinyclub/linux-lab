@@ -2059,7 +2059,7 @@ kernel-full: kernel-download kernel-prepare kernel
 kernel-all: kernel-full kernel-save kernel-saveconfig
 
 # Simplify testing
-prepare: kernel-prepare
+prepare: env-prepare kernel-prepare
 auto: kernel-auto
 full: kernel-full
 
@@ -3032,6 +3032,20 @@ VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
+
+# Prepare build environment
+ifneq ($(GCC),)
+  GCC_SWITCH := 1
+endif
+ifneq ($(CORI),)
+  GCC_SWITCH := 1
+endif
+
+env-prepare:
+ifeq ($(GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CORI),CORI=$(CORI)) $(if $(GCC),GCC=$(GCC))
+endif
+
 
 env:
 	@echo \#[ $(BOARD) ]:

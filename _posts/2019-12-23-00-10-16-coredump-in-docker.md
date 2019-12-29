@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "允许在 Docker 中生成 core 文件"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /coredump-in-docker/
 description: "本文介绍在 Docker 容器中，如何确保程序崩溃时可以正常生成 core 文件。"

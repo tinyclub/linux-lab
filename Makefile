@@ -124,20 +124,6 @@ PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
 PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
 PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
-BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
-
-# Loading board configurations
-ifneq ($(BOARD),)
-  include $(BOARD_MAKEFILE)
-endif
-
-# board specific src submodule parent
-ifeq ($(_PLUGIN), 1)
-  BSP_SROOT = $(PLUGIN_DIR)
-else
-  BSP_SROOT = $(BSP_DIR)
-endif
-
 # Core source: remote and local
 QEMU_GIT ?= https://github.com/qemu/qemu.git
 _QEMU_SRC ?= qemu
@@ -157,6 +143,26 @@ ROOT_GIT ?= https://github.com/buildroot/buildroot
 _ROOT_SRC ?= buildroot
 ROOT_SRC ?= $(_ROOT_SRC)
 
+_LINUX=$(LINUX)
+KERNEL_ABS_SRC := $(TOP_DIR)/$(KERNEL_SRC)
+ROOT_ABS_SRC   := $(TOP_DIR)/$(ROOT_SRC)
+UBOOT_ABS_SRC  := $(TOP_DIR)/$(UBOOT_SRC)
+QEMU_ABS_SRC   := $(TOP_DIR)/$(QEMU_SRC)
+
+BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
+
+# Loading board configurations
+ifneq ($(BOARD),)
+  include $(BOARD_MAKEFILE)
+endif
+
+# board specific src submodule parent
+ifeq ($(_PLUGIN), 1)
+  BSP_SROOT = $(PLUGIN_DIR)
+else
+  BSP_SROOT = $(BSP_DIR)
+endif
+
 # Verify LINUX argument
 KERNEL_SPATH := $(subst $(BSP_SROOT)/,,$(KERNEL_SRC))
 ifneq ($(LINUX),)
@@ -172,11 +178,8 @@ endif
 
 # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
 ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-  _LINUX=$(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
+  _LINUX := $(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
   KERNEL_ABS_SRC := $(KERNEL_SRC)
-else
-  _LINUX=$(LINUX)
-  KERNEL_ABS_SRC := $(TOP_DIR)/$(KERNEL_SRC)
 endif
 
 # Verify ROOT argument
@@ -194,8 +197,6 @@ endif
 
 ifneq ($(_ROOT_SRC), $(ROOT_SRC))
   ROOT_ABS_SRC := $(ROOT_SRC)
-else
-  ROOT_ABS_SRC := $(TOP_DIR)/$(ROOT_SRC)
 endif
 
 # Verify UBOOT argument
@@ -213,8 +214,6 @@ endif
 
 ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
   UBOOT_ABS_SRC := $(UBOOT_SRC)
-else
-  UBOOT_ABS_SRC := $(TOP_DIR)/$(UBOOT_SRC)
 endif
 
 # Verify QEMU argument
@@ -237,8 +236,6 @@ endif
 
 ifneq ($(_QEMU_SRC), $(QEMU_SRC))
   QEMU_ABS_SRC := $(QEMU_SRC)
-else
-  QEMU_ABS_SRC := $(TOP_DIR)/$(QEMU_SRC)
 endif
 
 # Kernel features configuration, e.g. kft, gcs ...
@@ -1030,7 +1027,7 @@ e-c: emulator-defconfig
 
 PHONY += qemu-defconfig emulator-defconfig q-c e-c
 
-qemu:
+qemu: qemu-env
 	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
 
 qemu-build: qemu
@@ -1310,7 +1307,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-root: $(ROOT)
+root: root-env $(ROOT)
 ifneq ($(RT),)
 	$(Q)make root-buildroot RT=$(RT)
 else
@@ -2018,7 +2015,7 @@ PHONY += module-getconfig module-setconfig m-gc m-sc modules-config module-confi
 kernel-help:
 	$(Q)make kernel KT=help
 
-kernel: $(KERNEL_DEPS)
+kernel: kernel-env $(KERNEL_DEPS)
 	$(C_PATH) $(KMAKE_CMD)
 
 kernel-build: kernel
@@ -2218,7 +2215,7 @@ uboot-menuconfig:
 UT ?= $(x)
 
 # Build Uboot
-uboot:
+uboot: uboot-env
 	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(UT)
 
 uboot-help:

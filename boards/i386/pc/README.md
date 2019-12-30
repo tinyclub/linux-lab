@@ -1,6 +1,11 @@
 
 # i386/pc Usage
 
+## Linux v2.6.24.7
+
+    $ make board-config LINUX=v2.6.24.7
+    $ make boot
+
 ## Linux v2.6.21.6
 
 This is based on buildroot/target/device/x86/i686/linux-2.6.21.5.config, with nfs and network feature support.

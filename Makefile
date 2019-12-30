@@ -429,6 +429,13 @@ ifeq ($(PBQ), 1)
       QEMU_SYSTEM := $(QTOOL)
     endif
   endif
+
+  QTOOL_LINUX ?= $\$(QTOOL[LINUX_$(LINUX)])
+  ifneq ($(QTOOL_LINUX),)
+    ifeq ($(QTOOL_LINUX),$(wildcard $(QTOOL_LINUX)))
+      QEMU_SYSTEM := $(QTOOL_LINUX)
+    endif
+  endif
 endif
 
 ifneq ($(QEMU),)

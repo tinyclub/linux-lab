@@ -905,9 +905,18 @@ ifneq ($(QEMU),)
 ifneq ($(QCO),0)
   QEMU_CHECKOUT := qemu-checkout
 endif
+
+COMMIT_QEMU  ?= $\$(COMMIT[QEMU_$(QEMU)])
+ifneq ($(COMMIT_QEMU),)
+  _QEMU := $(COMMIT_QEMU)
+else
+  _QEMU := $(QEMU)
+endif
+
+
 endif
 qemu-checkout:
-	cd $(QEMU_SRC) && git checkout -f $(QEMU) && git clean -fdx && cd $(TOP_DIR)
+	cd $(QEMU_SRC) && git checkout -f $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
 
 emulator-checkout: qemu-checkout
 
@@ -1153,9 +1162,16 @@ ifeq ($(RCO),1)
   ROOT_CHECKOUT := root-checkout
 endif
 
+COMMIT_BUILDROOT  ?= $\$(COMMIT[BUILDROOT_$(BUILDROOT)])
+ifneq ($(COMMIT_BUILDROOT),)
+  _BUILDROOT := $(COMMIT_BUILDROOT)
+else
+  _BUILDROOT := $(BUILDROOT)
+endif
+
 # Configure Buildroot
 root-checkout:
-	cd $(ROOT_SRC) && git checkout -f $(BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
+	cd $(ROOT_SRC) && git checkout -f $(_BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
 
@@ -2099,10 +2115,16 @@ full: kernel-full
 PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k kernel-prepare kernel-auto kernel-full prepare auto full kernel-all
 
 # Uboot targets
+COMMIT_UBOOT  ?= $\$(COMMIT[UBOOT_$(UBOOT)])
+ifneq ($(COMMIT_UBOOT),)
+  _UBOOT := $(COMMIT_UBOOT)
+else
+  _UBOOT := $(UBOOT)
+endif
 
 # Configure Uboot
 uboot-checkout:
-	cd $(UBOOT_SRC) && git checkout -f $(UBOOT) && git clean -fdx && cd $(TOP_DIR)
+	cd $(UBOOT_SRC) && git checkout -f $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
 
 
 PHONY += uboot-checkout

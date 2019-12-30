@@ -1074,6 +1074,16 @@ Please use 'tag' instead of 'branch', use kernel as an example:
 
 If want v5.1 kernel, just put a line "LINUX = v5.1" in `boards/<BOARD>/Makefile`.
 
+Or clone a kernel config from the old one or the official defconfig:
+
+    $ make kernel-clone LINUX_NEW=v5.3 LINUX=v5.1
+
+    Or
+
+    $ make B=i386/pc
+    $ pushd linux-stable && git checkout v5.4 && popd
+    $ make kernel-clone LINUX_NEW=v5.4 KCFG=i386_defconfig
+
 #### Configure, build and boot them
 
 Use kernel as an example:

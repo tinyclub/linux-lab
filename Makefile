@@ -1176,7 +1176,7 @@ endif
 
 gcc-switch: toolchain-switch
 
-PHONY += toolchain-switch gcc-switch toolchain-version gcc-version
+PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
 
 # Rootfs targets
 

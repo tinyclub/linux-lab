@@ -10,7 +10,6 @@ QEMU_US ?= 0
 UBOOT   ?= v2015.07
 LINUX   ?= v5.1
 
-U[LINUX_v3.18.39] = 0
 GCC[LINUX_v3.18.39] = 4.3
 GCC[LINUX_v4.0.9] = 4.3
 GCC[LINUX_v3.16.80] = 4.3

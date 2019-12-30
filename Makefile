@@ -151,6 +151,27 @@ QEMU_ABS_SRC   := $(TOP_DIR)/$(QEMU_SRC)
 
 BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
 
+# Common functions
+
+## Version specific variable
+## GCC = GCC[LINUX_v2.6.12]
+##
+## GCC = 4.4
+## LINUX = v2.6.35
+## GCC[LINUX_v2.6.35] = 4.3
+##
+## A=$(call __v,GCC,LINUX), 4.3
+## B=$(call _v,GCC,LINUX),  4.4 if LINUX is not v2.6.35
+
+define __v
+$($(1)[$(2)_$($(2))])
+endef
+
+define _v
+$(if $(call __v,$1,$2),$(call __v,$1,$2),$($1))
+endef
+#$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
+
 # Loading board configurations
 ifneq ($(BOARD),)
   include $(BOARD_MAKEFILE)
@@ -223,7 +244,7 @@ ifneq ($(QEMU),)
     QEMU_LIST ?= $(shell ls $(BSP_QEMU))
   endif
   # If Linux version specific qemu list defined, use it
-   _QEMU_LIST=$\$(QEMU_LIST[LINUX_$(LINUX)])
+   _QEMU_LIST=$(call __v,QEMU_LIST,LINUX)
   ifneq ($(_QEMU_LIST),)
     override QEMU_LIST := $(_QEMU_LIST)
   endif
@@ -256,7 +277,7 @@ ifneq ($(FEATURE),)
 endif
 
 # Core images: qemu, bootloader, kernel and rootfs
-ROOTFS_LINUX ?= $\$(ROOTFS[LINUX_$(LINUX)])
+ROOTFS_LINUX ?= $(call __v,ROOTFS,LINUX)
 ifneq ($(ROOTFS_LINUX),)
   ROOTFS := $(ROOTFS_LINUX)
 endif
@@ -430,7 +451,7 @@ ifeq ($(PBQ), 1)
     endif
   endif
 
-  QTOOL_LINUX ?= $\$(QTOOL[LINUX_$(LINUX)])
+  QTOOL_LINUX ?= $(call __v,QTOOL,LINUX)
   ifneq ($(QTOOL_LINUX),)
     ifeq ($(QTOOL_LINUX),$(wildcard $(QTOOL_LINUX)))
       QEMU_SYSTEM := $(QTOOL_LINUX)
@@ -549,7 +570,7 @@ endif
 # Verify rootdev argument
 ifneq ($(ROOTDEV),)
   # If Linux version specific rootdev list defined, use it
-   _ROOTDEV_LIST=$\$(ROOTDEV_LIST[LINUX_$(LINUX)])
+   _ROOTDEV_LIST=$(call __v,ROOTDEV_LIST,LINUX)
   ifneq ($(_ROOTDEV_LIST),)
     override ROOTDEV_LIST := $(_ROOTDEV_LIST)
   endif
@@ -906,7 +927,7 @@ ifneq ($(QCO),0)
   QEMU_CHECKOUT := qemu-checkout
 endif
 
-COMMIT_QEMU  ?= $\$(COMMIT[QEMU_$(QEMU)])
+COMMIT_QEMU  ?= $(call __v,COMMIT,QEMU)
 ifneq ($(COMMIT_QEMU),)
   _QEMU := $(COMMIT_QEMU)
 else
@@ -1162,7 +1183,7 @@ ifeq ($(RCO),1)
   ROOT_CHECKOUT := root-checkout
 endif
 
-COMMIT_BUILDROOT  ?= $\$(COMMIT[BUILDROOT_$(BUILDROOT)])
+COMMIT_BUILDROOT  ?= $(call __v,COMMIT,BUILDROOT)
 ifneq ($(COMMIT_BUILDROOT),)
   _BUILDROOT := $(COMMIT_BUILDROOT)
 else
@@ -1661,7 +1682,7 @@ ms-c: modules-clean
 PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
-COMMIT_LINUX  ?= $\$(COMMIT[LINUX_$(LINUX)])
+COMMIT_LINUX  ?= $(call __v,COMMIT,LINUX)
 ifneq ($(COMMIT_LINUX),)
   _LINUX := $(COMMIT_LINUX)
 endif
@@ -2115,7 +2136,7 @@ full: kernel-full
 PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k kernel-prepare kernel-auto kernel-full prepare auto full kernel-all
 
 # Uboot targets
-COMMIT_UBOOT  ?= $\$(COMMIT[UBOOT_$(UBOOT)])
+COMMIT_UBOOT  ?= $(call __v,COMMIT,UBOOT)
 ifneq ($(COMMIT_UBOOT),)
   _UBOOT := $(COMMIT_UBOOT)
 else
@@ -2140,7 +2161,7 @@ UP ?= 0
 # Verify BOOTDEV argument
 ifneq ($(BOOTDEV),)
   # If Uboot version specific bootdev list defined, use it
-   _BOOTDEV_LIST=$\$(BOOTDEV_LIST[UBOOT_$(UBOOT)])
+   _BOOTDEV_LIST=$(call __v,BOOTDEV_LIST,UBOOT)
   ifneq ($(_BOOTDEV_LIST),)
     override BOOTDEV_LIST := $(_BOOTDEV_LIST)
   endif
@@ -2489,7 +2510,7 @@ PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-savec
 # Verify NETDEV argument
 ifneq ($(NETDEV),)
   # If Linux version specific netdev list defined, use it
-   _NETDEV_LIST=$\$(NETDEV_LIST[LINUX_$(LINUX)])
+   _NETDEV_LIST=$(call __v,NETDEV_LIST,LINUX)
   ifneq ($(_NETDEV_LIST),)
     override NETDEV_LIST := $(_NETDEV_LIST)
   endif
@@ -3095,17 +3116,17 @@ VARS += TEST_TIMEOUT TEST_RD
 endif
 
 # Prepare build environment
-GCC_LINUX  ?= $\$(GCC[LINUX_$(LINUX)])
-CORI_LINUX ?= $\$(CORI[LINUX_$(LINUX)])
+GCC_LINUX  ?= $(call __v,GCC,LINUX)
+CORI_LINUX ?= $(call __v,CORI,LINUX)
 
-GCC_UBOOT  ?= $\$(GCC[UBOOT_$(UBOOT)])
-CORI_UBOOT ?= $\$(CORI[UBOOT_$(UBOOT)])
+GCC_UBOOT  ?= $(call __v,GCC,UBOOT)
+CORI_UBOOT ?= $(call __v,CORI,UBOOT)
 
-GCC_QEMU  ?= $\$(GCC[QEMU_$(QEMU)])
-CORI_QEMU ?= $\$(CORI[QEMU_$(QEMU)])
+GCC_QEMU  ?= $(call __v,GCC,QEMU)
+CORI_QEMU ?= $(call __v,CORI,QEMU)
 
-GCC_ROOT  ?= $\$(GCC[ROOT_$(ROOT)])
-CORI_ROOT ?= $\$(CORI[ROOT_$(ROOT)])
+GCC_ROOT  ?= $(call __v,GCC,BUILDROOT)
+CORI_ROOT ?= $(call __v,CORI,BUILDROOT)
 
 ifneq ($(GCC),)
   # Force using internal CORI if GCC specified

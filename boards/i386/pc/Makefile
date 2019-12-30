@@ -2,12 +2,6 @@ _BASE    = 1
 ARCH     = x86
 XARCH    = i386
 
-# Force change ARCH for kernel version <= 2.6.23
-ARCH_SRC = $(KERNEL_ABS_SRC)/arch/$(ARCH)/boot
-ifneq ($(ARCH_SRC),$(wildcard $(ARCH_SRC)))
-  ARCH  := $(XARCH)
-endif
-
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
 MEM     ?= 128M
@@ -19,6 +13,12 @@ LINUX[LINUX_v2.6.11.12] = 8e63197f
 GCC[LINUX_v2.6.11.12] = 4.4
 GCC[LINUX_v2.6.12.6] = 4.4
 GCC[LINUX_v2.6.21.5] = 4.4
+
+# Force change ARCH for kernel version <= 2.6.23
+IS_X86 = $(shell cd $(KERNEL_ABS_SRC); git show $(call _v,LINUX,LINUX):arch/$(ARCH)/boot >/dev/null 2>&1; echo $$?)
+ifneq ($(IS_X86),0)
+  ARCH  := $(XARCH)
+endif
 
 BUILDROOT?= 2019.02.2
 

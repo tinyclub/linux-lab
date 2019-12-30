@@ -560,6 +560,10 @@ ifeq ($(PBU),0)
 endif
 
 # Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
+U_LINUX ?= $(call __v,U,LINUX)
+ifneq ($(U_LINUX),)
+  U := $(U_LINUX)
+endif
 ifneq ($(U),0)
   KIMAGE := $(BIMAGE)
 endif

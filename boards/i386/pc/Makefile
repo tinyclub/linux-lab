@@ -13,6 +13,7 @@ LINUX[LINUX_v2.6.11.12] = 8e63197f
 GCC[LINUX_v2.6.11.12] = 4.4
 GCC[LINUX_v2.6.12.6] = 4.4
 GCC[LINUX_v2.6.21.5] = 4.4
+GCC[LINUX_v2.6.24.7] = 4.8
 
 # Force change ARCH for kernel version <= 2.6.23
 IS_X86 = $(shell cd $(KERNEL_ABS_SRC); git show $(call _v,LINUX,LINUX):arch/$(ARCH)/boot >/dev/null 2>&1; echo $$?)

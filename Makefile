@@ -169,7 +169,7 @@ $($(1)[$(2)_$($(2))])
 endef
 
 define _v
-$(if $(call __v,$1,$2),$(call __v,$1,$2),$($1))
+$(if $(call __v,$1,$2),$(call __v,$1,$2),$(if $3,$3,$($1)))
 endef
 #$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
 

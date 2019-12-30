@@ -1757,8 +1757,8 @@ NEW_KERNEL_GCC=$(if $(call __v,GCC,LINUX),GCC[LINUX_$(LINUX_NEW)] = $(call __v,G
 kernel-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
 	$(Q)sed -i -e "s%^\(LINUX.*?= \).*%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
-	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_DIR)/Makefile || \
-		sed -i -e "/GCC\[LINUX_$(LINUX)/a $(NEW_KERNEL_GCC)" $(BOARD_DIR)/Makefile
+	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_DIR)/Makefile; if [ $$? -ne 0 -a -n "$(NEW_KERNEL_GCC)" ]; then \
+		sed -i -e "/GCC\[LINUX_$(LINUX)/a $(NEW_KERNEL_GCC)" $(BOARD_DIR)/Makefile; fi
 	$(Q)mkdir -p $(NEW_PREBUILT_KERNEL_DIR)
 	$(Q)mkdir -p $(NEW_KERNEL_PATCH_DIR)
 else

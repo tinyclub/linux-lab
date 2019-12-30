@@ -565,7 +565,9 @@ ifneq ($(U_LINUX),)
   U := $(U_LINUX)
 endif
 ifneq ($(U),0)
-  KIMAGE := $(BIMAGE)
+  QEMU_KIMAGE := $(BIMAGE)
+else
+  QEMU_KIMAGE := $(KIMAGE)
 endif
 
 # Root configurations
@@ -1929,12 +1931,11 @@ dtb: $(DTS)
 	@echo "  DTB: $(DTB)"
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
 ifeq ($(_DTS),)
-	$(Q)make kernel KT=$(DTB_TARGET)
-else
+	$(Q)cd $(KERNEL_SRC) && mkdir -p $(dir $(ORIDTS)) && git show $(LINUX):$(ORIDTS) > $(ORIDTS) && cd $(TOP_DIR)
+endif
 	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
 	$(Q)mkdir -p $(dir $(DTB))
 	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
-endif
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0
@@ -2327,7 +2328,8 @@ root-ud-rebuild: root-rd _root-ud-rebuild
 
 kernel-uimage:
 ifeq ($(PBK), 0)
-	make kernel KT=uImage
+	$(Q)mkimage -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
+		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE)
 endif
 
 ifneq ($(INVALID_ROOTFS),1)
@@ -2672,9 +2674,9 @@ SMP ?= 1
 
 # If proxy kernel exists, hack the default -kernel option
 ifneq ($(PORIIMG),)
-  KERNEL_OPT ?= -kernel $(PKIMAGE) -device loader,file=$(KIMAGE),addr=$(KRN_ADDR)
+  KERNEL_OPT ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
 else
-  KERNEL_OPT ?= -kernel $(KIMAGE)
+  KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
 endif
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(KERNEL_OPT) $(EXIT_ACTION)

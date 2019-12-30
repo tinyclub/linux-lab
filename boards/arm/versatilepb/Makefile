@@ -16,9 +16,9 @@ PFLASH_BS   ?= 256
 # get dram range: bdinfo
 KRN_ADDR?= 0x007fc0
 KRN_SIZE?= 5
-RDK_ADDR?= 0x607fc0
+RDK_ADDR?= 0x900000
 RDK_SIZE?= 4
-DTB_ADDR?= 0xa07fc0
+DTB_ADDR?= 0xc07fc0
 DTB_SIZE?= 1
 BOOTDEV_LIST := tftp flash pflash
 BOOTDEV ?= flash
@@ -42,7 +42,7 @@ ifeq ($(HAS_DTS), 1)
   ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb
   BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 else
-  BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)/u-boot
+  BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/nodtb/u-boot
 endif
 
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage

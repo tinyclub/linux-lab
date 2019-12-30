@@ -104,6 +104,7 @@ BSP_UBOOT ?= $(BSP_DIR)/uboot
 BSP_QEMU ?= $(BSP_DIR)/qemu
 BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
 BSP_CONFIG = $(BSP_DIR)/configs
+BSP_PATCH  = $(BSP_DIR)/patch
 
 # Support old directory arch
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
@@ -1746,11 +1747,13 @@ ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
 NEW_KCFG_FILE=$(_BSP_CONFIG)/linux_$(LINUX_NEW)_defconfig
 NEW_PREBUILT_KERNEL_DIR=$(subst $(LINUX),$(LINUX_NEW),$(PREBUILT_KERNEL_DIR))
+NEW_KERNEL_PATCH_DIR=$(BSP_PATCH)/linux/$(LINUX_NEW)/
 
 kernel-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
 	$(Q)sed -i -e "s%^\(LINUX.*?= \).*%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
 	$(Q)mkdir -p $(NEW_PREBUILT_KERNEL_DIR)
+	$(Q)mkdir -p $(NEW_KERNEL_PATCH_DIR)
 else
 kernel-cloneconfig:
 	$(Q)echo $(LINUX_NEW) already exists!
@@ -2462,6 +2465,12 @@ kconfig-save: $(BOARD_BSP)
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
 
+kernel-savepatch: kpatch-save
+kpatch-save:
+	$(Q)cd $(KERNEL_SRC) && git format-patch $(_LINUX) && cd $(TOP_DIR)
+	$(Q)mkdir -p $(BSP_PATCH)/linux/$(LINUX)/
+	$(Q)cp $(KERNEL_SRC)/*.patch $(BSP_PATCH)/linux/$(LINUX)/
+
 root-saveconfig: rconfig-save
 
 rconfig-save: $(BOARD_BSP)
@@ -2475,12 +2484,14 @@ rconfig-save: $(BOARD_BSP)
 r-c-s: rconfig-save
 u-c-s: uconfig-save
 k-c-s: kconfig-save
+k-p-s: kpatch-save
 
 save: root-save kernel-save rconfig-save kconfig-save
 
 s: save
 
 PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-saveconfig rconfig-save r-c-s u-c-s k-c-s save s
+PHONY += kernel-savepatch kpatch-save k-p-s
 
 # Qemu options and kernel command lines
 

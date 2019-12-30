@@ -35,6 +35,7 @@ UORIIMG ?= arch/$(ARCH)/boot/uImage
 # Old Linux kernel don't support dts
 # FIXME: check which version is the first one support dts
 HAS_DTS[LINUX_v2.6.36] = 0
+HAS_DTS[LINUX_v2.6.14.7] = 0
 
 HAS_DTS := $(call _v,HAS_DTS,LINUX,1)
 

@@ -1717,10 +1717,7 @@ endif
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
 
 KCFG ?= $(KERNEL_CONFIG_FILE)
-KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs
-ifneq ($(KERNEL_CONFIG_DIR), $(wildcard $(KERNEL_CONFIG_DIR)))
-  $(shell mkdir -p $(KERNEL_CONFIG_DIR))
-endif
+KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 
 ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
   KCFG_FILE := $(_BSP_CONFIG)/$(KCFG)
@@ -1755,6 +1752,7 @@ _KCFG := $(notdir $(KCFG_FILE))
 
 kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
+	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
 	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(_KCFG)
 

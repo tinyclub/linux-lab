@@ -1093,7 +1093,10 @@ Or clone a kernel config from the old one or the official defconfig:
 If no tag existed, a virtual tag name with the real commmit number can be configured as following:
 
     LINUX = v2.6.11.12
-    COMMIT[LINUX_v2.6.11.12] = 8e63197f
+    LINUX[LINUX_v2.6.11.12] = 8e63197f
+
+    # The real commit number
+    LINUX_COMMIT = $(call _v,LINUX,LINUX)
 
 Linux version specific ROOTFS are also supported:
 

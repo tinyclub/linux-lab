@@ -927,13 +927,7 @@ ifneq ($(QCO),0)
   QEMU_CHECKOUT := qemu-checkout
 endif
 
-COMMIT_QEMU  ?= $(call __v,COMMIT,QEMU)
-ifneq ($(COMMIT_QEMU),)
-  _QEMU := $(COMMIT_QEMU)
-else
-  _QEMU := $(QEMU)
-endif
-
+_QEMU  ?= $(call _v,QEMU,QEMU)
 
 endif
 qemu-checkout:
@@ -1183,12 +1177,7 @@ ifeq ($(RCO),1)
   ROOT_CHECKOUT := root-checkout
 endif
 
-COMMIT_BUILDROOT  ?= $(call __v,COMMIT,BUILDROOT)
-ifneq ($(COMMIT_BUILDROOT),)
-  _BUILDROOT := $(COMMIT_BUILDROOT)
-else
-  _BUILDROOT := $(BUILDROOT)
-endif
+_BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 # Configure Buildroot
 root-checkout:
@@ -1682,10 +1671,7 @@ ms-c: modules-clean
 PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
-COMMIT_LINUX  ?= $(call __v,COMMIT,LINUX)
-ifneq ($(COMMIT_LINUX),)
-  _LINUX := $(COMMIT_LINUX)
-endif
+_LINUX  := $(call _v,LINUX,LINUX)
 
 # Configure Kernel
 kernel-checkout:
@@ -2134,12 +2120,7 @@ full: kernel-full
 PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k kernel-prepare kernel-auto kernel-full prepare auto full kernel-all
 
 # Uboot targets
-COMMIT_UBOOT  ?= $(call __v,COMMIT,UBOOT)
-ifneq ($(COMMIT_UBOOT),)
-  _UBOOT := $(COMMIT_UBOOT)
-else
-  _UBOOT := $(UBOOT)
-endif
+_UBOOT  ?= $(call _v,UBOOT,UBOOT)
 
 # Configure Uboot
 uboot-checkout:

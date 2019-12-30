@@ -745,6 +745,10 @@ board-config:
 
 PHONY += board-config
 
+# Permission preparation
+perm:
+	sudo chown $(USER):$(USER) -R ./ /.git /configs /tools
+
 # Plugin targets
 
 ifeq ($(filter command line, $(origin P) $(origin PLUGIN)), command line)

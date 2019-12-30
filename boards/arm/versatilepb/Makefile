@@ -8,6 +8,7 @@ GCC[UBOOT_v2015.07] = 4.3
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1
+GCC[LINUX_v2.6.36] = 4.3
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64
@@ -33,9 +34,9 @@ UORIIMG ?= arch/$(ARCH)/boot/uImage
 
 # Old Linux kernel don't support dts
 # FIXME: check which version is the first one support dts
-ifneq ($(LINUX), v2.6.36)
-  HAS_DTS ?= 1
-endif
+HAS_DTS[LINUX_v2.6.36] = 0
+
+HAS_DTS := $(call _v,HAS_DTS,LINUX,1)
 
 ifeq ($(HAS_DTS), 1)
   ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb

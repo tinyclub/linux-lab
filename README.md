@@ -733,6 +733,12 @@ If not external toolchain there, the builtin will be used back.
 
 If no builtin toolchain exists, please must use this external toolchain feature, currently, aarch64, arm, riscv, mipsel, ppc, i386, x86_64 support such feature.
 
+GCC version can be configured in board specific Makefile for Linux, Uboot, Qemu and Root, for example:
+
+    GCC[LINUX_v2.6.11.12] = 4.4
+
+With this configuration, GCC will be switched automatically during defconfig and compiling of the specified Linux v2.6.11.12.
+
 #### Rootfs
 
 Builtin rootfs is minimal, is not enough for complex application development,
@@ -1083,6 +1089,15 @@ Or clone a kernel config from the old one or the official defconfig:
     $ make B=i386/pc
     $ pushd linux-stable && git checkout v5.4 && popd
     $ make kernel-clone LINUX_NEW=v5.4 KCFG=i386_defconfig
+
+If no tag existed, a virtual tag name with the real commmit number can be configured as following:
+
+    LINUX = v2.6.11.12
+    COMMIT[LINUX_v2.6.11.12] = 8e63197f
+
+Linux version specific ROOTFS are also supported:
+
+    ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz
 
 #### Configure, build and boot them
 

@@ -49,6 +49,7 @@ endif
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/versatile-pb.dtb
 UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/uImage
+# FIXME: No working rootfs for v2.6.14.7 currently!!!
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)

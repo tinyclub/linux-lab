@@ -282,6 +282,18 @@ ROOTFS_LINUX ?= $(call __v,ROOTFS,LINUX)
 ifneq ($(ROOTFS_LINUX),)
   ROOTFS := $(ROOTFS_LINUX)
 endif
+BUILDROOT_LINUX ?= $(call __v,BUILDROOT,LINUX)
+ifneq ($(BUILDROOT_LINUX),)
+  BUILDROOT := $(BUILDROOT_LINUX)
+endif
+UBOOT_LINUX ?= $(call __v,UBOOT,LINUX)
+ifneq ($(UBOOT_LINUX),)
+  UBOOT := $(UBOOT_LINUX)
+endif
+QEMU_LINUX ?= $(call __v,QEMU,LINUX)
+ifneq ($(QEMU_LINUX),)
+  QEMU := $(QEMU_LINUX)
+endif
 
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)

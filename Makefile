@@ -1136,6 +1136,7 @@ endif
 ifeq ($(CCORI), internal)
 	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
 endif
+	@echo
 
 gcc-info: toolchain-info
 gcc-version: toolchain-info

@@ -24,6 +24,8 @@ GCC[LINUX_v2.6.10] = 4.4
 MEM[LINUX_v2.6.10] = 80M
 # /dev/ram0 boot panic on SMP currently
 SMP[LINUX_v2.6.10] = 1
+# panic after poweroff while using e1000
+NETDEV[LINUX_v2.6.10] = ne2k_pci
 
 # Force change ARCH for kernel version <= 2.6.23
 IS_X86 = $(shell cd $(KERNEL_ABS_SRC); git show $(call _v,LINUX,LINUX):arch/$(ARCH)/boot >/dev/null 2>&1; echo $$?)

@@ -180,32 +180,54 @@ endif
 
 # Prepare build environment
 GCC_LINUX  ?= $(call __v,GCC,LINUX)
-CORI_LINUX ?= $(call __v,CORI,LINUX)
+CCORI_LINUX ?= $(call __v,CCORI,LINUX)
 
 GCC_UBOOT  ?= $(call __v,GCC,UBOOT)
-CORI_UBOOT ?= $(call __v,CORI,UBOOT)
+CCORI_UBOOT ?= $(call __v,CCORI,UBOOT)
 
 GCC_QEMU  ?= $(call __v,GCC,QEMU)
-CORI_QEMU ?= $(call __v,CORI,QEMU)
+CCORI_QEMU ?= $(call __v,CCORI,QEMU)
 
 GCC_ROOT  ?= $(call __v,GCC,BUILDROOT)
-CORI_ROOT ?= $(call __v,CORI,BUILDROOT)
+CCORI_ROOT ?= $(call __v,CCORI,BUILDROOT)
+
+ifneq ($(GCC),)
+  # Force using internal CCORI if GCC specified
+  CCORI := internal
+  GCC_SWITCH := 1
+endif
 
 ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
-  _GCC:=$(GCC_LINUX)
-  _CORI:=$(CORI_LINUX)
+  ifneq ($(CCORI_LINUX)$(GCC_LINUX),)
+    ifeq ($(CCORI_LINUX),)
+      CCORI := internal
+    endif
+    GCC_LINUX_SWITCH := 1
+  endif
 endif
 ifeq ($(findstring uboot,$(MAKECMDGOALS)),uboot)
-  _GCC:=$(GCC_UBOOT)
-  _CORI:=$(CORI_UBOOT)
+  ifneq ($(CCORI_UBOOT)$(GCC_LINUX),)
+    ifeq ($(CCORI_UBOOT),)
+      CCORI := internal
+    endif
+    GCC_UBOOT_SWITCH := 1
+  endif
 endif
 ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
-  _GCC:=$(GCC_QEMU)
-  _CORI:=$(CORI_QEMU)
+  ifneq ($(CCORI_QEMU)$(GCC_LINUX),)
+    ifeq ($(CCORI_QEMU),)
+      CCORI := internal
+    endif
+    GCC_QEMU_SWITCH := 1
+  endif
 endif
 ifeq ($(findstring root,$(MAKECMDGOALS)),root)
-  _GCC:=$(GCC_ROOT)
-  _CORI:=$(CORI_ROOT)
+  ifneq ($(CCORI_ROOT)$(GCC_LINUX),)
+    ifeq ($(CCORI_ROOT),)
+      CCORI := internal
+    endif
+    GCC_ROOT_SWITCH := 1
+  endif
 endif
 
 # board specific src submodule parent
@@ -404,12 +426,10 @@ ifeq ($(CCORI), null)
 
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
-    ifeq ($(GCC)$(_GCC)$(CORI)$(_CORI),)
-      ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-        CCORI  := buildroot
-        CCPATH := $(BUILDROOT_CCPATH)
-        CCPRE  := $(BUILDROOT_CCPRE)
-      endif
+    ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI  := buildroot
+      CCPATH := $(BUILDROOT_CCPATH)
+      CCPRE  := $(BUILDROOT_CCPRE)
     endif
   else
     ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
@@ -3167,55 +3187,34 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
-ifneq ($(GCC),)
-  # Force using internal CORI if GCC specified
-  CORI := internal
-  GCC_SWITCH := 1
-endif
-ifneq ($(CORI_LINUX)$(GCC_LINUX),)
-ifeq ($(CORI_LINUX),)
-  CORI := internal
-endif
-  GCC_LINUX_SWITCH := 1
-endif
-ifneq ($(CORI_ROOT)$(GCC_ROOT),)
-  GCC_ROOT_SWITCH := 1
-endif
-ifneq ($(CORI_UBOOT)$(GCC_UBOOT),)
-  GCC_UBOOT_SWITCH := 1
-endif
-ifneq ($(CORI_QEMU)$(GCC_QEMU),)
-  GCC_QEMU_SWITCH := 1
-endif
-
 kernel-env: kernel-env-prepare
 kernel-env-prepare: env-prepare
 ifeq ($(GCC_LINUX_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CORI_LINUX),CORI=$(CORI_LINUX)) $(if $(GCC_LINUX),GCC=$(GCC_LINUX))
+	$(Q)make $(S) gcc-switch $(if $(CCORI_LINUX),CCORI=$(CCORI_LINUX)) $(if $(GCC_LINUX),GCC=$(GCC_LINUX))
 endif
 
 uboot-env: uboot-env-prepare
 uboot-env-prepare: env-prepare
 ifeq ($(GCC_UBOOT_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CORI_UBOOT),CORI=$(CORI_UBOOT)) $(if $(GCC_UBOOT),GCC=$(GCC_UBOOT))
+	$(Q)make $(S) gcc-switch $(if $(CCORI_UBOOT),CCORI=$(CCORI_UBOOT)) $(if $(GCC_UBOOT),GCC=$(GCC_UBOOT))
 endif
 
 qemu-env: qemu-env-prepare
 qemu-env-prepare: env-prepare
 ifeq ($(GCC_QEMU_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CORI_QEMU),CORI=$(CORI_QEMU)) $(if $(GCC_QEMU),GCC=$(GCC_QEMU))
+	$(Q)make $(S) gcc-switch $(if $(CCORI_QEMU),CCORI=$(CCORI_QEMU)) $(if $(GCC_QEMU),GCC=$(GCC_QEMU))
 endif
 
 root-env: root-env-prepare
 root-env-prepare: env-prepare
 ifeq ($(GCC_ROOT_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CORI_ROOT),CORI=$(CORI_ROOT)) $(if $(GCC_ROOT),GCC=$(GCC_ROOT))
+	$(Q)make $(S) gcc-switch $(if $(CCORI_ROOT),CCORI=$(CCORI_ROOT)) $(if $(GCC_ROOT),GCC=$(GCC_ROOT))
 endif
 
 env: env-prepare
 env-prepare: toolchain
 ifeq ($(GCC_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CORI),CORI=$(CORI)) $(if $(GCC),GCC=$(GCC))
+	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
 endif
 
 env-dump:

@@ -1375,7 +1375,7 @@ This means the rootfs.ext2 image may be broken, please remove it and try `make b
 This means using a newer gcc than the one linux kernel version supported, there are two solutions, one is [switching to an older gcc version](#toolchain) with 'make gcc-switch', use `i386/pc` board as an example:
 
     $ make gcc-list
-    $ make gcc-switch CORI=internal GCC=4.4
+    $ make gcc-switch CCORI=internal GCC=4.4
 
 ### Network not work
 

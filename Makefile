@@ -2744,7 +2744,7 @@ else
   KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
 endif
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(MEM) $(NET) -smp $(SMP) $(KERNEL_OPT) $(EXIT_ACTION)
+EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one

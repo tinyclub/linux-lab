@@ -666,7 +666,12 @@ ifneq ($(ROOTDEV),)
   endif
 endif
 
-ROOTDEV ?= /dev/ram0
+ROOTDEV_LINUX := $(call _v,ROOTDEV,LINUX)
+ifneq ($(ROOTDEV_LINUX),)
+  ROOTDEV := $(ROOTDEV_LINUX)
+else
+  ROOTDEV ?= /dev/ram0
+endif
 FSTYPE  ?= ext2
 
 ROOTFS_UBOOT_SUFFIX    := .cpio.uboot
@@ -2620,7 +2625,7 @@ endif
 
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
-NET ?=  -net nic,model=$(NETDEV) -net tap
+NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap
 
 ifeq ($(NETDEV), virtio)
   MACADDR_TOOL   := tools/qemu/macaddr.sh
@@ -2665,7 +2670,7 @@ else
 endif
 
 # Extra kernel command line
-CMDLINE += $(XKCLI)
+CMDLINE += $(call _v,XKCLI,LINUX)
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0

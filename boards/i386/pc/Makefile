@@ -16,6 +16,9 @@ GCC[LINUX_v2.6.21.5] = 4.4
 GCC[LINUX_v2.6.24.7] = 4.8
 GCC[LINUX_v2.6.34.9] = 4.8
 
+# Configuration for v2.6.10
+KERNEL_GIT[LINUX_v2.6.10] = https://gitee.com/tinylab/tglx-linux-history
+KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
 GCC[LINUX_v2.6.10] = 4.4
 # Workaround "Bad page state at prep_new_page (in process 'swapper', page c02d1b84)"
 MEM[LINUX_v2.6.10] = 80M

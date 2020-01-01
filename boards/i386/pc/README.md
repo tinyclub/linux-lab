@@ -61,9 +61,9 @@ There is no valid 2.6.11 tags currently, the commit id for v2.6.11.12 is added i
 
 ## Linux v2.6.10
 
-There is no v2.6.10 in linux-stable tree, need to download manually and configure it as below:
+There is no v2.6.10 in linux-stable tree, need to download it from the other repository. this is implemented by such lines:
 
-    $ git clone https://gitee.com/tinylab/tglx-linux-history
-    $ make board-config KERNEL_SRC=tglx-linux-history
+    KERNEL_GIT[LINUX_v2.6.10] = https://gitee.com/tinylab/tglx-linux-history
+    KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
 
 FIXME: with v2.6.10, only <=80M memory works, otherwise, panic.

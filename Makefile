@@ -127,20 +127,24 @@ PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
 # Core source: remote and local
 QEMU_GIT ?= https://github.com/qemu/qemu.git
+_QEMU_GIT := $(QEMU_GIT)
 _QEMU_SRC ?= qemu
 QEMU_SRC ?= $(_QEMU_SRC)
 
 UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+_UBOOT_GIT := $(UBOOT_GIT)
 _UBOOT_SRC ?= u-boot
 UBOOT_SRC ?= $(_UBOOT_SRC)
 
 KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
+_KERNEL_GIT := $(KERNEL_GIT)
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-_KERNEL_SRC = linux-stable
+_KERNEL_SRC ?= linux-stable
 KERNEL_SRC ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
 ROOT_GIT ?= https://github.com/buildroot/buildroot
+_ROOT_GIT := $(ROOT_GIT)
 _ROOT_SRC ?= buildroot
 ROOT_SRC ?= $(_ROOT_SRC)
 
@@ -176,6 +180,16 @@ endef
 # Loading board configurations
 ifneq ($(BOARD),)
   include $(BOARD_MAKEFILE)
+endif
+
+# Customize kernel git repo and local dir
+KERNEL_SRC_LINUX := $(call __v,KERNEL_SRC,LINUX)
+ifneq ($(KERNEL_SRC_LINUX),)
+  KERNEL_SRC := $(KERNEL_SRC_LINUX)
+endif
+KERNEL_GIT_LINUX := $(call __v,KERNEL_GIT,LINUX)
+ifneq ($(KERNEL_GIT_LINUX),)
+  KERNEL_GIT := $(KERNEL_GIT_LINUX)
 endif
 
 # Prepare build environment
@@ -934,10 +948,19 @@ kernel-source:
 	@echo
 	@echo "Downloading kernel source ..."
 	@echo
-ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(KERNEL_SPATH) && cd $(TOP_DIR)
+ifneq ($(_KERNEL_GIT), $(KERNEL_GIT))
+  ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
+	@if [ -d $(KERNEL_SRC) ]; then cd $(KERNEL_SRC) && git fetch --tags --all && cd $(TOP_DIR); else git clone $(KERNEL_GIT) $(KERNEL_SRC); fi
+  else
+	@echo "This may be very slow ..."
+	@cd $(_KERNEL_SRC) && git fetch --tags -v $(KERNEL_GIT) && cd $(TOP_DIR)
+  endif
 else
+  ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
+	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(KERNEL_SPATH) && cd $(TOP_DIR)
+  else
 	$(UPDATE_GITMODULE) $(KERNEL_SRC)
+  endif
 endif
 
 kernel-download: kernel-source

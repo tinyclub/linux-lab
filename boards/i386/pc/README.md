@@ -58,3 +58,12 @@ There is no valid 2.6.11 tags currently, the commit id for v2.6.11.12 is added i
     $ make boot
     $ make boot ROOTDEV=/dev/nfs
     $ make boot ROOTDEV=/dev/hda
+
+## Linux v2.6.10
+
+There is no v2.6.10 in linux-stable tree, need to download manually and configure it as below:
+
+    $ git clone https://gitee.com/tinylab/tglx-linux-history
+    $ make board-config KERNEL_SRC=tglx-linux-history
+
+FIXME: with v2.6.10, only <=80M memory works, otherwise, panic.

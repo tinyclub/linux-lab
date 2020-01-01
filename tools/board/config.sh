@@ -11,5 +11,5 @@ grep -v "^#" $Makefile | grep -q "$_V"
 if [ $? -eq 0 ]; then
   sed -i -e "s%^\($_V[^\[]*=[ ]*\).*%\1$S%g" $Makefile
 else
-  echo "$V ?= $S" >> $Makefile
+  echo "$V := $S" >> $Makefile
 fi

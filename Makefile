@@ -178,6 +178,36 @@ ifneq ($(BOARD),)
   include $(BOARD_MAKEFILE)
 endif
 
+# Prepare build environment
+GCC_LINUX  ?= $(call __v,GCC,LINUX)
+CORI_LINUX ?= $(call __v,CORI,LINUX)
+
+GCC_UBOOT  ?= $(call __v,GCC,UBOOT)
+CORI_UBOOT ?= $(call __v,CORI,UBOOT)
+
+GCC_QEMU  ?= $(call __v,GCC,QEMU)
+CORI_QEMU ?= $(call __v,CORI,QEMU)
+
+GCC_ROOT  ?= $(call __v,GCC,BUILDROOT)
+CORI_ROOT ?= $(call __v,CORI,BUILDROOT)
+
+ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
+  _GCC:=$(GCC_LINUX)
+  _CORI:=$(CORI_LINUX)
+endif
+ifeq ($(findstring uboot,$(MAKECMDGOALS)),uboot)
+  _GCC:=$(GCC_UBOOT)
+  _CORI:=$(CORI_UBOOT)
+endif
+ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
+  _GCC:=$(GCC_QEMU)
+  _CORI:=$(CORI_QEMU)
+endif
+ifeq ($(findstring root,$(MAKECMDGOALS)),root)
+  _GCC:=$(GCC_ROOT)
+  _CORI:=$(CORI_ROOT)
+endif
+
 # board specific src submodule parent
 ifeq ($(_PLUGIN), 1)
   BSP_SROOT = $(PLUGIN_DIR)
@@ -374,10 +404,12 @@ ifeq ($(CCORI), null)
 
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
-    ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
-      CCORI  := buildroot
-      CCPATH := $(BUILDROOT_CCPATH)
-      CCPRE  := $(BUILDROOT_CCPRE)
+    ifeq ($(GCC)$(_GCC)$(CORI)$(_CORI),)
+      ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+        CCORI  := buildroot
+        CCPATH := $(BUILDROOT_CCPATH)
+        CCPRE  := $(BUILDROOT_CCPRE)
+      endif
     endif
   else
     ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
@@ -427,7 +459,7 @@ ifneq ($(CCPATH),)
   C_PATH ?= env PATH=$(CCPATH):$(PATH) LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
 endif
 
-#$(info Using gcc: $(CCPATH)/$(CCPRE)gcc)
+#$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
 
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
@@ -3135,25 +3167,15 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
-# Prepare build environment
-GCC_LINUX  ?= $(call __v,GCC,LINUX)
-CORI_LINUX ?= $(call __v,CORI,LINUX)
-
-GCC_UBOOT  ?= $(call __v,GCC,UBOOT)
-CORI_UBOOT ?= $(call __v,CORI,UBOOT)
-
-GCC_QEMU  ?= $(call __v,GCC,QEMU)
-CORI_QEMU ?= $(call __v,CORI,QEMU)
-
-GCC_ROOT  ?= $(call __v,GCC,BUILDROOT)
-CORI_ROOT ?= $(call __v,CORI,BUILDROOT)
-
 ifneq ($(GCC),)
   # Force using internal CORI if GCC specified
   CORI := internal
   GCC_SWITCH := 1
 endif
 ifneq ($(CORI_LINUX)$(GCC_LINUX),)
+ifeq ($(CORI_LINUX),)
+  CORI := internal
+endif
   GCC_LINUX_SWITCH := 1
 endif
 ifneq ($(CORI_ROOT)$(GCC_ROOT),)

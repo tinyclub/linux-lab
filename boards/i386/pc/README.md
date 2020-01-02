@@ -90,3 +90,5 @@ There is no v2.6.10 in linux-stable tree, need to download it from the other rep
     KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
 
 FIXME: with v2.6.10, only <=80M memory works, otherwise, panic.
+
+A debug testing demonstration is recorded: <http://showterm.io/b8f1d62841b80ab3be7af>.

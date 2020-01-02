@@ -4,9 +4,7 @@
 ## V0.3
 
 * Add Chinese version of README.md
-* Upgrade docker image to ubuntu 18.04 LTS and reduce the size a lot
-* Instruction encoding/decoding support should be added to easier ISA understanding: pwntools
-* Add real hardware boards support
+* Update buildroot to 2019.11, share native linux-stable git repo
 
 ## Future
 
@@ -27,3 +25,6 @@
 * Allow terminal users to share their own boards online
 * Fix up network issue introduced by /etc/resolv.conf
 * Fix up filesystem issue while rootfs.ext2 is broken (verify and re-generate it)
+* Add real hardware boards support
+* Upgrade docker image to ubuntu 18.04 LTS and reduce the size a lot
+* Instruction encoding/decoding support should be added to easier ISA understanding: pwntools

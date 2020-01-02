@@ -1,6 +1,29 @@
 
 # i386/pc Usage
 
+The Linux kernel versions used by several famous Linux books are added:
+
+|  Books        | Versions         | Authors
+|---------------|------------------|-----------------
+|  LDD3         | v2.6.10          | Jonathan Corbet, Alessandro Rubini, and Greg Kroah-Hartman
+|  LKD3         | v2.6.34.9        | Robert Love
+|  ULK3         | v2.6.11.12       | Marco Cesati, Daniel P. Bovet
+|  PLKA         | v2.6.24.7        | Wolfgang Mauerer
+
+Books' fullname and their resources:
+
+* LDD3: [Linux Device Drivers, Third Edition](https://lwn.net/Kernel/LDD3/)
+    * [Original Examples](http://examples.oreilly.com/9780596005900/)
+    * [Latest Examples](https://github.com/martinezjavier/ldd3)
+* LKD3: Linux Kernel Development (3rd Edition)
+* ULK3: Understanding the Linux Kernel, 3rd Edition
+* PLKA: Professional Linux Kernel Architecture
+
+## Linux v2.6.34.9
+
+    $ make board-config LINUX=v2.6.34.9
+    $ make boot
+
 ## Linux v2.6.24.7
 
     $ make board-config LINUX=v2.6.24.7

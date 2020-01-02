@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "如何获取某个 Linux 子系统上游的最新代码"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /latest-linux-code/
 description: "本文介绍了如何获取某个 Linux 子系统的最新代码。"

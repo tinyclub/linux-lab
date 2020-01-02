@@ -1,3 +1,5 @@
 mips32--*
 Codescape*
 mips*
+opt*
+gcc-*

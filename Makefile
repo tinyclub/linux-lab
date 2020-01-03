@@ -158,6 +158,9 @@ BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
 
 # Common functions
 
+_uc = $(shell echo $1 | tr a-z A-Z)
+_lc = $(shell echo $1 | tr A-Z a-z)
+
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]
 ##
@@ -892,6 +895,9 @@ list-plugin:
 
 list-full:
 	$(Q)make $(S) board BOARD=
+
+list-%: FORCE
+	$(Q)echo $($(call _uc,$(subst list-,,$@))_LIST)
 
 l: list
 l-b: list-base

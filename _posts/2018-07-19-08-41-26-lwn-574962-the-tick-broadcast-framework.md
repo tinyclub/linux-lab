@@ -17,12 +17,12 @@ tags:
 
 > 原文：[The tick broadcast framework](https://lwn.net/Articles/574962/)
 > 原创：By Preeti U Murthy @ Nov. 26, 2013
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Wen Yang](https://github.com/w-simon)
 
 > Power management is an increasingly important responsibility of almost every subsystem in the Linux kernel. One of the most established power management mechanisms in the kernel is the [cpuidle framework](https://lwn.net/Articles/384146/) which puts idle CPUs into sleeping states until they have work to do. These sleeping states are called the "C-states" or CPU operating states. The deeper a C-state, the more power is conserved.
 
-对于 Linux 内核中的每个子系统来说，电源管理工作变得越来越重要。内核中最为成熟的电源管理机制之一是 [cpuidle 框架](https://lwn.net/Articles/384146/)，它会将空闲的处理器置于休眠状态，直到它们有新的工作要做。这些睡眠状态被称为 “C 状态”（C-states）或处理器操作状态（译者注：下文直接译为 C-state）。C-state 睡眠的程度越深，节能的效果越好。
+对于 Linux 内核中的每个子系统来说，电源管理工作变得越来越重要。内核中最为成熟的电源管理机制之一是 [cpuidle 框架][1]，它会将空闲的处理器置于休眠状态，直到它们有新的工作要做。这些睡眠状态被称为 “C 状态”（C-states）或处理器操作状态（译者注：下文直接译为 C-state）。C-state 睡眠的程度越深，节能的效果越好。
 
 > However, an interesting problem surfaces when CPUs enter certain deep C-states. Idle CPUs are typically woken up by their respective local timers when there is work to be done, but what happens if these CPUs enter deep C-states in which these timers stop working? Who will wake up the CPUs in time to handle the work scheduled on them? This is where the "tick broadcast framework" steps in. It assigns a clock device that is not affected by the C-states of the CPUs as the timer responsible for handling the wakeup of all those CPUs that enter deep C-states.
 
@@ -112,4 +112,4 @@ tags:
 
 非常感谢 IBM Linux 技术中心和 LWN 为我提供的这个机会。
 
-[1]: http://tinylab.org
+[1]: https://lwn.net/Articles/384146/

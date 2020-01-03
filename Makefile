@@ -896,6 +896,9 @@ list-plugin:
 list-full:
 	$(Q)make $(S) board BOARD=
 
+list-kernel: list-linux
+list-buildroot: list-root
+
 list-%: FORCE
 	$(Q)echo $($(call _uc,$(subst list-,,$@))_LIST)
 
@@ -903,10 +906,12 @@ l: list
 l-b: list-base
 l-p: list-plugin
 l-f: list-full
+l-k: list-kernel
+l-r: list-root
 b-l: l
 b-l-f: l-f
 
-PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f
+PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kernel l-k list-buildroot l-r
 
 # Source download
 

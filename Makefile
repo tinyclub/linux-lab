@@ -749,6 +749,14 @@ ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
   INVALID_ROOTDEV := 1
 endif
 
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(findstring $(MAKECMDGOALS),boot),$(MAKECMDGOALS))
+  ifneq ($(INVALID_ROOTFS)$(INVALID_ROOTDEV),)
+    $(error $(ROOTFS_TYPE))
+  endif
+ endif
+endif
+
 comma := ,
 empty :=
 space := $(empty) $(empty)

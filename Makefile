@@ -275,7 +275,7 @@ endif
 
 # Verify ROOT argument
 ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
-ifneq ($(ROOT),)
+ifneq ($(BUILDROOT),)
   ifeq ($(BSP_ROOT), $(wildcard $(BSP_ROOT)))
     ROOT_LIST ?= $(shell ls $(BSP_ROOT))
   endif

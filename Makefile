@@ -750,9 +750,12 @@ ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(findstring $(MAKECMDGOALS),boot),$(MAKECMDGOALS))
-  ifneq ($(INVALID_ROOTFS)$(INVALID_ROOTDEV),)
-    $(error $(ROOTFS_TYPE))
+ ifeq ($(findstring $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+  ifeq ($(INVALID_ROOTFS),1)
+    $(error rootfs: $(ROOTFS_TYPE))
+  endif
+  ifeq ($(INVALID_ROOTDEV),1)
+    $(error rootdev: $(ROOTDEV_TYPE))
   endif
  endif
 endif
@@ -3120,15 +3123,6 @@ _boot: $(_BOOT_DEPS)
 
 BOOT_DEPS ?=
 BOOT_DEPS += $(BOARD_BSP)
-
-ifeq ($(filter _boot,$(MAKECMDGOALS)),_boot)
-  ifeq ($(INVALID_ROOTFS),1)
-    $(error rootfs: $(ROOTFS) is invalid or not exists)
-  endif
-  ifeq ($(INVALID_ROOTDEV),1)
-    $(error rootdev: $(ROOTDEV) is invalid or not exists)
-  endif
-endif
 
 boot: $(BOOT_DEPS)
 	$(Q)make _boot

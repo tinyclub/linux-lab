@@ -1244,6 +1244,10 @@ endif
 qemu-new: qemu-clone
 
 PHONY += qemu-new qemu-clone
+else
+  ifeq ($(MAKECMDGOALS),qemu-clone)
+    $(error Usage: make qemu-clone QEMU_NEW=<qemu-version>)
+  endif
 endif
 
 
@@ -1440,6 +1444,10 @@ root-new: root-clone
 root-clone: root-cloneconfig
 
 PHONY += root-new root-clone root-cloneconfig
+else
+  ifeq ($(MAKECMDGOALS),root-clone)
+    $(error Usage: make root-clone BUILDROOT_NEW=<buildroot-version>)
+  endif
 endif
 
 root-olddefconfig:
@@ -1954,6 +1962,10 @@ kernel-cloneconfig:
 endif
 kernel-new: kernel-clone
 kernel-clone: kernel-cloneconfig
+else
+  ifeq ($(MAKECMDGOALS),kernel-clone)
+    $(error Usage: make kernel-clone LINUX_NEW=<linux-version>)
+  endif
 endif
 
 PHONY += kernel-new kernel-clone kernel-cloneconfig
@@ -2457,6 +2469,10 @@ uboot-new: uboot-clone
 uboot-clone: uboot-cloneconfig
 
 PHONY += uboot-new uboot-clone uboot-cloneconfig
+else
+  ifeq ($(MAKECMDGOALS),uboot-clone)
+    $(error Usage: make uboot-clone UBOOT_NEW=<uboot-version>)
+  endif
 endif
 
 

@@ -160,6 +160,9 @@ BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
 
 _uc = $(shell echo $1 | tr a-z A-Z)
 _lc = $(shell echo $1 | tr A-Z a-z)
+define _stamp
+$(3)/.stamp_$(1)-$(2)
+endef
 
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]
@@ -971,7 +974,7 @@ qemu-all: qemu-full qemu-save
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
-kernel-source:
+kernel-source: kernel-cleanup
 	@echo
 	@echo "Downloading kernel source ..."
 	@echo
@@ -989,6 +992,26 @@ else
 	$(UPDATE_GITMODULE) $(KERNEL_SRC)
   endif
 endif
+
+# Add basic kernel dependencies
+define _stamp_kernel
+$(call _stamp,kernel,$(1),$(KERNEL_OUTPUT))
+endef
+
+$(call _stamp_kernel,%):
+	$(Q)make $(subst $(KERNEL_OUTPUT)/.stamp_,,$@)
+	$(Q)touch $@
+
+kernel-checkout: $(call _stamp_kernel,download)
+kernel-patch: $(call _stamp_kernel,checkout)
+kernel-defconfig: $(call _stamp_kernel,patch)
+defconfig_childs := kernel-config kernel-getconfig kernel-saveconfig kernel-menuconfig kernel-oldconfig kernel-olddefconfig kernel kernel-feature
+$(defconfig_childs): $(call _stamp_kernel,defconfig)
+kernel-save: $(call _stamp_kernel,build)
+
+kernel-cleanstamp:
+	$(Q)rm $(addprefix $(KERNEL_OUTPUT)/.stamp_kernel-,download checkout patch defconfig)
+PHONY += kernel-cleanstamp
 
 kernel-download: kernel-source
 download-kernel: kernel-source
@@ -1800,6 +1823,12 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 _LINUX  := $(call _v,LINUX,LINUX)
 
 # Configure Kernel
+
+## clean up kernel source code
+kernel-cleanup: $(KERNEL_SRC)/.git
+	cd $(KERNEL_SRC) && git reset --hard HEAD && git clean -fdx && cd $(TOP_DIR)
+PHONY += kernel-cleanup
+
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
 

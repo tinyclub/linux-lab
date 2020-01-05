@@ -28,3 +28,4 @@
 * Add real hardware boards support
 * Upgrade docker image to ubuntu 18.04 LTS and reduce the size a lot
 * Instruction encoding/decoding support should be added to easier ISA understanding: pwntools
+* Only need to update source if the required version is not there (check with git show)

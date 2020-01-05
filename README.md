@@ -147,7 +147,7 @@ Docker is required by Linux Lab, please install it at first:
 
 - Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 
-- older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
+- older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox) or Virtualbox/Vmware + Linux
 
 Notes:
 
@@ -160,6 +160,11 @@ In order to speedup docker images downloading, please configure a local docker m
     $ grep registry-mirror /etc/default/docker
     DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
     $ service docker restart
+
+If still have errors like 'Client.Timeout exceeded while waiting headers', please try the other docker mirror sites:
+
+* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
+* Docker China: https://registry.docker-cn.com
 
 In order to avoid network ip address conflict, please try following changes and restart docker:
 
@@ -1400,9 +1405,9 @@ Or directly use `sudo make boot`.
 
 This means must configure one of the following docker images mirror sites:
 
+* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
 * Docker China: https://registry.docker-cn.com
 * USTC: https://docker.mirrors.ustc.edu.cn
-* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
 
 Configuration in Ubuntu:
 

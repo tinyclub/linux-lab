@@ -953,6 +953,8 @@ $(1)-outdir:
 
 $(1)-source: $(1)-cleanup $(1)-outdir
 
+$(1)-clean: $(1)-cleanstamp
+
 PHONY += $(1)-cleanup $(1)-outdir
 
 endef # gendeps

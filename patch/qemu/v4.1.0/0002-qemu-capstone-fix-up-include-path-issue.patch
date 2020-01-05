@@ -1,0 +1,26 @@
+From 6e74100372a70ed8beef372785115f7e0e1d99e2 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Tue, 14 May 2019 09:30:26 -0700
+Subject: [PATCH] qemu: capstone: fix up include path issue
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ include/disas/capstone.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/disas/capstone.h b/include/disas/capstone.h
+index 84e2149..2eb6be2 100644
+--- a/include/disas/capstone.h
++++ b/include/disas/capstone.h
+@@ -3,7 +3,7 @@
+ 
+ #ifdef CONFIG_CAPSTONE
+ 
+-#include <capstone.h>
++#include <capstone/capstone.h>
+ 
+ #else
+ 
+-- 
+2.7.4
+

@@ -1,18 +1,19 @@
-From ac3539ff694754bc7e868d075da0fed080452238 Mon Sep 17 00:00:00 2001
+From ca27d673838827848da1b975237781402ea8cf4d Mon Sep 17 00:00:00 2001
 From: Wu Zhangjin <wuzhangjin@gmail.com>
-Date: Tue, 14 May 2019 09:27:45 -0700
-Subject: [PATCH] scripts: qemu: git-submodule.sh: update remote
+Date: Mon, 6 Jan 2020 06:17:31 +0800
+Subject: [PATCH] scripts: qemu: git-submodule.sh: update remote and checkout
+ master
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- scripts/git-submodule.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/git-submodule.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
-index 98ca0f2..c587c90 100755
+index 807ca0b..fe70884 100755
 --- a/scripts/git-submodule.sh
 +++ b/scripts/git-submodule.sh
-@@ -71,7 +71,7 @@ update)
+@@ -71,11 +71,18 @@ update)
          exit 0
      fi
  
@@ -21,6 +22,17 @@ index 98ca0f2..c587c90 100755
      test $? -ne 0 && error "failed to update modules"
  
      $GIT submodule status $modules > "${substat}"
+     test $? -ne 0 && error "failed to save git submodule status" >&2
++
++    for m in $maybe_modules
++    do
++        cd $m
++        git checkout master
++	 cd -
++    done
+     ;;
+ esac
+ 
 -- 
 2.7.4
 

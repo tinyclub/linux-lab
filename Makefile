@@ -1233,6 +1233,20 @@ qemu-defconfig: qemu-env $(QEMU_PATCH)
 
 emulator-defconfig: qemu-defconfig
 
+ifneq ($(QEMU_NEW),)
+ifneq ($(QEMU_NEW),$(QEMU))
+NEW_PREBUILT_QEMU_DIR=$(subst $(QEMU),$(QEMU_NEW),$(PREBUILT_QEMU_DIR))
+
+qemu-clone: $(BOARD_BSP)
+	$(Q)sed -i -e "s%^\(QEMU.*?= \).*%\1$(QEMU_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)mkdir -p $(NEW_PREBUILT_QEMU_DIR)
+endif
+qemu-new: qemu-clone
+
+PHONY += qemu-new qemu-clone
+endif
+
+
 q-c: qemu-defconfig
 e-c: emulator-defconfig
 

@@ -2267,10 +2267,10 @@ k-m: kernel-menuconfig
 k-b: kernel
 k: kernel
 
-kernel-prepare: kernel-env kernel-checkout kernel-patch kernel-defconfig
-kernel-auto: kernel-prepare kernel
-kernel-full: kernel-download kernel-prepare kernel
-kernel-all: kernel-full kernel-save kernel-saveconfig
+kernel-prepare: kernel-defconfig
+kernel-auto: kernel
+kernel-full: kernel
+kernel-all: kernel-save kernel-saveconfig
 
 # Simplify testing
 prepare: kernel-prepare

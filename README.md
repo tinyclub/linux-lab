@@ -834,15 +834,15 @@ Reboot the guest system for several times:
 
 Test a feature of a specified linux version on a specified board, `prepare` equals checkout, patch and defconfig:
 
-    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=prepare
+    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=kernel-cleanup
 
 Test a kernel module:
 
-    $ make test m=hello TEST_PREPARE=prepare
+    $ make test m=hello
 
 Test multiple kernel modules:
 
-    $ make test m=exception,hello TEST_PREPARE=prepare
+    $ make test m=exception,hello
 
 Test modules with specified ROOTDEV, nfs boot is used by default, but some boards may not support network:
 

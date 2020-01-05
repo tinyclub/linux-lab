@@ -1238,7 +1238,7 @@ ifneq ($(QEMU_NEW),$(QEMU))
 NEW_PREBUILT_QEMU_DIR=$(subst $(QEMU),$(QEMU_NEW),$(PREBUILT_QEMU_DIR))
 
 qemu-clone: $(BOARD_BSP)
-	$(Q)sed -i -e "s%^\(QEMU.*?= \).*%\1$(QEMU_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)tools/board/config.sh QEMU=$(QEMU_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_QEMU_DIR)
 endif
 qemu-new: qemu-clone
@@ -1336,16 +1336,16 @@ gcc-clean: toolchain-clean
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean d-t toolchain-list gcc-list gcc-clean gcc
 
 ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
-  _CCORI := $(shell grep --color=always ^CCORI $(BOARD_DIR)/Makefile | cut -d '=' -f2 | tr -d ' ')
+  _CCORI := $(shell grep --color=always ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
 endif
 toolchain-switch:
 ifneq ($(filter $(GCC),$(CCORI_LIST)), $(GCC))
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 else
   ifneq ($(_CCORI), $(CCORI))
-	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
-	$(Q)sed -i -e "s%^\(CCORI.*?=\).*%\1 $(CCORI)%g" $(BOARD_DIR)/Makefile
-	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_DIR)/Makefile`
+	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
+	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
   else
 	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
 	@echo "       e.g. make toolchain-switch CCORI=bootlin"
@@ -1433,7 +1433,7 @@ NEW_PREBUILT_ROOT_DIR=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(PREBUILT_ROOT_DIR)
 
 root-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
-	$(Q)sed -i -e "s%^\(BUILDROOT.*?= \).*%\1$(BUILDROOT_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)tools/board/config.sh BUILDROOT=$(BUILDROOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_ROOT_DIR)
 endif
 root-new: root-clone
@@ -1943,9 +1943,9 @@ NEW_KERNEL_GCC=$(if $(call __v,GCC,LINUX),GCC[LINUX_$(LINUX_NEW)] = $(call __v,G
 
 kernel-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
-	$(Q)sed -i -e "s%^\(LINUX.*?= \).*%\1$(LINUX_NEW)%g" $(BOARD_DIR)/Makefile
-	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_DIR)/Makefile; if [ $$? -ne 0 -a -n "$(NEW_KERNEL_GCC)" ]; then \
-		sed -i -e "/GCC\[LINUX_$(LINUX)/a $(NEW_KERNEL_GCC)" $(BOARD_DIR)/Makefile; fi
+	$(Q)tools/board/config.sh LINUX=$(LINUX_NEW) $(BOARD_MAKEFILE)
+	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_MAKEFILE); if [ $$? -ne 0 -a -n "$(NEW_KERNEL_GCC)" ]; then \
+		sed -i -e "/GCC\[LINUX_$(LINUX)/a $(NEW_KERNEL_GCC)" $(BOARD_MAKEFILE); fi
 	$(Q)mkdir -p $(NEW_PREBUILT_KERNEL_DIR)
 	$(Q)mkdir -p $(NEW_KERNEL_PATCH_DIR)
 else
@@ -2450,7 +2450,7 @@ NEW_PREBUILT_UBOOT_DIR=$(subst $(UBOOT),$(UBOOT_NEW),$(PREBUILT_UBOOT_DIR))
 
 uboot-cloneconfig: $(BOARD_BSP)
 	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
-	$(Q)sed -i -e "s%^\(UBOOT.*?=.*\)$(UBOOT)%\1$(UBOOT_NEW)%g" $(BOARD_DIR)/Makefile
+	$(Q)tools/board/config.sh UBOOT=$(UBOOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_UBOOT_DIR)
 endif
 uboot-new: uboot-clone

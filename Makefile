@@ -934,6 +934,14 @@ $$(call _stamp_$(1),%):
 	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
+$$(call _stamp_$(1),download): $(1)-outdir
+	$(Q)if [ $$(shell if [ -d $$($(call _uc,$(1))_ABS_SRC) ]; then cd $$($(call _uc,$(1))_ABS_SRC) && \
+		  git show --pretty=oneline -q $$(_$(call _uc,$(1))) >/dev/null 2>&1; echo $$$$?; cd $$(TOP_DIR); else echo 128; fi) -eq 0 ]; then \
+			touch $$@; \
+		else \
+			make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@); \
+		fi
+
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
@@ -946,8 +954,10 @@ $(1)-cleanstamp:
 PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
-$(1)-cleanup: $$($(call _uc,$(1))_SRC)/.git
+$(1)-cleanup:
+ifeq ($$($(call _uc,$(1))_SRC)/.git, $$(wildcard $$($(call _uc,$(1))_SRC)/.git))
 	cd $$($(call _uc,$(1))_SRC) && git reset --hard HEAD && git clean -fdx && cd $$(TOP_DIR)
+endif
 $(1)-outdir:
 	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
@@ -974,9 +984,6 @@ else
 	$(UPDATE_GITMODULE) $(UBOOT_SRC)
 endif
 
-# Add basic uboot dependencies
-$(eval $(call gendeps,uboot))
-
 download-uboot: uboot-source
 uboot-download: uboot-source
 d-u: uboot-source
@@ -992,9 +999,6 @@ ifneq ($(_QEMU_SRC), $(QEMU_SRC))
 else
 	$(UPDATE_GITMODULE) $(QEMU_SRC)
 endif
-
-# Add basic qemu dependencies
-$(eval $(call gendeps,qemu))
 
 qemu-download: qemu-source
 download-qemu: qemu-source
@@ -1035,9 +1039,6 @@ else
   endif
 endif
 
-# Add basic kernel deps
-$(eval $(call gendeps,kernel))
-
 kernel-download: kernel-source
 download-kernel: kernel-source
 d-k: kernel-source
@@ -1053,9 +1054,6 @@ ifneq ($(_ROOT_SRC), $(ROOT_SRC))
 else
 	$(UPDATE_GITMODULE) $(ROOT_SRC)
 endif
-
-# Add basic root dependencies
-$(eval $(call gendeps,root))
 
 root-download: root-source
 download-root: root-source
@@ -1104,6 +1102,8 @@ ifneq ($(QCO),0)
 endif
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
+# Add basic qemu dependencies
+$(eval $(call gendeps,qemu))
 
 endif
 
@@ -1374,6 +1374,9 @@ ifeq ($(RCO),1)
 endif
 
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
+
+# Add basic root dependencies
+$(eval $(call gendeps,root))
 
 # Configure Buildroot
 
@@ -1873,6 +1876,10 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 
 # Linux Kernel targets
 _LINUX  := $(call _v,LINUX,LINUX)
+_KERNEL ?= $(_LINUX)
+
+# Add basic kernel deps
+$(eval $(call gendeps,kernel))
 
 # Configure Kernel
 
@@ -2332,6 +2339,8 @@ PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k ker
 
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
+# Add basic uboot dependencies
+$(eval $(call gendeps,uboot))
 
 # Configure Uboot
 

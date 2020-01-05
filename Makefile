@@ -2024,11 +2024,12 @@ dtb: $(DTS)
 	@echo "  DTB: $(DTB)"
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
 ifeq ($(_DTS),)
-	$(Q)cd $(KERNEL_SRC) && mkdir -p $(dir $(ORIDTS)) && git show $(LINUX):$(ORIDTS) > $(ORIDTS) && cd $(TOP_DIR)
-endif
+	$(Q)make kernel KT=$(DTB_TARGET)
+else
 	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
 	$(Q)mkdir -p $(dir $(DTB))
 	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
+endif
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS ?= 0

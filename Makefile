@@ -160,9 +160,7 @@ BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
 
 _uc = $(shell echo $1 | tr a-z A-Z)
 _lc = $(shell echo $1 | tr A-Z a-z)
-define _stamp
-$(3)/.stamp_$(1)-$(2)
-endef
+_stamp = $(3)/.stamp_$(1)-$(2)
 
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]
@@ -927,6 +925,41 @@ b-l-f: l-f
 
 PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kernel l-k list-buildroot l-r
 
+# Define generic target deps support
+
+define gendeps
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+$$(call _stamp_$(1),%):
+	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
+	$$(Q)touch $$@
+
+$(1)-checkout: $$(call _stamp_$(1),download)
+$(1)-patch: $$(call _stamp_$(1),checkout)
+$(1)-defconfig: $$(call _stamp_$(1),patch)
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature
+$$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
+$(1)-save: $$(call _stamp_$(1),build)
+
+$(1)-cleanstamp:
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,download checkout patch defconfig build)
+PHONY += $(1)-cleanstamp
+
+## clean up $(1) source code
+$(1)-cleanup: $$($(call _uc,$(1))_SRC)/.git
+	cd $$($(call _uc,$(1))_SRC) && git reset --hard HEAD && git clean -fdx && cd $$(TOP_DIR)
+$(1)-outdir:
+	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+
+$(1)-source: $(1)-cleanup $(1)-outdir
+
+PHONY += $(1)-cleanup $(1)-outdir
+
+endef # gendeps
+
+#$(warning $(call gendeps,kernel))
+#$(eval $(call gendeps,kernel))
+
 # Source download
 
 uboot-source:
@@ -938,6 +971,9 @@ ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
 else
 	$(UPDATE_GITMODULE) $(UBOOT_SRC)
 endif
+
+# Add basic uboot dependencies
+$(eval $(call gendeps,uboot))
 
 download-uboot: uboot-source
 uboot-download: uboot-source
@@ -955,6 +991,9 @@ else
 	$(UPDATE_GITMODULE) $(QEMU_SRC)
 endif
 
+# Add basic qemu dependencies
+$(eval $(call gendeps,qemu))
+
 qemu-download: qemu-source
 download-qemu: qemu-source
 d-q: qemu-source
@@ -963,18 +1002,19 @@ q-d: qemu-source
 emulator-download: qemu-source
 e-d: qemu-source
 
-emulator-prepare: emulator-checkout emulator-patch emulator-defconfig
-emulator-auto: emulator-prepare emulator
-emulator-full: emulator-download emulator-prepare emulator
+emulator-prepare: emulator-defconfig
+emulator-auto: emulator
+emulator-full: emulator
+emulator-all: emulator-save
 
-qemu-prepare: qemu-env emulator-prepare
+qemu-prepare: emulator-prepare
 qemu-auto: emulator-auto
 qemu-full: emulator-full
-qemu-all: qemu-full qemu-save
+qemu-all: emulator-all
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
-kernel-source: kernel-cleanup
+kernel-source:
 	@echo
 	@echo "Downloading kernel source ..."
 	@echo
@@ -993,25 +1033,8 @@ else
   endif
 endif
 
-# Add basic kernel dependencies
-define _stamp_kernel
-$(call _stamp,kernel,$(1),$(KERNEL_OUTPUT))
-endef
-
-$(call _stamp_kernel,%):
-	$(Q)make $(subst $(KERNEL_OUTPUT)/.stamp_,,$@)
-	$(Q)touch $@
-
-kernel-checkout: $(call _stamp_kernel,download)
-kernel-patch: $(call _stamp_kernel,checkout)
-kernel-defconfig: $(call _stamp_kernel,patch)
-defconfig_childs := kernel-config kernel-getconfig kernel-saveconfig kernel-menuconfig kernel-oldconfig kernel-olddefconfig kernel kernel-feature
-$(defconfig_childs): $(call _stamp_kernel,defconfig)
-kernel-save: $(call _stamp_kernel,build)
-
-kernel-cleanstamp:
-	$(Q)rm $(addprefix $(KERNEL_OUTPUT)/.stamp_kernel-,download checkout patch defconfig)
-PHONY += kernel-cleanstamp
+# Add basic kernel deps
+$(eval $(call gendeps,kernel))
 
 kernel-download: kernel-source
 download-kernel: kernel-source
@@ -1028,6 +1051,9 @@ ifneq ($(_ROOT_SRC), $(ROOT_SRC))
 else
 	$(UPDATE_GITMODULE) $(ROOT_SRC)
 endif
+
+# Add basic root dependencies
+$(eval $(call gendeps,root))
 
 root-download: root-source
 download-root: root-source
@@ -1078,6 +1104,7 @@ endif
 _QEMU  ?= $(call _v,QEMU,QEMU)
 
 endif
+
 qemu-checkout:
 	cd $(QEMU_SRC) && git checkout -f $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
 
@@ -1329,6 +1356,7 @@ endif
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 # Configure Buildroot
+
 root-checkout:
 	cd $(ROOT_SRC) && git checkout -f $(_BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
 
@@ -1514,10 +1542,10 @@ root-help:
 
 root-build: root
 
-root-prepare: root-checkout root-patch root-defconfig
-root-auto: root-prepare root
-root-full: root-download root-prepare root
-root-all: root-full root-save root-saveconfig
+root-prepare: root-defconfig
+root-auto: root
+root-full: root
+root-all: root-save root-saveconfig
 
 r: root
 r-b: root
@@ -1823,11 +1851,6 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 _LINUX  := $(call _v,LINUX,LINUX)
 
 # Configure Kernel
-
-## clean up kernel source code
-kernel-cleanup: $(KERNEL_SRC)/.git
-	cd $(KERNEL_SRC) && git reset --hard HEAD && git clean -fdx && cd $(TOP_DIR)
-PHONY += kernel-cleanup
 
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout -f $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
@@ -2283,6 +2306,7 @@ PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k ker
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 
 # Configure Uboot
+
 uboot-checkout:
 	cd $(UBOOT_SRC) && git checkout -f $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
 
@@ -2443,10 +2467,10 @@ uboot-help:
 
 uboot-build: uboot
 
-uboot-prepare: uboot-env uboot-checkout uboot-patch uboot-defconfig
-uboot-auto: uboot-prepare uboot
-uboot-full: uboot-download uboot-prepare uboot
-uboot-all: uboot-full uboot-save uboot-saveconfig
+uboot-prepare: uboot-defconfig
+uboot-auto: uboot
+uboot-full: uboot
+uboot-all: uboot-save uboot-saveconfig
 
 u-d: uboot-source
 u-o: uboot-checkout

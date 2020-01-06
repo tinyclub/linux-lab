@@ -945,7 +945,7 @@ $$(call _stamp_$(1),download): $(1)-outdir
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-buildroot
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 $(1)-save: $$(call _stamp_$(1),build)
 

@@ -2374,8 +2374,10 @@ PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k ker
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 # Add basic uboot dependencies
-#$(warning $(call gendeps,uboot))
-$(eval $(call gendeps,uboot))
+ifneq ($(UBOOT),)
+  #$(warning $(call gendeps,uboot))
+  $(eval $(call gendeps,uboot))
+endif
 
 # Configure Uboot
 

@@ -945,9 +945,18 @@ $$(call _stamp_$(1),download): $(1)-outdir
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-buildroot
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 $(1)-save: $$(call _stamp_$(1),build)
+
+$(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
+ifeq ($$(PB$$($(1)_APP_TYPE)),0)
+  ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
+    boot_deps += $$(call _stamp_$(1),build)
+  endif
+endif
+
+boot: $$(boot_deps)
 
 $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,download checkout patch defconfig build)
@@ -1103,6 +1112,7 @@ endif
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
 # Add basic qemu dependencies
+#$(warning $(call gendeps,qemu))
 $(eval $(call gendeps,qemu))
 
 endif
@@ -1376,6 +1386,7 @@ endif
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 # Add basic root dependencies
+#$(warning $(call gendeps,root))
 $(eval $(call gendeps,root))
 
 # Configure Buildroot
@@ -1879,6 +1890,7 @@ _LINUX  := $(call _v,LINUX,LINUX)
 _KERNEL ?= $(_LINUX)
 
 # Add basic kernel deps
+#$(warning $(call gendeps,kernel))
 $(eval $(call gendeps,kernel))
 
 # Configure Kernel
@@ -2340,6 +2352,7 @@ PHONY += kernel-help kernel kernel-build k-h k-d k-o k-p k-c k-o-c k-m k-b k ker
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 # Add basic uboot dependencies
+#$(warning $(call gendeps,uboot))
 $(eval $(call gendeps,uboot))
 
 # Configure Uboot
@@ -3264,6 +3277,15 @@ endif
 clean: emulator-clean qemu-clean root-clean kernel-clean rootdir-clean uboot-clean
 
 PHONY += emulator-clean root-clean kernel-clean rootdir-clean uboot-clean clean
+
+cleanstamp: $(addsuffix -cleanstamp,root qemu kernel uboot)
+
+PHONY += $(addsuffix -cleanstamp,root qemu kernel uboot)
+
+cleanup: $(addsuffix -cleanup,root qemu kernel uboot)
+
+PHONY += $(addsuffix -cleanup,root qemu kernel uboot)
+
 
 emulator-distclean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))

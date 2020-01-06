@@ -807,20 +807,6 @@ FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
 
-# board bsp
-#
-# only trigger bsp downloading while the bsp submodule path is there and nothing download
-#
-# to force download it, just issue 'make bsp'
-#
-
-BSP_SUBMODULE=$(shell grep $(BOARD)/bsp -q $(TOP_DIR)/.gitmodules; echo $$?)
-ifeq ($(BSP_SUBMODULE),0)
-  ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-    BOARD_BSP := bsp
-  endif
-endif
-
 board: board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
@@ -930,7 +916,7 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kerne
 define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
-$$(call _stamp_$(1),%):
+$$(call _stamp_$(1),%): $(1)-outdir
 	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
@@ -940,13 +926,16 @@ $$(call _stamp_$(1),download): $(1)-outdir
 			touch $$@; \
 		else \
 			make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@); \
+			touch $$@; \
 		fi
 
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
+
 $(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
+
 $(1)-save: $$(call _stamp_$(1),build)
 
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
@@ -956,10 +945,24 @@ ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   endif
 endif
 
+$$(call _stamp_$(1),bsp): $(1)-outdir
+	$(Q) if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
+		touch $$(call _stamp_$(1),bsp); \
+	else					\
+		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \
+			make bsp-source;		\
+			touch $$(call _stamp_$(1),bsp); \
+		fi;					\
+	fi
+
+
+$(1)_bsp_childs := $(1)-defconfig $(1)-patch $(1)-save $(1)-saveconfig $(1)-clone boot test boot-test
+$$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
+
 boot: $$(boot_deps)
 
 $(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,download checkout patch defconfig build)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,download checkout patch defconfig build bsp)
 PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
@@ -1070,7 +1073,12 @@ d-r: root-source
 
 PHONY += root-source root-download download-root d-r
 
-bsp-source:
+bsp-cleanup:
+ifeq ($(BSP_DIR)/.git, $(wildcard $(BSP_DIR)/.git))
+	cd $(BSP_DIR) && git reset --hard HEAD && git clean -fdx && cd $(TOP_DIR)
+endif
+
+bsp-source: bsp-cleanup
 	@echo
 	@echo "Downloading board bsp ..."
 	@echo
@@ -1081,7 +1089,7 @@ download-bsp: bsp-source
 bsp: bsp-source
 d-b: bsp-source
 
-PHONY += bsp-source bsp-download download-bsp d-b bsp
+PHONY += bsp-cleanup bsp-source bsp-download download-bsp d-b bsp
 
 source: bsp-source kernel-source root-source
 
@@ -1249,7 +1257,7 @@ ifneq ($(QEMU_NEW),)
 ifneq ($(QEMU_NEW),$(QEMU))
 NEW_PREBUILT_QEMU_DIR=$(subst $(QEMU),$(QEMU_NEW),$(PREBUILT_QEMU_DIR))
 
-qemu-clone: $(BOARD_BSP)
+qemu-clone:
 	$(Q)tools/board/config.sh QEMU=$(QEMU_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_QEMU_DIR)
 endif
@@ -1429,7 +1437,7 @@ RP ?= 0
 ROOT_PATCH_TOOL := tools/rootfs/patch.sh
 ROOT_PATCHED_TAG := $(ROOT_SRC)/.patched
 
-root-patch: $(BOARD_BSP)
+root-patch:
 	@if [ ! -f $(ROOT_PATCHED_TAG) ]; then \
 	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
 	  touch $(ROOT_PATCHED_TAG); \
@@ -1441,7 +1449,7 @@ ifeq ($(RP),1)
   ROOT_PATCH := root-patch
 endif
 
-root-defconfig: root-env $(ROOT_CHECKOUT) $(BOARD_BSP) $(ROOT_PATCH)
+root-defconfig: root-env $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
@@ -1451,7 +1459,7 @@ ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
 NEW_RCFG_FILE=$(_BSP_CONFIG)/buildroot_$(BUILDROOT_NEW)_defconfig
 NEW_PREBUILT_ROOT_DIR=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(PREBUILT_ROOT_DIR))
 
-root-cloneconfig: $(BOARD_BSP)
+root-cloneconfig:
 	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
 	$(Q)tools/board/config.sh BUILDROOT=$(BUILDROOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_ROOT_DIR)
@@ -1908,7 +1916,7 @@ KERNEL_PATCH_TOOL := tools/kernel/patch.sh
 LINUX_PATCHED_TAG := $(KERNEL_SRC)/.patched
 
 KP ?= 0
-kernel-patch: $(BOARD_BSP)
+kernel-patch:
 	@if [ ! -f $(LINUX_PATCHED_TAG) ]; then \
 	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
 	  touch $(LINUX_PATCHED_TAG); \
@@ -1957,7 +1965,7 @@ endif
 
 _KCFG := $(notdir $(KCFG_FILE))
 
-kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(BOARD_BSP) $(KERNEL_PATCH)
+kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
@@ -1970,7 +1978,7 @@ NEW_PREBUILT_KERNEL_DIR=$(subst $(LINUX),$(LINUX_NEW),$(PREBUILT_KERNEL_DIR))
 NEW_KERNEL_PATCH_DIR=$(BSP_PATCH)/linux/$(LINUX_NEW)/
 NEW_KERNEL_GCC=$(if $(call __v,GCC,LINUX),GCC[LINUX_$(LINUX_NEW)] = $(call __v,GCC,LINUX))
 
-kernel-cloneconfig: $(BOARD_BSP)
+kernel-cloneconfig:
 	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
 	$(Q)tools/board/config.sh LINUX=$(LINUX_NEW) $(BOARD_MAKEFILE)
 	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_MAKEFILE); if [ $$? -ne 0 -a -n "$(NEW_KERNEL_GCC)" ]; then \
@@ -2436,7 +2444,7 @@ _uboot-patch:
 	  echo "ERR: patchset has been applied, if want, please do 'make uboot-checkout' at first." && exit 1; \
 	fi
 
-uboot-patch: $(BOARD_BSP)
+uboot-patch:
 	@make $(S) _uboot-patch
 
 ifeq ($(UP),1)
@@ -2474,7 +2482,7 @@ endif
 
 _UCFG := $(notdir $(UCFG_FILE))
 
-uboot-defconfig: uboot-env $(UBOOT_CHECKOUT) $(BOARD_BSP) $(UBOOT_PATCH)
+uboot-defconfig: uboot-env $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
@@ -2484,7 +2492,7 @@ ifneq ($(UBOOT_NEW),$(UBOOT))
 NEW_UCFG_FILE=$(_BSP_CONFIG)/uboot_$(UBOOT_NEW)_defconfig
 NEW_PREBUILT_UBOOT_DIR=$(subst $(UBOOT),$(UBOOT_NEW),$(PREBUILT_UBOOT_DIR))
 
-uboot-cloneconfig: $(BOARD_BSP)
+uboot-cloneconfig:
 	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
 	$(Q)tools/board/config.sh UBOOT=$(UBOOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_UBOOT_DIR)
@@ -2648,7 +2656,7 @@ PHONY += checkout config build o c B
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
 # Save the built images
-root-save: $(BOARD_BSP)
+root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
@@ -2657,19 +2665,19 @@ ifneq ($(PORIIMG),)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))
 endif
 
-kernel-save: $(BOARD_BSP)
+kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG))
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
-uboot-save: $(BOARD_BSP)
+uboot-save:
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
 	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
 
 
-qemu-save: $(BOARD_BSP)
+qemu-save:
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
 	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
@@ -2686,7 +2694,7 @@ PHONY += root-save kernel-save uboot-save emulator-save qemu-save r-s k-s u-s e-
 
 uboot-saveconfig: uconfig-save
 
-uconfig-save: $(BOARD_BSP)
+uconfig-save:
 	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
@@ -2695,7 +2703,7 @@ uconfig-save: $(BOARD_BSP)
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig: kconfig-save
 
-kconfig-save: $(BOARD_BSP)
+kconfig-save:
 	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
@@ -2709,7 +2717,7 @@ kpatch-save:
 
 root-saveconfig: rconfig-save
 
-rconfig-save: $(BOARD_BSP)
+rconfig-save:
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(JOBS) savedefconfig
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
@@ -3120,7 +3128,7 @@ endif
 
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
-boot-test: $(BOARD_BSP)
+boot-test:
 	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
 _boot-test:
@@ -3140,7 +3148,7 @@ r-t: raw-test
 raw-test:
 	make test FI=0
 
-test: $(BOARD_BSP) $(TEST_PREPARE) FORCE
+test: $(TEST_PREPARE) FORCE
 	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init; fi
 	make boot-init
 	make boot-test
@@ -3229,7 +3237,6 @@ _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
 BOOT_DEPS ?=
-BOOT_DEPS += $(BOARD_BSP)
 
 boot: $(BOOT_DEPS)
 	$(Q)make _boot

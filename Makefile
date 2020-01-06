@@ -1188,7 +1188,7 @@ endif
 
 ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
  ifeq ($(QEMU),)
-  $(error ERR: No qemu version specified, please configure QEMU= in boards/$(BOARD)/Makefile or pass it manually)
+  $(error ERR: No qemu version specified, please configure QEMU= in $(BOARD_MAKEFILE) or pass it manually)
  endif
 
  ifneq ($(QCFG),)
@@ -3365,7 +3365,7 @@ PHONY += c-e c-r c-u c-k c dc-e dc-r dc-u dc-k dc distclean
 
 # Show the variables
 ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
-VARS := $(shell cat boards/$(BOARD)/Makefile | egrep -v "^ *\#|ifeq|ifneq|else|endif"| cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
+VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif"| cut -d'?' -f1 | cut -d'=' -f1 | tr -d ' ')
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT

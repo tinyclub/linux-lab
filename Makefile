@@ -1315,13 +1315,18 @@ gcc: toolchain
 include $(PREBUILT_TOOLCHAINS)/Makefile
 
 toolchain:
-	@echo
-	@echo "Downloading prebuilt toolchain ..."
-	@echo
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+	@echo
+	@echo "Installing prebuilt toolchain ..."
+	@echo
+
 	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
 else
   ifneq ($(CCPATH), $(wildcard $(CCPATH)))
+	@echo
+	@echo "Downloading prebuilt toolchain ..."
+	@echo
+
 	$(Q)wget -c $(CCURL)
 	$(Q)tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
   else

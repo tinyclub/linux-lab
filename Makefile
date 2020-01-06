@@ -733,6 +733,13 @@ ifeq ($(PBR),0)
   endif
 endif
 
+BSP_SUBMODULE=$(shell grep $(BOARD)/bsp -q $(TOP_DIR)/.gitmodules; echo $$?)
+ifeq ($(BSP_SUBMODULE),0)
+  ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+    BSP_DOWNLOADED := 0
+  endif
+endif
+
 ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
@@ -752,11 +759,18 @@ endif
 
 ifneq ($(MAKECMDGOALS),)
  ifeq ($(findstring $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+  ifeq ($(findstring $(BSP_DIR),$(ROOTFS)),$(BSP_DIR))
+    ifeq ($(BSP_DOWNLOADED),0)
+      # Allow download bsp automatically
+      INVALID_ROOTFS := 0
+      INVALID_ROOTDEV := 0
+    endif
+  endif
   ifeq ($(INVALID_ROOTFS),1)
-    $(error rootfs: $(ROOTFS_TYPE))
+    $(error rootfs: $(ROOTFS_TYPE), try run 'make bsp' to get newer rootfs.)
   endif
   ifeq ($(INVALID_ROOTDEV),1)
-    $(error rootdev: $(ROOTDEV_TYPE))
+    $(error rootdev: $(ROOTDEV_TYPE), try run 'make bsp' to get newer rootfs.)
   endif
  endif
 endif

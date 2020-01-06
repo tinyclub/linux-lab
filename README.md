@@ -744,6 +744,11 @@ GCC version can be configured in board specific Makefile for Linux, Uboot, Qemu 
 
 With this configuration, GCC will be switched automatically during defconfig and compiling of the specified Linux v2.6.11.12.
 
+To build host tools, host gcc should be configured too(please specify b=`i386/pc` explicitly):
+
+    $ make gcc-list b=i386/pc
+    $ make gcc-switch CCORI=internal GCC=4.8 b=i386/pc
+
 #### Rootfs
 
 Builtin rootfs is minimal, is not enough for complex application development,

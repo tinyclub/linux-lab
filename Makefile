@@ -1903,9 +1903,17 @@ ifeq ($(PBR), 0)
   endif
 endif
 
+# From linux-stable/scripts/depmod.sh, v5.1
+SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
+
 kernel-modules-install-km:
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 		$(C_PATH) $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+		if [ ! -f $(KERNEL_SRC)/scripts/depmod.sh ]; then \
+		    cd $(KERNEL_OUTPUT) && \
+		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
+		    cd $(TOP_DIR); \
+		fi;				\
 	fi
 
 kernel-modules-install: $(M_I_ROOT)

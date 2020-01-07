@@ -918,6 +918,10 @@ define make_kernel
 make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
+define make_root
+make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+endef
+
 # generate target dependencies
 define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
@@ -1530,7 +1534,7 @@ endif
 root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
+	$(call make_root,$(_RCFG))
 
 ifneq ($(BUILDROOT_NEW),)
 ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
@@ -1553,13 +1557,13 @@ else
 endif
 
 root-olddefconfig:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) olddefconfig
+	$(call make_root,olddefconfig)
 
 root-oldconfig:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) oldconfig
+	$(call make_root,oldconfig)
 
 root-menuconfig:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) menuconfig
+	$(call make_root,menuconfig)
 
 r-d: root-source
 r-o: root-checkout
@@ -1582,7 +1586,7 @@ ifeq ($(IKM), 1)
 endif
 
 root-buildroot:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(JOBS) $(RT)
+	$(call make_root,$(RT))
 
 # Install system/ to ROOTDIR
 root-install: root-dir
@@ -1625,7 +1629,7 @@ ifeq ($(prebuilt_root_dir), 1)
 	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
 else
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC)
+	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
 endif
@@ -1654,7 +1658,7 @@ endif
 
 root: $(ROOT)
 ifneq ($(RT),)
-	$(Q)make root-buildroot RT=$(RT)
+	$(Q)$(call make_root,$(RT))
 else
 	$(Q)make root-install
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
@@ -1662,7 +1666,7 @@ else
 endif
 
 root-help:
-	$(Q)make root RT=help
+	$(Q)$(call make_root,help)
 
 root-build: root
 
@@ -2797,7 +2801,7 @@ kpatch-save:
 root-saveconfig: rconfig-save
 
 rconfig-save:
-	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) -j$(JOBS) savedefconfig
+	$(call make_root,savedefconfig)
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \

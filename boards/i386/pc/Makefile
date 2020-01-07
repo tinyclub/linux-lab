@@ -20,6 +20,9 @@ GCC[LINUX_v2.6.34.9] = 4.8
 KERNEL_GIT[LINUX_v2.6.10] = https://gitee.com/tinylab/tglx-linux-history
 KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
 GCC[LINUX_v2.6.10] = 4.4
+# Kernel panic - not syncing: Attempted to kill init! on 2019.11, may compiled with too new kernel(v5.1)
+# Tested: Kernel <= v2.6.24.7 boot with /dev/ram0 not work with 2019.11
+BUILDROOT[LINUX_v2.6.10] = 2019.02.2
 # Workaround "Bad page state at prep_new_page (in process 'swapper', page c02d1b84)"
 MEM[LINUX_v2.6.10] = 80M
 # /dev/ram0 boot panic on SMP currently

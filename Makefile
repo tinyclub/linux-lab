@@ -906,10 +906,17 @@ list-full:
 	$(Q)make $(S) board BOARD=
 
 list-kernel: list-linux
+list-BUILDROOT: list-buildroot
 list-buildroot: list-root
 
 list-%: FORCE
-	$(Q)echo $($(call _uc,$(subst list-,,$@))_LIST)
+	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
+		echo $($(call _uc,$(subst list-,,$@))_LIST); \
+	else					\
+		if [ $(shell make --dry-run -s $(subst list-,,$@)-list >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
+			make -s $(subst list-,,$@)-list; \
+		fi		\
+	fi
 
 l: list
 l-b: list-base
@@ -920,7 +927,7 @@ l-r: list-root
 b-l: l
 b-l-f: l-f
 
-PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kernel l-k list-buildroot l-r
+PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kernel l-k list-buildroot list-BUILDROOT l-r
 
 # Define generic target deps support
 
@@ -3448,6 +3455,7 @@ ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
 endif
 
+env-list: env-dump
 env-dump:
 	@echo \#[ $(BOARD) ]:
 	@echo -n " "
@@ -3462,7 +3470,7 @@ help:
 
 h: help
 
-PHONY += env env-prepare kernel-env kernel-env-prepare uboot-env uboot-env-prepare qemu-env qemu-env-prepare env-dump env-save help h
+PHONY += env env-list env-prepare kernel-env kernel-env-prepare uboot-env uboot-env-prepare qemu-env qemu-env-prepare env-dump env-save help h
 
 #
 # override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input

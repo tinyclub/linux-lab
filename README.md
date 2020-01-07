@@ -488,6 +488,22 @@ Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 
     $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
 
+List supported options:
+
+    $ make list-ROOTDEV
+    $ make list-BOOTDEV
+    $ make list-CCORI
+    $ make list-NETDEV
+    $ make list-LINUX
+    $ make list-UBOOT
+    $ make list-QEMU
+
+And more 'xxx-list' are also supported with 'list-xxx', for example:
+
+    $ make list-features
+    $ make list-modules
+    $ make list-gcc
+
 ### Using
 
 #### Linux

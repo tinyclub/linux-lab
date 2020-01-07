@@ -922,6 +922,10 @@ define make_root
 make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
+define make_uboot
+make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+endef
+
 # generate target dependencies
 define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
@@ -2568,7 +2572,7 @@ _UCFG := $(notdir $(UCFG_FILE))
 uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
-	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
+	$(call make_uboot,$(_UCFG))
 
 ifneq ($(UBOOT_NEW),)
 ifneq ($(UBOOT_NEW),$(UBOOT))
@@ -2592,23 +2596,23 @@ endif
 
 
 uboot-olddefconfig:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldefconfig
+	$(C_PATH) $(call make_uboot,oldefconfig)
 
 uboot-oldconfig:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldconfig
+	$(C_PATH) $(call make_uboot,oldconfig)
 
 uboot-menuconfig:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) menuconfig
+	$(C_PATH) $(call make_uboot,menuconfig)
 
 # Specify uboot targets
 UT ?= $(x)
 
 # Build Uboot
 uboot:
-	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(UT)
+	$(C_PATH) $(call make_uboot,$(UT))
 
 uboot-help:
-	$(Q)make uboot UT=help
+	$(Q)$(call make_uboot,help)
 
 uboot-build: uboot
 
@@ -2778,7 +2782,7 @@ PHONY += root-save kernel-save uboot-save emulator-save qemu-save r-s k-s u-s e-
 uboot-saveconfig: uconfig-save
 
 uconfig-save:
-	-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) $(call make_uboot,savedefconfig)
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
@@ -3356,7 +3360,7 @@ endif
 
 uboot-clean: $(UBOOT_IMGS_DISTCLEAN)
 ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) clean
+	-$(Q)$(call make_uboot,clean)
 endif
 
 kernel-clean: kernel-modules-clean
@@ -3391,7 +3395,7 @@ endif
 
 uboot-distclean:
 ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) distclean
+	-$(Q)$(call make_uboot,distclean)
 	$(Q)rm -rf $(UBOOT_OUTPUT)
 endif
 

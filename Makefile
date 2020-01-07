@@ -915,15 +915,15 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kerne
 
 # Define generic target deps support
 define make_kernel
-make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+$(C_PATH) make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
 define make_uboot
-make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
 endef
 
 # generate target dependencies
@@ -1859,11 +1859,11 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 		make -s kernel-olddefconfig; \
 		$(call make_kernel); \
 	fi
-	$(C_PATH) $(call make_kernel,$(MODULE_PREPARE))
+	$(call make_kernel,$(MODULE_PREPARE))
 	$(Q)if [ -f $(KERNEL_SRC)/scripts/Makefile.modbuiltin ]; then \
-		$(C_PATH) $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
+		$(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
 	else	\
-		$(C_PATH) $(call make_kernel,modules $(KM)); \
+		$(call make_kernel,modules $(KM)); \
 	fi
 
 kernel-modules:
@@ -1908,7 +1908,7 @@ SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km:
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-		$(C_PATH) $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
 		if [ ! -f $(KERNEL_SRC)/scripts/depmod.sh ]; then \
 		    cd $(KERNEL_OUTPUT) && \
 		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
@@ -1918,7 +1918,7 @@ kernel-modules-install-km:
 
 kernel-modules-install: $(M_I_ROOT)
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-		$(C_PATH) $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
+		$(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
 	fi
 
 ifeq ($(internal_module),1)
@@ -2070,7 +2070,7 @@ kernel-defconfig: $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
-	$(C_PATH) $(call make_kernel,$(_KCFG) M=)
+	$(call make_kernel,$(_KCFG) M=)
 
 ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
@@ -2128,7 +2128,7 @@ kernel-oldconfig:
 	yes N | $(call make_kernel,oldconfig M=)
 
 kernel-menuconfig:
-	$(C_PATH) $(call make_kernel,menuconfig M=)
+	$(call make_kernel,menuconfig M=)
 
 
 PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
@@ -2401,10 +2401,10 @@ m-sc: module-setconfig
 PHONY += module-getconfig module-setconfig m-gc m-sc modules-config module-config
 
 kernel-help:
-	$(C_PATH) $(call make_kernel,help)
+	$(call make_kernel,help)
 
 kernel: $(KERNEL_DEPS)
-	$(C_PATH) $(call make_kernel,$(KT))
+	$(call make_kernel,$(KT))
 
 kernel-build: kernel
 
@@ -2608,20 +2608,20 @@ endif
 
 
 uboot-olddefconfig:
-	$(C_PATH) $(call make_uboot,oldefconfig)
+	$(call make_uboot,oldefconfig)
 
 uboot-oldconfig:
-	$(C_PATH) $(call make_uboot,oldconfig)
+	$(call make_uboot,oldconfig)
 
 uboot-menuconfig:
-	$(C_PATH) $(call make_uboot,menuconfig)
+	$(call make_uboot,menuconfig)
 
 # Specify uboot targets
 UT ?= $(x)
 
 # Build Uboot
 uboot:
-	$(C_PATH) $(call make_uboot,$(UT))
+	$(call make_uboot,$(UT))
 
 uboot-help:
 	$(Q)$(call make_uboot,help)
@@ -2794,7 +2794,7 @@ PHONY += root-save kernel-save uboot-save emulator-save qemu-save r-s k-s u-s e-
 uboot-saveconfig: uconfig-save
 
 uconfig-save:
-	-$(C_PATH) $(call make_uboot,savedefconfig)
+	-$(call make_uboot,savedefconfig)
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
@@ -2803,7 +2803,7 @@ uconfig-save:
 kernel-saveconfig: kconfig-save
 
 kconfig-save:
-	-$(C_PATH) $(call make_kernel,savedefconfig M=)
+	-$(call make_kernel,savedefconfig M=)
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi

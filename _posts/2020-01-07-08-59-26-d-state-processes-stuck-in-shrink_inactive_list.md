@@ -2,7 +2,8 @@
 layout: post
 author: 'Bai Haowen'
 title: "一次性能 BUG 分析之旅：大量 D 进程卡在 shrink_inactive_list"
-draft: true
+draft: false
+top: true
 license: "cc-by-nc-nd-4.0"
 permalink: /stuck_in_shrink/
 description: " 介绍一个实际项目中遇到的性能/稳定性问题，一步一步思考和分析，逐步逼近问题的根源 "

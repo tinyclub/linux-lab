@@ -1363,27 +1363,38 @@ d-t: toolchain
 gcc: toolchain
 
 include $(PREBUILT_TOOLCHAINS)/Makefile
-
-toolchain:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+endif
+
+toolchain-install:
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifneq ($(CCVER),)
+    ifneq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
 	@echo
 	@echo "Installing prebuilt toolchain ..."
 	@echo
-
-	$(Q)make $(S) -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
+	$(Q)add-apt-repository -y ppa:ubuntu-toolchain-r/test
+	$(Q)apt-get -y update
+	$(Q)apt-get install -y --force-yes $(CCVER)
+	$(Q)apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib
+	$(Q)update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
+    endif
+  endif
 else
   ifneq ($(CCPATH), $(wildcard $(CCPATH)))
 	@echo
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
-
 	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && \
 		tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN) && \
 		cd $(TOP_DIR)
-  else
-	$(Q)make $(S) gcc-info
   endif
 endif
+
+toolchain:
+	$(Q)make $(S) toolchain-install
+	$(Q)make $(S) gcc-info
 
 toolchain-list:
 	@echo
@@ -1416,7 +1427,9 @@ toolchain-version: toolchain-info
 
 toolchain-clean:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-	$(Q)make $(S) clean -C $(TOOLCHAIN) $(if $(CCVER),CCVER=$(CCVER))
+  ifeq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
+	$(Q)apt-get remove --purge $(CCVER)
+  endif
 else
   ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
      ifneq ($(CCBASE),)

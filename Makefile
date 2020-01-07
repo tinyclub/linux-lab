@@ -1340,7 +1340,7 @@ e-c: emulator-defconfig
 
 PHONY += qemu-defconfig emulator-defconfig q-c e-c
 
-qemu: qemu-env
+qemu:
 	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
 
 qemu-build: qemu
@@ -1657,7 +1657,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-root: root-env $(ROOT)
+root: $(ROOT)
 ifneq ($(RT),)
 	$(Q)make root-buildroot RT=$(RT)
 else
@@ -2389,7 +2389,7 @@ PHONY += module-getconfig module-setconfig m-gc m-sc modules-config module-confi
 kernel-help:
 	$(Q)make kernel KT=help
 
-kernel: kernel-env $(KERNEL_DEPS)
+kernel: $(KERNEL_DEPS)
 	$(C_PATH) $(KMAKE_CMD)
 
 kernel-build: kernel
@@ -2606,7 +2606,7 @@ uboot-menuconfig:
 UT ?= $(x)
 
 # Build Uboot
-uboot: uboot-env
+uboot:
 	$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(UT)
 
 uboot-help:

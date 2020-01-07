@@ -937,8 +937,10 @@ $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
 $(1)-defconfig: $$(call _stamp_$(1),env)
+$(1)-modules-install: $$(call _stamp_$(1),modules)
+$(1)-modules-install-km: $$(call _stamp_$(1),modules-km)
 
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build $(1)-modules $(1)-modules-km
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 
 $(1)-save: $$(call _stamp_$(1),build)
@@ -1710,6 +1712,11 @@ root-hd-rebuild: FORCE
 PHONY += root-hd root-hd-rebuild
 
 # Kernel modules
+
+# Add basic kernel & modules deps
+#$(warning $(call gendeps,kernel))
+$(eval $(call gendeps,kernel))
+
 TOP_MODULE_DIR := $(TOP_DIR)/modules
 ifneq ($(PLUGIN),)
   TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
@@ -1833,6 +1840,8 @@ kernel-modules-save:
 
 KM ?= M=$(M_PATH)
 KERNEL_MODULES_DEPS := modules-prompt kernel-modules-save
+
+export KM
 endif
 
 PHONY += modules-prompt kernel-modules-save
@@ -1843,11 +1852,11 @@ else
   MODULE_PREPARE := modules_prepare
 endif
 
-_kernel-modules: $(KERNEL_MODULES_DEPS)
-	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
+kernel-modules-km: $(KERNEL_MODULES_DEPS)
+	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE) KM=; make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
 
 kernel-modules:
-	make _kernel-modules KM=
+	make kernel-modules-km KM=
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
@@ -1874,7 +1883,7 @@ ifeq ($(internal_search),1)
 	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | cat -n
 endif
 
-PHONY += _kernel-modules kernel-modules kernel-modules-list kernel-modules-list-full
+PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
 M_I_ROOT ?= rootdir
 ifeq ($(PBR), 0)
@@ -1883,11 +1892,11 @@ ifeq ($(PBR), 0)
   endif
 endif
 
-_kernel-modules-install:
+kernel-modules-install-km:
 	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
 
 kernel-modules-install: $(M_I_ROOT)
-	make _kernel-modules-install KM=
+	make kernel-modules-install-km KM=
 
 ifeq ($(internal_module),1)
   M_ABS_PATH := $(KERNEL_OUTPUT)/$(M_PATH)
@@ -1896,20 +1905,20 @@ else
 endif
 
 KERNEL_MODULE_CLEAN := tools/module/clean.sh
-_kernel-modules-clean:
+kernel-modules-clean-km:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_ABS_PATH)
 	$(Q)rm -rf .module_config
 
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT)
 
-PHONY += _kernel-modules-install kernel-modules-install kernel-modules-clean
+PHONY += kernel-modules-install-km kernel-modules-install kernel-modules-clean
 
-_module: _kernel-modules plugin-save
+_module: kernel-modules-km plugin-save
 module-list: kernel-modules-list plugin-save
 module-list-full: kernel-modules-list-full plugin-save
-_module-install: _kernel-modules-install
-_module-clean: _kernel-modules-clean
+_module-install: kernel-modules-install-km
+_module-clean: kernel-modules-clean-km
 
 modules-list: module-list
 modules-list-full: module-list-full
@@ -1969,10 +1978,6 @@ PHONY += m m-l m-l-f m-i m-c m-t ms ms-t ms-i ms-c
 # Linux Kernel targets
 _LINUX  := $(call _v,LINUX,LINUX)
 _KERNEL ?= $(_LINUX)
-
-# Add basic kernel deps
-#$(warning $(call gendeps,kernel))
-$(eval $(call gendeps,kernel))
 
 # Configure Kernel
 

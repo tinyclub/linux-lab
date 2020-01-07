@@ -950,7 +950,7 @@ ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   endif
 endif
 
-$$(call _stamp_$(1),bsp):
+$$(call _stamp_$(1),bsp): $(1)-outdir
 	$(Q)if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
 		touch $$(call _stamp_$(1),bsp); \
 	else					\

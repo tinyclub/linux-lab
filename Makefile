@@ -1816,16 +1816,6 @@ endif
 SCRIPTS_KCONFIG := tools/kernel/config
 DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
 
-ifeq ($(findstring module,$(MAKECMDGOALS)),module)
-  MODULES_STATE   := $(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
-  ifeq ($(MODULES_STATE),y)
-    MODULES_EN := 1
-  else
-    MODULES_EN := 0
-  endif
-  $(info $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)
-endif
-
 ifneq ($(M_PATH),)
 modules-prompt:
 	@echo
@@ -1853,7 +1843,12 @@ else
 endif
 
 kernel-modules-km: $(KERNEL_MODULES_DEPS)
-	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE) KM=; make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
+		make -s feature feature=module; \
+		make -s kernel-olddefconfig; \
+		make kernel M= KM=; \
+	fi
+	$(Q)make kernel KT=$(MODULE_PREPARE) KM=; make kernel KT=$(if $(m),$(m).ko,modules) $(KM);
 
 kernel-modules:
 	make kernel-modules-km KM=
@@ -1893,7 +1888,7 @@ ifeq ($(PBR), 0)
 endif
 
 kernel-modules-install-km:
-	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
 
 kernel-modules-install: $(M_I_ROOT)
 	make kernel-modules-install-km KM=

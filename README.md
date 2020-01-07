@@ -211,6 +211,22 @@ Re-login the lab via web browser:
 
     $ tools/docker/vnc linux-lab
 
+The other login methods:
+
+    $ tools/docker/webvnc linux-lab   # The same as tools/docker/vnc
+    $ tools/docker/webssh linux-lab
+    $ tools/docker/ssh linux-lab
+    $ tools/docker/bash linux-lab
+
+Summary of login methods:
+
+|   Login Method |   Description      |  Default User    |  Where               |
+|----------------|--------------------|------------------|----------------------|
+|   webvnc/vnc   | web desktop        |  ubuntu          | anywhere via internet|
+|   webssh       | web ssh            |  ubuntu          | anywhere via internet|
+|   ssh          | normal ssh         |  ubuntu          | localhost            |
+|   bash         | docker bash        |  root            | localhost            |
+
 ## Update and rerun the lab
 
 If want a newer version, we **must** back up any local changes at first, and then update everything:
@@ -231,7 +247,7 @@ Issue the following command to boot the prebuilt kernel and rootfs on the defaul
 
     $ make boot
 
-Login as 'root' user without password, just input 'root' and press Enter:
+Login as 'root' user without password(password is empty), just input 'root' and press Enter:
 
     Welcome to Linux Lab
 

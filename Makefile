@@ -940,7 +940,7 @@ $$(call _stamp_$(1),%): $(1)-outdir
 	$$(Q)touch $$@
 
 $$(call _stamp_$(1),download): $(1)-outdir
-	$(Q)if [ $$(shell if [ -d $$($(call _uc,$(1))_ABS_SRC) ]; then cd $$($(call _uc,$(1))_ABS_SRC) && \
+	$$(Q)if [ $$(shell if [ -d $$($(call _uc,$(1))_ABS_SRC) ]; then cd $$($(call _uc,$(1))_ABS_SRC) && \
 		  git show --pretty=oneline -q $$(_$(call _uc,$(1))) >/dev/null 2>&1; echo $$$$?; cd $$(TOP_DIR); else echo 128; fi) -eq 0 ]; then \
 			touch $$@; \
 		else \
@@ -965,7 +965,7 @@ ifeq ($$(PB$$($(1)_APP_TYPE)),0)
 endif
 
 $$(call _stamp_$(1),bsp): $(1)-outdir
-	$(Q) if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
+	$(Q)if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
 		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \
@@ -986,11 +986,11 @@ PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
 $(1)-cleanup:
-	if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx && cd $$(TOP_DIR); \
 	fi
 $(1)-outdir:
-	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+	$$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
 $(1)-source: $(1)-cleanup $(1)-outdir
 
@@ -1060,7 +1060,7 @@ $(1)-source:
 	@echo
 	@echo "Downloading $(1) source ..."
 	@echo
-	$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
+	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC_FULL) && $$($(call _uc,$(1))_GITADD) && \
 		git fetch --tags --all && \
 		cd $$(TOP_DIR); \
@@ -1840,7 +1840,7 @@ else
 endif
 
 _kernel-modules: $(KERNEL_MODULES_DEPS)
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
+	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=$(MODULE_PREPARE); make kernel KT=$(if $(m),$(m).ko,modules) $(KM); fi
 
 kernel-modules:
 	make _kernel-modules KM=
@@ -1880,7 +1880,7 @@ ifeq ($(PBR), 0)
 endif
 
 _kernel-modules-install:
-	if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
+	$(Q)if [ $(MODULES_EN) -eq 1 ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
 
 kernel-modules-install: $(M_I_ROOT)
 	make _kernel-modules-install KM=

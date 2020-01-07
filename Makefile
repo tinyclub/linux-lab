@@ -825,7 +825,7 @@ b-c: board-clean
 
 PHONY += board board-clean board-save b-s b-c
 
-board-config:
+board-config: cleanstamp
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE);)
 
 PHONY += board-config
@@ -984,7 +984,7 @@ $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
 boot: $$(boot_deps)
 
 $(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,download checkout patch defconfig build bsp)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir download checkout patch env modules modules-km defconfig build bsp)
 PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code

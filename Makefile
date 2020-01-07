@@ -1377,8 +1377,9 @@ else
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
 
-	$(Q)wget -c $(CCURL)
-	$(Q)tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
+	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && \
+		tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN) && \
+		cd $(TOP_DIR)
   else
 	$(Q)make $(S) gcc-info
   endif

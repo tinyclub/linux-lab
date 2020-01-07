@@ -935,7 +935,7 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kerne
 define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
-$$(call _stamp_$(1),%): $(1)-outdir
+$$(call _stamp_$(1),%):
 	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
@@ -948,6 +948,7 @@ $$(call _stamp_$(1),download): $(1)-outdir
 			touch $$@; \
 		fi
 
+$(1)-download: $$(call _stamp_$(1),outdir)
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
@@ -964,7 +965,7 @@ ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   endif
 endif
 
-$$(call _stamp_$(1),bsp): $(1)-outdir
+$$(call _stamp_$(1),bsp):
 	$(Q)if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
@@ -974,6 +975,10 @@ $$(call _stamp_$(1),bsp): $(1)-outdir
 		fi;					\
 	fi
 
+$(1)-outdir: $$($(call _uc,$(1))_OUTPUT)
+
+$$($(call _uc,$(1))_OUTPUT):
+	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
 $(1)_bsp_childs := $(1)-defconfig $(1)-patch $(1)-save $(1)-saveconfig $(1)-clone boot test boot-test
 $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
@@ -992,7 +997,7 @@ $(1)-cleanup:
 $(1)-outdir:
 	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
 
-$(1)-source: $(1)-cleanup $(1)-outdir
+$(1)-source: $(1)-cleanup
 
 $(1)-clean: $(1)-cleanstamp
 

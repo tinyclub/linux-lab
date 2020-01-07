@@ -990,7 +990,7 @@ $(1)-cleanup:
 		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx && cd $$(TOP_DIR); \
 	fi
 $(1)-outdir:
-	$$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
 
 $(1)-source: $(1)-cleanup $(1)-outdir
 

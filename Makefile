@@ -1860,7 +1860,11 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 		$(call make_kernel); \
 	fi
 	$(C_PATH) $(call make_kernel,$(MODULE_PREPARE))
-	$(C_PATH) $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM))
+	$(Q)if [ -f $(KERNEL_SRC)/scripts/Makefile.modbuiltin ]; then \
+		$(C_PATH) $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
+	else	\
+		$(C_PATH) $(call make_kernel,modules $(KM)); \
+	fi
 
 kernel-modules:
 	make kernel-modules-km KM=

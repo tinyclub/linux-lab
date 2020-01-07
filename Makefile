@@ -205,55 +205,39 @@ ifneq ($(KERNEL_GIT_LINUX),)
 endif
 
 # Prepare build environment
-GCC_LINUX  ?= $(call __v,GCC,LINUX)
-CCORI_LINUX ?= $(call __v,CCORI,LINUX)
 
-GCC_UBOOT  ?= $(call __v,GCC,UBOOT)
-CCORI_UBOOT ?= $(call __v,CCORI,UBOOT)
+define genbuildenv
 
-GCC_QEMU  ?= $(call __v,GCC,QEMU)
-CCORI_QEMU ?= $(call __v,CCORI,QEMU)
+GCC_$(1) = $$(call __v,GCC,$(1))
+CCORI_$(1) = $$(call __v,CCORI,$(1))
 
-GCC_ROOT  ?= $(call __v,GCC,BUILDROOT)
-CCORI_ROOT ?= $(call __v,CCORI,BUILDROOT)
+ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
+  ifneq ($$(CCORI_$(1))$$(GCC_$(1)),)
+    ifeq ($$(CCORI_$(1)),)
+      CCORI := internal
+    endif
+    GCC_$(1)_SWITCH := 1
+  endif
+endif
+
+endef # genbuildenv
+
+#$(warning $(call genbuildenv,LINUX,kernel))
+$(eval $(call genbuildenv,LINUX,kernel))
+
+#$(warning $(call genbuildenv,UBOOT,uboot))
+$(eval $(call genbuildenv,UBOOT,uboot))
+
+#$(warning $(call genbuildenv,QEMU,qemu))
+$(eval $(call genbuildenv,QEMU,qemu))
+
+#$(warning $(call genbuildenv,BUILDROOT,root))
+$(eval $(call genbuildenv,BUILDROOT,root))
 
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
   CCORI := internal
   GCC_SWITCH := 1
-endif
-
-ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
-  ifneq ($(CCORI_LINUX)$(GCC_LINUX),)
-    ifeq ($(CCORI_LINUX),)
-      CCORI := internal
-    endif
-    GCC_LINUX_SWITCH := 1
-  endif
-endif
-ifeq ($(findstring uboot,$(MAKECMDGOALS)),uboot)
-  ifneq ($(CCORI_UBOOT)$(GCC_LINUX),)
-    ifeq ($(CCORI_UBOOT),)
-      CCORI := internal
-    endif
-    GCC_UBOOT_SWITCH := 1
-  endif
-endif
-ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
-  ifneq ($(CCORI_QEMU)$(GCC_LINUX),)
-    ifeq ($(CCORI_QEMU),)
-      CCORI := internal
-    endif
-    GCC_QEMU_SWITCH := 1
-  endif
-endif
-ifeq ($(findstring root,$(MAKECMDGOALS)),root)
-  ifneq ($(CCORI_ROOT)$(GCC_LINUX),)
-    ifeq ($(CCORI_ROOT),)
-      CCORI := internal
-    endif
-    GCC_ROOT_SWITCH := 1
-  endif
 endif
 
 # Verify LINUX argument
@@ -952,6 +936,7 @@ $(1)-download: $$(call _stamp_$(1),outdir)
 $(1)-checkout: $$(call _stamp_$(1),download)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
+$(1)-defconfig: $$(call _stamp_$(1),env)
 
 $(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
@@ -1316,7 +1301,7 @@ QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 
-qemu-defconfig: qemu-env $(QEMU_PATCH)
+qemu-defconfig: $(QEMU_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
@@ -1537,7 +1522,7 @@ ifeq ($(RP),1)
   ROOT_PATCH := root-patch
 endif
 
-root-defconfig: root-env $(ROOT_CHECKOUT) $(ROOT_PATCH)
+root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) $(_RCFG)
@@ -2053,7 +2038,7 @@ endif
 
 _KCFG := $(notdir $(KCFG_FILE))
 
-kernel-defconfig: kernel-env $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
+kernel-defconfig: $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
@@ -2572,7 +2557,7 @@ endif
 
 _UCFG := $(notdir $(UCFG_FILE))
 
-uboot-defconfig: uboot-env $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
+uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) $(_UCFG)
@@ -3444,29 +3429,26 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
-kernel-env: kernel-env-prepare
-kernel-env-prepare: env-prepare
-ifeq ($(GCC_LINUX_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI_LINUX),CCORI=$(CCORI_LINUX)) $(if $(GCC_LINUX),GCC=$(GCC_LINUX))
+define genenv
+
+$(1)-env: env
+ifeq ($$(GCC_$(2)_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
 
-uboot-env: uboot-env-prepare
-uboot-env-prepare: env-prepare
-ifeq ($(GCC_UBOOT_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI_UBOOT),CCORI=$(CCORI_UBOOT)) $(if $(GCC_UBOOT),GCC=$(GCC_UBOOT))
-endif
+endef #genenv
 
-qemu-env: qemu-env-prepare
-qemu-env-prepare: env-prepare
-ifeq ($(GCC_QEMU_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI_QEMU),CCORI=$(CCORI_QEMU)) $(if $(GCC_QEMU),GCC=$(GCC_QEMU))
-endif
+#$(warning $(call genenv,kernel,LINUX))
+$(eval $(call genenv,kernel,LINUX))
 
-root-env: root-env-prepare
-root-env-prepare: env-prepare
-ifeq ($(GCC_ROOT_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI_ROOT),CCORI=$(CCORI_ROOT)) $(if $(GCC_ROOT),GCC=$(GCC_ROOT))
-endif
+#$(warning $(call genenv,uboot,UBOOT))
+$(eval $(call genenv,uboot,UBOOT))
+
+#$(warning $(call genenv,uboot,UBOOT)
+$(eval $(call genenv,uboot,UBOOT))
+
+#$(warning $(call genenv,root,BUILDROOT)
+$(eval $(call genenv,root,BUILDROOT))
 
 env: env-prepare
 env-prepare: toolchain

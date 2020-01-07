@@ -126,24 +126,28 @@ PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
 PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
 # Core source: remote and local
-QEMU_GIT ?= https://github.com/qemu/qemu.git
+#QEMU_GIT ?= https://github.com/qemu/qemu.git
+QEMU_GIT ?= https://gitee.com/mirrors/qemu.git
 _QEMU_GIT := $(QEMU_GIT)
 _QEMU_SRC ?= qemu
 QEMU_SRC ?= $(_QEMU_SRC)
 
-UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+#UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+UBOOT_GIT ?= https://gitee.com/mirrors/u-boot.git
 _UBOOT_GIT := $(UBOOT_GIT)
 _UBOOT_SRC ?= u-boot
 UBOOT_SRC ?= $(_UBOOT_SRC)
 
-KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
+#KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
+KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
 _KERNEL_GIT := $(KERNEL_GIT)
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_SRC ?= linux-stable
 KERNEL_SRC ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
-ROOT_GIT ?= https://github.com/buildroot/buildroot
+#ROOT_GIT ?= https://github.com/buildroot/buildroot
+ROOT_GIT ?= https://gitee.com/mirrors/buildroot.git
 _ROOT_GIT := $(ROOT_GIT)
 _ROOT_SRC ?= buildroot
 ROOT_SRC ?= $(_ROOT_SRC)
@@ -248,15 +252,7 @@ ifeq ($(findstring root,$(MAKECMDGOALS)),root)
   endif
 endif
 
-# board specific src submodule parent
-ifeq ($(_PLUGIN), 1)
-  BSP_SROOT = $(PLUGIN_DIR)
-else
-  BSP_SROOT = $(BSP_DIR)
-endif
-
 # Verify LINUX argument
-KERNEL_SPATH := $(subst $(BSP_SROOT)/,,$(KERNEL_SRC))
 ifneq ($(LINUX),)
   ifeq ($(BSP_KERNEL), $(wildcard $(BSP_KERNEL)))
     LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
@@ -275,7 +271,6 @@ ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
 endif
 
 # Verify ROOT argument
-ROOT_SPATH := $(subst $(BSP_SROOT)/,,$(ROOT_SRC))
 ifneq ($(BUILDROOT),)
   ifeq ($(BSP_ROOT), $(wildcard $(BSP_ROOT)))
     ROOT_LIST ?= $(shell ls $(BSP_ROOT))
@@ -292,7 +287,6 @@ ifneq ($(_ROOT_SRC), $(ROOT_SRC))
 endif
 
 # Verify UBOOT argument
-UBOOT_SPATH := $(subst $(BSP_SROOT)/,,$(UBOOT_SRC))
 ifneq ($(UBOOT),)
   ifeq ($(BSP_UBOOT), $(wildcard $(BSP_UBOOT)))
     UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
@@ -309,7 +303,6 @@ ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
 endif
 
 # Verify QEMU argument
-QEMU_SPATH := $(subst $(BSP_SROOT)/,,$(QEMU_SRC))
 ifneq ($(QEMU),)
   ifeq ($(BSP_QEMU), $(wildcard $(BSP_QEMU)))
     QEMU_LIST ?= $(shell ls $(BSP_QEMU))
@@ -927,6 +920,7 @@ PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kerne
 
 # Define generic target deps support
 
+# generate target dependencies
 define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
@@ -964,7 +958,7 @@ $$(call _stamp_$(1),bsp): $(1)-outdir
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
 		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \
-			make bsp-source;		\
+			make bsp-checkout;		\
 			touch $$(call _stamp_$(1),bsp); \
 		fi;					\
 	fi
@@ -981,9 +975,9 @@ PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
 $(1)-cleanup:
-ifeq ($$($(call _uc,$(1))_SRC)/.git, $$(wildcard $$($(call _uc,$(1))_SRC)/.git))
-	cd $$($(call _uc,$(1))_SRC) && git reset --hard HEAD && git clean -fdx && cd $$(TOP_DIR)
-endif
+	if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx && cd $$(TOP_DIR); \
+	fi
 $(1)-outdir:
 	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
@@ -995,20 +989,84 @@ PHONY += $(1)-cleanup $(1)-outdir
 
 endef # gendeps
 
-#$(warning $(call gendeps,kernel))
-#$(eval $(call gendeps,kernel))
+# generate xxx-source target
+define gensource
+
+$(call _uc,$(1))_SRC_DEFAULT := 1
+
+ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$(1))_SRC))),$$($(call _uc,$(1))_SRC))
+  ifeq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$(1))_SRC)),x$$(BSP_DIR))
+    $(call _uc,$(1))_SROOT := $$(BSP_DIR)
+    $(call _uc,$(1))_SPATH := $$(subst $$(BSP_DIR)/,,$$($(call _uc,$(1))_SRC))
+    $(call _uc,$(1))_SRC_DEFAULT := 0
+  else
+    ifneq ($$(PLUGIN_DIR),)
+      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$($(call _uc,$(1))_SRC)),x$$(PLUGIN_DIR))
+        $(call _uc,$(1))_SROOT := $$(PLUGIN_DIR)
+        $(call _uc,$(1))_SPATH := $$(subst $$(PLUGIN_DIR)/,,$$($(call _uc,$(1))_SRC))
+        $(call _uc,$(1))_SRC_DEFAULT := 0
+      endif
+    endif
+  endif
+endif
+
+ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
+  # Put submodule is root of linux-lab if no directory specified or if not the above cases
+  $(call _uc,$(1))_SROOT := $$(TOP_DIR)
+  $(call _uc,$(1))_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$(1))_SRC))
+endif
+
+$(call _uc,$(1))_GITADD = git remote -v
+ifneq ($$(_$(call _uc,$(1))_SRC), $$($(call _uc,$(1))_SRC))
+  ifeq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
+    $(call _uc,$(1))_GETGITURL := 1
+  endif
+else
+  ifneq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
+    $(call _uc,$(1))_GITREPO := $(1)-$$(subst /,-,$$(BOARD))-$$(notdir $$(patsubst %/,%,$$($(call _uc,$(1))_SPATH)))
+    $(call _uc,$(1))_GITADD  := if [ $$$$(git remote | grep -q $$($(call _uc,$(1))_GITREPO); echo $$$$?) -ne 0 ]; then git remote add $$($(call _uc,$(1))_GITREPO) $$($(call _uc,$(1))_GIT); fi
+  endif
+endif
+
+ifeq ($$($(call _uc,$(1))_GIT),)
+  $(call _uc,$(1))_GETGITURL := 1
+endif
+
+ifeq ($$($(call _uc,$(1))_GETGITURL),1)
+  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && grep -A1 "path = $$($(call _uc,$(1))_SPATH)" -ur $$($(call _uc,$(1))_SROOT)/.gitmodules | tail -1 | cut -d'=' -f2 | tr -d ' ')
+  ifneq ($$(__$(call _uc,$(1))_GIT),)
+    _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
+    $(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
+  endif
+else
+  _$(call _uc,$(1))_GIT := $$($(call _uc,$(1))_GIT)
+endif
+
+# Build the full src directory
+$(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
+
+$(1)-source:
+	@echo
+	@echo "Downloading $(1) source ..."
+	@echo
+	$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
+		cd $$($(call _uc,$(1))_SRC_FULL) && $$($(call _uc,$(1))_GITADD) && \
+		git fetch --tags --all && \
+		cd $$(TOP_DIR); \
+	else		\
+		cd $$($(call _uc,$(1))_SROOT) && \
+			mkdir -p $$($(call _uc,$(1))_SPATH) && \
+			cd $$($(call _uc,$(1))_SPATH) && \
+			git init &&		\
+			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
+			git fetch --tags --all && \
+		cd $$(TOP_DIR); \
+	fi
+endef
 
 # Source download
-
-uboot-source:
-	@echo
-	@echo "Downloading u-boot source ..."
-	@echo
-ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
-	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(UBOOT_SPATH) && cd $(TOP_DIR)
-else
-	$(UPDATE_GITMODULE) $(UBOOT_SRC)
-endif
+#$(warning $(call gensource,uboot))
+$(eval $(call gensource,uboot))
 
 download-uboot: uboot-source
 uboot-download: uboot-source
@@ -1016,15 +1074,8 @@ d-u: uboot-source
 
 PHONY += uboot-source download-uboot uboot-download d-u
 
-qemu-source:
-	@echo
-	@echo "Downloading qemu source ..."
-	@echo
-ifneq ($(_QEMU_SRC), $(QEMU_SRC))
-	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(QEMU_SPATH) && cd $(TOP_DIR)
-else
-	$(UPDATE_GITMODULE) $(QEMU_SRC)
-endif
+#$(warning $(call gensource,qemu))
+$(eval $(call gensource,qemu))
 
 qemu-download: qemu-source
 download-qemu: qemu-source
@@ -1046,24 +1097,8 @@ qemu-all: emulator-all
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
-kernel-source:
-	@echo
-	@echo "Downloading kernel source ..."
-	@echo
-ifneq ($(_KERNEL_GIT), $(KERNEL_GIT))
-  ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-	@if [ -d $(KERNEL_SRC) ]; then cd $(KERNEL_SRC) && git fetch --tags --all && cd $(TOP_DIR); else git clone $(KERNEL_GIT) $(KERNEL_SRC); fi
-  else
-	@echo "This may be very slow ..."
-	@cd $(_KERNEL_SRC) && git fetch --tags -v $(KERNEL_GIT) && cd $(TOP_DIR)
-  endif
-else
-  ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(KERNEL_SPATH) && cd $(TOP_DIR)
-  else
-	$(UPDATE_GITMODULE) $(KERNEL_SRC)
-  endif
-endif
+#$(warning $(call gensource,kernel))
+$(eval $(call gensource,kernel))
 
 kernel-download: kernel-source
 download-kernel: kernel-source
@@ -1071,15 +1106,8 @@ d-k: kernel-source
 
 PHONY += kernel-source kernel-download download-kernel d-k
 
-root-source:
-	@echo
-	@echo "Downloading buildroot source ..."
-	@echo
-ifneq ($(_ROOT_SRC), $(ROOT_SRC))
-	cd $(BSP_SROOT) && $(UPDATE_GITMODULE) $(ROOT_SPATH)) && cd $(TOP_DIR)
-else
-	$(UPDATE_GITMODULE) $(ROOT_SRC)
-endif
+#$(warning $(call gensource,root))
+$(eval $(call gensource,root))
 
 root-download: root-source
 download-root: root-source
@@ -1087,16 +1115,27 @@ d-r: root-source
 
 PHONY += root-source root-download download-root d-r
 
-bsp-cleanup:
-ifeq ($(BSP_DIR)/.git, $(wildcard $(BSP_DIR)/.git))
-	cd $(BSP_DIR) && git reset --hard HEAD && git clean -fdx && cd $(TOP_DIR)
+BSP ?= master
+
+ifeq ($(_PLUGIN),1)
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
+else
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
+#$(warning $(call gensource,bsp))
+$(eval $(call gensource,bsp))
+
+bsp-cleanup:
+	$(Q)if [ -d $(BSP_SRC) -a -e $(BSP_SRC)/.git ]; then \
+		cd $(BSP_SRC) && git reset --hard && git clean -fdx && cd $(TOP_DIR); \
+	fi
+
+bsp-checkout: bsp-source
+	$(Q)if [ -d $(BSP_SRC) -a -e $(BSP_SRC)/.git ]; then \
+		cd $(BSP_SRC) && git checkout -f $(BSP) && git clean -fdx && cd $(TOP_DIR); \
+	fi
 
 bsp-source: bsp-cleanup
-	@echo
-	@echo "Downloading board bsp ..."
-	@echo
-	$(UPDATE_GITMODULE) $(BSP_DIR)
 
 bsp-download: bsp-source
 download-bsp: bsp-source

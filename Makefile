@@ -2392,8 +2392,8 @@ ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
 endif
 
 vmlinux:
-	@if [ ! -f $(VMLINUX) ]; then \
-	  echo "ERR: No $(VMLINUX) found, please compile with 'make kernel'" && exit 1; \
+	@if [ -z "$(VMLINUX)" -o ! -f $(VMLINUX) ]; then \
+	  echo "ERR: No VMLINUX:$(VMLINUX) found, please compile with 'make kernel'" && exit 1; \
 	fi
 
 PHONY += vmlinux
@@ -3230,6 +3230,8 @@ PHONY += _boot-test boot-test test r-t raw-test
 # Boot dependencies
 
 # Debug support
+VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
+
 ifeq ($(DEBUG),1)
 
 GDB         ?= $(C_PATH) $(CCPRE)gdb
@@ -3246,8 +3248,6 @@ ifneq ($(GDB_ARCH), 1)
      $(error ERR: Both of $(CCPATH)/$(CCPRE)gdb and gdb-multiarch not exist or not valid)
   endif
 endif
-
-VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
 
 GDB_CMD      ?= $(GDB) $(VMLINUX)
 GDB_INIT     ?= $(TOP_DIR)/.gdbinit

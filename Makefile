@@ -7,6 +7,9 @@ TOP_DIR := $(CURDIR)
 USER ?= $(shell whoami)
 
 # Check running host
+ifneq (../../configs/linux-lab, $(wildcard ../../configs/linux-lab))
+  $(error ERR: No Cloud Lab found, please refer to 'Download the lab' part of README.md)
+endif
 LAB_ENV_ID=/home/ubuntu/Desktop/lab.desktop
 ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
   $(error ERR: Please not try Linux Lab in local host, but use it with Cloud Lab, please refer to 'Run and login the lab' part of README.md)

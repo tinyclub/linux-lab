@@ -914,6 +914,9 @@ b-l-f: l-f
 PHONY += list list-base list-plugin list-full l l-b l-p l-f b-l b-l-f list-kernel l-k list-buildroot list-BUILDROOT l-r
 
 # Define generic target deps support
+define make_kernel
+make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+endef
 
 # generate target dependencies
 define gendeps
@@ -1846,9 +1849,10 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
 		make -s feature feature=module; \
 		make -s kernel-olddefconfig; \
-		make kernel M= KM=; \
+		$(call make_kernel); \
 	fi
-	$(Q)make kernel KT=$(MODULE_PREPARE) KM=; make kernel KT=$(if $(m),$(m).ko,modules) $(KM);
+	$(C_PATH) $(call make_kernel,$(MODULE_PREPARE))
+	$(C_PATH) $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM))
 
 kernel-modules:
 	make kernel-modules-km KM=
@@ -1888,10 +1892,14 @@ ifeq ($(PBR), 0)
 endif
 
 kernel-modules-install-km:
-	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then make kernel KT=modules_install INSTALL_MOD_PATH=$(ROOTDIR) $(KM); fi
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+		$(C_PATH) $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+	fi
 
 kernel-modules-install: $(M_I_ROOT)
-	make kernel-modules-install-km KM=
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+		$(C_PATH) $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
+	fi
 
 ifeq ($(internal_module),1)
   M_ABS_PATH := $(KERNEL_OUTPUT)/$(M_PATH)
@@ -2042,7 +2050,7 @@ kernel-defconfig: $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
-	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(_KCFG)
+	$(C_PATH) $(call make_kernel,$(_KCFG) M=)
 
 ifneq ($(LINUX_NEW),)
 ifneq ($(LINUX_NEW),$(LINUX))
@@ -2094,13 +2102,13 @@ endif
 
 kernel-oldnoconfig: kernel-olddefconfig
 kernel-olddefconfig:
-	yes N | $(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) $(KERNEL_OLDDEFCONFIG)
+	yes N | $(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
 
 kernel-oldconfig:
-	yes N | $(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) oldconfig
+	yes N | $(call make_kernel,oldconfig M=)
 
 kernel-menuconfig:
-	$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) menuconfig
+	$(C_PATH) $(call make_kernel,menuconfig M=)
 
 
 PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
@@ -2155,8 +2163,8 @@ PHONY += kernel-feature feature features kernel-features k-f f kernel-feature-li
 
 kernel-init:
 	$(Q)make kernel-config
-	$(Q)make kernel-$(KERNEL_OLDDEFCONFIG)
-	$(Q)make kernel KT=$(IMAGE)
+	$(Q)yes N | $(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
+	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init:
 	$(Q)make rootdir-clean
@@ -2210,11 +2218,6 @@ else
   KOPTS   += CONFIG_INITRAMFS_SOURCE=
 endif
 
-KMAKE_CMD := make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC)
-KMAKE_CMD += ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS)
-KMAKE_CMD += -j$(JOBS)
-KMAKE_CMD += $(KT) $(KM)
-
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
   ifeq ($(DTS),$(wildcard $(DTS)))
@@ -2226,7 +2229,7 @@ dtb: $(DTS)
 	@echo "  DTB: $(DTB)"
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
 ifeq ($(_DTS),)
-	$(Q)make kernel KT=$(DTB_TARGET)
+	$(Q)$(call make_kernel,$(DTB_TARGET))
 else
 	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
 	$(Q)mkdir -p $(dir $(DTB))
@@ -2352,10 +2355,11 @@ _kernel-setconfig:
 ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
-	$(Q)make kernel KT=$(KERNEL_OLDDEFCONFIG)
-	$(Q)make kernel KT=prepare
+
+	$(Q)$(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
+	$(Q)$(call make_kernel,prepare M=)
 else
-	$(Q)make kernel KT=$(KERNEL_OLDDEFCONFIG)
+	$(Q)$(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
 endif
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
@@ -2377,10 +2381,10 @@ m-sc: module-setconfig
 PHONY += module-getconfig module-setconfig m-gc m-sc modules-config module-config
 
 kernel-help:
-	$(Q)make kernel KT=help
+	$(C_PATH) $(call make_kernel,help)
 
 kernel: $(KERNEL_DEPS)
-	$(C_PATH) $(KMAKE_CMD)
+	$(C_PATH) $(call make_kernel,$(KT))
 
 kernel-build: kernel
 
@@ -2779,7 +2783,7 @@ uconfig-save:
 kernel-saveconfig: kconfig-save
 
 kconfig-save:
-	-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) CROSS_COMPILE=$(CCPRE) ARCH=$(ARCH) savedefconfig
+	-$(C_PATH) $(call make_kernel,savedefconfig M=)
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
@@ -3353,7 +3357,7 @@ endif
 
 kernel-clean: kernel-modules-clean
 ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) clean
+	-$(Q)$(call make_kernel,clean)
 endif
 
 clean: emulator-clean qemu-clean root-clean kernel-clean rootdir-clean uboot-clean
@@ -3389,7 +3393,7 @@ endif
 
 kernel-distclean:
 ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) distclean
+	-$(Q)$(call make_kernel,distclean)
 	$(Q)rm -rf $(KERNEL_OUTPUT)
 endif
 

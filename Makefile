@@ -802,7 +802,7 @@ FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
 
-board: board-save plugin-save
+board: board-init board-save plugin-save
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \
@@ -810,20 +810,28 @@ board: board-save plugin-save
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" | egrep --colour=auto "$(FILTER)"
 
+board-init:
+ifneq ($(BOARD),$(BOARD_CONFIG))
+	$(Q)make cleanstamp
+endif
+
 board-clean:
 	$(Q)rm -rf .board_config
 
 board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
+    ifneq ($(BOARD),$(BOARD_CONFIG))
 	$(Q)$(shell echo "$(BOARD)" > .board_config)
+    endif
   endif
 endif
 
+b-i: board-init
 b-s: board-save
 b-c: board-clean
 
-PHONY += board board-clean board-save b-s b-c
+PHONY += board board-init board-clean board-save b-s b-c b-i
 
 board-config: cleanstamp
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE);)

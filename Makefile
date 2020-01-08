@@ -474,8 +474,20 @@ ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
   $(error Supported gcc original list: $(CCORI_LIST))
 endif
 
+ifneq ($(LD_LIBRARY_PATH),)
+  ifneq ($(LL_PATH),)
+    L_PATH=LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
+  else
+    L_PATH=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+  endif
+else
+  ifneq ($(LL_PATH),)
+    L_PATH=LD_LIBRARY_PATH=$(LLPATH)
+  endif
+endif
+
 ifneq ($(CCPATH),)
-  C_PATH ?= env PATH=$(CCPATH):$(PATH) LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
+  C_PATH ?= env PATH=$(CCPATH):$(PATH) $(L_PATH)
 endif
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))

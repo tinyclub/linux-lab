@@ -871,7 +871,7 @@ Reboot the guest system for several times:
 
 Test a feature of a specified linux version on a specified board, `prepare` equals checkout, patch and defconfig:
 
-    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=kernel-cleanup
+    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=kernel-cleanstamp
 
 Test a kernel module:
 

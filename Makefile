@@ -213,7 +213,7 @@ CCORI_$(1) = $$(call __v,CCORI,$(1))
 
 ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
   ifneq ($$(CCORI_$(1))$$(GCC_$(1)),)
-    ifeq ($$(CCORI_$(1)),)
+    ifeq ($$(CCORI_$(1))$$(CCORI),)
       CCORI := internal
     endif
     GCC_$(1)_SWITCH := 1
@@ -236,7 +236,9 @@ $(eval $(call genbuildenv,BUILDROOT,root))
 
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
-  CCORI := internal
+  ifeq ($(CCORI),)
+    CCORI := internal
+  endif
   GCC_SWITCH := 1
 endif
 
@@ -1484,7 +1486,7 @@ else
 	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
 	@echo "       e.g. make toolchain-switch CCORI=bootlin"
 	@echo "            make toolchain-switch CCORI=internal GCC=4.9.3"
-	@echo "            make toolchain-switch CC=4.9.3       # If CCORI is already internal"
+	@echo "            make toolchain-switch GCC=4.9.3       # If CCORI is already internal"
 	$(Q)make $(S) toolchain-list
   endif
 endif

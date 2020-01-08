@@ -861,7 +861,7 @@ Run guest test case:
 
     $ make test TEST_CASE=/tools/ftrace/trace.sh
 
-Run guest test cases (need install new `system/` via `make r-i`):
+Run guest test cases (please make sure `COMMAND_LINE_SIZE` is bigger than 1024):
 
     $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
 
@@ -869,9 +869,13 @@ Reboot the guest system for several times:
 
     $ make test TEST_REBOOT=2
 
-Test a feature of a specified linux version on a specified board, `prepare` equals checkout, patch and defconfig:
+   NOTE: reboot may 1) hang, 2) continue; 3) timeout killed, TEST_TIMEOUT=30; 4) timeout continue, TIMEOUT_CONTINUE=1
 
-    $ make test f=kft LINUX=v2.6.36 BOARD=malta TEST_PREPARE=kernel-cleanstamp
+Test a feature of a specified linux version on a specified board:
+
+    $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init FORCE_CHECKOUT=1
+
+  NOTE: `board-init` and `FORCE_CHECKOUT` make sure test run automatically, but `FORCE_CHECKOUT` is not safe, please save your code before use it!!
 
 Test a kernel module:
 

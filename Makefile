@@ -1129,7 +1129,7 @@ emulator-all: emulator-save
 qemu-prepare: emulator-prepare
 qemu-auto: emulator-auto
 qemu-full: emulator-full
-qemu-all: emulator-all
+qemu-all: emulator-all emulator-save
 
 PHONY += qemu-download download-qemu d-q q-d emulator-download e-d emulator-prepare emulator-auto emulator-full qemu-prepare qemu-auto qemu-full qemu-all
 
@@ -1692,10 +1692,10 @@ root-help:
 
 root-build: root
 
-root-prepare: root-defconfig
-root-auto: root
-root-full: root
-root-all: root-save root-saveconfig
+root-prepare: root-checkout root-patch root-defconfig
+root-auto: root-prepare root
+root-full: root-download root-prepare root
+root-all: root-full root-save root-saveconfig
 
 r: root
 r-b: root
@@ -2449,10 +2449,10 @@ k-m: kernel-menuconfig
 k-b: kernel
 k: kernel
 
-kernel-prepare: kernel-defconfig
-kernel-auto: kernel
-kernel-full: kernel
-kernel-all: kernel-save kernel-saveconfig
+kernel-prepare: kernel-checkout kernel-patch kernel-defconfig
+kernel-auto: kernel-prepare kernel
+kernel-full: kernel-download kernel-prepare kernel
+kernel-all: kernel-full kernel-save kernel-saveconfig
 
 # Simplify testing
 prepare: kernel-prepare
@@ -2627,10 +2627,10 @@ uboot-help:
 
 uboot-build: uboot
 
-uboot-prepare: uboot-defconfig
-uboot-auto: uboot
-uboot-full: uboot
-uboot-all: uboot-save uboot-saveconfig
+uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
+uboot-auto: uboot-prepare uboot
+uboot-full: uboot-download uboot-prepare uboot
+uboot-all: uboot-full uboot-save uboot-saveconfig
 
 u-d: uboot-source
 u-o: uboot-checkout

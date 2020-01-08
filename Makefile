@@ -1017,7 +1017,7 @@ $(1)-cleanup:
 $(1)-outdir:
 	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
 
-$(1)-source: $(1)-cleanup
+$(1)-source:
 
 $(1)-clean: $(1)-cleanstamp
 
@@ -1168,10 +1168,8 @@ bsp-cleanup:
 
 bsp-checkout: bsp-source
 	$(Q)if [ -d $(BSP_SRC) -a -e $(BSP_SRC)/.git ]; then \
-		cd $(BSP_SRC) && git checkout -f $(BSP) && git clean -fdx && cd $(TOP_DIR); \
+		cd $(BSP_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(BSP) && git clean -fdx && cd $(TOP_DIR); \
 	fi
-
-bsp-source: bsp-cleanup
 
 bsp-download: bsp-source
 download-bsp: bsp-source
@@ -1215,7 +1213,7 @@ $(eval $(call gendeps,qemu))
 endif
 
 qemu-checkout:
-	cd $(QEMU_SRC) && git checkout -f $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
+	cd $(QEMU_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
 
 emulator-checkout: qemu-checkout
 
@@ -1514,7 +1512,7 @@ $(eval $(call gendeps,root))
 # Configure Buildroot
 
 root-checkout:
-	cd $(ROOT_SRC) && git checkout -f $(_BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
+	cd $(ROOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
 
 ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
 
@@ -2025,7 +2023,7 @@ _KERNEL ?= $(_LINUX)
 # Configure Kernel
 
 kernel-checkout:
-	cd $(KERNEL_SRC) && git checkout -f $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
+	cd $(KERNEL_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
 
 KCO ?= 0
 #LINUX ?= master
@@ -2474,7 +2472,7 @@ endif
 # Configure Uboot
 
 uboot-checkout:
-	cd $(UBOOT_SRC) && git checkout -f $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
+	cd $(UBOOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
 
 
 PHONY += uboot-checkout
@@ -2978,8 +2976,7 @@ ifeq ($(QEMU),)
 endif
 
 # Force running git submodule commands
-GIT_FORCE := $(if $(TEST),--force,)
-UPDATE_GITMODULE := git submodule update $(GIT_FORCE) --init --remote
+GIT_CHECKOUT_FORCE ?= $(if $(TEST),-f)
 
 # Some boards not support 'reboot' test, please use 'power' instead.
 #
@@ -3249,7 +3246,7 @@ raw-test:
 	make test FI=0
 
 test: $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init; fi
+	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init TEST=default; fi
 	make boot-init
 	make boot-test
 	make boot-finish

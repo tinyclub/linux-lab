@@ -3,12 +3,13 @@
 # kernel-feature.sh -- Apply the available kernel features
 #
 
-XARCH=$1
-BOARD=$2
-LINUX=$3
-KERNEL_SRC=$4
-KERNEL_OUTPUT=$5
-FEATURE="$6"
+ARCH=$1
+XARCH=$2
+BOARD=$3
+LINUX=$4
+KERNEL_SRC=$5
+KERNEL_OUTPUT=$6
+FEATURE="$7"
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
@@ -60,6 +61,10 @@ do
 
             [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
         done #p
+
+        echo "Patching more: $f"
+        [ -x "$path/patch.sh" ] && $path/patch.sh $ARCH $KERNEL_SRC
+
     done #f
 done #d
 

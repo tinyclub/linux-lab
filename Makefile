@@ -1387,8 +1387,10 @@ download-toolchain: toolchain
 d-t: toolchain
 gcc: toolchain
 
+SCRIPT_GETCCVER := tools/gcc/version.sh
+
 ifeq ($(CCORI),internal)
-  CCVER = `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
+  CCVER := $(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
 endif
 
 include $(PREBUILT_TOOLCHAINS)/Makefile
@@ -1485,8 +1487,8 @@ else
   else
 	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
 	@echo "       e.g. make toolchain-switch CCORI=bootlin"
-	@echo "            make toolchain-switch CCORI=internal GCC=4.9.3"
-	@echo "            make toolchain-switch GCC=4.9.3       # If CCORI is already internal"
+	@echo "            make toolchain-switch CCORI=internal GCC=4.3"
+	@echo "            make toolchain-switch GCC=4.3       # If CCORI is already internal"
 	$(Q)make $(S) toolchain-list
   endif
 endif

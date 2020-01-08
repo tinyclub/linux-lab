@@ -2180,7 +2180,7 @@ f-l: k-f-l
 
 ifneq ($(module),)
   ifneq ($(FEATURE),)
-    FEATURE += module
+    FEATURE := $(FEATURE),module
   else
     FEATURE := module
   endif

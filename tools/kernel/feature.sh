@@ -110,6 +110,10 @@ do
 
                 [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
             done #p
+
+            echo "Patching more: $f"
+            [ -x "$path/patch.sh" ] && $path/patch.sh $ARCH $KERNEL_SRC
+
         done #path
     done #d
 done #f

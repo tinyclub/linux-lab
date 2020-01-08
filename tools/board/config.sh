@@ -7,6 +7,12 @@ V=$(echo $1 | cut -d'=' -f1)
 _V=$(echo $V | sed -e "s/\[/\\\[/g;s/\]/\\\]/g")
 S=$(echo $1 | cut -d'=' -f2-)
 
+# Ignore BOARD setting
+for v in BOARD board b B
+do
+  [ "x$V" == "x$v" ] && exit 0
+done
+
 grep -v "^#" $Makefile | grep -q "$_V"
 if [ $? -eq 0 ]; then
   sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $Makefile

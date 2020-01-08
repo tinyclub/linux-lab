@@ -845,7 +845,7 @@ b-c: board-clean
 
 PHONY += board board-init board-clean board-save b-s b-c b-i
 
-board-config: cleanstamp
+board-config: board-save cleanstamp
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE);)
 
 PHONY += board-config
@@ -3320,6 +3320,7 @@ PHONY += _debug _debug_init_1 _debug_init_2
 endif # DEBUG = 1
 
 _BOOT_DEPS ?=
+_BOOT_DEPS += board-save
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)

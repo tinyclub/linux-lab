@@ -1385,6 +1385,10 @@ download-toolchain: toolchain
 d-t: toolchain
 gcc: toolchain
 
+ifeq ($(CCORI),internal)
+  CCVER = `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
+endif
+
 include $(PREBUILT_TOOLCHAINS)/Makefile
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
   include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile

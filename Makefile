@@ -1516,20 +1516,12 @@ ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 ifeq ($(RCFG),$(ROOT_CONFIG_FILE))
   RCFG_FILE := $(_BSP_CONFIG)/$(RCFG)
 else
-  ifeq ($(RCFG), $(wildcard $(RCFG)))
-    RCFG_FILE := $(RCFG)
+  _RCFG_FILE := $(shell for f in $(RCFG) $(_BSP_CONFIG)/$(RCFG) $(ROOT_CONFIG_DIR)/$(RCFG); do \
+		if [ -f $$f ]; then echo $$f; break; fi; done)
+  ifneq ($(_RCFG_FILE),)
+    RCFG_FILE := $(subst //,/,$(_RCFG_FILE))
   else
-    TMP := $(_BSP_CONFIG)/$(RCFG)
-    ifeq ($(TMP), $(wildcard $(TMP)))
-      RCFG_FILE := $(RCFG)
-    else
-      TMP := $(ROOT_CONFIG_DIR)/$(RCFG)
-      ifeq ($(TMP), $(wildcard $(TMP)))
-        RCFG_FILE := $(TMP)
-      else
-        $(error $(RCFG): can not be found, please pass a valid root defconfig)
-      endif
-    endif
+    $(error $(RCFG): can not be found, please pass a valid root defconfig)
   endif
 endif
 
@@ -2052,33 +2044,22 @@ endif
 
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
 
+
 KCFG ?= $(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 
 ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
   KCFG_FILE := $(_BSP_CONFIG)/$(KCFG)
 else
-  ifeq ($(KCFG), $(wildcard $(KCFG)))
-    KCFG_FILE := $(KCFG)
+  _KCFG_FILE := $(shell for f in $(KCFG) $(_BSP_CONFIG)/$(KCFG) $(KERNEL_CONFIG_DIR)/$(KCFG) $(KERNEL_SRC)/arch/$(ARCH)/$(KCFG); do \
+		if [ -f $$f ]; then echo $$f; break; fi; done)
+  ifneq ($(_KCFG_FILE),)
+    KCFG_FILE := $(subst //,/,$(_KCFG_FILE))
   else
-    TMP := $(_BSP_CONFIG)/$(KCFG)
-    ifeq ($(TMP), $(wildcard $(TMP)))
-      KCFG_FILE := $(TMP)
-    else
-      TMP := $(KERNEL_CONFIG_DIR)/$(KCFG)
-      ifeq ($(TMP), $(wildcard $(TMP)))
-        KCFG_FILE := $(TMP)
-      else
-        TMP := $(KERNEL_SRC)/arch/$(ARCH)/$(KCFG)
-        ifeq ($(TMP), $(wildcard $(TMP)))
-          KCFG_FILE := $(TMP)
-        else
-          $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
-        endif
-      endif
-    endif
+    $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
   endif
 endif
+
 
 ifeq ($(findstring $(KERNEL_CONFIG_DIR),$(KCFG_FILE)),$(KERNEL_CONFIG_DIR))
   KCFG_BUILTIN := 1
@@ -2578,20 +2559,12 @@ UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 ifeq ($(UCFG),$(UBOOT_CONFIG_FILE))
   UCFG_FILE := $(_BSP_CONFIG)/$(UCFG)
 else
-  ifeq ($(UCFG), $(wildcard $(UCFG)))
-    UCFG_FILE := $(UCFG)
+  _UCFG_FILE := $(shell for f in $(UCFG) $(_BSP_CONFIG)/$(UCFG) $(UBOOT_CONFIG_DIR)/$(UCFG); do \
+		if [ -f $$f ]; then echo $$f; break; fi; done)
+  ifneq ($(_UCFG_FILE),)
+    UCFG_FILE := $(subst //,/,$(_UCFG_FILE))
   else
-    TMP := $(_BSP_CONFIG)/$(UCFG)
-    ifeq ($(TMP), $(wildcard $(TMP)))
-      UCFG_FILE := $(UCFG)
-    else
-      TMP := $(UBOOT_CONFIG_DIR)/$(UCFG)
-      ifeq ($(TMP), $(wildcard $(TMP)))
-        UCFG_FILE := $(TMP)
-      else
-        $(error $(UCFG): can not be found, please pass a valid uboot defconfig)
-      endif
-    endif
+    $(error $(UCFG): can not be found, please pass a valid uboot defconfig)
   endif
 endif
 

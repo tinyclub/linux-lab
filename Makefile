@@ -3210,12 +3210,16 @@ else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
+  # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
+  TIMEOUT_CONTINUE ?= 0
+
   TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
-  TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); sudo kill -9 \$$\$$(cat $(TEST_LOG_PID)); \
+  TEST_AFTER  ?= ; echo \$$\$$? > $(TEST_RET); sudo kill -9 \$$\$$(cat $(TEST_LOG_PID)); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \
 	ret=\$$\$$(cat $(TEST_RET)) && [ \$$\$$ret -ne 0 ] && echo \"ERR: Boot timeout in $(TEST_TIMEOUT).\" && echo \"ERR: Log saved in $(TEST_LOG).\" && exit \$$\$$ret; \
-	echo \"LOG: Boot run successfully.\"
+	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then echo \"LOG: Test continue after timeout kill in $(TEST_TIMEOUT).\"; else echo \"LOG: Boot run successfully.\"; fi; \
+	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then sleep 2; rm -rf $(TEST_LOG_PIPE).in $(TEST_LOG_PIPE).out; fi
   # If not support netowrk, should use the other root device
 endif
 

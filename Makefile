@@ -2966,7 +2966,14 @@ endif
 
 # Testing support
 TEST ?= $(PREPARE)
-TEST_PREPARE ?= $(subst $(comma),$(space),$(TEST))
+ifneq ($(TEST_PREPARE),)
+  override TEST_PREPARE := $(subst $(comma),$(space),$(TEST_PREPARE))
+  ifneq ($(TEST),)
+    override TEST_PREPARE := $(TEST_PREPARE) $(subst $(comma),$(space),$(TEST))
+  endif
+else
+  TEST_PREPARE := $(subst $(comma),$(space),$(TEST))
+endif
 
 ifeq ($(UBOOT),)
   override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))

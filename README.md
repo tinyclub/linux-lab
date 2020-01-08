@@ -873,9 +873,10 @@ Reboot the guest system for several times:
 
 Test a feature of a specified linux version on a specified board(`cls` feature is for increase `COMMAND_LINE_SIZE` to 4096):
 
-    $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init FORCE_CHECKOUT=1
+    $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init,kernel-cleanup
 
-  NOTE: `board-init` and `FORCE_CHECKOUT` make sure test run automatically, but `FORCE_CHECKOUT` is not safe, please save your code before use it!!
+  NOTE: `board-init` and `kernel-cleanup` make sure test run automatically, but `kernel-cleanup` is not safe, please save your code before use it!!
+        To cleanup all of root,uboot,qemu and kernel, please use `cleanup` instead.
 
 Test a kernel module:
 
@@ -891,7 +892,7 @@ Test modules with specified ROOTDEV, nfs boot is used by default, but some board
 
 Run test cases while testing kernel modules (test cases run between insmod and rmmod):
 
-    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world' TEST_PREPARE=board-init FORCE_CHECKOUT=1 f=cls
+    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world' TEST_PREPARE=board-init,kernel-cleanup f=cls
 
 Run test cases while testing internal kernel modules:
 
@@ -921,11 +922,11 @@ Test a kernel module and make some targets before testing:
 
 Test everything in one command (from download to poweroff, see [poweroff hang](#poweroff-hang)):
 
-    $ make test TEST=kernel-full,root-full
+    $ make test TEST=kernel-full,root-full TEST_PREPARE=board-init,cleanup
 
 Test everything in one command (with uboot while support, e.g. vexpress-a9):
 
-    $ make test TEST=kernel-full,root-full,uboot-full
+    $ make test TEST=kernel-full,root-full,uboot-full TEST_PREPARE=board-init,cleanup
 
 Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
 

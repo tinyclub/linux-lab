@@ -861,7 +861,7 @@ Run guest test case:
 
     $ make test TEST_CASE=/tools/ftrace/trace.sh
 
-Run guest test cases (please make sure `COMMAND_LINE_SIZE` is bigger than 1024):
+Run guest test cases (`COMMAND_LINE_SIZE` must be big enough, e.g. 4096, see `cls` feature below):
 
     $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
 
@@ -871,7 +871,7 @@ Reboot the guest system for several times:
 
    NOTE: reboot may 1) hang, 2) continue; 3) timeout killed, TEST_TIMEOUT=30; 4) timeout continue, TIMEOUT_CONTINUE=1
 
-Test a feature of a specified linux version on a specified board:
+Test a feature of a specified linux version on a specified board(`cls` feature is for increase `COMMAND_LINE_SIZE` to 4096):
 
     $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init FORCE_CHECKOUT=1
 
@@ -891,7 +891,7 @@ Test modules with specified ROOTDEV, nfs boot is used by default, but some board
 
 Run test cases while testing kernel modules (test cases run between insmod and rmmod):
 
-    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
+    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world' TEST_PREPARE=board-init FORCE_CHECKOUT=1 f=cls
 
 Run test cases while testing internal kernel modules:
 

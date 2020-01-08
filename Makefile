@@ -2976,7 +2976,10 @@ ifeq ($(QEMU),)
 endif
 
 # Force running git submodule commands
-GIT_CHECKOUT_FORCE ?= $(if $(TEST),-f)
+# FIXME: To test automatically, must checkout with -f, otherwise, will stop with failures.
+ifeq ($(FORCE_CHECKOUT),1)
+  GIT_CHECKOUT_FORCE ?= -f
+endif
 
 # Some boards not support 'reboot' test, please use 'power' instead.
 #

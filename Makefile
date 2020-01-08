@@ -3461,26 +3461,26 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
-define genenv
+define genenvdeps
 
 $(1)-env: env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
 
-endef #genenv
+endef #genenvdeps
 
-#$(warning $(call genenv,kernel,LINUX))
-$(eval $(call genenv,kernel,LINUX))
+#$(warning $(call genenvdeps,kernel,LINUX))
+$(eval $(call genenvdeps,kernel,LINUX))
 
-#$(warning $(call genenv,uboot,UBOOT))
-$(eval $(call genenv,uboot,UBOOT))
+#$(warning $(call genenvdeps,uboot,UBOOT))
+$(eval $(call genenvdeps,uboot,UBOOT))
 
-#$(warning $(call genenv,uboot,UBOOT)
-$(eval $(call genenv,uboot,UBOOT))
+#$(warning $(call genenvdeps,uboot,UBOOT)
+$(eval $(call genenvdeps,uboot,UBOOT))
 
-#$(warning $(call genenv,root,BUILDROOT)
-$(eval $(call genenv,root,BUILDROOT))
+#$(warning $(call genenvdeps,root,BUILDROOT)
+$(eval $(call genenvdeps,root,BUILDROOT))
 
 env: env-prepare
 env-prepare: toolchain

@@ -189,10 +189,74 @@ $(if $(call __v,$1,$2),$(call __v,$1,$2),$(if $3,$3,$($1)))
 endef
 #$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
 
+# $(BOARD_DIR)/Makefile.linux_$(LINUX)
+define _f
+$(3)/$(2).$(1)
+endef
+
+define _vf
+$(call _f,$(if $(4),$(call _lc,$1)_$($1),$(1)),$(2),$(3))
+endef
+
+# include $(3)/$(2).lowcase($(1))_$(1)
+define _i
+  $(1)_$(2) := $$(call _vf,$(1),$(2),$(3),$(4))
+  ifeq ($$($(1)_$(2)),$$(wildcard $$($(1)_$(2))))
+    include $$($(1)_$(2))
+  endif
+endef
+
+# include $(BOARD_DIR)/Makefile.linux_$(LINUX)
+define _vi
+$(call _i,$(1),$(2),$(3),1)
+endef
+
+define _bvi
+$(call _vi,$(1),$(2),$(BOARD_DIR))
+endef
+
+define _bi
+$(call _i,$(1),$(2),$(BOARD_DIR))
+endef
+
+define _ti
+$(call _i,$(1),$(2),$(TOP_DIR))
+endef
+
+# Include board detailed configuration
+# Makefile.config/beforeconfig/afterconfig hooks for more
+
+define board_config
+$(call _bi,beforeconfig.private,Makefile)
+$(call _bi,beforeconfig,Makefile)
+
+$(call _bi,config,Makefile)
+
+$(call _bi,GCC,Makefile)
+$(call _bi,ROOT,Makefile)
+$(call _bi,NET,Makefile)
+$(call _bvi,LINUX,Makefile)
+
+$(call _bi,afterconfig,Makefile)
+$(call _bi,afterconfig.private,Makefile)
+endef
+
+# include Makefile.init if exist
+# the .private version is for user local customization, should not be added in mainline repository
+$(eval $(call _ti,init,Makefile))
+$(eval $(call _ti,init.private,Makefile))
+
 # Loading board configurations
 ifneq ($(BOARD),)
+  # include $(BOARD_DIR)/Makefile.init if exist
+  $(eval $(call _bi,init.private,Makefile))
+  $(eval $(call _bi,init,Makefile))
   include $(BOARD_MAKEFILE)
+  # include $(BOARD_DIR)/Makefile.fini if exist
+  $(eval $(call _bi,fini,Makefile))
+  $(eval $(call _bi,fini.private,Makefile))
 endif
+
 
 # Customize kernel git repo and local dir
 KERNEL_SRC_LINUX := $(call __v,KERNEL_SRC,LINUX)
@@ -848,7 +912,7 @@ b-c: board-clean
 PHONY += board board-init board-clean board-save b-s b-c b-i
 
 board-config: board-save cleanstamp
-	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE);)
+	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 PHONY += board-config
 
@@ -3509,6 +3573,10 @@ help:
 h: help
 
 PHONY += env env-list env-prepare kernel-env kernel-env-prepare uboot-env uboot-env-prepare qemu-env qemu-env-prepare env-dump env-save help h
+
+# include Makefile.fini if exist
+$(eval $(call _ti,fini,Makefile))
+$(eval $(call _ti,fini.private,Makefile))
 
 #
 # override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input

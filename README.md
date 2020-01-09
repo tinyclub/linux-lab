@@ -368,6 +368,13 @@ Checkout them one by one:
     $ make kernel-checkout
     $ make root-checkout
 
+If checkout not work due to local changes, save changes and run to get a clean environment:
+
+    $ make kernel-cleanup
+    $ make root-cleanup
+
+The same to qemu and uboot.
+
 ### Patching
 
 Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:

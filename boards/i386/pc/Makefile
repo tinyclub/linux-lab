@@ -8,28 +8,11 @@ MEM     ?= 128M
 #QEMU    ?= v0.10.6
 SMP     ?= 4
 LINUX   ?= v5.1
+BUILDROOT?= 2019.02.2
 
-LINUX[LINUX_v2.6.11.12] = 8e63197f
-GCC[LINUX_v2.6.11.12] = 4.4
-GCC[LINUX_v2.6.12.6] = 4.4
-GCC[LINUX_v2.6.21.5] = 4.4
-GCC[LINUX_v2.6.24.7] = 4.8
-GCC[LINUX_v2.6.34.9] = 4.8
-GCC[LINUX_v5.1] = 8
-
-# Configuration for v2.6.10
-KERNEL_GIT[LINUX_v2.6.10] = https://gitee.com/tinylab/tglx-linux-history
-KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
-GCC[LINUX_v2.6.10] = 4.4
-# Kernel panic - not syncing: Attempted to kill init! on 2019.11, may compiled with too new kernel(v5.1)
-# Tested: Kernel <= v2.6.24.7 boot with /dev/ram0 not work with 2019.11
-BUILDROOT[LINUX_v2.6.10] = 2019.02.2
-# Workaround "Bad page state at prep_new_page (in process 'swapper', page c02d1b84)"
-MEM[LINUX_v2.6.10] = 80M
-# /dev/ram0 boot panic on SMP currently
-SMP[LINUX_v2.6.10] = 1
-# panic after poweroff while using e1000
-NETDEV[LINUX_v2.6.10] = ne2k_pci
+# Add board detailed configuration
+#$(warning $(call board_config))
+$(eval $(call board_config))
 
 # Force change ARCH for kernel version <= 2.6.23
 IS_X86 = $(shell cd $(KERNEL_ABS_SRC); git show $(call _v,LINUX,LINUX):arch/$(ARCH)/boot >/dev/null 2>&1; echo $$?)
@@ -37,18 +20,16 @@ ifneq ($(IS_X86),0)
   ARCH  := $(XARCH)
 endif
 
-BUILDROOT?= 2019.02.2
-
 # Check qemu support:
 # $ qemu-system-i386 -net nic,model=?
 #   qemu: Supported NIC models: ne2k_pci,i82551,i82557b,i82559er,rtl8139,e1000,pcnet,virtio
 #
-NETDEV_LIST := ne2k_pci e1000 rtl8139 pcnet
+NETDEV_LIST ?= ne2k_pci e1000 rtl8139 pcnet
 NETDEV  ?= e1000
 
-ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
-ROOTDEV_LIST[LINUX_v2.6.34.9] := /dev/sda /dev/ram0 /dev/nfs
-ROOTDEV ?= /dev/ram0
+ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
+ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
+ROOTDEV ?= /dev/hda
 
 SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage

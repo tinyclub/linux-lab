@@ -1388,7 +1388,7 @@ gcc: toolchain
 SCRIPT_GETCCVER := tools/gcc/version.sh
 
 ifeq ($(CCORI),internal)
-  CCVER := gcc-$(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
+  CCVER := `echo gcc-$$($(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))`
 endif
 
 include $(PREBUILT_TOOLCHAINS)/Makefile
@@ -1491,7 +1491,7 @@ else
   endif
 endif
 
-gcc-switch: toolchain-switch
+gcc-switch: toolchain-switch gcc-info
 
 PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
 

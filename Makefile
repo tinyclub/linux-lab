@@ -890,7 +890,8 @@ endif
 		| egrep -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" | egrep --colour=auto "$(FILTER)"
+		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
+		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
 
 board-init: cleanstamp
 

@@ -2,6 +2,7 @@
 
 VS=$1
 Makefile=$2
+LINUX=$3
 
 V=$(echo $1 | cut -d'=' -f1)
 _V=$(echo $V | sed -e "s/\[/\\\[/g;s/\]/\\\]/g")
@@ -13,9 +14,38 @@ do
   [ "x$V" == "x$v" ] && exit 0
 done
 
-grep -v "^#" $Makefile | grep -q "$_V"
-if [ $? -eq 0 ]; then
-  sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $Makefile
+GCC_Makefile=${Makefile}.gcc
+ROOT_Makefile=${Makefile}.root
+NETD_Makefile=${Makefile}.net
+LINUX_Makefile=${Makefile}.linux_${LINUX}
+
+# Makefile.linux_vX.Y.Z > Makefile.gcc > Makefile
+
+echo "LOG: Config Variable: ($V, $_V)"
+echo "LOG: Config Value: $S"
+
+m=${Makefile}
+if [ "$V" != "LINUX" -a -f ${LINUX_Makefile} ]; then
+  m=${LINUX_Makefile}
 else
-  echo "$V := $S" >> $Makefile
+  for x in GCC ROOT NET
+  do
+    echo "$V" | grep -q "^$x"
+    if [ $? -eq 0 ]; then
+      _m=$(eval echo \${${x}_Makefile})
+      [ -f $_m ] && m=$_m && break
+    fi
+  done
+fi
+
+echo "LOG: Save to:" $m
+
+[ "$V" == "$_V" ] && _V="$V[\t ?:=]"
+
+grep -v "^#" $m | grep -q "$_V"
+if [ $? -eq 0 ]; then
+  sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $m
+else
+  echo "$V := $S" $m
+  echo "$V := $S" >> $m
 fi

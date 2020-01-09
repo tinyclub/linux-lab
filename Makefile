@@ -230,6 +230,7 @@ define board_config
 $(call _bi,beforeconfig.private,Makefile)
 $(call _bi,beforeconfig,Makefile)
 
+$(call _bi,config.private,Makefile)
 $(call _bi,config,Makefile)
 
 $(call _bi,GCC,Makefile)

@@ -35,7 +35,7 @@ tags:
 
 让我们再来看一下 2005 年那篇介绍 timer wheel 文章中的一张图：
 
-![Timer wheel diagram](https://static.lwn.net/images/ns/kernel/Timers.png)
+![Timer wheel diagram](/wp-content/uploads/2020/01/lwn-646950/lwn-152436.png)
 
 > This data structure is indexed by the kernel's low-resolution "jiffies" clock; one jiffy corresponds to something between 1ms and 10ms, depending on how the kernel is configured. Once every jiffy, the kernel processes any expired timers. That is done by taking the lowest eight bits of the `jiffies` variable and using them to index into the rightmost array in the above diagram; the result will be a linked list of timer events that expire at the current time.
 

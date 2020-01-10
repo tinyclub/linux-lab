@@ -66,11 +66,11 @@ tags:
     $ grep FTRACE -ur output/aarch64/linux-v5.1-raspi3/.config
     CONFIG_FTRACE=y
 
-**关闭 FTRACE"*
+**关闭 FTRACE**
 
-  $ linux-stable/scripts/config --file output/aarch64/linux-v5.1-raspi3/.config -d FTRACE
-  $ grep FTRACE -ur output/aarch64/linux-v5.1-raspi3/.config
-  # CONFIG_FTRACE is not set
+    $ linux-stable/scripts/config --file output/aarch64/linux-v5.1-raspi3/.config -d FTRACE
+    $ grep FTRACE -ur output/aarch64/linux-v5.1-raspi3/.config
+    # CONFIG_FTRACE is not set
 
 在用 `scripts/config` 配置完以后，需要再执行 `make kernel-olddefconfig` 才能让配置实际生效。
 

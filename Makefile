@@ -913,10 +913,13 @@ b-c: board-clean
 
 PHONY += board board-init board-clean board-save b-s b-c b-i
 
+board-edit:
+	$(Q)vim $(BOARD_MAKEFILE)
+
 board-config: board-save cleanstamp
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
-PHONY += board-config
+PHONY += board-config board-edit
 
 # Permission preparation
 perm:

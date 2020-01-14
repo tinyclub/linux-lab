@@ -65,7 +65,6 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Running any make goals](#running-any-make-goals)
 - [FAQs](#faqs)
    - [Poweroff hang](#poweroff-hang)
-   - [VNC login with password failure](#vnc-login-with-password-failure)
    - [Boot with missing sdl2 libraries failure](#boot-with-missing-sdl2-libraries-failure)
    - [NFS/tftpboot not work](#nfstftpboot-not-work)
    - [Run tools without sudo](#run-tools-without-sudo)
@@ -87,6 +86,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [linux-lab/configs: Permission denied](#linux-labconfigs-permission-denied)
    - [Client.Timeout exceeded while waiting headers](#clienttimeout-exceeded-while-waiting-headers)
    - [VNC login fails with wrong password](#vnc-login-fails-with-wrong-password)
+   - [scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h](#scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -188,9 +188,15 @@ If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of 
 
     $ cd /mnt/sda1
 
-For Linux or Mac OSX, please simply choose one directory in `~/Downloads` or `~/Documents`.
+For Linux, please simply choose one directory in `~/Downloads` or `~/Documents`.
 
     $ cd ~/Documents
+
+For Mac OSX, to compile Linux normally, please create a case sensitive filesystem as the working space at first:
+
+    $ hdiutil -type SPARSE create -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ cd ~/Documents/labspace
 
 ## Download the lab
 
@@ -1239,14 +1245,6 @@ To test such boards automatically, please make sure setting 'TEST_TIMEOUT', e.g.
 
 Welcome to fix up them.
 
-### VNC login with password failure
-
-This happens rarely, but simply fix it up by removing the containers (especially the clound-ubuntu-web container) and re-run your lab, it is safe
-to the data in lab directories.
-
-    $ tools/docker/rm-full
-    $ tools/docker/run linux-lab
-
 ### Boot with missing sdl2 libraries failure
 
 That's because the docker image is not updated, just rerun the lab (please must not use 'tools/docker/restart' here for it not using the new docker image):
@@ -1467,8 +1465,16 @@ Configuration in Ubuntu:
 
 VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
 
-    $ tools/docker/clean-all
+    $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab
+
+### scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h
+
+This means MAC OSX not use Case sensitive filesystem, create one using hdiutil or Disk Utility yourself:
+
+    $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ cd ~/Documents/labspace
 
 ## Contact and Sponsor
 

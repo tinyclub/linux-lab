@@ -818,7 +818,7 @@ ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(findstring $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+ ifeq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
   ifeq ($(findstring $(BSP_DIR),$(ROOTFS)),$(BSP_DIR))
     ifeq ($(BSP_DOWNLOADED),0)
       # Allow download bsp automatically

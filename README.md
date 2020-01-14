@@ -443,8 +443,8 @@ Save all of the configs and rootfs/kernel/dtb images:
 
 Save configs and images to `boards/<BOARD>/bsp/`:
 
-    $ make kconfig-save
-    $ make rconfig-save
+    $ make kernel-saveconfig
+    $ make root-saveconfig
 
     $ make root-save
     $ make kernel-save
@@ -730,7 +730,7 @@ Clean images if want to update ramdisk, dtb and uImage:
 Save uboot images and configs:
 
     $ make uboot-save
-    $ make uconfig-save
+    $ make uboot-saveconfig
 
 #### Qemu
 
@@ -1118,19 +1118,26 @@ good helper to utilize existing configs:
     $ make list-kernel
     v4.12 v5.0.10 v5.1
     $ make kernel-clone LINUX=v5.1 LINUX_NEW=v5.4
+    $ make kernel-menuconfig
     $ make kernel-saveconfig
 
     $ make list-root
     2016.05 2019.02.2
     $ make root-clone BUILDROOT=2019.02.2 BUILDROOT_NEW=2019.11
-    $ make root
+    $ make root-menuconfig
     $ make root-saveconfig
 
 Edit the configs and Makefile untill they match our requirements.
 
+    $ make kernel-menuconfig
+    $ make root-menuconfig
+    $ make board-edit
+
 The configuration must be put in `boards/<BOARD>/` and named with necessary
 version and arch info, use `raspi3` as an example:
 
+    $ make kernel-saveconfig
+    $ make root-saveconfig
     $ ls boards/aarch64/raspi3/bsp/configs/
     buildroot_2019.02.2_defconfig  linux_v5.1_defconfig
 
@@ -1193,9 +1200,9 @@ The same to rootfs, uboot and even qemu.
     $ make kernel-save
     $ make uboot-save
 
-    $ make rconfig-save
-    $ make kconfig-save
-    $ make uconfig-save
+    $ make root-saveconfig
+    $ make kernel-saveconfig
+    $ make uboot-saveconfig
 
 #### Upload everything
 

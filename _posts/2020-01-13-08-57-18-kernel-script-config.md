@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "通过命令行工具修改内核配置"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /kernel-script-config/
 description: "大家可能都比较习惯了通过交互式的方式配置内核选项，这里介绍一款命令行的非交互式配置工具。"

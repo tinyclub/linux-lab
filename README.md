@@ -1112,6 +1112,20 @@ Kernel itself also:
 
 * kernel: `linux-stable/arch/arm/configs/vexpress_defconfig`
 
+Linux Lab itself also provide many working configs too, the `-clone` target is a
+good helper to utilize existing configs:
+
+    $ make list-kernel
+    v4.12 v5.0.10 v5.1
+    $ make kernel-clone LINUX=v5.1 LINUX_NEW=v5.4
+    $ make kernel-saveconfig
+
+    $ make list-root
+    2016.05 2019.02.2
+    $ make root-clone BUILDROOT=2019.02.2 BUILDROOT_NEW=2019.11
+    $ make root
+    $ make root-saveconfig
+
 Edit the configs and Makefile untill they match our requirements.
 
 The configuration must be put in `boards/<BOARD>/` and named with necessary

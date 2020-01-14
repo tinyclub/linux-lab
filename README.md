@@ -1480,6 +1480,6 @@ This means MAC OSX not use Case sensitive filesystem, create one using hdiutil o
 
 Our contact wechat is **tinylab**, welcome to join our user & developer discussion group.
 
-** Contact us and Sponsor via wechat **
+**Contact us and Sponsor via wechat**
 
 ![contact-sponsor](doc/contact-sponsor.png)

@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "嵌入式 Linux 产品技术评估之系统裁剪与启动速度"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-product-evaluate-size-and-boot/
 description: "本文通过实例介绍了嵌入式 Linux 产品系统裁剪与启动速度的技术评估方法。"

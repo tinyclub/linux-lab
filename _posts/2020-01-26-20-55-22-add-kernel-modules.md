@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "为已安装好的 Linux 系统新增一个内核模块"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /add-kernel-modules/
 description: "本文介绍如何为已经安装好的 Linux 系统新增一个内核模块"

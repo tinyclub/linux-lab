@@ -572,6 +572,42 @@ JOBS ?= $(HOST_CPU_THREADS)
 # PBR = 1, prebuilt rootfs; 0, new building rootfs if exist
 # PBD = 1, prebuilt dtb   ; 0, new building dtb if exist
 # PBQ = 1, prebuilt qemu  ; 0, new building qemu if exist
+# PBU = 1, prebuilt uboot ; 0, new building qemu if exist
+#
+# Allow using contrary alias: k/kernel,r/root,d/dtb,q/qemu,u/uboot for PBK,PBR,PBD,PBQ,PBU
+#
+# Notes: the uppercase of d,q,u has been used for other cases,
+# so, use the lowercase here.
+#
+
+define _pb
+ifneq ($$($(call _lc,$1)),)
+  ifeq ($$($(call _lc,$1))),1)
+    PB$1 := 0
+  else
+    PB$1 := 1
+  endif
+endif
+
+endef
+
+define _lpb
+_$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
+ifneq ($$($1),)
+  ifeq ($$($1),1)
+    PB$$(_$(1)) := 0
+  else
+    PB$$(_$(1)) := 1
+  endif
+endif
+
+endef
+
+#$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
+$(eval $(foreach x,K R D Q U,$(call _pb,$x)))
+
+#$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+$(eval $(foreach x,kernel root dtb qemu uboot,$(call _pb,$x)))
 
 # Emulator configurations
 ifneq ($(BIOS),)
@@ -1050,6 +1086,17 @@ $(1)-save: $$(call _stamp_$(1),build)
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
 ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
+    boot_deps += $$(call _stamp_$(1),build)
+  endif
+endif
+$(1)_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$(1)))))
+ifeq ($$($$($(1)_app_type)),1)
+  ifeq ($$(origin $$($(1)_app_type)),command line)
+    boot_deps += $$(call _stamp_$(1),build)
+  endif
+endif
+ifeq ($$($(1)),1)
+  ifeq ($$(origin $(1)),command line)
     boot_deps += $$(call _stamp_$(1),build)
   endif
 endif
@@ -3524,6 +3571,7 @@ PHONY += c-e c-r c-u c-k c dc-e dc-r dc-u dc-k dc distclean
 # Show the variables
 ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
 VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' ')
+VARS += PBK PBR PBD PBQ PBU
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
 VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT

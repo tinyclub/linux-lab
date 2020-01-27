@@ -477,13 +477,21 @@ Boot with curses graphic (friendly to ssh login, not work for all boards, exit w
 
     $ make b=pc boot G=2
 
-Boot with prebuilt kernel and rootfs (if no new available, simple use `make boot`):
+Boot with PreBuilt Kernel, Dtb and Rootfs (if no new available, simple use `make boot`):
 
     $ make boot PBK=1 PBD=1 PBR=1
+    or
+    $ make boot k=0 d=0 r=0
+    or
+    $ make boot kernel=0 dtb=0 root=0
 
 Boot with new kernel, dtb and rootfs if exists (if new available, simple use `make boot`):
 
     $ make boot PBK=0 PBD=0 PBR=0
+    or
+    $ make boot k=1 d=1 r=1
+    or
+    $ make boot kernel=1 dtb=1 root=1
 
 Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
 

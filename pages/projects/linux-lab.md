@@ -203,7 +203,7 @@ tags:
 
 通过添加或者修改 `boards/BOARD/Makefile`，可以灵活配置开发板、内核版本以及 BuildRoot 等信息。通过它可以灵活打造自己特定的 Linux 实验环境。
 
-    $ cat boards/versatilepb/Makefile
+    $ cat boards/arm/versatilepb/Makefile
     ARCH=arm
     XARCH=$(ARCH)
     CPU=arm926t

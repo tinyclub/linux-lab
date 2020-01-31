@@ -1277,40 +1277,24 @@ PHONY += source download core-source download-core all-source all-download downl
 
 # Qemu targets
 
-QCO ?= 0
-ifneq ($(QEMU),)
-ifneq ($(QCO),0)
-  QEMU_CHECKOUT := qemu-checkout
-endif
-
 _QEMU  ?= $(call _v,QEMU,QEMU)
 # Add basic qemu dependencies
 #$(warning $(call gendeps,qemu))
 $(eval $(call gendeps,qemu))
 
-endif
-
 qemu-checkout:
 	cd $(QEMU_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
-
-QP ?= 0
 
 QEMU_PATCH_TOOL  := tools/qemu/patch.sh
 QEMU_PATCHED_TAG := $(QEMU_SRC)/.patched
 
-qemu-patch: $(QEMU_CHECKOUT)
+qemu-patch:
 	@if [ ! -f $(QEMU_PATCHED_TAG) ]; then \
 	  $(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT); \
 	  touch $(QEMU_PATCHED_TAG);  \
 	else \
 	  echo "ERR: qemu patchset has been applied, if want, please do 'make qemu-checkout' at first." && exit 1; \
 	fi
-
-ifneq ($(QEMU),)
-ifneq ($(QP),0)
-  QEMU_PATCH := qemu-patch
-endif
-endif
 
 # Notes:
 #
@@ -1400,7 +1384,7 @@ QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 
-qemu-defconfig: $(QEMU_PATCH)
+qemu-defconfig:
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
@@ -1542,12 +1526,6 @@ PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
 
 # Rootfs targets
 
-RCO ?= 0
-#BUILDROOT ?= master
-ifeq ($(RCO),1)
-  ROOT_CHECKOUT := root-checkout
-endif
-
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 # Add basic root dependencies
@@ -1582,7 +1560,6 @@ endif
 
 _RCFG := $(notdir $(RCFG_FILE))
 
-RP ?= 0
 ROOT_PATCH_TOOL := tools/rootfs/patch.sh
 ROOT_PATCHED_TAG := $(ROOT_SRC)/.patched
 
@@ -1594,11 +1571,7 @@ root-patch:
 	  echo "ERR: root patchset has been applied already, if want, please do 'make root-checkout' at first."; \
 	fi
 
-ifeq ($(RP),1)
-  ROOT_PATCH := root-patch
-endif
-
-root-defconfig: $(ROOT_CHECKOUT) $(ROOT_PATCH)
+root-defconfig:
 	$(Q)mkdir -p $(ROOT_OUTPUT)
 	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
 	$(call make_root,$(_RCFG))
@@ -2022,16 +1995,9 @@ _KERNEL ?= $(_LINUX)
 kernel-checkout:
 	cd $(KERNEL_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
 
-KCO ?= 0
-#LINUX ?= master
-ifeq ($(KCO),1)
-  KERNEL_CHECKOUT := kernel-checkout
-endif
-
 KERNEL_PATCH_TOOL := tools/kernel/patch.sh
 LINUX_PATCHED_TAG := $(KERNEL_SRC)/.patched
 
-KP ?= 0
 kernel-patch:
 	@if [ ! -f $(LINUX_PATCHED_TAG) ]; then \
 	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
@@ -2041,12 +2007,7 @@ kernel-patch:
 	fi
 
 
-ifeq ($(KP),1)
-  KERNEL_PATCH := kernel-patch
-endif
-
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
-
 
 KCFG ?= $(KERNEL_CONFIG_FILE)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
@@ -2070,7 +2031,7 @@ endif
 
 _KCFG := $(notdir $(KCFG_FILE))
 
-kernel-defconfig: $(KERNEL_CHECKOUT) $(KERNEL_PATCH)
+kernel-defconfig:
 	$(Q)mkdir -p $(KERNEL_OUTPUT)
 	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
 	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
@@ -2424,14 +2385,6 @@ uboot-checkout:
 	cd $(UBOOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
 
 
-BCO ?= 0
-#UBOOT ?= master
-ifeq ($(BCO),1)
-  UBOOT_CHECKOUT := uboot-checkout
-endif
-
-UP ?= 0
-
 # Verify BOOTDEV argument
 ifneq ($(BOOTDEV),)
   # If Uboot version specific bootdev list defined, use it
@@ -2500,10 +2453,6 @@ _uboot-patch:
 uboot-patch:
 	@make $(S) _uboot-patch
 
-ifeq ($(UP),1)
-  UBOOT_PATCH := uboot-patch
-endif
-
 UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
 
 UCFG ?= $(UBOOT_CONFIG_FILE)
@@ -2527,7 +2476,7 @@ endif
 
 _UCFG := $(notdir $(UCFG_FILE))
 
-uboot-defconfig: $(UBOOT_CHECKOUT) $(UBOOT_PATCH)
+uboot-defconfig:
 	$(Q)mkdir -p $(UBOOT_OUTPUT)
 	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
 	$(call make_uboot,$(_UCFG))

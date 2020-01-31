@@ -63,54 +63,54 @@ _CASE="test"
 
 case $CASE in
 	kernel)
-		PREPARE="kernel-full"
+		PREPARE="kernel"
 		;;
 	kernel-release)
-		PREPARE="kernel-all"
+		PREPARE="kernel-release"
 		PREBUILT=1
 		;;
 	root)
-		PREPARE="root-full"
+		PREPARE="root"
 		;;
 	root-release)
-		PREPARE="root-all"
+		PREPARE="root-release"
 		PREBUILT=1
 		;;
 	qemu)
-		PREPARE="qemu-full"
+		PREPARE="qemu"
 		;;
 	qemu-release)
-		PREPARE="qemu-all"
+		PREPARE="qemu-release"
 		PREBUILT=1
 		;;
 	uboot)
-		PREPARE="uboot-full"
+		PREPARE="uboot"
 		;;
 	uboot-release)
-		PREPARE="uboot-all"
+		PREPARE="uboot-release"
 		PREBUILT=1
 		;;
 	module)
 		;;
 	base)
-		PREPARE="uboot-full,kernel-full"
+		PREPARE="uboot,kernel"
 		;;
 	base-release)
-		PREPARE="uboot-all,kernel-all"
+		PREPARE="uboot-release,kernel-release"
 		PREBUILT=1
 		;;
 	core)
-		PREPARE="uboot-full,kernel-full,root-full"
+		PREPARE="uboot,kernel,root"
 		;;
 	core-release)
-		PREPARE="uboot-all,kernel-all,root-all"
+		PREPARE="uboot-release,kernel-release,root-release"
 		PREBUILT=1
 		;;
 	full)
-		PREPARE="uboot-full,kernel-full,root-full,qemu-full"
+		PREPARE="uboot,kernel,root,qemu"
 		;;
 	full-release)
-		PREPARE="uboot-all,kernel-all,root-all,qemu-all"
+		PREPARE="uboot-release,kernel-release,root-release,qemu-release"
 		PREBUILT=1
 		;;
 	debug)

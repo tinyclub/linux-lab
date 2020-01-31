@@ -1024,6 +1024,10 @@ list-%: FORCE
 PHONY += list list-base list-plugin list-full list-kernel list-buildroot list-BUILDROOT
 
 # Define generic target deps support
+define make_qemu
+$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
+endef
+
 define make_kernel
 $(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
@@ -1060,8 +1064,9 @@ $(1)-defconfig: $$(call _stamp_$(1),patch)
 $(1)-defconfig: $$(call _stamp_$(1),env)
 $(1)-modules-install: $$(call _stamp_$(1),modules)
 $(1)-modules-install-km: $$(call _stamp_$(1),modules-km)
+$(1)-help: $$(call _stamp_$(1),defconfig)
 
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build $(1)-buildroot $(1)-modules $(1)-modules-km
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-oldnoconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build $(1)-buildroot $(1)-modules $(1)-modules-km
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 
 $(1)-save: $$(call _stamp_$(1),build)
@@ -1119,6 +1124,17 @@ $(1)-outdir:
 $(1)-clean: $(1)-cleanstamp
 
 PHONY += $(1)-cleanup $(1)-outdir
+
+$(1)-build: $(1)
+$(1)-release: $(1) $(1)-save $(1)-saveconfig
+
+PHONY += $(1)-build $(1)-release
+
+$(1)-new $(1)-clone: $(1)-cloneconfig
+
+PHONY += $(1)-checkout $(1)-patch $(1) $(1)-help $(1)-clean $(1)-distclean
+PHONY += $(1)-defconfig $(1)-olddefconfig $(1)-oldnoconfig $(1)-menuconfig $(1)-new $(1)-clone $(1)-cloneconfig
+PHONY += $(1)-save $(1)-saveconfig $(1)-savepatch
 
 endef # gendeps
 
@@ -1195,45 +1211,27 @@ $(1)-source:
 			git fetch --tags --all && \
 		cd $$(TOP_DIR); \
 	fi
+
+$(1)_source_childs := $(1)-download download-$(1)
+
+$$($(1)_source_childs): $(1)-source
+
+PHONY += $(1)-source download-$(1) $(1)-download
+
 endef
 
 # Source download
 #$(warning $(call gensource,uboot))
 $(eval $(call gensource,uboot))
 
-download-uboot: uboot-source
-uboot-download: uboot-source
-
-PHONY += uboot-source download-uboot uboot-download
-
 #$(warning $(call gensource,qemu))
 $(eval $(call gensource,qemu))
-
-qemu-download: qemu-source
-download-qemu: qemu-source
-
-qemu-prepare: qemu-defconfig
-qemu-auto: qemu
-qemu-full: qemu
-qemu-all: qemu-all qemu-save
-
-PHONY += qemu-download download-qemu qemu-prepare qemu-auto qemu-full qemu-all
 
 #$(warning $(call gensource,kernel))
 $(eval $(call gensource,kernel))
 
-kernel-download: kernel-source
-download-kernel: kernel-source
-
-PHONY += kernel-source kernel-download download-kernel
-
 #$(warning $(call gensource,root))
 $(eval $(call gensource,root))
-
-root-download: root-source
-download-root: root-source
-
-PHONY += root-source root-download download-root
 
 BSP ?= master
 
@@ -1307,8 +1305,6 @@ qemu-patch: $(QEMU_CHECKOUT)
 	else \
 	  echo "ERR: qemu patchset has been applied, if want, please do 'make qemu-checkout' at first." && exit 1; \
 	fi
-
-PHONY += qemu-patch
 
 ifneq ($(QEMU),)
 ifneq ($(QP),0)
@@ -1408,6 +1404,9 @@ qemu-defconfig: $(QEMU_PATCH)
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
+qemu-help:
+	$(call make_qemu,help)
+
 ifneq ($(QEMU_NEW),)
 ifneq ($(QEMU_NEW),$(QEMU))
 NEW_PREBUILT_QEMU_DIR=$(subst $(QEMU),$(QEMU_NEW),$(PREBUILT_QEMU_DIR))
@@ -1416,24 +1415,14 @@ qemu-clone:
 	$(Q)tools/board/config.sh QEMU=$(QEMU_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_QEMU_DIR)
 endif
-qemu-new: qemu-clone
-
-PHONY += qemu-new qemu-clone
 else
   ifeq ($(MAKECMDGOALS),qemu-clone)
     $(error Usage: make qemu-clone QEMU_NEW=<qemu-version>)
   endif
 endif
 
-PHONY += qemu-defconfig
-
 qemu:
-	$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
-
-qemu-build: qemu
-
-PHONY += qemu qemu-build
-
+	$(call make_qemu)
 
 # Toolchains targets
 
@@ -1624,10 +1613,6 @@ root-cloneconfig:
 	$(Q)tools/board/config.sh BUILDROOT=$(BUILDROOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_ROOT_DIR)
 endif
-root-new: root-clone
-root-clone: root-cloneconfig
-
-PHONY += root-new root-clone root-cloneconfig
 else
   ifeq ($(MAKECMDGOALS),root-clone)
     $(error Usage: make root-clone BUILDROOT_NEW=<buildroot-version>)
@@ -1642,8 +1627,6 @@ root-oldconfig:
 
 root-menuconfig:
 	$(call make_root,menuconfig)
-
-PHONY += root-checkout root-patch root-defconfig root-menuconfig
 
 # Build Buildroot
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/rootfs/install.sh
@@ -1734,15 +1717,6 @@ endif
 
 root-help:
 	$(Q)$(call make_root,help)
-
-root-build: root
-
-root-prepare: root-checkout root-patch root-defconfig
-root-auto: root-prepare root
-root-full: root-download root-prepare root
-root-all: root-full root-save root-saveconfig
-
-PHONY += root root-help root-build root-prepare root-auto root-full root-all
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2120,15 +2094,11 @@ else
 kernel-cloneconfig:
 	$(Q)echo $(LINUX_NEW) already exists!
 endif
-kernel-new: kernel-clone
-kernel-clone: kernel-cloneconfig
 else
   ifeq ($(MAKECMDGOALS),kernel-clone)
     $(error Usage: make kernel-clone LINUX_NEW=<linux-version>)
   endif
 endif
-
-PHONY += kernel-new kernel-clone kernel-cloneconfig
 
 #
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
@@ -2159,9 +2129,6 @@ kernel-oldconfig:
 
 kernel-menuconfig:
 	$(call make_kernel,menuconfig M=)
-
-
-PHONY += kernel-checkout kernel-patch kernel-defconfig kernel-oldnoconfig kernel-olddefconfig kernel-oldconfig kernel-menuconfig
 
 # Build Kernel
 
@@ -2371,7 +2338,6 @@ ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
   o ?= $m
 endif
 
-kernel-getcfg: kernel-getconfig
 kernel-getconfig: FORCE
 	$(Q)$(if $(o), $(foreach _o, $(shell echo $(o) | tr ',' ' '), \
 		__o=$(shell echo $(_o) | tr '[a-z]' '[A-Z]') && \
@@ -2382,7 +2348,6 @@ _kernel-getconfig:
 	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
 kernel-config: kernel-setconfig
-kernel-setcfg: kernel-setconfig
 kernel-setconfig: FORCE
 	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
 		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
@@ -2405,7 +2370,7 @@ endif
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 
-PHONY += kernel-getcfg kernel-getconfig kernel-config kernel-setcfg kernel-setconfig _kernel-getconfig _kernel-setconfig
+PHONY += kernel-getconfig kernel-config kernel-setconfig _kernel-getconfig _kernel-setconfig
 
 module-config: module-setconfig
 modules-config: module-setconfig
@@ -2420,8 +2385,6 @@ kernel-help:
 
 kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
-
-kernel-build: kernel
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
@@ -2447,18 +2410,6 @@ kernel-calltrace: vmlinux
 
 PHONY += kernel-calltrace calltrace
 
-kernel-prepare: kernel-checkout kernel-patch kernel-defconfig
-kernel-auto: kernel-prepare kernel
-kernel-full: kernel-download kernel-prepare kernel
-kernel-all: kernel-full kernel-save kernel-saveconfig
-
-# Simplify testing
-prepare: kernel-prepare
-auto: kernel-auto
-full: kernel-full
-
-PHONY += kernel-help kernel kernel-build kernel-prepare kernel-auto kernel-full prepare auto full kernel-all
-
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 # Add basic uboot dependencies
@@ -2472,8 +2423,6 @@ endif
 uboot-checkout:
 	cd $(UBOOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
 
-
-PHONY += uboot-checkout
 
 BCO ?= 0
 #UBOOT ?= master
@@ -2593,10 +2542,6 @@ uboot-cloneconfig:
 	$(Q)tools/board/config.sh UBOOT=$(UBOOT_NEW) $(BOARD_MAKEFILE)
 	$(Q)mkdir -p $(NEW_PREBUILT_UBOOT_DIR)
 endif
-uboot-new: uboot-clone
-uboot-clone: uboot-cloneconfig
-
-PHONY += uboot-new uboot-clone uboot-cloneconfig
 else
   ifeq ($(MAKECMDGOALS),uboot-clone)
     $(error Usage: make uboot-clone UBOOT_NEW=<uboot-version>)
@@ -2622,15 +2567,6 @@ uboot:
 
 uboot-help:
 	$(Q)$(call make_uboot,help)
-
-uboot-build: uboot
-
-uboot-prepare: uboot-checkout uboot-patch uboot-defconfig
-uboot-auto: uboot-prepare uboot
-uboot-full: uboot-download uboot-prepare uboot
-uboot-all: uboot-full uboot-save uboot-saveconfig
-
-PHONY += uboot-patch uboot-help uboot-build uboot-prepare uboot-auto uboot-full uboot-all
 
 # uboot specific part
 ifeq ($(U),1)
@@ -2765,34 +2701,25 @@ qemu-save:
 	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
 	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
 
-PHONY += root-save kernel-save uboot-save qemu-save
-
-uboot-saveconfig: uconfig-save
-
-uconfig-save:
+uboot-saveconfig:
 	-$(call make_uboot,savedefconfig)
 	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
 	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
-kernel-saveconfig: kconfig-save
-
-kconfig-save:
+kernel-saveconfig:
 	-$(call make_kernel,savedefconfig M=)
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
 
-kernel-savepatch: kpatch-save
-kpatch-save:
+kernel-savepatch:
 	$(Q)cd $(KERNEL_SRC) && git format-patch $(_LINUX) && cd $(TOP_DIR)
 	$(Q)mkdir -p $(BSP_PATCH)/linux/$(LINUX)/
 	$(Q)cp $(KERNEL_SRC)/*.patch $(BSP_PATCH)/linux/$(LINUX)/
 
-root-saveconfig: rconfig-save
-
-rconfig-save:
+root-saveconfig:
 	$(call make_root,savedefconfig)
 	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
 	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
@@ -2800,10 +2727,9 @@ rconfig-save:
 	then cp $(ROOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else cp $(ROOT_OUTPUT)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
 
-save: root-save kernel-save rconfig-save kconfig-save
+save: root-save kernel-save root-saveconfig kernel-saveconfig
 
-PHONY += uboot-saveconfig uconfig-save kernel-saveconfig kconfig-save root-saveconfig rconfig-save save
-PHONY += kernel-savepatch kpatch-save
+PHONY += save
 
 # Qemu options and kernel command lines
 
@@ -3339,12 +3265,12 @@ PHONY += all
 
 qemu-clean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
-	-$(Q)make $(S) -C $(QEMU_OUTPUT) clean
+	-$(Q)$(call make_qemu,clean)
 endif
 
 root-clean:
 ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) clean
+	-$(Q)$(call make_root,clean)
 endif
 
 uboot-clean: $(UBOOT_IMGS_DISTCLEAN)
@@ -3359,7 +3285,7 @@ endif
 
 clean: qemu-clean root-clean kernel-clean rootdir-clean uboot-clean
 
-PHONY += qemu-clean root-clean kernel-clean rootdir-clean uboot-clean clean
+PHONY += rootdir-clean clean
 
 cleanstamp: $(addsuffix -cleanstamp,root qemu kernel uboot)
 
@@ -3372,13 +3298,13 @@ PHONY += $(addsuffix -cleanup,root qemu kernel uboot)
 
 qemu-distclean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
-	-$(Q)make $(S) -C $(QEMU_OUTPUT) distclean
+	-$(Q)$(call make_qemu,distclean)
 	$(Q)rm -rf $(QEMU_OUTPUT)
 endif
 
 root-distclean:
 ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
-	-$(Q)make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) distclean
+	-$(Q)$(call make_root,distclean)
 	$(Q)rm -rf $(ROOT_OUTPUT)
 endif
 
@@ -3396,7 +3322,7 @@ endif
 
 rootdir-distclean: rootdir-clean
 
-PHONY += qeu-distclean root-distclean uboot-distclean kernel-distclean rootdir-distclean
+PHONY += rootdir-distclean
 
 distclean: qemu-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean \
 	toolchain-clean plugin-clean board-clean
@@ -3457,7 +3383,7 @@ env-save: board-config
 help:
 	$(Q)cat README.md
 
-PHONY += env env-list env-prepare kernel-env kernel-env-prepare uboot-env uboot-env-prepare qemu-env qemu-env-prepare env-dump env-save help
+PHONY += env env-list env-prepare env-dump env-save help
 
 # include Makefile.fini if exist
 $(eval $(call _ti,fini,Makefile))

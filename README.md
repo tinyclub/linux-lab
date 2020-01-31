@@ -943,11 +943,11 @@ Test a kernel module and make some targets before testing:
 
 Test everything in one command (from download to poweroff, see [poweroff hang](#poweroff-hang)):
 
-    $ make test TEST=kernel-full,root-full TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root TEST_PREPARE=board-init,cleanup
 
 Test everything in one command (with uboot while support, e.g. vexpress-a9):
 
-    $ make test TEST=kernel-full,root-full,uboot-full TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,cleanup
 
 Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
 

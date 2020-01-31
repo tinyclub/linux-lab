@@ -1034,8 +1034,8 @@ $$(call _stamp_$(1),download): $(1)-outdir
 			touch $$@; \
 		fi
 
-$(1)-download: $$(call _stamp_$(1),outdir)
-$(1)-checkout: $$(call _stamp_$(1),download)
+$(1)-source: $$(call _stamp_$(1),outdir)
+$(1)-checkout: $$(call _stamp_$(1),source)
 $(1)-patch: $$(call _stamp_$(1),checkout)
 $(1)-defconfig: $$(call _stamp_$(1),patch)
 $(1)-defconfig: $$(call _stamp_$(1),env)
@@ -1085,8 +1085,6 @@ $(1)-cleanup:
 	fi
 $(1)-outdir:
 	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
-
-$(1)-source:
 
 $(1)-clean: $(1)-cleanstamp
 

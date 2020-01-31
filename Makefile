@@ -312,76 +312,49 @@ ifneq ($(GCC),)
   GCC_SWITCH := 1
 endif
 
-# Verify LINUX argument
-ifneq ($(LINUX),)
-  ifeq ($(BSP_KERNEL), $(wildcard $(BSP_KERNEL)))
-    LINUX_LIST ?= $(shell ls $(BSP_KERNEL))
-  endif
-  ifneq ($(LINUX_LIST),)
-    ifneq ($(filter $(LINUX), $(LINUX_LIST)), $(LINUX))
-      $(error Supported LINUX list: $(LINUX_LIST))
-    endif
-  endif
-endif
-
-# Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
-ifneq ($(_KERNEL_SRC), $(KERNEL_SRC))
-  _LINUX := $(subst $(shell basename $(KERNEL_SRC))-,,$(LINUX))
-  KERNEL_ABS_SRC := $(KERNEL_SRC)
-endif
-
-# Verify ROOT argument
-ifneq ($(BUILDROOT),)
-  ifeq ($(BSP_ROOT), $(wildcard $(BSP_ROOT)))
-    ROOT_LIST ?= $(shell ls $(BSP_ROOT))
-  endif
-  ifneq ($(ROOT_LIST),)
-    ifneq ($(filter $(ROOT), $(ROOT_LIST)), $(ROOT))
-      $(error Supported ROOT list: $(ROOT_LIST))
-    endif
-  endif
-endif
-
-ifneq ($(_ROOT_SRC), $(ROOT_SRC))
-  ROOT_ABS_SRC := $(ROOT_SRC)
-endif
-
-# Verify UBOOT argument
-ifneq ($(UBOOT),)
-  ifeq ($(BSP_UBOOT), $(wildcard $(BSP_UBOOT)))
-    UBOOT_LIST ?= $(shell ls $(BSP_UBOOT))
-  endif
-  ifneq ($(UBOOT_LIST),)
-    ifneq ($(filter $(UBOOT), $(UBOOT_LIST)), $(UBOOT))
-      $(error Supported UBOOT list: $(UBOOT_LIST))
-    endif
-  endif
-endif
-
-ifneq ($(_UBOOT_SRC), $(UBOOT_SRC))
-  UBOOT_ABS_SRC := $(UBOOT_SRC)
-endif
-
-# Verify QEMU argument
-ifneq ($(QEMU),)
-  ifeq ($(BSP_QEMU), $(wildcard $(BSP_QEMU)))
-    QEMU_LIST ?= $(shell ls $(BSP_QEMU))
+# generate verify function
+define genverify
+ ifneq ($$($2),)
+  ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
+    $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
   endif
   # If Linux version specific qemu list defined, use it
-   _QEMU_LIST=$(call __v,QEMU_LIST,LINUX)
-  ifneq ($(_QEMU_LIST),)
-    override QEMU_LIST := $(_QEMU_LIST)
+   _$(2)_LIST=$$(call __v,$(2)_LIST,LINUX)
+  ifneq ($$(_$(2)_LIST),)
+    override $(2)_LIST := $$(_$(2)_LIST)
   endif
-  ifneq ($(QEMU_LIST),)
-    ifneq ($(filter $(QEMU), $(QEMU_LIST)), $(QEMU))
-      $(error Supported QEMU list: $(QEMU_LIST))
+  ifneq ($$($(2)_LIST),)
+    ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
+      $$(if $(4),$$(eval $$(call $(4))))
+      $$(error Supported $(2) list: $$($(2)_LIST))
     endif
   endif
-endif
+ endif
+ # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
+ ifneq ($3,)
+   ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
+    _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$(2))
+    $(1)_ABS_SRC := $$($(1)_SRC)
+   endif
+ endif
 
-ifneq ($(_QEMU_SRC), $(QEMU_SRC))
-  QEMU_ABS_SRC := $(QEMU_SRC)
-endif
+endef
+
+# Verify LINUX argument
+#$(warning $(call genverify,KERNEL,LINUX,1))
+$(eval $(call genverify,KERNEL,LINUX,1))
+
+# Verify ROOT argument
+#$(warning $(call genverify,ROOT,BUILDROOT,1))
+$(eval $(call genverify,ROOT,BUILDROOT,1))
+
+# Verify UBOOT argument
+#$(warning $(call genverify,UBOOT,UBOOT,1))
+$(eval $(call genverify,UBOOT,UBOOT,1))
+
+# Verify QEMU argument
+#$(warning $(call genverify,QEMU,QEMU,1))
+$(eval $(call genverify,QEMU,QEMU,1))
 
 # Kernel features configuration, e.g. kft, gcs ...
 f ?= $(feature)
@@ -758,18 +731,8 @@ endif
 # TODO: buildroot defconfig for $ARCH
 
 # Verify rootdev argument
-ifneq ($(ROOTDEV),)
-  # If Linux version specific rootdev list defined, use it
-   _ROOTDEV_LIST=$(call __v,ROOTDEV_LIST,LINUX)
-  ifneq ($(_ROOTDEV_LIST),)
-    override ROOTDEV_LIST := $(_ROOTDEV_LIST)
-  endif
-  ifneq ($(ROOTDEV_LIST),)
-    ifneq ($(filter $(ROOTDEV), $(ROOTDEV_LIST)), $(ROOTDEV))
-      $(error Kernel Supported ROOTDEV list: $(ROOTDEV_LIST))
-    endif
-  endif
-endif
+#$(warning $(call genverify,ROOTDEV,ROOTDEV))
+$(eval $(call genverify,ROOTDEV,ROOTDEV))
 
 ROOTDEV_LINUX := $(call _v,ROOTDEV,LINUX)
 ifneq ($(ROOTDEV_LINUX),)
@@ -2685,24 +2648,16 @@ PHONY += save
 # Network configurations
 
 # Verify NETDEV argument
-ifneq ($(NETDEV),)
-  # If Linux version specific netdev list defined, use it
-   _NETDEV_LIST=$(call __v,NETDEV_LIST,LINUX)
-  ifneq ($(_NETDEV_LIST),)
-    override NETDEV_LIST := $(_NETDEV_LIST)
-  endif
-  ifneq ($(NETDEV_LIST),)
-    ifneq ($(filter $(NETDEV), $(NETDEV_LIST)), $(NETDEV))
-      ifeq ($(MACH), malta)
-        EMULATOR += -kernel $(_KIMAGE)
-      endif
-      ifneq ($(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k), $(BOARD))
-        $(info $(shell $(EMULATOR) -M $(MACH) -net nic,model=?))
-      endif
-      $(error Kernel Supported NETDEV list: $(NETDEV_LIST))
-    endif
-  endif
-endif
+define netdev_help
+ ifeq ($$(MACH), malta)
+  EMULATOR += -kernel $(_KIMAGE)
+ endif
+ ifneq ($$(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k), $(BOARD))
+  $$(info $$(shell $(EMULATOR) -M $$(MACH) -net nic,model=?))
+ endif
+endef
+
+$(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
 
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"

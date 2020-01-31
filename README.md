@@ -532,8 +532,8 @@ And more 'xxx-list' are also supported with 'list-xxx', for example:
 ##### non-interactive configuration
 
 A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
-config options non-interactively, based on it, both of `kernel-getconfig/k-gc`
-and `kernel-setconfig/k-sc` are added to tune the kernel options, with them, we
+config options non-interactively, based on it, both of `kernel-getconfig`
+and `kernel-setconfig` are added to tune the kernel options, with them, we
 can simply "enable/disable/setstr/setval/getstate" of a kernel option or many
 at the same time:
 
@@ -564,8 +564,8 @@ More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 
 Operates many options in one command line:
 
-    $ make k-sc m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
-    $ make k-gc o=tun,minix,ikconfig,panic_timeout,hostname
+    $ make kernel-setconfig m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
+    $ make kernel-getconfig o=tun,minix,ikconfig,panic_timeout,hostname
 
 ##### using kernel modules
 
@@ -578,13 +578,13 @@ Build all internel kernel modules:
 
 List available modules in `modules/`, `boards/<BOARD>/bsp/modules/`:
 
-    $ make m-l
+    $ make module-list
 
 If `m` argument specified, list available modules in `modules/`, `boards/<BOARD>/bsp/modules/` and `linux-stable/`:
 
-    $ make m-l m=hello
+    $ make module-list m=hello
          1	m=hello ; M=$PWD/modules/hello
-    $ make m-l m=tun,minix
+    $ make module-list m=tun,minix
          1	c=TUN ; m=tun ; M=drivers/net
          2	c=MINIX_FS ; m=minix ; M=fs/minix
 
@@ -604,14 +604,14 @@ Enable one kernel module:
 
 Build one kernel module (e.g. minix.ko):
 
-    $ make m M=fs/minix/
+    $ make module M=fs/minix/
     Or
-    $ make m m=minix
+    $ make module m=minix
 
 Install and clean the module:
 
-    $ make m-i M=fs/minix/
-    $ make m-c M=fs/minix/
+    $ make module-install M=fs/minix/
+    $ make module-clean M=fs/minix/
 
 More flexible usage:
 
@@ -622,9 +622,9 @@ More flexible usage:
 
 Build external kernel modules (the same as internel modules):
 
-    $ make m m=hello
+    $ make module m=hello
     Or
-    $ make k x=$PWD/modules/hello/hello.ko
+    $ make kernel x=$PWD/modules/hello/hello.ko
 
 
 ##### using kernel features
@@ -633,7 +633,7 @@ Kernel features are abstracted in `feature/linux/, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
 and in-mainline features.
 
-    $ make f-l
+    $ make feature-list
     [ feature/linux ]:
       + 9pnet
       + core
@@ -665,7 +665,7 @@ without any issue if the environment not changed.
 
 For example, to enable kernel modules support, simply do:
 
-    $ make f f=module
+    $ make feature f=module
     $ make kernel-olddefconfig
     $ make kernel
 
@@ -676,7 +676,7 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel-checkout
     $ make kernel-patch
     $ make kernel-defconfig
-    $ make f f=kft
+    $ make feature f=kft
     $ make kernel-olddefconfig
     $ make kernel
     $ make boot
@@ -836,7 +836,7 @@ More rootfs from docker can be found:
 
 Compile the kernel with debugging options:
 
-    $ make feature feature=debug
+    $ make feature f=debug
     $ make kernel-olddefconfig
     $ make kernel
 

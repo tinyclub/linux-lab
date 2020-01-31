@@ -192,6 +192,16 @@ $(if $(call __v,$1,$2),$(call __v,$1,$2),$(if $3,$3,$($1)))
 endef
 #$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
 
+define __vs
+ ifneq ($$(call __v,$(1),$(2)),)
+  $(3) $(1) := $$(call __v,$(1),$(2))
+ endif
+endef
+
+define _vs
+ $(1) := $$(call _v,$(1),$(2))
+endef
+
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
 $(3)/$(2).$(1)
@@ -265,14 +275,8 @@ endif
 
 
 # Customize kernel git repo and local dir
-KERNEL_SRC_LINUX := $(call __v,KERNEL_SRC,LINUX)
-ifneq ($(KERNEL_SRC_LINUX),)
-  KERNEL_SRC := $(KERNEL_SRC_LINUX)
-endif
-KERNEL_GIT_LINUX := $(call __v,KERNEL_GIT,LINUX)
-ifneq ($(KERNEL_GIT_LINUX),)
-  KERNEL_GIT := $(KERNEL_GIT_LINUX)
-endif
+$(eval $(call __vs,KERNEL_SRC,LINUX))
+$(eval $(call __vs,KERNEL_GIT,LINUX))
 
 # Prepare build environment
 
@@ -319,10 +323,7 @@ define genverify
     $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
   endif
   # If Linux version specific qemu list defined, use it
-   _$(2)_LIST=$$(call __v,$(2)_LIST,LINUX)
-  ifneq ($$(_$(2)_LIST),)
-    override $(2)_LIST := $$(_$(2)_LIST)
-  endif
+  $$(call __vs,$(2)_LIST,LINUX,override)
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
@@ -374,22 +375,10 @@ ifneq ($(FEATURE),)
 endif
 
 # Core images: qemu, bootloader, kernel and rootfs
-ROOTFS_LINUX ?= $(call __v,ROOTFS,LINUX)
-ifneq ($(ROOTFS_LINUX),)
-  ROOTFS := $(ROOTFS_LINUX)
-endif
-BUILDROOT_LINUX ?= $(call __v,BUILDROOT,LINUX)
-ifneq ($(BUILDROOT_LINUX),)
-  BUILDROOT := $(BUILDROOT_LINUX)
-endif
-UBOOT_LINUX ?= $(call __v,UBOOT,LINUX)
-ifneq ($(UBOOT_LINUX),)
-  UBOOT := $(UBOOT_LINUX)
-endif
-QEMU_LINUX ?= $(call __v,QEMU,LINUX)
-ifneq ($(QEMU_LINUX),)
-  QEMU := $(QEMU_LINUX)
-endif
+$(eval $(call __vs,ROOTFS,LINUX))
+$(eval $(call __vs,BUILDROOT,LINUX))
+$(eval $(call __vs,UBOOT,LINUX))
+$(eval $(call __vs,QEMU,LINUX))
 
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
@@ -716,10 +705,7 @@ ifeq ($(PBU),0)
 endif
 
 # Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
-U_LINUX ?= $(call __v,U,LINUX)
-ifneq ($(U_LINUX),)
-  U := $(U_LINUX)
-endif
+$(eval $(call __vs,U,LINUX))
 ifneq ($(U),0)
   QEMU_KIMAGE := $(BIMAGE)
 else
@@ -734,12 +720,8 @@ endif
 #$(warning $(call genverify,ROOTDEV,ROOTDEV))
 $(eval $(call genverify,ROOTDEV,ROOTDEV))
 
-ROOTDEV_LINUX := $(call _v,ROOTDEV,LINUX)
-ifneq ($(ROOTDEV_LINUX),)
-  ROOTDEV := $(ROOTDEV_LINUX)
-else
-  ROOTDEV ?= /dev/ram0
-endif
+ROOTDEV ?= /dev/ram0
+$(eval $(call _vs,ROOTDEV,LINUX))
 FSTYPE  ?= ext2
 
 ROOTFS_UBOOT_SUFFIX    := .cpio.uboot

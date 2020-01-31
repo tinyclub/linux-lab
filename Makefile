@@ -1334,7 +1334,7 @@ qemu-defconfig:
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 qemu-help:
-	$(call make_qemu,help)
+	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
 
 ifneq ($(QEMU_NEW),)
 ifneq ($(QEMU_NEW),$(QEMU))
@@ -3236,6 +3236,8 @@ ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
 
+PHONY += $(1)-env
+
 endef #genenvdeps
 
 #$(warning $(call genenvdeps,kernel,LINUX))
@@ -3245,7 +3247,7 @@ $(eval $(call genenvdeps,kernel,LINUX))
 $(eval $(call genenvdeps,uboot,UBOOT))
 
 #$(warning $(call genenvdeps,uboot,UBOOT)
-$(eval $(call genenvdeps,uboot,UBOOT))
+$(eval $(call genenvdeps,qemu,QEMU))
 
 #$(warning $(call genenvdeps,root,BUILDROOT)
 $(eval $(call genenvdeps,root,BUILDROOT))

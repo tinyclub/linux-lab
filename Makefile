@@ -1165,10 +1165,13 @@ $$($(1)_source_childs): $(1)-source
 
 PHONY += $(1)-source download-$(1) $(1)-download
 
-endef
+endef # gensource
 
 # Generate basic goals
 define gengoals
+$(1)-help:
+	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
+
 $(1)-checkout:
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
 	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
@@ -1177,14 +1180,85 @@ $(1)-checkout:
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 $(1)-patch:
 	@if [ ! -f $$(call _stamp_$(1),patched) ]; then \
-	  $($(call _uc,$(1))_PATCH_ACTION) \
+	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
 	  [ -f tools/$(1)/patch.sh ] && tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); \
 	  touch $$(call _stamp_$(1),patched); \
 	else		\
 	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-checkout' at first."; \
 	fi
 
-endef
+endef # gengoals
+
+define gencfgs
+
+$$(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($$(call _uc,$(2)))_defconfig
+$(3)CFG ?= $$($$(call _uc,$1)_CONFIG_FILE)
+
+ifeq ($$($(3)CFG),$$($$(call _uc,$1)_CONFIG_FILE))
+  $(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(3)CFG)
+else
+  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($$(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($$(call _uc,$1)_SRC)/arch/$$(ARCH)/$$($(3)CFG); do \
+		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
+  ifneq ($$(_$(3)CFG_FILE),)
+    $(3)CFG_FILE := $$(subst //,/,$$(_$(3)CFG_FILE))
+  else
+    $$(error $$($(3)CFG): can not be found, please pass a valid $(1) defconfig)
+  endif
+endif
+
+ifeq ($$(findstring $$($$(call _uc,$1)_CONFIG_DIR),$$($(3)CFG_FILE)),$$($$(call _uc,$1)_CONFIG_DIR))
+  $(3)CFG_BUILTIN := 1
+endif
+
+_$(3)CFG := $$(notdir $$($(3)CFG_FILE))
+
+$(1)-defconfig:
+	$$(Q)mkdir -p $$($$(call _uc,$1)_OUTPUT)
+	$$(Q)mkdir -p $$($$(call _uc,$1)_CONFIG_DIR)
+	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($$(call _uc,$1)_CONFIG_DIR))
+	$$(call make_$(1),$$(_$(3)CFG) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+$(1)-olddefconfig:
+	$$($$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($$(call _uc,$1)_OLDDEFCONFIG),$$($$(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+$(1)-oldconfig:
+	$$($$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+$(1)-menuconfig:
+	$$(call make_$1,menuconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+endef # gencfgs
+
+define genclone
+ifneq ($$($$(call _uc,$2)_NEW),)
+
+ifneq ($$($$(call _uc,$2)_NEW),$$($$(call _uc,$2)))
+
+NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($$(call _uc,$2)_NEW)_defconfig
+NEW_PREBUILT_$$(call _uc,$1)_DIR=$$(subst $$($$(call _uc,$2)),$$($$(call _uc,$2)_NEW),$$(PREBUILT_$$(call _uc,$1)_DIR))
+NEW_$$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($$(call _uc,$2)_NEW)/
+NEW_$$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$$(call _uc,$2)),GCC[$$(call _uc,$2)_$$($$(call _uc,$2)_NEW)] = $$(call __v,GCC,$$(call _uc,$2)))
+
+$(1)-cloneconfig:
+	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
+	$$(Q)tools/board/config.sh $$(call _uc,$2)=$$($$(call _uc,$2)_NEW) $$(BOARD_MAKEFILE)
+	$$(Q)grep -q "GCC\[$$(call _uc,$2)_$$($$(call _uc,$2)_NEW)" $$(BOARD_MAKEFILE); if [ $$$$? -ne 0 -a -n "$$(NEW_$$(call _uc,$1)_GCC)" ]; then \
+		sed -i -e "/GCC\[$$(call _uc,$2)_$$($$(call _uc,$2))/a $$(NEW_$$(call _uc,$1)_GCC)" $$(BOARD_MAKEFILE); fi
+	$$(Q)mkdir -p $$(NEW_PREBUILT_$$(call _uc,$1)_DIR)
+	$$(Q)mkdir -p $$(NEW_$$(call _uc,$1)_PATCH_DIR)
+else
+$(1)-cloneconfig:
+	$(Q)echo $$($$(call _uc,$2)_NEW) already exists!
+endif
+
+else
+  ifeq ($$(MAKECMDGOALS),$(1)-clone)
+    $$(error Usage: make $(1)-clone $$(call _uc,$2)_NEW=<$2-version>)
+  endif
+endif
+
+endef #genclone
+
 
 # Source download
 #$(warning $(call gensource,uboot))
@@ -1239,9 +1313,6 @@ _QEMU  ?= $(call _v,QEMU,QEMU)
 # Add basic qemu dependencies
 #$(warning $(call gendeps,qemu))
 $(eval $(call gendeps,qemu))
-
-#$(warning $(call gengoals,qemu,QEMU))
-$(eval $(call gengoals,qemu,QEMU))
 
 # Notes:
 #
@@ -1330,30 +1401,20 @@ endif
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
+qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
+
+#$(warning $(call gengoals,qemu,QEMU))
+$(eval $(call gengoals,qemu,QEMU))
 
 qemu-defconfig:
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
-qemu-help:
-	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
-
-ifneq ($(QEMU_NEW),)
-ifneq ($(QEMU_NEW),$(QEMU))
-NEW_PREBUILT_QEMU_DIR=$(subst $(QEMU),$(QEMU_NEW),$(PREBUILT_QEMU_DIR))
-
-qemu-clone:
-	$(Q)tools/board/config.sh QEMU=$(QEMU_NEW) $(BOARD_MAKEFILE)
-	$(Q)mkdir -p $(NEW_PREBUILT_QEMU_DIR)
-endif
-else
-  ifeq ($(MAKECMDGOALS),qemu-clone)
-    $(error Usage: make qemu-clone QEMU_NEW=<qemu-version>)
-  endif
-endif
-
 qemu:
 	$(call make_qemu)
+
+#$(warning $(call genclone,qemu,qemu,Q))
+$(eval $(call genclone,qemu,qemu,Q))
 
 # Toolchains targets
 
@@ -1485,58 +1546,12 @@ GIT_CLEAN_EXTRAFLAGS[root] := -e dl/
 #$(warning $(call gengoals,root,BUILDROOT))
 $(eval $(call gengoals,root,BUILDROOT))
 
-ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
-
-RCFG ?= $(ROOT_CONFIG_FILE)
 ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 
-ifeq ($(RCFG),$(ROOT_CONFIG_FILE))
-  RCFG_FILE := $(_BSP_CONFIG)/$(RCFG)
-else
-  _RCFG_FILE := $(shell for f in $(RCFG) $(_BSP_CONFIG)/$(RCFG) $(ROOT_CONFIG_DIR)/$(RCFG); do \
-		if [ -f $$f ]; then echo $$f; break; fi; done)
-  ifneq ($(_RCFG_FILE),)
-    RCFG_FILE := $(subst //,/,$(_RCFG_FILE))
-  else
-    $(error $(RCFG): can not be found, please pass a valid root defconfig)
-  endif
-endif
-
-ifeq ($(findstring $(ROOT_CONFIG_DIR),$(RCFG_FILE)),$(ROOT_CONFIG_DIR))
-  RCFG_BUILTIN := 1
-endif
-
-_RCFG := $(notdir $(RCFG_FILE))
-
-root-defconfig:
-	$(Q)mkdir -p $(ROOT_OUTPUT)
-	$(Q)$(if $(RCFG_BUILTIN),,cp $(RCFG_FILE) $(ROOT_CONFIG_DIR))
-	$(call make_root,$(_RCFG))
-
-ifneq ($(BUILDROOT_NEW),)
-ifneq ($(BUILDROOT_NEW),$(BUILDROOT))
-NEW_RCFG_FILE=$(_BSP_CONFIG)/buildroot_$(BUILDROOT_NEW)_defconfig
-NEW_PREBUILT_ROOT_DIR=$(subst $(BUILDROOT),$(BUILDROOT_NEW),$(PREBUILT_ROOT_DIR))
-
-root-cloneconfig:
-	$(Q)cp $(RCFG_FILE) $(NEW_RCFG_FILE)
-	$(Q)tools/board/config.sh BUILDROOT=$(BUILDROOT_NEW) $(BOARD_MAKEFILE)
-	$(Q)mkdir -p $(NEW_PREBUILT_ROOT_DIR)
-endif
-else
-  ifeq ($(MAKECMDGOALS),root-clone)
-    $(error Usage: make root-clone BUILDROOT_NEW=<buildroot-version>)
-  endif
-endif
-
-root-olddefconfig:
-	$(call make_root,olddefconfig)
-
-root-oldconfig:
-	$(call make_root,oldconfig)
-
-root-menuconfig:
-	$(call make_root,menuconfig)
+#$(warning $(call gencfgs,root,buildroot,R))
+$(eval $(call gencfgs,root,buildroot,R))
+#$(warning $(call genclone,root,buildroot,R))
+$(eval $(call genclone,root,buildroot,R))
 
 # Build Buildroot
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
@@ -1624,9 +1639,6 @@ else
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
 	$(Q)make root-rebuild
 endif
-
-root-help:
-	$(Q)$(call make_root,help)
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -1931,60 +1943,6 @@ _KERNEL ?= $(_LINUX)
 #$(warning $(call gengoals,kernel,LINUX))
 $(eval $(call gengoals,kernel,LINUX))
 
-KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
-
-KCFG ?= $(KERNEL_CONFIG_FILE)
-KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
-
-ifeq ($(KCFG),$(KERNEL_CONFIG_FILE))
-  KCFG_FILE := $(_BSP_CONFIG)/$(KCFG)
-else
-  _KCFG_FILE := $(shell for f in $(KCFG) $(_BSP_CONFIG)/$(KCFG) $(KERNEL_CONFIG_DIR)/$(KCFG) $(KERNEL_SRC)/arch/$(ARCH)/$(KCFG); do \
-		if [ -f $$f ]; then echo $$f; break; fi; done)
-  ifneq ($(_KCFG_FILE),)
-    KCFG_FILE := $(subst //,/,$(_KCFG_FILE))
-  else
-    $(error $(KCFG): can not be found, please pass a valid kernel defconfig)
-  endif
-endif
-
-
-ifeq ($(findstring $(KERNEL_CONFIG_DIR),$(KCFG_FILE)),$(KERNEL_CONFIG_DIR))
-  KCFG_BUILTIN := 1
-endif
-
-_KCFG := $(notdir $(KCFG_FILE))
-
-kernel-defconfig:
-	$(Q)mkdir -p $(KERNEL_OUTPUT)
-	$(Q)mkdir -p $(KERNEL_CONFIG_DIR)
-	$(Q)$(if $(KCFG_BUILTIN),,cp $(KCFG_FILE) $(KERNEL_CONFIG_DIR))
-	$(call make_kernel,$(_KCFG) M=)
-
-ifneq ($(LINUX_NEW),)
-ifneq ($(LINUX_NEW),$(LINUX))
-NEW_KCFG_FILE=$(_BSP_CONFIG)/linux_$(LINUX_NEW)_defconfig
-NEW_PREBUILT_KERNEL_DIR=$(subst $(LINUX),$(LINUX_NEW),$(PREBUILT_KERNEL_DIR))
-NEW_KERNEL_PATCH_DIR=$(BSP_PATCH)/linux/$(LINUX_NEW)/
-NEW_KERNEL_GCC=$(if $(call __v,GCC,LINUX),GCC[LINUX_$(LINUX_NEW)] = $(call __v,GCC,LINUX))
-
-kernel-cloneconfig:
-	$(Q)cp $(KCFG_FILE) $(NEW_KCFG_FILE)
-	$(Q)tools/board/config.sh LINUX=$(LINUX_NEW) $(BOARD_MAKEFILE)
-	$(Q)grep -q "GCC\[LINUX_$(LINUX_NEW)" $(BOARD_MAKEFILE); if [ $$? -ne 0 -a -n "$(NEW_KERNEL_GCC)" ]; then \
-		sed -i -e "/GCC\[LINUX_$(LINUX)/a $(NEW_KERNEL_GCC)" $(BOARD_MAKEFILE); fi
-	$(Q)mkdir -p $(NEW_PREBUILT_KERNEL_DIR)
-	$(Q)mkdir -p $(NEW_KERNEL_PATCH_DIR)
-else
-kernel-cloneconfig:
-	$(Q)echo $(LINUX_NEW) already exists!
-endif
-else
-  ifeq ($(MAKECMDGOALS),kernel-clone)
-    $(error Usage: make kernel-clone LINUX_NEW=<linux-version>)
-  endif
-endif
-
 #
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
@@ -2005,15 +1963,16 @@ ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
   endif
 endif
 
+KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
+KERNEL_CONFIG_EXTRAFLAG := M=
+KERNEL_CONFIG_EXTRACMDS := yes N | 
+
+#$(warning $(call gencfgs,kernel,linux,K))
+$(eval $(call gencfgs,kernel,linux,K))
+#$(warning $(call genclone,kernel,linux,K))
+$(eval $(call genclone,kernel,linux,K))
+
 kernel-oldnoconfig: kernel-olddefconfig
-kernel-olddefconfig:
-	yes N | $(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
-
-kernel-oldconfig:
-	yes N | $(call make_kernel,oldconfig M=)
-
-kernel-menuconfig:
-	$(call make_kernel,menuconfig M=)
 
 # Build Kernel
 
@@ -2265,9 +2224,6 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
-kernel-help:
-	$(call make_kernel,help)
-
 kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
 
@@ -2346,64 +2302,17 @@ ifneq ($(U),)
 endif
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
-UBOOT_PATCH_ACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
+UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
 
 #$(warning $(call gengoals,uboot,UBOOT))
 $(eval $(call gengoals,uboot,UBOOT))
 
-UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
-
-UCFG ?= $(UBOOT_CONFIG_FILE)
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
-ifeq ($(UCFG),$(UBOOT_CONFIG_FILE))
-  UCFG_FILE := $(_BSP_CONFIG)/$(UCFG)
-else
-  _UCFG_FILE := $(shell for f in $(UCFG) $(_BSP_CONFIG)/$(UCFG) $(UBOOT_CONFIG_DIR)/$(UCFG); do \
-		if [ -f $$f ]; then echo $$f; break; fi; done)
-  ifneq ($(_UCFG_FILE),)
-    UCFG_FILE := $(subst //,/,$(_UCFG_FILE))
-  else
-    $(error $(UCFG): can not be found, please pass a valid uboot defconfig)
-  endif
-endif
-
-ifeq ($(findstring $(UBOOT_CONFIG_DIR),$(UCFG_FILE)),$(UBOOT_CONFIG_DIR))
-  UCFG_BUILTIN := 1
-endif
-
-_UCFG := $(notdir $(UCFG_FILE))
-
-uboot-defconfig:
-	$(Q)mkdir -p $(UBOOT_OUTPUT)
-	$(Q)$(if $(UCFG_BUILTIN),,cp $(UCFG_FILE) $(UBOOT_CONFIG_DIR))
-	$(call make_uboot,$(_UCFG))
-
-ifneq ($(UBOOT_NEW),)
-ifneq ($(UBOOT_NEW),$(UBOOT))
-NEW_UCFG_FILE=$(_BSP_CONFIG)/uboot_$(UBOOT_NEW)_defconfig
-NEW_PREBUILT_UBOOT_DIR=$(subst $(UBOOT),$(UBOOT_NEW),$(PREBUILT_UBOOT_DIR))
-
-uboot-cloneconfig:
-	$(Q)cp $(UCFG_FILE) $(NEW_UCFG_FILE)
-	$(Q)tools/board/config.sh UBOOT=$(UBOOT_NEW) $(BOARD_MAKEFILE)
-	$(Q)mkdir -p $(NEW_PREBUILT_UBOOT_DIR)
-endif
-else
-  ifeq ($(MAKECMDGOALS),uboot-clone)
-    $(error Usage: make uboot-clone UBOOT_NEW=<uboot-version>)
-  endif
-endif
-
-
-uboot-olddefconfig:
-	$(call make_uboot,oldefconfig)
-
-uboot-oldconfig:
-	$(call make_uboot,oldconfig)
-
-uboot-menuconfig:
-	$(call make_uboot,menuconfig)
+#$(warning $(call gencfgs,uboot,uboot,U))
+$(eval $(call gencfgs,uboot,uboot,U))
+#$(warning $(call genclone,uboot,uboot,U))
+$(eval $(call genclone,uboot,uboot,U))
 
 # Specify uboot targets
 UT ?= $(x)
@@ -2411,9 +2320,6 @@ UT ?= $(x)
 # Build Uboot
 uboot:
 	$(call make_uboot,$(UT))
-
-uboot-help:
-	$(Q)$(call make_uboot,help)
 
 # uboot specific part
 ifeq ($(U),1)

@@ -749,8 +749,8 @@ PREBUILT_HROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
 PREBUILT_IROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
 # Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
-ROOTFS_TYPE_TOOL  := tools/rootfs/rootfs_type.sh
-ROOTDEV_TYPE_TOOL := tools/rootfs/rootdev_type.sh
+ROOTFS_TYPE_TOOL  := tools/root/rootfs_type.sh
+ROOTDEV_TYPE_TOOL := tools/root/rootdev_type.sh
 
 PBR ?= 0
 _PBR := $(PBR)
@@ -1055,7 +1055,7 @@ $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
 boot: $$(boot_deps)
 
 $(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir download checkout patch env modules modules-km defconfig build bsp)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir download checkout patch patched env modules modules-km defconfig build bsp)
 PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
@@ -1162,6 +1162,22 @@ $(1)_source_childs := $(1)-download download-$(1)
 $$($(1)_source_childs): $(1)-source
 
 PHONY += $(1)-source download-$(1) $(1)-download
+
+endef
+
+# Generate basic goals
+define gengoals
+$(1)-checkout:
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR)
+
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+$(1)-patch:
+	@if [ ! -f $$(call _stamp_$(1),patched) ]; then \
+	  tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); \
+	  touch $$(call _stamp_$(1),patched); \
+	else		\
+	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-checkout' at first."; \
+	fi
 
 endef
 
@@ -1479,8 +1495,9 @@ $(eval $(call gendeps,root))
 
 # Configure Buildroot
 
-root-checkout:
-	cd $(ROOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_BUILDROOT) && git clean -fdx -e dl/ && cd $(TOP_DIR)
+GIT_CLEAN_EXTRAFLAGS[root] := -e dl/
+#$(warning $(call gengoals,root,BUILDROOT))
+$(eval $(call gengoals,root,BUILDROOT))
 
 ROOT_CONFIG_FILE ?= buildroot_$(BUILDROOT)_defconfig
 
@@ -1504,17 +1521,6 @@ ifeq ($(findstring $(ROOT_CONFIG_DIR),$(RCFG_FILE)),$(ROOT_CONFIG_DIR))
 endif
 
 _RCFG := $(notdir $(RCFG_FILE))
-
-ROOT_PATCH_TOOL := tools/rootfs/patch.sh
-ROOT_PATCHED_TAG := $(ROOT_SRC)/.patched
-
-root-patch:
-	@if [ ! -f $(ROOT_PATCHED_TAG) ]; then \
-	  $(ROOT_PATCH_TOOL) $(BOARD) $(BUILDROOT) $(ROOT_SRC) $(ROOT_OUTPUT); \
-	  touch $(ROOT_PATCHED_TAG); \
-	else \
-	  echo "ERR: root patchset has been applied already, if want, please do 'make root-checkout' at first."; \
-	fi
 
 root-defconfig:
 	$(Q)mkdir -p $(ROOT_OUTPUT)
@@ -1547,7 +1553,7 @@ root-menuconfig:
 	$(call make_root,menuconfig)
 
 # Build Buildroot
-ROOT_INSTALL_TOOL := $(TOOL_DIR)/rootfs/install.sh
+ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
 # Install kernel modules?
 IKM ?= 1
@@ -1581,9 +1587,9 @@ endif
 
 # root ramdisk image
 ifeq ($(FS_TYPE),rd)
-  ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/dir2rd.sh
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
 else
-  ROOT_GENRD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2rd.sh
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
 endif
 
 root-rd:
@@ -1593,7 +1599,7 @@ root-rd-rebuild: FORCE
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
 
-ROOT_GENDISK_TOOL := $(TOOL_DIR)/rootfs/dir2$(DEV_TYPE).sh
+ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
 root-rebuild:
@@ -1638,7 +1644,7 @@ root-help:
 
 # root directory
 ifneq ($(FS_TYPE),dir)
-  ROOT_GENDIR_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2dir.sh
+  ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
 endif
 
 root-dir:
@@ -1660,7 +1666,7 @@ rootdir-clean:
 
 PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
 
-ROOT_GENHD_TOOL := $(TOOL_DIR)/rootfs/$(FS_TYPE)2hd.sh
+ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
 root-hd:
 	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
@@ -1936,21 +1942,8 @@ _LINUX  := $(call _v,LINUX,LINUX)
 _KERNEL ?= $(_LINUX)
 
 # Configure Kernel
-
-kernel-checkout:
-	cd $(KERNEL_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_LINUX) && git clean -fdx && cd $(TOP_DIR)
-
-KERNEL_PATCH_TOOL := tools/kernel/patch.sh
-LINUX_PATCHED_TAG := $(KERNEL_SRC)/.patched
-
-kernel-patch:
-	@if [ ! -f $(LINUX_PATCHED_TAG) ]; then \
-	  $(KERNEL_PATCH_TOOL) $(BOARD) $(LINUX) $(KERNEL_SRC) $(KERNEL_OUTPUT); \
-	  touch $(LINUX_PATCHED_TAG); \
-	else \
-	  echo "ERR: kernel patchset has been applied, if want, please do 'make kernel-checkout' at first." && exit 1; \
-	fi
-
+#$(warning $(call gengoals,kernel,LINUX))
+$(eval $(call gengoals,kernel,LINUX))
 
 KERNEL_CONFIG_FILE ?= linux_$(LINUX)_defconfig
 

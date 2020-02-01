@@ -323,7 +323,7 @@ define genverify
     $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
   endif
   # If Linux version specific qemu list defined, use it
-  $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override)
+  $$(eval $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override))
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(5),$$(eval $$(call $(5))))

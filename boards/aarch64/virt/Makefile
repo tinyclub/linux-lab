@@ -10,7 +10,7 @@ QEMU    ?= v4.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
 LINUX   ?= v5.1
-BUILDROOT?= 2016.05
+BUILDROOT?= 2019.11.1
 
 NETDEV_LIST := virtio 
 

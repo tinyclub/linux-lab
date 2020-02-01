@@ -877,7 +877,7 @@ boardvars := cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|inclu
 
 board: board-save plugin-save
 ifneq ($(BOARD),$(BOARD_CONFIG))
-	$(Q)make cleanstamp
+	$(Q)make -s cleanstamp
 endif
 	@echo [ $(BOARD) ]:"\n" $(foreach v,$(shell $(call boardvars)),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
 

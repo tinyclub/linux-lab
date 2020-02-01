@@ -10,7 +10,7 @@ PHONY :=
 USER ?= $(shell whoami)
 
 # Check running host
-LAB_ENV_ID=/home/ubuntu/Desktop/lab.desktop
+LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
 ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
   ifneq (../../configs/linux-lab, $(wildcard ../../configs/linux-lab))
     $(error ERR: No Cloud Lab found, please refer to 'Download the lab' part of README.md)
@@ -68,6 +68,7 @@ BOARDS_DIR  := boards
 BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
+HOME_DIR    := /home/$(USER)/
 
 # Search board in basic arch list while board name given without arch specified
 BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64 loongson csky
@@ -236,6 +237,10 @@ define _ti
 $(call _i,$(1),$(2),$(TOP_DIR))
 endef
 
+define _hi
+$(call _i,$(1),$(2),$(HOME_DIR))
+endef
+
 # Include board detailed configuration
 # Makefile.config/beforeconfig/afterconfig hooks for more
 
@@ -271,8 +276,11 @@ ifneq ($(BOARD),)
   # include $(BOARD_DIR)/Makefile.fini if exist
   $(eval $(call _bi,fini,Makefile))
   $(eval $(call _bi,fini.private,Makefile))
+  $(eval $(call _bi,labconfig))
 endif
 
+$(eval $(call _ti,labconfig))
+$(eval $(call _hi,labconfig))
 
 # Customize kernel git repo and local dir
 $(eval $(call __vs,KERNEL_SRC,LINUX))
@@ -3122,8 +3130,6 @@ env-dump:
 	@echo \#[ $(BOARD) ]:
 	@echo -n " "
 	-@echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'
-
-ENV_SAVE_TOOL := $(TOOL_DIR)/save-env.sh
 
 env-save: board-config
 

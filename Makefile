@@ -319,20 +319,22 @@ endif
 # generate verify function
 define genverify
  ifneq ($$($2),)
-  ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
+  ifneq ($$(BSP_$(1)),)
+   ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
     $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
+   endif
   endif
   # If Linux version specific qemu list defined, use it
   $$(eval $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override))
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
-      $$(if $(5),$$(eval $$(call $(5))))
+      $$(if $(4),$$(eval $$(call $(4))))
       $$(error Supported $(2) list: $$($(2)_LIST))
     endif
   endif
  endif
  # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
- ifneq ($4,0)
+ ifneq ($$($(1)_SRC),)
    ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
     _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$(2))
     $(1)_ABS_SRC := $$($(1)_SRC)
@@ -2324,8 +2326,8 @@ uboot-checkout:
 
 
 # Verify BOOTDEV argument
-#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT,0))
-$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT,0))
+#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
+$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
@@ -2622,7 +2624,7 @@ define netdev_help
  endif
 endef
 
-$(eval $(call genverify,NETDEV,NETDEV,,0,netdev_help))
+$(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
 
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"

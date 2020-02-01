@@ -1170,12 +1170,15 @@ endef
 # Generate basic goals
 define gengoals
 $(1)-checkout:
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR)
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+	fi
 
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 $(1)-patch:
 	@if [ ! -f $$(call _stamp_$(1),patched) ]; then \
-	  tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); \
+	  $($(call _uc,$(1))_PATCH_ACTION) \
+	  [ -f tools/$(1)/patch.sh ] && tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); \
 	  touch $$(call _stamp_$(1),patched); \
 	else		\
 	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-checkout' at first."; \
@@ -1203,24 +1206,16 @@ ifeq ($(_PLUGIN),1)
 else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
+
+BSP_OUTPUT := $(BSP_SRC)
 #$(warning $(call gensource,bsp))
 $(eval $(call gensource,bsp))
+$(eval $(call gendeps,bsp))
+$(eval $(call gengoals,bsp,BSP))
 
-bsp-cleanup:
-	$(Q)if [ -d $(BSP_SRC) -a -e $(BSP_SRC)/.git ]; then \
-		cd $(BSP_SRC) && git reset --hard && git clean -fdx && cd $(TOP_DIR); \
-	fi
-
-bsp-checkout: bsp-source
-	$(Q)if [ -d $(BSP_SRC) -a -e $(BSP_SRC)/.git ]; then \
-		cd $(BSP_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(BSP) && git clean -fdx && cd $(TOP_DIR); \
-	fi
-
-bsp-download: bsp-source
-download-bsp: bsp-source
 bsp: bsp-source
 
-PHONY += bsp-cleanup bsp-source bsp-download download-bsp bsp
+PHONY += bsp
 
 source: bsp-source kernel-source root-source
 
@@ -1245,19 +1240,8 @@ _QEMU  ?= $(call _v,QEMU,QEMU)
 #$(warning $(call gendeps,qemu))
 $(eval $(call gendeps,qemu))
 
-qemu-checkout:
-	cd $(QEMU_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_QEMU) && git clean -fdx && cd $(TOP_DIR)
-
-QEMU_PATCH_TOOL  := tools/qemu/patch.sh
-QEMU_PATCHED_TAG := $(QEMU_SRC)/.patched
-
-qemu-patch:
-	@if [ ! -f $(QEMU_PATCHED_TAG) ]; then \
-	  $(QEMU_PATCH_TOOL) $(BOARD) $(QEMU) $(QEMU_SRC) $(QEMU_OUTPUT); \
-	  touch $(QEMU_PATCHED_TAG);  \
-	else \
-	  echo "ERR: qemu patchset has been applied, if want, please do 'make qemu-checkout' at first." && exit 1; \
-	fi
+#$(warning $(call gengoals,qemu,QEMU))
+$(eval $(call gengoals,qemu,QEMU))
 
 # Notes:
 #
@@ -2319,12 +2303,6 @@ ifneq ($(UBOOT),)
   $(eval $(call gendeps,uboot))
 endif
 
-# Configure Uboot
-
-uboot-checkout:
-	cd $(UBOOT_SRC) && git checkout $(GIT_CHECKOUT_FORCE) $(_UBOOT) && git clean -fdx && cd $(TOP_DIR)
-
-
 # Verify BOOTDEV argument
 #$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 $(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
@@ -2368,20 +2346,10 @@ ifneq ($(U),)
 endif
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
-UBOOT_PATCH_TOOL  := tools/uboot/patch.sh
-UBOOT_PATCHED_TAG := $(UBOOT_SRC)/.patched
+UBOOT_PATCH_ACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
 
-_uboot-patch:
-	@if [ ! -f $(UBOOT_PATCHED_TAG) ]; then \
-	  if [ -n "$(UCONFIG)" ]; then $(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG); fi; \
-	  $(UBOOT_PATCH_TOOL) $(BOARD) $(UBOOT) $(UBOOT_SRC) $(UBOOT_OUTPUT); \
-	  touch $(UBOOT_PATCHED_TAG); \
-	else \
-	  echo "ERR: patchset has been applied, if want, please do 'make uboot-checkout' at first." && exit 1; \
-	fi
-
-uboot-patch:
-	@make $(S) _uboot-patch
+#$(warning $(call gengoals,uboot,UBOOT))
+$(eval $(call gengoals,uboot,UBOOT))
 
 UBOOT_CONFIG_FILE ?= uboot_$(UBOOT)_defconfig
 

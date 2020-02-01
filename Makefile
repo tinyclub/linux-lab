@@ -873,18 +873,13 @@ export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
+boardvars := cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' '
 
 board: board-save plugin-save
 ifneq ($(BOARD),$(BOARD_CONFIG))
 	$(Q)make cleanstamp
 endif
-	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
-		| egrep -v "/module" \
-		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
-		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
-		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
+	@echo [ $(BOARD) ]:"\n" $(foreach v,$(shell $(call boardvars)),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
 
 board-init: cleanstamp
 

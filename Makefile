@@ -323,16 +323,16 @@ define genverify
     $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
   endif
   # If Linux version specific qemu list defined, use it
-  $$(call __vs,$(2)_LIST,LINUX,override)
+  $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override)
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
-      $$(if $(4),$$(eval $$(call $(4))))
+      $$(if $(5),$$(eval $$(call $(5))))
       $$(error Supported $(2) list: $$($(2)_LIST))
     endif
   endif
  endif
  # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
- ifneq ($3,)
+ ifneq ($4,0)
    ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
     _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$(2))
     $(1)_ABS_SRC := $$($(1)_SRC)
@@ -342,20 +342,20 @@ define genverify
 endef
 
 # Verify LINUX argument
-#$(warning $(call genverify,KERNEL,LINUX,1))
-$(eval $(call genverify,KERNEL,LINUX,1))
+#$(warning $(call genverify,KERNEL,LINUX))
+$(eval $(call genverify,KERNEL,LINUX))
 
 # Verify ROOT argument
-#$(warning $(call genverify,ROOT,BUILDROOT,1))
-$(eval $(call genverify,ROOT,BUILDROOT,1))
+#$(warning $(call genverify,ROOT,BUILDROOT))
+$(eval $(call genverify,ROOT,BUILDROOT))
 
 # Verify UBOOT argument
-#$(warning $(call genverify,UBOOT,UBOOT,1))
-$(eval $(call genverify,UBOOT,UBOOT,1))
+#$(warning $(call genverify,UBOOT,UBOOT))
+$(eval $(call genverify,UBOOT,UBOOT))
 
 # Verify QEMU argument
-#$(warning $(call genverify,QEMU,QEMU,1))
-$(eval $(call genverify,QEMU,QEMU,1))
+#$(warning $(call genverify,QEMU,QEMU))
+$(eval $(call genverify,QEMU,QEMU))
 
 # Kernel features configuration, e.g. kft, gcs ...
 f ?= $(feature)
@@ -717,8 +717,8 @@ endif
 # TODO: buildroot defconfig for $ARCH
 
 # Verify rootdev argument
-#$(warning $(call genverify,ROOTDEV,ROOTDEV))
-$(eval $(call genverify,ROOTDEV,ROOTDEV))
+#$(warning $(call genverify,ROOTDEV,ROOTDEV,,0))
+$(eval $(call genverify,ROOTDEV,ROOTDEV,,0))
 
 ROOTDEV ?= /dev/ram0
 $(eval $(call _vs,ROOTDEV,LINUX))
@@ -2331,18 +2331,8 @@ uboot-checkout:
 
 
 # Verify BOOTDEV argument
-ifneq ($(BOOTDEV),)
-  # If Uboot version specific bootdev list defined, use it
-   _BOOTDEV_LIST=$(call __v,BOOTDEV_LIST,UBOOT)
-  ifneq ($(_BOOTDEV_LIST),)
-    override BOOTDEV_LIST := $(_BOOTDEV_LIST)
-  endif
-  ifneq ($(BOOTDEV_LIST),)
-    ifneq ($(filter $(BOOTDEV), $(BOOTDEV_LIST)), $(BOOTDEV))
-      $(error Uboot Supported BOOTDEV list: $(BOOTDEV_LIST))
-    endif
-  endif
-endif
+#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT,0))
+$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT,0))
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
@@ -2639,7 +2629,7 @@ define netdev_help
  endif
 endef
 
-$(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
+$(eval $(call genverify,NETDEV,NETDEV,,0,netdev_help))
 
 # TODO: net driver for $BOARD
 #NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"

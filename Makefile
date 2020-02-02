@@ -7,7 +7,7 @@ TOP_DIR := $(CURDIR)
 # Phony targets
 PHONY :=
 
-USER ?= $(shell whoami)
+USER ?= ubuntu
 
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
@@ -17,6 +17,16 @@ ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
   else
     $(error ERR: Please not try Linux Lab in local host, but use it with Cloud Lab, please refer to 'Run and login the lab' part of README.md)
   endif
+endif
+
+# Check running user, must as ubuntu
+ifneq ($(shell whoami),$(USER))
+  $(error ERR: Must run Linux Lab as general user: '$(USER)', not use it as root, please try 'su ubuntu'.)
+endif
+
+# Check permission issue, must available to ubuntu
+ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
+  $(error ERR: Must make sure Cloud Lab and Linux Lab available to user: '$(USER)', please try 'make perm' or change their owner in host.)
 endif
 
 # Current variables: board, plugin, module
@@ -2986,7 +2996,7 @@ GDB_CMD      ?= $(GDB) $(VMLINUX)
 GDB_INIT     ?= $(TOP_DIR)/.gdbinit
 HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
-GDB_USER     ?= ubuntu
+GDB_USER     ?= $(USER)
 
 # Xterm: lxterminal, terminator
 ifeq ($(XTERM), null)

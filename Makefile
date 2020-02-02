@@ -940,14 +940,23 @@ PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
 # List targets for boards and plugins
 
+board-info:
+	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
+		| egrep -v "/module" \
+		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
+		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
+		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
+		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
+
 list:
-	$(Q)make $(S) board BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
+	$(Q)make $(S) board-info BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-board:
-	$(Q)make $(S) board BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
+	$(Q)make $(S) board-info BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
 
 list-short:
-	$(Q)make $(S) board BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
+	$(Q)make $(S) board-info BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
 
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"
@@ -956,7 +965,7 @@ list-plugin:
 	$(Q)make $(S) list BTYPE="^_PLUGIN"
 
 list-full:
-	$(Q)make $(S) board BOARD=
+	$(Q)make $(S) board-info BOARD=
 
 list-kernel: list-linux
 list-BUILDROOT: list-buildroot
@@ -971,7 +980,7 @@ list-%: FORCE
 		fi		\
 	fi
 
-PHONY += list list-base list-plugin list-full list-kernel list-buildroot list-BUILDROOT
+PHONY += board-info list list-base list-plugin list-full list-kernel list-buildroot list-BUILDROOT
 
 # Define generic target deps support
 define make_qemu

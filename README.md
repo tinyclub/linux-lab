@@ -87,6 +87,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
    - [Client.Timeout exceeded while waiting headers](#clienttimeout-exceeded-while-waiting-headers)
    - [VNC login fails with wrong password](#vnc-login-fails-with-wrong-password)
    - [scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h](#scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh)
+   - [Ubuntu Snap Issues](#ubuntu-snap-issues)
 - [Contact and Sponsor](#contact-and-sponsor)
 
 ## Why
@@ -149,11 +150,18 @@ Docker is required by Linux Lab, please install it at first:
 
 - older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox) or Virtualbox/Vmware + Linux
 
-Notes:
+Before running Linux Lab, please make sure the following command works without sudo and without any issue:
 
-In order to run docker without password, please make sure your user is added in the docker group:
+    $ docker run hello-world
+
+Othewise, please read the following notes and more [official docker docs](https://docs.docker.com).
+
+**Notes**:
+
+In order to run docker without password, please make sure your user is added in the docker group and activate the change via newgrp:
 
     $ sudo usermod -aG docker $USER
+    $ newgrp docker
 
 In order to speedup docker images downloading, please configure a local docker mirror in `/etc/default/docker`, for example:
 
@@ -463,7 +471,7 @@ Boot with graphic (Exit with 'CTRL+ALT+2 quit'):
     $ make b=malta boot G=1 LINUX=v2.6.36
     $ make b=vexpress-a9 boot G=1 LINUX=v4.6.7 // LINUX=v3.18.39 works too
 
-  Note: real graphic boot require LCD and keyboard drivers, the above boards work well, with linux v5.1,
+  **Note**: real graphic boot require LCD and keyboard drivers, the above boards work well, with linux v5.1,
   `raspi3` and `malta` has tty0 console but without keyboard input.
 
   `vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
@@ -1005,7 +1013,7 @@ Qemu Board:
     $ tftp -g -r kft.patch 172.17.0.3
     $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
-Note: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
+**Note**: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
 #### Share with 9p virtio
 
@@ -1504,6 +1512,13 @@ This means MAC OSX not use Case sensitive filesystem, create one using hdiutil o
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
+
+### Ubuntu Snap Issues
+
+Users report many snap issues, please use apt-get instead:
+
+* users can not be added to docker group and break non-root operation.
+* snap service exhausts the /dev/loop devices and break mount operation.
 
 ## Contact and Sponsor
 

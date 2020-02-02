@@ -3133,7 +3133,7 @@ env-list: env-dump
 env-dump:
 	@echo \#[ $(BOARD) ]:
 	@echo -n " "
-	-@echo $(foreach v,$(VARS),"    $(v)=\"$($(v))\"\n") | tr -s '/'
+	-@echo $(foreach v,$(or $(VAR),$(VARS)),"    $(v)=\"$($(v))\"\n") | tr -s '/'
 
 env-save: board-config
 

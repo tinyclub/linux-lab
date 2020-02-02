@@ -873,13 +873,24 @@ export GREP_COLOR=32;40
 FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
-boardvars := cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' '
 
-board: board-save plugin-save
+define getboardvars
+cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' '
+endef
+
+define showboardvars
+echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
+endef
+
+board: board-save plugin-save board-cleanstamp board-show
+
+board-cleanstamp:
 ifneq ($(BOARD),$(BOARD_CONFIG))
 	$(Q)make -s cleanstamp
 endif
-	@echo [ $(BOARD) ]:"\n" $(foreach v,$(shell $(call boardvars)),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
+
+board-show:
+	$(Q)$(call showboardvars)
 
 board-init: cleanstamp
 
@@ -895,7 +906,7 @@ ifneq ($(BOARD),)
   endif
 endif
 
-PHONY += board board-init board-clean board-save
+PHONY += board board-init board-clean board-save board-cleanstamp
 
 board-edit:
 	$(Q)vim $(BOARD_MAKEFILE)
@@ -940,6 +951,33 @@ PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
 # List targets for boards and plugins
 
+INFO ?= raw
+
+ifneq ($(INFO),raw)
+
+define getboardlist
+find $(BOARDS_DIR)/$(2) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
+endef
+
+list:
+	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH CPU LINUX ROOTDEV";)
+
+list-board:
+	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH";)
+
+list-short:
+	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH LINUX";)
+
+list-base:
+	$(Q)$(foreach x,$(shell $(call getboardlist,"^_BASE")),make -s board-show b=$x VAR="ARCH";)
+
+list-plugin:
+	$(Q)$(foreach x,$(shell $(call getboardlist,"^_PLUGIN")),make -s board-show b=$x VAR="ARCH";)
+
+list-full:
+	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x;)
+else
+
 board-info:
 	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
@@ -948,6 +986,7 @@ board-info:
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
 		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
+
 
 list:
 	$(Q)make $(S) board-info BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
@@ -966,6 +1005,8 @@ list-plugin:
 
 list-full:
 	$(Q)make $(S) board-info BOARD=
+endif
+
 
 list-kernel: list-linux
 list-BUILDROOT: list-buildroot

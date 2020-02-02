@@ -6,3 +6,4 @@ logging
 *.patched
 .swp
 hostshare/
+.labconfig

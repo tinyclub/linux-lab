@@ -879,11 +879,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
 
-多次重启客户机系统：
+进行重启压力测试：
 
     $ make test TEST_REBOOT=2
     
-  **注意**: reboot 可以有以下几种选项 1) 挂起, 2) 继续; 3) 超时后被杀死, TEST_TIMEOUT=30; 4) 超时终止后不报错继续其他测试, TIMEOUT_CONTINUE=1
+  **注意**: reboot 可以有以下几种结果 1) 挂起, 2) 继续; 3) 超时后被杀死, TEST_TIMEOUT=30; 4) 超时终止后不报错继续其他测试, TIMEOUT_CONTINUE=1
 
 在一个特定的开发板上测试一个特定 Linux 版本的某个功能（`cmdline_size` 特性用于增加 `COMMAND_LINE_SIZE` 为 4096）：
 
@@ -904,7 +904,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test m=hello,exception TEST_RD=/dev/ram0
 
-在测试内核模块是运行测试用例（在 insmod 和 rmmod 命令之间运行测试用例）：
+在测试内核模块时运行测试用例（在 insmod 和 rmmod 命令之间运行测试用例）：
 
     $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world' TEST_PREPARE=board-init,kernel-cleanup f=cmdline_size
 
@@ -946,6 +946,10 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test TEST_TIMEOUT=30s
 
+测试过程中如果超时，继续执行后续测试，而不是直接终止：
+
+    $ make test TEST_TIMEOUT=30s TIMEOUT_CONTINUE=1
+
 测试内核调试：
 
     $ make test DEBUG=1
@@ -965,18 +969,18 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make root-rebuild
     $ make boot G=1
 
+上述操作在 root 用户目录下新增 new_file 文件。
+
 #### 采用 NFS 共享文件
 
-使用 `ROOTDEV=/dev/nfs` 选项启动开发板，
-
-启动/Qemu 开发板：
+使用 `ROOTDEV=/dev/nfs` 选项启动开发板：
 
     $ make boot ROOTDEV=/dev/nfs
 
-主机：
+主机 NFS 目录如下：
 
-    $ make env-dump | grep ROOTDIR
-    ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
+    $ make env-dump VAR=ROOTDIR
+    ROOTDIR="/labs/linux-lab/boards/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs"
 
 #### 通过 tftp 传输文件
 
@@ -1092,9 +1096,9 @@ Qemu 开发板：
 
 #### 从头开始配置变量
 
-为所有的修改添加注释，先获得一个最小的工作配置集，然后再加其他配置。
+先注释掉所有的配置项，然后逐个打开获得一个最小的可工作配置集，最后再添加其他配置。
 
-具体参考 `doc/qemu/qemu-doc.html` 或者在线说明 `http://qemu.weilnetz.de/qemu-doc.html`。
+具体参考 `doc/qemu/qemu-doc.html` 或者在线说明 <http://qemu.weilnetz.de/qemu-doc.html>。
 
 #### 同时准备 configs 文件
 
@@ -1113,7 +1117,7 @@ Uboot 也提供了许多缺省的配置文件：
 
 * kernel: `linux-stable/arch/arm/configs/vexpress_defconfig`
 
-Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用现有的配置：
+Linux Lab 也提供许多有效的配置，`-clone` 命令有助于利用现有的配置：
 
     $ make list-kernel
     v4.12 v5.0.10 v5.1
@@ -1263,7 +1267,7 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
 
 ### 引导时报缺少 sdl2 库
 
-这是由于 docker 的 image 没有更新导致，解决的方法是重新运行 lab（这里不要使用 'tools/docker/restart'，因为并没有使用新的 docker image）：
+这是由于 docker 的 image 没有更新导致，解决的方法是重新运行 lab：
 
     $ tools/docker/pull linux-lab
     $ tools/docker/rerun linux-lab
@@ -1308,7 +1312,7 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
 
 ### 为何不支持在本地主机上直接运行 Linux Lab
 
-Linux Lab 的完整功能依赖于 [Cloud Lab]（http://tinylab.org/cloud-lab）所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab]（http://tinylab.org/cloud-lab）在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
+Linux Lab 的完整功能依赖于 [Cloud Lab](http://tinylab.org/cloud-lab) 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab](http://tinylab.org/cloud-lab) 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
 
 Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用。
 
@@ -1389,11 +1393,9 @@ Linux Lab 的屏幕尺寸是由 xrandr 捕获的，如果不起作用，请检�
 
 ### 如何退出 qemu
 
-**串口控制台**: 使用 'CTRL+A X'
-
-**基于 Curses 的图形终端**: 使用 'ESC+2 quit' 或者 'ALT+2 quit'
-
-**基于 X 的图形终端**: 使用 'CTRL+ALT+2 quit'
+  * **串口控制台**: 使用 'CTRL+A X'
+  * **基于 Curses 的图形终端**: 使用 'ESC+2 quit' 或者 'ALT+2 quit'
+  * **基于 X 的图形终端**: 使用 'CTRL+ALT+2 quit'
 
 ### 如何进入全屏模式
 
@@ -1436,11 +1438,11 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ rm boards/aarch64/raspi3/bsp/root/2019.02.2/rootfs.ext2
     $ make boot
 
-`make boot` 命令可以自动创建该映像。
+`make boot` 命令可以自动创建该映像，请不要中途打断。
 
 ### 运行报错 "linux/compiler-gcc7.h: No such file or directory"
 
-这意味着您使用了一个比 Linux 内核版本所支持的 gcc 的版本更新的 gcc，可使用 `make gcc-switch` 命令 [切换到较旧的 gcc 版本](#toolchain)，以 `i386 / pc` 开发板为例：
+这意味着您使用的 gcc 版本不为当前 Linux 内核所支持，可使用 `make gcc-switch` 命令 [切换到较旧的 gcc 版本](#toolchain)，以 `i386 / pc` 开发板为例：
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4
@@ -1461,7 +1463,7 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ sudo chown $USER:$USER -R ./
     $ tools/docker/rerun linux-lab
 
-为确保环境一致，目前 Linux Lab 仅支持通过普通用户 ubuntu 使用。
+为确保环境一致，目前 Linux Lab 仅支持通过普通用户使用，如果是用 root 下载的代码，请务必确保普通用户可以读写。
 
 ### 运行报错 "Client.Timeout exceeded while waiting headers"
 
@@ -1485,7 +1487,7 @@ Ubuntu 中的配置方法如下：
 
 ### 运行报错 "scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h"
 
-这是因为 MAC OSX 不使用区分大小写的文件系统，请使用 hdiutil 或 Disk Utility 自己创建一个：
+这是因为 MAC OSX 缺省的文件系统不区分大小写，请使用 hdiutil 或 Disk Utility 自己创建一个：
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
@@ -1495,13 +1497,13 @@ Ubuntu 中的配置方法如下：
 
 用户报告了许多 snap 相关的问题，请改用 apt-get 安装 docker：
 
-* 无法将用户添加到 docker 组导致非 root 用户的操作被中断。
-* snap 服务会耗尽 `/dev/loop` 设备从而导致 mount 操作被打断。
+  * 无法将普通用户添加到 docker 用户组从而导致必须通过 root 用户使用 docker。
+  * snap 服务会耗尽 `/dev/loop` 设备从而导致无法挂载文件系统。
 
 ## 联系并赞助我们
 
-我们的微信号是 **tinylab**，欢迎加入我们的用户和开发人员讨论组。
+我们的联系微信是 **tinylab**，欢迎加入 Linux Lab 的用户和开发人员讨论组。
 
-**扫微信号二维码联系我们或者提供赞助**
+**通过微信扫描下述二维码联系我们或者提供赞助**
 
 ![contact-sponsor](doc/contact-sponsor.png)

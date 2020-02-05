@@ -986,16 +986,14 @@ Simply put the files with a relative path in `system/`, install and rebuild the 
 
 #### Share with NFS
 
-Boot the board with `ROOTDEV=/dev/nfs`,
-
-Boot/Qemu Board:
+Boot the board with `ROOTDEV=/dev/nfs`:
 
     $ make boot ROOTDEV=/dev/nfs
 
 Host:
 
-    $ make env-dump | grep ROOTDIR
-    ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
+    $ make env-dump VAR=ROOTDIR
+    ROOTDIR="/labs/linux-lab/boards/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs"
 
 #### Transfer via tftp
 
@@ -1112,7 +1110,7 @@ Use `versatilepb` as an example:
 
 Comment everything, add minimal ones and then others.
 
-Please refer to `doc/qemu/qemu-doc.html` or the online one `http://qemu.weilnetz.de/qemu-doc.html`.
+Please refer to `doc/qemu/qemu-doc.html` or the online one <http://qemu.weilnetz.de/qemu-doc.html>.
 
 #### At the same time, prepare the configs
 

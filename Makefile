@@ -1242,10 +1242,10 @@ $(1)-checkout:
 
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 $(1)-patch:
-	@if [ ! -f $$(call _stamp_$(1),patched) ]; then \
+	@if [ ! -f $$($(call _uc,$(1))_SRC)/$(1).patched ]; then \
 	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
 	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
-	  touch $$(call _stamp_$(1),patched); \
+	  touch $$($(call _uc,$(1))_SRC)/$(1).patched; \
 	else		\
 	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-checkout' at first."; \
 	fi

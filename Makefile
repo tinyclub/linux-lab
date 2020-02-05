@@ -1282,10 +1282,10 @@ $(1)-defconfig:
 	$$(call make_$(1),$$(_$(3)CFG) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-olddefconfig:
-	$$($$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($$(call _uc,$1)_OLDDEFCONFIG),$$($$(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($$(call _uc,$1)_OLDDEFCONFIG),$$($$(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-oldconfig:
-	$$($$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-menuconfig:
 	$$(call make_$1,menuconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))

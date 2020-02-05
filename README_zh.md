@@ -2,15 +2,14 @@
 
 # Linux Lab
 
-本项目致力于创建一个基于 QEMU，用于 Linux 开发的实验环境，方便大家学习、开发和测试 [Linux 内核](http://www.kernel.org)。
+本项目致力于创建一个基于 QEMU 的 Linux 实验环境，方便大家学习、开发和测试 [Linux 内核](http://www.kernel.org)。
 
-如果您想尝试 Linux 0.11，请访问我们的 [Linux 0.11 实验环境](http://gitee.com/tinylab/linux-0.11-lab)。
+如果您想尝试 Linux 0.11，请访问我们的另外一个开源项目：[Linux 0.11 实验环境](http://gitee.com/tinylab/linux-0.11-lab)。
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
 ## 内容目录
 
-- [内容目录](#内容目录)
 - [项目历史](#项目历史)
 - [项目主页](#项目主页)
 - [演示视频](#演示视频)
@@ -93,24 +92,24 @@
 
 ## 项目历史
 
-大约九年前，在 embedded linux foundation 上，发起了一个 tinylinux 的计划，具体参考 [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。我在这个项目上工作了几个月。
+大约九年前，我向 elinux.org 发起了一个 tinylinux 提案：[Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。该提案最终被采纳，因此我在这个项目上工作了几个月。
 
 在项目开发过程中，编写了几个脚本用于验证一些新的小特性（譬如：[gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf)）是否破坏了几个主要的处理器架构上的内核功能。
 
-这些脚本使用 qemu-system-ARCH 作为处理器/开发板的模拟器，在模拟器上针对 ftrace+perf 运行了基本的启动测试和功能测试，并为之相应开发了缺省的内核配置文件（defconfig）、根文件系统（rootfs）以及一些测试脚本。但在当时的条件下，所有的工作只是简单地归档在一个目录下，并没有从整体上将它们组织起来。
+这些脚本使用 qemu-system-ARCH 作为处理器/开发板的模拟器，在模拟器上针对 Ftrace+Perf 运行了基本的启动测试和功能测试，并为之相应准备了内核配置文件（defconfig）、根文件系统（rootfs）以及一些测试脚本。但在当时的条件下，所有的工作只是简单地归档在一个目录下，并没有从整体上将它们组织起来。
 
-这些工作成果在我的硬盘里闲置了好多年，直到有一天我遇到了 novnc 和 docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab)，此后，为了将此前开发的那些零散的脚本，内核缺省配置，根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
+这些工作成果在我的硬盘里闲置了好多年，直到有一天我遇到了 novnc 和 docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab)，此后，为了将此前开发的那些零散的脚本、内核配置文件、根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
 
 现在，Linux Lab 已经发展为一个学习、开发和测试 Linux 的集成环境，它支持以下功能：
 
 - **开发板**：基于 QEMU，支持 8+ 主流体系架构，15+ 个流行的开发板，只用输入一个 `make list` 命令就可以列出所有支持的开发板，用户无需关心具体的 QEMU 命令选项和参数。
-- **组件**：对 Uboot，Linux / 内核模块，Buildroot，Qemu 全都支持可自行配置，支持打补丁、编译以及构建，最新已支持到 Linux 内核版本 v5.1。
+- **组件**：对 Uboot，Linux / 内核模块，Buildroot，Qemu 全都支持可自行配置、打补丁、编译以及构建，最新已支持到 Linux 内核版本 v5.1。
 - **预置组件**：针对以上所有组件均已提供预制件，并按照开发板分类存放在 bsp 子模块中，可随时使用；针对 arm / arm64 平台预置了 v2.12.0 版本的 qemu。
-- **根文件系统**：内置 rootfs 支持包括 initrd，harddisk，mmc 和 nfs，可通过 ROOTDEV / ROOTFS 进行配置， 以 docker 镜像方式提供了 ARM 架构的 Ubuntu 18.04 文件系统，具体仓库路径在：`tinylab/armv32-ubuntu`。
-- **Docker**：编译环境（交叉工具链）可通过一条命令在数分钟内提供，支持 5 种主要架构，还可通过 `make toolchain` 命令配置外部的交叉工具链。
+- **根文件系统**：内置 rootfs 支持包括 initrd，harddisk，mmc 和 nfs，可通过 ROOTDEV / ROOTFS 进行配置， 以 docker 镜像方式提供了 ARM 架构的 Ubuntu 18.04 文件系统，具体映像为：`tinylab/armv32-ubuntu`。
+- **Docker**：编译环境（交叉工具链）可通过一条命令在数分钟内获得，支持 5 种主要架构，还可通过 `make toolchain` 命令配置外部的交叉工具链。
 - **浏览器**：当前支持通过网络浏览器访问使用，一旦安装在 Internet 服务器中，即可通过 Web vnc 或 Web ssh 在任何地方进行访问。
 - **网络**：内置桥接（bridge）网络支持，每个开发板都支持网络（Raspi3 是唯一的例外）。
-- **启动**：支持串口，curses（用于 ssh 访问）和图形化方式启动。
+- **启动**：支持串口、curses（用于 ssh 访问）和图形化方式启动。
 - **测试**：支持通过 `make test` 命令对目标板进行自动化测试。
 - **调试**：可通过 `make debug` 命令对目标板进行调试。
 
@@ -137,16 +136,14 @@
 
 更多操作:
 
-* [用 Linux Lab做《奔跑吧Linux内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
+* [用 Linux Lab 做《奔跑吧Linux内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
 * [利用 Linux Lab 完成嵌入式系统软件开发全过程](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
 
 ## 安装 docker
 
-运行 Linux Lab 需要基于 Docker，所以请先安装 Docker：
+运行 Linux Lab 需要基于 Docker，所以请务必先安装 Docker：
 
-- Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 - Linux, Mac OSX, Windows 10: 使用 [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-
 - 更早的 Windows 版本: 使用 [Docker Toolbox](https://www.docker.com/docker-toolbox) 或者 Virtualbox/Vmware + Linux
 
 在运行 Linux Lab 之前，请确保无需 sudo 权限也可以正常运行以下命令：
@@ -231,7 +228,7 @@
     $ tools/docker/ssh linux-lab
     $ tools/docker/bash linux-lab
 
-登录方式的总结：
+登录方式汇总：
 
 |   登录方法     |   描述             |  缺省用户        |  登录所在地          |
 |----------------|--------------------|------------------|----------------------|
@@ -242,7 +239,7 @@
 
 ## 更新实验环境并重新运行
 
-为了更新 Linux Lab 的版本，我们首先 **必须** 备份所有的本地修改，然后就可以执行更新了：
+为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，然后就可以执行更新了：
 
     $ tools/docker/update linux-lab
 
@@ -252,11 +249,15 @@
 
 如果有必要的话清理整个环境:
 
-   $ tools/docker/clean-all
+    $ tools/docker/clean-all
+
+之后重新运行 Linux Lab：
+
+    $ tools/docker/rerun linux-lab
 
 ## 快速上手: 启动一个开发板
 
-输入如下命令在缺省的 `vexpress-a9` 开发板上启动预置的内核和根文件系统：
+输入如下命令，在缺省的 `vexpress-a9` 开发板上启动预置的内核和根文件系统：
 
     $ make boot
 
@@ -348,7 +349,7 @@
 
 #### 以插件方式使用
 
-Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时自身的代码体积不会变得太大。
+Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时，自身的代码体积不会变得太大。
 
 该特性有助于支持基于 Linux Lab 学习一些书上的例子以及支持一些采用新的处理器体系架构的开发板，书籍中可能会涉及多个开发板或者是新的处理器架构，并可能会需要多个新的软件包（譬如交叉工具链和架构相关的 qemu 系统模拟器）。
 
@@ -386,7 +387,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make kernel-checkout
     $ make root-checkout
 
-如果由于本地更改而导致检出不起作用，请保存更改并运行清理以获取一个干净的环境：
+如果由于本地更改而导致检出不起作用，请保存更改并做清理以获取一个干净的环境：
 
     $ make kernel-cleanup
     $ make root-cleanup
@@ -429,7 +430,6 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
-    $ make uboot-oldefconfig
 
 ### 编译
 
@@ -694,7 +694,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
     $ make uboot-source
 
-检出一个特定的版本：
+检出一个特定的版本（版本号在 `boards/<BOARD>/Makefile` 中通过 UBOOT 指定）：
 
     $ make uboot-checkout
 
@@ -760,13 +760,13 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 qemu-ARCH-static 和 qemu-system-ARCH 是不能一起编译的，为了制作 qemu-ARCH-static，请在开发板的 Makefile 中首先使能 `QEMU_US=1` 然后再重新编译。
 
-如果指定了 QEMU 和 QTOOL，那么实验环境会优先使用 bsp 子模块中的 QEMU 和 QTOOL，而不是已经安装在本地系统中的版本，但会优先使用最近编译和存在的版本。
+如果指定了 QEMU 和 QTOOL，那么实验环境会优先使用 bsp 子模块中的 QEMU 和 QTOOL，而不是已经安装在本地系统中的版本，但会优先使用最近编译的版本，如果最近有编译过的话。
 
 在为新的内核实现移植时，如果使用 2.5 版本的 QEMU，Linux 5.0 在运行过程中会挂起，将 QEMU 升级到 2.12.0 后，问题消失。请在以后内核升级过程中注意相关的问题。
 
 #### Toolchain
 
-Linux 内核主线的升级非常迅速，内置的工具链无法与其保持同步，为了减少维护上的压力，环境支持添加外部工具链。譬如 ARM64/virt, CCVER 和 CCPATH。
+Linux 内核主线的升级非常迅速，内置的工具链可能无法与其保持同步，为了减少维护上的压力，环境支持添加外部工具链。譬如 ARM64/virt, CCVER 和 CCPATH。
 
 列出支持的预编译工具链：
 
@@ -792,7 +792,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 采用以上配置方法，在编译 v2.6.11.12 版本的 Linux 内核时会在 defconfig 时自动切换为使用指定的 GCC 版本。
 
-在编译主机（host）的工具链时，也需要做相应配置（需要显式指定 `b=i386/pc`）：
+在编译主机（host）的软件时，也需要做相应配置（需要显式指定 `b=i386/pc`）：
 
     $ make gcc-list b=i386/pc
     $ make gcc-switch CCORI=internal GCC=4.8 b=i386/pc
@@ -801,7 +801,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 内置的 rootfs 很小，不足以应付复杂的应用开发，如果需要涉及高级的应用开发，需要使用现代的 Linux 发布包。
 
-环境提供了针对 arm32v7 的 ubuntu 18.04 的根文件系统，该文件系统已经制作成 docker 镜像，以后有机会再提供更多更好的文件系统。
+环境提供了针对 arm32v7 的 Ubuntu 18.04 的根文件系统，该文件系统已经制作成 docker 镜像，以后有机会再提供更多更好的文件系统。
 
 可以通过 docker 直接使用：
 
@@ -1217,7 +1217,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
       Local ref configured for 'git push':
         master pushes to master (local out of date)
 
-然后，在 gitee.com 上 fork 这个仓库，上传你的修改，然后发送你的 pull request。 
+然后，在 gitee.com 上 fork 这个仓库，上传您的修改，然后发送您的 pull request。 
 
 ### 学习汇编
 
@@ -1440,7 +1440,7 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 ### 运行报错 "linux/compiler-gcc7.h: No such file or directory"
 
-这意味着你使用了一个比 Linux 内核版本所支持的 gcc 的版本更新的 gcc，可使用 `make gcc-switch` 命令 [切换到较旧的 gcc 版本](#toolchain)，以 `i386 / pc` 开发板为例：
+这意味着您使用了一个比 Linux 内核版本所支持的 gcc 的版本更新的 gcc，可使用 `make gcc-switch` 命令 [切换到较旧的 gcc 版本](#toolchain)，以 `i386 / pc` 开发板为例：
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4

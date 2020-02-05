@@ -253,7 +253,11 @@ If fails, please try to clean up the containers:
 
 Or even clean up the whole environments:
 
-   $ tools/docker/clean-all
+    $ tools/docker/clean-all
+
+Then rerurn linux lab:
+
+    $ tools/docker/rerun linux-lab
 
 ## Quickstart: Boot a board
 

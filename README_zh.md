@@ -8,90 +8,90 @@
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
-## 章节列表
+## 内容目录
 
-- [项目历史](#why)
-- [项目主页](#homepage)
-- [演示视频](#demonstration)
-- [安装 docker](#install-docker)
-- [选择工作目录](#choose-a-working-directory)
-- [下载实验环境](#download-the-lab)
-- [运行并登录 Linux Lab](#run-and-login-the-lab)
-- [更新实验环境并重新运行](#update-and-rerun-the-lab)
-- [快速上手：启动一个开发板](#quickstart-boot-a-board)
-- [使用说明](#usage)
-    - [使用开发板](#using-boards)
-          - [列出支持的开发板](#list-available-boards)
-          - [选择一个开发板](#choosing-a-board)
-          - [以插件方式使用](#using-as-plugins)
-    - [下载](#downloading)
-    - [检出](#checking-out)
-    - [打补丁](#patching)
-    - [配置](#configuration)
-        - [缺省配置](#default-configuration)
-        - [手动配置](#manual-configuration)
-        - [使用旧的缺省配置](#old-default-configuration)
-    - [编译](#building)
-    - [保存](#saving)
-    - [启动](#booting)
-    - [使用](#using)
-        - [Linux](#linux)
-            - [非交互方式配置](#non-interactive-configuration)
-            - [使用内核模块](#using-kernel-modules)
-            - [使用内核特性](#using-kernel-features)
-        - [Uboot](#uboot)
-        - [Qemu](#qemu)
-        - [Toolchain](#toolchain)
-        - [Rootfs](#rootfs)
-    - [调试](#debugging)
-    - [测试](#testing)
-    - [共享](#sharing)
-        - [在 rootfs 中安装文件](#install-files-to-rootfs)
-        - [采用 NFS 共享文件](#share-with-nfs)
-        - [通过 tftp 传输文件](#transfer-via-tftp)
-        - [通过 9p virtio 共享文件](#share-with-9p-virtio)
-- [更多](#more)
-    - [添加一个新的开发板](#add-a-new-board)
-        - [选择一个 qemu 支持的开发板](#choose-a-board-supported-by-qemu)
-        - [创建开发板的目录](#create-the-board-directory)
-        - [从一个已经支持的开发板中复制一份 Makefile](#clone-a-makefile-from-an-existing-board)
-        - [从头开始配置变量](#configure-the-variables-from-scratch)
-        - [同时准备 configs 文件](#at-the-same-time,-prepare-the-configs)
-        - [选择 kernel，rootfs 和 uboot 的版本](#choose-the-versions-of-kernel,-rootfs-and-uboot)
-        - [配置，构造和启动](#configure,-build-and-boot-them)
-        - [保存生成的镜像文件和配置文件](#save-the-images-and-configs)
-        - [上传所有工作](#upload-everything)
-    - [学习汇编](#learning-assembly)
-    - [运行任意的 make 目标](#running-any-make-goals)
-- [常见问题](#faqs)
-    - [关机挂起问题](#poweroff-hang)
-    - [无法登录 VNC](#vnc-login-with-password-failure)
-    - [引导时报缺少 sdl2 库](#boot-with-missing-sdl2-libraries-failure)
-    - [NFS/tftpboot 不工作](#nfstftpboot-not-work)
-    - [不使用 sudo 运行 tools 命令](#run-tools-without-sudo)
-    - [加快 docker images 下载的速度](#speed-up-docker-images-downloading)
-    - [Docker 的网络与 LAN 冲突](#docker-network-conflicts-with-lan)
-    - [为何不支持在本地主机上直接运行 Linux Lab](#why-not-allow-running-linux-lab-in-local-host)
-    - [为何不支持 kvm 加速](#why-kvm-speedding-up-is-disabled)
-    - [如何在 vim 中切换窗口](#how-to-switch-windows-in-vim)
-    - [如何删除 shell 命令行中打错的字](#how-to-delete-typo-in-shell-command-line)
-    - [如何调节窗口的大小](#how-to-tune-the-screen-size)
-    - [如何退出 qemu](#how-to-exit-qemu)
-    - [如何进入全屏模式](#how-to-work-in-fullscreen-mode)
-    - [如何录屏](#how-to-record-video)
-    - [Linux Lab 无响应](#linux-lab-not-response)
-    - [如何快速切换中英文输入](#language-input-switch-shortcuts)
-    - [运行报错 “No working init found”](#no-working-init-found)
-    - [运行报错 “linux/compiler-gcc7.h: No such file or directory”](#linuxcompiler-gcc7h-no-such-file-or-directory)
-    - [网络不通](#network-not-work)
-    - [运行报错 “linux-lab/configs: Permission denied”](#linux-labconfigs-permission-denied)
-    - [运行报错 “Client.Timeout exceeded while waiting headers”](#clienttimeout-exceeded-while-waiting-headers)
-    - [登录 VNC 时报密码错误](#vnc-login-fails-with-wrong-password)
-    - [运行报错：“scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h”](#scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh)
-    - [Ubuntu Snap 问题](#ubuntu-snap-issues)    
-- [联系我们以及赞助我们](#contact-and-sponsor)
+- [内容目录](#内容目录)
+- [项目历史](#项目历史)
+- [项目主页](#项目主页)
+- [演示视频](#演示视频)
+- [安装 docker](#安装-docker)
+- [选择工作目录](#选择工作目录)
+- [下载实验环境](#下载实验环境)
+- [运行并登录 Linux Lab](#运行并登录-linux-lab)
+- [更新实验环境并重新运行](#更新实验环境并重新运行)
+- [快速上手: 启动一个开发板](#快速上手-启动一个开发板)
+- [使用说明](#使用说明)
+   - [使用开发板](#使用开发板)
+      - [列出支持的开发板](#列出支持的开发板)
+      - [选择一个开发板](#选择一个开发板)
+      - [以插件方式使用](#以插件方式使用)
+   - [下载](#下载)
+   - [检出](#检出)
+   - [打补丁](#打补丁)
+   - [配置](#配置)
+      - [缺省配置](#缺省配置)
+      - [手动配置](#手动配置)
+      - [使用旧的缺省配置](#使用旧的缺省配置)
+   - [编译](#编译)
+   - [保存](#保存)
+   - [启动](#启动)
+   - [使用](#使用)
+      - [Linux](#linux)
+        - [非交互方式配置](#非交互方式配置)
+        - [使用内核模块](#使用内核模块)
+        - [使用内核特性](#使用内核特性)
+      - [Uboot](#uboot)
+      - [Qemu](#qemu)
+      - [Toolchain](#toolchain)
+      - [Rootfs](#rootfs)
+   - [调试](#调试)
+   - [测试](#测试)
+   - [共享](#共享)
+      - [在 rootfs 中安装文件](#在-rootfs-中安装文件)
+      - [采用 NFS 共享文件](#采用-nfs-共享文件)
+      - [通过 tftp 传输文件](#通过-tftp-传输文件)
+      - [通过 9p virtio 共享文件](#通过-9p-virtio-共享文件)
+- [更多](#更多)
+   - [添加一个新的开发板](#添加一个新的开发板)
+      - [选择一个 qemu 支持的开发板](#选择一个-qemu-支持的开发板)
+      - [创建开发板的目录](#创建开发板的目录)
+      - [从一个已经支持的开发板中复制一份 Makefile](#从一个已经支持的开发板中复制一份-makefile)
+      - [从头开始配置变量](#从头开始配置变量)
+      - [同时准备 configs 文件](#同时准备-configs-文件)
+      - [选择 kernel，rootfs 和 uboot 的版本](#选择-kernel，rootfs-和-uboot-的版本)
+      - [配置，编译和启动](#配置，编译和启动)
+      - [保存生成的镜像文件和配置文件](#保存生成的镜像文件和配置文件)
+      - [上传所有工作](#上传所有工作)
+   - [学习汇编](#学习汇编)
+   - [运行任意的 make 目标](#运行任意的-make-目标)
+- [常见问题](#常见问题)
+   - [关机挂起问题](#关机挂起问题)
+   - [引导时报缺少 sdl2 库](#引导时报缺少-sdl2-库)
+   - [NFS/tftpboot 不工作](#nfstftpboot-不工作)
+   - [不使用 sudo 运行 tools 命令](#不使用-sudo-运行-tools-命令)
+   - [加快 docker images 下载的速度](#加快-docker-images-下载的速度)
+   - [Docker 的网络与 LAN 冲突](#docker-的网络与-lan-冲突)
+   - [为何不支持在本地主机上直接运行 Linux Lab](#为何不支持在本地主机上直接运行-linux-lab)
+   - [为何不支持 kvm 加速](#为何不支持-kvm-加速)
+   - [如何在 vim 中切换窗口](#如何在-vim-中切换窗口)
+   - [如何删除 shell 命令行中打错的字](#如何删除-shell-命令行中打错的字)
+   - [如何调节窗口的大小](#如何调节窗口的大小)
+   - [如何退出 qemu](#如何退出-qemu)
+   - [如何进入全屏模式](#如何进入全屏模式)
+   - [如何录屏](#如何录屏)
+   - [Linux Lab 无响应](#linux-lab-无响应)
+   - [如何快速切换中英文输入](#如何快速切换中英文输入)
+   - [运行报错 No working init found](#运行报错-no-working-init-found)
+   - [运行报错 linux/compiler-gcc7.h: No such file or directory](#运行报错-linuxcompiler-gcc7h-no-such-file-or-directory)
+   - [网络不通](#网络不通)
+   - [运行报错 linux-lab/configs: Permission denied](#运行报错-linux-labconfigs-permission-denied)
+   - [运行报错 Client.Timeout exceeded while waiting headers](#运行报错-clienttimeout-exceeded-while-waiting-headers)
+   - [登录 VNC 时报密码错误](#登录-vnc-时报密码错误)
+   - [运行报错 scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h](#运行报错-scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh)
+   - [Ubuntu Snap 问题](#ubuntu-snap-问题)
+- [联系并赞助我们](#联系并赞助我们)
 
-## <span id="why">项目历史</span>
+## 项目历史
 
 大约九年前，在 embedded linux foundation 上，发起了一个 tinylinux 的计划，具体参考 [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。我在这个项目上工作了几个月。
 
@@ -116,11 +116,11 @@
 
 更多特性和使用方法请看下文介绍。
 
-## <span id="homepage">项目主页</span>
+## 项目主页
 
 参考：<http://tinylab.org/linux-lab/>
 
-## <span id="demonstration">演示视频</span>
+## 演示视频
 
 基本操作:
 
@@ -140,7 +140,7 @@
 * [用 Linux Lab做《奔跑吧Linux内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
 * [利用 Linux Lab 完成嵌入式系统软件开发全过程](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
 
-## <span id="install-docker">安装 docker</span>
+## 安装 docker
 
 运行 Linux Lab 需要基于 Docker，所以请先安装 Docker：
 
@@ -189,7 +189,7 @@
 
     $ sudo apt-get install linux-generic-lts-trusty
 
-## <span id="choose-a-working-directory">选择工作目录</span>
+## 选择工作目录
 
 如果您是通过 Docker Toolbox 安装，请在 Virtualbox 上进入 `default` 系统的 `/mnt/sda1`，否则，关机后所有数据会丢失，因为缺省的 `/root` 目录是挂载在内存中的。 
 
@@ -205,7 +205,7 @@
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
 
-## <span id="download-the-lab">下载实验环境</span>
+## 下载实验环境
 
 以 Ubuntu 系统为例:
 
@@ -214,7 +214,7 @@
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## <span id="run-and-login-the-lab">运行并登录 Linux Lab</span>
+## 运行并登录 Linux Lab
 
 启动 Linux Lab 并根据控制台上打印的用户名和密码登录实验环境：
 
@@ -240,7 +240,7 @@
 |   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
 |   bash         | docker bash        |  root            | 本地主机             |
 
-## <span id="update-and-rerun-the-lab">更新实验环境并重新运行</span>
+## 更新实验环境并重新运行
 
 为了更新 Linux Lab 的版本，我们首先 **必须** 备份所有的本地修改，然后就可以执行更新了：
 
@@ -254,7 +254,7 @@
 
    $ tools/docker/clean-all
 
-## <span id="quickstart-boot-a-board">快速上手：启动一个开发板</span>
+## 快速上手: 启动一个开发板
 
 输入如下命令在缺省的 `vexpress-a9` 开发板上启动预置的内核和根文件系统：
 
@@ -269,11 +269,11 @@
     # uname -a
     Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
 
-## <span id="usage">使用说明</span>
+## 使用说明
 
-### <span id="using-boards">使用开发板</span>
+### 使用开发板
 
-#### <span id="list-available-boards">列出支持的开发板</span>
+#### 列出支持的开发板
 
 列出内置支持的开发板:
 
@@ -329,7 +329,7 @@
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-#### <span id="choosing-a-board">选择一个开发板</span>
+#### 选择一个开发板
 
 系统缺省使用的开发板型号为 'vexpress-a9'，我们也可以自己配置，制作和使用其他的开发板，具体使用 'BOARD' 选项，举例如下：
 
@@ -346,7 +346,7 @@
 
     $ cat boards/arm/vexpress-a9/Makefile
 
-#### <span id="using-as-plugins">以插件方式使用</span>
+#### 以插件方式使用
 
 Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时自身的代码体积不会变得太大。
 
@@ -358,7 +358,7 @@ Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和
 - [龙芯/Loongson Linux](https://gitee.com/loongsonlab/loongson)
 - [《奔跑吧 Linux 内核》例子代码实验](https://gitee.com/tinylab/rlk4.0)
 
-### <span id="downloading">下载</span>
+### 下载
 
 v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动下载。
 
@@ -375,7 +375,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make root-source
     $ make uboot-source
 
-### <span id="checking-out">检出</span>
+### 检出
 
 检出（checkout）您需要的 kernel 和 buildroot 版本：
 
@@ -393,15 +393,15 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
 以上操作也适用于 qemu 和 uboot。
 
-### <span id="patching">打补丁</span>
+### 打补丁
 
 给开发板打补丁，补丁包的来源是存放在 `boards/<BOARD>/bsp/patch/linux` 和 `patch/linux/` 路径下：
 
     $ make kernel-patch
 
-### <span id="configuration">配置</span>
+### 配置
 
-#### <span id="default-configuration">缺省配置</span>
+#### 缺省配置
 
 使用缺省配置（defconfig）配置 kernel 和 buildroot：
 
@@ -420,18 +420,18 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
 如果仅提供 defconfig 的名字，则搜索所在目录的次序首先是 `boards/<BOARD>`，然后是 buildroot, u-boot 和 linux-stable 各自的缺省配置路径 `buildroot/configs`，`u-boot/configs` 和 `linux-stable/arch/<ARCH>/configs`。
 
-#### <span id="manual-configuration">手动配置</span>
+#### 手动配置
 
     $ make kernel-menuconfig
     $ make root-menuconfig
 
-#### <span id="old-default-configuration">使用旧的缺省配置</span>
+#### 使用旧的缺省配置
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
     $ make uboot-oldefconfig
 
-### <span id="building">编译</span>
+### 编译
 
 一起编译 kernel 和 buildroot：
 
@@ -442,7 +442,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make kernel
     $ make root
 
-### <span id="saving">保存</span>
+### 保存
 
 保存所有的配置以及 rootfs/kernel/dtb 的 image 文件：
 
@@ -456,7 +456,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make root-save
     $ make kernel-save
 
-### <span id="booting">启动</span>
+### 启动
 
 缺省情况下采用非图形界面的串口方式启动，如果要退出可以使用 'CTRL+a x', 'poweroff', 'reboot' 或者 'pkill qemu' 命令（具体参考 [“关机挂起问题”](#poweroff-hang)）
 
@@ -529,11 +529,11 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make list-modules
     $ make list-gcc
 
-### <span id="using">使用</span>
+### 使用
 
-#### <span id="linux">Linux</span>
+#### Linux
 
-##### <span id="non-interactive-configuration">非交互方式配置</span>
+##### 非交互方式配置
 
 Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获取或设置内核的配置选项值。基于该脚本，实验环境增加了两个选项 `kernel-getconfig` 和 `kernel-setconfig`，可用于调整内核的选项。基于该功能我们可以方便地实现类似 "enable/disable/setstr/setval/getstate" 内核选项的操作。
 
@@ -573,7 +573,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel-setconfig m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
     $ make kernel-getconfig o=tun,minix,ikconfig,panic_timeout,hostname
 
-##### <span id="using-kernel-modules">使用内核模块</span>
+##### 使用内核模块
 
 编译所有的内部内核模块：
 
@@ -633,7 +633,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel x=$PWD/modules/hello/hello.ko
 
 
-##### <span id="using-kernel-features">使用内核特性</span>
+##### 使用内核特性
 
 内核的众多特性都集中存放在 `feature/linux/`，其中包括了特性的配置补丁，可以用于管理已合入内核主线的特性和未合入的特性功能。
 
@@ -684,7 +684,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel
     $ make boot
 
-#### <span id="uboot">Uboot</span>
+#### Uboot
 
 从当前支持 U-boot 的板子：`versatilepb` 和 `vexpress-a9` 中选择一款：
 
@@ -743,7 +743,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make uboot-save
     $ make uboot-saveconfig
 
-#### <span id="qemu">Qemu</span>
+#### Qemu
 
 内置的 qemu 或许不能和最新的 Linux 内核配套工作，为此我们有时不得不自己编译 qemu，自行编译 qemu 的方法在 vexpress-a9 和 virt 开发板上已经验证通过。
 
@@ -764,7 +764,7 @@ qemu-ARCH-static 和 qemu-system-ARCH 是不能一起编译的，为了制作 qe
 
 在为新的内核实现移植时，如果使用 2.5 版本的 QEMU，Linux 5.0 在运行过程中会挂起，将 QEMU 升级到 2.12.0 后，问题消失。请在以后内核升级过程中注意相关的问题。
 
-#### <span id="toolchain">Toolchain</span>
+#### Toolchain
 
 Linux 内核主线的升级非常迅速，内置的工具链无法与其保持同步，为了减少维护上的压力，环境支持添加外部工具链。譬如 ARM64/virt, CCVER 和 CCPATH。
 
@@ -797,7 +797,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make gcc-list b=i386/pc
     $ make gcc-switch CCORI=internal GCC=4.8 b=i386/pc
 
-#### <span id="rootfs">Rootfs</span>
+#### Rootfs
 
 内置的 rootfs 很小，不足以应付复杂的应用开发，如果需要涉及高级的应用开发，需要使用现代的 Linux 发布包。
 
@@ -825,7 +825,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating system  25
     arm64v8/debian   Debian is a Linux distribution that's composed  20
 
-### <span id="debugging">调试</span>
+### 调试
 
 使用调试选项编译内核：
 
@@ -851,7 +851,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
    $ make test DEBUG=1
 
-### <span id="testing">测试</span>
+### 测试
 
 以 'aarch64/virt' 作为演示的开发板：
 
@@ -950,11 +950,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test DEBUG=1
 
-### <span id="sharing">共享</span>
+### 共享
 
 缺省支持如下方法在 Qemu 开发板和主机之间传输文件：
 
-#### <span id="install-files-to-rootfs">在 rootfs 中安装文件</span>
+#### 在 rootfs 中安装文件
 
 将文件放在 `system/` 的相对路径中，安装和重新制作 rootfs：
 
@@ -965,7 +965,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make root-rebuild
     $ make boot G=1
 
-#### <span id="share-with-nfs">采用 NFS 共享文件</span>
+#### 采用 NFS 共享文件
 
 使用 `ROOTDEV=/dev/nfs` 选项启动开发板，
 
@@ -978,7 +978,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make env-dump | grep ROOTDIR
     ROOTDIR = /linux-lab/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs
 
-#### <span id="transfer-via-tftp">通过 tftp 传输文件</span>
+#### 通过 tftp 传输文件
 
 在 Qemu 开发板上运行 `tftp` 命令访问主机的 tftp 服务器。
 
@@ -999,7 +999,7 @@ Qemu 开发板：
 
 **注意**：当把文件从 Qemu 开发板发送到主机侧时，必须先在主机上创建一个空的文件，这是一个 bug？！
 
-#### <span id="share-with-9p-virtio">通过 9p virtio 共享文件</span>
+#### 通过 9p virtio 共享文件
 
 有关如何为一个新的开发板启用 9p virtio，请参考 [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup)。编译 qemu 时必须使用 `--enable-virtfs` 选项，同时内核必须打开必要的选项。 
 
@@ -1068,35 +1068,35 @@ Qemu 开发板：
     riscv64/virt, work with virtio-9p-pci and virtio-9p-dev
     riscv32/virt, work with virtio-9p-pci and virtio-9p-dev
 
-## <span id="more">更多</span>
+## 更多
 
-### <span id="add-a-new-board">添加一个新的开发板</span>
+### 添加一个新的开发板
 
-#### <span id="choose-a-board-supported-by-qemu">选择一个 qemu 支持的开发板</span>
+#### 选择一个 qemu 支持的开发板
 
 列出支持的开发板，以 arm 架构为例：
 
     $ qemu-system-arm -M ?
 
-#### <span id="create-the-board-directory">创建开发板的目录</span>
+#### 创建开发板的目录
 
 以 `vexpress-a9` 为例：
 
     $ mkdir boards/arm/vexpress-a9/
 
-#### <span id="clone-a-makefile-from-an-existing-board">从一个已经支持的开发板中复制一份 Makefile</span>
+#### 从一个已经支持的开发板中复制一份 Makefile
 
 以 `versatilepb` 为例：
 
     $ cp boards/arm/versatilebp/Makefile boards/arm/vexpress-a9/Makefile
 
-#### <span id="configure-the-variables-from-scratch">从头开始配置变量</span>
+#### 从头开始配置变量
 
 为所有的修改添加注释，先获得一个最小的工作配置集，然后再加其他配置。
 
 具体参考 `doc/qemu/qemu-doc.html` 或者在线说明 `http://qemu.weilnetz.de/qemu-doc.html`。
 
-#### <span id="at-the-same-time,-prepare-the-configs">同时准备 configs 文件</span>
+#### 同时准备 configs 文件
 
 我们需要为 Linux，buildroot 甚至 uboot 准备 config 文件。
 
@@ -1142,7 +1142,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
 
 `2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
 
-#### <span id="choose-the-versions-of-kernel,-rootfs-and-uboot">选择 kernel，rootfs 和 uboot 的版本</span>
+#### 选择 kernel，rootfs 和 uboot 的版本
 
 检出版本时请使用 'tag' 命令而非 'branch' 命令，以 kernel 为例：
 
@@ -1178,7 +1178,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
 
     ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz
 
-#### <span id="configure,-build-and-boot-them">配置，编译和启动</span>
+#### 配置，编译和启动
 
 以 kernel 为例：
 
@@ -1189,7 +1189,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
 
 同样的方法适用于 rootfs，uboot，甚至 qemu。
 
-#### <span id="save-the-images-and-configs">保存生成的镜像文件和配置文件</span>
+#### 保存生成的镜像文件和配置文件
 
     $ make root-save
     $ make kernel-save
@@ -1199,7 +1199,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
     $ make kernel-saveconfig
     $ make uboot-saveconfig
 
-#### <span id="upload-everything">上传所有工作</span>
+#### 上传所有工作
 
 最后，将 images、defconfigs、patchset 上传到开发板特定的 bsp 子模块仓库。
 
@@ -1219,7 +1219,7 @@ Linux Lab 本身也提供许多有效的配置，`-clone` 命令有助于利用�
 
 然后，在 gitee.com 上 fork 这个仓库，上传你的修改，然后发送你的 pull request。 
 
-### <span id="learning-assembly">学习汇编</span>
+### 学习汇编
 
 Linux Lab 在 `examples/assembly` 目录下有许多汇编代码的例子：
 
@@ -1229,7 +1229,7 @@ Linux Lab 在 `examples/assembly` 目录下有许多汇编代码的例子：
     $ make -s -C aarch64/
     Hello, ARM64!
 
-### <span id="running-any-make-goals">运行任意的 make 目标</span>
+### 运行任意的 make 目标
 
 Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标，譬如：
 
@@ -1245,9 +1245,9 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
   执行这些带有 `-run` 的目标允许我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
 
 
-## <span id="faqs">常见问题</span>
+## 常见问题
 
-### <span id="poweroff-hang">关机挂起问题</span>
+### 关机挂起问题
 
 当前对以下开发板，基于内核版本 5.1（LINUX=v5.1），'poweroff' 和 'reboot' 命令无法正常工作：
 
@@ -1261,7 +1261,7 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
 
 欢迎提供修复意见。
 
-### <span id="boot-with-missing-sdl2-libraries-failure">引导时报缺少 sdl2 库</span>
+### 引导时报缺少 sdl2 库
 
 这是由于 docker 的 image 没有更新导致，解决的方法是重新运行 lab（这里不要使用 'tools/docker/restart'，因为并没有使用新的 docker image）：
 
@@ -1274,22 +1274,22 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
 
 使用 'tools/docker/update'，所有的 docker images 和源码都会被更新，这是推荐的做法。
 
-### <span id="nfstftpboot-not-work">NFS/tftpboot 不工作</span>
+### NFS/tftpboot 不工作
 
 如果 nfs 或 tftpboot 不起作用，请在主机端运行 `modprobe nfsd` 并通过运行 `/configs/tools/restart-net-servers.sh` 重新启动网络服务，请确保不要使用 `tools/docker/trun`。
 
-### <span id="run-tools-without-sudo">不使用 sudo 运行 tools 命令</span>
+### 不使用 sudo 运行 tools 命令
 
 如果需要在不使用 sudo 的情况下执行 `tools' 目录下的命令，请确保将您的帐户添加到 docker 组并重新启动系统以使其生效：
 
     $ sudo usermod -aG docker $USER
     $ newgrp docker
 
-### <span id="speed-up-docker-images-downloading">加快 docker images 下载的速度</span>
+### 加快 docker images 下载的速度
 
 为了优化 Docker 镜像的下载速度，请参考 `tools/docker/install` 脚本的内容编辑 `/etc/default/docker` 中的 `DOCKER_OPTS`。
 
-### <span id="docker-network-conflicts-with-lan">Docker 的网络与 LAN 冲突</span>
+### Docker 的网络与 LAN 冲突
 
 假设 docker 网络为 `10.66.0.0/16`，否则，最好采用如下方式对其进行更改：
 
@@ -1306,13 +1306,13 @@ Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标�
 
 如果 Linux Lab 的网络仍然无法正常工作，请尝试使用另一个专用网络地址，并最终避免与 LAN 地址冲突。
 
-### <span id="why-not-allow-running-linux-lab-in-local-host">为何不支持在本地主机上直接运行 Linux Lab</span>
+### 为何不支持在本地主机上直接运行 Linux Lab
 
 Linux Lab 的完整功能依赖于 [Cloud Lab]（http://tinylab.org/cloud-lab）所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab]（http://tinylab.org/cloud-lab）在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
 
 Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用。
 
-### <span id="why-kvm-speedding-up-is-disabled">为何不支持 kvm 加速</span>
+### 为何不支持 kvm 加速
 
 kvm 当前仅支持 qemu-system-i386 和 qemu-system-x86_64，并且还需要 cpu 和 bios 支持，否则，您可能会看到以下错误日志：
 
@@ -1324,11 +1324,11 @@ kvm 当前仅支持 qemu-system-i386 和 qemu-system-x86_64，并且还需要 cp
 
 如果 cpu 支持，我们还需要确保在 BIOS 中启用了该功能，只需重新启动计算机，按 “Delete” 键进入 BIOS，请确保 “Intel virtualization technology” 功能已启用。
 
-### <span id="how-to-switch-windows-in-vim">如何在 vim 中切换窗口</span>
+### 如何在 vim 中切换窗口
 
 浏览器和 vim 中都提供了 `CTRL+w`，为了避免冲突，要从一个窗口切换到另一个窗口，请改用 `CTRL+Left` 或 `CTRL+Right` 键，Linux Lab 已将 `CTRL+Right` 映射为 `CTRL+w`，将 `CTRL+Left` 映射为 `CTRL+p`。
 
-### <span id="how-to-delete-typo-in-shell-command-line">如何删除 shell 命令行中打错的字</span>
+### 如何删除 shell 命令行中打错的字
 
 长按键目前在 novnc 客户端中不起作用，因此，长按 “Delete” 键不起作用，请改用 “alt+delete” 或 “alt+backspace” 组合键，以下是更多有关组合键的小技巧：
 
@@ -1345,7 +1345,7 @@ kvm 当前仅支持 qemu-system-i386 和 qemu-system-x86_64，并且还需要 cp
   * dw (正向删除一个单词)
   * d^/d$ (删除从当前位置到行首/行尾的所有字符)
 
-### <span id="how-to-tune-the-screen-size">如何调节窗口的大小</span>
+### 如何调节窗口的大小
 
 Linux Lab 的屏幕尺寸是由 xrandr 捕获的，如果不起作用，请检查并自行设置，例如：
 
@@ -1387,7 +1387,7 @@ Linux Lab 的屏幕尺寸是由 xrandr 捕获的，如果不起作用，请检�
     $ tools/docker/rm-all
     $ tools/docker/run linux-lab
 
-### <span id="how-to-exit-qemu">如何退出 qemu</span>
+### 如何退出 qemu
 
 **串口控制台**: 使用 'CTRL+A X'
 
@@ -1395,11 +1395,11 @@ Linux Lab 的屏幕尺寸是由 xrandr 捕获的，如果不起作用，请检�
 
 **基于 X 的图形终端**: 使用 'CTRL+ALT+2 quit'
 
-### <span id="how-to-work-in-fullscreen-mode">如何进入全屏模式</span>
+### 如何进入全屏模式
 
 打开左边的侧边栏，点击 “Fullscreen” 按钮。
 
-### <span id="how-to-record-video">如何录屏</span>
+### 如何录屏
 
 * 使能录制
 
@@ -1421,15 +1421,15 @@ Linux Lab 的屏幕尺寸是由 xrandr 捕获的，如果不起作用，请检�
 
   视频存储在 “cloud-lab/recordings” 目录下，参考 [showdesk.io](http://showdesk.io/post) 的帮助进行分享。
 
-### <span id="linux-lab-not-response">Linux Lab 无响应</span>
+### Linux Lab 无响应
 
 VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的刷新按钮或断开连接后重新连接。
 
-### <span id="language-input-switch-shortcuts">如何快速切换中英文输入</span>
+### 如何快速切换中英文输入
 
 为了切换英文/中文输入法，请使用 “CTRL+s” 快捷键，而不是 “CTRL+space”，以避免与本地系统冲突。
 
-### <span id="no-working-init-found">运行报错 “No working init found”</span>
+### 运行报错 "No working init found"
 
 这意味着 rootfs.ext2 文件可能已损坏，请删除该文件，然后再次尝试执行 `make boot`，例如：
 
@@ -1438,14 +1438,14 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 `make boot` 命令可以自动创建该映像。
 
-### <span id="linuxcompiler-gcc7h-no-such-file-or-directory">运行报错 “linux/compiler-gcc7.h: No such file or directory”</span>
+### 运行报错 "linux/compiler-gcc7.h: No such file or directory"
 
 这意味着你使用了一个比 Linux 内核版本所支持的 gcc 的版本更新的 gcc，可使用 `make gcc-switch` 命令 [切换到较旧的 gcc 版本](#toolchain)，以 `i386 / pc` 开发板为例：
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4
 
-### <span id="network-not-work">网络不通</span>
+### 网络不通
 
 如果无法 ping 通，请根据下面列举的方法逐一排查：
 
@@ -1453,7 +1453,7 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 **IP 问题**：如果 ping 不起作用，请参阅 [网络冲突问题](#docker-network-conflicts-with-lan) 并更改 docker 容器的 ip 地址范围。
 
-### <span id="linux-labconfigs-permission-denied">运行报错 “linux-lab/configs: Permission denied”</span>
+### 运行报错 "linux-lab/configs: Permission denied"
 
 这个错误会在执行 `make boot` 时报出，原因可能是由于克隆代码仓库时使用了 `root` 权限，解决方式是修改 `cloud-lab/` 目录的所有者：
 
@@ -1463,7 +1463,7 @@ VNC 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 为确保环境一致，目前 Linux Lab 仅支持通过普通用户 ubuntu 使用。
 
-### <span id="clienttimeout-exceeded-while-waiting-headers">运行报错 “Client.Timeout exceeded while waiting headers”</span>
+### 运行报错 "Client.Timeout exceeded while waiting headers"
 
 解决方法是选择配置以下 docker images 的 mirror 站点中的一个：
 
@@ -1476,14 +1476,14 @@ Ubuntu 中的配置方法如下：
     $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
     $ sudo service docker restart
 
-### <span id="vnc-login-fails-with-wrong-password">登录 VNC 时报密码错误</span>
+### 登录 VNC 时报密码错误
 
 使用不匹配的密码时会导致 VNC 登录失败，要解决此问题，请清除所有内容并重新运行：
 
     $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab
 
-### <span id="scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh">运行报错：“scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h”</span>
+### 运行报错 "scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h"
 
 这是因为 MAC OSX 不使用区分大小写的文件系统，请使用 hdiutil 或 Disk Utility 自己创建一个：
 
@@ -1491,14 +1491,14 @@ Ubuntu 中的配置方法如下：
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
 
-### <span id="ubuntu-snap-issues">Ubuntu Snap 问题</span>
+### Ubuntu Snap 问题
 
 用户报告了许多 snap 相关的问题，请改用 apt-get 安装 docker：
 
 * 无法将用户添加到 docker 组导致非 root 用户的操作被中断。
 * snap 服务会耗尽 `/dev/loop` 设备从而导致 mount 操作被打断。
 
-## <span id="contact-and-sponsor">联系并赞助我们</span>
+## 联系并赞助我们
 
 我们的微信号是 **tinylab**，欢迎加入我们的用户和开发人员讨论组。
 

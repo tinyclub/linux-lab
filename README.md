@@ -105,13 +105,13 @@ They have slept in my harddisk for several years without any attention, untill o
 
 Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
 
-**Boards**: Qemu based, 6+ main Architectures, 10+ popular boards, one `make list` command for all boards, qemu options are hidden.
+**Boards**: Qemu based, 8+ main Architectures, 15+ popular boards, one `make list` command for all boards, qemu options are hidden.
 **Components**: Uboot, Linux / Modules, Buildroot, Qemu are configurable, patchable, compilable, buildable, Linux v5.1 supported.
 **Prebuilt**: all of above components have been prebuilt and put in board specific bsp submodule for instant using, qemu v2.12.0 prebuilt for arm/arm64.
 **Rootfs**: Builtin rootfs support include initrd, harddisk, mmc and nfs, configurable via ROOTDEV/ROOTFS, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
 **Docker**: Environment (cross toolchains) available in one command in serveral minutes, 5 main architectures have builtin support, external ones configurable via `make toolchain`.
 **Browser**: usable via modern web browsers, once installed in a internet server, available everywhere via web vnc or web ssh.
-**Network**: Builtin bridge networking support, every board support network.
+**Network**: Builtin bridge networking support, every board support network (except Raspi3).
 **Boot**: Support serial port, curses (ssh friendly) and graphic booting.
 **Testing**: Support automatic testing via `make test` target.
 **Debugging**: debuggable via `make debug` target.
@@ -361,15 +361,19 @@ Here maintains the available plugins:
 
 ### Downloading
 
+v0.3 version support source code downloading automatically, no need to download
+manually, if still want to download them for preparation, please continue.
+
 Download board specific package and the kernel, buildroot source code:
 
-    $ make core-source -j3
+    $ make core-source -j4
 
 Download one by one:
 
     $ make bsp-source
     $ make kernel-source
     $ make root-source
+    $ make uboot-source
 
 ### Checking out
 
@@ -407,11 +411,6 @@ Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
 
     $ make kernel-defconfig
     $ make root-defconfig
-
-Configure with kernel patching:
-
-    $ make kernel-defconfig KP=1
-    $ make root-defconfig RP=1
 
 Configure with specified defconfig:
 
@@ -485,7 +484,7 @@ Boot with curses graphic (friendly to ssh login, not work for all boards, exit w
 
     $ make b=pc boot G=2
 
-Boot with PreBuilt Kernel, Dtb and Rootfs (if no new available, simple use `make boot`):
+Boot with PreBuilt Kernel, Dtb and Rootfs:
 
     $ make boot PBK=1 PBD=1 PBR=1
     or
@@ -493,7 +492,7 @@ Boot with PreBuilt Kernel, Dtb and Rootfs (if no new available, simple use `make
     or
     $ make boot kernel=0 dtb=0 root=0
 
-Boot with new kernel, dtb and rootfs if exists (if new available, simple use `make boot`):
+Boot with new kernel, dtb and rootfs if exists:
 
     $ make boot PBK=0 PBD=0 PBR=0
     or
@@ -703,7 +702,7 @@ Checkout the specified version:
 
     $ make uboot-checkout
 
-Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `tftp` by default.
+Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `flash` by default.
 
     $ make uboot-patch
 
@@ -724,7 +723,7 @@ Building:
 
     $ make uboot
 
-Boot with `BOOTDEV` and `ROOTDEV`, use `tftp` by default:
+Boot with `BOOTDEV` and `ROOTDEV`, use `flash` by default:
 
     $ make boot U=1
 
@@ -1150,7 +1149,7 @@ Edit the configs and Makefile untill they match our requirements.
     $ make board-edit
 
 The configuration must be put in `boards/<BOARD>/` and named with necessary
-version and arch info, use `raspi3` as an example:
+version info, use `raspi3` as an example:
 
     $ make kernel-saveconfig
     $ make root-saveconfig
@@ -1191,9 +1190,6 @@ If no tag existed, a virtual tag name with the real commmit number can be config
 
     LINUX = v2.6.11.12
     LINUX[LINUX_v2.6.11.12] = 8e63197f
-
-    # The real commit number
-    LINUX_COMMIT = $(call _v,LINUX,LINUX)
 
 Linux version specific ROOTFS are also supported:
 
@@ -1305,6 +1301,7 @@ make sure not use `tools/docker/trun`.
 To use the tools under `tools` without sudo, please make sure add your account to the docker group and reboot your system to take effect:
 
     $ sudo usermod -aG docker $USER
+    $ newgrp docker
 
 ### Speed up docker images downloading
 
@@ -1411,9 +1408,9 @@ If want the default one, please remove the manual setting at first:
 
 ### How to exit qemu
 
-1. Serial Port Console: Exit with 'CTRL+A X'
-2. Curses based Graphic: Exit with 'ESC+2 quit' Or 'ALT+2 quit'
-3. X based Graphic: Exit with 'CTRL+ALT+2 quit'
+* Serial Port Console: Exit with 'CTRL+A X'
+* Curses based Graphic: Exit with 'ESC+2 quit' Or 'ALT+2 quit'
+* X based Graphic: Exit with 'CTRL+ALT+2 quit'
 
 ### How to work in fullscreen mode
 
@@ -1461,7 +1458,7 @@ This means the rootfs.ext2 image may be broken, please remove it and try `make b
 
 ### linux/compiler-gcc7.h: No such file or directory
 
-This means using a newer gcc than the one linux kernel version supported, there are two solutions, one is [switching to an older gcc version](#toolchain) with 'make gcc-switch', use `i386/pc` board as an example:
+This means using a newer gcc than the one linux kernel version supported, the solution is [switching to an older gcc version](#toolchain) via 'make gcc-switch', use `i386/pc` board as an example:
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4
@@ -1483,7 +1480,7 @@ This may happen at `make boot` while the repository is cloned with `root` user, 
     $ sudo chown $USER:$USER -R ./
     $ tools/docker/rerun linux-lab
 
-Or directly use `sudo make boot`.
+To make a consistent working environment, Linux Lab only support using as general user: 'ubuntu'.
 
 ### Client.Timeout exceeded while waiting headers
 

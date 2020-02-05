@@ -412,6 +412,7 @@ QEMU_OUTPUT     := $(TOP_OUTPUT_ARCH)/qemu-$(QEMU)-$(MACH)
 UBOOT_OUTPUT    := $(TOP_OUTPUT_ARCH)/uboot-$(UBOOT)-$(MACH)
 KERNEL_OUTPUT   := $(TOP_OUTPUT_ARCH)/linux-$(LINUX)-$(MACH)
 ROOT_OUTPUT     := $(TOP_OUTPUT_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
+BSP_OUTPUT      := $(TOP_OUTPUT_ARCH)/bsp-$(MACH)
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
@@ -1344,7 +1345,6 @@ else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
-BSP_OUTPUT := $(BSP_SRC)
 #$(warning $(call gensource,bsp))
 $(eval $(call gensource,bsp))
 $(eval $(call gendeps,bsp))

@@ -239,7 +239,7 @@ Summary of login methods:
 |   webvnc/vnc   | web desktop        |  ubuntu          | anywhere via internet|
 |   webssh       | web ssh            |  ubuntu          | anywhere via internet|
 |   ssh          | normal ssh         |  ubuntu          | localhost            |
-|   bash         | docker bash        |  root            | localhost            |
+|   bash         | docker bash        |  ubuntu          | localhost            |
 
 ## Update and rerun the lab
 

@@ -235,7 +235,7 @@
 |   webvnc/vnc   | web 桌面           |  ubuntu          | 互联网在线即可       |
 |   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
 |   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
-|   bash         | docker bash        |  root            | 本地主机             |
+|   bash         | docker bash        |  ubuntu          | 本地主机             |
 
 ## 更新实验环境并重新运行
 

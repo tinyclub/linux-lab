@@ -863,11 +863,11 @@ It will open a new terminal, load the scripts from .gdbinit, run gdb automatical
 
 It equals to:
 
-   $ make boot DEBUG=1
+    $ make boot DEBUG=1
 
 to automate debug testing:
 
-   $ make test DEBUG=1
+    $ make test DEBUG=1
 
 ### Testing
 

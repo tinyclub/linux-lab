@@ -555,17 +555,11 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 更多 `kernel-setconfig` 命令的控制选项：`y, n, c, o, s, v`：
 
-    `y`, build the modules in kernel or enable anther kernel options.
     `y`, 编译内核中的模块或者使能其他内核选项。
-    `c`, build the modules as pluginable modules, just like `m`.
     `c`, 以插件方式编译内核模块，类似 `m` 选项。
-    `o`, build the modules as pluginable modules, just like `m`.
     `o`, 以插件方式编译内核模块，类似 `m` 选项。
-    `n`, disable a kernel option.
     `n`, 关闭一个内核选项。
-    `s`, `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
     `s`, `RTC_SYSTOHC_DEVICE="rtc0"`，设置 rtc 设备为 rtc0
-    `v`, `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
     `v`, `v=PANIC_TIMEOUT=5`, 设置内核 panic 超时为 5 秒。
 
 在一条命令中使用多个选项：
@@ -845,11 +839,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 以上命令等价于运行如下命令：
 
-   $ make boot DEBUG=1
+    $ make boot DEBUG=1
 
 自动调试测试可以运行如下命令：
 
-   $ make test DEBUG=1
+    $ make test DEBUG=1
 
 ### 测试
 

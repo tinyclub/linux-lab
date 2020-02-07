@@ -1223,7 +1223,7 @@ $(1)-source:
 	@echo
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC_FULL) && $$($(call _uc,$(1))_GITADD) && \
-		git fetch --tags --all && \
+		git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin) && \
 		cd $$(TOP_DIR); \
 	else		\
 		cd $$($(call _uc,$(1))_SROOT) && \
@@ -1231,7 +1231,7 @@ $(1)-source:
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			git fetch --tags --all && \
+			git fetch --tags origin && \
 		cd $$(TOP_DIR); \
 	fi
 

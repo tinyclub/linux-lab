@@ -1260,7 +1260,7 @@ $(1)-patch:
 	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
 	  touch $$($(call _uc,$(1))_SRC)/$(1).patched; \
 	else		\
-	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-checkout' at first."; \
+	  echo "LOG: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first."; \
 	fi
 
 endef # gengoals

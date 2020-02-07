@@ -1068,7 +1068,7 @@ define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),%):
-	$$(Q)make $$(S) $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
+	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
 $$(call _stamp_$(1),download): $(1)-outdir
@@ -1076,7 +1076,7 @@ $$(call _stamp_$(1),download): $(1)-outdir
 		  git show --pretty=oneline -q $$(_$(call _uc,$(1))) >/dev/null 2>&1; echo $$$$?; cd $$(TOP_DIR); else echo 128; fi) -eq 0 ]; then \
 			touch $$@; \
 		else \
-			make $$(S) $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@); \
+			make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@); \
 			touch $$@; \
 		fi
 

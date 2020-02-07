@@ -1710,9 +1710,9 @@ root: $(ROOT)
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
-	$(Q)make root-install
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
-	$(Q)make root-rebuild
+	$(Q)make $(S) root-install
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(S) $(KERNEL_MODULES_INSTALL); fi
+	$(Q)make $(S) root-rebuild
 endif
 
 # root directory
@@ -1895,7 +1895,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	fi
 
 kernel-modules:
-	make kernel-modules-km KM=
+	$(Q)make $(S) kernel-modules-km KM=
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
@@ -2094,28 +2094,28 @@ endif
 PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
 
 kernel-init:
-	$(Q)make kernel-config
-	$(Q)make kernel-olddefconfig
+	$(Q)make $(S) kernel-config
+	$(Q)make $(S) kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init:
-	$(Q)make rootdir-clean
-	$(Q)make rootdir
-	$(Q)make root-install
+	$(Q)make $(S) rootdir-clean
+	$(Q)make $(S) rootdir
+	$(Q)make $(S) root-install
 
 module-init:
-	$(Q)make modules
-	$(Q)make modules-install
+	$(Q)make $(S) modules
+	$(Q)make $(S) modules-install
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
-	make feature FEATURE="$(FEATURE)"
-	make kernel-init
-	make rootdir-init
+	$(Q)make $(S) feature FEATURE="$(FEATURE)"
+	$(Q)make $(S) kernel-init
+	$(Q)make $(S) rootdir-init
 ifeq ($(findstring module,$(FEATURE)),module)
-	make module-init
+	$(Q)make $(S) module-init
 endif
-	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make root-rebuild; fi
+	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(S) root-rebuild; fi
 endif
 
 kernel-feature-test: test
@@ -2956,7 +2956,7 @@ endif
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
-	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+	make $(S) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
 _boot-test:
 ifeq ($(BOOT_TEST), default)
@@ -2972,13 +2972,13 @@ FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
 raw-test:
-	make test FI=0
+	$(Q)make $(S) test FI=0
 
 test: $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init TEST=default; fi
-	make boot-init
-	make boot-test
-	make boot-finish
+	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(S) feature-init TEST=default; fi
+	$(Q)make $(S) boot-init
+	$(Q)make $(S) boot-test
+	$(Q)make $(S) boot-finish
 
 PHONY += _boot-test boot-test test raw-test
 
@@ -3066,7 +3066,7 @@ _boot: $(_BOOT_DEPS)
 BOOT_DEPS ?=
 
 boot: $(BOOT_DEPS)
-	$(Q)make _boot
+	$(Q)make $(S) _boot
 
 PHONY += boot-test test _boot boot
 

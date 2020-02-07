@@ -1337,7 +1337,7 @@ $(eval $(call gensource,kernel))
 #$(warning $(call gensource,root))
 $(eval $(call gensource,root))
 
-BSP ?= master
+_BSP ?= master
 
 ifeq ($(_PLUGIN),1)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))

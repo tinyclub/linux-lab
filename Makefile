@@ -1048,19 +1048,19 @@ PHONY += board-info list list-base list-plugin list-full list-kernel list-buildr
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
+$(C_PATH) make $(S) -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
 endef
 
 define make_kernel
-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
-$(C_PATH) make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+$(C_PATH) make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
 define make_uboot
-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
 endef
 
 # generate target dependencies
@@ -1117,7 +1117,7 @@ $$(call _stamp_$(1),bsp): $(1)-outdir
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
 		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \
-			make bsp-checkout;		\
+			make $$(S) bsp-checkout;		\
 			touch $$(call _stamp_$(1),bsp); \
 		fi;					\
 	fi

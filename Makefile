@@ -3054,6 +3054,10 @@ PHONY += _debug _debug_init_1 _debug_init_2
 endif # DEBUG = 1
 
 _BOOT_DEPS ?=
+ifneq ($(BOOT_PREPARE),)
+  override BOOT_PREPARE := $(subst $(comma),$(space),$(BOOT_PREPARE))
+  _BOOT_DEPS += $(BOOT_PREPARE)
+endif
 _BOOT_DEPS += board-save
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)

@@ -2083,7 +2083,7 @@ PHONY += kernel-feature feature features kernel-features kernel-feature-list ker
 
 kernel-init:
 	$(Q)make kernel-config
-	$(Q)yes N | $(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
+	$(Q)make kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init:
@@ -2268,10 +2268,10 @@ ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 
-	$(Q)$(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
+	$(Q)make -s kernel-olddefconfig
 	$(Q)$(call make_kernel,prepare M=)
 else
-	$(Q)$(call make_kernel,$(KERNEL_OLDDEFCONFIG) M=)
+	$(Q)make -s kernel-olddefconfig
 endif
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)

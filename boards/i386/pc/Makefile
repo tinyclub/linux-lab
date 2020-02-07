@@ -15,10 +15,10 @@ BUILDROOT?= 2019.02.2
 $(eval $(call board_config))
 
 # Force change ARCH for kernel version <= 2.6.23
-IS_X86 = $(shell cd $(KERNEL_ABS_SRC); git show $(call _v,LINUX,LINUX):arch/$(ARCH)/boot >/dev/null 2>&1; echo $$?)
-ifneq ($(IS_X86),0)
-  ARCH  := $(XARCH)
-endif
+#$(warning $(call fixup_arch))
+$(eval $(call fixup_arch))
+#$(warning ARCH is $(ARCH))
+
 
 # Check qemu support:
 # $ qemu-system-i386 -net nic,model=?

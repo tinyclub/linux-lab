@@ -270,6 +270,18 @@ $(call _bi,afterconfig,Makefile)
 $(call _bi,afterconfig.private,Makefile)
 endef
 
+define fixup_arch
+ifneq ($$(KERNEL_SRC),)
+  ifneq ($$(_KERNEL_SRC),$$(KERNEL_SRC))
+    KERNEL_ABS_SRC := $$(KERNEL_SRC)
+  endif
+endif
+IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?)
+ifneq ($$(IS_ARCH),0)
+  ARCH  := $$(XARCH)
+endif
+endef
+
 # include Makefile.init if exist
 # the .private version is for user local customization, should not be added in mainline repository
 $(eval $(call _ti,init,Makefile))

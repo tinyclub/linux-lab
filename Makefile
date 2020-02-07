@@ -3239,8 +3239,13 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-BASIC_TARGETS := kernel uboot root
-_BASIC_TARGETS := k u r
+k: kernel
+u: uboot
+r: root
+q: qemu
+
+BASIC_TARGETS := kernel uboot root qemu
+_BASIC_TARGETS := k u r q
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
 _EXEC_TARGETS  := $(foreach t,$(_BASIC_TARGETS),$(t:=-x))
 

@@ -1139,7 +1139,7 @@ PHONY += $(1)-cleanstamp
 ## clean up $(1) source code
 $(1)-cleanup:
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx && cd $$(TOP_DIR); \
+		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
 	fi
 $(1)-outdir:
 	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
@@ -1250,7 +1250,7 @@ $(1)-help:
 
 $(1)-checkout:
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
 	fi
 
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))

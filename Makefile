@@ -366,7 +366,7 @@ define genverify
  # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
  ifneq ($$($(1)_SRC),)
    ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
-    _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$(2))
+    _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$$($(2)))
     $(1)_ABS_SRC := $$($(1)_SRC)
    endif
  endif

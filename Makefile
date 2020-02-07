@@ -542,13 +542,13 @@ ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
 endif
 
 ifneq ($(LD_LIBRARY_PATH),)
-  ifneq ($(LL_PATH),)
+  ifneq ($(LLPATH),)
     L_PATH=LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
   else
     L_PATH=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
   endif
 else
-  ifneq ($(LL_PATH),)
+  ifneq ($(LLPATH),)
     L_PATH=LD_LIBRARY_PATH=$(LLPATH)
   endif
 endif

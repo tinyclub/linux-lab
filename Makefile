@@ -1048,19 +1048,19 @@ PHONY += board-info list list-base list-plugin list-full list-kernel list-buildr
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make $(S) -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
+$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
 endef
 
 define make_kernel
-$(C_PATH) make $(S) O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
-$(C_PATH) make $(S) O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+$(C_PATH) make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
 define make_uboot
-$(C_PATH) make $(S) O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
 endef
 
 # generate target dependencies
@@ -1710,9 +1710,9 @@ root: $(ROOT)
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
-	$(Q)make $(S) root-install
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(S) $(KERNEL_MODULES_INSTALL); fi
-	$(Q)make $(S) root-rebuild
+	$(Q)make root-install
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
+	$(Q)make root-rebuild
 endif
 
 # root directory
@@ -1895,7 +1895,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	fi
 
 kernel-modules:
-	$(Q)make $(S) kernel-modules-km KM=
+	make kernel-modules-km KM=
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
@@ -2094,28 +2094,28 @@ endif
 PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
 
 kernel-init:
-	$(Q)make $(S) kernel-config
-	$(Q)make $(S) kernel-olddefconfig
+	$(Q)make kernel-config
+	$(Q)make kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init:
-	$(Q)make $(S) rootdir-clean
-	$(Q)make $(S) rootdir
-	$(Q)make $(S) root-install
+	$(Q)make rootdir-clean
+	$(Q)make rootdir
+	$(Q)make root-install
 
 module-init:
-	$(Q)make $(S) modules
-	$(Q)make $(S) modules-install
+	$(Q)make modules
+	$(Q)make modules-install
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
-	$(Q)make $(S) feature FEATURE="$(FEATURE)"
-	$(Q)make $(S) kernel-init
-	$(Q)make $(S) rootdir-init
+	make feature FEATURE="$(FEATURE)"
+	make kernel-init
+	make rootdir-init
 ifeq ($(findstring module,$(FEATURE)),module)
-	$(Q)make $(S) module-init
+	make module-init
 endif
-	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(S) root-rebuild; fi
+	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make root-rebuild; fi
 endif
 
 kernel-feature-test: test
@@ -2956,7 +2956,7 @@ endif
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
-	make $(S) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
 _boot-test:
 ifeq ($(BOOT_TEST), default)
@@ -2972,13 +2972,13 @@ FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
 raw-test:
-	$(Q)make $(S) test FI=0
+	make test FI=0
 
 test: $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(S) feature-init TEST=default; fi
-	$(Q)make $(S) boot-init
-	$(Q)make $(S) boot-test
-	$(Q)make $(S) boot-finish
+	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init TEST=default; fi
+	make boot-init
+	make boot-test
+	make boot-finish
 
 PHONY += _boot-test boot-test test raw-test
 
@@ -3066,7 +3066,7 @@ _boot: $(_BOOT_DEPS)
 BOOT_DEPS ?=
 
 boot: $(BOOT_DEPS)
-	$(Q)make $(S) _boot
+	$(Q)make _boot
 
 PHONY += boot-test test _boot boot
 

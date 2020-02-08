@@ -1,7 +1,7 @@
 
 <div id="footer_layer" style="text-align: center; max-width='100%';">
 
-{% if true %}
+{% if false %}
 <a title="欢迎关注我们的公众号、QQ讨论群" href="http://tinylab.org/about" target="_blank"><img src="/images/contact/tinylab-wechat-qq.jpg" style="max-height:180px; max-width:100%">
 {% endif %}
 

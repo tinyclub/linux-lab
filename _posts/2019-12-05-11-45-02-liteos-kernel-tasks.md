@@ -212,5 +212,5 @@ UINT32 create_demo_tasks()
 [1]: https://liteos.github.io/api-reference/a00068_gc7ab8061ace7abbd5a885bc6004aaf57.html#gc7ab8061ace7abbd5a885bc6004aaf57
 [2]: https://liteos.github.io/api-reference/a00068_g0b1786be9a0f359ccc92786ba0079fc3.html#g0b1786be9a0f359ccc92786ba0079fc3
 [3]: https://liteos.github.io/api-reference/a00022.html
-[4]: https://tinylab.org/liteos-env-setup/
+[4]: http://tinylab.org/liteos-env-setup/
 [5]: http://opensource.org/licenses/BSD-3-Clause

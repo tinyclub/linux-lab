@@ -1343,7 +1343,8 @@ $(eval $(call gensource,kernel,LINUX))
 #$(warning $(call gensource,root,BUILDROOT))
 $(eval $(call gensource,root,BUILDROOT))
 
-_BSP ?= master
+BSP ?= master
+_BSP ?= $(BSP)
 
 ifeq ($(_PLUGIN),1)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
@@ -1356,7 +1357,8 @@ $(eval $(call gensource,bsp))
 $(eval $(call gendeps,bsp))
 $(eval $(call gengoals,bsp,BSP))
 
-bsp: bsp-source
+bsp:
+	$(Q)make -s bsp-source
 
 PHONY += bsp
 
@@ -3216,6 +3218,13 @@ else
   ifeq ($(origin QEMU),command line)
     APPS += qemu
   endif
+  ifeq ($(origin BSP),command line)
+    APPS += bsp
+  endif
+endif
+
+ifneq ($(APP),)
+  app ?= $(APP)
 endif
 
 $(APP_TARGETS):

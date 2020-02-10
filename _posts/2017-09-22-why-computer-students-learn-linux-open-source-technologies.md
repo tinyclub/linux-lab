@@ -96,12 +96,12 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 如果想学习 Linux 0.11 内核，可以到 <http://oldlinux.org/> 下载开放的书籍和源代码，用 Qemu 做实验就好：
 
 * 赵博士的[《Linux 内核完全注释》](http://www.oldlinux.org/download/clk011c-3.0.pdf)
-* [Linux 0.11 实验环境和源代码](https://github.com/tinyclub/linux-0.11-lab.git)
+* [Linux 0.11 实验环境和源代码](https://gitee.com/tinylab/linux-0.11-lab.git)
 * [五分钟 Linux 0.11 实验环境使用指南][11] 。
 
 如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建 Linux 内核实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot、Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试和测试，也可通过 Web 远程访问。
 
-* [Linux Lab 源代码](https://github.com/tinyclub/linux-lab)
+* [Linux Lab 源代码](https://gitee.com/tinylab/linux-lab)
 * [利用 Linux Lab 完成嵌入式系统软件开发全过程](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/)
 
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
@@ -109,12 +109,10 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 * Linux 0.11 Lab 用法演示
     * [基本用法](http://showdesk.io/50bc346f53a19b4d1f813b428b0b7b49)
     * [添加一个新的系统调用](http://showterm.io/4b628301d2d45936a7f8a)
-    * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * Linux Lab 用法演示
     * [基本用法](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
     * [进阶用法（请切到高清观看）](https://v.qq.com/x/page/y0543o6zlh5.html)
-    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ### 汇编语言
 
@@ -153,11 +151,9 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 * CS630 Qemu Lab 用法演示
     * [命令行演示](http://showterm.io/547ccaae139df14c3deec)
     * [视频演示](http://showdesk.io/1f06d49dfff081e9b54792436590d9f9/)
-    * [获取即时在线实验帐号](https://weidian.com/i/1978159029)
 
 * Linux Lab 各架构汇编例子用法演示
     * [命令行演示](http://showterm.io/0f0c2a6e754702a429269)
-    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ### C 语言
 
@@ -261,7 +257,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux 等在内的实验环境，更多环境正在陆续开发中。欢迎提出更多想法、需求和建议。
 
 * 项目首页：<http://tinylab.org/cloud-lab>
-* 代码仓库：<https://github.com/tinyclub/cloud-lab>
+* 代码仓库：<https://gitee.com/tinylab/cloud-lab>
 
 有了 Cloud Lab，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
 
@@ -273,25 +269,21 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
     * [CS630 Qemu Lab 基本用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)
-    * [获取即时在线实验帐号](https://weidian.com/i/1978159029)
 
 * [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux 0.11 Lab 基本用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
     * [为 Linux 0.11 添加系统调用](http://showterm.io/4b628301d2d45936a7f8a)
-    * [获取即时在线实验帐号](https://weidian.com/i/1487448443)
 
 * [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
     * [Linux Lab 基本用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
     * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
     * [通过 Linux Lab 做 Uboot 实验](https://v.qq.com/x/page/l0549rgi54e.html)
-    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 * 其他
     * [C 语言](http://showterm.io/a98435fb1b79b83954775)
     * [C 编译过程](http://showterm.io/887b5ee77e3f377035d01)
     * [Shell 语言](http://showterm.io/445cbf5541c926b19d4af)
     * [SQL 语言](http://showterm.io/7766b67876c0b7615850e)
-    * [获取即时在线实验帐号](https://weidian.com/i/1937753839)
 
 ## 小结
 
@@ -312,7 +304,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
  [7]: http://www.buildroot.org/
  [8]: http://www.linuxforu.com/2011/06/qemu-for-embedded-systems-development-part-1/
  [9]: http://www.linuxforu.com/2011/07/qemu-for-embedded-systems-development-part-2/
- [10]: https://github.com/tinyclub/linux-0.11-lab
+ [10]: https://gitee.com/tinylab/linux-0.11-lab
  [11]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [12]: http://tinylab.org/assembly/
  [13]: http://www.cs.usfca.edu/~cruse/cs630f06/

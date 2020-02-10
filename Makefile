@@ -1366,22 +1366,6 @@ bsp: bsp-source
 
 PHONY += bsp
 
-source: bsp-source kernel-source root-source
-
-download: source
-
-core-source: source uboot-source
-
-core-download: core-source
-download-core: core-source
-
-all-source: source uboot-source qemu-source
-
-download-all: all-source
-all-download: all-source
-
-PHONY += source download core-source download-core all-source all-download download-all
-
 # Qemu targets
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
@@ -1706,7 +1690,8 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-root: $(ROOT)
+root:
+	$(Q)make $(S) $(ROOT)
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
@@ -2299,7 +2284,8 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
-kernel: $(KERNEL_DEPS)
+kernel:
+	$(Q)make $(S) $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
@@ -2384,10 +2370,12 @@ $(eval $(call gengoals,uboot,UBOOT))
 
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
+ifneq ($(U),)
 #$(warning $(call gencfgs,uboot,uboot,U))
 $(eval $(call gencfgs,uboot,uboot,U))
 #$(warning $(call genclone,uboot,uboot,U))
 $(eval $(call genclone,uboot,uboot,U))
+endif
 
 # Specify uboot targets
 UT ?= $(x)
@@ -2488,18 +2476,6 @@ PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
 
 endif # Uboot specific part
 
-
-# Checkout kernel and Rootfs
-checkout: kernel-checkout root-checkout
-
-# Config Kernel and Rootfs
-config: root-defconfig kernel-defconfig
-
-# Build Kernel and Rootfs
-build: root kernel
-
-PHONY += checkout config build
-
 STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 
 # Save the built images
@@ -2554,10 +2530,6 @@ root-saveconfig:
 	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
 	then cp $(ROOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else cp $(ROOT_OUTPUT)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
-
-save: root-save kernel-save root-saveconfig kernel-saveconfig
-
-PHONY += save
 
 # Qemu options and kernel command lines
 
@@ -3107,18 +3079,7 @@ ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
 	-$(Q)$(call make_kernel,clean)
 endif
 
-clean: qemu-clean root-clean kernel-clean rootdir-clean uboot-clean
-
-PHONY += rootdir-clean clean
-
-cleanstamp: $(addsuffix -cleanstamp,root qemu kernel uboot)
-
-PHONY += $(addsuffix -cleanstamp,root qemu kernel uboot)
-
-cleanup: $(addsuffix -cleanup,root qemu kernel uboot)
-
-PHONY += $(addsuffix -cleanup,root qemu kernel uboot)
-
+PHONY += rootdir-clean
 
 qemu-distclean:
 ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
@@ -3147,9 +3108,6 @@ endif
 rootdir-distclean: rootdir-clean
 
 PHONY += rootdir-distclean
-
-distclean: qemu-distclean root-distclean kernel-distclean rootdir-distclean uboot-distclean \
-	toolchain-clean plugin-clean board-clean
 
 fullclean: distclean
 	$(Q)git clean -fdx
@@ -3239,6 +3197,36 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
+download: source
+APP_TARGETS := source checkout patch defconfig olddefconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone
+ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  # ...and turn them into do-nothing targets
+  $(eval $(RUN_ARGS):FORCE;@:)
+endif
+
+ifneq ($(RUN_ARGS),)
+  APPS := $(RUN_ARGS)
+else
+  APPS :=
+  ifeq ($(origin LINUX),command line)
+    APPS += kernel
+  endif
+  ifeq ($(origin BUILDROOT),command line)
+    APPS += root
+  endif
+  ifeq ($(origin UBOOT),command line)
+    APPS += uboot
+  endif
+  ifeq ($(origin QEMU),command line)
+    APPS += qemu
+  endif
+endif
+
+$(APP_TARGETS):
+	$(Q)$(if $(app),make $(MFLAGS) $(app)-$(@),$(foreach app,$(APPS),make $(MFLAGS) $(app)-$(@);))
+
 k: kernel
 u: uboot
 r: root
@@ -3255,7 +3243,7 @@ $(EXEC_TARGETS):
 $(_EXEC_TARGETS):
 	make $(@:-x=) x=$(RUN_ARGS)
 
-PHONY += $(EXEC_TARGETS) $(_EXEC_TARGETS)
+PHONY += $(APP_TARGETS) $(EXEC_TARGETS) $(_EXEC_TARGETS)
 
 PHONY += FORCE
 

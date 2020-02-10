@@ -370,7 +370,7 @@ manually, if still want to download them for preparation, please continue.
 
 Download board specific package and the kernel, buildroot source code:
 
-    $ make core-source -j4
+    $ make source APPS="bsp kernel root uboot"
 
 Download one by one:
 
@@ -379,21 +379,38 @@ Download one by one:
     $ make root-source
     $ make uboot-source
 
+Or
+
+    $ make source bsp
+    $ make source kernel
+    $ make source root
+    $ make source uboot
+
 ### Checking out
 
 Checkout the target version of kernel and builroot:
 
-    $ make checkout
+    $ make checkout APPS="kernel root"
 
 Checkout them one by one:
 
     $ make kernel-checkout
     $ make root-checkout
 
+Or
+
+    $ make checkout kernel
+    $ make checkout root
+
 If checkout not work due to local changes, save changes and run to get a clean environment:
 
     $ make kernel-cleanup
     $ make root-cleanup
+
+Or
+
+    $ make cleanup kernel
+    $ make cleanup root
 
 The same to qemu and uboot.
 
@@ -403,18 +420,27 @@ Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
     $ make kernel-patch
 
+Or
+
+    $ make patch kernel
+
 ### Configuration
 
 #### Default Configuration
 
 Configure kernel and buildroot with defconfig:
 
-    $ make config
+    $ make defconfig APPS="kernel root"
 
 Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
 
     $ make kernel-defconfig
     $ make root-defconfig
+
+Or
+
+    $ make defconfig kernel
+    $ make defconfig root
 
 Configure with specified defconfig:
 
@@ -429,36 +455,59 @@ If only defconfig name specified, search boards/<BOARD> at first, and then the d
     $ make kernel-menuconfig
     $ make root-menuconfig
 
+Or
+
+    $ make menuconfig kernel
+    $ make menuconfig root
+
 #### Old default configuration
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
-    $ make uboot-oldefconfig
+    $ make uboot-olddefconfig
+
+Or
+
+    $ make olddefconfig kernel
+    $ make olddefconfig root
+    $ make olddefconfig uboot
 
 ### Building
 
 Build kernel and buildroot together:
 
-    $ make build
+    $ make build APPS="kernel root"
 
 Build them one by one:
 
-    $ make kernel
-    $ make root
+    $ make kernel-build  # make kernel
+    $ make root-build    # make root
+
+Or
+
+    $ make build kernel
+    $ make build root
 
 ### Saving
 
 Save all of the configs and rootfs/kernel/dtb images:
 
-    $ make save
+    $ make save APPS="kernel root"
+    $ make saveconfig APPS="kernel root"
 
 Save configs and images to `boards/<BOARD>/bsp/`:
 
     $ make kernel-saveconfig
     $ make root-saveconfig
-
     $ make root-save
     $ make kernel-save
+
+Or
+    $ make saveconfig kernel
+    $ make saveconfig root
+    $ make save kernel
+    $ make save root
+
 
 ### Booting
 

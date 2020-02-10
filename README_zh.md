@@ -367,7 +367,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：
 
-    $ make core-source -j4
+    $ make source APPS="bsp kernel root uboot"
 
 如果需要单独下载这些部分：
 
@@ -376,21 +376,39 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make root-source
     $ make uboot-source
 
+Or
+
+    $ make source bsp
+    $ make source kernel
+    $ make source root
+    $ make source uboot
+
+
 ### 检出
 
 检出（checkout）您需要的 kernel 和 buildroot 版本：
 
-    $ make checkout
+    $ make checkout APPS="kernel root"
 
 单独检出相关部分:
 
     $ make kernel-checkout
     $ make root-checkout
 
+Or
+
+    $ make checkout kernel
+    $ make checkout root
+
 如果由于本地更改而导致检出不起作用，请保存更改并做清理以获取一个干净的环境：
 
     $ make kernel-cleanup
     $ make root-cleanup
+
+Or
+
+    $ make cleanup kernel
+    $ make cleanup root
 
 以上操作也适用于 qemu 和 uboot。
 
@@ -400,18 +418,27 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
     $ make kernel-patch
 
+Or
+
+    $ make patch kernel
+
 ### 配置
 
 #### 缺省配置
 
 使用缺省配置（defconfig）配置 kernel 和 buildroot：
 
-    $ make config
+    $ make defconfig APPS="kernel root"
 
 单独配置，缺省情况下使用 `boards/<BOARD>/bsp/` 下的 defconfig：
 
     $ make kernel-defconfig
     $ make root-defconfig
+
+Or
+
+    $ make defconfig kernel
+    $ make defconfig root
 
 使用特定的 defconfig 配置：
 
@@ -426,35 +453,60 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make kernel-menuconfig
     $ make root-menuconfig
 
+Or
+
+    $ make menuconfig kernel
+    $ make menuconfig root
+
 #### 使用旧的缺省配置
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
+    $ make root-olddefconfig
+    $ make uboot-olddefconfig
+
+Or
+
+    $ make olddefconfig kernel
+    $ make olddefconfig root
+    $ make olddefconfig uboot
 
 ### 编译
 
 一起编译 kernel 和 buildroot：
 
-    $ make build
+    $ make build APPS="kernel root"
 
 单独编译 kernel 和 buildroot:
 
-    $ make kernel
-    $ make root
+    $ make kernel-build  # make kernel
+    $ make root-build    # make root
+
+Or
+
+    $ make build kernel
+    $ make build root
 
 ### 保存
 
 保存所有的配置以及 rootfs/kernel/dtb 的 image 文件：
 
-    $ make save
+    $ make saveconfig APPS="kernel root"
+    $ make save APPS="kernel root"
 
 保存配置和 image 文件到 `boards/<BOARD>/bsp/`：
 
     $ make kernel-saveconfig
     $ make root-saveconfig
-
     $ make root-save
     $ make kernel-save
+
+Or
+    $ make saveconfig kernel
+    $ make saveconfig root
+    $ make save kernel
+    $ make save root
+
 
 ### 启动
 

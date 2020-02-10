@@ -1071,15 +1071,6 @@ $$(call _stamp_$(1),%):
 	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
-$$(call _stamp_$(1),download): $(1)-outdir
-	$$(Q)if [ $$(shell if [ -d $$($(call _uc,$(1))_ABS_SRC) ]; then cd $$($(call _uc,$(1))_ABS_SRC) && \
-		  git show --pretty=oneline -q $$(_$(call _uc,$(1))) >/dev/null 2>&1; echo $$$$?; cd $$(TOP_DIR); else echo 128; fi) -eq 0 ]; then \
-			touch $$@; \
-		else \
-			make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@); \
-			touch $$@; \
-		fi
-
 $(1)-source: $$(call _stamp_$(1),outdir)
 $(1)-checkout: $$(call _stamp_$(1),source)
 $(1)-patch: $$(call _stamp_$(1),checkout)
@@ -1133,7 +1124,7 @@ $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
 boot: $$(boot_deps)
 
 $(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir download checkout patch patched env modules modules-km defconfig build bsp)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
@@ -1222,8 +1213,11 @@ $(1)-source:
 	@echo "Downloading $(1) source ..."
 	@echo
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC_FULL) && $$($(call _uc,$(1))_GITADD) && \
-		git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin) && \
+		cd $$($(call _uc,$(1))_SRC_FULL);	\
+		if [ $$(shell cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(_$(call _uc,$(2))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+			$$($(call _uc,$(1))_GITADD); \
+			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin); \
+		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
 		cd $$($(call _uc,$(1))_SROOT) && \
@@ -1337,17 +1331,17 @@ endef #genclone
 
 
 # Source download
-#$(warning $(call gensource,uboot))
-$(eval $(call gensource,uboot))
+#$(warning $(call gensource,uboot,UBOOT))
+$(eval $(call gensource,uboot,UBOOT))
 
-#$(warning $(call gensource,qemu))
-$(eval $(call gensource,qemu))
+#$(warning $(call gensource,qemu,QEMU))
+$(eval $(call gensource,qemu,QEMU))
 
-#$(warning $(call gensource,kernel))
-$(eval $(call gensource,kernel))
+#$(warning $(call gensource,kernel,LINUX))
+$(eval $(call gensource,kernel,LINUX))
 
-#$(warning $(call gensource,root))
-$(eval $(call gensource,root))
+#$(warning $(call gensource,root,BUILDROOT))
+$(eval $(call gensource,root,BUILDROOT))
 
 _BSP ?= master
 

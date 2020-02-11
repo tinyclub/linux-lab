@@ -567,19 +567,19 @@ Or
 
 列出支持的选项：
 
-    $ make list-ROOTDEV
-    $ make list-BOOTDEV
-    $ make list-CCORI
-    $ make list-NETDEV
-    $ make list-LINUX
-    $ make list-UBOOT
-    $ make list-QEMU
+    $ make list ROOTDEV
+    $ make list BOOTDEV
+    $ make list CCORI
+    $ make list NETDEV
+    $ make list LINUX
+    $ make list UBOOT
+    $ make list QEMU
 
-使用 'list-xxx' 可以实现更多 'xxx-list'，例如：
+使用 'list xxx' 可以实现更多 'xxx-list'，例如：
 
-    $ make list-features
-    $ make list-modules
-    $ make list-gcc
+    $ make list features
+    $ make list modules
+    $ make list gcc
 
 ### 使用
 
@@ -1165,13 +1165,13 @@ Uboot 也提供了许多缺省的配置文件：
 
 Linux Lab 也提供许多有效的配置，`-clone` 命令有助于利用现有的配置：
 
-    $ make list-kernel
+    $ make list kernel
     v4.12 v5.0.10 v5.1
     $ make kernel-clone LINUX=v5.1 LINUX_NEW=v5.4
     $ make kernel-menuconfig
     $ make kernel-saveconfig
 
-    $ make list-root
+    $ make list root
     2016.05 2019.02.2
     $ make root-clone BUILDROOT=2019.02.2 BUILDROOT_NEW=2019.11
     $ make root-menuconfig

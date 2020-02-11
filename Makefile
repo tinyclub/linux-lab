@@ -1030,11 +1030,6 @@ list-full:
 	$(Q)make $(S) board-info BOARD=
 endif
 
-
-list-kernel: list-linux
-list-BUILDROOT: list-buildroot
-list-buildroot: list-root
-
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
 		echo $($(call _uc,$(subst list-,,$@))_LIST); \
@@ -1045,7 +1040,7 @@ list-%: FORCE
 	fi
 
 
-PHONY += board-info list list-base list-plugin list-full list-kernel list-buildroot list-BUILDROOT
+PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu
@@ -1243,6 +1238,9 @@ endef # gensource
 
 # Generate basic goals
 define gengoals
+$(1)-list:
+	$$(Q)echo $$($(2)_LIST)
+
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
 
@@ -1983,6 +1981,8 @@ module-clean: FORCE
 		echo "\nCleaning module: $(_M) ...\n" && make _module-clean M=$(_M);) echo '')
 
 # If no M, m/module/modules, M_PATH specified, compile internel modules by default
+ifneq ($(firstword $(MAKECMDGOALS)),list)
+
 ifneq ($(module)$(M)$(KM)$(M_PATH),)
 modules: module
 modules-install: module-install
@@ -1992,6 +1992,8 @@ modules: kernel-modules FORCE
 modules-install: kernel-modules-install
 modules-clean: kernel-modules-clean
 endif
+
+endif # skip modules target for list command
 
 PHONY += modules modules-install modules-clean module module-install module-clean
 

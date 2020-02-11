@@ -1080,7 +1080,10 @@ $(1)-modules-install: $$(call _stamp_$(1),modules)
 $(1)-modules-install-km: $$(call _stamp_$(1),modules-km)
 $(1)-help: $$(call _stamp_$(1),defconfig)
 
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-oldnoconfig $(1)-olddefconfig $(1) $(1)-feature $(1)-build $(1)-buildroot $(1)-modules $(1)-modules-km
+$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-oldnoconfig $(1)-olddefconfig $(1)-feature $(1)-build $(1)-buildroot $(1)-modules $(1)-modules-km
+ifeq ($(firstword $(MAKECMDGOALS)),$(1))
+  $(1)_defconfig_childs := $(1)
+endif
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 
 $(1)-save: $$(call _stamp_$(1),build)

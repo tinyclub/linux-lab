@@ -982,7 +982,7 @@ define getboardlist
 find $(BOARDS_DIR)/$(2) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
 endef
 
-list:
+list-default:
 	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH CPU LINUX ROOTDEV";)
 
 list-board:
@@ -1011,7 +1011,7 @@ board-info:
 		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
 
 
-list:
+list-default:
 	$(Q)make $(S) board-info BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-board:
@@ -1043,6 +1043,7 @@ list-%: FORCE
 			make -s $(subst list-,,$@)-list; \
 		fi		\
 	fi
+
 
 PHONY += board-info list list-base list-plugin list-full list-kernel list-buildroot list-BUILDROOT
 
@@ -3196,7 +3197,7 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list
 ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   # use the rest as arguments for "run"
   RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
@@ -3230,10 +3231,23 @@ endif
 
 ifeq ($(apps),)
   apps := kernel
+  ifeq ($(MAKECMDGOALS),list)
+    apps := default
+  endif
 endif
 
+PREFIX_TARGETS := list
+SILENT_TARGETS := list
+define silent_flag
+$(shell if [ "$(filter $(1),$(SILENT_TARGETS))" = "$(1)" ]; then echo $(S); fi)
+endef
+
+define real_target
+$(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
+endef
+
 $(APP_TARGETS):
-	$(Q)$(if $(app),make $(MFLAGS) $(app)-$(@),$(foreach app,$(apps),make $(MFLAGS) $(app)-$(@);))
+	$(Q)$(if $(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(app)),$(foreach app,$(apps),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(app));))
 
 k: kernel
 u: uboot

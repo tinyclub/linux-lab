@@ -3158,10 +3158,10 @@ env-dump:
 
 env-save: board-config
 
-help:
+lab-help:
 	$(Q)cat README.md
 
-PHONY += env env-list env-prepare env-dump env-save help
+PHONY += env env-list env-prepare env-dump env-save lab-help
 
 # include Makefile.fini if exist
 $(eval $(call _ti,fini,Makefile))
@@ -3193,8 +3193,7 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-download: source
-APP_TARGETS := source checkout patch defconfig olddefconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help
 ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   # use the rest as arguments for "run"
   RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
@@ -3202,33 +3201,36 @@ ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
+define detectapp
+ifeq ($$(origin $(2)),command line)
+  APPS += $(1)
+endif
+
+endef
+
+APP_MAP ?= kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 ifneq ($(RUN_ARGS),)
   APPS := $(RUN_ARGS)
 else
   APPS :=
-  ifeq ($(origin LINUX),command line)
-    APPS += kernel
-  endif
-  ifeq ($(origin BUILDROOT),command line)
-    APPS += root
-  endif
-  ifeq ($(origin UBOOT),command line)
-    APPS += uboot
-  endif
-  ifeq ($(origin QEMU),command line)
-    APPS += qemu
-  endif
-  ifeq ($(origin BSP),command line)
-    APPS += bsp
-  endif
+  $(foreach m,$(APP_MAP),$(eval $(call detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
 endif
 
 ifneq ($(APP),)
   app ?= $(APP)
+  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
+endif
+ifneq ($(APPS),)
+  apps ?= $(APPS)
+  override apps := $(subst buildroot,root,$(subst linux,kernel,$(apps)))
+endif
+
+ifeq ($(apps),)
+  apps := kernel
 endif
 
 $(APP_TARGETS):
-	$(Q)$(if $(app),make $(MFLAGS) $(app)-$(@),$(foreach app,$(APPS),make $(MFLAGS) $(app)-$(@);))
+	$(Q)$(if $(app),make $(MFLAGS) $(app)-$(@),$(foreach app,$(apps),make $(MFLAGS) $(app)-$(@);))
 
 k: kernel
 u: uboot

@@ -371,6 +371,10 @@ manually, if still want to download them for preparation, please continue.
 Download board specific package and the kernel, buildroot source code:
 
     $ make source APPS="bsp kernel root uboot"
+    Or
+    $ make source APPS=all
+    Or
+    $ make source all
 
 Download one by one:
 

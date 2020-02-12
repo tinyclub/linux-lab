@@ -368,6 +368,10 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：
 
     $ make source APPS="bsp kernel root uboot"
+    Or
+    $ make source APPS=all
+    Or
+    $ make source all
 
 如果需要单独下载这些部分：
 

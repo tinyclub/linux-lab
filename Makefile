@@ -6,6 +6,9 @@ TOP_DIR := $(CURDIR)
 
 # Phony targets
 PHONY :=
+comma := ,
+empty :=
+space := $(empty) $(empty)
 
 USER ?= ubuntu
 
@@ -56,6 +59,9 @@ ifeq ($(B),)
 else
     BOARD := $(B)
 endif
+
+# Supported apps and their version variable
+APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
 # Plugin config: P/PLUGIN persistent, p/plugin temporarily (FIXME: this feature is really required?)
 plugin ?= $(p)
@@ -606,7 +612,19 @@ ifneq ($(BUILD),)
   endif
 endif
 
+endef # _lpb
+
+define default_detectbuild
+ifneq ($$($(2)),)
+  override BUILD += $(1)
+endif
+
 endef
+
+ifeq ($(BUILD),all)
+  override BUILD :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
 
 #$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
 $(eval $(foreach x,K R D Q U,$(call _pb,$x)))
@@ -858,10 +876,6 @@ ifneq ($(MAKECMDGOALS),)
   endif
  endif
 endif
-
-comma := ,
-empty :=
-space := $(empty) $(empty)
 
 _ROOTFS_TYPE=$(subst $(comma),$(space),$(ROOTFS_TYPE))
 
@@ -3235,7 +3249,6 @@ endif
 
 endef
 
-APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 ifneq ($(RUN_ARGS),)
   APP := $(RUN_ARGS)
 else

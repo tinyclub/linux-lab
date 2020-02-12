@@ -3215,7 +3215,7 @@ endif
 
 endef
 
-APP_MAP ?= kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 ifneq ($(RUN_ARGS),)
   APPS := $(RUN_ARGS)
 else

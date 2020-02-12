@@ -3273,21 +3273,11 @@ endef
 $(APP_TARGETS):
 	$(Q)$(foreach a,$(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));))
 
-k: kernel
-u: uboot
-r: root
-q: qemu
-
 BASIC_TARGETS := kernel uboot root qemu
-_BASIC_TARGETS := k u r q
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
-_EXEC_TARGETS  := $(foreach t,$(_BASIC_TARGETS),$(t:=-x))
 
 $(EXEC_TARGETS):
 	make $(@:-run=) x=$(RUN_ARGS)
-
-$(_EXEC_TARGETS):
-	make $(@:-x=) x=$(RUN_ARGS)
 
 PHONY += $(APP_TARGETS) $(EXEC_TARGETS) $(_EXEC_TARGETS)
 

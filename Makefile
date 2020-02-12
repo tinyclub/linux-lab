@@ -1372,7 +1372,7 @@ $(eval $(call gendeps,bsp))
 $(eval $(call gengoals,bsp,BSP))
 $(eval $(call genenvdeps,bsp,BSP))
 
-ifeq ($(findstring qemu,$(MAKECMDGOALS)),bsp)
+ifeq ($(firstword bsp,$(MAKECMDGOALS)),bsp)
 bsp:
 	$(Q)make -s bsp-source
 endif

@@ -557,6 +557,10 @@ Boot with new kernel, dtb and rootfs if exists:
     or
     $ make boot kernel=1 dtb=1 root=1
 
+Boot with new kernel and uboot, build them if not exists:
+
+    $ make boot BUILD="kernel uboot"
+
 Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
 
     $ make boot U=0

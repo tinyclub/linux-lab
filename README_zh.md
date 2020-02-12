@@ -553,6 +553,10 @@ Or
     or
     $ make boot kernel=1 dtb=1 root=1
 
+如果目标内核和 Uboot 不存在，重新编译一个之后再启动：
+
+    $ make boot BUILD="kernel uboot"
+
 使用 Uboot 启动（目前仅测试并支持了 `versatilepb` 和 `vexpress-a9` 两款开发板）：
 
     $ make boot U=0

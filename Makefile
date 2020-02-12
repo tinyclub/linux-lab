@@ -600,6 +600,11 @@ ifneq ($$($1),)
     PB$$(_$(1)) := 1
   endif
 endif
+ifneq ($(BUILD),)
+  ifeq ($(filter $(1),$(BUILD)),$(1))
+    PB$$(_$(1)) := 0
+  endif
+endif
 
 endef
 
@@ -607,7 +612,7 @@ endef
 $(eval $(foreach x,K R D Q U,$(call _pb,$x)))
 
 #$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
-$(eval $(foreach x,kernel root dtb qemu uboot,$(call _pb,$x)))
+$(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
 
 # Emulator configurations
 ifneq ($(BIOS),)
@@ -1100,6 +1105,9 @@ ifeq ($$($(1)),1)
   ifeq ($$(origin $(1)),command line)
     boot_deps += $$(call _stamp_$(1),build)
   endif
+endif
+ifeq ($(filter $(1),$(BUILD)),$(1))
+  boot_deps += $$(call _stamp_$(1),build)
 endif
 
 $$(call _stamp_$(1),bsp): $(1)-outdir

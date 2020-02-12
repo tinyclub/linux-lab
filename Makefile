@@ -29,7 +29,7 @@ endif
 
 # Check permission issue, must available to ubuntu
 ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
-  $(error ERR: Must make sure Cloud Lab and Linux Lab available to user: '$(USER)', please try 'make perm' or change their owner in host.)
+  $(error ERR: Must make sure Cloud Lab and Linux Lab **NOT** belong to user: 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab')
 endif
 
 # Current variables: board, plugin, module
@@ -957,10 +957,6 @@ board-config: board-save cleanstamp
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 PHONY += board-config board-edit
-
-# Permission preparation
-perm:
-	sudo chown $(USER):$(USER) -R ./ /.git /configs /tools
 
 # Plugin targets
 

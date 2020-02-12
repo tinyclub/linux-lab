@@ -1331,6 +1331,17 @@ endif
 
 endef #genclone
 
+define genenvdeps
+
+$(1)-env: env
+ifeq ($$(GCC_$(2)_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
+endif
+
+PHONY += $(1)-env
+
+endef #genenvdeps
+
 
 # Source download
 #$(warning $(call gensource,uboot,UBOOT))
@@ -1345,6 +1356,7 @@ $(eval $(call gensource,kernel,LINUX))
 #$(warning $(call gensource,root,BUILDROOT))
 $(eval $(call gensource,root,BUILDROOT))
 
+# Build bsp targets
 BSP ?= master
 _BSP ?= $(BSP)
 
@@ -1358,9 +1370,12 @@ endif
 $(eval $(call gensource,bsp))
 $(eval $(call gendeps,bsp))
 $(eval $(call gengoals,bsp,BSP))
+$(eval $(call genenvdeps,bsp,BSP))
 
+ifeq ($(findstring qemu,$(MAKECMDGOALS)),bsp)
 bsp:
 	$(Q)make -s bsp-source
+endif
 
 PHONY += bsp
 
@@ -3128,17 +3143,6 @@ VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
-
-define genenvdeps
-
-$(1)-env: env
-ifeq ($$(GCC_$(2)_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
-endif
-
-PHONY += $(1)-env
-
-endef #genenvdeps
 
 #$(warning $(call genenvdeps,kernel,LINUX))
 $(eval $(call genenvdeps,kernel,LINUX))

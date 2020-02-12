@@ -1372,7 +1372,7 @@ $(eval $(call gendeps,bsp))
 $(eval $(call gengoals,bsp,BSP))
 $(eval $(call genenvdeps,bsp,BSP))
 
-ifeq ($(firstword bsp,$(MAKECMDGOALS)),bsp)
+ifeq ($(findstring bsp,$(firstword bsp,$(MAKECMDGOALS))),bsp)
 bsp:
 	$(Q)make -s bsp-source
 endif
@@ -1482,7 +1482,7 @@ qemu-defconfig:
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
-ifeq ($(firstword $(MAKECMDGOALS)),qemu)
+ifeq ($(findstring qemu,$(firstword $(MAKECMDGOALS))),qemu)
 qemu:
 	$(call make_qemu)
 endif
@@ -1705,7 +1705,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-ifeq ($(firstword $(MAKECMDGOALS)),root)
+ifeq ($(findstring root,$(firstword $(MAKECMDGOALS))),root)
 root:
 	$(Q)make $(S) $(ROOT)
 ifneq ($(RT),)
@@ -2305,7 +2305,7 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
-ifeq ($(firstword $(MAKECMDGOALS)),kernel)
+ifeq ($(findstring kernel,$(firstword $(MAKECMDGOALS))),kernel)
 kernel:
 	$(Q)make $(S) $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
@@ -2404,7 +2404,7 @@ endif
 UT ?= $(x)
 
 # Build Uboot
-ifeq ($(firstword $(MAKECMDGOALS)),uboot)
+ifeq ($(findstring uboot,$(firstword $(MAKECMDGOALS))),uboot)
 uboot:
 	$(call make_uboot,$(UT))
 endif

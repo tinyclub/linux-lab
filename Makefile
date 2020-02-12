@@ -1467,8 +1467,10 @@ qemu-defconfig:
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
+ifeq ($(firstword $(MAKECMDGOALS)),qemu)
 qemu:
 	$(call make_qemu)
+endif
 
 #$(warning $(call genclone,qemu,qemu,Q))
 $(eval $(call genclone,qemu,qemu,Q))
@@ -1688,6 +1690,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
+ifeq ($(firstword $(MAKECMDGOALS)),root)
 root:
 	$(Q)make $(S) $(ROOT)
 ifneq ($(RT),)
@@ -1697,6 +1700,7 @@ else
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
 	$(Q)make root-rebuild
 endif
+endif # root
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2286,9 +2290,11 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
+ifeq ($(firstword $(MAKECMDGOALS)),kernel)
 kernel:
 	$(Q)make $(S) $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
+endif
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
@@ -2383,8 +2389,10 @@ endif
 UT ?= $(x)
 
 # Build Uboot
+ifeq ($(firstword $(MAKECMDGOALS)),uboot)
 uboot:
 	$(call make_uboot,$(UT))
+endif
 
 # uboot specific part
 ifeq ($(U),1)

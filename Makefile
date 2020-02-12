@@ -3215,23 +3215,23 @@ endif
 
 define cli_detectapp
 ifeq ($$(origin $(2)),command line)
-  APPS += $(1)
+  APP += $(1)
 endif
 
 endef
 
 define default_detectapp
 ifneq ($$($(2)),)
-  override apps += $(1)
+  override app += $(1)
 endif
 
 endef
 
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 ifneq ($(RUN_ARGS),)
-  APPS := $(RUN_ARGS)
+  APP := $(RUN_ARGS)
 else
-  APPS :=
+  APP :=
   $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
 endif
 
@@ -3239,24 +3239,16 @@ ifneq ($(APP),)
   app ?= $(APP)
   override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
 endif
-ifneq ($(APPS),)
-  apps ?= $(APPS)
-  override apps := $(subst buildroot,root,$(subst linux,kernel,$(apps)))
-endif
 
 ifeq ($(app),all)
-  override apps := all
-endif
-
-ifeq ($(apps),all)
-  override apps :=
+  override app :=
   $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
 endif
 
-ifeq ($(apps),)
-  apps := kernel
+ifeq ($(app),)
+  app := kernel
   ifeq ($(MAKECMDGOALS),list)
-    apps := default
+    app := default
   endif
 endif
 
@@ -3271,7 +3263,7 @@ $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2);
 endef
 
 $(APP_TARGETS):
-	$(Q)$(if $(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(app)),$(foreach app,$(apps),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(app));))
+	$(Q)$(foreach a,$(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));))
 
 k: kernel
 u: uboot

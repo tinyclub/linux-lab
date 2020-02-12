@@ -367,9 +367,9 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：
 
-    $ make source APPS="bsp kernel root uboot"
+    $ make source APP="bsp kernel root uboot"
     Or
-    $ make source APPS=all
+    $ make source APP=all
     Or
     $ make source all
 
@@ -392,7 +392,7 @@ Or
 
 检出（checkout）您需要的 kernel 和 buildroot 版本：
 
-    $ make checkout APPS="kernel root"
+    $ make checkout APP="kernel root"
 
 单独检出相关部分:
 
@@ -432,7 +432,7 @@ Or
 
 使用缺省配置（defconfig）配置 kernel 和 buildroot：
 
-    $ make defconfig APPS="kernel root"
+    $ make defconfig APP="kernel root"
 
 单独配置，缺省情况下使用 `boards/<BOARD>/bsp/` 下的 defconfig：
 
@@ -479,7 +479,7 @@ Or
 
 一起编译 kernel 和 buildroot：
 
-    $ make build APPS="kernel root"
+    $ make build APP="kernel root"
 
 单独编译 kernel 和 buildroot:
 
@@ -495,8 +495,8 @@ Or
 
 保存所有的配置以及 rootfs/kernel/dtb 的 image 文件：
 
-    $ make saveconfig APPS="kernel root"
-    $ make save APPS="kernel root"
+    $ make saveconfig APP="kernel root"
+    $ make save APP="kernel root"
 
 保存配置和 image 文件到 `boards/<BOARD>/bsp/`：
 

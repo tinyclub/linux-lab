@@ -370,9 +370,9 @@ manually, if still want to download them for preparation, please continue.
 
 Download board specific package and the kernel, buildroot source code:
 
-    $ make source APPS="bsp kernel root uboot"
+    $ make source APP="bsp kernel root uboot"
     Or
-    $ make source APPS=all
+    $ make source APP=all
     Or
     $ make source all
 
@@ -394,7 +394,7 @@ Or
 
 Checkout the target version of kernel and builroot:
 
-    $ make checkout APPS="kernel root"
+    $ make checkout APP="kernel root"
 
 Checkout them one by one:
 
@@ -434,7 +434,7 @@ Or
 
 Configure kernel and buildroot with defconfig:
 
-    $ make defconfig APPS="kernel root"
+    $ make defconfig APP="kernel root"
 
 Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
 
@@ -480,7 +480,7 @@ Or
 
 Build kernel and buildroot together:
 
-    $ make build APPS="kernel root"
+    $ make build APP="kernel root"
 
 Build them one by one:
 
@@ -496,8 +496,8 @@ Or
 
 Save all of the configs and rootfs/kernel/dtb images:
 
-    $ make save APPS="kernel root"
-    $ make saveconfig APPS="kernel root"
+    $ make save APP="kernel root"
+    $ make saveconfig APP="kernel root"
 
 Save configs and images to `boards/<BOARD>/bsp/`:
 

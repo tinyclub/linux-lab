@@ -3053,12 +3053,6 @@ debug:
 
 PHONY += debug
 
-# Allinone
-all: config build boot
-
-
-PHONY += all
-
 # Clean up
 
 qemu-clean:
@@ -3236,6 +3230,10 @@ endif
 ifneq ($(APPS),)
   apps ?= $(APPS)
   override apps := $(subst buildroot,root,$(subst linux,kernel,$(apps)))
+endif
+
+ifeq ($(app),all)
+  override apps := all
 endif
 
 ifeq ($(apps),all)

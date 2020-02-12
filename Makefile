@@ -3207,9 +3207,16 @@ ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-define detectapp
+define cli_detectapp
 ifeq ($$(origin $(2)),command line)
   APPS += $(1)
+endif
+
+endef
+
+define default_detectapp
+ifneq ($$($(2)),)
+  override apps += $(1)
 endif
 
 endef
@@ -3219,7 +3226,7 @@ ifneq ($(RUN_ARGS),)
   APPS := $(RUN_ARGS)
 else
   APPS :=
-  $(foreach m,$(APP_MAP),$(eval $(call detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
 endif
 
 ifneq ($(APP),)
@@ -3229,6 +3236,11 @@ endif
 ifneq ($(APPS),)
   apps ?= $(APPS)
   override apps := $(subst buildroot,root,$(subst linux,kernel,$(apps)))
+endif
+
+ifeq ($(apps),all)
+  override apps :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
 endif
 
 ifeq ($(apps),)

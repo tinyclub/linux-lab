@@ -80,7 +80,7 @@ command ---> stderr ---> terminal
 
 具体命令执行的例子如下，假设 nop.txt 这个文件并不存在。
 
-````
+```
 $ cat nop.txt
 cat: nop.txt: No such file or directory
 ```
@@ -89,7 +89,7 @@ cat: nop.txt: No such file or directory
 
 基于以上分析，我们应该可以自行分析以下命令为何还会在屏幕上看到出错的信息。
 
-````
+```
 $ cat nop.txt > output.txt
 cat: nop.txt: No such file or directory
 ```

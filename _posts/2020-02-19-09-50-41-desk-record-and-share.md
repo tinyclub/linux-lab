@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "记录和分享桌面的 n 重境界"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /desk-record-and-share/
 description: "本文介绍桌面操作记录和分享的多种方法，包括截图，录制 gif，录制视频，分享视频，直播等。"

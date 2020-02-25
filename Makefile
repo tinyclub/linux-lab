@@ -1121,7 +1121,7 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
 endif
 
 $$(call _stamp_$(1),bsp): $(1)-outdir
-	$(Q)if [ -d $$(BSP_$(call _uc,$(1)))/$$(_$(call _uc,$(1))) ]; then \
+	$(Q)if [ -e $$(BSP_DIR)/.git ]; then \
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
 		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \

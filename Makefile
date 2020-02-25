@@ -2819,14 +2819,12 @@ endif
 BOOT_CMD += $(XOPTS)
 
 D ?= 0
-ifeq ($(D),1)
-  DEBUG := 1
-endif
+DEBUG := $(D)
 
 # Must disable the kaslr feature while debugging, otherwise, breakpoint will not stop and just continue
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
 #      https://www.spinics.net/lists/newbies/msg59708.html
-ifeq ($(DEBUG),1)
+ifneq ($(DEBUG),0)
     BOOT_CMD += -s
     # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
     ifneq ($(XARCH),x86_64)
@@ -2837,7 +2835,7 @@ endif
 
 # Debug not work with -enable-kvm
 # KVM speedup for x86 architecture, assume our host is x86 currently
-ifneq ($(DEBUG),1)
+ifeq ($(DEBUG),0)
   KVM_DEV ?= /dev/kvm
   ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
     ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
@@ -3002,7 +3000,7 @@ PHONY += _boot-test boot-test test raw-test
 # Debug support
 VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
 
-ifeq ($(DEBUG),1)
+ifneq ($(DEBUG),0)
 
 GDB         ?= $(C_PATH) $(CCPRE)gdb
 ifeq ($(shell which gdb-multiarch >/dev/null 2>&1; echo $$?), 0)
@@ -3019,8 +3017,14 @@ ifneq ($(GDB_ARCH), 1)
   endif
 endif
 
-GDB_CMD      ?= $(GDB) $(VMLINUX)
-GDB_INIT     ?= $(TOP_DIR)/.gdbinit
+ifeq ($(DEBUG),uboot)
+  GDB_CMD      ?= $(GDB) $(BIMAGE)
+  GDB_INIT     ?= $(TOP_DIR)/.uboot_gdbinit
+else
+  GDB_CMD      ?= $(GDB) $(VMLINUX)
+  GDB_INIT     ?= $(TOP_DIR)/.kernel_gdbinit
+endif
+
 HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
 GDB_USER     ?= $(USER)
@@ -3048,6 +3052,7 @@ endif
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
+	$(Q)ln -sf $(GDB_INIT) .gdbinit
 	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
 	$(Q)$(DEBUG_CMD) &
 
@@ -3066,7 +3071,7 @@ DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
 
 PHONY += _debug _debug_init_1 _debug_init_2
 
-endif # DEBUG = 1
+endif # DEBUG != 0
 
 _BOOT_DEPS ?=
 ifneq ($(BOOT_PREPARE),)
@@ -3090,7 +3095,7 @@ boot: $(BOOT_DEPS)
 PHONY += boot-test test _boot boot
 
 debug:
-	$(Q)make $(S) boot D=1
+	$(Q)make $(S) boot D=$(or $(DEBUG),1)
 
 PHONY += debug
 

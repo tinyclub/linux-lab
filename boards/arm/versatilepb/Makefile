@@ -9,7 +9,7 @@ BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1
 GCC[LINUX_v2.6.36] = 4.3
-GCC[LINUX_v5.1] = 4.7
+GCC = 4.7
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64

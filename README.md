@@ -920,11 +920,15 @@ It will open a new terminal, load the scripts from .gdbinit, run gdb automatical
 
 It equals to:
 
-    $ make boot DEBUG=1
+    $ make boot DEBUG=linux
 
 to automate debug testing:
 
-    $ make test DEBUG=1
+    $ make test DEBUG=linux
+
+to debug uboot:
+
+    $ make debug DEBUG=uboot
 
 ### Testing
 

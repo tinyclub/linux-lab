@@ -3095,7 +3095,7 @@ boot: $(BOOT_DEPS)
 PHONY += boot-test test _boot boot
 
 debug:
-	$(Q)make $(S) boot D=$(or $(DEBUG),1)
+	$(Q)make $(S) boot D=$(or $(DEBUG),linux)
 
 PHONY += debug
 

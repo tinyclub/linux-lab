@@ -899,11 +899,15 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 以上命令等价于运行如下命令：
 
-    $ make boot DEBUG=1
+    $ make boot DEBUG=linux
 
 自动调试测试可以运行如下命令：
 
-    $ make test DEBUG=1
+    $ make test DEBUG=linux
+
+如果想调试 Uboot：
+
+    $ make debug DEBUG=uboot
 
 ### 测试
 

@@ -1089,6 +1089,9 @@ INFO ?= raw
 
 ifneq ($(INFO),raw)
 
+# FIXME: ROOTDEV has been set to /dev/vda for riscv32/virt and exported, which is not supported by the other boards
+export ROOTDEV=/dev/ram0
+
 define getboardlist
 find $(BOARDS_DIR)/$(2) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
 endef

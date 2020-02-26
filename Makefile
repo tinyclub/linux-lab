@@ -1603,7 +1603,7 @@ gcc: toolchain
 
 SCRIPT_GETCCVER := tools/gcc/version.sh
 
-ifeq ($(CCORI),internal)
+ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
   CCVER := `echo gcc-$$($(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))`
 endif
 

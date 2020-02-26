@@ -5,7 +5,18 @@ XARCH    = i386
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
 MEM     ?= 128M
-#QEMU    ?= v0.10.6
+
+# This is for old linux 0.11 floppy support
+QEMU    ?= v0.10.6
+
+ifeq ($(QEMU),v0.10.6)
+QEMU_SDL    := 0
+QEMU_CURSES := 0
+QEMU_VIRTFS := 0
+QEMU_VNC    :=
+GCC[QEMU_v0.10.6] = 4.4
+endif
+
 SMP     ?= 4
 LINUX   ?= v5.1
 BUILDROOT?= 2019.02.2

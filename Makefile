@@ -745,6 +745,15 @@ else
   PBU := 1
 endif
 
+# allow specify boot app here
+ifneq ($(BOOT),)
+  ifeq ($(BOOT),uboot)
+    U ?= 1
+  else
+    U := 0
+  endif
+endif
+
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   U ?= 1
 else
@@ -1271,9 +1280,15 @@ $(1)-patch:
 	fi
 
 $(1)-debug:
-	$$(Q)make $$(S) boot D=$(1)
+	$$(Q)make -s boot DEBUG=$(1)
 
-PHONY += $(addprefix $(1)-,list help checkout patch debug)
+$(1)-boot:
+	$$(Q)make -s _boot BOOT=$(1)
+
+$(1)-test:
+	$$(Q)make -s _test BOOT=$(1)
+
+PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
 
 endef # gengoals
 
@@ -2988,9 +3003,9 @@ FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
 raw-test:
-	make test FI=0
+	make -s _test FI=0
 
-test: $(TEST_PREPARE) FORCE
+_test: $(TEST_PREPARE) FORCE
 	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init TEST=default; fi
 	make boot-init
 	make boot-test
@@ -3093,7 +3108,6 @@ _boot: $(_BOOT_DEPS)
 BOOT_DEPS ?=
 
 boot: $(BOOT_DEPS)
-	$(Q)make _boot
 
 PHONY += boot-test test _boot boot
 
@@ -3226,7 +3240,7 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
 ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   # use the rest as arguments for "run"
   RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
@@ -3270,6 +3284,11 @@ ifeq ($(app),)
   ifeq ($(MAKECMDGOALS),list)
     app := default
   endif
+  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+    ifeq ($(U),1)
+      app := uboot
+    endif
+  endif
 endif
 
 PREFIX_TARGETS := list
@@ -3283,7 +3302,7 @@ $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2);
 endef
 
 $(APP_TARGETS):
-	$(Q)$(foreach a,$(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));))
+	$(Q)$(foreach a,$(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));)
 
 BASIC_TARGETS := kernel uboot root qemu
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))

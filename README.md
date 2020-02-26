@@ -928,7 +928,7 @@ to automate debug testing:
 
 to debug uboot:
 
-    $ make debug DEBUG=uboot
+    $ make debug uboot
 
 ### Testing
 

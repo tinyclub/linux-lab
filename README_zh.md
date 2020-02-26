@@ -907,7 +907,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 如果想调试 Uboot：
 
-    $ make debug DEBUG=uboot
+    $ make debug uboot
 
 ### 测试
 

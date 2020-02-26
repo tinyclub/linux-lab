@@ -1091,7 +1091,7 @@ $(1)-modules-install: $$(call _stamp_$(1),modules)
 $(1)-modules-install-km: $$(call _stamp_$(1),modules-km)
 $(1)-help: $$(call _stamp_$(1),defconfig)
 
-$(1)_defconfig_childs := $(1)-config $(1)-getconfig $(1)-saveconfig $(1)-menuconfig $(1)-oldconfig $(1)-oldnoconfig $(1)-olddefconfig $(1)-feature $(1)-build $(1)-buildroot $(1)-modules $(1)-modules-km
+$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km)
 ifeq ($(firstword $(MAKECMDGOALS)),$(1))
   $(1)_defconfig_childs := $(1)
 endif
@@ -1135,14 +1135,13 @@ $(1)-outdir: $$($(call _uc,$(1))_OUTPUT)
 $$($(call _uc,$(1))_OUTPUT):
 	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
-$(1)_bsp_childs := $(1)-defconfig $(1)-patch $(1)-save $(1)-saveconfig $(1)-clone boot test boot-test
+$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone) boot test boot-test
 $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
 
 boot: $$(boot_deps)
 
 $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
-PHONY += $(1)-cleanstamp
 
 ## clean up $(1) source code
 $(1)-cleanup:
@@ -1154,18 +1153,12 @@ $(1)-outdir:
 
 $(1)-clean: $(1)-cleanup $(1)-cleanstamp
 
-PHONY += $(1)-cleanup $(1)-outdir
-
 $(1)-build: $(1)
 $(1)-release: $(1) $(1)-save $(1)-saveconfig
 
-PHONY += $(1)-build $(1)-release
-
 $(1)-new $(1)-clone: $(1)-cloneconfig
 
-PHONY += $(1)-checkout $(1)-patch $(1) $(1)-help $(1)-clean $(1)-distclean
-PHONY += $(1)-defconfig $(1)-olddefconfig $(1)-oldnoconfig $(1)-menuconfig $(1)-new $(1)-clone $(1)-cloneconfig
-PHONY += $(1)-save $(1)-saveconfig $(1)-savepatch
+PHONY += $(addprefix $(1)-,save saveconfig savepatch cleanstamp cleanup outdir clean distclean build release new clone)
 
 endef # gendeps
 
@@ -1250,7 +1243,7 @@ $(1)_source_childs := $(1)-download download-$(1)
 
 $$($(1)_source_childs): $(1)-source
 
-PHONY += $(1)-source download-$(1) $(1)-download
+PHONY += $(addprefix $(1)-,source download) download-$(1)
 
 endef # gensource
 
@@ -1276,6 +1269,11 @@ $(1)-patch:
 	else		\
 	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
+
+$(1)-debug:
+	$$(Q)make $$(S) boot D=$(1)
+
+PHONY += $(addprefix $(1)-,list help checkout patch debug)
 
 endef # gengoals
 
@@ -1317,6 +1315,8 @@ $(1)-oldconfig:
 $(1)-menuconfig:
 	$$(call make_$1,menuconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
 
+PHONY += $(addprefix $(1)-,defconfig olddefconfig oldconfig menuconfig)
+
 endef # gencfgs
 
 define genclone
@@ -1346,6 +1346,9 @@ else
     $$(error Usage: make $(1)-clone $$(call _uc,$2)_NEW=<$2-version>)
   endif
 endif
+
+
+PHONY += $(addprefix $(1)-,cloneconfig)
 
 endef #genclone
 
@@ -3094,11 +3097,6 @@ boot: $(BOOT_DEPS)
 
 PHONY += boot-test test _boot boot
 
-debug:
-	$(Q)make $(S) boot D=$(or $(DEBUG),linux)
-
-PHONY += debug
-
 # Clean up
 
 qemu-clean:
@@ -3228,7 +3226,7 @@ ifeq ($(findstring -x,$(first_target)),-x)
   $(eval $(RUN_ARGS):FORCE;@:)
 endif
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug
 ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
   # use the rest as arguments for "run"
   RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))

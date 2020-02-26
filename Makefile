@@ -43,8 +43,9 @@ ifeq ($V, 1)
   Q :=
   S :=
 else
-  S ?= -s
   Q ?= @
+  NPD ?= --no-print-directory
+  S ?= -s $(NPD)
 endif
 
 # Board config: B/BOARD persistent, b/board temporarily
@@ -1088,7 +1089,7 @@ define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),%):
-	$$(Q)make $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
+	$$(Q)make $$(NPD) $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
 $(1)-source: $$(call _stamp_$(1),outdir)
@@ -1747,9 +1748,9 @@ root:
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
-	$(Q)make root-install
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(KERNEL_MODULES_INSTALL); fi
-	$(Q)make root-rebuild
+	$(Q)make $(NPD) root-install
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
+	$(Q)make $(NPD) root-rebuild
 endif
 endif # root
 
@@ -1759,7 +1760,7 @@ ifneq ($(FS_TYPE),dir)
 endif
 
 root-dir:
-	$(Q)if [ ! -d "${ROOTDIR}" ]; then make root-dir-rebuild; fi
+	$(Q)if [ ! -d "${ROOTDIR}" ]; then make $(NPD) root-dir-rebuild; fi
 
 root-dir-rebuild: rootdir
 
@@ -1780,7 +1781,7 @@ PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
 root-hd:
-	$(Q)if [ ! -f "$(HROOTFS)" ]; then make root-hd-rebuild; fi
+	$(Q)if [ ! -f "$(HROOTFS)" ]; then make $(NPD) root-hd-rebuild; fi
 
 root-hd-rebuild: FORCE
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
@@ -1933,7 +1934,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	fi
 
 kernel-modules:
-	make kernel-modules-km KM=
+	make $(NPD) kernel-modules-km KM=
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
@@ -2136,28 +2137,28 @@ endif
 PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
 
 kernel-init:
-	$(Q)make kernel-config
-	$(Q)make kernel-olddefconfig
+	$(Q)make $(NPD) kernel-config
+	$(Q)make $(NPD) kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init:
-	$(Q)make rootdir-clean
-	$(Q)make rootdir
-	$(Q)make root-install
+	$(Q)make $(NPD) rootdir-clean
+	$(Q)make $(NPD) rootdir
+	$(Q)make $(NPD) root-install
 
 module-init:
-	$(Q)make modules
-	$(Q)make modules-install
+	$(Q)make $(NPD) modules
+	$(Q)make $(NPD) modules-install
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
-	make feature FEATURE="$(FEATURE)"
-	make kernel-init
-	make rootdir-init
+	make $(NPD) feature FEATURE="$(FEATURE)"
+	make $(NPD) kernel-init
+	make $(NPD) rootdir-init
 ifeq ($(findstring module,$(FEATURE)),module)
-	make module-init
+	make $(NPD) module-init
 endif
-	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make root-rebuild; fi
+	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(NPD) root-rebuild; fi
 endif
 
 kernel-feature-test: test
@@ -2450,7 +2451,7 @@ ifeq ($(U),1)
 
 # root uboot image
 root-ud:
-	$(Q)if [ ! -f "$(UROOTFS)" ]; then make root-ud-rebuild; fi
+	$(Q)if [ ! -f "$(UROOTFS)" ]; then make $(NPD) root-ud-rebuild; fi
 
 _root-ud-rebuild: FORCE
 	@echo "LOG: Generating rootfs image for uboot ..."
@@ -2987,15 +2988,15 @@ endif
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
-	make _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+	make $(NPD) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
 _boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
+	$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE);)
+		$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE);)
 endif
 
 # Allow to disable feature-init
@@ -3006,10 +3007,10 @@ raw-test:
 	make -s _test FI=0
 
 _test: $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make feature-init TEST=default; fi
-	make boot-init
-	make boot-test
-	make boot-finish
+	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(NPD) feature-init TEST=default; fi
+	make $(NPD) boot-init
+	make $(NPD) boot-test
+	make $(NPD) boot-finish
 
 PHONY += _boot-test boot-test test raw-test
 
@@ -3302,7 +3303,7 @@ $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2);
 endef
 
 $(APP_TARGETS):
-	$(Q)$(foreach a,$(app),make $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));)
+	$(Q)$(foreach a,$(app),make $(NPD) $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));)
 
 BASIC_TARGETS := kernel uboot root qemu
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))

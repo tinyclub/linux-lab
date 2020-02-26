@@ -63,6 +63,65 @@ endif
 
 # Supported apps and their version variable
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
+first_target := $(firstword $(MAKECMDGOALS))
+ifneq ($(filter $(first_target),$(APP_TARGETS)),)
+  # use the rest as arguments for "run"
+  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+
+define cli_detectapp
+ifeq ($$(origin $(2)),command line)
+  APP += $(1)
+endif
+
+endef
+
+define default_detectapp
+ifneq ($$($(2)),)
+  override app += $(1)
+endif
+
+endef
+
+ifneq ($(APP_ARGS),)
+  APP := $(APP_ARGS)
+else
+  APP :=
+  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifneq ($(APP),)
+  app ?= $(APP)
+  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
+endif
+
+ifeq ($(app),all)
+  override app :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifeq ($(app),)
+  app := kernel
+  ifeq ($(MAKECMDGOALS),list)
+    app := default
+  endif
+  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+    ifeq ($(U),1)
+      app := uboot
+    endif
+  endif
+endif
+
+endif # common commands
+
+# If the first argument is "xxx-run"...
+reserve_target := $(first_target:-run=)
+
+ifeq ($(findstring -run,$(first_target)),-run)
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  x := $(RUN_ARGS)
+endif
 
 # Plugin config: P/PLUGIN persistent, p/plugin temporarily (FIXME: this feature is really required?)
 plugin ?= $(p)
@@ -746,7 +805,15 @@ else
   PBU := 1
 endif
 
+# Get DEBUG option if -debug found in goals
+ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+  DEBUG = $(app)
+endif
+
 # allow specify boot app here
+ifeq ($(findstring boot,$(firstword $(MAKECMDGOALS))),boot)
+  BOOT ?= $(app)
+endif
 ifneq ($(BOOT),)
   ifeq ($(BOOT),uboot)
     U ?= 1
@@ -1148,7 +1215,7 @@ $$($(call _uc,$(1))_OUTPUT):
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone) boot test boot-test
 $$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
 
-boot: $$(boot_deps)
+_boot: $$(boot_deps)
 
 $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
@@ -1280,14 +1347,11 @@ $(1)-patch:
 	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
 
-$(1)-debug:
-	$$(Q)make $$(NPD) boot DEBUG=$(1)
+$(1)-debug: _boot
 
-$(1)-boot:
-	$$(Q)make $$(NPD) _boot BOOT=$(1)
+$(1)-boot: _boot
 
-$(1)-test:
-	$$(Q)make $$(NPD) _test BOOT=$(1)
+$(1)-test: _test
 
 PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
 
@@ -1744,7 +1808,7 @@ endif
 
 ifeq ($(findstring root,$(firstword $(MAKECMDGOALS))),root)
 root:
-	$(Q)make $(S) $(ROOT)
+	$(Q)$(if $(ROOT),make $(S) $(ROOT))
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
@@ -2013,7 +2077,7 @@ _module-clean: kernel-modules-clean-km
 modules-list: module-list
 modules-list-full: module-list-full
 
-module-test: test
+module-test: kernel-test
 modules-test: module-test
 
 PHONY += _module module-list module-list-full _module-install _module-clean modules-list modules-list-full
@@ -2161,7 +2225,7 @@ endif
 	$(Q)if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(NPD) root-rebuild; fi
 endif
 
-kernel-feature-test: test
+kernel-feature-test: kernel-test
 kernel-features-test: kernel-feature-test
 features-test: kernel-feature-test
 feature-test: kernel-feature-test
@@ -2344,7 +2408,7 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 
 ifeq ($(findstring kernel,$(firstword $(MAKECMDGOALS))),kernel)
 kernel:
-	$(Q)make $(S) $(KERNEL_DEPS)
+	$(Q)$(if $(KERNEL_DEPS),make $(S) $(KERNEL_DEPS))
 	$(call make_kernel,$(KT))
 endif
 
@@ -2838,7 +2902,7 @@ endif
 BOOT_CMD += $(XOPTS)
 
 D ?= 0
-DEBUG := $(D)
+DEBUG ?= $(D)
 
 # Must disable the kaslr feature while debugging, otherwise, breakpoint will not stop and just continue
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
@@ -3109,11 +3173,7 @@ _BOOT_DEPS += $(BOOT_DTB)
 _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
-BOOT_DEPS ?=
-
-boot: $(BOOT_DEPS)
-
-PHONY += boot-test test _boot boot
+PHONY += boot-test _boot
 
 # Clean up
 
@@ -3225,76 +3285,12 @@ $(eval $(call _ti,fini.private,Makefile))
 # ref: https://stackoverflow.com/questions/2214575/passing-arguments-to-make-run#
 #
 
-# If the first argument is "xxx-run"...
-first_target := $(firstword $(MAKECMDGOALS))
-reserve_target := $(first_target:-run=)
-_reserve_target := $(first_target:-x=)
-
-ifeq ($(findstring -run,$(first_target)),-run)
-  # use the rest as arguments for "run"
-  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_ARGS):FORCE;@:)
+ifneq ($(APP_ARGS),)
+# ...and turn them into do-nothing targets
+$(eval $(APP_ARGS):FORCE;@:)
 endif
 
-ifeq ($(findstring -x,$(first_target)),-x)
-  # use the rest as arguments for "run"
-  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_ARGS):FORCE;@:)
-endif
-
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
-ifeq ($(filter $(first_target),$(APP_TARGETS)),$(first_target))
-  # use the rest as arguments for "run"
-  RUN_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_ARGS):FORCE;@:)
-endif
-
-define cli_detectapp
-ifeq ($$(origin $(2)),command line)
-  APP += $(1)
-endif
-
-endef
-
-define default_detectapp
-ifneq ($$($(2)),)
-  override app += $(1)
-endif
-
-endef
-
-ifneq ($(RUN_ARGS),)
-  APP := $(RUN_ARGS)
-else
-  APP :=
-  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
-ifneq ($(APP),)
-  app ?= $(APP)
-  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
-endif
-
-ifeq ($(app),all)
-  override app :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
-ifeq ($(app),)
-  app := kernel
-  ifeq ($(MAKECMDGOALS),list)
-    app := default
-  endif
-  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
-    ifeq ($(U),1)
-      app := uboot
-    endif
-  endif
-endif
-
+ifneq ($(filter $(first_target),$(APP_TARGETS)),)
 PREFIX_TARGETS := list
 SILENT_TARGETS := list
 define silent_flag
@@ -3305,16 +3301,21 @@ define real_target
 $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
 endef
 
-$(APP_TARGETS):
-	$(Q)$(foreach a,$(app),make $(NPD) $(call silent_flag,$(@)) $(MFLAGS) $(call real_target,$(@),$(a));)
+$(APP_TARGETS): $(foreach a,$(app), $(call real_target,$(firstword $(MAKECMDGOALS)),$(a)))
+
+PHONY += $(APP_TARGETS)
+endif
+
+ifneq ($(RUN_ARGS),)
+# ...and turn them into do-nothing targets
+$(eval $(RUN_ARGS):FORCE;@:)
 
 BASIC_TARGETS := kernel uboot root qemu
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
 
-$(EXEC_TARGETS):
-	make $(@:-run=) x=$(RUN_ARGS)
-
-PHONY += $(APP_TARGETS) $(EXEC_TARGETS) $(_EXEC_TARGETS)
+$(EXEC_TARGETS): $(subst -run,,$(MAKECMDGOALS))
+PHONY += $(EXEC_TARGETS)
+endif
 
 PHONY += FORCE
 

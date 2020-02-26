@@ -5,6 +5,7 @@ CPU     ?= any
 SMP     ?= 4
 MEM     ?= 128M
 QEMU    ?= v4.0.0
+HOST_GCC[QEMU_v4.0.0] := 4.8
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
 LINUX   ?= v5.0.13

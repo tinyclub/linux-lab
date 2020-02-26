@@ -384,12 +384,23 @@ CCORI_$(1) = $$(call __v,CCORI,$(1))
 ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
   ifneq ($$(CCORI_$(1))$$(GCC_$(1)),)
     ifeq ($$(CCORI_$(1))$$(CCORI),)
-      CCORI := internal
+      CCORI_$(1) := internal
     endif
     GCC_$(1)_SWITCH := 1
   endif
 endif
 
+HOST_GCC_$(1) = $$(call __v,HOST_GCC,$(1))
+HOST_CCORI_$(1) = $$(call __v,HOST_CCORI,$(1))
+
+ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
+  ifneq ($$(HOST_CCORI_$(1))$$(HOST_GCC_$(1)),)
+    ifeq ($$(HOST_CCORI_$(1))$$(HOST_CCORI),)
+      HOST_CCORI_$(1) := internal
+    endif
+    HOST_GCC_$(1)_SWITCH := 1
+  endif
+endif
 endef # genbuildenv
 
 #$(warning $(call genbuildenv,LINUX,kernel))
@@ -410,6 +421,14 @@ ifneq ($(GCC),)
     CCORI := internal
   endif
   GCC_SWITCH := 1
+endif
+
+ifneq ($(HOST_GCC),)
+  # Force using internal CCORI if GCC specified
+  ifeq ($(HOST_CCORI),)
+    HOST_CCORI := internal
+  endif
+  HOST_GCC_SWITCH := 1
 endif
 
 # generate verify function
@@ -1437,6 +1456,9 @@ define genenvdeps
 $(1)-env: env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
+endif
+ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
 endif
 
 PHONY += $(1)-env
@@ -3249,6 +3271,9 @@ env: env-prepare
 env-prepare: toolchain
 ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
+endif
+ifeq ($(HOST_GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(HOST_CCORI),CCORI=$(HOST_CCORI)) $(if $(HOST_GCC),GCC=$(HOST_GCC)) b=i386/pc
 endif
 
 env-list: env-dump

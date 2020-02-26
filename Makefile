@@ -1136,7 +1136,7 @@ PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V) $(1)
+$(C_PATH) make -C $(QEMU_OUTPUT)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
@@ -2605,8 +2605,8 @@ uboot-save:
 
 qemu-save:
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
-	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),make -C $(QEMU_OUTPUT)/$(_QEMU_TARGET) install V=$(V);echo '';)
-	$(Q)make -C $(QEMU_OUTPUT) install V=$(V)
+	-$(Q)$(call make_qemu,install)
+	-$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),$(call make_qemu,install,$(_QEMU_TARGET));echo '';)
 
 uboot-saveconfig:
 	-$(call make_uboot,savedefconfig)

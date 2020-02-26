@@ -3055,23 +3055,19 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 
 boot-test:
 	$(Q)echo "Running $@"
-	$(Q)make $(NPD) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
-
-_boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(Q)$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
+	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE);)
+		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTRE);)
 endif
 
 # Allow to disable feature-init
 FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
-raw-test:
-	$(Q)make $(NPD) _test FI=0
+raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
 
 _test: $(TEST_PREPARE) FORCE
 	$(Q)if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(NPD) feature-init TEST=default; fi

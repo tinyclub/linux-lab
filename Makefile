@@ -1281,13 +1281,13 @@ $(1)-patch:
 	fi
 
 $(1)-debug:
-	$$(Q)make -s boot DEBUG=$(1)
+	$$(Q)make $$(NPD) boot DEBUG=$(1)
 
 $(1)-boot:
-	$$(Q)make -s _boot BOOT=$(1)
+	$$(Q)make $$(NPD) _boot BOOT=$(1)
 
 $(1)-test:
-	$$(Q)make -s _test BOOT=$(1)
+	$$(Q)make $$(NPD) _test BOOT=$(1)
 
 PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
 
@@ -2152,13 +2152,13 @@ module-init:
 
 feature-init: FORCE
 ifneq ($(FEATURE),)
-	make $(NPD) feature FEATURE="$(FEATURE)"
-	make $(NPD) kernel-init
-	make $(NPD) rootdir-init
+	$(Q)make $(NPD) feature FEATURE="$(FEATURE)"
+	$(Q)make $(NPD) kernel-init
+	$(Q)make $(NPD) rootdir-init
 ifeq ($(findstring module,$(FEATURE)),module)
-	make $(NPD) module-init
+	$(Q)make $(NPD) module-init
 endif
-	if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(NPD) root-rebuild; fi
+	$(Q)if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(NPD) root-rebuild; fi
 endif
 
 kernel-feature-test: test
@@ -2875,11 +2875,13 @@ endif
 SYSTEM_TOOL_DIR := system/tools
 
 boot-init: FORCE
+	$(Q)echo "Running $@"
 	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
 
 boot-finish: FORCE
+	$(Q)echo "Running $@"
 	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
@@ -2988,11 +2990,12 @@ endif
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test:
-	make $(NPD) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
+	$(Q)echo "Running $@"
+	$(Q)make $(NPD) _boot-test T_BEFORE="$(TEST_BEFORE)" T_AFTRE="$(TEST_AFTER)" MAKECLIVAR='$(makeclivar)'
 
 _boot-test:
 ifeq ($(BOOT_TEST), default)
-	$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
+	$(Q)$(T_BEFORE) make $(NPD) boot $(MAKECLIVAR) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(T_AFTRE)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
@@ -3004,13 +3007,13 @@ FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
 raw-test:
-	make -s _test FI=0
+	$(Q)make $(NPD) _test FI=0
 
 _test: $(TEST_PREPARE) FORCE
-	if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(NPD) feature-init TEST=default; fi
-	make $(NPD) boot-init
-	make $(NPD) boot-test
-	make $(NPD) boot-finish
+	$(Q)if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(NPD) feature-init TEST=default; fi
+	$(Q)make $(NPD) boot-init
+	$(Q)make $(NPD) boot-test
+	$(Q)make $(NPD) boot-finish
 
 PHONY += _boot-test boot-test test raw-test
 

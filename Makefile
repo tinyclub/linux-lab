@@ -2200,37 +2200,12 @@ endif
 
 PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
 
-kernel-init:
-	$(Q)make $(NPD) kernel-config
-	$(Q)make $(NPD) kernel-olddefconfig
-	$(Q)$(call make_kernel,$(IMAGE))
-
-rootdir-init:
-	$(Q)make $(NPD) rootdir-clean
-	$(Q)make $(NPD) rootdir
-	$(Q)make $(NPD) root-install
-
-module-init:
-	$(Q)make $(NPD) modules
-	$(Q)make $(NPD) modules-install
-
-feature-init: FORCE
-ifneq ($(FEATURE),)
-	$(Q)make $(NPD) feature FEATURE="$(FEATURE)"
-	$(Q)make $(NPD) kernel-init
-	$(Q)make $(NPD) rootdir-init
-ifeq ($(findstring module,$(FEATURE)),module)
-	$(Q)make $(NPD) module-init
-endif
-	$(Q)if [ "$(TEST_RD)" != "/dev/nfs" ]; then make $(NPD) root-rebuild; fi
-endif
-
 kernel-feature-test: kernel-test
 kernel-features-test: kernel-feature-test
 features-test: kernel-feature-test
 feature-test: kernel-feature-test
 
-PHONY += kernel-init rootdir-init module-init feature-init kernel-feature-test kernel-features-test features-test feature-test
+PHONY += kernel-feature-test kernel-features-test features-test feature-test
 
 IMAGE := $(notdir $(ORIIMG))
 
@@ -3063,19 +3038,36 @@ else
 		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTRE);)
 endif
 
+raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
+
+PHONY += raw-test boot-test
+
 # Allow to disable feature-init
 FEATURE_INIT ?= 1
 FI ?= $(FEATURE_INIT)
 
-raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
+kernel-init: kernel-config kernel-olddefconfig
+	$(Q)$(call make_kernel,$(IMAGE))
 
-_test: $(TEST_PREPARE) FORCE
-	$(Q)if [ $(FI) -eq 1 -a -n "$(FEATURE)" ]; then make $(NPD) feature-init TEST=default; fi
-	$(Q)make $(NPD) boot-init
-	$(Q)make $(NPD) boot-test
-	$(Q)make $(NPD) boot-finish
+rootdir-init: rootdir-clean rootdir root-install
 
-PHONY += _boot-test boot-test test raw-test
+module-init: modules modules-install
+
+ifeq ($(findstring module,$(FEATURE)),module)
+  MODULE_INIT := module-init
+endif
+
+ifneq ($(TEST_RD),/dev/nfs)
+  ROOT_REBUILD := root-rebuild
+endif
+
+feature-init: $(if $(FEATURE),feature kernel-init rootdir-init $(MODULE_INIT) $(ROOT_REBUILD)) FORCE
+
+PHONY += kernel-init rootdir-init module-init feature-init
+
+_test: $(TEST_PREPARE) $(if $(FI),$(if $(FEATURE),feature-init)) boot-init boot-test boot-finish FORCE
+
+PHONY += _test
 
 # Boot dependencies
 

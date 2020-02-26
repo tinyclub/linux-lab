@@ -1585,9 +1585,11 @@ qemu-defconfig:
 	$(Q)mkdir -p $(QEMU_OUTPUT)
 	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
+QT ?= $(x)
+
 ifeq ($(findstring qemu,$(firstword $(MAKECMDGOALS))),qemu)
 qemu:
-	$(call make_qemu)
+	$(call make_qemu,$(QT))
 endif
 
 #$(warning $(call genclone,qemu,qemu,Q))
@@ -3289,19 +3291,21 @@ define real_target
 $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
 endef
 
-$(APP_TARGETS): $(foreach a,$(app), $(call real_target,$(firstword $(MAKECMDGOALS)),$(a)))
+$(APP_TARGETS): $(foreach a,$(app), $(call real_target,$(first_target),$(a)))
 
 PHONY += $(APP_TARGETS)
 endif
+
+BASIC_TARGETS := kernel uboot root qemu
+PHONY += $(BASIC_TARGETS)
 
 ifneq ($(RUN_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(RUN_ARGS):FORCE;@:)
 
-BASIC_TARGETS := kernel uboot root qemu
 EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
+$(EXEC_TARGETS): $(subst -run,,$(first_target))
 
-$(EXEC_TARGETS): $(subst -run,,$(MAKECMDGOALS))
 PHONY += $(EXEC_TARGETS)
 endif
 

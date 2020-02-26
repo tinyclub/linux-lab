@@ -1633,9 +1633,7 @@ else
   endif
 endif
 
-toolchain:
-	$(Q)make $(S) toolchain-install
-	$(Q)make $(S) gcc-info
+toolchain: toolchain-install gcc-info
 
 toolchain-list:
 	@echo

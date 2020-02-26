@@ -1136,7 +1136,7 @@ PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V)
+$(C_PATH) make -C $(QEMU_OUTPUT) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
@@ -1552,10 +1552,12 @@ else
       QEMU_CONF += --enable-sdl
     endif
 
-    ifeq ($(QEMU_VNC),1)
-      QEMU_CONF += --enable-vnc
-    else
-      QEMU_CONF += --disable-vnc
+    ifneq ($(QEMU_VNC),)
+      ifeq ($(QEMU_VNC),1)
+        QEMU_CONF += --enable-vnc
+      else
+        QEMU_CONF += --disable-vnc
+      endif
     endif
 
     ifneq ($(QEMU_VIRTFS),0)

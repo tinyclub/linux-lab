@@ -62,8 +62,15 @@ else
 endif
 
 # Supported apps and their version variable
+APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
+
+define gengoalslist
+$(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
+endef
+
 first_target := $(firstword $(MAKECMDGOALS))
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   # use the rest as arguments for "run"
@@ -1022,15 +1029,17 @@ endef
 
 board: board-save plugin-save board-cleanstamp board-show
 
-board-cleanstamp:
+CLEAN_STAMP := $(call gengoalslist,cleanstamp)
 ifneq ($(BOARD),$(BOARD_CONFIG))
-	$(Q)make -s cleanstamp
+  BOARD_CLEAN_STAMP := $(CLEAN_STAMP)
 endif
+
+board-cleanstamp: $(BOARD_CLEAN_STAMP)
 
 board-show:
 	$(Q)$(call showboardvars)
 
-board-init: cleanstamp
+board-init: $(CLEAN_STAMP)
 
 board-clean:
 	$(Q)rm -rf .board_config
@@ -1049,7 +1058,7 @@ PHONY += board board-init board-clean board-save board-cleanstamp
 board-edit:
 	$(Q)vim $(BOARD_MAKEFILE)
 
-board-config: board-save cleanstamp
+board-config: board-save
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 PHONY += board-config board-edit
@@ -3242,7 +3251,7 @@ rootdir-distclean: rootdir-clean
 
 PHONY += rootdir-distclean
 
-fullclean: distclean
+fullclean: $(call gengoalslist,distclean)
 	$(Q)git clean -fdx
 
 # Show the variables
@@ -3324,14 +3333,13 @@ $(APP_TARGETS): $(foreach a,$(app), $(call real_target,$(first_target),$(a)))
 PHONY += $(APP_TARGETS)
 endif
 
-BASIC_TARGETS := kernel uboot root qemu
-PHONY += $(BASIC_TARGETS)
+PHONY += $(APPS)
 
 ifneq ($(RUN_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(RUN_ARGS):FORCE;@:)
 
-EXEC_TARGETS  := $(foreach t,$(BASIC_TARGETS),$(t:=-run))
+EXEC_TARGETS  := $(foreach t,$(APPS),$(t:=-run))
 $(EXEC_TARGETS): $(subst -run,,$(first_target))
 
 PHONY += $(EXEC_TARGETS)

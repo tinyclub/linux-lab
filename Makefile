@@ -2434,15 +2434,8 @@ ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
   endif
 endif
 
-vmlinux:
-	@if [ -z "$(VMLINUX)" -o ! -f $(VMLINUX) ]; then \
-	  echo "ERR: No VMLINUX: $(VMLINUX) found, please compile with 'make kernel'" && exit 1; \
-	fi
-
-PHONY += vmlinux
-
 calltrace: kernel-calltrace
-kernel-calltrace: vmlinux
+kernel-calltrace: kernel-build
 	$(Q)$(KERNEL_CALLTRACE_TOOL) $(VMLINUX) $(LASTCALL) $(KERNEL_ABS_SRC) "$(C_PATH)" "$(CCPRE)"
 
 PHONY += kernel-calltrace calltrace
@@ -3130,9 +3123,11 @@ endif
 ifeq ($(DEBUG),uboot)
   GDB_CMD      ?= $(GDB) $(BIMAGE)
   GDB_INIT     ?= $(TOP_DIR)/.uboot_gdbinit
+  DEBUG_DEPS   := uboot-build
 else
   GDB_CMD      ?= $(GDB) $(VMLINUX)
   GDB_INIT     ?= $(TOP_DIR)/.kernel_gdbinit
+  DEBUG_DPES   := kernel-build
 endif
 
 HOME_GDB_INIT ?= $(HOME)/.gdbinit
@@ -3177,7 +3172,7 @@ ifneq ($(TEST_TIMEOUT),0)
 else
   DEBUG_INIT := _debug_init_1
 endif
-DEBUG_CLIENT := vmlinux $(DEBUG_INIT) _debug
+DEBUG_CLIENT := $(DEBUG_DEPS) $(DEBUG_INIT) _debug
 
 PHONY += _debug _debug_init_1 _debug_init_2
 

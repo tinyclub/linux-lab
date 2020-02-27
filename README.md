@@ -969,7 +969,6 @@ Test a feature of a specified linux version on a specified board(`cmdline_size` 
     $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init,kernel-cleanup
 
   NOTE: `board-init` and `kernel-cleanup` make sure test run automatically, but `kernel-cleanup` is not safe, please save your code before use it!!
-        To cleanup all of root,uboot,qemu and kernel, please use `cleanup` instead.
 
 Test a kernel module:
 
@@ -1015,11 +1014,11 @@ Test a kernel module and make some targets before testing:
 
 Test everything in one command (from download to poweroff, see [poweroff hang](#poweroff-hang)):
 
-    $ make test TEST=kernel,root TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root TEST_PREPARE=board-init,kernel-cleanup,root-cleanup
 
 Test everything in one command (with uboot while support, e.g. vexpress-a9):
 
-    $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,kernel-cleanup,root-cleanup,uboot-cleanup
 
 Test kernel hang during boot, allow to specify a timeout, timeout must happen while system hang:
 

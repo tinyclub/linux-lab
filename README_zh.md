@@ -948,7 +948,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init,kernel-cleanup
     
   **注意**：`board-init` 和 `kernel-cleanup` 用于确保测试自动运行，但是 `kernel-cleanup` 不安全，请在使用前保存代码！
-  要清除所有的 root，uboot，qemu 和 kernel，请改用 `cleanup`。
 
 测试一个内核模块：
 
@@ -994,11 +993,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 使用一条命令测试所有功能（从下载到关机，参考 [“关机挂起问题”](#poweroff-hang)）：
 
-    $ make test TEST=kernel,root TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root TEST_PREPARE=board-init,kernel-cleanup,root-cleanup
 
 使用一条命令测试所有功能（带 uboot，如果支持的话，譬如：vexpress-a9）：
 
-    $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,cleanup
+    $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,kernel-cleanup,root-cleanup,uboot-cleanup
 
 测试引导过程中内核挂起，允许指定超时时间，系统挂起时将发生超时：
 

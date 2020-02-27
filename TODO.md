@@ -1,10 +1,9 @@
 
 # TODO List
 
-## V0.3
+## V0.4
 
-* Add Chinese version of README.md
-* Update buildroot to 2019.11, share native linux-stable git repo
+* optimize docker image size
 
 ## Future
 

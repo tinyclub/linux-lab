@@ -1418,10 +1418,10 @@ $(1)-defconfig:
 	$$(call make_$(1),$$(_$(3)CFG) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-olddefconfig:
-	$$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($$(call _uc,$1)_OLDDEFCONFIG),$$($$(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-oldconfig:
-	$$($$(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-menuconfig:
 	$$(call make_$1,menuconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -2161,26 +2161,10 @@ _KERNEL ?= $(_LINUX)
 #$(warning $(call gengoals,kernel,LINUX))
 $(eval $(call gengoals,kernel,LINUX))
 
-#
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
-#
-
-ifeq ($(findstring kernel,$(MAKECMDGOALS)),kernel)
-  KCONFIG_MAKEFILE := $(KERNEL_SRC)/scripts/kconfig/Makefile
-  KERNEL_OLDDEFCONFIG := olddefconfig
-  ifeq ($(KCONFIG_MAKEFILE), $(wildcard $(KCONFIG_MAKEFILE)))
-    ifneq ($(shell grep olddefconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
-      ifneq ($(shell grep oldnoconfig -q $(KCONFIG_MAKEFILE); echo $$?),0)
-        KERNEL_OLDDEFCONFIG := oldconfig
-      else
-        KERNEL_OLDDEFCONFIG := oldnoconfig
-      endif
-    endif
-  endif
-endif
-
+kernel-olddefconfig: KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | 

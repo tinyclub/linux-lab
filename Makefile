@@ -4,6 +4,9 @@
 
 TOP_DIR := $(CURDIR)
 
+# Force set default goal
+.DEFAULT_GOAL := board
+
 # Phony targets
 PHONY :=
 comma := ,
@@ -91,7 +94,7 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   ifneq ($(ARCH),)
     override BOARD     := $(ARCH)/$(BOARD)
     override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
-    _boot: $(info LOG: Current board is $(BOARD))
+    $(info LOG: Current board is $(BOARD))
   else
     $(error ERR: $(BOARD) not exist, check available boards in 'make list')
   endif
@@ -2166,7 +2169,9 @@ $(eval $(call gengoals,kernel,LINUX))
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
-kernel-olddefconfig: KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
+ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
+KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
+endif
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | 

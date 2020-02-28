@@ -383,7 +383,7 @@ Download one by one:
     $ make root-source
     $ make uboot-source
 
-Or
+    Or
 
     $ make source bsp
     $ make source kernel
@@ -401,7 +401,7 @@ Checkout them one by one:
     $ make kernel-checkout
     $ make root-checkout
 
-Or
+    Or
 
     $ make checkout kernel
     $ make checkout root
@@ -411,7 +411,7 @@ If checkout not work due to local changes, save changes and run to get a clean e
     $ make kernel-cleanup
     $ make root-cleanup
 
-Or
+    Or
 
     $ make cleanup kernel
     $ make cleanup root
@@ -424,7 +424,7 @@ Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
     $ make kernel-patch
 
-Or
+    Or
 
     $ make patch kernel
 
@@ -441,7 +441,7 @@ Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
     $ make kernel-defconfig
     $ make root-defconfig
 
-Or
+    Or
 
     $ make defconfig kernel
     $ make defconfig root
@@ -459,7 +459,7 @@ If only defconfig name specified, search boards/<BOARD> at first, and then the d
     $ make kernel-menuconfig
     $ make root-menuconfig
 
-Or
+    Or
 
     $ make menuconfig kernel
     $ make menuconfig root
@@ -470,7 +470,7 @@ Or
     $ make root-olddefconfig
     $ make uboot-olddefconfig
 
-Or
+    Or
 
     $ make olddefconfig kernel
     $ make olddefconfig root
@@ -487,7 +487,7 @@ Build them one by one:
     $ make kernel-build  # make kernel
     $ make root-build    # make root
 
-Or
+    Or
 
     $ make build kernel
     $ make build root
@@ -506,7 +506,8 @@ Save configs and images to `boards/<BOARD>/bsp/`:
     $ make root-save
     $ make kernel-save
 
-Or
+    Or
+
     $ make saveconfig kernel
     $ make saveconfig root
     $ make save kernel
@@ -1094,14 +1095,14 @@ Reconfigure the kernel with:
   If using `-virtfs` or `-device virtio-9p-pci` option for qemu, must enable the above PCI related options, otherwise will not work:
 
     9pnet_virtio: no channels available for device hostshare
-    mount: mounting hostshare on /hostshare failed: No such file or directory'
+    mount: mounting hostshare on /hostshare failed: No such file or directory
 
   `-device virtio-9p-device` requires less kernel options.
 
   To enable the above options, please simply type:
 
-   $ make feature f=9pnet
-   $ make kernel-olddefconfig
+    $ make feature f=9pnet
+    $ make kernel-olddefconfig
 
 Docker host:
 

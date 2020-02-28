@@ -368,9 +368,9 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：
 
     $ make source APP="bsp kernel root uboot"
-    Or
+    或
     $ make source APP=all
-    Or
+    或
     $ make source all
 
 如果需要单独下载这些部分：
@@ -380,7 +380,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
     $ make root-source
     $ make uboot-source
 
-Or
+    或
 
     $ make source bsp
     $ make source kernel
@@ -399,7 +399,7 @@ Or
     $ make kernel-checkout
     $ make root-checkout
 
-Or
+    或
 
     $ make checkout kernel
     $ make checkout root
@@ -409,7 +409,7 @@ Or
     $ make kernel-cleanup
     $ make root-cleanup
 
-Or
+    或
 
     $ make cleanup kernel
     $ make cleanup root
@@ -422,7 +422,7 @@ Or
 
     $ make kernel-patch
 
-Or
+    或
 
     $ make patch kernel
 
@@ -439,7 +439,7 @@ Or
     $ make kernel-defconfig
     $ make root-defconfig
 
-Or
+    或
 
     $ make defconfig kernel
     $ make defconfig root
@@ -457,7 +457,7 @@ Or
     $ make kernel-menuconfig
     $ make root-menuconfig
 
-Or
+    或
 
     $ make menuconfig kernel
     $ make menuconfig root
@@ -469,7 +469,7 @@ Or
     $ make root-olddefconfig
     $ make uboot-olddefconfig
 
-Or
+    或
 
     $ make olddefconfig kernel
     $ make olddefconfig root
@@ -486,7 +486,7 @@ Or
     $ make kernel-build  # make kernel
     $ make root-build    # make root
 
-Or
+    或
 
     $ make build kernel
     $ make build root
@@ -505,7 +505,7 @@ Or
     $ make root-save
     $ make kernel-save
 
-Or
+    或
     $ make saveconfig kernel
     $ make saveconfig root
     $ make save kernel
@@ -665,7 +665,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 编译一个内核模块（例如：minix.ko）
 
     $ make module M=fs/minix/
-    Or
+    或
     $ make module m=minix
 
 安装和清理模块：
@@ -683,7 +683,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 编译外部内核模块（类似编译内部模块）：
 
     $ make module m=hello
-    Or
+    或
     $ make kernel x=$PWD/modules/hello/hello.ko
 
 
@@ -1078,15 +1078,14 @@ Qemu 开发板：
   如果需要使用 qemu 的 `-virtfs` 或者 `-device virtio-9p-pci` 选项，需要使能以上 PCI 相关的选项，否则无法工作：
 
     9pnet_virtio: no channels available for device hostshare
-    mount: mounting hostshare on /hostshare failed: No such file or directory'
+    mount: mounting hostshare on /hostshare failed: No such file or directory
 
-  `-device virtio-9p-device` requires less kernel options.
   `-device virtio-9p-device` 需要较少的内核选项。
 
   为了使能以上选项，请输入以下命令：
 
-   $ make feature f=9pnet
-   $ make kernel-olddefconfig
+    $ make feature f=9pnet
+    $ make kernel-olddefconfig
 
 Docker 主机：
 

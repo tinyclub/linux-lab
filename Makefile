@@ -94,7 +94,7 @@ ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
   ifneq ($(ARCH),)
     override BOARD     := $(ARCH)/$(BOARD)
     override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
-    $(info LOG: Current board is $(BOARD))
+    #$(info LOG: Current board is $(BOARD))
   else
     $(error ERR: $(BOARD) not exist, check available boards in 'make list')
   endif

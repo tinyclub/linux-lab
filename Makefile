@@ -313,6 +313,67 @@ $(eval $(call _hi,labconfig))
 $(eval $(call __vs,KERNEL_SRC,LINUX))
 $(eval $(call __vs,KERNEL_GIT,LINUX))
 
+#
+# Prefer new binaries to the prebuilt ones control
+#
+# PBK = 1, prebuilt kernel; 0, new building kernel if exist
+# PBR = 1, prebuilt rootfs; 0, new building rootfs if exist
+# PBD = 1, prebuilt dtb   ; 0, new building dtb if exist
+# PBQ = 1, prebuilt qemu  ; 0, new building qemu if exist
+# PBU = 1, prebuilt uboot ; 0, new building qemu if exist
+#
+# Allow using contrary alias: k/kernel,r/root,d/dtb,q/qemu,u/uboot for PBK,PBR,PBD,PBQ,PBU
+#
+# Notes: the uppercase of d,q,u has been used for other cases,
+# so, use the lowercase here.
+#
+
+define _pb
+ifneq ($$($(call _lc,$1)),)
+  ifeq ($$($(call _lc,$1))),1)
+    PB$1 := 0
+  else
+    PB$1 := 1
+  endif
+endif
+
+endef
+
+define _lpb
+_$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
+ifneq ($$($1),)
+  ifeq ($$($1),1)
+    PB$$(_$(1)) := 0
+  else
+    PB$$(_$(1)) := 1
+  endif
+endif
+ifneq ($(BUILD),)
+  ifeq ($(filter $(1),$(BUILD)),$(1))
+    PB$$(_$(1)) := 0
+  endif
+endif
+
+endef # _lpb
+
+define default_detectbuild
+ifneq ($$($(2)),)
+  override BUILD += $(1)
+endif
+
+endef
+
+ifeq ($(BUILD),all)
+  override BUILD :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+#$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
+$(eval $(foreach x,K R D Q U,$(call _pb,$x)))
+
+#$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+$(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+
 # Supported apps and their version variable
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
@@ -363,11 +424,6 @@ ifeq ($(app),)
   app := kernel
   ifeq ($(MAKECMDGOALS),list)
     app := default
-  endif
-  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
-    ifeq ($(U),1)
-      app := uboot
-    endif
   endif
 endif
 
@@ -659,67 +715,6 @@ TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 HOST_CPU_THREADS := $(shell grep -c processor /proc/cpuinfo)
 JOBS ?= $(HOST_CPU_THREADS)
 
-#
-# Prefer new binaries to the prebuilt ones control
-#
-# PBK = 1, prebuilt kernel; 0, new building kernel if exist
-# PBR = 1, prebuilt rootfs; 0, new building rootfs if exist
-# PBD = 1, prebuilt dtb   ; 0, new building dtb if exist
-# PBQ = 1, prebuilt qemu  ; 0, new building qemu if exist
-# PBU = 1, prebuilt uboot ; 0, new building qemu if exist
-#
-# Allow using contrary alias: k/kernel,r/root,d/dtb,q/qemu,u/uboot for PBK,PBR,PBD,PBQ,PBU
-#
-# Notes: the uppercase of d,q,u has been used for other cases,
-# so, use the lowercase here.
-#
-
-define _pb
-ifneq ($$($(call _lc,$1)),)
-  ifeq ($$($(call _lc,$1))),1)
-    PB$1 := 0
-  else
-    PB$1 := 1
-  endif
-endif
-
-endef
-
-define _lpb
-_$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
-ifneq ($$($1),)
-  ifeq ($$($1),1)
-    PB$$(_$(1)) := 0
-  else
-    PB$$(_$(1)) := 1
-  endif
-endif
-ifneq ($(BUILD),)
-  ifeq ($(filter $(1),$(BUILD)),$(1))
-    PB$$(_$(1)) := 0
-  endif
-endif
-
-endef # _lpb
-
-define default_detectbuild
-ifneq ($$($(2)),)
-  override BUILD += $(1)
-endif
-
-endef
-
-ifeq ($(BUILD),all)
-  override BUILD :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
-#$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
-$(eval $(foreach x,K R D Q U,$(call _pb,$x)))
-
-#$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
-$(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
-
 # Emulator configurations
 ifneq ($(BIOS),)
   BIOS_ARG := -bios $(BIOS)
@@ -824,6 +819,7 @@ ifneq ($(_QTOOL),)
 endif
 
 # Uboot configurations
+ifneq ($(UBOOT),)
 UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/u-boot
 PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/u-boot
 
@@ -831,23 +827,6 @@ ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
 else
   PBU := 1
-endif
-
-# Get DEBUG option if -debug found in goals
-ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
-  DEBUG = $(app)
-endif
-
-# allow specify boot app here
-ifeq ($(findstring boot,$(firstword $(MAKECMDGOALS))),boot)
-  BOOT ?= $(app)
-endif
-ifneq ($(BOOT),)
-  ifeq ($(BOOT),uboot)
-    U ?= 1
-  else
-    U := 0
-  endif
 endif
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
@@ -865,9 +844,22 @@ ifeq ($(PBU),0)
   BIMAGE := $(UBOOT_BIMAGE)
 endif
 
+ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+  ifeq ($(U),1)
+    app := uboot
+  endif
+  ifneq ($(U),0)
+    ifeq ($(filter command line,$(foreach i,PBU u uboot,$(origin $i))),command line)
+      app := uboot
+    endif
+  endif
+endif
+
+endif # UBOOT != ""
+
 # Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
 $(eval $(call __vs,U,LINUX))
-ifneq ($(U),0)
+ifeq ($(U),1)
   QEMU_KIMAGE := $(BIMAGE)
 else
   QEMU_KIMAGE := $(KIMAGE)
@@ -2824,7 +2816,18 @@ EMULATOR_OPTS += $(SHARE_OPT)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
 BOOT_CMD := sudo $(EMULATOR) $(EMULATOR_OPTS)
-ifeq ($(U),0)
+
+ifeq ($(U),1)
+  ifeq ($(SD_BOOT),1)
+    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw,id=sd0
+  endif
+
+  ifneq ($(PFLASH_SIZE),0)
+    # Load pflash for booting with uboot every time
+    # pflash is at least used as the env storage
+    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw
+  endif
+else # U != 1
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
     INITRD ?= 1
   endif
@@ -2842,15 +2845,7 @@ ifeq ($(U),0)
       BOOT_CMD += -dtb $(DTB)
     endif
   endif
-else
-  ifeq ($(SD_BOOT),1)
-    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw,id=sd0
-  endif
-
-  # Load pflash for booting with uboot every time
-  # pflash is at least used as the env storage
-  BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw
-endif
+endif # U != 1
 
 ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
   BOOT_CMD += -hda $(HROOTFS)
@@ -2886,6 +2881,11 @@ endif
 
 # Add extra qemu options
 BOOT_CMD += $(XOPTS)
+
+# Get DEBUG option if -debug found in goals
+ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+  DEBUG = $(app)
+endif
 
 D ?= 0
 DEBUG ?= $(D)
@@ -2980,7 +2980,7 @@ endif
 # Strip begin,end and duplicated spaces
 CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
 
-ifeq ($(U),0)
+ifneq ($(U),1)
   BOOT_CMD += -append '$(CMDLINE)'
 endif
 

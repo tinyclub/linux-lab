@@ -3257,7 +3257,7 @@ $(eval $(call genenvdeps,qemu,QEMU))
 $(eval $(call genenvdeps,root,BUILDROOT))
 
 env: env-prepare
-env-prepare: toolchain
+env-prepare: toolchain-install
 ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
 endif

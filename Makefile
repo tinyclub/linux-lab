@@ -1210,6 +1210,7 @@ endif
 $$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
 
 $(1)-save: $$(call _stamp_$(1),build)
+$(1)-saveconfig: $$(call _stamp_$(1),build)
 
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
 ifeq ($$(PB$$($(1)_APP_TYPE)),0)

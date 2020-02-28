@@ -1392,13 +1392,13 @@ endef # gengoals
 
 define gencfgs
 
-$$(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($$(call _uc,$(2)))_defconfig
-$(3)CFG ?= $$($$(call _uc,$1)_CONFIG_FILE)
+$(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
+$(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
-ifeq ($$($(3)CFG),$$($$(call _uc,$1)_CONFIG_FILE))
+ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
   $(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(3)CFG)
 else
-  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($$(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($$(call _uc,$1)_SRC)/arch/$$(ARCH)/$$($(3)CFG); do \
+  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC)/arch/$$(ARCH)/$$($(3)CFG); do \
 		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
   ifneq ($$(_$(3)CFG_FILE),)
     $(3)CFG_FILE := $$(subst //,/,$$(_$(3)CFG_FILE))
@@ -1407,17 +1407,17 @@ else
   endif
 endif
 
-ifeq ($$(findstring $$($$(call _uc,$1)_CONFIG_DIR),$$($(3)CFG_FILE)),$$($$(call _uc,$1)_CONFIG_DIR))
+ifeq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($(3)CFG_FILE)),$$($(call _uc,$1)_CONFIG_DIR))
   $(3)CFG_BUILTIN := 1
 endif
 
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
 $(1)-defconfig:
-	$$(Q)mkdir -p $$($$(call _uc,$1)_OUTPUT)
-	$$(Q)mkdir -p $$($$(call _uc,$1)_CONFIG_DIR)
-	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($$(call _uc,$1)_CONFIG_DIR))
-	$$(call make_$(1),$$(_$(3)CFG) $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
+	$$(Q)mkdir -p $$($(call _uc,$1)_CONFIG_DIR)
+	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
+	$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -1426,37 +1426,37 @@ $(1)-oldconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-menuconfig:
-	$$(call make_$1,menuconfig $$($$(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 PHONY += $(addprefix $(1)-,defconfig olddefconfig oldconfig menuconfig)
 
 endef # gencfgs
 
 define genclone
-ifneq ($$($$(call _uc,$2)_NEW),)
+ifneq ($$($(call _uc,$2)_NEW),)
 
-ifneq ($$($$(call _uc,$2)_NEW),$$($$(call _uc,$2)))
+ifneq ($$($(call _uc,$2)_NEW),$($(call _uc,$2)))
 
-NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($$(call _uc,$2)_NEW)_defconfig
-NEW_PREBUILT_$$(call _uc,$1)_DIR=$$(subst $$($$(call _uc,$2)),$$($$(call _uc,$2)_NEW),$$(PREBUILT_$$(call _uc,$1)_DIR))
-NEW_$$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($$(call _uc,$2)_NEW)/
-NEW_$$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$$(call _uc,$2)),GCC[$$(call _uc,$2)_$$($$(call _uc,$2)_NEW)] = $$(call __v,GCC,$$(call _uc,$2)))
+NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
+NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($(call _uc,$2)_NEW)/
+NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $(1)-cloneconfig:
 	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
-	$$(Q)tools/board/config.sh $$(call _uc,$2)=$$($$(call _uc,$2)_NEW) $$(BOARD_MAKEFILE)
-	$$(Q)grep -q "GCC\[$$(call _uc,$2)_$$($$(call _uc,$2)_NEW)" $$(BOARD_MAKEFILE); if [ $$$$? -ne 0 -a -n "$$(NEW_$$(call _uc,$1)_GCC)" ]; then \
-		sed -i -e "/GCC\[$$(call _uc,$2)_$$($$(call _uc,$2))/a $$(NEW_$$(call _uc,$1)_GCC)" $$(BOARD_MAKEFILE); fi
-	$$(Q)mkdir -p $$(NEW_PREBUILT_$$(call _uc,$1)_DIR)
-	$$(Q)mkdir -p $$(NEW_$$(call _uc,$1)_PATCH_DIR)
+	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_MAKEFILE)
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_MAKEFILE); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
+		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_MAKEFILE); fi
+	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
+	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
 else
 $(1)-cloneconfig:
-	$(Q)echo $$($$(call _uc,$2)_NEW) already exists!
+	$(Q)echo $$($(call _uc,$2)_NEW) already exists!
 endif
 
 else
   ifeq ($$(MAKECMDGOALS),$(1)-clone)
-    $$(error Usage: make $(1)-clone $$(call _uc,$2)_NEW=<$2-version>)
+    $$(error Usage: make $(1)-clone $(call _uc,$2)_NEW=<$2-version>)
   endif
 endif
 

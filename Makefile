@@ -1186,6 +1186,9 @@ define gendeps
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),%):
+	@echo
+	@echo "Running $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)"
+	@echo
 	$$(Q)make $$(NPD) $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
 	$$(Q)touch $$@
 
@@ -3306,7 +3309,12 @@ define real_target
 $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
 endef
 
-$(APP_TARGETS): $(foreach a,$(app), $(call real_target,$(first_target),$(a)))
+show-%:
+	@echo
+	@echo "Running $(subst xshow-,,x$@)"
+	@echo
+
+$(APP_TARGETS): $(foreach a,$(app),show-$(call real_target,$(first_target),$(a)) $(call real_target,$(first_target),$(a)))
 
 PHONY += $(APP_TARGETS)
 endif

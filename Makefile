@@ -61,75 +61,6 @@ else
     BOARD := $(B)
 endif
 
-# Supported apps and their version variable
-APPS := kernel uboot root qemu
-APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
-
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
-
-define gengoalslist
-$(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
-endef
-
-first_target := $(firstword $(MAKECMDGOALS))
-ifneq ($(filter $(first_target),$(APP_TARGETS)),)
-  # use the rest as arguments for "run"
-  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-
-define cli_detectapp
-ifeq ($$(origin $(2)),command line)
-  APP += $(1)
-endif
-
-endef
-
-define default_detectapp
-ifneq ($$($(2)),)
-  override app += $(1)
-endif
-
-endef
-
-ifneq ($(APP_ARGS),)
-  APP := $(APP_ARGS)
-else
-  APP :=
-  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
-ifneq ($(APP),)
-  app ?= $(APP)
-  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
-endif
-
-ifeq ($(app),all)
-  override app :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
-ifeq ($(app),)
-  app := kernel
-  ifeq ($(MAKECMDGOALS),list)
-    app := default
-  endif
-  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
-    ifeq ($(U),1)
-      app := uboot
-    endif
-  endif
-endif
-
-endif # common commands
-
-# If the first argument is "xxx-run"...
-reserve_target := $(first_target:-run=)
-
-ifeq ($(findstring -run,$(first_target)),-run)
-  # use the rest as arguments for "run"
-  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  x := $(RUN_ARGS)
-endif
-
 # Plugin config: P/PLUGIN persistent, p/plugin temporarily (FIXME: this feature is really required?)
 plugin ?= $(p)
 P ?= $(plugin)
@@ -378,6 +309,76 @@ $(eval $(call _hi,labconfig))
 # Customize kernel git repo and local dir
 $(eval $(call __vs,KERNEL_SRC,LINUX))
 $(eval $(call __vs,KERNEL_GIT,LINUX))
+
+# Supported apps and their version variable
+APPS := kernel uboot root qemu
+APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test
+
+define gengoalslist
+$(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
+endef
+
+first_target := $(firstword $(MAKECMDGOALS))
+ifneq ($(filter $(first_target),$(APP_TARGETS)),)
+  # use the rest as arguments for "run"
+  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+
+define cli_detectapp
+ifeq ($$(origin $(2)),command line)
+  APP += $(1)
+endif
+
+endef
+
+define default_detectapp
+ifneq ($$($(2)),)
+  override app += $(1)
+endif
+
+endef
+
+ifneq ($(APP_ARGS),)
+  APP := $(APP_ARGS)
+else
+  APP :=
+  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifneq ($(APP),)
+  app ?= $(APP)
+  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
+endif
+
+ifeq ($(app),all)
+  override app :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifeq ($(app),)
+  app := kernel
+  ifeq ($(MAKECMDGOALS),list)
+    app := default
+  endif
+  ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+    ifeq ($(U),1)
+      app := uboot
+    endif
+  endif
+endif
+
+endif # common commands
+
+# If the first argument is "xxx-run"...
+reserve_target := $(first_target:-run=)
+
+ifeq ($(findstring -run,$(first_target)),-run)
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  x := $(RUN_ARGS)
+endif
+
 
 # Prepare build environment
 

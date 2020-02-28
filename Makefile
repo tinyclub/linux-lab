@@ -1482,7 +1482,6 @@ PHONY += $(1)-env
 
 endef #genenvdeps
 
-
 # Source download
 #$(warning $(call gensource,uboot,UBOOT))
 $(eval $(call gensource,uboot,UBOOT))
@@ -2431,13 +2430,14 @@ kernel-calltrace: kernel-build
 
 PHONY += kernel-calltrace calltrace
 
+# Uboot specific part
+ifeq ($(U),1)
+
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 # Add basic uboot dependencies
-ifneq ($(UBOOT),)
-  #$(warning $(call gendeps,uboot))
-  $(eval $(call gendeps,uboot))
-endif
+#$(warning $(call gendeps,uboot))
+$(eval $(call gendeps,uboot))
 
 # Verify BOOTDEV argument
 #$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
@@ -2477,24 +2477,18 @@ ifeq ($(DTS),)
   DTB_ADDR := -
 endif
 
-ifneq ($(U),)
-  export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
-endif
+export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
+UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
 #$(warning $(call gengoals,uboot,UBOOT))
 $(eval $(call gengoals,uboot,UBOOT))
-
-UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
-
-ifneq ($(U),)
 #$(warning $(call gencfgs,uboot,uboot,U))
 $(eval $(call gencfgs,uboot,uboot,U))
 #$(warning $(call genclone,uboot,uboot,U))
 $(eval $(call genclone,uboot,uboot,U))
-endif
 
 # Specify uboot targets
 UT ?= $(x)
@@ -2504,9 +2498,6 @@ ifeq ($(findstring uboot,$(firstword $(MAKECMDGOALS))),uboot)
 uboot:
 	$(call make_uboot,$(UT))
 endif
-
-# uboot specific part
-ifeq ($(U),1)
 
 # root uboot image
 root-ud:

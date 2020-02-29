@@ -1259,7 +1259,7 @@ $$(call __stamp_$(1),build): $$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1
 	$$(Q)touch $$@
 
 ifeq ($$(findstring $(1),$$(firstword $$(MAKECMDGOALS))),$(1))
-$(1): $(1)-build
+$(1): $(if $(x),_$(1),$(1)-build)
 endif
 
 $(1)-build: $$(call __stamp_$(1),build)

@@ -468,6 +468,7 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
     ifeq ($$(CCORI_$(2))$$(CCORI),)
       CCORI_$(2) := internal
+      CCORI := internal
     endif
     GCC_$(2)_SWITCH := 1
   endif
@@ -485,6 +486,11 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   endif
 endif
 endef # genbuildenv
+
+$(eval $(call genbuildenv,kernel,LINUX))
+$(eval $(call genbuildenv,uboot,UBOOT))
+$(eval $(call genbuildenv,qemu,QEMU))
+$(eval $(call genbuildenv,root,BUILDROOT))
 
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
@@ -1674,8 +1680,6 @@ $(eval $(call gendeps,qemu))
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
 $(eval $(call gencfgs,qemu,QEMU,Q))
-#$(warning $(call genbuildenv,qemu,QEMU)
-$(eval $(call genbuildenv,qemu,QEMU))
 #$(warning $(call genenvdeps,qemu,QEMU)
 $(eval $(call genenvdeps,qemu,QEMU))
 #$(warning $(call genclone,qemu,qemu,Q))
@@ -1842,8 +1846,6 @@ ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 $(eval $(call gencfgs,root,buildroot,R))
 #$(warning $(call genclone,root,buildroot,R))
 $(eval $(call genclone,root,buildroot,R))
-#$(warning $(call genbuildenv,root,BUILDROOT)
-$(eval $(call genbuildenv,root,BUILDROOT))
 #$(warning $(call genenvdeps,root,BUILDROOT)
 $(eval $(call genenvdeps,root,BUILDROOT))
 
@@ -2000,8 +2002,6 @@ $(eval $(call gengoals,kernel,LINUX))
 $(eval $(call gencfgs,kernel,linux,K))
 #$(warning $(call genclone,kernel,linux,K))
 $(eval $(call genclone,kernel,linux,K))
-#$(warning $(call genbuildenv,kernel,LINUX))
-$(eval $(call genbuildenv,kernel,LINUX))
 #$(warning $(call genenvdeps,kernel,LINUX))
 $(eval $(call genenvdeps,kernel,LINUX))
 
@@ -2578,8 +2578,6 @@ $(eval $(call gengoals,uboot,UBOOT))
 $(eval $(call gencfgs,uboot,uboot,U))
 #$(warning $(call genclone,uboot,uboot,U))
 $(eval $(call genclone,uboot,uboot,U))
-#$(warning $(call genbuildenv,uboot,UBOOT))
-$(eval $(call genbuildenv,uboot,UBOOT))
 #$(warning $(call genenvdeps,uboot,UBOOT))
 $(eval $(call genenvdeps,uboot,UBOOT))
 

@@ -1241,6 +1241,9 @@ $$($(1)_bsp_childs): $(1)-bsp
 
 _boot: $$(boot_deps)
 
+$(1)-%-cleanstamp:
+	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
+
 $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 
@@ -1317,7 +1320,7 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),source):
 	@echo
@@ -1354,7 +1357,7 @@ endef # gensource
 # Generate basic goals
 define gengoals
 
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $(1)-list:
 	$$(Q)echo $$($(2)_LIST)
@@ -1371,8 +1374,8 @@ $$(call _stamp_$(1),checkout):
 $(1)-checkout: $$(call _stamp_$(1),checkout)
 
 $$(call _stamp_$(1),patch):
-	$$(Q)$($(call _uc,$(1))_PATCH_EXTRAACTION); \
-	if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi;
+	$$(Q)$($(call _uc,$(1))_PATCH_EXTRAACTION)
+	$$(Q)if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi;
 	$$(Q)touch $$@
 
 $(1)-patch: $$(call _stamp_$(1),patch)
@@ -1389,7 +1392,7 @@ endef # gengoals
 
 define gencfgs
 
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
@@ -1469,7 +1472,7 @@ endef #genclone
 
 define genenvdeps
 
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),env):
 	$$(Q)make $$(S) env

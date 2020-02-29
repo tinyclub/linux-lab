@@ -1692,30 +1692,51 @@ toolchain-source: toolchain
 download-toolchain: toolchain
 gcc: toolchain
 
-SCRIPT_GETCCVER := tools/gcc/version.sh
-
-ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
-  CCVER := `echo gcc-$$($(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))`
-endif
-
 include $(PREBUILT_TOOLCHAINS)/Makefile
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
   include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 endif
 
+SCRIPT_GETCCVER := tools/gcc/version.sh
+
+ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
+  _CCVER := gcc-$(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
+
+  ifneq ($(CCVER),)
+    ifeq ($(CCVER),$(_CCVER))
+      CCVER_EXIST := 0
+    endif
+    ifeq ($(CCVER),$(subst gcc-,,$(_CCVER)))
+      CCVER_EXIST := 0
+    endif
+    ifneq ($(CCVER_EXIST),0)
+      CCVER_EXIST := $(shell which gcc-$(subst gcc-,,$(CCVER)) 2>&1 >/dev/null; echo $$?)
+      ifeq ($(CCVER_EXIST),0)
+        ifeq ($(origin CCVER),command line)
+          $(warning gcc: $(CCVER) already installed.)
+        endif
+      endif
+    endif
+  else
+    CCVER := $(_CCVER)
+    CCVER_EXIST := 0
+  endif
+  ifeq ($(CCVER_EXIST),0)
+    override CCVER := $(_CCVER)
+  endif
+endif
+
 toolchain-install:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-  ifneq ($(CCVER),)
-    ifneq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
+  ifneq ($(CCVER_EXIST),0)
 	@echo
 	@echo "Installing prebuilt toolchain ..."
 	@echo
-	$(Q)add-apt-repository -y ppa:ubuntu-toolchain-r/test
-	$(Q)apt-get -y update
-	$(Q)apt-get install -y --force-yes $(CCVER)
-	$(Q)apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib
-	$(Q)update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
-    endif
+	$(Q)sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+	$(Q)sudo apt-get -y update
+	$(Q)sudo apt-get install -y --force-yes $(CCVER)
+	$(Q)sudo apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib
+	$(Q)sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
   endif
 else
   ifneq ($(CCPATH), $(wildcard $(CCPATH)))
@@ -1762,7 +1783,7 @@ toolchain-version: toolchain-info
 toolchain-clean:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
   ifeq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
-	$(Q)apt-get remove --purge $(CCVER)
+	$(Q)sudo apt-get remove --purge $(CCVER)
   endif
 else
   ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))

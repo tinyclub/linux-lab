@@ -469,6 +469,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
     ifeq ($$(CCORI_$(2))$$(CCORI),)
       CCORI_$(2) := internal
       CCORI := internal
+    else
+      $(eval $(call __vs,CCORI,$(2)))
     endif
     GCC_$(2)_SWITCH := 1
   endif
@@ -1804,11 +1806,18 @@ PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain
 ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
   _CCORI := $(shell grep --color=always ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
 endif
+
+ifneq ($(_CCORI),$(CCORI))
+  ifneq ($(filter $(CCORI),internal buildroot),$(CCORI))
+    UPDATE_CCORI := 1
+  endif
+endif
+
 toolchain-switch:
-ifneq ($(filter $(GCC),$(CCORI_LIST)), $(GCC))
+ifneq ($(GCC),)
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 else
-  ifneq ($(_CCORI), $(CCORI))
+  ifeq ($(UPDATE_CCORI),1)
 	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
 	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
 	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`

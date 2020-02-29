@@ -1994,7 +1994,7 @@ ifneq ($(M_PATH),)
 modules-prompt:
 	@echo
 	@echo "  Current using module is $(M_PATH)."
-	@echo "  to compile modules under $(KERNEL_SRC), use 'make kernel-modules' or 'make m KM='."
+	@echo "  to compile modules under $(KERNEL_SRC), use 'make kernel-modules'."
 	@echo
 
 kernel-modules-save:

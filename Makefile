@@ -1567,11 +1567,6 @@ PHONY += bsp
 
 # Qemu targets
 
-_QEMU  ?= $(call _v,QEMU,QEMU)
-# Add basic qemu dependencies
-#$(warning $(call gendeps,qemu))
-$(eval $(call gendeps,qemu))
-
 # Notes:
 #
 # 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
@@ -1658,17 +1653,19 @@ else
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
 endif
 
-QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
-
 QEMU_CONFIG_STATUS := config.log
+QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
+qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
+_QEMU  ?= $(call _v,QEMU,QEMU)
+# Add basic qemu dependencies
+#$(warning $(call gendeps,qemu))
+$(eval $(call gendeps,qemu))
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
 $(eval $(call gencfgs,qemu,QEMU,Q))
-
-qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 QT ?= $(x)
 

@@ -1378,10 +1378,10 @@ $$(call _stamp_$(1),checkout):
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
 $$(call _stamp_$(1),patch):
-	@if [ ! -f $$($(call _uc,$(1))_SRC)/$(1).patched ]; then \
+	@if [ ! -f $$($(call _uc,$(1))_SRC)/.$(1).patched ]; then \
 	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
 	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
-	  touch $$($(call _uc,$(1))_SRC)/$(1).patched; \
+	  touch $$($(call _uc,$(1))_SRC)/.$(1).patched; \
 	else		\
 	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
 	fi

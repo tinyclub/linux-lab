@@ -2196,9 +2196,12 @@ kernel-feature:
 	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-checkout' at first." && exit 1; \
 	fi
 
+ifneq ($(firstword $(MAKECMDGOALS)),list)
 feature: kernel-feature
 features: feature
-kernel-features: feature
+endif
+
+kernel-features: kernel-feature
 
 kernel-feature-list:
 	$(Q)echo [ $(FEATURE_DIR) ]:

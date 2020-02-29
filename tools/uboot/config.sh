@@ -21,11 +21,7 @@ TFTP_KERNEL="tftpboot $KRN_ADDR $KERNEL_IMG;"
 
 IPADDR="set ipaddr $IP;"
 SERVERIP="set serverip $ROUTE;"
-if [ ${ROOTDEV} == "/dev/nfs" ]; then
-    BOOTARGS="set bootargs '$CMDLINE';"
-else
-    BOOTARGS="set bootargs '$CMDLINE';"
-fi
+BOOTARGS="set bootargs '"$(echo -n "$CMDLINE" | sed 's%"%\\\\"%g')"';"
 TFTPS="$TFTP_KERNEL $TFTP_RAMDISK $TFTP_DTB"
 [ "$DTB_ADDR" == "-" ] && DTB_ADDR=""
 BOOTM="bootm $KRN_ADDR $RDK_ADDR $DTB_ADDR"

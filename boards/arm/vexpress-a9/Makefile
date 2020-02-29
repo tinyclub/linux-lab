@@ -10,6 +10,9 @@ QEMU_US ?= 0
 UBOOT   ?= v2015.07
 LINUX   ?= v5.1
 
+# Uboot breaks 9pnet sharing, disable uboot if 9pnet share used
+UBOOT[SHARE_1] := disabled
+
 GCC[LINUX_v3.18.39] = 4.3
 GCC[LINUX_v4.0.9] = 4.3
 GCC[LINUX_v4.12] = 4.7

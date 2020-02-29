@@ -379,6 +379,17 @@ $(eval $(foreach x,K R D Q U,$(call _pb,$x)))
 #$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
 $(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
 
+# Init 9pnet share variables
+ifeq ($(origin SHARE_DIR),command line)
+  SHARE := 1
+else
+  SHARE ?= 0
+endif
+SHARE_DIR ?= hostshare
+HOST_SHARE_DIR ?= $(SHARE_DIR)
+GUEST_SHARE_DIR ?= /hostshare
+SHARE_TAG ?= hostshare
+
 # Supported apps and their version variable
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
@@ -812,6 +823,18 @@ ifneq ($(_QTOOL),)
 endif
 
 # Uboot configurations
+
+ifneq ($(UBOOT),)
+  ifeq ($(SHARE),1)
+    ifeq ($(call _v,UBOOT,SHARE),disabled)
+      # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
+      #        versatilepb works with 9pnet + uboot?
+      $(info LOG: 9pnet file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
+      UBOOT :=
+    endif
+  endif
+endif
+
 ifneq ($(UBOOT),)
 UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/u-boot
 PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/u-boot
@@ -2769,20 +2792,7 @@ endif
 
 # Sharing with the 9p virtio protocol
 # ref: https://wiki.qemu.org/Documentation/9psetup
-SHARE ?= 0
-SHARE_DIR ?= hostshare
-HOST_SHARE_DIR ?= $(SHARE_DIR)
-GUEST_SHARE_DIR ?= /hostshare
-SHARE_TAG ?= hostshare
 ifneq ($(SHARE),0)
-  # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
-  #        versatilepb works with 9pnet + uboot?
-  ifeq ($(U),1)
-    $(info LOG: file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
-    U := 0
-    export U
-  endif
-
   # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC
   # aarch64/virt supports `virtio-9p-device` and `virtio-9p-pci`
   # arm/vexpress-a9 only supports `virtio-9p-device`

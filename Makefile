@@ -1179,10 +1179,12 @@ endef
 # generate target dependencies
 define gendeps
 
+ifeq ($$(_stamp_$(1)),)
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
 __stamp_$(1)=$$(_stamp_$(1))
+endif
 endif
 
 $(1)-source: $(1)-outdir
@@ -1271,6 +1273,14 @@ endef # gendeps
 # generate xxx-source target
 define gensource
 
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
+
 $(call _uc,$(1))_SRC_DEFAULT := 1
 
 ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$(1))_SRC))),$$($(call _uc,$(1))_SRC))
@@ -1323,8 +1333,6 @@ endif
 
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
-
-#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $$(call _stamp_$(1),source):
 	@echo
@@ -1401,7 +1409,13 @@ endef # gengoals
 
 define gencfgs
 
-#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
 
 $(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
@@ -1481,7 +1495,13 @@ endef #genclone
 
 define genenvdeps
 
-#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
 
 $$(call _stamp_$(1),env):
 	$$(Q)make $$(S) env

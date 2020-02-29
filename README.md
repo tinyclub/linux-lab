@@ -24,6 +24,7 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
       - [List available boards](#list-available-boards)
       - [Choosing a board](#choosing-a-board)
       - [Using as plugins](#using-as-plugins)
+   - [Automation](#automation)
    - [Downloading](#downloading)
    - [Checking out](#checking-out)
    - [Patching](#patching)
@@ -363,10 +364,32 @@ Here maintains the available plugins:
 - [Loongson Linux](https://gitee.com/loongsonlab/loongson)
 - [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
 
-### Downloading
+### Automation
 
-v0.3 version support source code downloading automatically, no need to download
-manually, if still want to download them for preparation, please continue.
+v0.3+ version add target dependency by default, so, if want to compile a kernel, just run:
+
+    $ make kernel-build
+
+    Or
+
+    $ make build kernel
+
+It will do everything required, of course, we still be able to run the targets explicitly.
+
+And futher, with the timestamping support, finished targets will not be run again during the late operations, if still want, just clean the stamp and run it again:
+
+    $ make cleanstamp kernel-build
+    $ make kernel-build
+
+    Or
+
+    $ make force-kernel-build
+
+To clean all of the stamp files:
+
+    $ make cleanstamp kernel
+
+### Downloading
 
 Download board specific package and the kernel, buildroot source code:
 

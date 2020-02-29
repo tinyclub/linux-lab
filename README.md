@@ -885,12 +885,12 @@ Run it via docker directly:
 
 Extract it out and run in Linux Lab:
 
-  ARM32/vexpress-a9:
+  ARM32/vexpress-a9 (user: root, password: root):
 
     $ tools/rootfs/docker/extract.sh tinylab/arm32v7-ubuntu arm
     $ make boot B=vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=/dev/nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
 
-  ARM64/raspi3:
+  ARM64/raspi3 (user: root, password: root):
 
     $ tools/rootfs/docker/extract.sh tinylab/arm64v8-ubuntu arm
     $ make boot B=raspi3 V=1 ROOTDEV=/dev/mmcblk0 ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm64v8-ubuntu

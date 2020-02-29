@@ -1936,6 +1936,8 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
+ROOT := $(strip $(ROOT))
+
 _root:
 	$(Q)$(if $(ROOT),make $(S) $(ROOT))
 ifneq ($(RT),)
@@ -2504,6 +2506,8 @@ module-getconfig: kernel-getconfig
 module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
+
+KERNEL_DEPS := $(strip $(KERNEL_DEPS))
 
 _kernel:
 	$(Q)$(if $(KERNEL_DEPS),make $(S) $(KERNEL_DEPS))

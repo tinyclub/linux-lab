@@ -1528,19 +1528,6 @@ PHONY += $(1)-env
 
 endef #genenvdeps
 
-# Source download
-#$(warning $(call gensource,uboot,UBOOT))
-$(eval $(call gensource,uboot,UBOOT))
-
-#$(warning $(call gensource,qemu,QEMU))
-$(eval $(call gensource,qemu,QEMU))
-
-#$(warning $(call gensource,kernel,LINUX))
-$(eval $(call gensource,kernel,LINUX))
-
-#$(warning $(call gensource,root,BUILDROOT))
-$(eval $(call gensource,root,BUILDROOT))
-
 # Build bsp targets
 BSP ?= master
 _BSP ?= $(BSP)
@@ -1660,6 +1647,9 @@ qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
 qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
+
+#$(warning $(call gensource,qemu,QEMU))
+$(eval $(call gensource,qemu,QEMU))
 # Add basic qemu dependencies
 #$(warning $(call gendeps,qemu))
 $(eval $(call gendeps,qemu))
@@ -1792,6 +1782,9 @@ PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
 # Rootfs targets
 
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
+
+#$(warning $(call gensource,root,BUILDROOT))
+$(eval $(call gensource,root,BUILDROOT))
 
 # Add basic root dependencies
 #$(warning $(call gendeps,root))
@@ -1935,9 +1928,34 @@ PHONY += root-hd root-hd-rebuild
 
 # Kernel modules
 
+# Linux Kernel targets
+_LINUX  := $(call _v,LINUX,LINUX)
+_KERNEL ?= $(_LINUX)
+
+# kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
+# see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
+#        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
+ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
+KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
+endif
+KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
+KERNEL_CONFIG_EXTRAFLAG := M=
+KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
+
+kernel-oldnoconfig: kernel-olddefconfig
+
+#$(warning $(call gensource,kernel,LINUX))
+$(eval $(call gensource,kernel,LINUX))
 # Add basic kernel & modules deps
 #$(warning $(call gendeps,kernel))
 $(eval $(call gendeps,kernel))
+#$(warning $(call gengoals,kernel,LINUX))
+$(eval $(call gengoals,kernel,LINUX))
+# Configure Kernel
+#$(warning $(call gencfgs,kernel,linux,K))
+$(eval $(call gencfgs,kernel,linux,K))
+#$(warning $(call genclone,kernel,linux,K))
+$(eval $(call genclone,kernel,linux,K))
 
 TOP_MODULE_DIR := $(TOP_DIR)/modules
 ifneq ($(PLUGIN),)
@@ -2202,31 +2220,6 @@ endif # skip modules target for list command
 
 PHONY += modules modules-install modules-clean module module-install module-clean
 
-# Linux Kernel targets
-_LINUX  := $(call _v,LINUX,LINUX)
-_KERNEL ?= $(_LINUX)
-
-# Configure Kernel
-#$(warning $(call gengoals,kernel,LINUX))
-$(eval $(call gengoals,kernel,LINUX))
-
-# kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
-# see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
-#        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
-ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
-KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
-endif
-KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
-KERNEL_CONFIG_EXTRAFLAG := M=
-KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
-
-#$(warning $(call gencfgs,kernel,linux,K))
-$(eval $(call gencfgs,kernel,linux,K))
-#$(warning $(call genclone,kernel,linux,K))
-$(eval $(call genclone,kernel,linux,K))
-
-kernel-oldnoconfig: kernel-olddefconfig
-
 # Build Kernel
 
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
@@ -2481,6 +2474,9 @@ ifeq ($(U),1)
 
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
+
+#$(warning $(call gensource,uboot,UBOOT))
+$(eval $(call gensource,uboot,UBOOT))
 # Add basic uboot dependencies
 #$(warning $(call gendeps,uboot))
 $(eval $(call gendeps,uboot))

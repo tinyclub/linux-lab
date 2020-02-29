@@ -13,7 +13,7 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 
-USER ?= ubuntu
+USER := ubuntu
 
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
@@ -26,8 +26,10 @@ ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
 endif
 
 # Check running user, must as ubuntu
-ifneq ($(shell whoami),$(USER))
-  $(error ERR: Must run Linux Lab as general user: '$(USER)', not use it as root, please try 'su ubuntu'.)
+ifeq ($(TEST_TIMEOUT),)
+  ifneq ($(shell whoami),$(USER))
+    $(error ERR: Must run Linux Lab as general user: '$(USER)', not use it as root, please try 'su ubuntu'.)
+  endif
 endif
 
 # Check permission issue, must available to ubuntu

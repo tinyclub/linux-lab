@@ -1249,14 +1249,14 @@ $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 
 ## clean up $(1) source code
-$(1)-cleanup:
+$(1)-cleanup: $(1)-cleanstamp
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
 	fi
 $(1)-outdir:
 	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
 
-$(1)-clean: $(1)-cleanup $(1)-cleanstamp
+$(1)-clean: $(1)-cleanup
 
 $(1)-build: $(1)
 $(1)-release: $(1) $(1)-save $(1)-saveconfig

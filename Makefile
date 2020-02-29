@@ -2030,7 +2030,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	fi
 
 kernel-modules:
-	make $(NPD) kernel-modules-km KM=
+	$(Q)make $(NPD) kernel-modules-km KM=
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))

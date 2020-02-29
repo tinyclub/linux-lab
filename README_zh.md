@@ -385,6 +385,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make cleanstamp kernel
 
+该功能同样适用于 root, uboot 和 qemu。
+
 ### 下载
 
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：

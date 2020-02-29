@@ -389,6 +389,8 @@ To clean all of the stamp files:
 
     $ make cleanstamp kernel
 
+This function also support uboot, root and qemu.
+
 ### Downloading
 
 Download board specific package and the kernel, buildroot source code:

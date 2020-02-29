@@ -443,42 +443,30 @@ endif
 
 define genbuildenv
 
-GCC_$(1) = $$(call __v,GCC,$(1))
-CCORI_$(1) = $$(call __v,CCORI,$(1))
+GCC_$(2) = $$(call __v,GCC,$(2))
+CCORI_$(2) = $$(call __v,CCORI,$(2))
 
-ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
-  ifneq ($$(CCORI_$(1))$$(GCC_$(1)),)
-    ifeq ($$(CCORI_$(1))$$(CCORI),)
-      CCORI_$(1) := internal
+ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+  ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
+    ifeq ($$(CCORI_$(2))$$(CCORI),)
+      CCORI_$(2) := internal
     endif
-    GCC_$(1)_SWITCH := 1
+    GCC_$(2)_SWITCH := 1
   endif
 endif
 
-HOST_GCC_$(1) = $$(call __v,HOST_GCC,$(1))
-HOST_CCORI_$(1) = $$(call __v,HOST_CCORI,$(1))
+HOST_GCC_$(2) = $$(call __v,HOST_GCC,$(2))
+HOST_CCORI_$(2) = $$(call __v,HOST_CCORI,$(2))
 
-ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
-  ifneq ($$(HOST_CCORI_$(1))$$(HOST_GCC_$(1)),)
-    ifeq ($$(HOST_CCORI_$(1))$$(HOST_CCORI),)
-      HOST_CCORI_$(1) := internal
+ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+  ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)
+    ifeq ($$(HOST_CCORI_$(2))$$(HOST_CCORI),)
+      HOST_CCORI_$(2) := internal
     endif
-    HOST_GCC_$(1)_SWITCH := 1
+    HOST_GCC_$(2)_SWITCH := 1
   endif
 endif
 endef # genbuildenv
-
-#$(warning $(call genbuildenv,LINUX,kernel))
-$(eval $(call genbuildenv,LINUX,kernel))
-
-#$(warning $(call genbuildenv,UBOOT,uboot))
-$(eval $(call genbuildenv,UBOOT,uboot))
-
-#$(warning $(call genbuildenv,QEMU,qemu))
-$(eval $(call genbuildenv,QEMU,qemu))
-
-#$(warning $(call genbuildenv,BUILDROOT,root))
-$(eval $(call genbuildenv,BUILDROOT,root))
 
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
@@ -1656,14 +1644,17 @@ $(eval $(call gendeps,qemu))
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
 $(eval $(call gencfgs,qemu,QEMU,Q))
+#$(warning $(call genbuildenv,qemu,QEMU)
+$(eval $(call genbuildenv,qemu,QEMU))
+#$(warning $(call genenvdeps,qemu,QEMU)
+$(eval $(call genenvdeps,qemu,QEMU))
+#$(warning $(call genclone,qemu,qemu,Q))
+$(eval $(call genclone,qemu,qemu,Q))
 
 QT ?= $(x)
 
 _qemu:
 	$(call make_qemu,$(QT))
-
-#$(warning $(call genclone,qemu,qemu,Q))
-$(eval $(call genclone,qemu,qemu,Q))
 
 # Toolchains targets
 
@@ -1785,13 +1776,11 @@ _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 #$(warning $(call gensource,root,BUILDROOT))
 $(eval $(call gensource,root,BUILDROOT))
-
 # Add basic root dependencies
 #$(warning $(call gendeps,root))
 $(eval $(call gendeps,root))
 
 # Configure Buildroot
-
 GIT_CLEAN_EXTRAFLAGS[root] := -e dl/
 #$(warning $(call gengoals,root,BUILDROOT))
 $(eval $(call gengoals,root,BUILDROOT))
@@ -1802,6 +1791,10 @@ ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
 $(eval $(call gencfgs,root,buildroot,R))
 #$(warning $(call genclone,root,buildroot,R))
 $(eval $(call genclone,root,buildroot,R))
+#$(warning $(call genbuildenv,root,BUILDROOT)
+$(eval $(call genbuildenv,root,BUILDROOT))
+#$(warning $(call genenvdeps,root,BUILDROOT)
+$(eval $(call genenvdeps,root,BUILDROOT))
 
 # Build Buildroot
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
@@ -1956,6 +1949,10 @@ $(eval $(call gengoals,kernel,LINUX))
 $(eval $(call gencfgs,kernel,linux,K))
 #$(warning $(call genclone,kernel,linux,K))
 $(eval $(call genclone,kernel,linux,K))
+#$(warning $(call genbuildenv,kernel,LINUX))
+$(eval $(call genbuildenv,kernel,LINUX))
+#$(warning $(call genenvdeps,kernel,LINUX))
+$(eval $(call genenvdeps,kernel,LINUX))
 
 TOP_MODULE_DIR := $(TOP_DIR)/modules
 ifneq ($(PLUGIN),)
@@ -2475,16 +2472,6 @@ ifeq ($(U),1)
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 
-#$(warning $(call gensource,uboot,UBOOT))
-$(eval $(call gensource,uboot,UBOOT))
-# Add basic uboot dependencies
-#$(warning $(call gendeps,uboot))
-$(eval $(call gendeps,uboot))
-
-# Verify BOOTDEV argument
-#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
-$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
-
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
 BOOTDEV ?= flash
@@ -2495,6 +2482,9 @@ RDK_SIZE ?= 0
 DTB_ADDR ?= -
 DTB_SIZE ?= 0
 UCFG_DIR := u-boot/include/configs
+
+#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
+$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 
 ifeq ($(findstring sd,$(BOOTDEV)),sd)
   SD_BOOT ?= 1
@@ -2525,12 +2515,22 @@ UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
 
+#$(warning $(call gensource,uboot,UBOOT))
+$(eval $(call gensource,uboot,UBOOT))
+# Add basic uboot dependencies
+#$(warning $(call gendeps,uboot))
+$(eval $(call gendeps,uboot))
+# Verify BOOTDEV argument
 #$(warning $(call gengoals,uboot,UBOOT))
 $(eval $(call gengoals,uboot,UBOOT))
 #$(warning $(call gencfgs,uboot,uboot,U))
 $(eval $(call gencfgs,uboot,uboot,U))
 #$(warning $(call genclone,uboot,uboot,U))
 $(eval $(call genclone,uboot,uboot,U))
+#$(warning $(call genbuildenv,uboot,UBOOT))
+$(eval $(call genbuildenv,uboot,UBOOT))
+#$(warning $(call genenvdeps,uboot,UBOOT))
+$(eval $(call genenvdeps,uboot,UBOOT))
 
 # Specify uboot targets
 UT ?= $(x)
@@ -3291,18 +3291,6 @@ VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
-
-#$(warning $(call genenvdeps,kernel,LINUX))
-$(eval $(call genenvdeps,kernel,LINUX))
-
-#$(warning $(call genenvdeps,uboot,UBOOT))
-$(eval $(call genenvdeps,uboot,UBOOT))
-
-#$(warning $(call genenvdeps,uboot,UBOOT)
-$(eval $(call genenvdeps,qemu,QEMU))
-
-#$(warning $(call genenvdeps,root,BUILDROOT)
-$(eval $(call genenvdeps,root,BUILDROOT))
 
 env: env-prepare
 env-prepare: toolchain-install

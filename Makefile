@@ -1178,54 +1178,48 @@ endef
 
 # generate target dependencies
 define gendeps
+
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
-$$(call _stamp_$(1),%):
-	@echo "BEGIN $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)"
-	$$(Q)make $$(NPD) $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)
-	@echo "END $$(subst $$($(call _uc,$(1))_OUTPUT)/.stamp_,,$$@)"
-	$$(Q)touch $$@
-
-$(1)-source: $$(call _stamp_$(1),outdir)
-$(1)-checkout: $$(call _stamp_$(1),source)
-$(1)-patch: $$(call _stamp_$(1),checkout)
-$(1)-defconfig: $$(call _stamp_$(1),patch)
-$(1)-defconfig: $$(call _stamp_$(1),env)
-$(1)-modules-install: $$(call _stamp_$(1),modules)
-$(1)-modules-install-km: $$(call _stamp_$(1),modules-km)
-$(1)-help: $$(call _stamp_$(1),defconfig)
+$(1)-source: $(1)-outdir
+$(1)-checkout: $(1)-source
+$(1)-patch: $(1)-checkout
+$(1)-defconfig: $(1)-patch
+$(1)-defconfig: $(1)-env
+$(1)-modules-install: $(1)-modules
+$(1)-modules-install-km: $(1)-modules-km
+$(1)-help: $(1)-defconfig
 
 $(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km)
 ifeq ($(firstword $(MAKECMDGOALS)),$(1))
   $(1)_defconfig_childs := $(1)
 endif
-$$($(1)_defconfig_childs): $$(call _stamp_$(1),defconfig)
+$$($(1)_defconfig_childs): $(1)-defconfig
 
-$(1)-save: $$(call _stamp_$(1),build)
-$(1)-saveconfig: $$(call _stamp_$(1),build)
+$(1)-save $(1)-saveconfig: $(1)-build
 
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
 ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
-    boot_deps += $$(call _stamp_$(1),build)
+    boot_deps += $(1)-build
   endif
 endif
 $(1)_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$(1)))))
 ifeq ($$($$($(1)_app_type)),1)
   ifeq ($$(origin $$($(1)_app_type)),command line)
-    boot_deps += $$(call _stamp_$(1),build)
+    boot_deps += $(1)-build
   endif
 endif
 ifeq ($$($(1)),1)
   ifeq ($$(origin $(1)),command line)
-    boot_deps += $$(call _stamp_$(1),build)
+    boot_deps += $(1)-build
   endif
 endif
 ifeq ($(filter $(1),$(BUILD)),$(1))
-  boot_deps += $$(call _stamp_$(1),build)
+  boot_deps += $(1)-build
 endif
 
-$$(call _stamp_$(1),bsp): $(1)-outdir
+$$(call _stamp_$(1),bsp):
 	$(Q)if [ -e $$(BSP_DIR)/.git ]; then \
 		touch $$(call _stamp_$(1),bsp); \
 	else					\
@@ -1235,13 +1229,15 @@ $$(call _stamp_$(1),bsp): $(1)-outdir
 		fi;					\
 	fi
 
+$(1)-bsp: $(1)-outdir $$(call _stamp_$(1),bsp)
+
 $(1)-outdir: $$($(call _uc,$(1))_OUTPUT)
 
 $$($(call _uc,$(1))_OUTPUT):
 	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
 
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone) boot test boot-test
-$$($(1)_bsp_childs): $$(call _stamp_$(1),bsp)
+$$($(1)_bsp_childs): $(1)-bsp
 
 _boot: $$(boot_deps)
 
@@ -1253,8 +1249,6 @@ $(1)-cleanup: $(1)-cleanstamp
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
 	fi
-$(1)-outdir:
-	$$(Q)if [ ! -d $$($(call _uc,$(1))_OUTPUT) ]; then mkdir -p $$($(call _uc,$(1))_OUTPUT); fi
 
 $(1)-clean: $(1)-cleanup
 
@@ -1323,7 +1317,9 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-$(1)-source:
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+$$(call _stamp_$(1),source):
 	@echo
 	@echo "Downloading $(1) source ..."
 	@echo
@@ -1343,6 +1339,9 @@ $(1)-source:
 			git fetch --tags origin && \
 		cd $$(TOP_DIR); \
 	fi
+	$$(Q)touch $$@
+
+$(1)-source: $$(call _stamp_$(1),source)
 
 $(1)_source_childs := $(1)-download download-$(1)
 
@@ -1354,26 +1353,29 @@ endef # gensource
 
 # Generate basic goals
 define gengoals
+
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
 $(1)-list:
 	$$(Q)echo $$($(2)_LIST)
 
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
 
-$(1)-checkout:
+$$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
 	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
 	fi
+	$$(Q)touch $$@
 
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
-$(1)-patch:
-	@if [ ! -f $$($(call _uc,$(1))_SRC)/$(1).patched ]; then \
-	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
-	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
-	  touch $$($(call _uc,$(1))_SRC)/$(1).patched; \
-	else		\
-	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
-	fi
+$(1)-checkout: $$(call _stamp_$(1),checkout)
+
+$$(call _stamp_$(1),patch):
+	$$(Q)$($(call _uc,$(1))_PATCH_EXTRAACTION); \
+	if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi;
+	$$(Q)touch $$@
+
+$(1)-patch: $$(call _stamp_$(1),patch)
 
 $(1)-debug: _boot
 
@@ -1386,6 +1388,8 @@ PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
 endef # gengoals
 
 define gencfgs
+
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
@@ -1408,11 +1412,14 @@ endif
 
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
-$(1)-defconfig:
+$$(call _stamp_$(1),defconfig):
 	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
 	$$(Q)mkdir -p $$($(call _uc,$1)_CONFIG_DIR)
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$(Q)touch $$@
+
+$(1)-defconfig: $$(call _stamp_$(1),defconfig)
 
 $(1)-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -1462,13 +1469,19 @@ endef #genclone
 
 define genenvdeps
 
-$(1)-env: env
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+$$(call _stamp_$(1),env):
+	$$(Q)make $$(S) env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
 ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
 endif
+	$$(Q)touch $$@
+
+$(1)-env: $$(call _stamp_$(1),env)
 
 PHONY += $(1)-env
 
@@ -1500,6 +1513,7 @@ endif
 #$(warning $(call gensource,bsp))
 $(eval $(call gensource,bsp))
 $(eval $(call gendeps,bsp))
+#$(warning $(call gengoals,bsp,BSP))
 $(eval $(call gengoals,bsp,BSP))
 $(eval $(call genenvdeps,bsp,BSP))
 
@@ -2170,7 +2184,7 @@ KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/script
 endif
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
-KERNEL_CONFIG_EXTRACMDS := yes N | 
+KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
 
 #$(warning $(call gencfgs,kernel,linux,K))
 $(eval $(call gencfgs,kernel,linux,K))

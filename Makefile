@@ -3413,6 +3413,11 @@ $(EXEC_TARGETS): $(subst -run,,$(first_target))
 PHONY += $(EXEC_TARGETS)
 endif
 
+# Allow cleanstamp and run a target
+force-%:
+	$(Q)make $(NPD) $(subst force-,,$@)-cleanstamp
+	$(Q)make $(NPD) $(subst force-,,$@)
+
 PHONY += FORCE
 
 FORCE:

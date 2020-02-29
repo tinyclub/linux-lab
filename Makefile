@@ -3298,7 +3298,7 @@ ifneq ($(filter $(first_target),$(APP_TARGETS)),)
 PREFIX_TARGETS := list
 SILENT_TARGETS := list
 define silent_flag
-$(shell if [ "$(filter $(1),$(SILENT_TARGETS))" = "$(1)" ]; then echo $(S); fi)
+$(shell if [ "$(filter $(patsubst %-,,$(1)),$(SILENT_TARGETS))" = "$(1)" ]; then echo $$?; fi)
 endef
 
 define real_target
@@ -3306,10 +3306,10 @@ $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2);
 endef
 
 begin-%:
-	@echo "$(subst xbegin-,BEGIN ,x$@)"
+	@$(if $(call silent_flag,$@),echo "$(subst xbegin-,BEGIN ,x$@)")
 
 end-%:
-	@echo "$(subst xend-,END ,x$@)"
+	@$(if $(call silent_flag,$@),echo "$(subst xend-,END ,x$@)")
 
 $(APP_TARGETS): $(foreach a,$(app),begin-$(call real_target,$(first_target),$(a)) $(call real_target,$(first_target),$(a)) end-$(call real_target,$(first_target),$(a)) )
 

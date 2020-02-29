@@ -363,6 +363,11 @@ endif
 
 endef
 
+# Support alias, root -> buildroot, kernel -> linux
+ifneq ($(BUILD),)
+  override BUILD := $(subst buildroot,root,$(subst linux,kernel,$(BUILD)))
+endif
+
 ifeq ($(BUILD),all)
   override BUILD :=
   $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))

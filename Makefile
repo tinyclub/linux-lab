@@ -2018,8 +2018,8 @@ endif
 
 kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
-		make -s feature feature=module; \
-		make -s kernel-olddefconfig; \
+		make -s $(NPD) feature feature=module; \
+		make -s $(NPD) kernel-olddefconfig; \
 		$(call make_kernel); \
 	fi
 	$(call make_kernel,$(MODULE_PREPARE))
@@ -2114,23 +2114,28 @@ modules-test: module-test
 
 PHONY += _module module-list module-list-full _module-install _module-clean modules-list modules-list-full
 
+kernel-module: module
 module: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nBuilding module: $(m) ...\n" && make _module m=$(m);) echo '')
+		echo "\nBuilding module: $(m) ...\n" && make $(NPD) _module m=$(m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
-		echo "\nBuilding module: $(_M) ...\n" && make _module M=$(_M);) echo '')
+		echo "\nBuilding module: $(_M) ...\n" && make $(NPD) _module M=$(_M);) echo '')
 
+kernel-module-install: module-install
 module-install: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nInstalling module: $(m) ...\n" && make _module-install m=$(m);) echo '')
+		echo "\nInstalling module: $(m) ...\n" && make $(NPD) _module-install m=$(m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
-		echo "\nInstalling module: $(_M) ...\n" && make _module-install M=$(_M);) echo '')
+		echo "\nInstalling module: $(_M) ...\n" && make $(NPD) _module-install M=$(_M);) echo '')
 
+kernel-module-clean: module-clean
 module-clean: FORCE
 	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
-		echo "\nCleaning module: $(m) ...\n" && make _module-clean m=$(m);) echo '')
+		echo "\nCleaning module: $(m) ...\n" && make $(NPD) _module-clean m=$(m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
-		echo "\nCleaning module: $(_M) ...\n" && make _module-clean M=$(_M);) echo '')
+		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
+
+PHONY += kernel-module kernel-module-install kernel-module-clean
 
 # If no M, m/module/modules, M_PATH specified, compile internel modules by default
 ifneq ($(firstword $(MAKECMDGOALS)),list)

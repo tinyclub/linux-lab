@@ -1261,7 +1261,16 @@ $(1)-cleanup: $(1)-cleanstamp
 
 $(1)-clean: $(1)-cleanup
 
-$(1)-build: $(1)
+$$(call __stamp_$(1),build): $$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)
+	$$(Q)make $$(NPD) _$(1)
+	$$(Q)touch $$@
+
+ifeq ($$(findstring $(1),$$(firstword $$(MAKECMDGOALS))),$(1))
+$(1): $(1)-build
+endif
+
+$(1)-build: $$(call __stamp_$(1),build)
+
 $(1)-release: $(1) $(1)-save $(1)-saveconfig
 
 $(1)-new $(1)-clone: $(1)-cloneconfig
@@ -1440,9 +1449,9 @@ _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
 $$(call _stamp_$(1),defconfig):
 	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
-	$$(Q)mkdir -p $$($(call _uc,$1)_CONFIG_DIR)
+	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
-	$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
 $(1)-defconfig: $$(call __stamp_$(1),defconfig)
@@ -1651,22 +1660,20 @@ endif
 
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 
+QEMU_CONFIG_STATUS := config.log
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
 qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
 
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
+$(eval $(call gencfgs,qemu,QEMU,Q))
 
-qemu-defconfig:
-	$(Q)mkdir -p $(QEMU_OUTPUT)
-	$(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
+qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 QT ?= $(x)
 
-ifeq ($(findstring qemu,$(firstword $(MAKECMDGOALS))),qemu)
-qemu:
+_qemu:
 	$(call make_qemu,$(QT))
-endif
 
 #$(warning $(call genclone,qemu,qemu,Q))
 $(eval $(call genclone,qemu,qemu,Q))
@@ -1884,8 +1891,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-ifeq ($(findstring root,$(firstword $(MAKECMDGOALS))),root)
-root:
+_root:
 	$(Q)$(if $(ROOT),make $(S) $(ROOT))
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
@@ -1894,7 +1900,6 @@ else
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
 	$(Q)make $(NPD) root-rebuild
 endif
-endif # root
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2453,11 +2458,9 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
-ifeq ($(findstring kernel,$(firstword $(MAKECMDGOALS))),kernel)
-kernel:
+_kernel:
 	$(Q)$(if $(KERNEL_DEPS),make $(S) $(KERNEL_DEPS))
 	$(call make_kernel,$(KT))
-endif
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
@@ -2540,10 +2543,8 @@ $(eval $(call genclone,uboot,uboot,U))
 UT ?= $(x)
 
 # Build Uboot
-ifeq ($(findstring uboot,$(firstword $(MAKECMDGOALS))),uboot)
-uboot:
+_uboot:
 	$(call make_uboot,$(UT))
-endif
 
 # root uboot image
 root-ud:

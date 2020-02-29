@@ -540,7 +540,7 @@ Boot with graphic (Exit with 'CTRL+ALT+2 quit'):
 
 Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit' or 'ALT+2 quit'):
 
-    $ make b=pc boot G=2
+    $ make b=pc boot G=2 LINUX=v4.6.7
 
 Boot with PreBuilt Kernel, Dtb and Rootfs:
 

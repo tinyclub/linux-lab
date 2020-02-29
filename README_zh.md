@@ -535,7 +535,7 @@ v0.3 以及之后的版本支持按需自动下载所需的源码，无需手动
 
 基于 curses 图形方式启动（这么做适合采用 ssh 的登录方式，但不是对所有开发板都有效，退出时需要使用 'ESC+2 quit' 或 'ALT+2 quit'）
 
-    $ make b=pc boot G=2
+    $ make b=pc boot G=2 LINUX=v4.6.7
 
 使用预编译的内核、dtb 和 Rootfs 启动：
 

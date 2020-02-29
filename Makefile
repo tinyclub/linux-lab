@@ -1181,6 +1181,10 @@ define gendeps
 
 _stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+
 $(1)-source: $(1)-outdir
 $(1)-checkout: $(1)-source
 $(1)-patch: $(1)-checkout
@@ -1344,7 +1348,7 @@ $$(call _stamp_$(1),source):
 	fi
 	$$(Q)touch $$@
 
-$(1)-source: $$(call _stamp_$(1),source)
+$(1)-source: $$(call __stamp_$(1),source)
 
 $(1)_source_childs := $(1)-download download-$(1)
 
@@ -1371,7 +1375,7 @@ $$(call _stamp_$(1),checkout):
 	fi
 	$$(Q)touch $$@
 
-$(1)-checkout: $$(call _stamp_$(1),checkout)
+$(1)-checkout: $$(call __stamp_$(1),checkout)
 
 $$(call _stamp_$(1),patch):
 	@if [ ! -f $$($(call _uc,$(1))_SRC)/$(1).patched ]; then \
@@ -1383,7 +1387,7 @@ $$(call _stamp_$(1),patch):
 	fi
 	$$(Q)touch $$@
 
-$(1)-patch: $$(call _stamp_$(1),patch)
+$(1)-patch: $$(call __stamp_$(1),patch)
 
 $(1)-debug: _boot
 
@@ -1427,7 +1431,7 @@ $$(call _stamp_$(1),defconfig):
 	$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	$$(Q)touch $$@
 
-$(1)-defconfig: $$(call _stamp_$(1),defconfig)
+$(1)-defconfig: $$(call __stamp_$(1),defconfig)
 
 $(1)-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -1489,7 +1493,7 @@ ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
 endif
 	$$(Q)touch $$@
 
-$(1)-env: $$(call _stamp_$(1),env)
+$(1)-env: $$(call __stamp_$(1),env)
 
 PHONY += $(1)-env
 

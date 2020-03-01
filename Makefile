@@ -1473,7 +1473,7 @@ endif
 
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
-$$(call _stamp_$(1),defconfig):
+$$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
 	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))

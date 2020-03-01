@@ -1936,9 +1936,7 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-ROOT := $(strip $(ROOT))
-
-_root: $(if $(ROOT),$(ROOT))
+_root: $(ROOT)
 ifneq ($(RT),)
 	$(Q)$(call make_root,$(RT))
 else
@@ -2506,9 +2504,7 @@ module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
 
-KERNEL_DEPS := $(strip $(KERNEL_DEPS))
-
-_kernel: $(if $(KERNEL_DEPS),$(KERNEL_DEPS))
+_kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh

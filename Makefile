@@ -958,13 +958,6 @@ ifeq ($(PBR),0)
   endif
 endif
 
-BSP_SUBMODULE=$(shell grep $(BOARD)/bsp -q $(TOP_DIR)/.gitmodules; echo $$?)
-ifeq ($(BSP_SUBMODULE),0)
-  ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-    BSP_DOWNLOADED := 0
-  endif
-endif
-
 ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
@@ -976,21 +969,16 @@ endif
 
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
   INVALID_ROOTFS := 1
+  INVALID_ROOT := 1
 endif
 
 ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
   INVALID_ROOTDEV := 1
+  INVALID_ROOT := 1
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
-  ifeq ($(findstring $(BSP_DIR),$(ROOTFS)),$(BSP_DIR))
-    ifeq ($(BSP_DOWNLOADED),0)
-      # Allow download bsp automatically
-      INVALID_ROOTFS := 0
-      INVALID_ROOTDEV := 0
-    endif
-  endif
+ ifeq ($(filter $(MAKECMDGOALS),_boot boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
   ifeq ($(INVALID_ROOTFS),1)
     $(error rootfs: $(ROOTFS_TYPE), try run 'make bsp' to get newer rootfs.)
   endif
@@ -1000,6 +988,7 @@ ifneq ($(MAKECMDGOALS),)
  endif
 endif
 
+ifneq ($(INVALID_ROOT),1)
 _ROOTFS_TYPE=$(subst $(comma),$(space),$(ROOTFS_TYPE))
 
 FS_TYPE   := $(firstword $(_ROOTFS_TYPE))
@@ -1029,6 +1018,7 @@ endif
 
 _ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
 DEV_TYPE      := $(firstword $(_ROOTDEV_TYPE))
+endif # INVALID ROOT
 
 # Board targets
 
@@ -1213,7 +1203,6 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$(1)-source: $(1)-outdir
 $(1)-checkout: $(1)-source
 $(1)-patch: $(1)-checkout
 $(1)-defconfig: $(1)-patch
@@ -1251,43 +1240,12 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
   boot_deps += $(1)-build
 endif
 
-$$(call _stamp_$(1),bsp):
-	$(Q)if [ -e $$(BSP_DIR)/.git ]; then \
-		touch $$(call _stamp_$(1),bsp); \
-	else					\
-		if [ $$(shell grep $$(BOARD)/bsp -q $$(TOP_DIR)/.gitmodules; echo $$$$?) -eq 0 ]; then \
-			make $$(S) bsp-checkout;		\
-			touch $$(call _stamp_$(1),bsp); \
-		fi;					\
-	fi
-
-$(1)-bsp: $(1)-outdir $$(call _stamp_$(1),bsp)
-
-$(1)-outdir: $$($(call _uc,$(1))_OUTPUT)
-
-$$($(call _uc,$(1))_OUTPUT):
-	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
-
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone) boot test boot-test
-$$($(1)_bsp_childs): $(1)-bsp
+$$($(1)_bsp_childs): bsp-checkout
 
 _boot: $$(boot_deps)
 
-$(1)-%-cleanstamp:
-	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
-
-$(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
-
-## clean up $(1) source code
-$(1)-cleanup: $(1)-cleanstamp
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
-	fi
-
-$(1)-clean: $(1)-cleanup
-
-$$(call __stamp_$(1),build): $$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)
+$$(call __stamp_$(1),build): $(if $$$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 
@@ -1301,7 +1259,7 @@ $(1)-release: $(1) $(1)-save $(1)-saveconfig
 
 $(1)-new $(1)-clone: $(1)-cloneconfig
 
-PHONY += $(addprefix $(1)-,save saveconfig savepatch cleanstamp cleanup outdir clean distclean build release new clone)
+PHONY += $(addprefix $(1)-,save saveconfig savepatch build release new clone)
 
 endef # gendeps
 
@@ -1369,7 +1327,7 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-$$(call _stamp_$(1),source):
+$$(call _stamp_$(1),source): $(1)-outdir
 	@echo
 	@echo "Downloading $(1) source ..."
 	@echo
@@ -1393,11 +1351,41 @@ $$(call _stamp_$(1),source):
 
 $(1)-source: $$(call __stamp_$(1),source)
 
+$$(call _stamp_$(1),checkout):
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
+	fi
+	$$(Q)touch $$@
+
+$(1)-checkout: $$(call __stamp_$(1),checkout)
+
+$$(call _stamp_$(1),outdir):
+	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+	$$(Q)touch $$@
+
+$(1)-outdir: $$(call __stamp_$(1),outdir)
+
 $(1)_source_childs := $(1)-download download-$(1)
 
 $$($(1)_source_childs): $(1)-source
 
 PHONY += $(addprefix $(1)-,source download) download-$(1)
+
+$(1)-%-cleanstamp:
+	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
+
+$(1)-cleanstamp:
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
+
+## clean up $(1) source code
+$(1)-cleanup: $(1)-cleanstamp
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+	fi
+
+$(1)-clean: $(1)-cleanup
+
+PHONY += $(addprefix $(1)-,cleanstamp cleanup outdir clean distclean)
 
 endef # gensource
 
@@ -1411,14 +1399,6 @@ $(1)-list:
 
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
-
-$$(call _stamp_$(1),checkout):
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
-	fi
-	$$(Q)touch $$@
-
-$(1)-checkout: $$(call __stamp_$(1),checkout)
 
 $$(call _stamp_$(1),patch):
 	@if [ ! -f $$($(call _uc,$(1))_SRC)/.$(1).patched ]; then \
@@ -1564,17 +1544,14 @@ else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
-#$(warning $(call gensource,bsp))
-$(eval $(call gensource,bsp))
-$(eval $(call gendeps,bsp))
-#$(warning $(call gengoals,bsp,BSP))
-$(eval $(call gengoals,bsp,BSP))
-$(eval $(call genenvdeps,bsp,BSP))
-
-ifeq ($(findstring bsp,$(firstword bsp,$(MAKECMDGOALS))),bsp)
-bsp:
-	$(Q)make -s bsp-source
+ifeq ($(firstword $(MAKECMDGOALS)),bsp)
+export BSP=force-update
+bsp: force-bsp-source
 endif
+
+#$(warning $(call gensource,bsp,BSP))
+$(eval $(call gensource,bsp,BSP))
+$(eval $(call genenvdeps,bsp,BSP))
 
 PHONY += bsp
 

@@ -978,7 +978,7 @@ ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),_boot boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+ ifeq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
   ifeq ($(INVALID_ROOTFS),1)
     $(error rootfs: $(ROOTFS_TYPE), try run 'make bsp' to get newer rootfs.)
   endif
@@ -1203,7 +1203,6 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$(1)-checkout: $(1)-source
 $(1)-patch: $(1)-checkout
 $(1)-defconfig: $(1)-patch
 $(1)-defconfig: $(1)-env
@@ -1350,6 +1349,8 @@ $$(call _stamp_$(1),source): $(1)-outdir
 	$$(Q)touch $$@
 
 $(1)-source: $$(call __stamp_$(1),source)
+
+$(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \

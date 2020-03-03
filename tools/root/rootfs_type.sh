@@ -30,8 +30,8 @@ elif [ -d ${ROOTFS}/rootfs -a -d ${ROOTFS}/rootfs/bin -a ${ROOTFS}/rootfs/etc ];
   exit 0
 else
   # If rootfs under BSP_ROOT and not exist, simpliy parse the default setting to avoid download first.
-  echo "$ROOTFS" | grep -q ${BSP_ROOT}
-  if [ $? -eq 0 -a ! -d ${BSP_ROOT} ]; then
+  echo "$ROOTFS" | grep -q "${BSP_ROOT}"
+  if [ $? -eq 0 -a ! -d "${BSP_ROOT}" ]; then
     echo ${ROOTFS} | grep -q "\.cpio.gz$" && echo "rd,${ROOTFS},.cpio.gz" && exit 0
     echo ${ROOTFS} | grep -q "\.cpio.uboot$" && echo "rd,${ROOTFS},.cpio.uboot" && exit 0
     echo ${ROOTFS} | grep -q "\.cpio$" && echo "rd,${ROOTFS},.cpio" && exit 0

@@ -1039,7 +1039,11 @@ define showboardvars
 echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
 endef
 
-board: board-save plugin-save board-cleanstamp board-show
+ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+  BOARD_DOWNLOAD := bsp-checkout
+endif
+
+board: board-save plugin-save board-cleanstamp board-show $(BOARD_DOWNLOAD)
 
 CLEAN_STAMP := $(call gengoalslist,cleanstamp)
 ifneq ($(BOARD),$(BOARD_CONFIG))
@@ -1212,7 +1216,7 @@ $(1)-modules-install: $(1)-modules
 $(1)-modules-install-km: $(1)-modules-km
 $(1)-help: $(1)-defconfig
 
-$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km)
+$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km run)
 ifeq ($(firstword $(MAKECMDGOALS)),$(1))
   $(1)_defconfig_childs := $(1)
 endif
@@ -1241,7 +1245,7 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
   boot_deps += $(1)-build
 endif
 
-$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone) boot test boot-test
+$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone)
 $$($(1)_bsp_childs): bsp-checkout
 
 _boot: $$(boot_deps)
@@ -1356,7 +1360,7 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(subst force-update,master,$$(_$(2))) && cd $$(TOP_DIR); \
 	fi
 	$$(Q)touch $$@
 
@@ -1560,14 +1564,13 @@ endif
 
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)
 export BSP=force-update
-bsp: force-bsp-source
+bsp: force-bsp-checkout
+PHONY += bsp
 endif
 
 #$(warning $(call gensource,bsp,BSP))
 $(eval $(call gensource,bsp,BSP))
 $(eval $(call genenvdeps,bsp,BSP))
-
-PHONY += bsp
 
 # Qemu targets
 
@@ -3328,13 +3331,12 @@ define real_target
 $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
 endef
 
-begin-%:
-	@$(if $(call silent_flag,$@),echo "$(subst xbegin-,BEGIN ,x$@)")
-
-end-%:
-	@$(if $(call silent_flag,$@),echo "$(subst xend-,END ,x$@)")
-
-$(APP_TARGETS): $(foreach a,$(app),begin-$(call real_target,$(first_target),$(a)) $(call real_target,$(first_target),$(a)) end-$(call real_target,$(first_target),$(a)) )
+ifneq ($(BOARD_DOWNLOAD),)
+$(APP_TARGETS): $(BOARD_DOWNLOAD)
+	$(Q)make $(S) $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
+else
+$(APP_TARGETS): $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
+endif
 
 PHONY += $(APP_TARGETS)
 endif
@@ -3346,7 +3348,12 @@ ifneq ($(RUN_ARGS),)
 $(eval $(RUN_ARGS):FORCE;@:)
 
 EXEC_TARGETS  := $(foreach t,$(APPS),$(t:=-run))
+ifneq ($(BOARD_DOWNLOAD),)
+$(EXEC_TARGETS): $(BOARD_DOWNLOAD)
+	$(Q)make $(S) $(subst -run,,$(first_target))
+else
 $(EXEC_TARGETS): $(subst -run,,$(first_target))
+endif
 
 PHONY += $(EXEC_TARGETS)
 endif

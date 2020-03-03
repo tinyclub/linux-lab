@@ -1388,6 +1388,17 @@ $(1)-cleanup: $(1)-cleanstamp
 
 $(1)-clean: $(1)-cleanup
 
+$(1)-clean: $$($(call _uc,$(1))_CLEAN_DEPS)
+ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+	-$$(Q)$$(call make_$(1),clean)
+endif
+
+$(1)-distclean:
+ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+	-$$(Q)$$(call make_$(1),distclean)
+	$$(Q)rm -rf $$($(call _uc,$(1))_OUTPUT)
+endif
+
 PHONY += $(addprefix $(1)-,cleanstamp cleanup outdir clean distclean)
 
 endef # gensource
@@ -1946,6 +1957,12 @@ rootdir-install: root-install
 rootdir-clean:
 	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
 
+rootdir-distclean: rootdir-clean
+
+PHONY += rootdir-distclean
+
+fullclean: $(call gengoalslist,distclean)
+	$(Q)git clean -fdx
 
 PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
 
@@ -1975,6 +1992,7 @@ endif
 KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
+KERNEL_CLEAN_DEPS := kernel-modules-clean
 
 kernel-oldnoconfig: kernel-olddefconfig
 
@@ -2552,6 +2570,7 @@ export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
 UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
+UBOOT_CLEAN_DEPS := $(UBOOT_IMGS_DISTCLEAN)
 
 #$(warning $(call gensource,uboot,UBOOT))
 $(eval $(call gensource,uboot,UBOOT))
@@ -3246,61 +3265,6 @@ _boot: $(_BOOT_DEPS)
 	$(BOOT_CMD)
 
 PHONY += boot-test _boot
-
-# Clean up
-
-qemu-clean:
-ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
-	-$(Q)$(call make_qemu,clean)
-endif
-
-root-clean:
-ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
-	-$(Q)$(call make_root,clean)
-endif
-
-uboot-clean: $(UBOOT_IMGS_DISTCLEAN)
-ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
-	-$(Q)$(call make_uboot,clean)
-endif
-
-kernel-clean: kernel-modules-clean
-ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
-	-$(Q)$(call make_kernel,clean)
-endif
-
-PHONY += rootdir-clean
-
-qemu-distclean:
-ifeq ($(QEMU_OUTPUT)/Makefile, $(wildcard $(QEMU_OUTPUT)/Makefile))
-	-$(Q)$(call make_qemu,distclean)
-	$(Q)rm -rf $(QEMU_OUTPUT)
-endif
-
-root-distclean:
-ifeq ($(ROOT_OUTPUT)/Makefile, $(wildcard $(ROOT_OUTPUT)/Makefile))
-	-$(Q)$(call make_root,distclean)
-	$(Q)rm -rf $(ROOT_OUTPUT)
-endif
-
-uboot-distclean:
-ifeq ($(UBOOT_OUTPUT)/Makefile, $(wildcard $(UBOOT_OUTPUT)/Makefile))
-	-$(Q)$(call make_uboot,distclean)
-	$(Q)rm -rf $(UBOOT_OUTPUT)
-endif
-
-kernel-distclean:
-ifeq ($(KERNEL_OUTPUT)/Makefile, $(wildcard $(KERNEL_OUTPUT)/Makefile))
-	-$(Q)$(call make_kernel,distclean)
-	$(Q)rm -rf $(KERNEL_OUTPUT)
-endif
-
-rootdir-distclean: rootdir-clean
-
-PHONY += rootdir-distclean
-
-fullclean: $(call gengoalslist,distclean)
-	$(Q)git clean -fdx
 
 # Show the variables
 ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)

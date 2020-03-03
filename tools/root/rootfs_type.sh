@@ -6,6 +6,7 @@
 #
 
 ROOTFS=$1
+BSP_ROOT=$2
 
 [ -z "$ROOTFS" ] && echo "Usage: $0 rootfs" && exit 1
 
@@ -28,6 +29,14 @@ elif [ -d ${ROOTFS}/rootfs -a -d ${ROOTFS}/rootfs/bin -a ${ROOTFS}/rootfs/etc ];
   echo "dir,${ROOTFS}/rootfs"
   exit 0
 else
-  echo "ERR: $0: ${ROOTFS}: not invalid or not exists"
-  exit 1
+  # If rootfs under BSP_ROOT and not exist, simpliy parse the default setting to avoid download first.
+  echo "$ROOTFS" | grep -q ${BSP_ROOT}
+  if [ $? -eq 0 -a ! -d ${BSP_ROOT} ]; then
+    echo ${ROOTFS} | grep -q "\.cpio.gz$" && echo "rd,${ROOTFS},.cpio.gz" && exit 0
+    echo ${ROOTFS} | grep -q "\.cpio.uboot$" && echo "rd,${ROOTFS},.cpio.uboot" && exit 0
+    echo ${ROOTFS} | grep -q "\.cpio$" && echo "rd,${ROOTFS},.cpio" && exit 0
+  else
+    echo "ERR: $0: ${ROOTFS}: not invalid or not exists"
+    exit 1
+  fi
 fi

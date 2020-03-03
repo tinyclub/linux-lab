@@ -958,8 +958,10 @@ ifeq ($(PBR),0)
   endif
 endif
 
-ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS) $(BSP_ROOT))
 ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
+
+#$(error ROOTFS_TYPE: $(ROOTFS_TYPE) ROOTDEV_TYPE:= $(ROOTDEV_TYPE))
 
 # FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)

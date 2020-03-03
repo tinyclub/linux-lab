@@ -2523,7 +2523,7 @@ kernel-calltrace: kernel-build
 PHONY += kernel-calltrace calltrace
 
 # Uboot specific part
-ifeq ($(U),1)
+ifneq ($(UBOOT),)
 
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)

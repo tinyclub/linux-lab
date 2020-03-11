@@ -1,6 +1,104 @@
-**Subscribe Wechat**：<br/><img src='doc/tinylab-wechat.jpg' width='110px'/><br/>
+% Linux Lab v0.3 Manual
+% [TinyLab Community | Tinylab.org](http://tinylab.org)
+% \today
 
-# Linux Lab
+# Table of Content
+
+- [1.1 Project Introduction](#11-project-introduction)
+- [1.2 Project Homepage](#12-project-homepage)
+- [1.3 Demonstration](#13-demonstration)
+   - [1.3.1 Basic Operations](#131-basic-operations)
+   - [1.3.2 Cool Operations](#132-cool-operations)
+- [1.4 Project Functions](#14-project-functions)
+- [1.5 Project History](#15-project-history)
+   - [1.5.1 Project Origins](#151-project-origins)
+   - [1.5.2 Problems Solved](#152-problems-solved)
+   - [1.5.3 Project Born](#153-project-born)
+- [2.1 Docker Installation](#21-docker-installation)
+   - [2.1.1 Basic installation](#211-basic-installation)
+   - [2.1.2 Installation Issues](#212-installation-issues)
+- [2.2 Choose a working directory](#22-choose-a-working-directory)
+- [2.3 Download the lab](#23-download-the-lab)
+- [2.4 Run and login the lab](#24-run-and-login-the-lab)
+- [2.5 Update and rerun the lab](#25-update-and-rerun-the-lab)
+- [2.6 Quickstart: Boot a board](#26-quickstart-boot-a-board)
+- [3.1 Using boards](#31-using-boards)
+   - [3.1.1 List available boards](#311-list-available-boards)
+   - [3.1.2 Choosing a board](#312-choosing-a-board)
+   - [3.1.3 Using as plugins](#313-using-as-plugins)
+- [3.3 Build in one command](#33-build-in-one-command)
+- [3.3 Detailed Operations](#33-detailed-operations)
+   - [3.3.1 Downloading](#331-downloading)
+   - [3.3.2 Checking out](#332-checking-out)
+   - [3.3.3 Patching](#333-patching)
+   - [3.3.4 Configuration](#334-configuration)
+      - [3.3.4.1 Default Configuration](#3341-default-configuration)
+      - [3.3.4.2 Manual Configuration](#3342-manual-configuration)
+      - [3.3.4.3 Old default configuration](#3343-old-default-configuration)
+   - [3.3.5 Building](#335-building)
+   - [3.3.6 Saving](#336-saving)
+   - [3.3.7 Booting](#337-booting)
+- [4.1 Using Linux Kernel](#41-using-linux-kernel)
+   - [4.1.1 non-interactive configuration](#411-non-interactive-configuration)
+   - [4.1.2 using kernel modules](#412-using-kernel-modules)
+   - [4.1.3 using kernel features](#413-using-kernel-features)
+- [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
+- [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
+- [4.4 Using Toolchains](#44-using-toolchains)
+- [4.5 Using Rootfs](#45-using-rootfs)
+- [4.6 Debugging Linux and Uboot](#46-debugging-linux-and-uboot)
+- [4.7 Test Automation](#47-test-automation)
+- [4.8 File Sharing](#48-file-sharing)
+   - [4.8.1 Install files to rootfs](#481-install-files-to-rootfs)
+   - [4.8.2 Share with NFS](#482-share-with-nfs)
+   - [4.8.3 Transfer via tftp](#483-transfer-via-tftp)
+   - [4.8.4 Share with 9p virtio](#484-share-with-9p-virtio)
+- [4.9 Learning Assembly](#49-learning-assembly)
+- [4.10 Running any make goals](#410-running-any-make-goals)
+- [5.1 Choose a board supported by qemu](#51-choose-a-board-supported-by-qemu)
+- [5.2 Create the board directory](#52-create-the-board-directory)
+- [5.3 Clone a Makefile from an existing board](#53-clone-a-makefile-from-an-existing-board)
+- [5.4 Configure the variables from scratch](#54-configure-the-variables-from-scratch)
+- [5.5 At the same time, prepare the configs](#55-at-the-same-time,-prepare-the-configs)
+- [5.6 Choose the versions of kernel, rootfs and uboot](#56-choose-the-versions-of-kernel,-rootfs-and-uboot)
+- [5.7 Configure, build and boot them](#57-configure,-build-and-boot-them)
+- [5.8 Save the images and configs](#58-save-the-images-and-configs)
+- [5.9 Upload everything](#59-upload-everything)
+- [6.1 Docker Issues](#61-docker-issues)
+   - [6.1.1 Speed up docker images downloading](#611-speed-up-docker-images-downloading)
+   - [6.1.2 Docker network conflicts with LAN](#612-docker-network-conflicts-with-lan)
+   - [6.1.3 Why not allow running Linux Lab in local host](#613-why-not-allow-running-linux-lab-in-local-host)
+   - [6.1.4 Run tools without sudo](#614-run-tools-without-sudo)
+   - [6.1.5 Network not work](#615-network-not-work)
+   - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
+- [6.2 Qemu Issues](#62-qemu-issues)
+   - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
+   - [6.2.2 Poweroff hang](#622-poweroff-hang)
+   - [6.2.3 How to exit qemu](#623-how-to-exit-qemu)
+   - [6.2.4 Boot with missing sdl2 libraries failure](#624-boot-with-missing-sdl2-libraries-failure)
+- [6.3 Environment Issues](#63-environment-issues)
+   - [6.3.1 NFS/tftpboot not work](#631-nfstftpboot-not-work)
+   - [6.3.2 How to switch windows in vim](#632-how-to-switch-windows-in-vim)
+   - [6.3.3 How to delete typo in shell command line](#633-how-to-delete-typo-in-shell-command-line)
+   - [6.3.4 Language input switch shortcuts](#634-language-input-switch-shortcuts)
+   - [6.3.5 How to tune the screen size](#635-how-to-tune-the-screen-size)
+   - [6.3.6 How to work in fullscreen mode](#636-how-to-work-in-fullscreen-mode)
+   - [6.3.7 How to record video](#637-how-to-record-video)
+   - [6.3.8 Linux Lab not response](#638-linux-lab-not-response)
+   - [6.3.9 VNC login fails with wrong password](#639-vnc-login-fails-with-wrong-password)
+   - [6.3.10 Ubuntu Snap Issues](#6310-ubuntu-snap-issues)
+- [6.4 Lab Issues](#64-lab-issues)
+   - [6.4.1 No working init found](#641-no-working-init-found)
+   - [6.4.2 linux/compiler-gcc7.h: No such file or directory](#642-linuxcompiler-gcc7h-no-such-file-or-directory)
+   - [6.4.3 linux-lab/configs: Permission denied](#643-linux-labconfigs-permission-denied)
+   - [6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#644-scriptsmakefileheadersinst-missing-uapi-file)
+
+
+**Subscribe Wechat**：![Wechat Public](doc/tinylab-wechat.jpg)
+
+# 1. Linux Lab Overview
+
+## 1.1 Project Introduction
 
 This project aims to create a Qemu-based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
 
@@ -8,93 +106,74 @@ For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
-## Contents
+## 1.2 Project Homepage
 
-- [Why](#why)
-- [Homepage](#homepage)
-- [Demonstration](#demonstration)
-- [Install docker](#install-docker)
-- [Choose a working directory](#choose-a-working-directory)
-- [Download the lab](#download-the-lab)
-- [Run and login the lab](#run-and-login-the-lab)
-- [Update and rerun the lab](#update-and-rerun-the-lab)
-- [Quickstart: Boot a board](#quickstart-boot-a-board)
-- [Usage](#usage)
-   - [Using boards](#using-boards)
-      - [List available boards](#list-available-boards)
-      - [Choosing a board](#choosing-a-board)
-      - [Using as plugins](#using-as-plugins)
-   - [Automation](#automation)
-   - [Downloading](#downloading)
-   - [Checking out](#checking-out)
-   - [Patching](#patching)
-   - [Configuration](#configuration)
-      - [Default Configuration](#default-configuration)
-      - [Manual Configuration](#manual-configuration)
-      - [Old default configuration](#old-default-configuration)
-   - [Building](#building)
-   - [Saving](#saving)
-   - [Booting](#booting)
-   - [Using](#using)
-      - [Linux](#linux)
-        - [non-interactive configuration](#non-interactive-configuration)
-        - [using kernel modules](#using-kernel-modules)
-        - [using kernel features](#using-kernel-features)
-      - [Uboot](#uboot)
-      - [Qemu](#qemu)
-      - [Toolchain](#toolchain)
-      - [Rootfs](#rootfs)
-   - [Debugging](#debugging)
-   - [Testing](#testing)
-   - [Sharing](#sharing)
-      - [Install files to rootfs](#install-files-to-rootfs)
-      - [Share with NFS](#share-with-nfs)
-      - [Transfer via tftp](#transfer-via-tftp)
-      - [Share with 9p virtio](#share-with-9p-virtio)
-- [More](#more)
-   - [Add a new board](#add-a-new-board)
-      - [Choose a board supported by qemu](#choose-a-board-supported-by-qemu)
-      - [Create the board directory](#create-the-board-directory)
-      - [Clone a Makefile from an existing board](#clone-a-makefile-from-an-existing-board)
-      - [Configure the variables from scratch](#configure-the-variables-from-scratch)
-      - [At the same time, prepare the configs](#at-the-same-time,-prepare-the-configs)
-      - [Choose the versions of kernel, rootfs and uboot](#choose-the-versions-of-kernel,-rootfs-and-uboot)
-      - [Configure, build and boot them](#configure,-build-and-boot-them)
-      - [Save the images and configs](#save-the-images-and-configs)
-      - [Upload everything](#upload-everything)
-   - [Learning Assembly](#learning-assembly)
-   - [Running any make goals](#running-any-make-goals)
-- [FAQs](#faqs)
-   - [Poweroff hang](#poweroff-hang)
-   - [Boot with missing sdl2 libraries failure](#boot-with-missing-sdl2-libraries-failure)
-   - [NFS/tftpboot not work](#nfstftpboot-not-work)
-   - [Run tools without sudo](#run-tools-without-sudo)
-   - [Speed up docker images downloading](#speed-up-docker-images-downloading)
-   - [Docker network conflicts with LAN](#docker-network-conflicts-with-lan)
-   - [Why not allow running Linux Lab in local host](#why-not-allow-running-linux-lab-in-local-host)
-   - [Why kvm speedding up is disabled](#why-kvm-speedding-up-is-disabled)
-   - [How to switch windows in vim](#how-to-switch-windows-in-vim)
-   - [How to delete typo in shell command line](#how-to-delete-typo-in-shell-command-line)
-   - [How to tune the screen size](#how-to-tune-the-screen-size)
-   - [How to exit qemu](#how-to-exit-qemu)
-   - [How to work in fullscreen mode](#how-to-work-in-fullscreen-mode)
-   - [How to record video](#how-to-record-video)
-   - [Linux Lab not response](#linux-lab-not-response)
-   - [Language input switch shortcuts](#language-input-switch-shortcuts)
-   - [No working init found](#no-working-init-found)
-   - [linux/compiler-gcc7.h: No such file or directory](#linuxcompiler-gcc7h-no-such-file-or-directory)
-   - [Network not work](#network-not-work)
-   - [linux-lab/configs: Permission denied](#linux-labconfigs-permission-denied)
-   - [Client.Timeout exceeded while waiting headers](#clienttimeout-exceeded-while-waiting-headers)
-   - [VNC login fails with wrong password](#vnc-login-fails-with-wrong-password)
-   - [scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h](#scriptsmakefileheadersinst-missing-uapi-file-includeuapilinuxnetfilterxt_connmarkh)
-   - [Ubuntu Snap Issues](#ubuntu-snap-issues)
-- [Contact and Sponsor](#contact-and-sponsor)
+* Homepage
+    * <http://tinylab.org/linux-lab/>
 
-## Why
+* Repository
+    * <https://gitee.com/tinylab/linux-lab>
+    * <https://github.com/tinyclub/linux-lab>
+
+Related Projects:
+
+* Cloud Lab
+    * Linux Lab Running Environment Manager
+    * <http://tinylab.org/cloud-lab>
+
+* Linux 0.11 Lab
+    * Learning Linux 0.11
+    * <http://tinylab.org/linux-0.11-lab>
+
+* CS630 Qemu Lab
+    * Learning X86 Linux Assembly
+    * <http://tinylab.org/cs630-qemu-lab>
+
+## 1.3 Demonstration
+
+### 1.3.1 Basic Operations
+
+  * [Basic Usage](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
+  * [Learning Uboot](http://showterm.io/11f5ae44b211b56a5d267)
+  * [Learning Assembly](http://showterm.io/0f0c2a6e754702a429269)
+  * [Boot ARM Ubuntu 18.04 on Vexpress-a9 board](http://showterm.io/c351abb6b1967859b7061)
+  * [Boot Linux v5.1 on ARM64/Virt board](http://showterm.io/9275515b44d208d9559aa)
+  * [Boot Riscv32/virt and Riscv64/virt boards](http://showterm.io/37ce75e5f067be2cc017f)
+
+### 1.3.2 Cool Operations
+
+  * [One command of testing a specified kernel feature](http://showterm.io/7edd2e51e291eeca59018)
+  * [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
+  * [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
+  * [Batch testing the debug function of all boards](http://showterm.io/0255c6a8b7d16dc116cbe)
+
+## 1.4 Project Functions
+
+Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
+
+| Items    | Description
+|----------|-----------------------------------------------------------------------
+|Boards    | Qemu based, 8+ main Architectures, 15+ popular boards
+|Components| Uboot, Linux / Modules, Buildroot, Qemu, Linux v2.6.10 ~ 5.x supported
+|Prebuilt  | All of above components has been prebuilt
+|Rootfs    | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM
+|Docker    | Cross toolchains available in one command, external ones configurable
+|Acess     | Access via web browsers, available everywhere via web vnc or web ssh
+|Network   | Builtin bridge networking, every board has network (except Raspi3)
+|Boot      | Support serial port, curses (ssh friendly) and graphic booting
+|Testing   | Support automatic testing via `make test` target
+|Debugging | debuggable via `make debug` target
+
+Continue reading for more features and usage.
+
+## 1.5 Project History
+
+### 1.5.1 Project Origins
 
 About 9 years ago, a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by embedded
 linux foundation, therefore I have worked on this project for serveral months.
+
+### 1.5.2 Problems Solved
 
 During the project cycle, several scripts written to verify if the adding tiny features (e.g. [gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf))
 breaks the other kernel features on the main cpu architectures.
@@ -102,54 +181,25 @@ breaks the other kernel features on the main cpu architectures.
 These scripts uses qemu-system-ARCH as the cpu/board simulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
 rootfs, test scripts have been prepared, at that time, all of them were simply put in a directory, without a design or holistic consideration.
 
+### 1.5.3 Project Born
+
 They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
 
-Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
+# 2. Linux Lab Installation
 
-**Boards**: Qemu based, 8+ main Architectures, 15+ popular boards, one `make list` command for all boards, qemu options are hidden.
-**Components**: Uboot, Linux / Modules, Buildroot, Qemu are configurable, patchable, compilable, buildable, Linux v5.1 supported.
-**Prebuilt**: all of above components have been prebuilt and put in board specific bsp submodule for instant using, qemu v2.12.0 prebuilt for arm/arm64.
-**Rootfs**: Builtin rootfs support include initrd, harddisk, mmc and nfs, configurable via ROOTDEV/ROOTFS, Ubuntu 18.04 for ARM available as docker image: tinylab/armv32-ubuntu.
-**Docker**: Environment (cross toolchains) available in one command in serveral minutes, 5 main architectures have builtin support, external ones configurable via `make toolchain`.
-**Browser**: usable via modern web browsers, once installed in a internet server, available everywhere via web vnc or web ssh.
-**Network**: Builtin bridge networking support, every board support network (except Raspi3).
-**Boot**: Support serial port, curses (ssh friendly) and graphic booting.
-**Testing**: Support automatic testing via `make test` target.
-**Debugging**: debuggable via `make debug` target.
+## 2.1 Docker Installation
 
-Continue reading for more features and usage.
-
-## Homepage
-
-See: <http://tinylab.org/linux-lab/>
-
-## Demonstration
-
-Basic:
-
-* [Basic Usage](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
-* [Learning Uboot](http://showterm.io/11f5ae44b211b56a5d267)
-* [Learning Assembly](http://showterm.io/0f0c2a6e754702a429269)
-* [Boot ARM Ubuntu 18.04 on Vexpress-a9 board](http://showterm.io/c351abb6b1967859b7061)
-* [Boot Linux v5.1 on ARM64/Virt board](http://showterm.io/9275515b44d208d9559aa)
-* [Boot Riscv32/virt and Riscv64/virt boards](http://showterm.io/37ce75e5f067be2cc017f)
-* [One command of testing a specified kernel feature](http://showterm.io/7edd2e51e291eeca59018)
-* [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
-* [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
-* [Batch testing the debug function of all boards](http://showterm.io/0255c6a8b7d16dc116cbe)
-
-More:
-
-* [Learning RLK4.0 Book (Chinese)](https://v.qq.com/x/page/y0543o6zlh5.html)
-* [Developing Embedded Linux (Chinese)](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/).
-
-## Install docker
+### 2.1.1 Basic installation
 
 Docker is required by Linux Lab, please install it at first:
 
-- Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+  - Linux, Mac OSX, Windows 10
 
-- older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox) or Virtualbox/Vmware + Linux
+     [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+
+  - older Windows
+
+     [Docker Toolbox](https://www.docker.com/docker-toolbox) or Virtualbox/Vmware + Linux
 
 Before running Linux Lab, please make sure the following command works without sudo and without any issue:
 
@@ -157,7 +207,7 @@ Before running Linux Lab, please make sure the following command works without s
 
 Othewise, please read the following notes and more [official docker docs](https://docs.docker.com).
 
-**Notes**:
+### 2.1.2 Installation Issues
 
 In order to run docker without password, please make sure your user is added in the docker group and activate the change via newgrp:
 
@@ -170,7 +220,7 @@ In order to speedup docker images downloading, please configure a local docker m
     DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
     $ service docker restart
 
-If still have errors like 'Client.Timeout exceeded while waiting headers', please try the other docker mirror sites:
+If still have errors like `Client.Timeout exceeded while waiting headers`, please try the other docker mirror sites:
 
 * Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
 * Docker China: https://registry.docker-cn.com
@@ -191,7 +241,7 @@ For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will
 
     $ sudo apt-get install linux-generic-lts-trusty
 
-## Choose a working directory
+## 2.2 Choose a working directory
 
 If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
 
@@ -207,7 +257,7 @@ For Mac OSX, to compile Linux normally, please create a case sensitive filesyste
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
 
-## Download the lab
+## 2.3 Download the lab
 
 Use Ubuntu system as an example:
 
@@ -216,7 +266,7 @@ Download cloud lab framework, pull images and checkout linux-lab repository:
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## Run and login the lab
+## 2.4 Run and login the lab
 
 Launch the lab and login with the user and password printed in the console:
 
@@ -242,7 +292,7 @@ Summary of login methods:
 |   ssh          | normal ssh         |  ubuntu          | localhost            |
 |   bash         | docker bash        |  ubuntu          | localhost            |
 
-## Update and rerun the lab
+## 2.5 Update and rerun the lab
 
 If want a newer version, we **must** back up any local changes at first, and then update everything:
 
@@ -260,13 +310,13 @@ Then rerurn linux lab:
 
     $ tools/docker/rerun linux-lab
 
-## Quickstart: Boot a board
+## 2.6 Quickstart: Boot a board
 
 Issue the following command to boot the prebuilt kernel and rootfs on the default `vexpress-a9` board:
 
     $ make boot
 
-Login as 'root' user without password(password is empty), just input 'root' and press Enter:
+Login as `root` user without password(password is empty), just input `root` and press Enter:
 
     Welcome to Linux Lab
 
@@ -275,11 +325,11 @@ Login as 'root' user without password(password is empty), just input 'root' and 
     # uname -a
     Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
 
-## Usage
+# 3. Linux Lab Kickstart
 
-### Using boards
+## 3.1 Using boards
 
-#### List available boards
+### 3.1.1 List available boards
 
 List builtin boards:
 
@@ -335,9 +385,9 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-#### Choosing a board
+### 3.1.2 Choosing a board
 
-By default, the default board: 'vexpress-a9' is used, we can configure, build and boot for a specific board with 'BOARD', for example:
+By default, the default board: `vexpress-a9` is used, we can configure, build and boot for a specific board with `BOARD`, for example:
 
     $ make BOARD=malta
     $ make boot
@@ -352,7 +402,7 @@ Check the board specific configuration:
 
     $ cat boards/arm/vexpress-a9/Makefile
 
-#### Using as plugins
+### 3.1.3 Using as plugins
 
 The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
 
@@ -362,9 +412,8 @@ Here maintains the available plugins:
 
 - [C-Sky Linux](https://gitee.com/tinylab/csky)
 - [Loongson Linux](https://gitee.com/loongsonlab/loongson)
-- [RLK4.0 Book Examples](https://gitee.com/tinylab/rlk4.0)
 
-### Automation
+## 3.3 Build in one command
 
 v0.3+ version add target dependency by default, so, if want to compile a kernel, just run:
 
@@ -391,7 +440,9 @@ To clean all of the stamp files:
 
 This function also support uboot, root and qemu.
 
-### Downloading
+## 3.3 Detailed Operations
+
+### 3.3.1 Downloading
 
 Download board specific package and the kernel, buildroot source code:
 
@@ -415,7 +466,7 @@ Download one by one:
     $ make source root
     $ make source uboot
 
-### Checking out
+### 3.3.2 Checking out
 
 Checkout the target version of kernel and builroot:
 
@@ -443,7 +494,7 @@ If checkout not work due to local changes, save changes and run to get a clean e
 
 The same to qemu and uboot.
 
-### Patching
+### 3.3.3 Patching
 
 Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
@@ -453,9 +504,9 @@ Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
 
     $ make patch kernel
 
-### Configuration
+### 3.3.4 Configuration
 
-#### Default Configuration
+#### 3.3.4.1 Default Configuration
 
 Configure kernel and buildroot with defconfig:
 
@@ -479,7 +530,7 @@ Configure with specified defconfig:
 
 If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: buildroot/configs, u-boot/configs, linux-stable/arch/<ARCH>/configs.
 
-#### Manual Configuration
+#### 3.3.4.2 Manual Configuration
 
     $ make kernel-menuconfig
     $ make root-menuconfig
@@ -489,7 +540,7 @@ If only defconfig name specified, search boards/<BOARD> at first, and then the d
     $ make menuconfig kernel
     $ make menuconfig root
 
-#### Old default configuration
+#### 3.3.4.3 Old default configuration
 
     $ make kernel-olddefconfig
     $ make root-olddefconfig
@@ -501,7 +552,7 @@ If only defconfig name specified, search boards/<BOARD> at first, and then the d
     $ make olddefconfig root
     $ make olddefconfig uboot
 
-### Building
+### 3.3.5 Building
 
 Build kernel and buildroot together:
 
@@ -517,7 +568,7 @@ Build them one by one:
     $ make build kernel
     $ make build root
 
-### Saving
+### 3.3.6 Saving
 
 Save all of the configs and rootfs/kernel/dtb images:
 
@@ -539,13 +590,13 @@ Save configs and images to `boards/<BOARD>/bsp/`:
     $ make save root
 
 
-### Booting
+### 3.3.7 Booting
 
-Boot with serial port (nographic) by default, exit with 'CTRL+a x', 'poweroff', 'reboot' or 'pkill qemu' (See [poweroff hang](#poweroff-hang)):
+Boot with serial port (nographic) by default, exit with `CTRL+a x`, `poweroff`, `reboot` or `pkill qemu` (See [poweroff hang](#poweroff-hang)):
 
     $ make boot
 
-Boot with graphic (Exit with 'CTRL+ALT+2 quit'):
+Boot with graphic (Exit with `CTRL+ALT+2 quit`):
 
     $ make b=pc boot G=1 LINUX=v5.1
     $ make b=versatilepb boot G=1 LINUX=v5.1
@@ -563,7 +614,7 @@ Boot with graphic (Exit with 'CTRL+ALT+2 quit'):
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
-Boot with curses graphic (friendly to ssh login, not work for all boards, exit with 'ESC+2 quit' or 'ALT+2 quit'):
+Boot with curses graphic (friendly to ssh login, not work for all boards, exit with `ESC+2 quit` or `ALT+2 quit`):
 
     $ make b=pc boot G=2 LINUX=v4.6.7
 
@@ -613,17 +664,17 @@ List supported options:
     $ make list UBOOT
     $ make list QEMU
 
-And more 'xxx-list' are also supported with 'list xxx', for example:
+And more `xxx-list` are also supported with `list xxx`, for example:
 
     $ make list features
     $ make list modules
     $ make list gcc
 
-### Using
+# 4. Linux Lab Advance
 
-#### Linux
+## 4.1 Using Linux Kernel
 
-##### non-interactive configuration
+### 4.1.1 non-interactive configuration
 
 A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
 config options non-interactively, based on it, both of `kernel-getconfig`
@@ -649,19 +700,21 @@ Enable a kernel module:
 
 More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 
-    `y`, build the modules in kernel or enable anther kernel options.
-    `c`, build the modules as pluginable modules, just like `m`.
-    `o`, build the modules as pluginable modules, just like `m`.
-    `n`, disable a kernel option.
-    `s`, `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
-    `v`, `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+| Option | Description
+|--------|-----------------------------------------------------------
+|`y`     | build the modules in kernel or enable anther kernel options.
+|`c`     | build the modules as pluginable modules, just like `m`.
+|`o`     | build the modules as pluginable modules, just like `m`.
+|`n`     | disable a kernel option.
+|`s`     | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
+|`v`     | `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
 
 Operates many options in one command line:
 
     $ make kernel-setconfig m=tun,minix_fs y=ikconfig v=panic_timeout=5 s=DEFAULT_HOSTNAME=linux-lab n=debug_info
     $ make kernel-getconfig o=tun,minix,ikconfig,panic_timeout,hostname
 
-##### using kernel modules
+### 4.1.2 using kernel modules
 
 Build all internel kernel modules:
 
@@ -721,7 +774,7 @@ Build external kernel modules (the same as internel modules):
     $ make kernel x=$PWD/modules/hello/hello.ko
 
 
-##### using kernel features
+### 4.1.3 using kernel features
 
 Kernel features are abstracted in `feature/linux/, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
@@ -775,7 +828,7 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
-#### Uboot
+## 4.2 Using Uboot Bootloader
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.
 
@@ -834,7 +887,7 @@ Save uboot images and configs:
     $ make uboot-save
     $ make uboot-saveconfig
 
-#### Qemu
+## 4.3 Using Qemu Emulator
 
 Builtin qemu may not work with the newest linux kernel, so, we need compile and
 add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
@@ -861,7 +914,7 @@ While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
 compiling a newer qemu 2.12.0, no hang exists. please take notice of such issue
 in the future kernel upgrade.
 
-#### Toolchain
+## 4.4 Using Toolchains
 
 The pace of Linux mainline is very fast, builtin toolchains can not keep up, to
 reduce the maintaining pressure, external toolchain feature is added. for
@@ -896,7 +949,7 @@ To build host tools, host gcc should be configured too(please specify b=`i386/pc
     $ make gcc-list b=i386/pc
     $ make gcc-switch CCORI=internal GCC=4.8 b=i386/pc
 
-#### Rootfs
+## 4.5 Using Rootfs
 
 Builtin rootfs is minimal, is not enough for complex application development,
 which requires modern Linux distributions.
@@ -926,7 +979,7 @@ More rootfs from docker can be found:
     arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating system  25
     arm64v8/debian   Debian is a Linux distribution that's composed  20
 
-### Debugging
+## 4.6 Debugging Linux and Uboot
 
 Compile the kernel with debugging options:
 
@@ -956,9 +1009,9 @@ to debug uboot:
 
     $ make debug uboot
 
-### Testing
+## 4.7 Test Automation
 
-Use 'aarch64/virt' as the demo board here.
+Use `aarch64/virt` as the demo board here.
 
     $ make BOARD=virt
 
@@ -1054,12 +1107,12 @@ Test kernel debug:
 
     $ make test DEBUG=1
 
-### Sharing
+## 4.8 File Sharing
 
 To transfer files between Qemu Board and Host, three methods are supported by
 default:
 
-#### Install files to rootfs
+### 4.8.1 Install files to rootfs
 
 Simply put the files with a relative path in `system/`, install and rebuild the rootfs:
 
@@ -1070,7 +1123,7 @@ Simply put the files with a relative path in `system/`, install and rebuild the 
     $ make root-rebuild
     $ make boot G=1
 
-#### Share with NFS
+### 4.8.2 Share with NFS
 
 Boot the board with `ROOTDEV=/dev/nfs`:
 
@@ -1081,7 +1134,7 @@ Host:
     $ make env-dump VAR=ROOTDIR
     ROOTDIR="/labs/linux-lab/boards/<BOARD>/bsp/root/<BUILDROOT_VERSION>/rootfs"
 
-#### Transfer via tftp
+### 4.8.3 Transfer via tftp
 
 Using tftp server of host from the Qemu board with the `tftp` command.
 
@@ -1102,7 +1155,7 @@ Qemu Board:
 
 **Note**: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
 
-#### Share with 9p virtio
+### 4.8.4 Share with 9p virtio
 
 To enable 9p virtio for a new board, please refer to [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup). qemu must be compiled with `--enable-virtfs`, and kernel must enable the necessary options.
 
@@ -1162,58 +1215,86 @@ Qemu Board:
 
 Verified boards with Linux v5.1:
 
-    aarch64/virt: virtio-9p-device (virtio-9p-pci breaks nfsroot)
-    arm/vexpress-a9: only work with virtio-9p-device and without uboot booting
-    arm/versatilepb: only work with virtio-9p-pci
-    x86_64/pc, only work with virtio-9p-pci
-    i386/pc, only work with virtio-9p-pci
-    riscv64/virt, work with virtio-9p-pci and virtio-9p-dev
-    riscv32/virt, work with virtio-9p-pci and virtio-9p-dev
+| boards          | Status
+|-----------------|---------------------------------------------------
+|aarch64/virt     | virtio-9p-device (virtio-9p-pci breaks nfsroot)
+|arm/vexpress-a9  | only work with virtio-9p-device and without uboot booting
+|arm/versatilepb  | only work with virtio-9p-pci
+|x86_64/pc        | only work with virtio-9p-pci
+|i386/pc          | only work with virtio-9p-pci
+|riscv64/virt     | work with virtio-9p-pci and virtio-9p-dev
+|riscv32/virt     | work with virtio-9p-pci and virtio-9p-dev
 
-## More
+## 4.9 Learning Assembly
 
-### Add a new board
+Linux Lab has added many assembly examples in `examples/assembly`:
 
-#### Choose a board supported by qemu
+    $ cd examples/assembly
+    $ ls
+    aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
+    $ make -s -C aarch64/
+    Hello, ARM64!
+
+## 4.10 Running any make goals
+
+Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
+
+    $ make kernel-run help
+    $ make kernel-run menuconfig
+
+    $ make root-run help
+    $ make root-run busybox-menuconfig
+
+    $ make uboot-run help
+    $ make uboot-run menuconfig
+
+  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+
+
+# 5. Linux Lab Development
+
+This introduces how to add a new board for Linux Lab.
+
+## 5.1 Choose a board supported by qemu
 
 list the boards, use arm as an example:
 
     $ qemu-system-arm -M ?
 
-#### Create the board directory
+## 5.2 Create the board directory
 
 Use `vexpress-a9` as an example:
 
     $ mkdir boards/arm/vexpress-a9/
 
-#### Clone a Makefile from an existing board
+## 5.3 Clone a Makefile from an existing board
 
 Use `versatilepb` as an example:
 
     $ cp boards/arm/versatilebp/Makefile boards/arm/vexpress-a9/Makefile
 
-#### Configure the variables from scratch
+## 5.4 Configure the variables from scratch
 
 Comment everything, add minimal ones and then others.
 
 Please refer to `doc/qemu/qemu-doc.html` or the online one <http://qemu.weilnetz.de/qemu-doc.html>.
 
-#### At the same time, prepare the configs
+## 5.5 At the same time, prepare the configs
 
 We need to prepare the configs for linux, buildroot and even uboot.
 
 Buildroot has provided many examples about buildroot and kernel configuration:
 
-* buildroot: `buildroot/configs/qemu_ARCH_BOARD_defconfig`
-* kernel: `buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config`
+    buildroot: buildroot/configs/qemu_ARCH_BOARD_defconfig
+    kernel: buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
 
 Uboot has also provided many default configs:
 
-* uboot: `u-boot/configs/vexpress_ca9x4_defconfig`
+    uboot: u-boot/configs/vexpress_ca9x4_defconfig
 
 Kernel itself also:
 
-* kernel: `linux-stable/arch/arm/configs/vexpress_defconfig`
+    kernel: linux-stable/arch/arm/configs/vexpress_defconfig
 
 Linux Lab itself also provide many working configs too, the `-clone` target is a
 good helper to utilize existing configs:
@@ -1247,9 +1328,9 @@ version info, use `raspi3` as an example:
 `2019.02.2` is the buildroot version, `v5.1` is the kernel version, both of these
 variables should be configured in `boards/<BOARD>/Makefile`.
 
-#### Choose the versions of kernel, rootfs and uboot
+## 5.6 Choose the versions of kernel, rootfs and uboot
 
-Please use 'tag' instead of 'branch', use kernel as an example:
+Please use `tag` instead of `branch`, use kernel as an example:
 
     $ cd linux-stable
     $ git tag
@@ -1283,7 +1364,7 @@ Linux version specific ROOTFS are also supported:
 
     ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz
 
-#### Configure, build and boot them
+## 5.7 Configure, build and boot them
 
 Use kernel as an example:
 
@@ -1294,7 +1375,7 @@ Use kernel as an example:
 
 The same to rootfs, uboot and even qemu.
 
-#### Save the images and configs
+## 5.8 Save the images and configs
 
     $ make root-save
     $ make kernel-save
@@ -1304,7 +1385,7 @@ The same to rootfs, uboot and even qemu.
     $ make kernel-saveconfig
     $ make uboot-saveconfig
 
-#### Upload everything
+## 5.9 Upload everything
 
 At last, upload the images, defconfigs, patchset to board specific bsp submodule repository.
 
@@ -1324,78 +1405,15 @@ Firstly, get the remote bsp repository address as following:
 
 Then, fork this repository from gitee.com, upload your changes, and send your pull request.
 
-### Learning Assembly
+# 6. FAQs
 
-Linux Lab has added many assembly examples in `examples/assembly`:
+## 6.1 Docker Issues
 
-    $ cd examples/assembly
-    $ ls
-    aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
-    $ make -s -C aarch64/
-    Hello, ARM64!
-
-### Running any make goals
-
-Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
-
-    $ make kernel-run help
-    $ make kernel-run menuconfig
-
-    $ make root-run help
-    $ make root-run busybox-menuconfig
-
-    $ make uboot-run help
-    $ make uboot-run menuconfig
-
-  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
-
-
-## FAQs
-
-### Poweroff hang
-
-Both of the 'poweroff' and 'reboot' commands not work on these boards currently (LINUX=v5.1):
-
-  * mipsel/malta (exclude LINUX=v2.6.36)
-  * aarch64/raspi3
-  * arm/versatilepb
-
-System will directly hang there while running 'poweroff' or 'reboot', to exit qemu, please pressing 'CTRL+a x' or using 'pkill qemu'.
-
-To test such boards automatically, please make sure setting 'TEST_TIMEOUT', e.g. `make test TEST_TIMEOUT=50`.
-
-Welcome to fix up them.
-
-### Boot with missing sdl2 libraries failure
-
-That's because the docker image is not updated, just rerun the lab (please must not use 'tools/docker/restart' here for it not using the new docker image):
-
-    $ tools/docker/pull linux-lab
-    $ tools/docker/rerun linux-lab
-
-    Or
-
-    $ tools/docker/update linux-lab
-
-With 'tools/docker/update', every docker images and source code will be updated, it is preferred.
-
-### NFS/tftpboot not work
-
-If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` and please
-make sure not use `tools/docker/trun`.
-
-### Run tools without sudo
-
-To use the tools under `tools` without sudo, please make sure add your account to the docker group and reboot your system to take effect:
-
-    $ sudo usermod -aG docker $USER
-    $ newgrp docker
-
-### Speed up docker images downloading
+### 6.1.1 Speed up docker images downloading
 
 To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/default/docker` via referring to `tools/docker/install`.
 
-### Docker network conflicts with LAN
+### 6.1.2 Docker network conflicts with LAN
 
 We assume the docker network is `10.66.0.0/16`, if not, we'd better change it as following:
 
@@ -1412,15 +1430,50 @@ Please restart docker service and lab container to make this change works:
 
 If lab network still not work, please try another private network address and eventually to avoid conflicts with LAN address.
 
-### Why not allow running Linux Lab in local host
+### 6.1.3 Why not allow running Linux Lab in local host
 
 The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab](http://tinylab.org/cloud-lab), so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
 
 Linux Lab is designed to use pre-installed environment with the docker technology and save our life by avoiding the packages installation issues in different systems, so, Linux Lab would never support local host using even in the future.
 
-### Why kvm speedding up is disabled
 
-kvm only supports both of qemu-system-i386 and qemu-system-x86_64 currently, and it also requires the cpu and bios support, otherwise, you may get this error log:
+### 6.1.4 Run tools without sudo
+
+To use the tools under `tools` without sudo, please make sure add your account to the docker group and reboot your system to take effect:
+
+    $ sudo usermod -aG docker $USER
+    $ newgrp docker
+
+### 6.1.5 Network not work
+
+If ping not work, please check one by one:
+
+  * DNS issue
+
+      if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
+
+  * IP issue
+
+      if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
+
+### 6.1.6 Client.Timeout exceeded while waiting headers
+
+This means must configure one of the following docker images mirror sites:
+
+  * Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
+  * Docker China: https://registry.docker-cn.com
+  * USTC: https://docker.mirrors.ustc.edu.cn
+
+Configuration in Ubuntu:
+
+    $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
+    $ sudo service docker restart
+
+## 6.2 Qemu Issues
+
+### 6.2.1 Why kvm speedding up is disabled
+
+kvm only supports both of `qemu-system-i386` and `qemu-system-x86_64` currently, and it also requires the cpu and bios support, otherwise, you may get this error log:
 
     modprobe: ERROR: could not insert 'kvm_intel': Operation not supported
 
@@ -1430,29 +1483,72 @@ Check cpu virtualization support, if nothing output, then, cpu not support virtu
 
 If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
 
-### How to switch windows in vim
+### 6.2.2 Poweroff hang
 
-`CTRL+w` is used in both of browser and vim, to switch from one window to another, please use 'CTRL+Left' or 'CTRL+Right' key instead, Linux Lab has remapped 'CTRL+Right' to `CTRL+w` and 'CTRL+Left' to `CTRL+p`.
+Both of the `poweroff` and `reboot` commands not work on these boards currently (LINUX=v5.1):
 
-### How to delete typo in shell command line
+  * mipsel/malta (exclude LINUX=v2.6.36)
+  * aarch64/raspi3
+  * arm/versatilepb
 
-Long keypress not work in novnc client currently, so, long 'Delete' not work, please use 'alt+delete' or 'alt+backspace' instead, more tips:
+System will directly hang there while running `poweroff` or `reboot`, to exit qemu, please pressing `CTRL+a x` or using `pkill qemu`.
 
-* Bash
-  * ctrl+a/e (begin/end)
-  * ctrl+home/end (forward/backward)
-  * alt+delete/backspace (delete one word backward)
-  * alt+d (delete one word forward)
-  * ctrl+u/k (delete all to begin, delete all to end)
+To test such boards automatically, please make sure setting `TEST_TIMEOUT`, e.g. `make test TEST_TIMEOUT=50`.
 
-* Vim
-  * ^/$ (begin/end)
-  * w/b; ctrl+home/end (forward/backward)
-  * db (delete one word backward)
-  * dw (delete one word forward)
-  * d^/d$ (delete all to begin, delete all to end)
+Welcome to fix up them.
 
-### How to tune the screen size
+### 6.2.3 How to exit qemu
+
+| Where                 |  How
+|-----------------------|---------------------------------------
+| Serial Port Console   | `CTRL+A X`
+| Curses based Graphic  | `ESC+2 quit` Or `ALT+2 quit`
+| X based Graphic       | with `CTRL+ALT+2 quit`
+
+### 6.2.4 Boot with missing sdl2 libraries failure
+
+That's because the docker image is not updated, just rerun the lab (please must not use `tools/docker/restart` here for it not using the new docker image):
+
+    $ tools/docker/pull linux-lab
+    $ tools/docker/rerun linux-lab
+
+    Or
+
+    $ tools/docker/update linux-lab
+
+With `tools/docker/update`, every docker images and source code will be updated, it is preferred.
+
+## 6.3 Environment Issues
+
+### 6.3.1 NFS/tftpboot not work
+
+If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` and please
+make sure not use `tools/docker/trun`.
+
+### 6.3.2 How to switch windows in vim
+
+`CTRL+w` is used in both of browser and vim, to switch from one window to another, please use `CTRL+Left` or `CTRL+Right` key instead, Linux Lab has remapped `CTRL+Right` to `CTRL+w` and `CTRL+Left` to `CTRL+p`.
+
+### 6.3.3 How to delete typo in shell command line
+
+Long keypress not work in novnc client currently, so, long `Delete` not work, please use `alt+delete` or `alt+backspace` instead, more tips:
+
+|Function                  | Vim           | Bash                      |
+|--------------------------|---------------|---------------------------|
+|begin/end                 | `^/$`         | `Ctrl + a/e`              |
+|forward/backward          | `w/b`         | `Ctrl + Home/end`         |
+|cut one word backword     | `db`          | `Alt  + Delete/backspace` |
+|cut one word forward      | `dw`          | `Alt  + d`                |
+|cut all to begin          | `d^`          | `Ctrl + u`                |
+|cut all to end            | `d$`          | `Ctrl + k`                |
+|paste all cutted          | `p`           | `Ctrl + y`                |
+
+### 6.3.4 Language input switch shortcuts
+
+In order to switch English/Chinese input method, please use `CTRL+s` shortcuts, it is used instead of `CTRL+space` to avoid conflicts with local system.
+
+
+### 6.3.5 How to tune the screen size
 
 The screen size of lab is captured by xrandr, if not work, please check and set your own, for example:
 
@@ -1494,48 +1590,54 @@ If want the default one, please remove the manual setting at first:
     $ tools/docker/rm-all
     $ tools/docker/run linux-lab
 
-### How to exit qemu
 
-* Serial Port Console: Exit with 'CTRL+A X'
-* Curses based Graphic: Exit with 'ESC+2 quit' Or 'ALT+2 quit'
-* X based Graphic: Exit with 'CTRL+ALT+2 quit'
-
-### How to work in fullscreen mode
+### 6.3.6 How to work in fullscreen mode
 
 Open the left sidebar, press the 'Fullscreen' button.
 
-### How to record video
+### 6.3.7 How to record video
 
 * Enable recording
 
-  Open the left sidebar, press the 'Settings' button, config 'File/Title/Author/Category/Tags/Description' and enable the 'Record Screen' option.
+    Open the left sidebar, press the 'Settings' button, config 'File/Title/Author/Category/Tags/Description' and enable the 'Record Screen' option.
 
 * Start recording
 
-  Press the 'Connect' button.
+    Press the 'Connect' button.
 
 * Stop recording
 
-  Press the 'Disconnect' button.
+    Press the 'Disconnect' button.
 
 * Replay recorded video
 
-  Press the 'Play' button.
+    Press the 'Play' button.
 
 * Share it
 
-  Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io](http://showdesk.io/post).
+    Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io](http://showdesk.io/post).
 
-### Linux Lab not response
+### 6.3.8 Linux Lab not response
 
 The VNC connection may hang for some unknown reasons and therefore Linux Lab may not response sometimes, to restore it, please press the flush button of web browser or re-connect after explicitly disconnect.
 
-### Language input switch shortcuts
+### 6.3.9 VNC login fails with wrong password
 
-In order to switch English/Chinese input method, please use 'CTRL+s' shortcuts, it is used instead of 'CTRL+space' to avoid conflicts with local system.
+VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
 
+    $ tools/docker/clean linux-lab
+    $ tools/docker/rerun linux-lab
 
-### No working init found
+### 6.3.10 Ubuntu Snap Issues
+
+Users report many snap issues, please use apt-get instead:
+
+  * users can not be added to docker group and break non-root operation.
+  * snap service exhausts the /dev/loop devices and break mount operation.
+
+## 6.4 Lab Issues
+
+### 6.4.1 No working init found
 
 This means the rootfs.ext2 image may be broken, please remove it and try `make boot` again, for example:
 
@@ -1544,23 +1646,14 @@ This means the rootfs.ext2 image may be broken, please remove it and try `make b
 
 `make boot` command can create this image automatically.
 
-### linux/compiler-gcc7.h: No such file or directory
+### 6.4.2 linux/compiler-gcc7.h: No such file or directory
 
-This means using a newer gcc than the one linux kernel version supported, the solution is [switching to an older gcc version](#toolchain) via 'make gcc-switch', use `i386/pc` board as an example:
+This means using a newer gcc than the one linux kernel version supported, the solution is [switching to an older gcc version](#toolchain) via `make gcc-switch`, use `i386/pc` board as an example:
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4
 
-### Network not work
-
-If ping not work, please check one by one:
-
-**DNS issue**: if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
-
-**IP issue**: if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
-
-
-### linux-lab/configs: Permission denied
+### 6.4.3 linux-lab/configs: Permission denied
 
 This may happen at `make boot` while the repository is cloned with `root` user, please simply update the owner of `cloud-lab/` directory:
 
@@ -1570,45 +1663,18 @@ This may happen at `make boot` while the repository is cloned with `root` user, 
 
 To make a consistent working environment, Linux Lab only support using as general user: 'ubuntu'.
 
-### Client.Timeout exceeded while waiting headers
+### 6.4.4 scripts/Makefile.headersinst: Missing UAPI file
 
-This means must configure one of the following docker images mirror sites:
-
-* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
-* Docker China: https://registry.docker-cn.com
-* USTC: https://docker.mirrors.ustc.edu.cn
-
-Configuration in Ubuntu:
-
-    $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
-    $ sudo service docker restart
-
-### VNC login fails with wrong password
-
-VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
-
-    $ tools/docker/clean linux-lab
-    $ tools/docker/rerun linux-lab
-
-### scripts/Makefile.headersinst: Missing UAPI file: ./include/uapi/linux/netfilter/xt_CONNMARK.h
-
-This means MAC OSX not use Case sensitive filesystem, create one using hdiutil or Disk Utility yourself:
+This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil` or `Disk Utility` yourself:
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
 
-### Ubuntu Snap Issues
-
-Users report many snap issues, please use apt-get instead:
-
-* users can not be added to docker group and break non-root operation.
-* snap service exhausts the /dev/loop devices and break mount operation.
-
-## Contact and Sponsor
+# 7. Contact and Sponsor
 
 Our contact wechat is **tinylab**, welcome to join our user & developer discussion group.
 
-**Contact us and Sponsor via wechat**
+**Contact us and Sponsor via wechat:**
 
 ![contact-sponsor](doc/contact-sponsor.png)

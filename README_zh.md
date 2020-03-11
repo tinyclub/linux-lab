@@ -1,6 +1,15 @@
+<!--
+
 % Linux Lab v0.3 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
+
+-->
+
+**订阅公众号，关注项目状态：**
+
+![扫码订阅 “泰晓科技” 公众号](doc/tinylab-wechat.jpg)
+
 
 # 目录
 
@@ -96,9 +105,6 @@
    - [6.4.2 linux/compiler-gcc7.h: No such file or directory](#642-linuxcompiler-gcc7h-no-such-file-or-directory)
    - [6.4.3 linux-lab/configs: Permission denied](#643-linux-labconfigs-permission-denied)
    - [6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#644-scriptsmakefileheadersinst-missing-uapi-file)
-**订阅公众号，关注项目状态：**
-
-![扫码订阅 “泰晓科技” 公众号](doc/tinylab-wechat.jpg)
 
 # 1. Linux Lab 概览
 

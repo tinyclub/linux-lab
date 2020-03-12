@@ -1,9 +1,7 @@
 <!-- metadata start --><--
-
 % Linux Lab v0.3 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today
-
 --><!-- metadata end -->
 
 **Subscribe Wechat**：![Wechat Public](doc/tinylab-wechat.jpg)

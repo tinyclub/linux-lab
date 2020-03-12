@@ -1,9 +1,7 @@
 <!-- metadata start --><--
-
 % Linux Lab v0.3 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
-
 --><!-- metadata end -->
 
 **订阅公众号，关注项目状态：**

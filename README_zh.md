@@ -1,4 +1,4 @@
-<!-- metadata start --><--
+<!-- metadata start --><!--
 % Linux Lab v0.3 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today

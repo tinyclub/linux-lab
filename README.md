@@ -1,4 +1,4 @@
-<!-- metadata start --><--
+<!-- metadata start --><!--
 % Linux Lab v0.3 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today

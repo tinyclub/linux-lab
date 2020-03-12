@@ -69,7 +69,7 @@ Rapsi3 almost works, but:
   Download and extract the rootfs out to `prebuilt/fullroot/tmp`:
 
     $ cd $(path-to)/linux-lab
-    $ tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64
+    $ tools/root/docker/extract.sh arm64v8/ubuntu aarch64
     LOG: Pulling arm64v8/ubuntu
     Using default tag: latest
     latest: Pulling from arm64v8/ubuntu
@@ -91,7 +91,7 @@ Rapsi3 almost works, but:
   Or pull it and then extract:
 
     $ docker pull arm64v8/ubuntu
-    $ PULL=0 tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64
+    $ PULL=0 tools/root/docker/extract.sh arm64v8/ubuntu aarch64
 
   Use it with docker:
 
@@ -104,7 +104,7 @@ Rapsi3 almost works, but:
 
   Use it with chroot:
 
-    $ tools/rootfs/docker/chroot.sh arm64v8/ubuntu
+    $ tools/root/docker/chroot.sh arm64v8/ubuntu
     LOG: Chroot into ...linux-lab/prebuilt/fullroot/tmp/arm64v8-ubuntu
     root@ubuntu:/#
 

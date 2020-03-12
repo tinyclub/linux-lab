@@ -192,8 +192,6 @@ They have slept in my harddisk for several years without any attention, untill o
 
 ## 2.1 Docker Installation
 
-### 2.1.1 Basic installation
-
 Docker is required by Linux Lab, please install it at first:
 
   - Linux, Mac OSX, Windows 10
@@ -208,57 +206,14 @@ Before running Linux Lab, please make sure the following command works without s
 
     $ docker run hello-world
 
-Othewise, please read the following notes and more [official docker docs](https://docs.docker.com).
+In China, to use docker service normally, please **must** configure one of chinese docker mirror sites, for example:
 
-### 2.1.2 Installation Issues
+  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-In order to run docker without password, please make sure your user is added in the docker group and activate the change via newgrp:
+More docker related issues, such as download slowly, download timeout and download errors, are cleary documented in the 6.1 section of FAQs.
 
-    $ sudo usermod -aG docker $USER
-    $ newgrp docker
-
-In order to speedup docker images downloading, please configure a local docker mirror in `/etc/default/docker`, for example:
-
-    $ grep registry-mirror /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
-
-If still have errors like `Client.Timeout exceeded while waiting headers`, please try the other docker mirror sites:
-
-* Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
-* Docker China: https://registry.docker-cn.com
-
-In order to avoid network ip address conflict, please try following changes and restart docker:
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-If the above changes not work, try something as following:
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
-
-For Ubuntu 12.04, please install the new kernel at first, otherwise, docker will not work:
-
-    $ sudo apt-get install linux-generic-lts-trusty
-
-## 2.2 Choose a working directory
-
-If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
-
-    $ cd /mnt/sda1
-
-For Linux, please simply choose one directory in `~/Downloads` or `~/Documents`.
-
-    $ cd ~/Documents
-
-For Mac OSX, to compile Linux normally, please create a case sensitive filesystem as the working space at first:
-
-    $ hdiutil -type SPARSE create -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
-    $ cd ~/Documents/labspace
+The other issues, please read the [official docker docs](https://docs.docker.com).
 
 ## 2.3 Download the lab
 
@@ -1461,16 +1416,32 @@ If ping not work, please check one by one:
 
 ### 6.1.6 Client.Timeout exceeded while waiting headers
 
-This means must configure one of the following docker images mirror sites:
+This means must configure one of the following docker mirror sites:
 
-  * Aliyun (Register Required): <http://t.cn/AiFxJ8QE>
-  * Docker China: https://registry.docker-cn.com
-  * USTC: https://docker.mirrors.ustc.edu.cn
+  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-Configuration in Ubuntu:
+Potential methods of configuration in Ubuntu, depends on docker and ubuntu versions:
 
-    $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
+`/etc/default/docker`:
+
+    echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
+
+`/lib/systemd/system/docker.service`:
+
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+
+`/etc/docker/daemon.json`:
+
+    {
+        "registry-mirrors": ["<your accelerate address>"]
+    }
+
+Please restart docker service after change the accelerate address:
+
     $ sudo service docker restart
+
+For the other Linux systems, Windows and MacOS System, please refer to [Aliyun Mirror Speedup Document](https://help.aliyun.com/document_detail/60750.html).
 
 ## 6.2 Qemu Issues
 

@@ -237,8 +237,6 @@
 
 ## 2.1 安装 Docker
 
-### 2.1.1 基本操作
-
 运行 Linux Lab 需要基于 Docker，所以请务必先安装 Docker：
 
   - Linux, Mac OSX, Windows 10
@@ -253,41 +251,14 @@
 
     $ docker run hello-world
 
-否则，请阅读以下说明和更多 [官方 Docker 文档](https://docs.docker.com)。
+另外，在国内要正常使用 Docker，请**务必**配置好国内的 Docker 镜像加速服务：
 
-### 2.1.2 注意事项
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-为了避免在运行 `docker` 命令时需要输入管理员权限密码，请确保将您的用户帐号添加到 docker 组中：
+使用 Linux Lab 过程中的常见 Docker 相关问题，请参考常见问题中的 6.1 节，镜像下载慢、下载超时、下载出错等问题都有详细解决方案。
 
-    $ sudo usermod -aG docker $USER
-    $ newgrp docker
-
-为了加速 Docker 镜像的下载，请在 `/etc/default/docker` 文件中配置本地 Docker Mirror，举例如下：
-
-    $ grep registry-mirror /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
-
-如果在运行中仍然会遇到错误提示：`Client.Timeout exceeded while waiting headers`，请尝试其他的 Docker Mirrir 站点，譬如：
-
-  * Aliyun (需要注册后才能使用): <http://t.cn/AiFxJ8QE>
-  * Docker China: https://registry.docker-cn.com
-
-为避免网络 ip 地址冲突，尝试以下修改后再重启 Docker 服务：
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果以上措施还未解决您的问题，请尝试如下操作：
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
-
-如果您使用的是 Ubuntu 12.04， 请先安装新的内核版本，否则 Docker 有可能无法工作：
-
-    $ sudo apt-get install linux-generic-lts-trusty
+其他问题，请参考 [官方 Docker 文档](https://docs.docker.com)。
 
 ## 2.2 选择工作目录
 
@@ -1488,16 +1459,33 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
 ### 6.1.6 Client.Timeout exceeded while waiting headers
 
-解决方法是选择配置以下 docker images 的 mirror 站点中的一个：
+解决方法是选择配置以下 Docker 镜像服务站点中的一个：
 
-  * 阿里云 (需要注册帐号): <http://t.cn/AiFxJ8QE>
-  * Docker China: https://registry.docker-cn.com
-  * USTC: https://docker.mirrors.ustc.edu.cn
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-Ubuntu 中的配置方法如下：
+Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror 站点配置：
 
-    $ echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\"" | sudo tee -a /etc/default/docker
+`/etc/default/docker`:
+
+    DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
+
+
+`/lib/systemd/system/docker.service`:
+
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+
+`/etc/docker/daemon.json`:
+
+    {
+        "registry-mirrors": ["<your accelerate address>"]
+    }
+
+配置完需要重启 docker 服务才能生效：
+
     $ sudo service docker restart
+
+对于其他 Linux 系统，Windows 和 MacOS 系统，建议优先参考 [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)。
 
 ## 6.2 Qemu 相关
 

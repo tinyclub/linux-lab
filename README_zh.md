@@ -1010,6 +1010,10 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make debug uboot
 
+找出内核崩溃出错地址所在的代码行:
+
+    $ make kernel-calltrace func+offset/length
+
 ## 4.7 自动化测试
 
 以 `aarch64/virt` 作为演示的开发板：

@@ -967,6 +967,10 @@ to debug uboot:
 
     $ make debug uboot
 
+find out the code line of a kernel panic address:
+
+    $ make kernel-calltrace func+offset/length
+
 ## 4.7 Test Automation
 
 Use `aarch64/virt` as the demo board here.

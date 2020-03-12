@@ -1,12 +1,14 @@
-<!--
+<!-- metadata start --><--
 
 % Linux Lab v0.3 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today
 
--->
+--><!-- metadata end -->
 
 **Subscribe Wechat**：![Wechat Public](doc/tinylab-wechat.jpg)
+
+<!-- toc start -->
 
 # Table of Content
 
@@ -98,6 +100,8 @@
    - [6.4.2 linux/compiler-gcc7.h: No such file or directory](#642-linuxcompiler-gcc7h-no-such-file-or-directory)
    - [6.4.3 linux-lab/configs: Permission denied](#643-linux-labconfigs-permission-denied)
    - [6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#644-scriptsmakefileheadersinst-missing-uapi-file)
+
+<!-- toc end -->
 
 # 1. Linux Lab Overview
 

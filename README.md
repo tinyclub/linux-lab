@@ -10,6 +10,7 @@
 
 <!-- toc start -->
 
+
 # Table of Content
 
 - [1.1 Project Introduction](#11-project-introduction)
@@ -23,9 +24,6 @@
    - [1.5.2 Problems Solved](#152-problems-solved)
    - [1.5.3 Project Born](#153-project-born)
 - [2.1 Docker Installation](#21-docker-installation)
-   - [2.1.1 Basic installation](#211-basic-installation)
-   - [2.1.2 Installation Issues](#212-installation-issues)
-- [2.2 Choose a working directory](#22-choose-a-working-directory)
 - [2.3 Download the lab](#23-download-the-lab)
 - [2.4 Run and login the lab](#24-run-and-login-the-lab)
 - [2.5 Update and rerun the lab](#25-update-and-rerun-the-lab)

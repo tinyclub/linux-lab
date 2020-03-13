@@ -342,17 +342,17 @@ endif
 endef
 
 define _lpb
-_$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
+__$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
 ifneq ($$($1),)
   ifeq ($$($1),1)
-    PB$$(_$(1)) := 0
+    PB$$(__$(1)) := 0
   else
-    PB$$(_$(1)) := 1
+    PB$$(__$(1)) := 1
   endif
 endif
 ifneq ($(BUILD),)
   ifeq ($(filter $(1),$(BUILD)),$(1))
-    PB$$(_$(1)) := 0
+    PB$$(__$(1)) := 0
   endif
 endif
 

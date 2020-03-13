@@ -1332,7 +1332,7 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-$$(call _stamp_$(1),source): $(1)-outdir
+$$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
 	@echo
 	@echo "Downloading $(1) source ..."
 	@echo

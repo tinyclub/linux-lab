@@ -64,7 +64,7 @@
   description: 支持自定义样式的 Markdown 编辑器，支持微信公众号、知乎、开源中国、稀土掘金、博客园和 CSDN 等平台
   group: tools
 
-- title: Mermaid 画图
-  permalink: https://mermaid-js.github.io
+- title: Mermaid 在线画图
+  permalink: https://mermaid-js.github.io/mermaid-live-editor/
   description: 通过 Mermaid 画流程图、甘特图、类型图、序列图等
   group: tools

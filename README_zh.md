@@ -58,6 +58,8 @@
 - [4.4 Toolchain 工具链](#44-toolchain-工具链)
 - [4.5 Rootfs 文件系统](#45-rootfs-文件系统)
 - [4.6 Linux 与 Uboot 调试](#46-linux-与-uboot-调试)
+   - [4.6.1 调试 Linux](#461-调试-linux)
+   - [4.6.2 调试 Uboot](#462-调试-uboot)
 - [4.7 自动化测试](#47-自动化测试)
 - [4.8 文件共享](#48-文件共享)
    - [4.8.1 在 rootfs 中安装文件](#481-在-rootfs-中安装文件)
@@ -984,6 +986,8 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ## 4.6 Linux 与 Uboot 调试
 
+### 4.6.1 调试 Linux
+
 使用调试选项编译内核：
 
     $ make feature f=debug
@@ -998,23 +1002,37 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make debug
 
-将打开一个新的终端窗口，从 `.gdbinit` 加载脚本，自动运行 gdb。
+将打开一个新的终端窗口，从 `.kernel_gdbinit` 加载脚本，自动运行 gdb。
 
 以上命令等价于运行如下命令：
 
+    $ make debug linux
+    或
     $ make boot DEBUG=linux
 
-自动调试测试可以运行如下命令：
+自动测试调试可以运行如下命令：
 
+    $ make test-debug linux
+    或
     $ make test DEBUG=linux
-
-如果想调试 Uboot：
-
-    $ make debug uboot
 
 找出内核崩溃出错地址所在的代码行:
 
     $ make kernel-calltrace func+offset/length
+
+### 4.6.2 调试 Uboot
+
+如果想调试 Uboot（采用 `.uboot_gdbinit` 调试脚本）：
+
+    $ make debug uboot
+    或
+    $ make debug DEBUG=uboot
+
+同样可以自动测试调试：
+
+    $ make test-debug uboot
+    或
+    $ make test DEBUG=uboot
 
 ## 4.7 自动化测试
 

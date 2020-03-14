@@ -51,6 +51,8 @@
 - [4.4 Using Toolchains](#44-using-toolchains)
 - [4.5 Using Rootfs](#45-using-rootfs)
 - [4.6 Debugging Linux and Uboot](#46-debugging-linux-and-uboot)
+   - [4.6.1 Debugging Linux](#461-debugging-linux)
+   - [4.6.2 Debugging Uboot](#462-debugging-uboot)
 - [4.7 Test Automation](#47-test-automation)
 - [4.8 File Sharing](#48-file-sharing)
    - [4.8.1 Install files to rootfs](#481-install-files-to-rootfs)
@@ -939,6 +941,8 @@ More rootfs from docker can be found:
 
 ## 4.6 Debugging Linux and Uboot
 
+### 4.6.1 Debugging Linux
+
 Compile the kernel with debugging options:
 
     $ make feature f=debug
@@ -953,23 +957,37 @@ And then debug it directly:
 
     $ make debug
 
-It will open a new terminal, load the scripts from .gdbinit, run gdb automatically.
+It will open a new terminal, load the scripts from `.kernel_gdbinit`, run gdb automatically.
 
 It equals to:
 
+    $ make debug linux
+    or
     $ make boot DEBUG=linux
 
 to automate debug testing:
 
+    $ make test-debug linux
+    or
     $ make test DEBUG=linux
-
-to debug uboot:
-
-    $ make debug uboot
 
 find out the code line of a kernel panic address:
 
     $ make kernel-calltrace func+offset/length
+
+### 4.6.2 Debugging Uboot
+
+to debug uboot with `.uboot_gdbinit`:
+
+    $ make debug uboot
+    or
+    $ make boot DEBUG=uboot
+
+to automate uboot debug testing:
+
+    $ make test-debug uboot
+    or
+    $ make test DEBUG=uboot
 
 ## 4.7 Test Automation
 

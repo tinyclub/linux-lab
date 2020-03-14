@@ -3239,7 +3239,7 @@ endif
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
-	$(Q)ln -sf $(GDB_INIT) .gdbinit
+	$(Q)ln -sf $(notdir $(GDB_INIT)) .gdbinit
 	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
 	$(Q)$(DEBUG_CMD) &
 

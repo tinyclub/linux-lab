@@ -4,6 +4,10 @@
 
 TOP_DIR := $(CURDIR)
 
+# Disable the implict rules for our Makefile
+.SUFFIXES:
+SUFFIXES :=
+
 # Force set default goal
 .DEFAULT_GOAL := board
 

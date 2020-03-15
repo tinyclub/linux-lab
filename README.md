@@ -1497,9 +1497,10 @@ Welcome to fix up them.
 
 | Where                 |  How
 |-----------------------|---------------------------------------
-| Serial Port Console   | `CTRL+A X`
+| Serial Port Console   | `CTRL+a x`
 | Curses based Graphic  | `ESC+2 quit` Or `ALT+2 quit`
-| X based Graphic       | with `CTRL+ALT+2 quit`
+| X based Graphic       | `CTRL+ALT+2 quit`
+| Generic Methods       | `poweroff`, `reboot`, `kill`, `pkill`
 
 ### 6.2.4 Boot with missing sdl2 libraries failure
 

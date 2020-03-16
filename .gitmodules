@@ -8,7 +8,7 @@
 	ignore = all
 [submodule "linux-stable"]
 	path = linux-stable
-	url = https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
+	url = https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
 	ignore = all
 [submodule "u-boot"]
 	path = u-boot

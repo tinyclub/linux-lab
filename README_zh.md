@@ -264,6 +264,13 @@
 
 其他问题，请参考 [官方 Docker 文档](https://docs.docker.com)。
 
+**Windows 用户须知**：
+
+  - 请参考 [Docker 官方文档](https://docs.docker.com)确保所用 Windows 版本支持 Docker
+
+  - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
+      - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”
+
 ## 2.2 选择工作目录
 
 如果您是通过 Docker Toolbox 安装，请在 Virtualbox 上进入 `default` 系统的 `/mnt/sda1`，否则，关机后所有数据会丢失，因为缺省的 `/root` 目录是挂载在内存中的。
@@ -279,6 +286,10 @@
     $ hdiutil -type SPARSE create -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
+
+对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
+
+**注意**: 由于相关 Docker 镜像以及 Linux 和 Buildroot 等源码占用的空间较大，请务必预留 50G 以上的剩余空间，避免使用过程中存储空间不足。
 
 ## 2.3 下载实验环境
 

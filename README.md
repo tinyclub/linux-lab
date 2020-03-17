@@ -22,6 +22,7 @@
    - [1.5.2 Problems Solved](#152-problems-solved)
    - [1.5.3 Project Born](#153-project-born)
 - [2.1 Docker Installation](#21-docker-installation)
+- [2.2 Choose a working directory](#22-choose-a-working-directory)
 - [2.3 Download the lab](#23-download-the-lab)
 - [2.4 Run and login the lab](#24-run-and-login-the-lab)
 - [2.5 Update and rerun the lab](#25-update-and-rerun-the-lab)
@@ -216,6 +217,31 @@ In China, to use docker service normally, please **must** configure one of chine
 More docker related issues, such as download slowly, download timeout and download errors, are cleary documented in the 6.1 section of FAQs.
 
 The other issues, please read the [official docker docs](https://docs.docker.com).
+
+**Notes for Windows User**:
+
+  - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)
+
+  - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
+      - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
+
+## 2.2 Choose a working directory
+
+If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
+
+    $ cd /mnt/sda1
+
+For Linux, please simply choose one directory in `~/Downloads` or `~/Documents`.
+
+    $ cd ~/Documents
+
+For Mac OSX, to compile Linux normally, please create a case sensitive filesystem as the working space at first:
+
+    $ hdiutil -type SPARSE create -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ cd ~/Documents/labspace
+
+**Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
 
 ## 2.3 Download the lab
 

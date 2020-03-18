@@ -78,6 +78,7 @@
    - [6.1.4 Run tools without sudo](#614-run-tools-without-sudo)
    - [6.1.5 Network not work](#615-network-not-work)
    - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
+- [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
 - [6.2 Qemu Issues](#62-qemu-issues)
    - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
    - [6.2.2 Poweroff hang](#622-poweroff-hang)
@@ -108,7 +109,7 @@
 
 This project aims to create a Qemu-based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
 
-For Linux 0.11, please try our [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab).
+Linux Lab is open source with no warranty – use at your own risk.
 
 [![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
@@ -1491,6 +1492,20 @@ Please restart docker service after change the accelerate address:
 
 For the other Linux systems, Windows and MacOS System, please refer to [Aliyun Mirror Speedup Document](https://help.aliyun.com/document_detail/60750.html).
 
+## 6.1.7 Restart Linux Lab after host system shutdown or reboot
+
+After host system (include virtual machine) shutdown or reboot, you can restart the lab via the "Linux Lab" icon on the desktop, or just like before, issue this command:
+
+    $ tools/docker/run linux-lab
+
+Current implementation doesn't support the direct 'docker start' command, please learn it.
+
+If the above methods still not restart the lab, please refer to the methods mentioned in the 6.3.9 section.
+
+If resume from a suspended host system, the lab will restore automatically, no need to do anything to restart it, just use one of the 4 login methods mentioned in the 2.4 section, for example, start a web browser to connect it:
+
+    $ tools/docker/vnc linux-lab
+
 ## 6.2 Qemu Issues
 
 ### 6.2.1 Why kvm speedding up is disabled
@@ -1648,7 +1663,14 @@ The VNC connection may hang for some unknown reasons and therefore Linux Lab may
 
 VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
 
+**Note**: The `clean` command will remove some containers and data, please do necessary backup before run it.
+
     $ tools/docker/clean linux-lab
+    $ tools/docker/rerun linux-lab
+
+If the above command not work, please try this one (**It will clean more data, please do necessary backup**)
+
+    $ tools/docker/clean-all
     $ tools/docker/rerun linux-lab
 
 ### 6.3.10 Ubuntu Snap Issues

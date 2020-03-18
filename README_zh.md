@@ -84,6 +84,7 @@
    - [6.1.4 非 root 无法运行 tools 命令](#614-非-root-无法运行-tools-命令)
    - [6.1.5 网络不通](#615-网络不通)
    - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
+- [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
 - [6.2 Qemu 相关](#62-qemu-相关)
    - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
    - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
@@ -98,7 +99,7 @@
    - [6.3.6 如何进入全屏模式](#636-如何进入全屏模式)
    - [6.3.7 如何录屏](#637-如何录屏)
    - [6.3.8 Web 界面无响应](#638-web-界面无响应)
-   - [6.3.9 登录 WEb 界面时报密码错误](#639-登录-web-界面时报密码错误)
+   - [6.3.9 登录 WEB 界面时报密码错误](#639-登录-web-界面时报密码错误)
    - [6.3.10 Ubuntu Snap 问题](#6310-ubuntu-snap-问题)
 - [6.4 Linux Lab 相关](#64-linux-lab-相关)
    - [6.4.1 No working init found](#641-no-working-init-found)
@@ -113,6 +114,8 @@
 ## 1.1 项目简介
 
 本项目致力于创建一个基于 Docker + QEMU 的 Linux 实验环境，方便大家学习、开发和测试 [Linux 内核](http://www.kernel.org)。
+
+Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用过程中的任何风险。
 
 [![Linux Lab 项目启动示意图](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
@@ -1522,6 +1525,20 @@ Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror �
 
 对于其他 Linux 系统，Windows 和 MacOS 系统，建议优先参考 [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)。
 
+## 6.1.7 关机或重启主机后如何恢复运行 Linux Lab
+
+在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
+
+    $ tools/docker/run linux-lab
+
+当前实现不支持通过 `docker start` 恢复容器，请知悉！
+
+如果上述方式无法恢复，请根据情况执行 6.3.9 节中的相应步骤。
+
+如果是从休眠中的主机（或虚拟机）系统唤醒，那么 Linux Lab 也会自动恢复，可以直接使用，登陆方式请参考 2.4 节中提供的 4 种登陆方式。例如，直接开一个浏览器去使用：
+
+    $ tools/docker/vnc linux-lab
+
 ## 6.2 Qemu 相关
 
 ### 6.2.1 缺少 KVM 加速
@@ -1674,11 +1691,18 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
 
 Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的刷新按钮或断开连接后重新连接。
 
-### 6.3.9 登录 WEb 界面时报密码错误
+### 6.3.9 登录 WEB 界面时报密码错误
 
-使用不匹配的密码时会导致 Web 登录失败，要解决此问题，请清除所有内容并重新运行：
+使用不匹配的密码时会导致 Web 登录失败，要解决此问题，请清理环境并重新运行：
+
+**注意**: 下述 clean 命令会清理一些容器和数据，请自行做好相应备份。
 
     $ tools/docker/clean linux-lab
+    $ tools/docker/rerun linux-lab
+
+如果上述命令依然无法启动，请尝试执行下述命令（**该命令会整理整个 Cloud Lab 环境，请务必做好必要数据备份**)：
+
+    $ tools/docker/clean-all
     $ tools/docker/rerun linux-lab
 
 ### 6.3.10 Ubuntu Snap 问题

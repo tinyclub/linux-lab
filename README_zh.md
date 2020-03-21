@@ -84,7 +84,7 @@
    - [6.1.4 非 root 无法运行 tools 命令](#614-非-root-无法运行-tools-命令)
    - [6.1.5 网络不通](#615-网络不通)
    - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
-- [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
+   - [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
 - [6.2 Qemu 相关](#62-qemu-相关)
    - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
    - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
@@ -1525,7 +1525,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror �
 
 对于其他 Linux 系统，Windows 和 MacOS 系统，建议优先参考 [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)。
 
-## 6.1.7 关机或重启主机后如何恢复运行 Linux Lab
+### 6.1.7 关机或重启主机后如何恢复运行 Linux Lab
 
 在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
 

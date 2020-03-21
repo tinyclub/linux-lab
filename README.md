@@ -78,7 +78,7 @@
    - [6.1.4 Run tools without sudo](#614-run-tools-without-sudo)
    - [6.1.5 Network not work](#615-network-not-work)
    - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
-- [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
+   - [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
 - [6.2 Qemu Issues](#62-qemu-issues)
    - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
    - [6.2.2 Poweroff hang](#622-poweroff-hang)
@@ -1492,7 +1492,7 @@ Please restart docker service after change the accelerate address:
 
 For the other Linux systems, Windows and MacOS System, please refer to [Aliyun Mirror Speedup Document](https://help.aliyun.com/document_detail/60750.html).
 
-## 6.1.7 Restart Linux Lab after host system shutdown or reboot
+### 6.1.7 Restart Linux Lab after host system shutdown or reboot
 
 After host system (include virtual machine) shutdown or reboot, you can restart the lab via the "Linux Lab" icon on the desktop, or just like before, issue this command:
 

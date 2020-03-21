@@ -331,13 +331,17 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ## 2.5 更新实验环境并重新运行
 
-为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，然后就可以执行更新了：
+为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，比如固化容器：
+
+    $ tools/docker/commit linux-lab
+
+然后就可以执行更新了：
 
     $ tools/docker/update linux-lab
 
 如果更新失败，请尝试清理当前运行的容器:
 
-    $ tools/docker/rm-full
+    $ tools/docker/rm-all
 
 如果有必要的话清理整个环境:
 
@@ -1648,6 +1652,10 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
        800x600       60.32
        640x480       59.94
 
+执行下述 rm 操作前务必做好容器和数据备份，例如固化容器：
+
+    $ tools/docker/commit linux-lab
+
 选择一个并对其进行配置：
 
     $ cd /path/to/cloud-lab
@@ -1693,9 +1701,11 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 ### 6.3.9 登录 WEB 界面时报密码错误
 
-使用不匹配的密码时会导致 Web 登录失败，要解决此问题，请清理环境并重新运行：
+**注意**: 下述 clean 和 rerun 命令会清理一些容器和数据，请自行做好相应备份，例如固化容器：
 
-**注意**: 下述 clean 命令会清理一些容器和数据，请自行做好相应备份。
+    $ tools/docker/commit linux-lab
+
+使用不匹配的密码时会导致 Web 登录失败，要解决此问题，请清理环境并重新运行。
 
     $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab

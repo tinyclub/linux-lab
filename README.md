@@ -281,13 +281,17 @@ Summary of login methods:
 
 ## 2.5 Update and rerun the lab
 
-If want a newer version, we **must** back up any local changes at first, and then update everything:
+If want a newer version, we **must** back up any local changes at first, for example, save the container:
+
+    $ tools/docker/commit linux-lab
+
+And then update everything:
 
     $ tools/docker/update linux-lab
 
 If fails, please try to clean up the containers:
 
-    $ tools/docker/rm-full
+    $ tools/docker/rm-all
 
 Or even clean up the whole environments:
 
@@ -1615,6 +1619,10 @@ Get available screen size values:
        800x600       60.32
        640x480       59.94
 
+Before running rm command, please save all of your data, for example, save the container:
+
+    $ tools/docker/commit linux-lab
+
 Choose one and configure it:
 
     $ cd /path/to/cloud-lab
@@ -1661,9 +1669,12 @@ The VNC connection may hang for some unknown reasons and therefore Linux Lab may
 
 ### 6.3.9 VNC login fails with wrong password
 
+**Note**: The `clean` command will remove some containers and data, please do necessary backup before run it, for example, save the container:
+
+    $ tools/docker/commit linux-lab
+
 VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
 
-**Note**: The `clean` command will remove some containers and data, please do necessary backup before run it.
 
     $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab

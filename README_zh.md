@@ -1531,6 +1531,10 @@ Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror �
 
 ### 6.1.7 关机或重启主机后如何恢复运行 Linux Lab
 
+如果要恢复容器中已经安装的软件和添加的各类配置，请事先保存好容器：
+
+    $ tools/docker/commit linux-lab
+
 在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
 
     $ tools/docker/run linux-lab

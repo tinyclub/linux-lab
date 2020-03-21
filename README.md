@@ -1498,6 +1498,10 @@ For the other Linux systems, Windows and MacOS System, please refer to [Aliyun M
 
 ### 6.1.7 Restart Linux Lab after host system shutdown or reboot
 
+If want to restore the installed softwares and related configurations, please save the container manually:
+
+    $ tools/docker/commit linux-lab
+
 After host system (include virtual machine) shutdown or reboot, you can restart the lab via the "Linux Lab" icon on the desktop, or just like before, issue this command:
 
     $ tools/docker/run linux-lab

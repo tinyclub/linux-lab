@@ -31,5 +31,5 @@ if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]
   [ -n "$KERNEL_IMAGE" ] && sudo cp $KERNEL_IMAGE $SD_DIR/uImage
   sudo umount $SD_DIR
 
-  sync
+  #sync
 fi

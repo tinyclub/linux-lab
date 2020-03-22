@@ -49,7 +49,7 @@ fi
 
 sudo chown ${USER}:${USER} -R ./
 
-sync
+#sync
 popd
 sudo umount ${ROOTDIR}.tmp
 rm -rf ${ROOTDIR}.tmp

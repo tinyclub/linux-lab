@@ -24,5 +24,5 @@ if [ "${BOOTDEV}" == "pflash" -o "${BOOTDEV}" == "flash" ]; then
   [ -n "$ROOT_IMAGE" -a -f "$ROOT_IMAGE" ] && dd if=$ROOT_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$((KRN_SIZE * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
   [ -n "$DTB_IMAGE" -a -f "$DTB_IMAGE" ] && dd if=$DTB_IMAGE of=$PFLASH_IMG status=none conv=notrunc seek=$(((KRN_SIZE+RDK_SIZE) * 1024 / PFLASH_BS)) bs=${PFLASH_BS}K
 
-  sync
+  #sync
 fi

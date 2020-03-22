@@ -22,5 +22,5 @@ sudo mount ${HROOTFS} ${ROOTDIR}.tmp
 cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
 
 sudo chown ${USER}:${USER} -R ./
-sync
+#sync
 sudo umount ${ROOTDIR}.tmp

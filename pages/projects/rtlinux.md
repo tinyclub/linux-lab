@@ -50,6 +50,7 @@ tags:
   * [OSADL RT 页面](https://www.osadl.org/Realtime-Linux.projects-realtime-linux.0.html)
   * [OSADL RT QA Farm 页面](https://www.osadl.org/?id=1223)
   * [龙芯 RT 页面](/preempt-rt-4-loongson/)
+  * [Product Documentation for Red Hat Enterprise Linux for Real Time 8](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/8/)
   * 实时 Linux 测试
     * [Real time testing with Fuego](https://elinux.org/images/4/43/ELC2018_Real-time_testing_with_Fuego-181024m.pdf)
     * [Cyclictest](https://rt.wiki.kernel.org/index.php?title=Cyclictest&diff=7079&oldid=7077)

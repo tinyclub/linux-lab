@@ -1909,8 +1909,12 @@ root-rd-rebuild: FORCE
 
 ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
+ifeq ($(prebuilt_root_dir), 1)
+  ROOT_DIR := root-dir
+endif
+
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
-root-rebuild:
+root-rebuild: $(ROOT_DIR)
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)

@@ -1255,7 +1255,7 @@ $$($(1)_bsp_childs): bsp-checkout
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $(if $$$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 

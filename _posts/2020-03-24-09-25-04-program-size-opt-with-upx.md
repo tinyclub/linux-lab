@@ -1,9 +1,9 @@
----
+﻿---
 layout: post
 author: 'Wu Zhangjin'
 title: "单个程序 Size 优化之压缩后自解压执行"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /program-size-opt-with-upx/
 description: "本文介绍了一款优化程序 Size 的工具，它通过压缩程序后加入自解压代码允许压缩后的程序直接执行。"

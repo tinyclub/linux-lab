@@ -539,17 +539,11 @@ define genverify
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
-      verify_notice_1 := $$($2) is not supported
-      verify_notice_2 := Supported $(2) list: $$($(2)_LIST)
-      verify_notice_3 := Update bsp may help: 'make bsp B=$$(BOARD)'
+      verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST), update bsp please: 'make bsp B=$$(BOARD)'
       ifeq ($$(notice), error)
-        $$(warning ERR: $$(verify_notice_1))
-        $$(warning ERR: $$(verify_notice_2))
-        $$(error ERR: $$(verify_notice_3))
+        $$(error ERR: $$(verify_notice))
       else
-        $$(warning WARN: $$(verify_notice_1))
-        $$(warning WARN: $$(verify_notice_2))
-        $$(warning WARN: $$(verify_notice_3))
+        $$(warning WARN: $$(verify_notice))
       endif
     endif
   endif

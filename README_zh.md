@@ -99,7 +99,7 @@
    - [6.3.6 如何进入全屏模式](#636-如何进入全屏模式)
    - [6.3.7 如何录屏](#637-如何录屏)
    - [6.3.8 Web 界面无响应](#638-web-界面无响应)
-   - [6.3.9 登录 WEB 界面时报密码错误](#639-登录-web-界面时报密码错误)
+   - [6.3.9 登录 WEB 界面时超时或报错](#639-登录-web-界面时超时或报错)
    - [6.3.10 Ubuntu Snap 问题](#6310-ubuntu-snap-问题)
 - [6.4 Linux Lab 相关](#64-linux-lab-相关)
    - [6.4.1 No working init found](#641-no-working-init-found)
@@ -1703,7 +1703,26 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
 
 Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的刷新按钮或断开连接后重新连接。
 
-### 6.3.9 登录 WEB 界面时报密码错误
+### 6.3.9 登录 WEB 界面时超时或报错
+
+如果登陆 WEB 界面时出现 “Disconnect timeout”，请稍等片刻后继续点击左侧 “Connect” 按钮，如果依然无法成功，请按下述步骤检查。
+
+首先检查 linux-lab 需要的 docker 容器是否正常启动（Up: 正常，Exit: 为不正常）：
+
+    $ docker ps -a
+    CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+    19a61ba075b5 tinylab/linux-lab "/tools/lab/run" 4 days ago Up 4 days 22/tcp, 5900/tcp linux-lab-21575
+    75dae89984c9 tinylab/cloud-ubuntu-web "/startup.sh" 8 days ago Up 8 days ....443/tcp cloud-ubuntu-web
+
+如果为 Exit，可能是关机后容器自动关闭了，也可能是容器启动失败，如果是容器自动关闭了可以通过如下命令启动：
+
+    $ tools/docker/run linux-lab
+
+如果依然无法启动，请检查并分析启动日志：
+
+    $ tools/docker/logs linux-lab
+
+如果日志正常，那说明之前保存的帐号和密码可能由于某次异常失效了，需要参考如下步骤重新生成新的帐号和密码。
 
 **注意**: 下述 clean 和 rerun 命令会清理一些容器和数据，请自行做好相应备份，例如固化容器：
 

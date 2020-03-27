@@ -93,7 +93,7 @@
    - [6.3.6 How to work in fullscreen mode](#636-how-to-work-in-fullscreen-mode)
    - [6.3.7 How to record video](#637-how-to-record-video)
    - [6.3.8 Linux Lab not response](#638-linux-lab-not-response)
-   - [6.3.9 VNC login fails with wrong password](#639-vnc-login-fails-with-wrong-password)
+   - [6.3.9 VNC login with failures](#639-vnc-login-with-failures)
    - [6.3.10 Ubuntu Snap Issues](#6310-ubuntu-snap-issues)
 - [6.4 Lab Issues](#64-lab-issues)
    - [6.4.1 No working init found](#641-no-working-init-found)
@@ -1671,7 +1671,26 @@ Open the left sidebar, press the 'Fullscreen' button.
 
 The VNC connection may hang for some unknown reasons and therefore Linux Lab may not response sometimes, to restore it, please press the flush button of web browser or re-connect after explicitly disconnect.
 
-### 6.3.9 VNC login fails with wrong password
+### 6.3.9 VNC login with failures
+
+If VNC login return "Disconnect timeout", wait a while and press the left 'Connect' button again, otherwise, check as following:
+
+At first, check the containers' status (Up: Ok, Exit: Bad):
+
+    $ docker ps -a
+    CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+    19a61ba075b5 tinylab/linux-lab "/tools/lab/run" 4 days ago Up 4 days 22/tcp, 5900/tcp linux-lab-21575
+    75dae89984c9 tinylab/cloud-ubuntu-web "/startup.sh" 8 days ago Up 8 days ....443/tcp cloud-ubuntu-web
+
+If the status is 'Exit', that means container may be shutdown or may never up, run it again to resume for the shutdown case:
+
+    $ tools/docker/run linux-lab
+
+Otherwise, check the running logs:
+
+    $ tools/docker/logs linux-lab
+
+If normal, that means the login account and password may have been invalid for some exceptions, please regenerte new account and password with the coming steps:
 
 **Note**: The `clean` command will remove some containers and data, please do necessary backup before run it, for example, save the container:
 

@@ -445,7 +445,7 @@ endif
 
 ifeq ($(app),)
   app := kernel
-  ifeq ($(MAKECMDGOALS),list)
+  ifeq ($(filter $(MAKECMDGOALS),list help),$(MAKECMDGOALS))
     app := default
   endif
 endif
@@ -3311,7 +3311,7 @@ env-dump:
 
 env-save: board-config
 
-lab-help:
+default-help:
 	$(Q)cat README.md
 
 PHONY += env env-list env-prepare env-dump env-save lab-help

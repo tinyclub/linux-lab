@@ -1392,7 +1392,7 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(subst force-update,master,$$(_$(2))) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC) && $$(if $$(BSP_CHECKOUT),git pull,git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2))) && cd $$(TOP_DIR); \
 	fi
 	$$(Q)touch $$@
 
@@ -1597,8 +1597,11 @@ else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
+ifeq ($(findstring bsp-checkout, $(MAKECMDGOALS)), bsp-checkout)
+  BSP_CHECKOUT := 1
+endif
+
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)
-export BSP=force-update
 bsp: force-bsp-checkout
 PHONY += bsp
 endif

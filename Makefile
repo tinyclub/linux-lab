@@ -515,6 +515,17 @@ ifneq ($(HOST_GCC),)
   HOST_GCC_SWITCH := 1
 endif
 
+# tuning notify method
+notice := error
+# stop error for force targets ??
+ifeq ($(findstring xforce, x$(MAKECMDGOALS)), xforce)
+  notice := warning
+endif
+# warning instead of error for bsp downloading
+ifeq ($(findstring xbsp, x$(MAKECMDGOALS)),xbsp)
+  notice := warning
+endif
+
 # generate verify function
 define genverify
  ifneq ($$($2),)
@@ -528,7 +539,18 @@ define genverify
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
-      $$(error Supported $(2) list: $$($(2)_LIST))
+      verify_notice_1 := $$($2) is not supported
+      verify_notice_2 := Supported $(2) list: $$($(2)_LIST)
+      verify_notice_3 := Update bsp may help: 'make bsp B=$$(BOARD)'
+      ifeq ($$(notice), error)
+        $$(warning ERR: $$(verify_notice_1))
+        $$(warning ERR: $$(verify_notice_2))
+        $$(error ERR: $$(verify_notice_3))
+      else
+        $$(warning WARN: $$(verify_notice_1))
+        $$(warning WARN: $$(verify_notice_2))
+        $$(warning WARN: $$(verify_notice_3))
+      endif
     endif
   endif
  endif

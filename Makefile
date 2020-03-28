@@ -1098,6 +1098,15 @@ board-edit:
 board-config: board-save
 	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
+BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
+
+local-edit:
+	$(Q)touch $(BOARD_LABCONFIG)
+	$(Q)vim $(BOARD_LABCONFIG)
+
+local-config: board-save
+	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
+
 PHONY += board-config board-edit
 
 # Plugin targets

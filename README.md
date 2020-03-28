@@ -31,7 +31,8 @@
    - [3.1.1 List available boards](#311-list-available-boards)
    - [3.1.2 Choosing a board](#312-choosing-a-board)
    - [3.1.3 Using as plugins](#313-using-as-plugins)
-- [3.3 Build in one command](#33-build-in-one-command)
+   - [3.1.4 Configure boards](#314-configure-boards)
+- [3.2 Build in one command](#32-build-in-one-command)
 - [3.3 Detailed Operations](#33-detailed-operations)
    - [3.3.1 Downloading](#331-downloading)
    - [3.3.2 Checking out](#332-checking-out)
@@ -404,7 +405,25 @@ Here maintains the available plugins:
 - [C-Sky Linux](https://gitee.com/tinylab/csky)
 - [Loongson Linux](https://gitee.com/loongsonlab/loongson)
 
-## 3.3 Build in one command
+### 3.1.4 Configure boards
+
+Every board has its own configuration, some can be changed on demand, for example, memory size, linux version, buildroot version, qemu version and the other external devices, such as serial port, network devices and so on.
+
+The configure method is very simple, just edit it by referring to current values (`boards/<BOARD>/Makefile`), this command open local configuration (`boards/<BOARD>/.labconfig`) via vim:
+
+    $ make local-edit
+
+But please don't make a big change once, we often only need to tune linux version, this command is better for such case:
+
+    $ make list-linux
+    v4.12 v4.5.5 v5.0.10 [v5.1]
+    $ make local-config LINUX=v5.0.10
+    $ make list-linux
+    v4.12 v4.5.5 [v5.0.10] v5.1
+
+If want to upstream your local changes, please use `board-edit` and `board-config`, otherwise, `local-edit` and `local-config` are preferrable, for they will avoid conflicts while pulling remote updates.
+
+## 3.2 Build in one command
 
 v0.3+ version add target dependency by default, so, if want to compile a kernel, just run:
 

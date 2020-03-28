@@ -1192,13 +1192,12 @@ endif
 
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
-		echo $($(call _uc,$(subst list-,,$@))_LIST); \
+		echo $($(call _uc,$(subst list-,,$@))_LIST) | sed -e 's%$($(call _uc,$(subst list-,,$@)))%[$($(call _uc,$(subst list-,,$@)))]%g'; \
 	else					\
 		if [ $(shell make --dry-run -s $(subst list-,,$@)-list >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 			make -s $(subst list-,,$@)-list; \
 		fi		\
 	fi
-
 
 PHONY += board-info list list-base list-plugin list-full
 
@@ -1439,7 +1438,7 @@ define gengoals
 #_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $(1)-list:
-	$$(Q)echo $$($(2)_LIST)
+	$$(Q)echo $$($(2)_LIST) | sed -e 's%$$($(2))%[$$($(2))]%g'
 
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))

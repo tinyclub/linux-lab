@@ -1642,6 +1642,17 @@ In order to switch English/Chinese input method, please use `CTRL+s` shortcuts, 
 
 ### 6.3.5 How to tune the screen size
 
+There are tow methods to tune the screen size, one is auto scaling by noVNC, another is pre-setting during launching.
+
+The first one is setting noVNC before connecting.
+
+    * Press the left sidebar of noVNC web page
+    * Disconnect
+    * Enable 'Auto Scaling Mode' via 'Settings -> Scaling Mode: -> Local Scaling -> Apply'
+    * Connect
+
+The second one is setting `SCREEN_SIZE` while running Linux Lab.
+
 The screen size of lab is captured by xrandr, if not work, please check and set your own, for example:
 
 Get available screen size values:

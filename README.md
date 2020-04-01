@@ -282,10 +282,30 @@ Summary of login methods:
 
 |   Login Method |   Description      |  Default User    |  Where               |
 |----------------|--------------------|------------------|----------------------|
-|   webvnc/vnc   | web desktop        |  ubuntu          | anywhere via internet|
+|   webvnc       | web desktop        |  ubuntu          | anywhere via internet|
 |   webssh       | web ssh            |  ubuntu          | anywhere via internet|
-|   ssh          | normal ssh         |  ubuntu          | localhost            |
 |   bash         | docker bash        |  ubuntu          | localhost            |
+|   ssh          | normal ssh         |  ubuntu          | localhost            |
+|   vnc          | normal vnc         |  ubuntu          | localhost+VNC client |
+
+Since vnc clients differs from operating systems, we use webvnc by default to make sure auto login vnc for all systems.
+
+If really want to use local vnc clients, please use the 'IP' and 'Normal Password' printed by `tools/docker/webvnc`, for example, `vinagre` or `remmina` can be used by Ubuntu users.
+
+    $ tools/docker/vnc linux-lab
+    ...
+    Please login via VNC Client with:
+
+          IP: 172.17.0.3
+        User: 7827c9 (Only for noVNC)
+    Password: nl7fxd (Normal)
+    Password: fmkv7w (View)
+    ...
+
+    $ sudo apt-get install vinagre
+
+    // After connected, input the above 'Normal' Password, the 'View' one is only for students.
+    $ vinagre 172.17.0.3
 
 ## 2.5 Update and rerun the lab
 

@@ -180,7 +180,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 |3   | 预置组件   | 提供上述组件的预先编译版本，并按开发板分类存放，可即时下载使用                       |
 |4   | 根文件系统 | 支持 initrd，harddisk，mmc 和 nfs; ARM 架构提供 Debian 系统                          |
 |5   | Docker     | 交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链                               |
-|6   | 灵活访问   | 支持通过本地或网络访问，支持 bash, ssh, web ssh, web vnc                             |
+|6   | 灵活访问   | 支持通过本地或网络访问，支持 bash, ssh, vnc, web ssh, web vnc                        |
 |7   | 网络       | 内置桥接网络支持，每个开发板都支持网络（Raspi3 是唯一例外）                          |
 |8   | 启动       | 支持串口、Curses（用于 `ssh` 访问）和图形化方式启动                                  |
 |9   | 测试       | 支持通过 `make test` 命令对目标板进行自动化测试                                      |
@@ -332,10 +332,30 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 |   登录方法     |   描述             |  缺省用户        |  登录所在地          |
 |----------------|--------------------|------------------|----------------------|
-|   webvnc/vnc   | web 桌面           |  ubuntu          | 互联网在线即可       |
+|   webvnc       | web 桌面           |  ubuntu          | 互联网在线即可       |
 |   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
-|   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
 |   bash         | docker bash        |  ubuntu          | 本地主机             |
+|   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
+|   vnc          | 普通 桌面          |  ubuntu          | 本地主机+VNC client  |
+
+由于普通的 vnc 客户端五花八门，所以当前默认采用 webvnc，确保可以在各个平台能自动登陆。
+
+如果大家要使用本地 vnc 客户端，可以使用 `tools/docker/webvnc` 打印出来的 `IP` 和 `Normal Password`，例如，Ubuntu 的用户可以使用 vinagre 或 remmina：
+
+    $ tools/docker/vnc linux-lab
+    ...
+    Please login via VNC Client with:
+
+          IP: 172.17.0.3
+        User: 7827c9 (Only for noVNC)
+    Password: nl7fxd (Normal)
+    Password: fmkv7w (View)
+    ...
+
+    $ sudo apt-get install vinagre
+
+    // 用下面的命令连接后，输入 "Normal" 后面的密码即可，"View" 后面的密码只能看，不能操作，可以给学生用。
+    $ vinagre 172.17.0.3
 
 ## 2.5 更新实验环境并重新运行
 

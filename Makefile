@@ -1394,7 +1394,7 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && $$(if $$(BSP_CHECKOUT),git pull,git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2))) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && $$(if $$(BSP_CHECKOUT),git pull,echo) && cd $$(TOP_DIR); \
 	fi
 	$$(Q)touch $$@
 

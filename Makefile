@@ -1394,7 +1394,7 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && $$(if $$(BSP_CHECKOUT),git pull,echo) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
 	fi
 	$$(Q)touch $$@
 
@@ -1590,17 +1590,14 @@ PHONY += $(1)-env
 endef #genenvdeps
 
 # Build bsp targets
-BSP ?= master
+# Always checkout the latest commit for bsp
+BSP ?= FETCH_HEAD
 _BSP ?= $(BSP)
 
 ifeq ($(_PLUGIN),1)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
 else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
-endif
-
-ifeq ($(findstring bsp-checkout, $(MAKECMDGOALS)), bsp-checkout)
-  BSP_CHECKOUT := 1
 endif
 
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)

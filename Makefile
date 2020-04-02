@@ -1371,8 +1371,8 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
 	@echo "Downloading $(1) source ..."
 	@echo
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC_FULL);	\
-		if [ $$(shell cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(_$(call _uc,$(2))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
+		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(_$(call _uc,$(2))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			$$($(call _uc,$(1))_GITADD); \
 			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin); \
 		fi;	\

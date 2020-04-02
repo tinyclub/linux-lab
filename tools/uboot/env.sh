@@ -2,6 +2,8 @@
 #
 # env.sh -- edit uboot environment for prebuilt uboot images
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 ROOT_IMAGE=${U_ROOT_IMAGE}
 DTB_IMAGE=${U_DTB_IMAGE}

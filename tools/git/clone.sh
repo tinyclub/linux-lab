@@ -2,6 +2,8 @@
 #
 # clone.sh -- clone a remote repo via git init + git fetch, update it if exist
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 git_repo_url=$1
 git_repo_dir=$2

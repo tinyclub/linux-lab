@@ -1,3 +1,4 @@
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
 _BASE    = 1
 ARCH     = x86
 XARCH    = x86_64

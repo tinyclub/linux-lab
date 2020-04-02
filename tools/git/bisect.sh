@@ -2,6 +2,8 @@
 #
 # bisect.sh -- find out the first bad change quickly
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # Usage:
 #
 #       $ cd linux-lab

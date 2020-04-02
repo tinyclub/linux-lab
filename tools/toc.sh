@@ -1,5 +1,9 @@
 #!/bin/bash
-
+#
+# toc.sh -- generate toc for READMEs
+#
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 TOP_DIR=$(cd $(dirname $0)/../ && pwd)
 

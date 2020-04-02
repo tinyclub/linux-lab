@@ -2,6 +2,8 @@
 #
 # run.sh -- test specified boards automatically
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # TODO:
 #      1. test core features of boards
 #      2. different boards should maintain a board feature list for specific linux version: nfsroot, 9pnet, graphic boot ...

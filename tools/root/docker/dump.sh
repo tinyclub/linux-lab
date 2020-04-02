@@ -2,6 +2,8 @@
 #
 # dump rootfs from running docker container
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # examples:
 #
 # $ tools/rootfs/docker/dump.sh container

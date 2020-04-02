@@ -2,6 +2,8 @@
 #
 # reader -- read fifo in backround
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 pipe_file=$1
 log_file=$2

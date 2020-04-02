@@ -2,6 +2,8 @@
 #
 # hd2dir.sh hrootfs rootdir -- harddisk fs image to directory, not mount
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 [ -z "$HROOTFS" ] && HROOTFS=$1
 [ -z "$ROOTDIR" ] && ROOTDIR=$2

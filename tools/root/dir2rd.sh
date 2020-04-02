@@ -2,6 +2,8 @@
 #
 # dir2rd.sh -- rebuild rootfs.cpio.gz from rootfs directory
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 [ -z "$ROOTDIR" ] && ROOTDIR=$1
 [ -z "$INITRD" ] && INITRD=$2

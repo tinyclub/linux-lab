@@ -2,6 +2,8 @@
 #
 # rootdev_type.sh -- get root type of a specified rootfs variable
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # It is able to be: rootfs directory, rootfs initrd (cpio.gz, cpio), rootfs harddisk image (.img, .ext2, .ext4 ...)
 #
 

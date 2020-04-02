@@ -2,6 +2,8 @@
 #
 # tags.sh -- list tags of all specified docker image
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 image=$1
 

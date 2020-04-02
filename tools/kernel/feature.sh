@@ -2,6 +2,8 @@
 #
 # kernel-feature.sh -- Apply the available kernel features
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 ARCH=$1
 XARCH=$2

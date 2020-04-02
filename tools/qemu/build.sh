@@ -2,6 +2,8 @@
 #
 # build.sh -- build all of the supported qemu-system-$(XARCH) and $(XARCH)-linux-user
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # Usage: build.sh VERSION QEMU_ALL ARCH_LIST
 #
 

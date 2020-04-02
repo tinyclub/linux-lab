@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# clean.sh -- clean modules
+#
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 KERNEL_OUTPUT=$1
 MODULE_PATH=$2

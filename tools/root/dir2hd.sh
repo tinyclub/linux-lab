@@ -2,6 +2,8 @@
 #
 # dir2hd.sh rootdir hrootfs fstype -- directory to harddisk fs image
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 [ -z "$ROOTDIR" ] && ROOTDIR=$1
 [ -z "$HROOTFS" ] && HROOTFS=$2

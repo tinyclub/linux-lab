@@ -2,6 +2,8 @@
 #
 # extract rootfs from docker image
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 # examples:
 #
 # $ tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64

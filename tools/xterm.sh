@@ -2,6 +2,8 @@
 #
 # xterm.sh -- get current terminal
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 # Default setting
 TERM_MATCH='term'

@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
 # Author: Wu Zhangjin <wuzhangjin@gmail.com>, wechat: lzufalcon, 2019-05-28
 #
 # calltrace-helper.sh -- analyze calltrace result, find out the issue lines and changes.

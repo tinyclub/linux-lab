@@ -2,6 +2,8 @@
 #
 # rd2dir.sh -- extract rootfs.cpio.gz to rootfs directory
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 [ -z "$INITRD" ] && INITRD=$1
 [ -z "$ROOTDIR" ] && ROOTDIR=$2

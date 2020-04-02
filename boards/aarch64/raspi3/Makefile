@@ -1,3 +1,4 @@
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
 # Raspberry Pi 3
 _BASE    = 1
 ARCH     = arm64

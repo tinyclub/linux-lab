@@ -2,6 +2,8 @@
 #
 # stop.sh -- stop testing of a kernel feature
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 [ -r /etc/default/testing ] && . /etc/default/testing
 

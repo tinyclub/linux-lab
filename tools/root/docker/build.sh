@@ -2,6 +2,8 @@
 #
 # build.sh -- build docker image from rootfs
 #
+# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+#
 
 TOP_DIR=$(cd $(dirname $0)/../../../ && pwd)
 PREBUILT_FULLROOT=$TOP_DIR/prebuilt/fullroot

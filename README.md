@@ -1173,12 +1173,11 @@ default:
 
 Simply put the files with a relative path in `system/`, install and rebuild the rootfs:
 
-    $ cd system/
     $ mkdir system/root/
     $ touch system/root/new_file
     $ make root-install
     $ make root-rebuild
-    $ make boot G=1
+    $ make boot
 
 ### 4.8.2 Share with NFS
 

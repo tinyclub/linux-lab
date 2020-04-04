@@ -1208,12 +1208,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 将文件放在 `system/` 的相对路径中，安装和重新制作 rootfs：
 
-    $ cd system/
     $ mkdir system/root/
     $ touch system/root/new_file
     $ make root-install
     $ make root-rebuild
-    $ make boot G=1
+    $ make boot
 
 上述操作在 root 用户目录下新增 `new_file` 文件。
 

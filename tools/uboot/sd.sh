@@ -32,4 +32,5 @@ if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]
   sudo umount $SD_DIR
 
   #sync
+  exit 0
 fi

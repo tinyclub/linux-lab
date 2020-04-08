@@ -302,20 +302,20 @@ $(eval $(call _ti,init.private,Makefile))
 $(eval $(call _ti,config,Makefile))
 $(eval $(call _ti,config.private,Makefile))
 
+$(eval $(call _ti,labconfig))
+$(eval $(call _hi,labconfig))
+
 # Loading board configurations
 ifneq ($(BOARD),)
   # include $(BOARD_DIR)/Makefile.init if exist
   $(eval $(call _bi,init.private,Makefile))
   $(eval $(call _bi,init,Makefile))
+  $(eval $(call _bi,labconfig))
   include $(BOARD_MAKEFILE)
   # include $(BOARD_DIR)/Makefile.fini if exist
   $(eval $(call _bi,fini,Makefile))
   $(eval $(call _bi,fini.private,Makefile))
-  $(eval $(call _bi,labconfig))
 endif
-
-$(eval $(call _ti,labconfig))
-$(eval $(call _hi,labconfig))
 
 # Customize kernel git repo and local dir
 $(eval $(call __vs,KERNEL_SRC,LINUX))

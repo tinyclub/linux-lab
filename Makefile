@@ -265,22 +265,11 @@ $(call _i,$(1),$(2),$(HOME_DIR))
 endef
 
 # Include board detailed configuration
-# Makefile.config/beforeconfig/afterconfig hooks for more
-
 define board_config
-$(call _bi,beforeconfig.private,Makefile)
-$(call _bi,beforeconfig,Makefile)
-
-$(call _bi,config.private,Makefile)
-$(call _bi,config,Makefile)
-
 $(call _bi,GCC,Makefile)
 $(call _bi,ROOT,Makefile)
 $(call _bi,NET,Makefile)
 $(call _bvi,LINUX,Makefile)
-
-$(call _bi,afterconfig,Makefile)
-$(call _bi,afterconfig.private,Makefile)
 endef
 
 define fixup_arch
@@ -295,26 +284,20 @@ ifneq ($$(IS_ARCH),0)
 endif
 endef
 
-# include Makefile.init if exist
-# the .private version is for user local customization, should not be added in mainline repository
-$(eval $(call _ti,init,Makefile))
-$(eval $(call _ti,init.private,Makefile))
-$(eval $(call _ti,config,Makefile))
-$(eval $(call _ti,config.private,Makefile))
+# include .labinit if exist
+$(eval $(call _ti,labinit))
 
 $(eval $(call _ti,labconfig))
 $(eval $(call _hi,labconfig))
 
 # Loading board configurations
 ifneq ($(BOARD),)
-  # include $(BOARD_DIR)/Makefile.init if exist
-  $(eval $(call _bi,init.private,Makefile))
-  $(eval $(call _bi,init,Makefile))
+  # include $(BOARD_DIR)/.labinit
+  $(eval $(call _bi,labinit))
   $(eval $(call _bi,labconfig))
   include $(BOARD_MAKEFILE)
-  # include $(BOARD_DIR)/Makefile.fini if exist
-  $(eval $(call _bi,fini,Makefile))
-  $(eval $(call _bi,fini.private,Makefile))
+  # include $(BOARD_DIR)/.labfini
+  $(eval $(call _bi,labfini))
 endif
 
 # Customize kernel git repo and local dir
@@ -3346,9 +3329,8 @@ default-help:
 
 PHONY += env env-list env-prepare env-dump env-save lab-help
 
-# include Makefile.fini if exist
-$(eval $(call _ti,fini,Makefile))
-$(eval $(call _ti,fini.private,Makefile))
+# include .labfini if exist
+$(eval $(call _ti,.labfini))
 
 #
 # override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input

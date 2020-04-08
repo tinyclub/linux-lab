@@ -92,6 +92,7 @@ BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
 HOME_DIR    := /home/$(USER)/
+GDBINIT_DIR := $(TOP_DIR)/.gdbinits
 
 # Search board in basic arch list while board name given without arch specified
 BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64 loongson csky
@@ -3238,11 +3239,11 @@ endif
 
 ifeq ($(DEBUG),uboot)
   GDB_CMD      ?= $(GDB) $(BIMAGE)
-  GDB_INIT     ?= $(TOP_DIR)/.uboot_gdbinit
+  GDB_INIT     ?= $(GDBINIT_DIR)/uboot
   DEBUG_DEPS   := uboot-build
 else
   GDB_CMD      ?= $(GDB) $(VMLINUX)
-  GDB_INIT     ?= $(TOP_DIR)/.kernel_gdbinit
+  GDB_INIT     ?= $(GDBINIT_DIR)/kernel
   DEBUG_DPES   := kernel-build
 endif
 
@@ -3273,7 +3274,7 @@ endif
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
-	$(Q)ln -sf $(notdir $(GDB_INIT)) .gdbinit
+	$(Q)ln -sf $(notdir $(GDBINIT_DIR))/$(notdir $(GDB_INIT)) .gdbinit
 	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
 	$(Q)$(DEBUG_CMD) &
 

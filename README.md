@@ -1034,7 +1034,7 @@ And then debug it directly:
 
     $ make debug
 
-It will open a new terminal, load the scripts from `.kernel_gdbinit`, run gdb automatically.
+It will open a new terminal, load the scripts from `.gdbinits/kernel`, run gdb automatically.
 
 It equals to:
 
@@ -1054,7 +1054,7 @@ find out the code line of a kernel panic address:
 
 ### 4.6.2 Debugging Uboot
 
-to debug uboot with `.uboot_gdbinit`:
+to debug uboot with `.gdbinits/uboot`:
 
     $ make debug uboot
     or

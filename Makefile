@@ -1627,6 +1627,12 @@ ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
  else
    # Use v2.12.0 by default
    QEMU_CONF ?= --disable-kvm
+
+   # FIXME: Disable qemu git update if already downloaded
+   # please replace 'exit 1' with 'exit 0' for git-submodule-update in qemu/Makefile at the same time
+   ifeq ($(QEMU_UPDATE),0)
+     QEMU_CONF += --disable-git-update
+   endif
  endif
 endif
 

@@ -404,10 +404,11 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-`ARCH` and `PLUGIN` arguments are supported:
+`ARCH`, `PLUGIN` and `FILTER` arguments are supported:
 
     $ make list ARCH=arm
     $ make list PLUGIN=loongson
+    $ make list FILTER=virt
 
 and more:
 

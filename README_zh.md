@@ -454,10 +454,11 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-如果只想查看特定的架构或插件，可以使用 `ARCH`，`PLUGIN`:
+如果只想查看特定的架构，插件或者模糊匹配，可以使用 `ARCH`，`PLUGIN`, `FILTER`:
 
     $ make list ARCH=arm
     $ make list PLUGIN=loongson
+    $ make list FILTER=virt
 
 更多用法:
 

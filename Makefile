@@ -1126,13 +1126,18 @@ PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
 INFO ?= raw
 
+# Allow filter by specified arch
+ifeq ($(origin ARCH),command line)
+  _ARCH := $(ARCH)
+endif
+
 ifneq ($(INFO),raw)
 
 # FIXME: ROOTDEV has been set to /dev/vda for riscv32/virt and exported, which is not supported by the other boards
 export ROOTDEV=/dev/ram0
 
 define getboardlist
-find $(BOARDS_DIR)/$(2) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
+find $(BOARDS_DIR)/$(or $(_ARCH),$(2)) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | tr -s '/' | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
 endef
 
 list-default:
@@ -1155,7 +1160,8 @@ list-full:
 else
 
 board-info:
-	$(Q)find $(BOARDS_DIR)/$(BOARD) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(_ARCH),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+		| tr -s '/' \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \

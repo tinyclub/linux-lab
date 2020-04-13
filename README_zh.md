@@ -454,6 +454,19 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
+如果只想查看特定的架构或插件，可以使用 `ARCH`，`PLUGIN`:
+
+    $ make list ARCH=arm
+    $ make list PLUGIN=loongson
+
+更多用法:
+
+    $ make list-board         # 仅显示 ARCH
+    $ make list-short         # ARCH 和 LINUX
+    $ make list-base          # 不包含插件
+    $ make list-plugin        # 仅包含插件
+    $ make list-full          # 所有板子信息
+
 ### 3.1.2 选择一个开发板
 
 系统缺省使用的开发板型号为 `vexpress-a9`，我们也可以自己配置，制作和使用其他的开发板，具体使用 `BOARD` 选项，举例如下：

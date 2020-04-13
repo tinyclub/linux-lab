@@ -404,6 +404,19 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
+`ARCH` and `PLUGIN` arguments are supported:
+
+    $ make list ARCH=arm
+    $ make list PLUGIN=loongson
+
+and more:
+
+    $ make list-board         # only ARCH
+    $ make list-short         # ARCH and LINUX
+    $ make list-base          # no plugin
+    $ make list-plugin        # only plugin
+    $ make list-full          # everything
+
 ### 3.1.2 Choosing a board
 
 By default, the default board: `vexpress-a9` is used, we can configure, build and boot for a specific board with `BOARD`, for example:

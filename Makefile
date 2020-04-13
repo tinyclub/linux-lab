@@ -1032,7 +1032,10 @@ endif # INVALID ROOT
 BOARD_TOOL := ${TOOL_DIR}/board/show.sh
 
 export GREP_COLOR=32;40
-FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
+# FILTER for board name
+FILTER   ?= .*
+# FILTER for board settings
+VAR_FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
 BTYPE    ?= ^_BASE|^_PLUGIN
 
@@ -1041,7 +1044,7 @@ cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eva
 endef
 
 define showboardvars
-echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(FILTER)"
+echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(VAR_FILTER)"
 endef
 
 ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
@@ -1137,7 +1140,7 @@ ifneq ($(INFO),raw)
 export ROOTDEV=/dev/ram0
 
 define getboardlist
-find $(BOARDS_DIR)/$(or $(_ARCH),$(2)) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | tr -s '/' | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
+find $(BOARDS_DIR)/$(or $(_ARCH),$(2)) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | tr -s '/' | egrep $(FILTER) | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
 endef
 
 list-default:
@@ -1161,23 +1164,23 @@ else
 
 board-info:
 	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(_ARCH),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| tr -s '/' \
+		| tr -s '/' | egrep "$(FILTER)" \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
 		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
-		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(FILTER)"
+		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(VAR_FILTER)"
 
 
 list-default:
-	$(Q)make $(S) board-info BOARD= FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
+	$(Q)make $(S) board-info BOARD= VAR_FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
 list-board:
-	$(Q)make $(S) board-info BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
+	$(Q)make $(S) board-info BOARD= VAR_FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
 
 list-short:
-	$(Q)make $(S) board-info BOARD= FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
+	$(Q)make $(S) board-info BOARD= VAR_FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
 
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"

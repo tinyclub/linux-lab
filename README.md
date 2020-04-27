@@ -4,7 +4,7 @@
 % \today
 --><!-- metadata end -->
 
-**Subscribe Wechat**：![Wechat Public](doc/tinylab-wechat.jpg)
+**Subscribe Wechat**：![Wechat Public](doc/images/tinylab-wechat.jpg)
 
 <!-- toc start -->
 
@@ -119,7 +119,7 @@ This project aims to create a Qemu-based Linux development Lab to easier the lea
 
 Linux Lab is open source with no warranty – use at your own risk.
 
-[![Docker Qemu Linux Lab](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+[![Docker Qemu Linux Lab](doc/images/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
 ## 1.2 Project Homepage
 
@@ -1826,4 +1826,4 @@ Our contact wechat is **tinylab**, welcome to join our user & developer discussi
 
 **Contact us and Sponsor via wechat:**
 
-![contact-sponsor](doc/contact-sponsor.png)
+![contact-sponsor](doc/images/contact-sponsor.png)

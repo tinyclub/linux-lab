@@ -6,7 +6,7 @@
 
 **订阅公众号，关注项目状态：**
 
-![扫码订阅 “泰晓科技” 公众号](doc/tinylab-wechat.jpg)
+![扫码订阅 “泰晓科技” 公众号](doc/images/tinylab-wechat.jpg)
 
 <!-- toc start -->
 
@@ -125,7 +125,7 @@
 
 Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用过程中的任何风险。
 
-[![Linux Lab 项目启动示意图](doc/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+[![Linux Lab 项目启动示意图](doc/images/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
 ## 1.2 项目主页
 
@@ -1857,4 +1857,4 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 **通过微信扫描下述二维码联系我们或提供赞助：**
 
-![Linux Lab 需要更多的用户或者赞助~ 加入我们吧！](doc/contact-sponsor.png)
+![Linux Lab 需要更多的用户或者赞助~ 加入我们吧！](doc/images/contact-sponsor.png)

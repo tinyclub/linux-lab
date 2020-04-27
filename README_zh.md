@@ -258,9 +258,9 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
       使用 [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 
-  - 更早的 Windows 版本
+  - 更早的 Windows 版本（含大部分老版本 Windows 10）
 
-      使用 [Docker Toolbox](https://www.docker.com/docker-toolbox) 或 Virtualbox/Vmware + Linux
+      通过 Virtualbox 或 Vmware 安装 Ubuntu 后使用
 
 在运行 Linux Lab 之前，请确保无需 `sudo` 权限也可以正常运行以下命令：
 
@@ -274,6 +274,9 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 使用 Linux Lab 过程中的常见 Docker 相关问题，请参考常见问题中的 6.1 节，镜像下载慢、下载超时、下载出错等问题都有详细解决方案。
 
 其他问题，请参考 [官方 Docker 文档](https://docs.docker.com)。
+
+**Ubuntu 用户安装手册**
+  - doc/install/ubuntu-docker.md
 
 **Windows 用户须知**：
 

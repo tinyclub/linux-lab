@@ -210,9 +210,9 @@ Docker is required by Linux Lab, please install it at first:
 
      [Docker CE](https://store.docker.com/search?type=edition&offering=community)
 
-  - older Windows
+  - older Windows (include some older Windows 10)
 
-     [Docker Toolbox](https://www.docker.com/docker-toolbox) or Virtualbox/Vmware + Linux
+     Install Ubuntu via Virtualbox or Vmware Virtual Machine
 
 Before running Linux Lab, please make sure the following command works without sudo and without any issue:
 
@@ -227,7 +227,10 @@ More docker related issues, such as download slowly, download timeout and downlo
 
 The other issues, please read the [official docker docs](https://docs.docker.com).
 
-**Notes for Windows User**:
+**Notes for Ubuntu Users**
+  - doc/install/ubuntu-docker.md
+
+**Notes for Windows Users**:
 
   - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)
 

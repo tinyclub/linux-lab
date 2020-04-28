@@ -55,5 +55,6 @@
 	path = boards/x86_64/pc/bsp
 	url = https://gitee.com/tinylab/qemu-x86_64-pc.git
 [submodule "boards/arm/mcimx6ul-evk/bsp"]
+	ignore = all
 	path = boards/arm/mcimx6ul-evk/bsp
 	url = https://gitee.com/tinylab/qemu-arm-mcimx6ul-evk.git

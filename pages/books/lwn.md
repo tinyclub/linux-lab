@@ -85,7 +85,12 @@ tags:
 				<p style="text-align: center;">调试与跟踪</p>
 			</a>
 		</td>
-		<td>&nbsp;</td>
+		<td width="33.3%">
+			<a href="/lwn-list-security">
+				<p style="text-align: center;"><img title="Security" src="/pages/lwn/pic/9.security.png"/></p>
+				<p style="text-align: center;">安全</p>
+			</a>
+		</td>
 	</tr>
 </table>
 

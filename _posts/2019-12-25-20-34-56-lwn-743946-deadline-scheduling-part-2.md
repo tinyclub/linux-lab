@@ -22,7 +22,7 @@ tags:
 > 原文：[Deadline scheduler part 2 — details and usage](https://lwn.net/Articles/743946/)
 > 原创：By Daniel Bristot de Oliveira @ Jan. 19, 2018
 > 翻译：By [unicornx](https://github.com/unicornx)
-> 校对：By [xxx](https://github.com/xxx)
+> 校对：By [Shaojie Dong](https://github.com/ShaojieDong)
 
 > Linux’s deadline scheduler is a global early deadline first scheduler for sporadic tasks with constrained deadlines. These terms were defined in [the first part of this series](https://lwn.net/Articles/743740/). In this installment, the details of the Linux deadline scheduler and how it can be used will be examined.
 

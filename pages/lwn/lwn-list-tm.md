@@ -35,6 +35,31 @@ tags:
 	</tr>
 </table>
 
+### Deadline scheduling
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-356576">Deadline scheduling for Linux</a></td>
+		<td>October. 13, 2009</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-575497">Deadline scheduling: coming soon?</a></td>
+		<td>December 4, 2013</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-743740">Deadline scheduling part 1 — overview and theory</a></td>
+		<td>January 16, 2018</td>
+	</tr>
+	<tr>
+		<td><a href="/lwn-743946">Deadline scheduler part 2 — details and usage</a></td>
+		<td>January 19, 2018</td>
+	</tr>
+</table>
+
 ### Group scheduling
 
 <table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
@@ -57,6 +82,19 @@ tags:
 	<tr>
 		<td><a href="/lwn-433904">A group scheduling demonstration</a></td>
 		<td>July 2, 2007</td>
+	</tr>
+</table>
+
+### Kernel Stack
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-600644">Expanding the kernel stack</a></td>
+		<td>May 29, 2014</td>
 	</tr>
 </table>
 

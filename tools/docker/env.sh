@@ -4,8 +4,9 @@
 #
 
 # Hardware
-#echo -n "Vendor:"
-#cat /proc/cpuinfo | grep 'vendor_id' | head -1 | cut -d':' -f2 | tr -s ' '
+echo "Product: `cat /sys/class/dmi/id/product_name`"
+
+echo "Board: `cat /sys/class/dmi/id/board_name`"
 
 echo "ARCH: `uname -p`"
 

@@ -51,7 +51,12 @@
 
 ### Step 2.2: 安装特定版本
 
+  列出所有版本：
+
     $ sudo apt-cache policy docker-ce
+
+  安装某个版本：
+
     $ sudo apt-get -y install docker-ce=18.09.4~3-0~ubuntu-bionic
 
 
@@ -61,18 +66,20 @@
 
     $ apt-cache search linux-image-4.15.*generic | tail -1 | cut -d' ' -f1
     linux-image-4.15.0-99-generic
-    $ sudo apt-get install linux-image-4.15.0-99-generic linux-modules-4.15.0-99-generic
+    $ sudo apt-get -y install linux-image-4.15.0-99-generic linux-modules-4.15.0-99-generic
 
-  记得同时安装上 `linux-image` 和 `linux-modules`，否则设备驱动可能异常。
+  记得**务必**同时安装上 `linux-image` 和 `linux-modules`，否则设备驱动可能异常。
 
   然后设置默认启动的内核版本：
 
     $ export GRUB_CONFIG=`sudo find /boot -name "grub.cfg"`
+
     $ sudo egrep '^menuentry|submenu ' /boot/grub/grub.cfg | cut -f 2 -d "'" | nl -v 0
      0	Ubuntu
      1	Advanced options for Ubuntu
      2	Memory test (memtest86+)
      3	Memory test (memtest86+, serial console 115200)
+
     $ sudo grep $'\tmenuentry ' /boot/grub/grub.cfg | cut -f 2 -d "'" | nl -v 0 | grep linux-image-4.15.0-99-generic | head -1
      3	Ubuntu, with Linux linux-image-4.15.0-99-generic
 

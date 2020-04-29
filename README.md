@@ -23,7 +23,7 @@
        - [ 1.5.2 Problems Solved](#-152-problems-solved)
        - [ 1.5.3 Project Born](#-153-project-born)
 - [2. Linux Lab Installation](#2-linux-lab-installation)
-    - [2.1 Hardware Requirement](#21-hardware-requirement)
+    - [2.1 Hardware and Software Requirement](#21-hardware-and-software-requirement)
     - [2.2 Docker Installation](#22-docker-installation)
     - [2.3 Choose a working directory](#23-choose-a-working-directory)
     - [2.4 Download the lab](#24-download-the-lab)
@@ -203,7 +203,7 @@ They have slept in my harddisk for several years without any attention, untill o
 
 # 2. Linux Lab Installation
 
-## 2.1 Hardware Requirement
+## 2.1 Hardware and Software Requirement
 
 Linux Lab is a full embedded Linux development system, it needs enough calculation capacity and disk & memory storage space, to avoid potential extension issues, here is the recommended configuration:
 
@@ -214,6 +214,20 @@ Linux Lab is a full embedded Linux development system, it needs enough calculati
 | Memory       | >= 4G            | Lower than 4G may have many unpredictable exceptions |
 
 If often use, please increase disk storage to 100G~200G and memory storage to 8G.
+
+And here is a list for verified operating systems for references:
+
+| OS         | System&Kernel Version | Docker version | Others                  |
+|------------|-----------------------|----------------|-------------------------|
+| Ubuntu     | 16.04 + 4.4           | 18.09.4        | terminator              |
+| Ubuntu     | 18.04 + 5.0/4.15      | 18.09.4        | Linux v5.3 has issue    |
+
+Some engineers have run CentOS，Windows 10 and Mac OSX, welcome [reply this issue](https://github.com/tinyclub/linux-lab/issues/5) to share yours, for example:
+
+    $ tools/docker/env.sh
+    System: Ubuntu 16.04.6 LTS
+    Linux: 4.4.0-176-generic
+    Docker: Docker version 18.09.4, build d14af54
 
 ## 2.2 Docker Installation
 

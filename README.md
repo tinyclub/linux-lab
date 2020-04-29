@@ -23,12 +23,13 @@
        - [ 1.5.2 Problems Solved](#-152-problems-solved)
        - [ 1.5.3 Project Born](#-153-project-born)
 - [2. Linux Lab Installation](#2-linux-lab-installation)
-    - [2.1 Docker Installation](#21-docker-installation)
-    - [2.2 Choose a working directory](#22-choose-a-working-directory)
-    - [2.3 Download the lab](#23-download-the-lab)
-    - [2.4 Run and login the lab](#24-run-and-login-the-lab)
-    - [2.5 Update and rerun the lab](#25-update-and-rerun-the-lab)
-    - [2.6 Quickstart: Boot a board](#26-quickstart-boot-a-board)
+    - [2.1 Hardware Requirement](#21-hardware-requirement)
+    - [2.2 Docker Installation](#22-docker-installation)
+    - [2.3 Choose a working directory](#23-choose-a-working-directory)
+    - [2.4 Download the lab](#24-download-the-lab)
+    - [2.5 Run and login the lab](#25-run-and-login-the-lab)
+    - [2.6 Update and rerun the lab](#26-update-and-rerun-the-lab)
+    - [2.7 Quickstart: Boot a board](#27-quickstart-boot-a-board)
 - [3. Linux Lab Kickstart](#3-linux-lab-kickstart)
     - [3.1 Using boards](#31-using-boards)
        - [ 3.1.1 List available boards](#-311-list-available-boards)
@@ -202,7 +203,19 @@ They have slept in my harddisk for several years without any attention, untill o
 
 # 2. Linux Lab Installation
 
-## 2.1 Docker Installation
+## 2.1 Hardware Requirement
+
+Linux Lab is a full embedded Linux development system, it needs enough calculation capacity and disk & memory storage space, to avoid potential extension issues, here is the recommended configuration:
+
+| Hardware     | Requirement      | Description                                          |
+|--------------|------------------|------------------------------------------------------|
+| Processor    | X86_64, > 1.5GHz | Must choose 64bit X86 while using virtual machine    |
+| Disk         | >= 50G           | System (25G), Docker Images(~5G), Linux Lab (20G)    |
+| Memory       | >= 4G            | Lower than 4G may have many unpredictable exceptions |
+
+If often use, please increase disk storage to 100G~200G and memory storage to 8G.
+
+## 2.2 Docker Installation
 
 Docker is required by Linux Lab, please install it at first:
 
@@ -237,7 +250,7 @@ The other issues, please read the [official docker docs](https://docs.docker.com
   - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
       - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
 
-## 2.2 Choose a working directory
+## 2.3 Choose a working directory
 
 If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
 
@@ -255,7 +268,7 @@ For Mac OSX, to compile Linux normally, please create a case sensitive filesyste
 
 **Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
 
-## 2.3 Download the lab
+## 2.4 Download the lab
 
 Use Ubuntu system as an example:
 
@@ -264,7 +277,7 @@ Download cloud lab framework, pull images and checkout linux-lab repository:
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## 2.4 Run and login the lab
+## 2.5 Run and login the lab
 
 Launch the lab and login with the user and password printed in the console:
 
@@ -310,7 +323,7 @@ If really want to use local vnc clients, please use the 'IP' and 'Normal Passwor
     // After connected, input the above 'Normal' Password, the 'View' one is only for students.
     $ vinagre 172.17.0.3
 
-## 2.5 Update and rerun the lab
+## 2.6 Update and rerun the lab
 
 If want a newer version, we **must** back up any local changes at first, for example, save the container:
 
@@ -332,7 +345,7 @@ Then rerurn linux lab:
 
     $ tools/docker/rerun linux-lab
 
-## 2.6 Quickstart: Boot a board
+## 2.7 Quickstart: Boot a board
 
 Issue the following command to boot the prebuilt kernel and rootfs on the default `vexpress-a9` board:
 

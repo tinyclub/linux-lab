@@ -1,3 +1,4 @@
+# Copyright (C) 2019-2020 Ping Wu <pingwu@mail.ustc.edu.cn>
 _BASE    = 1
 ARCH     = arm
 XARCH    = $(ARCH)

@@ -61,7 +61,9 @@
 
     $ apt-cache search linux-image-4.15.*generic | tail -1 | cut -d' ' -f1
     linux-image-4.15.0-99-generic
-    $ sudo apt-get install linux-image-4.15.0-99-generic
+    $ sudo apt-get install linux-image-4.15.0-99-generic linux-modules-4.15.0-99-generic
+
+  记得同时安装上 `linux-image` 和 `linux-modules`，否则设备驱动可能异常。
 
   然后设置默认启动的内核版本：
 

@@ -731,7 +731,7 @@ List supported options:
     $ make list UBOOT
     $ make list QEMU
 
-And more `xxx-list` are also supported with `list xxx`, for example:
+And more `<xxx>-list` are also supported with `list <xxx>`, for example:
 
     $ make list features
     $ make list modules
@@ -1323,7 +1323,7 @@ Linux Lab has added many assembly examples in `examples/assembly`:
 
 ## 4.10 Running any make goals
 
-Linux Lab allows to access Makefile goals easily via `xxx-run`, for example:
+Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:
 
     $ make kernel-run help
     $ make kernel-run menuconfig

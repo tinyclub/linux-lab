@@ -778,7 +778,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make list UBOOT
     $ make list QEMU
 
-使用 `list xxx` 可以实现更多 `xxx-list`，例如：
+使用 `list <xxx>` 可以实现更多 `<xxx>-list`，例如：
 
     $ make list features
     $ make list modules
@@ -1358,7 +1358,7 @@ Linux Lab 在 `examples/assembly` 目录下有许多汇编代码的例子：
 
 ## 4.10 运行任意的 make 目标
 
-Linux Lab 支持通过形如 `xxx-run` 方式访问 Makefile 中定义的目标，譬如：
+Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目标，譬如：
 
     $ make kernel-run help
     $ make kernel-run menuconfig

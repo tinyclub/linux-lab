@@ -5,7 +5,7 @@
 验证过的版本：
 
 - Ubuntu 16.04 LTS
-- Ubuntu 18.04 LTS
+- Ubuntu 18.04 LTS + Linux 5.0/4.15，已知某 Linux 5.3 内核有 Bug，如有异常请参考 Step 2.3
 - 待补充
 
 为加速安装，采用了阿里提供的镜像，参考 [“阿里的 docker-ce 的安装方法”](https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.53322f70PlMeFc)，本文在此基础上添加了一些自己的注释。
@@ -41,6 +41,7 @@
 
 ## Step 2: 安装 Docker CE
 
+### Step 2.1: 安装默认版本
 
   安装完成后自动启动 Docker CE 服务。
 
@@ -48,6 +49,36 @@
     $ sudo apt-get -y update
     $ sudo apt-get -y install docker-ce
 
+### Step 2.2: 安装特定版本
+
+    $ sudo apt-cache policy docker-ce
+    $ sudo apt-get -y install docker-ce=18.09.4~3-0~ubuntu-bionic
+
+
+### Step 2.3: 更换 Linux 内核版本
+
+  **注意**：在 Ubuntu 18.04 上，由于已知某 Linux 5.3 有 Bug，请卸载 5.3，替换为 5.0 或者 4.15。例如：
+
+    $ apt-cache search linux-image-4.15.*generic | tail -1 | cut -d' ' -f1
+    linux-image-4.15.0-99-generic
+    $ sudo apt-get install linux-image-4.15.0-99-generic
+
+  然后设置默认启动的内核版本：
+
+    $ export GRUB_CONFIG=`sudo find /boot -name "grub.cfg"`
+    $ sudo egrep '^menuentry|submenu ' /boot/grub/grub.cfg | cut -f 2 -d "'" | nl -v 0
+     0	Ubuntu
+     1	Advanced options for Ubuntu
+     2	Memory test (memtest86+)
+     3	Memory test (memtest86+, serial console 115200)
+    $ sudo grep $'\tmenuentry ' /boot/grub/grub.cfg | cut -f 2 -d "'" | nl -v 0 | grep linux-image-4.15.0-99-generic | head -1
+     3	Ubuntu, with Linux linux-image-4.15.0-99-generic
+
+  接着选择上面的 "Advanced options for Ubuntu"，它含子菜单，子菜单对应内核版本为第 3 项，所以默认配置为："1>3"：
+
+    $ sudo sed -ie 's/GRUB_DEFAULT=.*/GRUB_DEFAULT="1>3"/g' /etc/default/grub
+    $ sudo update-grub
+    $ sudo reboot
 
 ## Step 3: 把工作用户加入 docker 组，避免使用 root 帐号工作
 

@@ -3,14 +3,29 @@
 # env.sh -- list current system information
 #
 
+# Hardware
+#echo -n "Vendor:"
+#cat /proc/cpuinfo | grep 'vendor_id' | head -1 | cut -d':' -f2 | tr -s ' '
+
+echo "ARCH: `uname -p`"
+
+cpuinfo=`cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2 | tr -s ' '`
+cpunum=`cat /proc/cpuinfo | grep 'model name' | wc -l`
+echo "CPU: $cpunum x$cpuinfo"
+
+mem_size=`cat /proc/meminfo | egrep 'MemTotal' | tr -s ' ' | cut -d ' ' -f2 | xargs -i echo "scale=0;{}/1024" | bc -l`
+echo "RAM: $mem_size MiB"
+
 # System
-echo -n "System: "
-lsb_release -d | cut -d':' -f2 | tr -d '\t'
+system_desc="`lsb_release -d | cut -d':' -f2 | tr -d '\t'`"
+system_code="`lsb_release -c | cut -d':' -f2 | tr -d '\t'`"
+echo "System: $system_desc, $system_code"
 
 # Kernel
-echo -n "Linux: "
-uname -r
+echo "Linux: `uname -r`"
 
 # Docker
-echo -n "Docker: "
-docker --version
+echo "Docker: `docker --version`"
+
+# Shell
+echo "Shell: $SHELL $BASH_VERSION"

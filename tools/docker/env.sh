@@ -18,7 +18,7 @@ echo "Product: `cat /sys/class/dmi/id/product_name`"
 
 echo "Board: `cat /sys/class/dmi/id/board_name`"
 
-echo "ARCH: `uname -p`"
+echo "ARCH: `uname -m`"
 
 cpuinfo=`cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2 | tr -s ' '`
 cpunum=`cat /proc/cpuinfo | grep 'model name' | wc -l`
@@ -39,4 +39,17 @@ echo "Linux: `uname -r`"
 echo "Docker: `docker --version`"
 
 # Shell
-echo "Shell: $SHELL $BASH_VERSION"
+shell=`basename $SHELL`
+case $shell in
+  bash)
+       shell_version=$BASH_VERSION
+       ;;
+   zsh)
+       shell_version=$ZSH_VERSION
+       ;;
+   *)
+       shell_version=
+       ;;
+esac
+
+echo "Shell: $SHELL $shell_version"

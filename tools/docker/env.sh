@@ -1,7 +1,13 @@
 #!/bin/bash
 #
-# env.sh -- list current system information
+# env.sh -- list current system information of running docker
 #
+
+# dump system information of lab is not meaningful
+if [ -d '/configs' ]; then
+    echo "LOG: Please run this in host system, not in lab."
+    exit 0
+fi
 
 # Hardware
 echo "Product: `cat /sys/class/dmi/id/product_name`"

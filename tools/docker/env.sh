@@ -5,9 +5,13 @@
 
 # dump system information of lab is not meaningful
 if [ -d '/configs' ]; then
-    echo "LOG: Please run this in host system, not in lab."
-    exit 0
+    echo "ERR: Please run this in host system, not in lab."
+    exit 1
 fi
+
+# must already install docker
+docker --version 2>&1 >/dev/null
+[ $? -ne 0 ] && echo "ERR: No docker installed?" && exit 2
 
 # Hardware
 echo "Product: `cat /sys/class/dmi/id/product_name`"

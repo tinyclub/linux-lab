@@ -1459,6 +1459,11 @@ $$(call _stamp_$(1),patch):
 
 $(1)-patch: $$(call __stamp_$(1),patch)
 
+$(1)-savepatch:
+	$(Q)cd $$($(call _uc,$(1))_SRC) && git format-patch $$(_$2) && cd $$(TOP_DIR)
+	$(Q)mkdir -p $$(BSP_PATCH)/$(call _uc,$(2))/$$($2)/
+	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _uc,$(2))/$$($2)/
+
 $(1)-debug: _boot
 
 $(1)-boot: _boot
@@ -2769,11 +2774,6 @@ kernel-saveconfig:
 	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
 	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
-
-kernel-savepatch:
-	$(Q)cd $(KERNEL_SRC) && git format-patch $(_LINUX) && cd $(TOP_DIR)
-	$(Q)mkdir -p $(BSP_PATCH)/linux/$(LINUX)/
-	$(Q)cp $(KERNEL_SRC)/*.patch $(BSP_PATCH)/linux/$(LINUX)/
 
 root-saveconfig:
 	$(call make_root,savedefconfig)

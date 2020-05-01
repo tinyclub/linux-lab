@@ -1635,8 +1635,14 @@ ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
    # Use v2.12.0 by default
    QEMU_CONF ?= --disable-kvm
 
-   # FIXME: Disable qemu git update if already downloaded
+   # FIXME: Disable qemu git update if already downloaded, this helps workaround submodule update issue
    # please replace 'exit 1' with 'exit 0' for git-submodule-update in qemu/Makefile at the same time
+   #
+   #    export QEMU_UPDATE=0
+   #    make qemu-defconfig
+   #    sed -ie "s/exit 1)/exit 0)/g" qemu/Makefile
+   #    make qemu
+   #
    ifeq ($(QEMU_UPDATE),0)
      QEMU_CONF += --disable-git-update
    endif

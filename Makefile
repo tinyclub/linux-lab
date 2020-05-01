@@ -1461,8 +1461,8 @@ $(1)-patch: $$(call __stamp_$(1),patch)
 
 $(1)-savepatch:
 	$(Q)cd $$($(call _uc,$(1))_SRC) && git format-patch $$(_$2) && cd $$(TOP_DIR)
-	$(Q)mkdir -p $$(BSP_PATCH)/$(call _uc,$(2))/$$($2)/
-	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _uc,$(2))/$$($2)/
+	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
+	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
 
 $(1)-debug: _boot
 

@@ -1,0 +1,26 @@
+From 70eb1e9173f7bd26a02224c31e8fea74dbba581e Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Mon, 4 May 2020 03:51:18 +0800
+Subject: [PATCH] Makefile: Fix up undefine command
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 7c2067f..ddb1a40 100644
+--- a/Makefile
++++ b/Makefile
+@@ -34,7 +34,7 @@ else ifeq ("riscv32", $(MK_ARCH))
+ else ifeq ("riscv64", $(MK_ARCH))
+   export HOST_ARCH=$(HOST_ARCH_RISCV64)
+ endif
+-undefine MK_ARCH
++#undefine MK_ARCH
+ 
+ # Avoid funny character set dependencies
+ unexport LC_ALL
+-- 
+2.7.4
+

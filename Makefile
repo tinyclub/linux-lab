@@ -27,9 +27,6 @@ include core/verify/generic
 # Board targets
 include core/board/config
 
-# Toolchains targets
-include core/toolchain/config
-
 # Build bsp targets
 include core/bsp/config
 
@@ -47,6 +44,9 @@ include core/uboot/config
 
 # Boot, test and debug targets
 include core/boot/config
+
+# Toolchains targets
+include core/toolchain/config
 
 # Env targets
 include core/env/config

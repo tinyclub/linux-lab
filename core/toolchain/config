@@ -1,3 +1,9 @@
+ifneq ($(TOOLCHAON),)
+  include $(TOOLCHAIN)/Makefile
+else
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+endif
+
 _GCC := $(GCC)
 
 ifneq ($(GCC),)

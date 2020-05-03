@@ -59,4 +59,3 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 # prebuilt toolchain, please download it if not internal via: make toolchain
 # Available CCORI: internal, bootlin, arm
 CCORI   ?= internal
-include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile

@@ -26,8 +26,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
     HOST_GCC_$(2)_SWITCH := 1
   endif
 endif
-endef # genbuildenv
 
+endef # genbuildenv
 
 # tuning notify method
 notice := error

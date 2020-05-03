@@ -55,4 +55,3 @@ QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 CCORI   ?= gnu-mcu-eclipse
 # Force use riscv64 toolchain for us
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/riscv64
-include $(TOOLCHAIN)/Makefile

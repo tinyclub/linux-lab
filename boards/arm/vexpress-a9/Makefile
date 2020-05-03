@@ -8,7 +8,7 @@ QEMU    ?= v2.12.0
 # compile qemu-user with QEMU_US=1, by default only compile qemu-system-$(XARCH)
 # after enabling QEMU_US=1, qemu-system-$(XARCH) will not be compiled
 QEMU_US ?= 0
-UBOOT   ?= v2015.07
+UBOOT   ?= v2020.04
 LINUX   ?= v5.1
 
 # Uboot breaks 9pnet sharing, disable uboot if 9pnet share used
@@ -19,6 +19,7 @@ GCC[LINUX_v4.0.9] = 4.3
 GCC[LINUX_v4.12] = 4.7
 GCC[LINUX_v3.16.80] = 4.3
 GCC = 4.7
+CCORI[UBOOT_v2020.04] = linaro
 
 BUILDROOT?= 2016.05
 KRN_ADDR?= 0x60003000

@@ -1,0 +1,290 @@
+ifneq ($(GCC),)
+  # Force using internal CCORI if GCC specified
+  ifeq ($(CCORI),)
+    CCORI := internal
+  endif
+  GCC_SWITCH := 1
+endif
+
+ifneq ($(HOST_GCC),)
+  # Force using internal CCORI if GCC specified
+  ifeq ($(HOST_CCORI),)
+    HOST_CCORI := internal
+  endif
+  HOST_GCC_SWITCH := 1
+endif
+
+ifneq ($(XARCH), i386)
+  BUILDROOT_CCPRE  = $(XARCH)-linux-
+else
+  BUILDROOT_CCPRE  = i686-linux-
+endif
+BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
+
+# Add internal toolchain to list (the one installed in docker image)
+ifneq ($(CCPRE),)
+  ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    CCORI_INTERNAL := 1
+  endif
+  # Add builtin toolchain to list (the one builtin the bsp or plugin)
+  ifeq ($(CCORI),)
+    ifneq ($(CCPATH),)
+      ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+        CCORI_LIST += builtin
+      endif
+    endif
+  endif
+else
+  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+    ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI_INTERNAL := 1
+    endif
+  endif
+endif
+
+ifeq ($(CCORI_INTERNAL), 1)
+  ifneq ($(filter internal, $(CCORI_LIST)), internal)
+    CCORI_LIST += internal
+  endif
+endif
+
+# Add buidroot toolchain to list
+ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+  ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
+    CCORI_LIST += buildroot
+  endif
+  ifeq ($(CCORI), buildroot)
+    CCPATH := $(BUILDROOT_CCPATH)
+    CCPRE  := $(BUILDROOT_CCPRE)
+  endif
+endif
+
+CCORI ?= null
+
+# If no CCORI specified, check internal, buildroot, external one by one
+ifeq ($(CCORI), null)
+
+  # Check if there is a local toolchain
+  ifneq ($(CCPRE),)
+    ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI := internal
+    endif
+  else
+    ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+      ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+        CCORI := internal
+      endif
+    endif
+  endif
+
+  # Check if buildroot version exists
+  ifeq ($(CCPATH),)
+    ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI  := buildroot
+      CCPATH := $(BUILDROOT_CCPATH)
+      CCPRE  := $(BUILDROOT_CCPRE)
+    endif
+  else
+    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      CCORI := builtin
+    endif
+  endif
+
+else # CCORI != null
+
+  # Check if internal toolchain is there
+  ifeq ($(CCORI), internal)
+    ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      $(error ERR: No internal toolchain found, please find one via: make toolchain-list)
+    endif
+  endif
+
+  # Check if external toolchain downloaded
+  ifneq ($(filter $(CCORI), buildroot), $(CCORI))
+    ifneq ($(CCPRE),)
+      ifneq ($(CCPATH),)
+        ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+          # If CCORI specified and it is not there, just download one
+          ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+            CC_TOOLCHAIN := toolchain-source
+          else
+            $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+          endif
+        endif
+      endif
+    endif
+  endif
+
+endif # CCORI = null
+
+# If none exists
+ifeq ($(CCORI), null)
+  $(info ERR: No toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+endif
+
+CCORI_LIST ?= $(CCORI)
+
+ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+  $(error Supported gcc original list: $(CCORI_LIST))
+endif
+
+ifneq ($(LD_LIBRARY_PATH),)
+  ifneq ($(LLPATH),)
+    L_PATH=LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
+  else
+    L_PATH=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+  endif
+else
+  ifneq ($(LLPATH),)
+    L_PATH=LD_LIBRARY_PATH=$(LLPATH)
+  endif
+endif
+
+ifneq ($(CCPATH),)
+  C_PATH ?= env PATH=$(CCPATH):$(PATH) $(L_PATH)
+endif
+
+#$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
+
+TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
+
+
+toolchain-source: toolchain
+download-toolchain: toolchain
+gcc: toolchain
+
+include $(PREBUILT_TOOLCHAINS)/Makefile
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+endif
+
+SCRIPT_GETCCVER := tools/gcc/version.sh
+
+ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
+  _CCVER := gcc-$(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
+
+  ifneq ($(CCVER),)
+    ifeq ($(CCVER),$(_CCVER))
+      CCVER_EXIST := 0
+    endif
+    ifeq ($(CCVER),$(subst gcc-,,$(_CCVER)))
+      CCVER_EXIST := 0
+    endif
+    ifneq ($(CCVER_EXIST),0)
+      CCVER_EXIST := $(shell which gcc-$(subst gcc-,,$(CCVER)) 2>&1 >/dev/null; echo $$?)
+      ifeq ($(CCVER_EXIST),0)
+        ifeq ($(origin CCVER),command line)
+          $(warning gcc: $(CCVER) already installed.)
+        endif
+      endif
+    endif
+  else
+    CCVER := $(_CCVER)
+    CCVER_EXIST := 0
+  endif
+  ifeq ($(CCVER_EXIST),0)
+    override CCVER := $(_CCVER)
+  endif
+endif
+
+toolchain-install:
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifneq ($(CCVER_EXIST),0)
+	@echo
+	@echo "Installing prebuilt toolchain ..."
+	@echo
+	$(Q)sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+	$(Q)sudo apt-get -y update
+	$(Q)sudo apt-get install -y --force-yes $(CCVER)
+	$(Q)sudo apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib
+	$(Q)sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
+  endif
+else
+  ifneq ($(CCPATH), $(wildcard $(CCPATH)))
+	@echo
+	@echo "Downloading prebuilt toolchain ..."
+	@echo
+	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && \
+		tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN) && \
+		cd $(TOP_DIR)
+  endif
+endif
+
+toolchain: toolchain-install gcc-info
+
+toolchain-list:
+	@echo
+	@echo "Listing prebuilt toolchain ..."
+	@echo
+	$(Q)$(foreach ccori, $(CCORI_LIST), make $(S) gcc-info CCORI=$(ccori);)
+
+gcc-list: toolchain-list
+
+toolchain-info:
+	@echo
+	@echo [ $(CCORI) $(CCVER) ]:
+	@echo
+	@echo Remote.: $(CCURL)
+	@echo Local..: $(CCPATH)
+	@echo Tool...: $(CCPRE)gcc
+ifneq ($(CCPATH), $(wildcard $(CCPATH)))
+	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
+else
+	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
+endif
+ifeq ($(CCORI), internal)
+	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
+endif
+	@echo
+
+gcc-info: toolchain-info
+gcc-version: toolchain-info
+toolchain-version: toolchain-info
+
+toolchain-clean:
+ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifeq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
+	$(Q)sudo apt-get remove --purge $(CCVER)
+  endif
+else
+  ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+     ifneq ($(CCBASE),)
+	$(Q)rm -rf $(TOOLCHAIN)/$(CCBASE)
+     endif
+  endif
+endif
+
+gcc-clean: toolchain-clean
+
+PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain-list gcc-list gcc-clean gcc
+
+ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
+  _CCORI := $(shell grep --color=always ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
+endif
+
+ifneq ($(_CCORI),$(CCORI))
+  ifneq ($(filter $(CCORI),internal buildroot),$(CCORI))
+    UPDATE_CCORI := 1
+  endif
+endif
+
+toolchain-switch:
+ifneq ($(GCC),)
+	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
+else
+  ifeq ($(UPDATE_CCORI),1)
+	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
+	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+  else
+	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
+	@echo "       e.g. make toolchain-switch CCORI=bootlin"
+	@echo "            make toolchain-switch CCORI=internal GCC=4.3"
+	@echo "            make toolchain-switch GCC=4.3       # If CCORI is already internal"
+	$(Q)make $(S) toolchain-list
+  endif
+endif
+
+gcc-switch: toolchain-switch gcc-info
+
+PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info

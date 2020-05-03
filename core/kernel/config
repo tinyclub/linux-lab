@@ -1,0 +1,628 @@
+# Linux configurations
+LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)
+LINUX_KIMAGE  := $(KERNEL_OUTPUT)/$(ORIIMG)
+LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(UORIIMG)
+
+ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
+  PBK ?= 0
+else
+  PBK := 1
+endif
+
+# Customize DTS?
+_DTS := $(DTS)
+
+ifeq ($(DTS),)
+  ifneq ($(ORIDTS),)
+    DTS    := $(KERNEL_SRC)/$(ORIDTS)
+    ORIDTB ?= $(ORIDTS:.dts=.dtb)
+  endif
+  ifneq ($(ORIDTB),)
+    ORIDTS := $(ORIDTB:.dtb=.dts)
+    DTS    := $(KERNEL_SRC)/$(ORIDTS)
+  endif
+endif
+
+ifneq ($(DTS),)
+  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(shell echo $(DTS) | sed -e "s%.*/dts/%%g"))
+  LINUX_DTB  := $(KERNEL_OUTPUT)/$(ORIDTB)
+  ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
+    ifneq ($(ORIDTB),)
+      PBD ?= 0
+    else
+      PBD := 1
+    endif
+  else
+    PBD := 1
+  endif
+endif
+
+PKIMAGE ?= $(LINUX_PKIMAGE)
+KIMAGE  ?= $(LINUX_KIMAGE)
+UKIMAGE ?= $(LINUX_UKIMAGE)
+DTB     ?= $(LINUX_DTB)
+
+ifeq ($(PBK),0)
+  KIMAGE  := $(LINUX_KIMAGE)
+  UKIMAGE := $(LINUX_UKIMAGE)
+endif
+ifeq ($(PBD),0)
+  DTB := $(LINUX_DTB)
+endif
+
+
+# Kernel features configuration, e.g. kft, gcs ...
+f ?= $(feature)
+F ?= $(f)
+FEATURES ?= $(F)
+FEATURE ?= $(FEATURES)
+ifneq ($(FEATURE),)
+  FEATURE_ENVS := $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH) ]; then \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH); \
+			elif [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH) ]; then \
+			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH); fi))
+
+  ifneq ($(FEATURE_ENVS),)
+    include $(FEATURE_ENVS)
+  endif
+endif
+
+define make_kernel
+$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+endef
+
+_LINUX  := $(call _v,LINUX,LINUX)
+_KERNEL ?= $(_LINUX)
+
+# kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
+# see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
+#        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
+ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
+KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
+endif
+KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
+KERNEL_CONFIG_EXTRAFLAG := M=
+KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
+KERNEL_CLEAN_DEPS := kernel-modules-clean
+
+kernel-oldnoconfig: kernel-olddefconfig
+
+$(eval $(call genbuildenv,kernel,LINUX))
+#$(warning $(call gensource,kernel,LINUX))
+$(eval $(call gensource,kernel,LINUX))
+# Add basic kernel & modules deps
+#$(warning $(call gendeps,kernel))
+$(eval $(call gendeps,kernel))
+#$(warning $(call gengoals,kernel,LINUX))
+$(eval $(call gengoals,kernel,LINUX))
+# Configure Kernel
+#$(warning $(call gencfgs,kernel,linux,K))
+$(eval $(call gencfgs,kernel,linux,K))
+#$(warning $(call genclone,kernel,linux,K))
+$(eval $(call genclone,kernel,linux,K))
+#$(warning $(call genenvdeps,kernel,LINUX))
+$(eval $(call genenvdeps,kernel,LINUX))
+
+TOP_MODULE_DIR := $(TOP_DIR)/modules
+ifneq ($(PLUGIN),)
+  TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
+  ifeq ($(TMP),$(wildcard $(TMP)))
+    PLUGIN_MODULE_DIR := $(TMP)
+  endif
+else
+  PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -maxdepth 5 -type d -name "modules")
+endif
+
+EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
+KERNEL_MODULE_DIR := $(KERNEL_ABS_SRC)
+KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
+
+modules ?= $(m)
+module  ?= $(modules)
+ifeq ($(module),all)
+  module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
+endif
+
+internal_module := 0
+ifneq ($(M),)
+  ifneq ($(M),)
+    override M := $(patsubst %/,%,$(M))
+  endif
+  ifeq ($(M),$(wildcard $(M)))
+    ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M)),$(KERNEL_MODULE_DIR))
+      # Convert to relative path: must related to top dir of linux kernel, otherwise, will be compiled in source directory
+      M_PATH = $(subst $(KERNEL_MODULE_DIR)/,,$(M))
+      internal_module := 1
+    else
+      M_PATH ?= $(M)
+    endif
+  else
+    ifeq ($(KERNEL_MODULE_DIR)/$(M),$(wildcard $(KERNEL_MODULE_DIR)/$(M)))
+      M_PATH ?= $(M)
+      internal_module := 1
+    else
+      MODULES ?= $(M)
+    endif
+  endif
+endif
+
+MODULE ?= $(MODULES)
+ifeq ($(MODULE),)
+  ifneq ($(module),)
+    MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',' | sed -e 's%,$$%%g')
+  endif
+endif
+
+# Ignore multiple modules check here
+ifneq ($(module),)
+  MC ?= $(words $(subst $(comma),$(space),$(module)))
+endif
+
+# Only check module exists for 'module' target
+one_module := 0
+ifeq ($(MC),1)
+  ifeq ($(findstring _module,$(MAKECMDGOALS)),_module)
+    one_module := 1
+  endif
+endif
+
+ifeq ($(one_module),1)
+  ifeq ($(module),)
+    # Prefer user input instead of preconfigured
+    ifneq ($(M_PATH),$(wildcard $(M_PATH)))
+      ifneq ($(MODULE_CONFIG),)
+        module = $(MODULE_CONFIG)
+      endif
+      ifneq ($(MPATH_CONFIG),)
+        M_PATH ?= $(MPATH_CONFIG)
+      endif
+    endif
+  else
+    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
+    ifeq ($(M_PATH),)
+      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -iH "^obj-.*[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
+      ifneq ($(M_PATH),)
+        M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
+        internal_module :=1
+      endif
+    endif
+
+    ifeq ($(M_PATH),)
+      $(error 'ERR: No such module found: $(module), list all by: `make m-l`')
+    else
+      $(info LOG: m=$(module) ; M=$(M_PATH))
+    endif
+  endif # module not empty
+endif   # ext_one_module = 1
+
+ifneq ($(M_PATH),)
+  M_PATH := $(patsubst %/,%,$(M_PATH))
+endif
+
+SCRIPTS_KCONFIG := tools/kernel/config
+DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
+
+ifneq ($(M_PATH),)
+modules-prompt:
+	@echo
+	@echo "  Current using module is $(M_PATH)."
+	@echo "  to compile modules under $(KERNEL_SRC), use 'make kernel-modules'."
+	@echo
+
+kernel-modules-save:
+	$(Q)$(shell echo "$(M_PATH)" > .mpath_config)
+	$(Q)$(shell echo "$(module)" > .module_config)
+
+
+KM ?= M=$(M_PATH)
+KERNEL_MODULES_DEPS := modules-prompt kernel-modules-save
+
+export KM
+endif
+
+PHONY += modules-prompt kernel-modules-save
+
+ifeq ($(internal_module),1)
+  MODULE_PREPARE := prepare
+else
+  MODULE_PREPARE := modules_prepare
+endif
+
+kernel-modules-km: $(KERNEL_MODULES_DEPS)
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
+		make -s $(NPD) feature feature=module; \
+		make -s $(NPD) kernel-olddefconfig; \
+		$(call make_kernel); \
+	fi
+	$(call make_kernel,$(MODULE_PREPARE))
+	$(Q)if [ -f $(KERNEL_SRC)/scripts/Makefile.modbuiltin ]; then \
+		$(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
+	else	\
+		$(call make_kernel,modules $(KM)); \
+	fi
+
+kernel-modules:
+	$(Q)make $(NPD) kernel-modules-km KM=
+
+ifneq ($(module),)
+  IMF ?= $(subst $(comma),|,$(module))
+  MF ?= egrep "$(IMF)"
+  internal_search := 1
+else
+  IMF :=.*
+  MF := cat
+endif
+
+# If m or M argument specified, search modules in kernel source directory
+ifneq ($(M),)
+  PF ?= egrep "$(subst $(comma),|,$(M))"
+  internal_search := 1
+else
+  PF := cat
+endif
+
+kernel-modules-list: kernel-modules-list-full
+
+kernel-modules-list-full:
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)/\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=\$$PWD/\1%g" | cat -n
+ifeq ($(internal_search),1)
+	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | cat -n
+endif
+
+PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
+
+M_I_ROOT ?= rootdir
+ifeq ($(PBR), 0)
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    M_I_ROOT := root-buildroot
+  endif
+endif
+
+# From linux-stable/scripts/depmod.sh, v5.1
+SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
+
+kernel-modules-install-km:
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+		if [ ! -f $(KERNEL_SRC)/scripts/depmod.sh ]; then \
+		    cd $(KERNEL_OUTPUT) && \
+		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
+		    cd $(TOP_DIR); \
+		fi;				\
+	fi
+
+kernel-modules-install: $(M_I_ROOT)
+	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+		$(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
+	fi
+
+ifeq ($(internal_module),1)
+  M_ABS_PATH := $(KERNEL_OUTPUT)/$(M_PATH)
+else
+  M_ABS_PATH := $(wildcard $(M_PATH))
+endif
+
+KERNEL_MODULE_CLEAN := tools/module/clean.sh
+kernel-modules-clean-km:
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_ABS_PATH)
+	$(Q)rm -rf .module_config
+
+kernel-modules-clean:
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT)
+
+PHONY += kernel-modules-install-km kernel-modules-install kernel-modules-clean
+
+_module: kernel-modules-km plugin-save
+module-list: kernel-modules-list plugin-save
+module-list-full: kernel-modules-list-full plugin-save
+_module-install: kernel-modules-install-km
+_module-clean: kernel-modules-clean-km
+
+modules-list: module-list
+modules-list-full: module-list-full
+
+module-test: kernel-test
+modules-test: module-test
+
+PHONY += _module module-list module-list-full _module-install _module-clean modules-list modules-list-full
+
+kernel-module: module
+module: FORCE
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nBuilding module: $(m) ...\n" && make $(NPD) _module m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nBuilding module: $(_M) ...\n" && make $(NPD) _module M=$(_M);) echo '')
+
+kernel-module-install: module-install
+module-install: FORCE
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nInstalling module: $(m) ...\n" && make $(NPD) _module-install m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nInstalling module: $(_M) ...\n" && make $(NPD) _module-install M=$(_M);) echo '')
+
+kernel-module-clean: module-clean
+module-clean: FORCE
+	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+		echo "\nCleaning module: $(m) ...\n" && make $(NPD) _module-clean m=$(m);) echo '')
+	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
+
+PHONY += kernel-module kernel-module-install kernel-module-clean
+
+# If no M, m/module/modules, M_PATH specified, compile internel modules by default
+ifneq ($(firstword $(MAKECMDGOALS)),list)
+
+ifneq ($(module)$(M)$(KM)$(M_PATH),)
+modules: module
+modules-install: module-install
+modules-clean: module-clean
+else
+modules: kernel-modules FORCE
+modules-install: kernel-modules-install
+modules-clean: kernel-modules-clean
+endif
+
+endif # skip modules target for list command
+
+PHONY += modules modules-install modules-clean module module-install module-clean
+
+# Build Kernel
+
+KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
+
+FPL ?= 1
+ifeq ($(filter $(FEATURE),debug module boot nfsroot initrd), $(FEATURE))
+  FPL := 0
+endif
+ifeq ($(FEATURE),boot,module)
+  FPL := 0
+endif
+
+FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
+
+kernel-feature:
+	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
+	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
+	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
+	else \
+	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-checkout' at first." && exit 1; \
+	fi
+
+ifneq ($(firstword $(MAKECMDGOALS)),list)
+feature: kernel-feature
+features: feature
+endif
+
+kernel-features: kernel-feature
+
+kernel-feature-list:
+	$(Q)echo [ $(FEATURE_DIR) ]:
+	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
+
+kernel-features-list: kernel-feature-list
+features-list: kernel-feature-list
+feature-list: kernel-feature-list
+
+ifneq ($(module),)
+  ifneq ($(FEATURE),)
+    FEATURE := $(FEATURE),module
+  else
+    FEATURE := module
+  endif
+endif
+
+PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
+
+kernel-feature-test: kernel-test
+kernel-features-test: kernel-feature-test
+features-test: kernel-feature-test
+feature-test: kernel-feature-test
+
+PHONY += kernel-feature-test kernel-features-test features-test feature-test
+
+IMAGE := $(notdir $(ORIIMG))
+
+ifeq ($(U),1)
+  IMAGE := uImage
+endif
+
+# Default kernel target is kernel image
+KT ?= $(IMAGE)
+ifneq ($(x),)
+  KT := $(x)
+endif
+
+# Allow to accept external kernel compile options, such as XXX_CONFIG=y
+KOPTS ?=
+
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  ROOT_RD := root-rd
+  # directory is ok, but is not compressed cpio
+  KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
+else
+  KOPTS   += CONFIG_INITRAMFS_SOURCE=
+endif
+
+# Update bootargs in dts if exists, some boards not support -append
+ifneq ($(DTS),)
+  ifeq ($(DTS),$(wildcard $(DTS)))
+
+# FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
+dtb: $(DTS)
+	@echo "Building dtb ..."
+	@echo "  DTS: $(DTS)"
+	@echo "  DTB: $(DTB)"
+	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
+ifeq ($(_DTS),)
+	$(Q)$(call make_kernel,$(DTB_TARGET))
+else
+	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
+	$(Q)mkdir -p $(dir $(DTB))
+	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
+endif
+
+# Pass kernel command line in dts, require to build dts for every boot
+KCLI_DTS ?= 0
+ifeq ($(KCLI_DTS),1)
+  BOOT_DTB := dtb
+endif
+KERNEL_DTB := dtb
+
+PHONY += dtb
+
+  endif
+endif
+
+# Ignore DTB and RD dependency if KT is not kernel image
+ifeq ($(KT),$(IMAGE))
+  KERNEL_DEPS := $(CC_TOOLCHAIN) $(KERNEL_DTB) $(ROOT_RD)
+endif
+
+ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)
+  ksetconfig := 1
+endif
+
+ifeq ($(ksetconfig),1)
+
+# y=MODULE, n=MODULE, m=MODULE, c=MODULE, s=STR, v=VALUE
+ifneq ($(m),)
+  KCONFIG_SET_OPT := -m $(m)
+  KCONFIG_GET_OPT := -s $(m)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(m)
+endif
+
+# c/o added for module option, when it is not the same as module name
+ifneq ($(c),)
+  KCONFIG_SET_OPT := -m $(c)
+  KCONFIG_GET_OPT := -s $(c)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(c)
+endif
+
+ifneq ($(o),)
+  KCONFIG_SET_OPT := -m $(o)
+  KCONFIG_GET_OPT := -s $(o)
+  KCONFIG_OPR := m
+  KCONFIG_OPT := $(o)
+endif
+
+ifneq ($(s),)
+  tmp := $(subst =,$(space),$(s))
+  KCONFIG_SET_OPT := --set-str $(tmp)
+  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
+  KCONFIG_OPR := s
+endif
+
+ifneq ($(v),)
+  tmp := $(subst =,$(space),$(v))
+  KCONFIG_SET_OPT := --set-val $(tmp)
+  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
+  KCONFIG_OPR := v
+endif
+
+ifneq ($(y),)
+  KCONFIG_SET_OPT := -e $(y)
+  KCONFIG_GET_OPT := -s $(y)
+  KCONFIG_OPR := y
+  KCONFIG_OPT := $(y)
+endif
+
+ifneq ($(n),)
+  KCONFIG_SET_OPT := -d $(n)
+  KCONFIG_GET_OPT := -s $(n)
+  KCONFIG_OPR := n
+  KCONFIG_OPT := $(n)
+endif
+
+endif #ksetconfig
+
+ifeq ($(filter _kernel-getconfig,$(MAKECMDGOALS)),_kernel-getconfig)
+  ifneq ($(o),)
+    KCONFIG_GET_OPT := -s $(o)
+  endif
+endif
+
+ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
+  o ?= $m
+endif
+
+kernel-getconfig: FORCE
+	$(Q)$(if $(o), $(foreach _o, $(shell echo $(o) | tr ',' ' '), \
+		__o=$(shell echo $(_o) | tr '[a-z]' '[A-Z]') && \
+		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
+
+_kernel-getconfig:
+	$(Q)printf "option state: $(o)="&& $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
+	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+
+kernel-config: kernel-setconfig
+kernel-setconfig: FORCE
+	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
+		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
+		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
+		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $o;), echo '')
+
+_kernel-setconfig:
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
+	$(Q)echo "Enabling new kernel config: $(KCONFIG_OPT) ..."
+ifeq ($(KCONFIG_OPR),m)
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
+	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
+
+	$(Q)make -s kernel-olddefconfig
+	$(Q)$(call make_kernel,prepare M=)
+else
+	$(Q)make -s kernel-olddefconfig
+endif
+	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
+	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
+	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+
+PHONY += kernel-getconfig kernel-config kernel-setconfig _kernel-getconfig _kernel-setconfig
+
+module-config: module-setconfig
+modules-config: module-setconfig
+
+module-getconfig: kernel-getconfig
+module-setconfig: kernel-setconfig
+
+PHONY += module-getconfig module-setconfig modules-config module-config
+
+_kernel: $(KERNEL_DEPS)
+	$(call make_kernel,$(KT))
+
+KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
+
+ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
+  ifneq ($(lastcall),)
+    LASTCALL ?= $(lastcall)
+  endif
+  ifeq ($(LASTCALL),)
+    $(error make kernel-calltrace lastcall=func+offset/length)
+  endif
+endif
+
+calltrace: kernel-calltrace
+kernel-calltrace: kernel-build
+	$(Q)$(KERNEL_CALLTRACE_TOOL) $(VMLINUX) $(LASTCALL) $(KERNEL_ABS_SRC) "$(C_PATH)" "$(CCPRE)"
+
+PHONY += kernel-calltrace calltrace
+
+kernel-save:
+	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
+	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
+	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG))
+	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
+	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
+
+# kernel < 2.6.36 doesn't support: `make savedefconfig`
+kernel-saveconfig:
+	-$(call make_kernel,savedefconfig M=)
+	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
+	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
+

@@ -1,0 +1,159 @@
+# Current variables: board, plugin, module
+BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)
+PLUGIN_CONFIG := $(shell cat .plugin_config 2>/dev/null)
+MODULE_CONFIG := $(shell cat .module_config 2>/dev/null)
+MPATH_CONFIG  := $(shell cat .mpath_config 2>/dev/null)
+
+# Board config: B/BOARD persistent, b/board temporarily
+board ?= $(b)
+B ?= $(board)
+ifeq ($(B),)
+  ifeq ($(BOARD_CONFIG),)
+    BOARD := arm/vexpress-a9
+  else
+    BOARD ?= $(BOARD_CONFIG)
+  endif
+else
+    BOARD := $(B)
+endif
+
+# Plugin config: P/PLUGIN persistent, p/plugin temporarily (FIXME: this feature is really required?)
+plugin ?= $(p)
+P ?= $(plugin)
+ifeq ($(P),)
+  ifeq ($(origin P), command line)
+    PLUGIN :=
+  else
+    ifneq ($(PLUGIN_CONFIG),)
+      PLUGIN ?= $(PLUGIN_CONFIG)
+    endif
+  endif
+else
+  PLUGIN := $(P)
+endif
+
+# Core directories
+TOOL_DIR    := tools
+BOARDS_DIR  := boards
+BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
+FEATURE_DIR := feature/linux
+TFTPBOOT    := tftpboot
+HOME_DIR    := /home/$(USER)/
+GDBINIT_DIR := $(TOP_DIR)/.gdbinits
+
+# Search board in basic arch list while board name given without arch specified
+BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64 loongson csky
+ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
+  ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
+  ifneq ($(ARCH),)
+    override BOARD     := $(ARCH)/$(BOARD)
+    override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
+    #$(info LOG: Current board is $(BOARD))
+  else
+    $(error ERR: $(BOARD) not exist, check available boards in 'make list')
+  endif
+endif
+
+# Check if it is a plugin
+BOARD_PREFIX:= $(subst /,,$(dir $(BOARD)))
+PLUGIN_DIR  := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
+PLUGIN_FLAG := $(PLUGIN_DIR)/.plugin
+
+ifneq ($(PLUGIN_FLAG), $(wildcard $(PLUGIN_FLAG)))
+  PLUGIN_DIR:=
+  _PLUGIN   := 0
+else
+  _PLUGIN   := 1
+endif
+
+# add board directories
+BOARD_ROOT ?= $(BOARD_DIR)/root
+BOARD_KERNEL ?= $(BOARD_DIR)/kernel
+BOARD_UBOOT ?= $(BOARD_DIR)/uboot
+BOARD_QEMU ?= $(BOARD_DIR)/qemu
+BOARD_TOOLCHAIN ?= $(BOARD_DIR)/toolchains
+
+# add a standlaone bsp directory
+BSP_DIR ?= $(BOARD_DIR)/bsp
+BSP_ROOT ?= $(BSP_DIR)/root
+BSP_KERNEL ?= $(BSP_DIR)/kernel
+BSP_UBOOT ?= $(BSP_DIR)/uboot
+BSP_QEMU ?= $(BSP_DIR)/qemu
+BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
+BSP_CONFIG = $(BSP_DIR)/configs
+BSP_PATCH  = $(BSP_DIR)/patch
+
+# Support old directory arch
+ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+  _BSP_CONFIG := $(BSP_CONFIG)
+else
+  _BSP_CONFIG := $(BOARD_DIR)
+endif
+
+# Get the machine name for qemu-system-$(XARCH)
+MACH ?= $(notdir $(BOARD))
+
+# Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
+PREBUILT_DIR        := $(TOP_DIR)/prebuilt
+PREBUILT_TOOLCHAINS := $(PREBUILT_DIR)/toolchains
+PREBUILT_ROOT       := $(PREBUILT_DIR)/root
+PREBUILT_KERNEL     := $(PREBUILT_DIR)/kernel
+PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
+PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
+PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
+
+# Core source: remote and local
+#QEMU_GIT ?= https://github.com/qemu/qemu.git
+QEMU_GIT ?= https://gitee.com/mirrors/qemu.git
+_QEMU_GIT := $(QEMU_GIT)
+_QEMU_SRC ?= qemu
+QEMU_SRC ?= $(_QEMU_SRC)
+
+#UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
+UBOOT_GIT ?= https://gitee.com/mirrors/u-boot.git
+_UBOOT_GIT := $(UBOOT_GIT)
+_UBOOT_SRC ?= u-boot
+UBOOT_SRC ?= $(_UBOOT_SRC)
+
+#KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
+#KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
+KERNEL_GIT ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
+_KERNEL_GIT := $(KERNEL_GIT)
+# git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+_KERNEL_SRC ?= linux-stable
+KERNEL_SRC ?= $(_KERNEL_SRC)
+
+# Use faster mirror instead of git://git.buildroot.net/buildroot.git
+#ROOT_GIT ?= https://github.com/buildroot/buildroot
+ROOT_GIT ?= https://gitee.com/mirrors/buildroot.git
+_ROOT_GIT := $(ROOT_GIT)
+_ROOT_SRC ?= buildroot
+ROOT_SRC ?= $(_ROOT_SRC)
+
+_LINUX=$(LINUX)
+KERNEL_ABS_SRC := $(TOP_DIR)/$(KERNEL_SRC)
+ROOT_ABS_SRC   := $(TOP_DIR)/$(ROOT_SRC)
+UBOOT_ABS_SRC  := $(TOP_DIR)/$(UBOOT_SRC)
+QEMU_ABS_SRC   := $(TOP_DIR)/$(QEMU_SRC)
+
+BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
+
+# include .labinit if exist
+$(eval $(call _ti,labinit))
+
+$(eval $(call _ti,labconfig))
+$(eval $(call _hi,labconfig))
+
+# Loading board configurations
+ifneq ($(BOARD),)
+  # include $(BOARD_DIR)/.labinit
+  $(eval $(call _bi,labinit))
+  $(eval $(call _bi,labconfig))
+  include $(BOARD_MAKEFILE)
+  # include $(BOARD_DIR)/.labfini
+  $(eval $(call _bi,labfini))
+endif
+
+# Customize kernel git repo and local dir
+$(eval $(call __vs,KERNEL_SRC,LINUX))
+$(eval $(call __vs,KERNEL_GIT,LINUX))

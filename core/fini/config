@@ -1,0 +1,58 @@
+
+# include .labfini if exist
+$(eval $(call _ti,.labfini))
+
+#
+# override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input
+# but warnings exists about 'overriding recipe for target 'xxx' when arguments are existing targets.
+#
+# ref: https://stackoverflow.com/questions/2214575/passing-arguments-to-make-run#
+#
+
+ifneq ($(APP_ARGS),)
+# ...and turn them into do-nothing targets
+$(eval $(APP_ARGS):FORCE;@:)
+endif
+
+ifneq ($(filter $(first_target),$(APP_TARGETS)),)
+PREFIX_TARGETS := list
+SILENT_TARGETS := list
+define silent_flag
+$(shell if [ "$(filter $(patsubst %-,,$(1)),$(SILENT_TARGETS))" = "$(1)" ]; then echo $$?; fi)
+endef
+
+define real_target
+$(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
+endef
+
+ifneq ($(BOARD_DOWNLOAD),)
+$(APP_TARGETS): $(BOARD_DOWNLOAD)
+	$(Q)make $(S) $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
+else
+$(APP_TARGETS): $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
+endif
+
+PHONY += $(APP_TARGETS)
+endif
+
+PHONY += $(APPS)
+
+ifneq ($(RUN_ARGS),)
+# ...and turn them into do-nothing targets
+$(eval $(RUN_ARGS):FORCE;@:)
+
+EXEC_TARGETS  := $(foreach t,$(APPS),$(t:=-run))
+ifneq ($(BOARD_DOWNLOAD),)
+$(EXEC_TARGETS): $(BOARD_DOWNLOAD)
+	$(Q)make $(S) $(subst -run,,$(first_target))
+else
+$(EXEC_TARGETS): $(subst -run,,$(first_target))
+endif
+
+PHONY += $(EXEC_TARGETS)
+endif
+
+# Allow cleanstamp and run a target
+force-%:
+	$(Q)make $(NPD) $(subst force-,,$@)-cleanstamp
+	$(Q)make $(NPD) $(subst force-,,$@)

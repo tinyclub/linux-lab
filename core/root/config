@@ -1,0 +1,306 @@
+define make_root
+$(C_PATH) make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+endef
+
+# TODO: buildroot defconfig for $ARCH
+
+# Verify rootdev argument
+#$(warning $(call genverify,ROOTDEV,ROOTDEV,,0))
+$(eval $(call genverify,ROOTDEV,ROOTDEV,,0))
+
+ROOTDEV ?= /dev/ram0
+$(eval $(call _vs,ROOTDEV,LINUX))
+FSTYPE  ?= ext2
+
+ROOTFS_UBOOT_SUFFIX    := .cpio.uboot
+ROOTFS_HARDDISK_SUFFIX := .$(FSTYPE)
+ROOTFS_INITRD_SUFFIX   := .cpio.gz
+
+# Real one
+BUILDROOT_ROOTDIR  :=  $(ROOT_OUTPUT)/target
+# As a temp variable
+_BUILDROOT_ROOTDIR :=  $(ROOT_OUTPUT)/images/rootfs
+
+BUILDROOT_UROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+BUILDROOT_HROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+BUILDROOT_IROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+
+PREBUILT_ROOT_DIR   ?= $(BSP_ROOT)/$(BUILDROOT)
+PREBUILT_KERNEL_DIR ?= $(BSP_KERNEL)/$(LINUX)
+PREBUILT_UBOOT_DIR  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)
+PREBUILT_QEMU_DIR   ?= $(BSP_QEMU)/$(QEMU)
+
+PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
+
+PREBUILT_UROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+PREBUILT_HROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+PREBUILT_IROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+
+# Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
+ROOTFS_TYPE_TOOL  := tools/root/rootfs_type.sh
+ROOTDEV_TYPE_TOOL := tools/root/rootdev_type.sh
+
+PBR ?= 0
+_PBR := $(PBR)
+
+ifeq ($(_PBR), 0)
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ifeq ($(PREBUILT_IROOTFS),$(wildcard $(PREBUILT_IROOTFS)))
+      PBR := 1
+    endif
+  endif
+endif
+
+# Proxy kernel is built in buildroot
+ifeq ($(PBR),0)
+  PKIMAGE   := $(LINUX_PKIMAGE)
+endif
+
+# Prefer ROOTFS: command line > environment override > buildroot > prebuilt
+ifeq ($(PBR),0)
+  ifeq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ROOTFS  := $(BUILDROOT_IROOTFS)
+    IROOTFS := $(BUILDROOT_IROOTFS)
+    UROOTFS := $(BUILDROOT_UROOTFS)
+    HROOTFS := $(BUILDROOT_HROOTFS)
+    ROOTDIR := $(BUILDROOT_ROOTDIR)
+  endif
+endif
+
+ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS) $(BSP_ROOT))
+ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
+
+#$(error ROOTFS_TYPE: $(ROOTFS_TYPE) ROOTDEV_TYPE:= $(ROOTDEV_TYPE))
+
+# FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
+ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+  ROOTFS := $(dir $(ROOTFS))
+  ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+endif
+
+ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+  INVALID_ROOTFS := 1
+  INVALID_ROOT := 1
+endif
+
+ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
+  INVALID_ROOTDEV := 1
+  INVALID_ROOT := 1
+endif
+
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+  ifeq ($(INVALID_ROOTFS),1)
+    $(error rootfs: $(ROOTFS_TYPE), try run 'make bsp' to get newer rootfs.)
+  endif
+  ifeq ($(INVALID_ROOTDEV),1)
+    $(error rootdev: $(ROOTDEV_TYPE), try run 'make bsp' to get newer rootfs.)
+  endif
+ endif
+endif
+
+ifneq ($(INVALID_ROOT),1)
+_ROOTFS_TYPE=$(subst $(comma),$(space),$(ROOTFS_TYPE))
+
+FS_TYPE   := $(firstword $(_ROOTFS_TYPE))
+FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
+FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
+
+# Buildroot use its own ROOTDIR in /target, not in images/rootfs
+ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
+  ifeq ($(FS_TYPE),dir)
+    ROOTDIR := $(FS_PATH)
+  else
+    ROOTDIR := $(FS_PATH:$(FS_SUFFIX)=)
+  endif
+
+  ifeq ($(FS_TYPE),rd)
+    IROOTFS := $(ROOTFS)
+  else
+    IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+  endif
+  ifeq ($(FS_TYPE),hd)
+    HROOTFS := $(ROOTFS)
+  else
+    HROOTFS := $(ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+  endif
+  UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+endif
+
+_ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
+DEV_TYPE      := $(firstword $(_ROOTDEV_TYPE))
+endif # INVALID ROOT
+
+_BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
+
+$(eval $(call genbuildenv,root,BUILDROOT))
+#$(warning $(call gensource,root,BUILDROOT))
+$(eval $(call gensource,root,BUILDROOT))
+# Add basic root dependencies
+#$(warning $(call gendeps,root))
+$(eval $(call gendeps,root))
+
+# Configure Buildroot
+GIT_CLEAN_EXTRAFLAGS[root] := -e dl/
+#$(warning $(call gengoals,root,BUILDROOT))
+$(eval $(call gengoals,root,BUILDROOT))
+
+ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
+
+#$(warning $(call gencfgs,root,buildroot,R))
+$(eval $(call gencfgs,root,buildroot,R))
+#$(warning $(call genclone,root,buildroot,R))
+$(eval $(call genclone,root,buildroot,R))
+#$(warning $(call genenvdeps,root,BUILDROOT)
+$(eval $(call genenvdeps,root,BUILDROOT))
+
+# Build Buildroot
+ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
+
+# Install kernel modules?
+IKM ?= 1
+
+ifeq ($(IKM), 1)
+  ifeq ($(KERNEL_OUTPUT)/.modules.order, $(wildcard $(KERNEL_OUTPUT)/.modules.order))
+    KERNEL_MODULES_INSTALL := module-install
+  endif
+endif
+
+root-buildroot:
+	$(call make_root,$(RT))
+
+# Install system/ to ROOTDIR
+root-install: root-dir
+	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+
+PHONY += root-buildroot root-install
+
+prebuilt_root_dir ?= $(PBR)
+ifeq ($(FS_TYPE),dir)
+  prebuilt_root_dir := 1
+endif
+
+build_root_uboot ?= 0
+ifeq ($(U),1)
+  ifeq ($(DEV_TYPE),rd)
+    build_root_uboot := 1
+  endif
+endif
+
+# root ramdisk image
+ifeq ($(FS_TYPE),rd)
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
+else
+  ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
+endif
+
+root-rd:
+	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rd-rebuild; fi
+
+root-rd-rebuild: FORCE
+	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
+
+ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
+
+ifeq ($(prebuilt_root_dir), 1)
+  ROOT_DIR := root-dir
+endif
+
+# This is used to repackage the updated root directory, for example, `make r-i` just executed.
+root-rebuild: $(ROOT_DIR)
+ifeq ($(prebuilt_root_dir), 1)
+	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
+	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
+else
+	$(call make_root)
+	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
+	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
+endif
+
+ROOT ?= rootdir
+ifeq ($(_PBR), 0)
+  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+    ROOT := root-buildroot
+  endif
+endif
+
+PHONY += root-rd root-rd-rebuild
+
+# Specify buildroot target
+
+RT ?= $(x)
+
+ifneq ($(RT),)
+  ROOT :=
+endif
+
+_root: $(ROOT)
+ifneq ($(RT),)
+	$(Q)$(call make_root,$(RT))
+else
+	$(Q)make $(NPD) root-install
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
+	$(Q)make $(NPD) root-rebuild
+endif
+
+# root directory
+ifneq ($(FS_TYPE),dir)
+  ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
+endif
+
+root-dir:
+	$(Q)if [ ! -d "${ROOTDIR}" ]; then make $(NPD) root-dir-rebuild; fi
+
+root-dir-rebuild: rootdir
+
+rootdir:
+ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
+	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
+endif
+
+rootdir-install: root-install
+
+rootdir-clean:
+	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
+
+rootdir-distclean: rootdir-clean
+
+PHONY += rootdir-distclean
+
+fullclean: $(call gengoalslist,distclean)
+	$(Q)git clean -fdx
+
+PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
+
+ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
+
+root-hd:
+	$(Q)if [ ! -f "$(HROOTFS)" ]; then make $(NPD) root-hd-rebuild; fi
+
+root-hd-rebuild: FORCE
+	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
+
+PHONY += root-hd root-hd-rebuild
+
+# Save the built images
+root-save:
+	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
+	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
+	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
+ifneq ($(PORIIMG),)
+	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
+	-$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG))
+endif
+
+root-saveconfig:
+	$(call make_root,savedefconfig)
+	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
+	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
+	then cp $(ROOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	else cp $(ROOT_OUTPUT)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
+

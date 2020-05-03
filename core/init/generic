@@ -1,0 +1,92 @@
+# Common functions
+
+_uc = $(shell echo $1 | tr a-z A-Z)
+_lc = $(shell echo $1 | tr A-Z a-z)
+_stamp = $(3)/.stamp_$(1)-$(2)
+
+## Version specific variable
+## GCC = GCC[LINUX_v2.6.12]
+##
+## GCC = 4.4
+## LINUX = v2.6.35
+## GCC[LINUX_v2.6.35] = 4.3
+##
+## A=$(call __v,GCC,LINUX), 4.3
+## B=$(call _v,GCC,LINUX),  4.4 if LINUX is not v2.6.35
+
+define __v
+$($(1)[$(2)_$($(2))])
+endef
+
+define _v
+$(if $(call __v,$1,$2),$(call __v,$1,$2),$(if $3,$3,$($1)))
+endef
+#$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
+
+define __vs
+ ifneq ($$(call __v,$(1),$(2)),)
+  $(3) $(1) := $$(call __v,$(1),$(2))
+ endif
+endef
+
+define _vs
+ $(1) := $$(call _v,$(1),$(2))
+endef
+
+# $(BOARD_DIR)/Makefile.linux_$(LINUX)
+define _f
+$(3)/$(2).$(1)
+endef
+
+define _vf
+$(call _f,$(if $(4),$(call _lc,$1)_$($1),$(1)),$(2),$(3))
+endef
+
+# include $(3)/$(2).lowcase($(1))_$(1)
+define _i
+  $(1)_$(2) := $$(call _vf,$(1),$(2),$(3),$(4))
+  ifeq ($$($(1)_$(2)),$$(wildcard $$($(1)_$(2))))
+    include $$($(1)_$(2))
+  endif
+endef
+
+# include $(BOARD_DIR)/Makefile.linux_$(LINUX)
+define _vi
+$(call _i,$(1),$(2),$(3),1)
+endef
+
+define _bvi
+$(call _vi,$(1),$(2),$(BOARD_DIR))
+endef
+
+define _bi
+$(call _i,$(1),$(2),$(BOARD_DIR))
+endef
+
+define _ti
+$(call _i,$(1),$(2),$(TOP_DIR))
+endef
+
+define _hi
+$(call _i,$(1),$(2),$(HOME_DIR))
+endef
+
+# Include board detailed configuration
+define board_config
+$(call _bi,GCC,Makefile)
+$(call _bi,ROOT,Makefile)
+$(call _bi,NET,Makefile)
+$(call _bvi,LINUX,Makefile)
+endef
+
+define fixup_arch
+ifneq ($$(KERNEL_SRC),)
+  ifneq ($$(_KERNEL_SRC),$$(KERNEL_SRC))
+    KERNEL_ABS_SRC := $$(KERNEL_SRC)
+  endif
+endif
+IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?)
+ifneq ($$(IS_ARCH),0)
+  ARCH  := $$(XARCH)
+endif
+endef

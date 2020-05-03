@@ -1,0 +1,121 @@
+#
+# Prefer new binaries to the prebuilt ones control
+#
+# PBK = 1, prebuilt kernel; 0, new building kernel if exist
+# PBR = 1, prebuilt rootfs; 0, new building rootfs if exist
+# PBD = 1, prebuilt dtb   ; 0, new building dtb if exist
+# PBQ = 1, prebuilt qemu  ; 0, new building qemu if exist
+# PBU = 1, prebuilt uboot ; 0, new building qemu if exist
+#
+# Allow using contrary alias: k/kernel,r/root,d/dtb,q/qemu,u/uboot for PBK,PBR,PBD,PBQ,PBU
+#
+# Notes: the uppercase of d,q,u has been used for other cases,
+# so, use the lowercase here.
+#
+
+define _pb
+ifneq ($$($(call _lc,$1)),)
+  ifeq ($$($(call _lc,$1))),1)
+    PB$1 := 0
+  else
+    PB$1 := 1
+  endif
+endif
+
+endef
+
+define _lpb
+__$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
+ifneq ($$($1),)
+  ifeq ($$($1),1)
+    PB$$(__$(1)) := 0
+  else
+    PB$$(__$(1)) := 1
+  endif
+endif
+ifneq ($(BUILD),)
+  ifeq ($(filter $(1),$(BUILD)),$(1))
+    PB$$(__$(1)) := 0
+  endif
+endif
+
+endef # _lpb
+
+define default_detectbuild
+ifneq ($$($(2)),)
+  override BUILD += $(1)
+endif
+
+endef
+
+
+# Support alias, root -> buildroot, kernel -> linux
+ifneq ($(BUILD),)
+  override BUILD := $(subst buildroot,root,$(subst linux,kernel,$(BUILD)))
+endif
+
+ifeq ($(BUILD),all)
+  override BUILD :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+#$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
+$(eval $(foreach x,K R D Q U,$(call _pb,$x)))
+
+#$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+$(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+
+first_target := $(firstword $(MAKECMDGOALS))
+ifneq ($(filter $(first_target),$(APP_TARGETS)),)
+  # use the rest as arguments for "run"
+  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+
+define cli_detectapp
+ifeq ($$(origin $(2)),command line)
+  APP += $(1)
+endif
+
+endef
+
+define default_detectapp
+ifneq ($$($(2)),)
+  override app += $(1)
+endif
+
+endef
+
+ifneq ($(APP_ARGS),)
+  APP := $(APP_ARGS)
+else
+  APP :=
+  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifneq ($(APP),)
+  app ?= $(APP)
+  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
+endif
+
+ifeq ($(app),all)
+  override app :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
+
+ifeq ($(app),)
+  app := kernel
+  ifeq ($(filter $(MAKECMDGOALS),list help),$(MAKECMDGOALS))
+    app := default
+  endif
+endif
+
+endif # common commands
+
+# If the first argument is "xxx-run"...
+reserve_target := $(first_target:-run=)
+
+ifeq ($(findstring -run,$(first_target)),-run)
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  x := $(RUN_ARGS)
+endif
+

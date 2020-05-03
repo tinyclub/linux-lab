@@ -1,0 +1,234 @@
+define make_uboot
+$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(ARCH) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+endef
+
+# Uboot configurations
+
+ifneq ($(UBOOT),)
+  ifeq ($(SHARE),1)
+    ifeq ($(call _v,UBOOT,SHARE),disabled)
+      # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
+      #        versatilepb works with 9pnet + uboot?
+      $(info LOG: 9pnet file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
+      UBOOT :=
+    endif
+  endif
+endif
+
+ifneq ($(UBOOT),)
+UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/u-boot
+PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/u-boot
+
+ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
+  PBU ?= 0
+else
+  PBU := 1
+endif
+
+ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
+  U ?= 1
+else
+  ifeq ($(PREBUILT_BIMAGE),$(wildcard $(PREBUILT_BIMAGE)))
+    U ?= 1
+  else
+    U := 0
+  endif
+endif
+
+BIMAGE ?= $(UBOOT_BIMAGE)
+ifeq ($(PBU),0)
+  BIMAGE := $(UBOOT_BIMAGE)
+endif
+
+ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+  ifeq ($(U),1)
+    app := uboot
+  endif
+  ifneq ($(U),0)
+    ifeq ($(filter command line,$(foreach i,PBU u uboot,$(origin $i))),command line)
+      app := uboot
+    endif
+  endif
+endif
+
+endif # UBOOT != ""
+
+# Use u-boot as 'kernel' if uboot used (while PBU=1/U=1 and u-boot exists)
+$(eval $(call __vs,U,LINUX))
+ifeq ($(U),1)
+  QEMU_KIMAGE := $(BIMAGE)
+else
+  QEMU_KIMAGE := $(KIMAGE)
+endif
+
+ifneq ($(UBOOT),)
+
+# Uboot targets
+_UBOOT  ?= $(call _v,UBOOT,UBOOT)
+
+PFLASH_BASE ?= 0
+PFLASH_SIZE ?= 0
+BOOTDEV ?= flash
+KRN_ADDR ?= -
+KRN_SIZE ?= 0
+RDK_ADDR ?= -
+RDK_SIZE ?= 0
+DTB_ADDR ?= -
+DTB_SIZE ?= 0
+UCFG_DIR := u-boot/include/configs
+
+#$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
+$(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
+
+ifeq ($(findstring sd,$(BOOTDEV)),sd)
+  SD_BOOT ?= 1
+endif
+ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
+  SD_BOOT ?= 1
+endif
+
+# By default, boot from tftp
+U_BOOT_CMD ?= bootcmd1
+ifeq ($(SD_BOOT),1)
+  U_BOOT_CMD := bootcmd2
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+  U_BOOT_CMD := bootcmd3
+endif
+
+ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  RDK_ADDR := -
+endif
+ifeq ($(DTS),)
+  DTB_ADDR := -
+endif
+
+export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
+
+UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
+UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
+UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
+UBOOT_CLEAN_DEPS := $(UBOOT_IMGS_DISTCLEAN)
+
+$(eval $(call genbuildenv,uboot,UBOOT))
+#$(warning $(call gensource,uboot,UBOOT))
+$(eval $(call gensource,uboot,UBOOT))
+# Add basic uboot dependencies
+#$(warning $(call gendeps,uboot))
+$(eval $(call gendeps,uboot))
+# Verify BOOTDEV argument
+#$(warning $(call gengoals,uboot,UBOOT))
+$(eval $(call gengoals,uboot,UBOOT))
+#$(warning $(call gencfgs,uboot,uboot,U))
+$(eval $(call gencfgs,uboot,uboot,U))
+#$(warning $(call genclone,uboot,uboot,U))
+$(eval $(call genclone,uboot,uboot,U))
+#$(warning $(call genenvdeps,uboot,UBOOT))
+$(eval $(call genenvdeps,uboot,UBOOT))
+
+# Specify uboot targets
+UT ?= $(x)
+
+# Build Uboot
+_uboot:
+	$(call make_uboot,$(UT))
+
+# root uboot image
+root-ud:
+	$(Q)if [ ! -f "$(UROOTFS)" ]; then make $(NPD) root-ud-rebuild; fi
+
+_root-ud-rebuild: FORCE
+	@echo "LOG: Generating rootfs image for uboot ..."
+	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
+
+root-ud-rebuild: root-rd _root-ud-rebuild
+
+kernel-uimage:
+ifeq ($(PBK), 0)
+	$(Q)mkimage -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
+		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE)
+endif
+
+ifneq ($(INVALID_ROOTFS),1)
+$(UROOTFS): root-ud
+U_ROOT_IMAGE = $(UROOTFS)
+endif
+
+$(UKIMAGE): kernel-uimage
+
+U_KERNEL_IMAGE = $(UKIMAGE)
+
+ifeq ($(DTB),$(wildcard $(DTB)))
+  U_DTB_IMAGE=$(DTB)
+endif
+
+PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
+
+export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+
+UBOOT_TFTP_TOOL   := $(TOOL_DIR)/uboot/tftp.sh
+UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
+UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
+UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
+
+TFTP_IMGS := $(addprefix $(TFTPBOOT)/,ramdisk dtb uImage)
+
+# require by env saving, whenever boot from pflash
+PFLASH_IMG := $(TFTPBOOT)/pflash.img
+
+SD_IMG     := $(TFTPBOOT)/sd.img
+ENV_IMG    := $(TFTPBOOT)/env.img
+
+export ENV_IMG
+
+UBOOT_DEPS := $(U_DTB_IMAGE)
+ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
+  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    UBOOT_DEPS += root-ud
+  endif
+endif
+ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
+  UBOOT_DEPS += kernel-uimage
+endif
+
+_uboot-images: $(UBOOT_DEPS)
+ifeq ($(BOOTDEV),tftp)
+	$(Q)$(UBOOT_TFTP_TOOL)
+endif
+ifeq ($(findstring flash,$(BOOTDEV)),flash)
+	$(Q)$(UBOOT_PFLASH_TOOL)
+endif
+ifeq ($(SD_BOOT),1)
+	$(Q)$(UBOOT_SD_TOOL)
+endif
+
+uboot-images: _uboot-images
+	#$(Q)$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
+	$(Q)$(UBOOT_ENV_TOOL)
+
+uboot-images-clean:
+	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
+
+uboot-images-distclean: uboot-images-clean
+	$(Q)rm -rf $(UROOTFS)
+ifeq ($(PBK), 0)
+	$(Q)rm -rf $(UKIMAGE)
+endif
+
+UBOOT_IMGS := uboot-images
+UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
+
+PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
+
+endif # Uboot specific part
+
+uboot-save:
+	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
+	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
+
+uboot-saveconfig:
+	-$(call make_uboot,savedefconfig)
+	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
+	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
+

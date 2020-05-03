@@ -1,0 +1,18 @@
+# Always checkout the latest commit for bsp
+BSP ?= FETCH_HEAD
+_BSP ?= $(BSP)
+
+ifeq ($(_PLUGIN),1)
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
+else
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
+endif
+
+ifeq ($(firstword $(MAKECMDGOALS)),bsp)
+bsp: force-bsp-checkout
+PHONY += bsp
+endif
+
+#$(warning $(call gensource,bsp,BSP))
+$(eval $(call gensource,bsp,BSP))
+$(eval $(call genenvdeps,bsp,BSP))

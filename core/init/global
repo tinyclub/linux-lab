@@ -1,0 +1,32 @@
+TOP_DIR := $(CURDIR)
+
+# Disable the implict rules for our Makefile
+.SUFFIXES:
+SUFFIXES :=
+
+# Force set default goal
+.DEFAULT_GOAL := board
+
+# Phony targets
+PHONY :=
+comma := ,
+empty :=
+space := $(empty) $(empty)
+
+USER := ubuntu
+
+# Verbose logging control
+ifeq ($V, 1)
+  Q :=
+  S :=
+else
+  Q ?= @
+  NPD ?= --no-print-directory
+  S ?= -s $(NPD)
+endif
+
+# Supported apps and their version variable
+APPS := kernel uboot root qemu
+APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug

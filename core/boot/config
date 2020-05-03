@@ -1,0 +1,537 @@
+# Init 9pnet share variables
+ifeq ($(origin SHARE_DIR),command line)
+  SHARE := 1
+else
+  SHARE ?= 0
+endif
+SHARE_DIR ?= hostshare
+HOST_SHARE_DIR ?= $(SHARE_DIR)
+GUEST_SHARE_DIR ?= /hostshare
+SHARE_TAG ?= hostshare
+
+# Network configurations
+
+# Verify NETDEV argument
+define netdev_help
+ ifeq ($$(MACH), malta)
+  EMULATOR += -kernel $(_KIMAGE)
+ endif
+ ifneq ($$(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k), $(BOARD))
+  $$(info $$(shell $(EMULATOR) -M $$(MACH) -net nic,model=?))
+ endif
+endef
+
+$(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
+
+# TODO: net driver for $BOARD
+#NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
+NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap
+
+ifeq ($(NETDEV), virtio)
+  MACADDR_TOOL   := tools/qemu/macaddr.sh
+  RANDOM_MACADDR := $(shell $(MACADDR_TOOL))
+  NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
+endif
+
+# Kernel command line configuration
+CMDLINE :=
+
+# Init route and ip for guest
+ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
+TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
+IP    := $(basename $(ROUTE)).$(TMP)
+
+CMDLINE += route=$(ROUTE)
+
+# Default iface
+IFACE   ?= eth0
+CMDLINE += iface=$(IFACE)
+
+ifeq ($(ROOTDEV),/dev/nfs)
+  ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
+    $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
+  endif
+  # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
+  # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
+  IP_FULL  ?= $(IP):$(ROUTE):$(ROUTE):255.255.255.0:linux-lab:$(IFACE):off
+  IP_SHORT ?= $(IP):::::$(IFACE):off
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP_SHORT)
+endif
+
+ifeq ($(DEV_TYPE),hd)
+  CMDLINE += rw fsck.repair=yes rootwait
+endif
+
+# Ramdisk init configuration
+RDINIT ?= /init
+
+ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+  CMDLINE += rdinit=$(RDINIT)
+else
+  CMDLINE += root=$(ROOTDEV)
+endif
+
+# Extra kernel command line
+CMDLINE += $(call _v,XKCLI,LINUX)
+
+# Graphic output? we prefer Serial port ;-)
+G ?= 0
+
+# Force using curses based graphic mode for bash/ssh login
+ifneq ($(shell env | grep -q ^XDG; echo $$?), 0)
+  XTERM := null
+
+  ifeq ($(G), 1)
+    override G := 2
+  endif
+endif
+
+# Sharing with the 9p virtio protocol
+# ref: https://wiki.qemu.org/Documentation/9psetup
+ifneq ($(SHARE),0)
+  # Note: `-virtfs` uses `-device virtio-9p-pci`, requires more kernel options: PCI, VIRTIO_PCI, PCI_HOST_GENERIC
+  # aarch64/virt supports `virtio-9p-device` and `virtio-9p-pci`
+  # arm/vexpress-a9 only supports `virtio-9p-device`
+  # x86_64/pc only supports `virtio-9p-pci`
+
+  ifeq ($(NET9PDEV),)
+     SHARE_OPT ?= -virtfs local,path=$(SHARE_DIR),security_model=passthrough,id=fsdev0,mount_tag=$(SHARE_TAG)
+     # The above equals, NET9PDEV := virtio-9p-pci for below line
+     # SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device $(NET9PDEV),fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  else
+     SHARE_OPT ?= -fsdev local,path=$(HOST_SHARE_DIR),security_model=passthrough,id=fsdev0 -device $(NET9PDEV),fsdev=fsdev0,mount_tag=$(SHARE_TAG)
+  endif
+
+  CMDLINE += sharetag=$(SHARE_TAG) sharedir=$(GUEST_SHARE_DIR)
+endif
+
+# Console configurations
+SERIAL  ?= ttyS0
+CONSOLE ?= tty0
+
+ifeq ($(G),0)
+  CMDLINE += console=$(SERIAL)
+else
+  CMDLINE += console=$(CONSOLE)
+endif
+
+# Testing support
+TEST ?= $(PREPARE)
+ifneq ($(TEST_PREPARE),)
+  override TEST_PREPARE := $(subst $(comma),$(space),$(TEST_PREPARE))
+  ifneq ($(TEST),)
+    override TEST_PREPARE := $(TEST_PREPARE) $(subst $(comma),$(space),$(TEST))
+  endif
+else
+  TEST_PREPARE := $(subst $(comma),$(space),$(TEST))
+endif
+
+ifeq ($(UBOOT),)
+  override TEST_PREPARE := $(patsubst uboot%,,$(TEST_PREPARE))
+endif
+ifeq ($(QEMU),)
+  override TEST_PREPARE := $(patsubst qemu%,,$(TEST_PREPARE))
+endif
+
+# Force running git submodule commands
+# FIXME: To test automatically, must checkout with -f, otherwise, will stop with failures.
+ifeq ($(FORCE_CHECKOUT),1)
+  GIT_CHECKOUT_FORCE ?= -f
+endif
+
+# Some boards not support 'reboot' test, please use 'power' instead.
+#
+# reboot means run reboot command in Qemu guest
+# power means run poweroff command in Qemu guest and poweron it via host
+#
+REBOOT_TYPE ?= power
+TEST_REBOOT ?= 0
+
+# Shutdown the board if 'poweroff -h/-n' or crash
+ifeq ($(REBOOT_TYPE), reboot)
+  ifneq ($(TEST_REBOOT),0)
+    TEST_FINISH := reboot
+  endif
+else
+  TEST_FINISH := poweroff
+endif
+
+ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
+  EXIT_ACTION ?= -no-reboot
+endif
+
+# SMP configuration
+SMP ?= 1
+
+# If proxy kernel exists, hack the default -kernel option
+ifneq ($(PORIIMG),)
+  KERNEL_OPT ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
+else
+  KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
+endif
+
+EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
+EMULATOR_OPTS += $(SHARE_OPT)
+
+# Launch Qemu, prefer our own instead of the prebuilt one
+BOOT_CMD := sudo $(EMULATOR) $(EMULATOR_OPTS)
+
+ifeq ($(U),1)
+  ifeq ($(SD_BOOT),1)
+    BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw,id=sd0
+  endif
+
+  ifneq ($(PFLASH_SIZE),0)
+    # Load pflash for booting with uboot every time
+    # pflash is at least used as the env storage
+    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw
+  endif
+else # U != 1
+  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    INITRD ?= 1
+  endif
+
+  ifneq ($(INITRD),)
+    ifeq ($(INITRD),$(wildcard $(INITRD)))
+      BOOT_CMD += -initrd $(INITRD)
+    else
+      BOOT_CMD += -initrd $(IROOTFS)
+    endif
+  endif
+
+  ifneq ($(DTB),)
+    ifeq ($(DTB),$(wildcard $(DTB)))
+      BOOT_CMD += -dtb $(DTB)
+    endif
+  endif
+endif # U != 1
+
+ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
+  BOOT_CMD += -hda $(HROOTFS)
+endif
+
+ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
+  # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
+  ifeq ($(MACH), virt)
+    BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
+  else
+    BOOT_CMD += -hda $(HROOTFS)
+  endif
+endif
+
+# FIXME: Currently, BOOTDEV and ROOTDEV can not be sed to sd/mmc at the same time
+# but it should work when the rootfs is put in a specified partition of the same sdcard.
+ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
+  BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw,id=mmc0
+endif
+
+ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
+  # Ref: https://wiki.debian.org/Arm64Qemu
+  BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-vda -device virtio-blk-device,drive=virtio-vda
+endif
+
+ifeq ($(G),0)
+  BOOT_CMD += -nographic
+else
+  ifeq ($(G), 2)
+    BOOT_CMD += -curses
+  endif
+endif
+
+# Add extra qemu options
+BOOT_CMD += $(XOPTS)
+
+# Get DEBUG option if -debug found in goals
+ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+  DEBUG = $(app)
+endif
+
+D ?= 0
+DEBUG ?= $(D)
+
+# Must disable the kaslr feature while debugging, otherwise, breakpoint will not stop and just continue
+# ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
+#      https://www.spinics.net/lists/newbies/msg59708.html
+ifneq ($(DEBUG),0)
+    BOOT_CMD += -s
+    # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
+    ifneq ($(XARCH),x86_64)
+      BOOT_CMD += -S
+    endif
+    CMDLINE  += nokaslr
+endif
+
+# Debug not work with -enable-kvm
+# KVM speedup for x86 architecture, assume our host is x86 currently
+ifeq ($(DEBUG),0)
+  KVM_DEV ?= /dev/kvm
+  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+    ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
+      BOOT_CMD += -enable-kvm
+    endif
+  endif
+endif
+
+# Silence qemu warnings and errors
+#ifneq ($(V), 1)
+#  QUIET_OPT ?= 2>/dev/null
+#endif
+#BOOT_CMD += $(QUIET_OPT)
+
+# ROOTDEV=/dev/nfs for file sharing between guest and host
+# SHARE=1 is another method, but only work on some boards
+
+SYSTEM_TOOL_DIR := system/tools
+
+boot-init: FORCE
+	$(Q)echo "Running $@"
+	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
+
+boot-finish: FORCE
+	$(Q)echo "Running $@"
+	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
+
+PHONY += boot-init boot-finish
+
+# Test support
+ifneq ($(TEST),)
+ ifeq ($(filter _boot, $(MAKECMDGOALS)), _boot)
+  TEST_KCLI :=
+  ifneq ($(FEATURE),)
+    TEST_KCLI += feature=$(subst $(space),$(comma),$(strip $(FEATURE)))
+    ifeq ($(findstring module,$(FEATURE)),module)
+      TEST_KCLI += module=$(subst $(space),$(comma),$(strip $(MODULE)))
+    endif
+  endif
+  ifeq ($(REBOOT_TYPE), reboot)
+    ifneq ($(TEST_REBOOT),0)
+      TEST_KCLI += reboot=$(TEST_REBOOT)
+    endif
+  endif
+  ifneq ($(TEST_BEGIN),)
+    TEST_KCLI += test_begin="$(TEST_BEGIN)"
+  endif
+  ifneq ($(TEST_END),)
+    TEST_KCLI += test_end="$(TEST_END)"
+  endif
+  ifneq ($(TEST_FINISH),)
+    TEST_KCLI += test_finish="$(TEST_FINISH)"
+  endif
+
+  TEST_CASE ?= $(TEST_CASES)
+  ifneq ($(TEST_CASE),)
+    TEST_KCLI += test_case="$(TEST_CASE)"
+  endif
+
+  MODULE_ARGS := $(foreach m_args,$(addsuffix _args,$(subst $(comma),$(space),$(MODULE))), \
+	$(shell eval 'echo $(m_args)=\"'\$$$(m_args)'\"'))
+
+  TEST_KCLI += $(MODULE_ARGS)
+
+  CMDLINE += $(TEST_KCLI)
+ endif
+endif
+
+# Strip begin,end and duplicated spaces
+CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
+
+ifneq ($(U),1)
+  BOOT_CMD += -append '$(CMDLINE)'
+endif
+
+BOOT_TEST := default
+ifneq ($(TEST_REBOOT), 0)
+  ifeq ($(findstring power,$(REBOOT_TYPE)),power)
+    BOOT_TEST := loop
+  endif
+endif
+
+# By default, seconds
+TIMEOUT ?= 0
+TEST_TIMEOUT ?= $(TIMEOUT)
+TEST_UBOOT ?= $(U)
+
+ifneq ($(TEST_TIMEOUT),0)
+  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
+  TEST_ENV        ?= $(TEST_LOGGING)/boot.env
+  TEST_LOG        ?= $(TEST_LOGGING)/boot.log
+
+  # ref: https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile
+  # Must create pipe.in and pipe.out, if only one pipe, the guess output will work as guest input
+  # and breaks uboot autoboot progress
+
+  TEST_LOG_PIPE   ?= $(TEST_LOGGING)/boot.log.pipe
+  TEST_LOG_PID    ?= $(TEST_LOGGING)/boot.log.pid
+  TEST_LOG_READER ?= tools/qemu/reader.sh
+  TEST_RET        ?= $(TEST_LOGGING)/boot.ret
+
+  # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.lo
+ifeq ($(findstring serial,$(XOPTS)),serial)
+    XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
+else
+    XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
+endif
+
+  # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
+  TIMEOUT_CONTINUE ?= 0
+
+  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
+	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
+	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
+  TEST_AFTER  ?= ; echo $$? > $(TEST_RET); sudo kill -9 $$(cat $(TEST_LOG_PID)); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \
+	ret=$$(cat $(TEST_RET)) && [ $$ret -ne 0 ] && echo "ERR: Boot timeout in $(TEST_TIMEOUT)." && echo "ERR: Log saved in $(TEST_LOG)." && exit $$ret; \
+	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then echo "LOG: Test continue after timeout kill in $(TEST_TIMEOUT)."; else echo "LOG: Boot run successfully."; fi; \
+	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then sleep 2; rm -rf $(TEST_LOG_PIPE).in $(TEST_LOG_PIPE).out; fi
+  # If not support netowrk, should use the other root device
+endif
+
+TEST_XOPTS ?= $(XOPTS)
+TEST_RD ?= $(if $(TEST_ROOTDEV),$(TEST_ROOTDEV),/dev/nfs)
+# Override TEST_RD if ROOTDEV specified
+ifeq ($(origin ROOTDEV), command line)
+  TEST_RD := $(ROOTDEV)
+endif
+
+export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
+
+boot-test:
+	$(Q)echo "Running $@"
+ifeq ($(BOOT_TEST), default)
+	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTER)
+else
+	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
+		echo "\nRebooting test: $r\n" && \
+		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTER);)
+endif
+
+raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
+
+PHONY += raw-test boot-test
+
+# Allow to disable feature-init
+FEATURE_INIT ?= 1
+FI ?= $(FEATURE_INIT)
+
+kernel-init: kernel-config kernel-olddefconfig
+	$(Q)$(call make_kernel,$(IMAGE))
+
+rootdir-init: rootdir-clean rootdir root-install
+
+module-init: modules modules-install
+
+ifeq ($(findstring module,$(FEATURE)),module)
+  MODULE_INIT := module-init
+endif
+
+ifneq ($(TEST_RD),/dev/nfs)
+  ROOT_REBUILD := root-rebuild
+endif
+
+feature-init: $(if $(FEATURE),feature kernel-init rootdir-init $(MODULE_INIT) $(ROOT_REBUILD)) FORCE
+
+PHONY += kernel-init rootdir-init module-init feature-init
+
+_test: $(TEST_PREPARE) $(if $(FI),$(if $(FEATURE),feature-init)) boot-init boot-test boot-finish FORCE
+
+PHONY += _test
+
+# Boot dependencies
+
+# Debug support
+VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
+
+ifneq ($(DEBUG),0)
+
+GDB         ?= $(C_PATH) $(CCPRE)gdb
+ifeq ($(shell which gdb-multiarch >/dev/null 2>&1; echo $$?), 0)
+  GDB_MARCH ?= 1
+endif
+ifeq ($(shell $(GDB) --version >/dev/null 2>&1; echo $$?), 0)
+  GDB_ARCH  ?= 1
+endif
+ifneq ($(GDB_ARCH), 1)
+  ifeq ($(GDB_MARCH), 1)
+     GDB := gdb-multiarch
+  else
+     $(error ERR: Both of $(CCPATH)/$(CCPRE)gdb and gdb-multiarch not exist or not valid)
+  endif
+endif
+
+ifeq ($(DEBUG),uboot)
+  GDB_CMD      ?= $(GDB) $(BIMAGE)
+  GDB_INIT     ?= $(GDBINIT_DIR)/uboot
+  DEBUG_DEPS   := uboot-build
+else
+  GDB_CMD      ?= $(GDB) $(VMLINUX)
+  GDB_INIT     ?= $(GDBINIT_DIR)/kernel
+  DEBUG_DPES   := kernel-build
+endif
+
+HOME_GDB_INIT ?= $(HOME)/.gdbinit
+# Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
+GDB_USER     ?= $(USER)
+
+# Xterm: lxterminal, terminator
+ifeq ($(XTERM), null)
+  XTERM_STATUS := 1
+else
+  XTERM ?= $(shell tools/xterm.sh lxterminal)
+  # Testing should use non-interactive mode, otherwise, enable interactive.
+  ifneq ($(TEST),)
+    XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
+  else
+    XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+  endif
+  XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
+endif
+
+ifeq ($(XTERM_STATUS), 0)
+  DEBUG_CMD  := $(XTERM_CMD)
+else
+  DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
+endif
+
+# FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
+#        just ignore the do_fork breakpoint to workaround it.
+_debug:
+	$(Q)ln -sf $(notdir $(GDBINIT_DIR))/$(notdir $(GDB_INIT)) .gdbinit
+	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
+	$(Q)$(DEBUG_CMD) &
+
+_debug_init_1:
+	$(Q)sudo -u $(GDB_USER) sed -i -e "/do_fork/s/^#*//g" $(GDB_INIT)
+
+_debug_init_2:
+	$(Q)sed -i -e "/do_fork/s/^#*/#/g" $(GDB_INIT)
+
+ifneq ($(TEST_TIMEOUT),0)
+  DEBUG_INIT := _debug_init_2
+else
+  DEBUG_INIT := _debug_init_1
+endif
+DEBUG_CLIENT := $(DEBUG_DEPS) $(DEBUG_INIT) _debug
+
+PHONY += _debug _debug_init_1 _debug_init_2
+
+endif # DEBUG != 0
+
+_BOOT_DEPS ?=
+ifneq ($(BOOT_PREPARE),)
+  override BOOT_PREPARE := $(subst $(comma),$(space),$(BOOT_PREPARE))
+  _BOOT_DEPS += $(BOOT_PREPARE)
+endif
+_BOOT_DEPS += board-save
+_BOOT_DEPS += root-$(DEV_TYPE)
+_BOOT_DEPS += $(UBOOT_IMGS)
+_BOOT_DEPS += $(DEBUG_CLIENT)
+_BOOT_DEPS += $(BOOT_DTB)
+
+_boot: $(_BOOT_DEPS)
+	$(BOOT_CMD)
+
+PHONY += boot-test _boot
+

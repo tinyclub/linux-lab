@@ -1,0 +1,36 @@
+# Show the variables
+ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
+VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' ')
+VARS += PBK PBR PBD PBQ PBU
+VARS += BOARD FEATURE TFTPBOOT
+VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
+VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
+VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
+VARS += IP ROUTE BOOT_CMD
+VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
+VARS += TEST_TIMEOUT TEST_RD
+endif
+
+env: env-prepare
+env-prepare: toolchain-install
+ifeq ($(GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
+endif
+ifeq ($(HOST_GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(HOST_CCORI),CCORI=$(HOST_CCORI)) $(if $(HOST_GCC),GCC=$(HOST_GCC)) b=i386/pc ROOTDEV=/dev/ram0
+endif
+
+env-list: env-dump
+env-dump:
+	@echo \#[ $(BOARD) ]:
+	@echo -n " "
+	-@echo $(foreach v,$(or $(VAR),$(VARS)),"    $(v)=\"$($(v))\"\n") | tr -s '/'
+
+env-save: board-config
+
+default-help:
+	$(Q)cat README.md
+
+PHONY += env env-list env-prepare env-dump env-save lab-help
+
+

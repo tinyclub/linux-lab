@@ -1,0 +1,446 @@
+define genbuildenv
+
+GCC_$(2) = $$(call __v,GCC,$(2))
+CCORI_$(2) = $$(call __v,CCORI,$(2))
+
+ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+  ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
+    ifeq ($$(CCORI_$(2))$$(CCORI),)
+      CCORI_$(2) := internal
+      CCORI := internal
+    else
+      $(eval $(call __vs,CCORI,$(2)))
+    endif
+    GCC_$(2)_SWITCH := 1
+  endif
+endif
+
+HOST_GCC_$(2) = $$(call __v,HOST_GCC,$(2))
+HOST_CCORI_$(2) = $$(call __v,HOST_CCORI,$(2))
+
+ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+  ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)
+    ifeq ($$(HOST_CCORI_$(2))$$(HOST_CCORI),)
+      HOST_CCORI_$(2) := internal
+    endif
+    HOST_GCC_$(2)_SWITCH := 1
+  endif
+endif
+endef # genbuildenv
+
+
+# tuning notify method
+notice := error
+# stop error for force targets ??
+ifeq ($(findstring xforce, x$(MAKECMDGOALS)), xforce)
+  notice := warning
+endif
+# warning instead of error for bsp downloading
+ifeq ($(findstring xbsp, x$(MAKECMDGOALS)),xbsp)
+  notice := warning
+endif
+
+# generate verify function
+define genverify
+ ifneq ($$($2),)
+  ifneq ($$(BSP_$(1)),)
+   ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
+    $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
+   endif
+  endif
+  # If Linux version specific qemu list defined, use it
+  $$(eval $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override))
+  ifneq ($$($(2)_LIST),)
+    ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
+      $$(if $(4),$$(eval $$(call $(4))))
+      verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST), update bsp please: 'make bsp B=$$(BOARD)'
+      ifeq ($$(notice), error)
+        $$(error ERR: $$(verify_notice))
+      else
+        $$(warning WARN: $$(verify_notice))
+      endif
+    endif
+  endif
+ endif
+ # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
+ ifneq ($$($(1)_SRC),)
+   ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
+    _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$$($(2)))
+    $(1)_ABS_SRC := $$($(1)_SRC)
+   endif
+ endif
+
+endef
+
+
+# generate target dependencies
+define gendeps
+
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
+
+$(1)-patch: $(1)-checkout
+$(1)-defconfig: $(1)-patch
+$(1)-defconfig: $(1)-env
+$(1)-modules-install: $(1)-modules
+$(1)-modules-install-km: $(1)-modules-km
+$(1)-help: $(1)-defconfig
+
+$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km run)
+ifeq ($(firstword $(MAKECMDGOALS)),$(1))
+  $(1)_defconfig_childs := $(1)
+endif
+$$($(1)_defconfig_childs): $(1)-defconfig
+
+$(1)-save $(1)-saveconfig: $(1)-build
+
+$(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
+ifeq ($$(PB$$($(1)_APP_TYPE)),0)
+  ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
+    boot_deps += $(1)-build
+  endif
+endif
+$(1)_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$(1)))))
+ifeq ($$($$($(1)_app_type)),1)
+  ifeq ($$(origin $$($(1)_app_type)),command line)
+    boot_deps += $(1)-build
+  endif
+endif
+ifeq ($$($(1)),1)
+  ifeq ($$(origin $(1)),command line)
+    boot_deps += $(1)-build
+  endif
+endif
+ifeq ($(filter $(1),$(BUILD)),$(1))
+  boot_deps += $(1)-build
+endif
+
+$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone)
+$$($(1)_bsp_childs): bsp-checkout
+
+_boot: $$(boot_deps)
+
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
+	$$(Q)make $$(NPD) _$(1)
+	$$(Q)touch $$@
+
+ifeq ($$(findstring $(1),$$(firstword $$(MAKECMDGOALS))),$(1))
+$(1): $(if $(x),_$(1),$(1)-build)
+endif
+
+# Force app building for current building targets can not auto detect code update
+ifeq ($(filter $(first_target), $(1) $(1)-build), $(first_target))
+$(1)-build: _$(1)
+else
+$(1)-build: $$(call __stamp_$(1),build)
+endif
+
+$(1)-release: $(1) $(1)-save $(1)-saveconfig
+
+$(1)-new $(1)-clone: $(1)-cloneconfig
+
+PHONY += $(addprefix $(1)-,save saveconfig savepatch build release new clone)
+
+endef # gendeps
+
+# generate xxx-source target
+define gensource
+
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
+
+$(call _uc,$(1))_SRC_DEFAULT := 1
+
+ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$(1))_SRC))),$$($(call _uc,$(1))_SRC))
+  ifeq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$(1))_SRC)),x$$(BSP_DIR))
+    $(call _uc,$(1))_SROOT := $$(BSP_DIR)
+    $(call _uc,$(1))_SPATH := $$(subst $$(BSP_DIR)/,,$$($(call _uc,$(1))_SRC))
+    $(call _uc,$(1))_SRC_DEFAULT := 0
+  else
+    ifneq ($$(PLUGIN_DIR),)
+      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$($(call _uc,$(1))_SRC)),x$$(PLUGIN_DIR))
+        $(call _uc,$(1))_SROOT := $$(PLUGIN_DIR)
+        $(call _uc,$(1))_SPATH := $$(subst $$(PLUGIN_DIR)/,,$$($(call _uc,$(1))_SRC))
+        $(call _uc,$(1))_SRC_DEFAULT := 0
+      endif
+    endif
+  endif
+endif
+
+ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
+  # Put submodule is root of linux-lab if no directory specified or if not the above cases
+  $(call _uc,$(1))_SROOT := $$(TOP_DIR)
+  $(call _uc,$(1))_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$(1))_SRC))
+endif
+
+$(call _uc,$(1))_GITADD = git remote -v
+ifneq ($$(_$(call _uc,$(1))_SRC), $$($(call _uc,$(1))_SRC))
+  ifeq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
+    $(call _uc,$(1))_GETGITURL := 1
+  endif
+else
+  ifneq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
+    $(call _uc,$(1))_GITREPO := $(1)-$$(subst /,-,$$(BOARD))-$$(notdir $$(patsubst %/,%,$$($(call _uc,$(1))_SPATH)))
+    $(call _uc,$(1))_GITADD  := if [ $$$$(git remote | grep -q $$($(call _uc,$(1))_GITREPO); echo $$$$?) -ne 0 ]; then git remote add $$($(call _uc,$(1))_GITREPO) $$($(call _uc,$(1))_GIT); fi
+  endif
+endif
+
+ifeq ($$($(call _uc,$(1))_GIT),)
+  $(call _uc,$(1))_GETGITURL := 1
+endif
+
+ifeq ($$($(call _uc,$(1))_GETGITURL),1)
+  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && grep -A1 "path = $$($(call _uc,$(1))_SPATH)" -ur $$($(call _uc,$(1))_SROOT)/.gitmodules | tail -1 | cut -d'=' -f2 | tr -d ' ')
+  ifneq ($$(__$(call _uc,$(1))_GIT),)
+    _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
+    $(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
+  endif
+else
+  _$(call _uc,$(1))_GIT := $$($(call _uc,$(1))_GIT)
+endif
+
+# Build the full src directory
+$(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
+
+$$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
+	@echo
+	@echo "Downloading $(1) source ..."
+	@echo
+	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
+		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
+		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(_$(call _uc,$(2))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+			$$($(call _uc,$(1))_GITADD); \
+			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin); \
+		fi;	\
+		cd $$(TOP_DIR); \
+	else		\
+		cd $$($(call _uc,$(1))_SROOT) && \
+			mkdir -p $$($(call _uc,$(1))_SPATH) && \
+			cd $$($(call _uc,$(1))_SPATH) && \
+			git init &&		\
+			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
+			git fetch --tags origin && \
+		cd $$(TOP_DIR); \
+	fi
+	$$(Q)touch $$@
+
+$(1)-source: $$(call __stamp_$(1),source)
+
+$(1)-checkout: $(1)-source
+
+$$(call _stamp_$(1),checkout):
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
+	fi
+	$$(Q)touch $$@
+
+$(1)-checkout: $$(call __stamp_$(1),checkout)
+
+$$(call _stamp_$(1),outdir):
+	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+	$$(Q)touch $$@
+
+$(1)-outdir: $$(call __stamp_$(1),outdir)
+
+$(1)_source_childs := $(1)-download download-$(1)
+
+$$($(1)_source_childs): $(1)-source
+
+PHONY += $(addprefix $(1)-,source download) download-$(1)
+
+$(1)-%-cleanstamp:
+	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
+
+$(1)-cleanstamp:
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
+
+## clean up $(1) source code
+$(1)-cleanup: $(1)-cleanstamp
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
+		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+	fi
+
+$(1)-clean: $(1)-cleanup
+
+$(1)-clean: $$($(call _uc,$(1))_CLEAN_DEPS)
+ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+	-$$(Q)$$(call make_$(1),clean)
+endif
+
+$(1)-distclean:
+ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+	-$$(Q)$$(call make_$(1),distclean)
+	$$(Q)rm -rf $$($(call _uc,$(1))_OUTPUT)
+endif
+
+PHONY += $(addprefix $(1)-,cleanstamp cleanup outdir clean distclean)
+
+endef # gensource
+
+# Generate basic goals
+define gengoals
+
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+$(1)-list:
+	$$(Q)echo $$($(2)_LIST) | sed -e 's%$$($(2))%[$$($(2))]%g'
+
+$(1)-help:
+	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
+
+$$(call _stamp_$(1),patch):
+	@if [ ! -f $$($(call _uc,$(1))_SRC)/.$(1).patched ]; then \
+	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
+	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
+	  touch $$($(call _uc,$(1))_SRC)/.$(1).patched; \
+	else		\
+	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
+	fi
+	$$(Q)touch $$@
+
+$(1)-patch: $$(call __stamp_$(1),patch)
+
+$(1)-savepatch:
+	$(Q)cd $$($(call _uc,$(1))_SRC) && git format-patch $$(_$2) && cd $$(TOP_DIR)
+	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
+	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
+
+$(1)-debug: _boot
+
+$(1)-boot: _boot
+
+$(1)-test: _test
+
+$(1)-test-debug:
+	$$(Q)make _test DEBUG=$(1)
+
+PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
+
+endef # gengoals
+
+define gencfgs
+
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
+
+$(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
+$(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
+
+ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
+  $(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(3)CFG)
+else
+  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC)/arch/$$(ARCH)/$$($(3)CFG); do \
+		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
+  ifneq ($$(_$(3)CFG_FILE),)
+    $(3)CFG_FILE := $$(subst //,/,$$(_$(3)CFG_FILE))
+  else
+    $$(error $$($(3)CFG): can not be found, please pass a valid $(1) defconfig)
+  endif
+endif
+
+ifeq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($(3)CFG_FILE)),$$($(call _uc,$1)_CONFIG_DIR))
+  $(3)CFG_BUILTIN := 1
+endif
+
+_$(3)CFG := $$(notdir $$($(3)CFG_FILE))
+
+$$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
+	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
+	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
+	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
+	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
+	$$(Q)touch $$@
+
+$(1)-defconfig: $$(call __stamp_$(1),defconfig)
+
+$(1)-olddefconfig:
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+$(1)-oldconfig:
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+$(1)-menuconfig:
+	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+
+PHONY += $(addprefix $(1)-,defconfig olddefconfig oldconfig menuconfig)
+
+endef # gencfgs
+
+define genclone
+ifneq ($$($(call _uc,$2)_NEW),)
+
+ifneq ($$($(call _uc,$2)_NEW),$($(call _uc,$2)))
+
+NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
+NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($(call _uc,$2)_NEW)/
+NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
+
+$(1)-cloneconfig:
+	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
+	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_MAKEFILE)
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_MAKEFILE); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
+		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_MAKEFILE); fi
+	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
+	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
+else
+$(1)-cloneconfig:
+	$(Q)echo $$($(call _uc,$2)_NEW) already exists!
+endif
+
+else
+  ifeq ($$(MAKECMDGOALS),$(1)-clone)
+    $$(error Usage: make $(1)-clone $(call _uc,$2)_NEW=<$2-version>)
+  endif
+endif
+
+
+PHONY += $(addprefix $(1)-,cloneconfig)
+
+endef #genclone
+
+define genenvdeps
+
+ifeq ($$(_stamp_$(1)),)
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+
+ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
+__stamp_$(1)=$$(_stamp_$(1))
+endif
+endif
+
+$$(call _stamp_$(1),env):
+	$$(Q)make $$(S) env
+ifeq ($$(GCC_$(2)_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
+endif
+ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
+endif
+	$$(Q)touch $$@
+
+$(1)-env: $$(call __stamp_$(1),env)
+
+PHONY += $(1)-env
+
+endef #genenvdeps
+
+define gengoalslist
+$(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
+endef
+

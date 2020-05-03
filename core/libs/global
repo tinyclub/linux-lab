@@ -1,0 +1,36 @@
+_BIMAGE := $(BIMAGE)
+_KIMAGE := $(KIMAGE)
+_ROOTFS := $(ROOTFS)
+_QTOOL  := $(QTOOL)
+
+# Core output: for building in standalone directories
+TOP_OUTPUT      := $(TOP_DIR)/output
+TOP_OUTPUT_ARCH := $(TOP_OUTPUT)/$(XARCH)
+QEMU_OUTPUT     := $(TOP_OUTPUT_ARCH)/qemu-$(QEMU)-$(MACH)
+UBOOT_OUTPUT    := $(TOP_OUTPUT_ARCH)/uboot-$(UBOOT)-$(MACH)
+KERNEL_OUTPUT   := $(TOP_OUTPUT_ARCH)/linux-$(LINUX)-$(MACH)
+ROOT_OUTPUT     := $(TOP_OUTPUT_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
+BSP_OUTPUT      := $(TOP_OUTPUT_ARCH)/bsp-$(MACH)
+
+# Parallel Compiling threads
+HOST_CPU_THREADS := $(shell grep -c processor /proc/cpuinfo)
+JOBS ?= $(HOST_CPU_THREADS)
+
+# Prebuilt path (not top dir) setting
+ifneq ($(_BIMAGE),)
+  PREBUILT_UBOOT_DIR  ?= $(dir $(_BIMAGE))
+endif
+ifneq ($(_KIMAGE),)
+  PREBUILT_KERNEL_DIR ?= $(dir $(_KIMAGE))
+endif
+ifneq ($(_ROOTFS),)
+  PREBUILT_ROOT_DIR   ?= $(dir $(_ROOTFS))
+endif
+ifneq ($(_QTOOL),)
+  PREBUILT_QEMU_DIR   ?= $(patsubst %/bin/,%,$(dir $(_QTOOL)))
+endif
+
+# Caching commandline variables
+makeclivar := $(-*-command-variables-*-)
+
+STRIP_CMD := $(C_PATH) $(CCPRE)strip -s

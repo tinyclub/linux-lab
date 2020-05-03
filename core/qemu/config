@@ -1,0 +1,172 @@
+# Emulator configurations
+ifneq ($(BIOS),)
+  BIOS_ARG := -bios $(BIOS)
+endif
+
+# Another qemu-system-$(ARCH)
+QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
+
+ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+  PBQ ?= 0
+else
+  PBQ := 1
+endif
+
+ifeq ($(PBQ), 1)
+  ifneq ($(QTOOL),)
+    ifeq ($(QTOOL),$(wildcard $(QTOOL)))
+      QEMU_SYSTEM := $(QTOOL)
+    endif
+  endif
+
+  QTOOL_LINUX ?= $(call __v,QTOOL,LINUX)
+  ifneq ($(QTOOL_LINUX),)
+    ifeq ($(QTOOL_LINUX),$(wildcard $(QTOOL_LINUX)))
+      QEMU_SYSTEM := $(QTOOL_LINUX)
+    endif
+  endif
+endif
+
+ifneq ($(QEMU),)
+  ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+    QEMU_PATH := env PATH=$(dir $(QEMU_SYSTEM)):$(PATH)
+  endif
+endif
+
+EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
+
+
+define make_qemu
+$(C_PATH) make -C $(QEMU_OUTPUT)/$(2) -j$(JOBS) V=$(V) $(1)
+endef
+
+# Notes:
+#
+# 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
+#    deps: sudo apt-get install libncursesw5-dev
+# 2. --enable-sdl is required for G=1, but from v4.0.0, it requires libsdl2-dev,
+# 3. --disable-vnc disable vnc graphic support, this is not that friendly because
+#    it requires to install a vnc viewer, such as vinagre.
+#    TODO: start vnc viewer automatically while qemu boots and listen on vnc port.
+# 4. --disable-kvm is used to let qemu boot in docker environment which not have kvm.
+# 5. --enable-virtfs adds 9pnet sharing support, depends on libattr1-dev libcap-dev
+#
+
+
+ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
+ ifeq ($(QEMU),)
+  $(error ERR: No qemu version specified, please configure QEMU= in $(BOARD_MAKEFILE) or pass it manually)
+ endif
+
+ ifneq ($(QCFG),)
+   QEMU_CONF := $(QCFG)
+ else
+   # Use v2.12.0 by default
+   QEMU_CONF ?= --disable-kvm
+
+   # FIXME: Disable qemu git update if already downloaded, this helps workaround submodule update issue
+   # please replace 'exit 1' with 'exit 0' for git-submodule-update in qemu/Makefile at the same time
+   #
+   #    export QEMU_UPDATE=0
+   #    make qemu-defconfig
+   #    sed -ie "s/exit 1)/exit 0)/g" qemu/Makefile
+   #    make qemu
+   #
+   ifeq ($(QEMU_UPDATE),0)
+     QEMU_CONF += --disable-git-update
+   endif
+ endif
+endif
+
+#
+# qemu-user-static, only compile it for it works the same as qemu-user
+#
+# Ref:
+# http://logan.tw/posts/2018/02/18/build-qemu-user-static-from-source-code/
+# Disable system for it cann't by compiled with --static currently
+#
+# it is saved as $(XARCH)-linux-user/qemu-$(XARCH), need to append a suffix
+# -static and put in /usr/bin of chroot's target directory
+#
+
+# Current supported architectures
+ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
+ifeq ($(QEMU_ALL),1)
+  PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
+  QEMU_OUTPUT := $(TOP_OUTPUT)/qemu-$(QEMU)-all
+  QEMU_ARCH = $(ARCH_LIST)
+else
+  QEMU_ARCH = $(XARCH)
+endif
+
+ifeq ($(QEMU_US), 1)
+  QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -linux-user,$(QEMU_ARCH)))
+  QEMU_CONF   += --enable-linux-user --static
+  QEMU_CONF   += --target-list=$(QEMU_TARGET)
+  QEMU_CONF   += --disable-system
+else
+  ifeq ($(QCFG),)
+    # Qemu > 4.0 requires libsdl2, which is not installable in current lab
+    # (too old ubuntu), use vnc instead
+    #QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
+    #QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
+    #QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
+    QEMU_SDL    ?= 1
+    QEMU_CURSES ?= 1
+    ifneq ($(QEMU_SDL),0)
+      QEMU_CONF += --enable-sdl
+    endif
+
+    ifneq ($(QEMU_VNC),)
+      ifeq ($(QEMU_VNC),1)
+        QEMU_CONF += --enable-vnc
+      else
+        QEMU_CONF += --disable-vnc
+      endif
+    endif
+
+    ifneq ($(QEMU_VIRTFS),0)
+      QEMU_CONF += --enable-virtfs
+    endif
+
+    ifeq ($(QEMU_CURSES),1)
+      QEMU_CONF += --enable-curses
+    endif
+  endif
+
+  QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -softmmu,$(QEMU_ARCH)))
+  QEMU_CONF   += --target-list=$(QEMU_TARGET)
+endif
+
+QEMU_CONFIG_STATUS := config.log
+QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
+QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
+qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
+qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
+
+_QEMU  ?= $(call _v,QEMU,QEMU)
+
+$(eval $(call genbuildenv,qemu,QEMU))
+#$(warning $(call gensource,qemu,QEMU))
+$(eval $(call gensource,qemu,QEMU))
+# Add basic qemu dependencies
+#$(warning $(call gendeps,qemu))
+$(eval $(call gendeps,qemu))
+#$(warning $(call gengoals,qemu,QEMU))
+$(eval $(call gengoals,qemu,QEMU))
+$(eval $(call gencfgs,qemu,QEMU,Q))
+#$(warning $(call genenvdeps,qemu,QEMU)
+$(eval $(call genenvdeps,qemu,QEMU))
+#$(warning $(call genclone,qemu,qemu,Q))
+$(eval $(call genclone,qemu,qemu,Q))
+
+QT ?= $(x)
+
+_qemu:
+	$(call make_qemu,$(QT))
+
+qemu-save:
+	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
+	-$(Q)$(call make_qemu,install)
+	-$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),$(call make_qemu,install,$(_QEMU_TARGET));echo '';)
+

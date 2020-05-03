@@ -1,0 +1,21 @@
+# Verify LINUX argument
+#$(warning $(call genverify,KERNEL,LINUX))
+$(eval $(call genverify,KERNEL,LINUX))
+
+# Verify ROOT argument
+#$(warning $(call genverify,ROOT,BUILDROOT))
+$(eval $(call genverify,ROOT,BUILDROOT))
+
+# Verify UBOOT argument
+#$(warning $(call genverify,UBOOT,UBOOT))
+$(eval $(call genverify,UBOOT,UBOOT))
+
+# Verify QEMU argument
+#$(warning $(call genverify,QEMU,QEMU))
+$(eval $(call genverify,QEMU,QEMU))
+
+# Core images: qemu, bootloader, kernel and rootfs
+$(eval $(call __vs,ROOTFS,LINUX))
+$(eval $(call __vs,BUILDROOT,LINUX))
+$(eval $(call __vs,UBOOT,LINUX))
+$(eval $(call __vs,QEMU,LINUX))

@@ -131,3 +131,7 @@ do
 done
 
 sed -i -e "${line}i/* LINUX LAB INSERT START */" $CONFIG_FILE
+
+sed -i -e "${line}i#endif" $CONFIG_FILE
+sed -i -e "${line}i#undef CONFIG_BOOTCOMMAND" $CONFIG_FILE
+sed -i -e "${line}i#ifdef CONFIG_BOOTCOMMAND" $CONFIG_FILE

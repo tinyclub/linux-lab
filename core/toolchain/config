@@ -1,3 +1,5 @@
+_GCC := $(GCC)
+
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
   ifeq ($(CCORI),)
@@ -263,28 +265,30 @@ ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
 endif
 
 ifneq ($(_CCORI),$(CCORI))
-  ifneq ($(filter $(CCORI),internal buildroot),$(CCORI))
+  ifneq ($(filter $(CCORI),buildroot),$(CCORI))
     UPDATE_CCORI := 1
   endif
 endif
 
+ifeq ($(_CCORI), internal)
+  _GCC := $(CCVER)
+endif
+
+ifneq ($(_GCC), $(GCC))
+  UPDATE_GCC := 1
+endif
+
 toolchain-switch:
-ifneq ($(GCC),)
+ifeq ($(UPDATE_GCC),1)
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
-else
-  ifeq ($(UPDATE_CCORI),1)
+endif
+ifeq ($(UPDATE_CCORI),1)
 	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
 	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
 	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
-  else
-	@echo "Usage: make toolchain-switch CCORI=<CCORI> GCC=<Internal-GCC-Version>"
-	@echo "       e.g. make toolchain-switch CCORI=bootlin"
-	@echo "            make toolchain-switch CCORI=internal GCC=4.3"
-	@echo "            make toolchain-switch GCC=4.3       # If CCORI is already internal"
-	$(Q)make $(S) toolchain-list
-  endif
 endif
+	$(Q)make -s gcc-info
 
-gcc-switch: toolchain-switch gcc-info
+gcc-switch: toolchain-switch
 
 PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info

@@ -2720,7 +2720,7 @@ ifeq ($(SD_BOOT),1)
 endif
 
 uboot-images: _uboot-images
-	$(Q)$(UBOOT_CONFIG_TOOL)
+	$(Q)$(UBOOT_CONFIG_TOOL) $(UCFG_DIR) $(UCONFIG)
 	$(Q)$(UBOOT_ENV_TOOL)
 
 uboot-images-clean:

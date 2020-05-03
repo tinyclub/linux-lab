@@ -485,6 +485,8 @@ $(eval $(call genbuildenv,uboot,UBOOT))
 $(eval $(call genbuildenv,qemu,QEMU))
 $(eval $(call genbuildenv,root,BUILDROOT))
 
+include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified
   ifeq ($(CCORI),)

@@ -108,6 +108,7 @@
        - [ 6.4.2 linux/compiler-gcc7.h: No such file or directory](#-642-linuxcompiler-gcc7h-no-such-file-or-directory)
        - [ 6.4.3 linux-lab/configs: Permission denied](#-643-linux-labconfigs-permission-denied)
        - [ 6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#-644-scriptsmakefileheadersinst-missing-uapi-file)
+       - [ 6.4.5 how to run as root](#-645-how-to-run-as-root)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
 
 <!-- toc end -->
@@ -1849,6 +1850,12 @@ This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil`
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
+
+### 6.4.5 how to run as root
+
+By default, no password required to run as root with:
+
+    $ sudo -s
 
 # 7. Contact and Sponsor
 

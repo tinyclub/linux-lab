@@ -114,6 +114,7 @@
        - [ 6.4.2 linux/compiler-gcc7.h: No such file or directory](#-642-linuxcompiler-gcc7h-no-such-file-or-directory)
        - [ 6.4.3 linux-lab/configs: Permission denied](#-643-linux-labconfigs-permission-denied)
        - [ 6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#-644-scriptsmakefileheadersinst-missing-uapi-file)
+       - [ 6.4.5 如何切到 root 用户](#-645-如何切到-root-用户)
 - [7. 联系并赞助我们](#7-联系并赞助我们)
 
 <!-- toc end -->
@@ -1878,6 +1879,12 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
+
+### 6.4.5 如何切到 root 用户
+
+默认情况下，可以免密直接切到 root：
+
+    $ sudo -s
 
 # 7. 联系并赞助我们
 

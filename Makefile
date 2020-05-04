@@ -20,6 +20,7 @@ empty :=
 space := $(empty) $(empty)
 
 USER := ubuntu
+WARN_ON_USER ?= 1
 
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
@@ -31,17 +32,21 @@ ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
   endif
 endif
 
+# Warning if run as root
+ifeq ($(WARN_ON_USER), 1)
 # Check running user, must as ubuntu
 ifeq ($(TEST_TIMEOUT),)
   ifneq ($(shell whoami),$(USER))
-    $(error ERR: Must run Linux Lab as general user: '$(USER)', not use it as root, please try 'su ubuntu'.)
+    $(warning WARN: Please not run as 'root', but as general user: '$(USER)', please try 'sudo -su $(USER)'.)
   endif
 endif
 
 # Check permission issue, must available to ubuntu
 ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
-  $(error ERR: Must make sure Cloud Lab and Linux Lab **NOT** belong to user: 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab')
+  $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab')
+  $(warning WARN: Cancel this warning via: 'export WARN_ON_USER=0')
 endif
+endif # Warning on user
 
 # Current variables: board, plugin, module
 BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)

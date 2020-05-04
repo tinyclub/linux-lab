@@ -1466,6 +1466,8 @@ $(1)-savepatch:
 	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
 	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
 
+debug-$(1): $(1)-debug
+
 $(1)-debug: _boot
 
 $(1)-boot: _boot
@@ -3026,8 +3028,12 @@ endif
 BOOT_CMD += $(XOPTS)
 
 # Get DEBUG option if -debug found in goals
-ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+ifeq (debug,$(firstword $(MAKECMDGOALS)))
   DEBUG = $(app)
+else
+  ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+    DEBUG = $(subst -,,$(subst debug,,$(firstword $(MAKECMDGOALS))))
+  endif
 endif
 
 D ?= 0

@@ -18,6 +18,7 @@ HOST_OS=$(uname)
 
 # Hardware
 if [ "x$HOST_OS" = "xDarwin" ]; then
+  # ref: http://teczd.com/2015/09/23/osx-get-system-info-from-command-line/
   product=`system_profiler SPHardwareDataType | grep -i "Model" | cut -d ':' -f2 | tr '\n' ',' | sed -e 's/ ,    /,/g;s/,$//g'`
   echo "Product: Apple,$product";
 elif [ "x$HOST_OS" = "xLinux" ]; then

@@ -18,7 +18,8 @@ HOST_OS=$(uname)
 
 # Hardware
 if [ "x$HOST_OS" = "xDarwin" ]; then
-  echo "TBD";
+  product=`system_profiler SPHardwareDataType | grep -i "Model" | cut -d ':' -f2 | tr '\n' ',' | sed -e 's/ ,    /,/g;s/,$//g'`
+  echo "Product: Apple,$product";
 elif [ "x$HOST_OS" = "xLinux" ]; then
   vendor="`cat /sys/class/dmi/id/board_vendor`"
   board="`cat /sys/class/dmi/id/board_name`"
@@ -31,16 +32,29 @@ fi
 
 echo "ARCH: `uname -m`"
 
-cpuinfo=`cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2 | tr -s ' '`
-cpunum=`cat /proc/cpuinfo | grep 'model name' | wc -l`
+if [ "x$HOST_OS" = "xDarwin" ]; then
+  # sysctl -a | grep machdep
+  cpuinfo=" `sysctl -n machdep.cpu.brand_string`"
+  cpunum=`sysctl -n hw.physicalcpu`
+else
+  cpuinfo=`cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2 | tr -s ' '`
+  cpunum=`cat /proc/cpuinfo | grep 'model name' | wc -l`
+fi
+
 echo "CPU: $cpunum x$cpuinfo"
 
-mem_size=`cat /proc/meminfo | egrep 'MemTotal' | tr -s ' ' | cut -d ' ' -f2 | xargs -i sh -c 'echo $(({}/1024))'`
-echo "RAM: $mem_size MiB"
+if [ "x$HOST_OS" = "xDarwin" ]; then
+  # sysctl -n hw.memsize
+  mem_size="`system_profiler SPHardwareDataType | grep Memory | cut -d':' -f2 | tr -s ' '`"
+  echo "RAM:$mem_size"
+else
+  mem_size=`cat /proc/meminfo | egrep 'MemTotal' | tr -s ' ' | cut -d ' ' -f2 | xargs -I{} sh -c 'echo $(({}/1024))'`
+  echo "RAM: $mem_size MiB"
+fi
 
 # System
 if [ "x$HOST_OS" = "xDarwin" ]; then
-  echo "TBD";
+  echo "System:`sw_vers | cut -d ':' -f2 | tr '\t' ' ' | tr '\n' ',' | sed -e 's/,$//g'`"
 elif [ "x$HOST_OS" = "xLinux" ]; then
   system_desc="`lsb_release -d | cut -d':' -f2 | tr -d '\t'`"
   system_code="`lsb_release -c | cut -d':' -f2 | tr -d '\t'`"
@@ -50,7 +64,7 @@ else # Windows
 fi
 
 # Kernel
-echo "Linux: `uname -r`"
+echo "Kernel: `uname -sr`"
 
 # Docker
 echo "Docker: `docker --version`"

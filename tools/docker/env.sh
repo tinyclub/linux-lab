@@ -60,7 +60,8 @@ elif [ "x$HOST_OS" = "xLinux" ]; then
   system_code="`lsb_release -c | cut -d':' -f2 | tr -d '\t'`"
   echo "System: $system_desc, $system_code"
 else # Windows
-  echo "System: $HOST_OS, `uname -n`"
+  system=`systeminfo.exe | head -4 | tail -3 | cut -d ':' -f2 | tr -s ' ' | tr '\n' ',' | tr -d -c "[:print:]" | sed -e 's/ ,/,/g;s/,$//g'`
+  echo "System:$system"
 fi
 
 # Kernel

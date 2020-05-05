@@ -783,7 +783,7 @@ EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
 # Linux configurations
 LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)
 LINUX_KIMAGE  := $(KERNEL_OUTPUT)/$(ORIIMG)
-LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(UORIIMG)
+LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
 
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
@@ -860,8 +860,8 @@ ifneq ($(UBOOT),)
 endif
 
 ifneq ($(UBOOT),)
-UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/u-boot
-PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/u-boot
+UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/$(notdir $(BIMAGE))
+PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/$(notdir $(BIMAGE))
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
   PBU ?= 0
@@ -2401,7 +2401,11 @@ PHONY += kernel-feature-test kernel-features-test features-test feature-test
 IMAGE := $(notdir $(ORIIMG))
 
 ifeq ($(U),1)
-  IMAGE := uImage
+  ifeq ($(ARCH),arm64)
+    IMAGE := Image
+  else
+    IMAGE := uImage
+  endif
 endif
 
 # Default kernel target is kernel image
@@ -2603,7 +2607,7 @@ _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
-BOOTDEV ?= flash
+BOOTDEV ?= none
 KRN_ADDR ?= -
 KRN_SIZE ?= 0
 RDK_ADDR ?= -
@@ -2629,6 +2633,10 @@ ifeq ($(SD_BOOT),1)
 endif
 ifeq ($(findstring flash,$(BOOTDEV)),flash)
   U_BOOT_CMD := bootcmd3
+endif
+ifeq ($(BOOTDEV),ram)
+  U_BOOT_CMD := bootcmd4
+  RAM_BOOT ?= 1
 endif
 
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
@@ -2698,9 +2706,11 @@ ifeq ($(DTB),$(wildcard $(DTB)))
   U_DTB_IMAGE=$(DTB)
 endif
 
+BOOTX := $(if $(UBOOT_BIOS),booti,bootm)
+
 PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
 
-export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS ENV_OFFSET SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
+export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS ENV_ADDR ENV_OFFSET ENV_SIZE BOOTX BOOTDEV_LIST SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
 UBOOT_TFTP_TOOL   := $(TOOL_DIR)/uboot/tftp.sh
 UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
@@ -2740,7 +2750,9 @@ endif
 
 uboot-images: _uboot-images
 	$(Q)$(UBOOT_CONFIG_TOOL)
+ifneq ($(BOOTDEV),none)
 	$(Q)$(UBOOT_ENV_TOOL)
+endif
 
 uboot-images-clean:
 	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
@@ -2968,7 +2980,11 @@ SMP ?= 1
 ifneq ($(PORIIMG),)
   KERNEL_OPT ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
 else
-  KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
+  ifeq ($(U),1)
+    KERNEL_OPT ?= $(if $(UBOOT_BIOS),-bios,-kernel) $(QEMU_KIMAGE)
+  else
+    KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
+  endif
 endif
 
 EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
@@ -2981,11 +2997,21 @@ ifeq ($(U),1)
   ifeq ($(SD_BOOT),1)
     BOOT_CMD += -drive if=sd,file=$(SD_IMG),format=raw,id=sd0
   endif
+  ifeq ($(RAM_BOOT),1)
+    BOOT_CMD += -device loader,file=$(UKIMAGE),addr=$(KRN_ADDR)
+    BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
+    #BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
+  endif
+  ifeq ($(UBOOT_BIOS),1)
+    ifneq ($(ENV_DEV), flash)
+      BOOT_CMD += -device loader,file=$(ENV_IMG),addr=$(ENV_ADDR)
+    endif
+  endif
 
   ifneq ($(PFLASH_SIZE),0)
     # Load pflash for booting with uboot every time
     # pflash is at least used as the env storage
-    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw
+    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw$(if $(UBOOT_BIOS),$(comma)unit=1)
   endif
 else # U != 1
   ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)

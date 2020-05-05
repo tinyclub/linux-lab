@@ -99,7 +99,7 @@ BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
 HOME_DIR    := /home/$(USER)/
-GDBINIT_DIR := $(TOP_DIR)/.gdbinits
+GDBINIT_DIR := $(TOP_DIR)/.gdb
 
 # Search board in basic arch list while board name given without arch specified
 BASE_ARCHS := arm aarch64 mipsel ppc i386 x86_64 loongson csky
@@ -3256,13 +3256,25 @@ ifneq ($(GDB_ARCH), 1)
   endif
 endif
 
+ifeq ($(GDBINIT_DIR)/kernel.user, $(wildcard $(GDBINIT_DIR)/kernel.user))
+  GDB_INIT_KERNEL ?= kerenl.user
+else
+  GDB_INIT_KERNEL ?= kernel.default
+endif
+
+ifeq ($(GDBINIT_DIR)/uboot.user, $(wildcard $(GDBINIT_DIR)/uboot.user))
+  GDB_INIT_UBOOT  ?= uboot.user
+else
+  GDB_INIT_UBOOT  ?= uboot.default
+endif
+
 ifeq ($(DEBUG),uboot)
   GDB_CMD      ?= $(GDB) $(BIMAGE)
-  GDB_INIT     ?= $(GDBINIT_DIR)/uboot
+  GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_UBOOT)
   DEBUG_DEPS   := uboot-build
 else
   GDB_CMD      ?= $(GDB) $(VMLINUX)
-  GDB_INIT     ?= $(GDBINIT_DIR)/kernel
+  GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_KERNEL)
   DEBUG_DPES   := kernel-build
 endif
 

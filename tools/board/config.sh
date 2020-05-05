@@ -25,8 +25,8 @@ LINUX_Makefile=${Makefile}.linux_${LINUX}
 
 # Makefile.linux_vX.Y.Z > Makefile.gcc > Makefile
 
-echo "LOG: Config Variable: ($V, $_V)"
-echo "LOG: Config Value: $S"
+# echo "LOG: Config Variable: ($V, $_V)"
+# echo "LOG: Config Value: $S"
 
 m=${Makefile}
 if [ "$V" != "LINUX" -a -f ${LINUX_Makefile} ]; then

@@ -3262,7 +3262,7 @@ ifneq ($(GDB_ARCH), 1)
 endif
 
 ifeq ($(GDBINIT_DIR)/kernel.user, $(wildcard $(GDBINIT_DIR)/kernel.user))
-  GDB_INIT_KERNEL ?= kerenl.user
+  GDB_INIT_KERNEL ?= kernel.user
 else
   GDB_INIT_KERNEL ?= kernel.default
 endif

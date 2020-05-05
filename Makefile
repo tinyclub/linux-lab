@@ -1227,7 +1227,7 @@ endef
 
 # FIXME: ugly workaround for uboot, it share code between arm and arm64
 define uboot_arch
-$(shell if [ $1 = arm64 ]; then echo arm; else echo $1...; fi)
+$(shell if [ $1 = arm64 ]; then echo arm; else echo $1; fi)
 endef
 
 define make_uboot

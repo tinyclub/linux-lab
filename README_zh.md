@@ -1109,7 +1109,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make debug
 
-将打开一个新的终端窗口，从 `.gdbinits/kernel` 加载脚本，自动运行 gdb。
+将打开一个新的终端窗口，从 `.gdb/kernel.default` 加载脚本，自动运行 gdb。
+
+如果想修改调试脚本，可以拷贝一份到 `.gdb/kernel.user`，这样就可以无缝升级：
+
+    $ cp .gdb/kernel.default .gdb/kernel.user
 
 以上命令等价于运行如下命令：
 
@@ -1129,7 +1133,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ### 4.6.2 调试 Uboot
 
-如果想调试 Uboot（采用 `.gdbinits/uboot` 调试脚本）：
+如果想调试 Uboot（采用 `.gdb/uboot.default` 调试脚本）：
 
     $ make debug uboot
     或
@@ -1140,6 +1144,10 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ make test-debug uboot
     或
     $ make test DEBUG=uboot
+
+同样地，如果想修改调试脚本，可以拷贝一份到 `.gdb/uboot.user`，这样就可以无缝升级：
+
+    $ cp .gdb/uboot.default .gdb/uboot.user
 
 ## 4.7 自动化测试
 

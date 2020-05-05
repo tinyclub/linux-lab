@@ -1079,7 +1079,11 @@ And then debug it directly:
 
     $ make debug
 
-It will open a new terminal, load the scripts from `.gdbinits/kernel`, run gdb automatically.
+It will open a new terminal, load the scripts from `.gdb/kernel.default`, run gdb automatically.
+
+To customize kernel gdbinit script, simply copy one and edit it manually:
+
+    $ cp .gdb/kernel.default .gdb/kernel.user
 
 It equals to:
 
@@ -1099,7 +1103,7 @@ find out the code line of a kernel panic address:
 
 ### 4.6.2 Debugging Uboot
 
-to debug uboot with `.gdbinits/uboot`:
+to debug uboot with `.gdb/uboot.default`:
 
     $ make debug uboot
     or
@@ -1110,6 +1114,10 @@ to automate uboot debug testing:
     $ make test-debug uboot
     or
     $ make test DEBUG=uboot
+
+The same to kernel gdbinit script, customize one for uboot:
+
+    $ cp .gdb/uboot.default .gdb/uboot.user
 
 ## 4.7 Test Automation
 

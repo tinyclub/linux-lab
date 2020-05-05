@@ -37,6 +37,8 @@ PFLASH_SIZE ?= 64
 PFLASH_BS   ?= 512
 # Environment Offset, see CONFIG_ENV_OFFSET in $UCONFIG
 ENV_OFFSET  ?= 63
+# see CONFIG_ENV_ADDR in defconfig
+# ENV_ADDR   ?= 0x47F80000
 
 # 9pnet based network filesystem sharing, vexpress-a9 not support virtio-9p-pci, so, the virtio-9p-pci based -virtfs not work
 NET9PDEV ?= virtio-9p-device

@@ -3011,6 +3011,7 @@ ifeq ($(U),1)
   ifneq ($(PFLASH_SIZE),0)
     # Load pflash for booting with uboot every time
     # pflash is at least used as the env storage
+    # unit=1 means the second pflash, the first one is unit=0
     BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw$(if $(UBOOT_BIOS),$(comma)unit=1)
   endif
 else # U != 1

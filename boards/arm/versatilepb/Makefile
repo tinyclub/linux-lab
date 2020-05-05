@@ -15,6 +15,9 @@ GCC = 4.7
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64
 PFLASH_BS   ?= 256
+# Environment Offset, see CONFIG_ENV_OFFSET in $UCONFIG
+ENV_OFFSET  ?= 63
+
 # get dram range: bdinfo
 KRN_ADDR?= 0x007fc0
 KRN_SIZE?= 5

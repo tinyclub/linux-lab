@@ -16,5 +16,5 @@ UBOOT_IMAGE=${BIMAGE}
 if [ -n "$ENV_IMG" ]; then
   [ ! -f $PFLASH_IMG ] && dd if=/dev/zero of=$PFLASH_IMG status=none bs=${PFLASH_BS}K count=$((PFLASH_SIZE * 1024 / PFLASH_BS))
 
-  dd if=$ENV_IMG of=$PFLASH_IMG bs=1M seek=$((PFLASH_SIZE-1)) conv=notrunc status=none
+  dd if=$ENV_IMG of=$PFLASH_IMG bs=1M seek=$ENV_OFFSET conv=notrunc status=none
 fi

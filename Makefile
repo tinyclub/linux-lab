@@ -2421,8 +2421,11 @@ else
   KOPTS   += CONFIG_INITRAMFS_SOURCE=
 endif
 
+DTC := tools/kernel/dtc
+
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
+
   ifeq ($(DTS),$(wildcard $(DTS)))
 
 # FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
@@ -2436,7 +2439,7 @@ ifeq ($(_DTS),)
 else
 	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
 	$(Q)mkdir -p $(dir $(DTB))
-	$(Q)dtc -I dts -O dtb -o $(DTB) $(DTS)
+	$(Q)$(DTC) -I dts -O dtb -o $(DTB) $(DTS)
 endif
 
 # Pass kernel command line in dts, require to build dts for every boot
@@ -2664,19 +2667,21 @@ UT ?= $(x)
 _uboot:
 	$(call make_uboot,$(UT))
 
+UBOOT_MKIMAGE := tools/uboot/mkimage
+
 # root uboot image
 root-ud:
 	$(Q)if [ ! -f "$(UROOTFS)" ]; then make $(NPD) root-ud-rebuild; fi
 
 _root-ud-rebuild: FORCE
 	@echo "LOG: Generating rootfs image for uboot ..."
-	$(Q)mkimage -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
+	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
 
 root-ud-rebuild: root-rd _root-ud-rebuild
 
 kernel-uimage:
 ifeq ($(PBK), 0)
-	$(Q)mkimage -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
+	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
 		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE)
 endif
 

@@ -2867,7 +2867,7 @@ ifeq ($(ROOTDEV),/dev/nfs)
   # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
   # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
   IP_FULL  ?= $(IP):$(ROUTE):$(ROUTE):255.255.255.0:linux-lab:$(IFACE):off
-  IP_SHORT ?= $(IP):::::$(IFACE):off
+  IP_SHORT ?= $(IP)::$(ROUTE):::$(IFACE):off
   CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP_SHORT)
 endif
 

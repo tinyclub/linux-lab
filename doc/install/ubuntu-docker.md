@@ -66,7 +66,7 @@
 
     $ apt-cache search linux-image-4.15.*generic | tail -1 | cut -d' ' -f1
     linux-image-4.15.0-99-generic
-    $ sudo apt-get -y install linux-image-4.15.0-99-generic linux-modules-4.15.0-99-generic
+    $ sudo apt-get -y install linux-image-4.15.0-99-generic linux-modules-4.15.0-99-generic linux-modules-extra-4.15.0-99-generic
 
   记得**务必**同时安装上 `linux-image` 和 `linux-modules`，否则设备驱动可能异常。
 

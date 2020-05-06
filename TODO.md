@@ -31,3 +31,4 @@
   * Operating Systems, include busybox, openwrt, openembedded, yocto, openEuler, UOS
   * Virtualization, Container, Hypervisor, User-Mode OS, Real Time, OP-TEE
   * Bootloaders
+* Clean up the 'shortcuts' support, current support differs from system

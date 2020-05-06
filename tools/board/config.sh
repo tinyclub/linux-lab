@@ -42,7 +42,7 @@ else
   done
 fi
 
-echo "LOG: Save to:" $m
+#echo "LOG: Save to:" $m
 touch $m
 
 [ "$V" == "$_V" ] && _V="$V[\t ?:=]"

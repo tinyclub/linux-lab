@@ -1881,9 +1881,9 @@ ifeq ($(UPDATE_GCC),1)
 	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 endif
 ifeq ($(UPDATE_CCORI),1)
-	$(Q)echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
-	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
-	$(Q)echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	@#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	@tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
+	@#echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
 endif
 	$(Q)make -s gcc-info
 

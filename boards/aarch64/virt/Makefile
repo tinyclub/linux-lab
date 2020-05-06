@@ -4,7 +4,7 @@ ARCH     = arm64
 XARCH    = aarch64
 CPU     ?= cortex-a57
 SMP     ?= 2
-MEM     ?= 128M
+MEM     ?= 256M
 XOPTS   ?= -cpu $(CPU) -serial mon:stdio -machine virt,gic_version=3 -machine type=virt,virtualization=true -d guest_errors -nodefaults
 # v2.12.0 has sdl based graphic, boots with G=1, v4.0.0 with vnc output
 QEMU    ?= v4.0.0
@@ -48,11 +48,11 @@ ORIIMG  ?= arch/$(ARCH)/boot/Image
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 
 # Get DRAM start & size via `bdinfo`
-KRN_ADDR?= 0x43000000
-KRN_SIZE?= 12
-RDK_ADDR?= 0x41000000
-RDK_SIZE?= 10
-DTB_ADDR?= 0x42000000
+KRN_ADDR?= 0x45000000
+KRN_SIZE?= 10
+RDK_ADDR?= 0x42000000
+RDK_SIZE?= 6
+DTB_ADDR?= 0x44000000
 DTB_SIZE?= 2
 UCONFIG ?= qemu-arm.h
 
@@ -70,7 +70,7 @@ ENVDEV      ?= flash
 ifeq ($(ENV_DEV), flash)
   ENV_ADDR  ?= 0x4000000
 else
-  ENV_ADDR  ?= 0x45000000
+  ENV_ADDR  ?= 0x49000000
 endif
 
 # Run uboot as bios, use -bios instead of -kernel

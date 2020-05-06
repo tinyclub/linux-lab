@@ -3000,7 +3000,9 @@ ifeq ($(U),1)
   ifeq ($(RAM_BOOT),1)
     BOOT_CMD += -device loader,file=$(UKIMAGE),addr=$(KRN_ADDR)
     BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
-    #BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
+    ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+      BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
+    endif
   endif
   ifeq ($(UBOOT_BIOS),1)
     ifneq ($(ENV_DEV), flash)

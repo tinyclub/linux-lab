@@ -23,4 +23,11 @@
 * Fix up filesystem issue while rootfs.ext2 is broken (verify and re-generate it)
 * Add real hardware boards support
 * Instruction encoding/decoding support should be added to easier ISA understanding: pwntools
-* Upgrade docker image to ubuntu 18.04 LTS and reduce the size a lot
+* Upgrade docker image to ubuntu 20.04 LTS and reduce the size a lot
+* Modulize the core Makefile to 'APP' level, reduce coupling and increase scalability & maintainability
+* More 'APP's and functions: from top to bottom
+  * GUI System
+  * Tools for profile, trace and debug
+  * Operating Systems, include busybox, openwrt, openembedded, yocto, openEuler, UOS
+  * Virtualization, Container, Hypervisor, User-Mode OS, Real Time, OP-TEE
+  * Bootloaders

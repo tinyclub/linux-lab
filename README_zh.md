@@ -346,45 +346,42 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     $ tools/docker/run linux-lab
 
+通过 Bash 直接登陆：
+
+    $ tools/docker/bash
+
 通过 Web 浏览器直接登录实验环境：
 
-    $ tools/docker/vnc linux-lab
+    $ tools/docker/webvnc
 
 其他登录方式：
 
-    $ tools/docker/webvnc linux-lab   # The same as tools/docker/vnc
-    $ tools/docker/webssh linux-lab
-    $ tools/docker/ssh linux-lab
-    $ tools/docker/bash linux-lab
+    $ tools/docker/vnc
+    $ tools/docker/ssh
+    $ tools/docker/webssh
+
+选择某种登陆方式：
+
+    $ tools/docker/login list   # 列出并选择，并且记住
+    $ tools/docker/login vnc    # 直接选择一种并记住
 
 登录方式汇总：
 
 |   登录方法     |   描述             |  缺省用户        |  登录所在地          |
 |----------------|--------------------|------------------|----------------------|
-|   webvnc       | web 桌面           |  ubuntu          | 互联网在线即可       |
-|   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
 |   bash         | docker bash        |  ubuntu          | 本地主机             |
 |   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
 |   vnc          | 普通 桌面          |  ubuntu          | 本地主机+VNC client  |
+|   webvnc       | web 桌面           |  ubuntu          | 互联网在线即可       |
+|   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
 
-由于普通的 vnc 客户端五花八门，所以当前默认采用 webvnc，确保可以在各个平台能自动登陆。
+由于普通的 vnc 客户端五花八门，所以当前建议采用 webvnc，确保可以在各个平台能自动登陆。
 
-如果大家要使用本地 vnc 客户端，可以使用 `tools/docker/webvnc` 打印出来的 `IP` 和 `Normal Password`，例如，Ubuntu 的用户可以使用 vinagre 或 remmina：
+如果想使用本地的 vnc 客户端，请先提前安装好客户端，Linux Lab 推荐使用 vinagre。其他的客户端请通过如下方式指定：
 
-    $ tools/docker/vnc linux-lab
-    ...
-    Please login via VNC Client with:
+    $ tools/docker/vnc vinagre
 
-          IP: 172.17.0.3
-        User: 7827c9 (Only for noVNC)
-    Password: nl7fxd (Normal)
-    Password: fmkv7w (View)
-    ...
-
-    $ sudo apt-get install vinagre
-
-    // 用下面的命令连接后，输入 "Normal" 后面的密码即可，"View" 后面的密码只能看，不能操作，可以给学生用。
-    $ vinagre 172.17.0.3
+如果上述命令不能正常工作，请根据上述命令打印出来的 VNC 服务器信息，自行配置所用客户端。
 
 ## 2.6 更新实验环境并重新运行
 
@@ -1641,7 +1638,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror �
 
 如果是从休眠中的主机（或虚拟机）系统唤醒，那么 Linux Lab 也会自动恢复，可以直接使用，登陆方式请参考 2.4 节中提供的 4 种登陆方式。例如，直接开一个浏览器去使用：
 
-    $ tools/docker/vnc linux-lab
+    $ tools/docker/vnc
 
 ## 6.2 Qemu 相关
 

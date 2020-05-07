@@ -298,45 +298,42 @@ Launch the lab and login with the user and password printed in the console:
 
     $ tools/docker/run linux-lab
 
+Login with Bash:
+
+    $ tools/docker/bash
+
 Re-login the lab via web browser:
 
-    $ tools/docker/vnc linux-lab
+    $ tools/docker/webvnc
 
 The other login methods:
 
-    $ tools/docker/webvnc linux-lab   # The same as tools/docker/vnc
-    $ tools/docker/webssh linux-lab
-    $ tools/docker/ssh linux-lab
-    $ tools/docker/bash linux-lab
+    $ tools/docker/vnc
+    $ tools/docker/ssh
+    $ tools/docker/webssh
+
+Choose one of the method:
+
+    $ tools/docker/login list  # List, choose and record
+    $ tools/docker/login vnc   # Choose one directly and record for late login
 
 Summary of login methods:
 
 |   Login Method |   Description      |  Default User    |  Where               |
 |----------------|--------------------|------------------|----------------------|
-|   webvnc       | web desktop        |  ubuntu          | anywhere via internet|
-|   webssh       | web ssh            |  ubuntu          | anywhere via internet|
 |   bash         | docker bash        |  ubuntu          | localhost            |
 |   ssh          | normal ssh         |  ubuntu          | localhost            |
 |   vnc          | normal vnc         |  ubuntu          | localhost+VNC client |
+|   webvnc       | web desktop        |  ubuntu          | anywhere via internet|
+|   webssh       | web ssh            |  ubuntu          | anywhere via internet|
 
 Since vnc clients differs from operating systems, we use webvnc by default to make sure auto login vnc for all systems.
 
-If really want to use local vnc clients, please use the 'IP' and 'Normal Password' printed by `tools/docker/webvnc`, for example, `vinagre` or `remmina` can be used by Ubuntu users.
+If really want to use local vnc clients, please install a vnc client, for example: `vinagre`, then specify it like this:
 
-    $ tools/docker/vnc linux-lab
-    ...
-    Please login via VNC Client with:
+    $ tools/docker/vnc vinagre
 
-          IP: 172.17.0.3
-        User: 7827c9 (Only for noVNC)
-    Password: nl7fxd (Normal)
-    Password: fmkv7w (View)
-    ...
-
-    $ sudo apt-get install vinagre
-
-    // After connected, input the above 'Normal' Password, the 'View' one is only for students.
-    $ vinagre 172.17.0.3
+If the above command not work normally, based on the information printed above, please configure the vnc client yourself.
 
 ## 2.6 Update and rerun the lab
 
@@ -1610,7 +1607,7 @@ If the above methods still not restart the lab, please refer to the methods ment
 
 If resume from a suspended host system, the lab will restore automatically, no need to do anything to restart it, just use one of the 4 login methods mentioned in the 2.4 section, for example, start a web browser to connect it:
 
-    $ tools/docker/vnc linux-lab
+    $ tools/docker/vnc
 
 ## 6.2 Qemu Issues
 

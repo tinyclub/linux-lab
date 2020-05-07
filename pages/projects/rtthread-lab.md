@@ -89,7 +89,7 @@ RT-Thread 是一套国产 IoT 操作系统。
 
 退出以后下次可直接登陆：
 
-    $ tools/docker/vnc rtthread-lab
+    $ tools/docker/vnc
 
 ## 使用 RT-Thread Lab
 

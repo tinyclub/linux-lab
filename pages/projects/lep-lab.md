@@ -83,7 +83,7 @@ LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
 退出以后下次可直接登陆：
 
-    $ tools/docker/vnc lep-lab
+    $ tools/docker/vnc
 
 ## 使用 LEP Lab
 

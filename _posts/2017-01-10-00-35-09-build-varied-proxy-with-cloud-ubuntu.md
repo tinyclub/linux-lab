@@ -42,11 +42,10 @@ tags:
 
     $ tools/docker/install
 
-如果是国内用户，建议在 `/etc/default/docker` 中打开如下配置：
+如果是国内用户，建议参考如下文档配置 docker 加速：
 
-> DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-> DOCKER_OPTS="$DOCKER_OPTS --dns 223.5.5.5 --dns 114.114.114.114"
-> DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.33.10/24"
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
 重启 Docker 服务，加载新配置：
 

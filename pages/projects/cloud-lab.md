@@ -63,9 +63,10 @@ Docker 是 Cloud Lab 的基础，需要先安装好，可参考：
 
 由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
 
-    $ grep registry-mirror /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
+Docker 镜像加速部分请参考：
+
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
 如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
 
@@ -118,9 +119,10 @@ Windows 虽然也支持通过 Docker CE 直接安装 Docker，但是如果要使
 
 由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
 
-    $ grep registry-mirror /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
+Docker 镜像加速部分请参考：
+
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
 ### 避免网络地址冲突
 

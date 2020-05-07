@@ -118,7 +118,7 @@ Labs 并没有特别的要求，可以是一系列代码加上一些必要的构
 
       $ tools/docker/install
 
-  安装以后，可根据实际情况自行配置 `/etc/default/docker`，包括 `--registry-mirror`，`--dns`，`--bip`，`dm.basesize` 等。修改后需要重启服务：
+  安装以后，可根据实际情况自行配置 `registry-mirror`，`dns`，`bip`，`dm.basesize` 等。修改后需要重启服务：
 
       $ sudo service docker restart
 

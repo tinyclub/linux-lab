@@ -48,9 +48,8 @@ tags:
 
 由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 `registry-mirror` 更换镜像库为本地区的（以 ustc 为例），更换完记得重启 docker 服务。
 
-    $ cat /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://docker.mirrors.ustc.edu.cn"
-    $ service docker restart
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
 如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过配置 `bip` 更新 docker 网络环境，并重启 docker 服务。
 

@@ -1557,9 +1557,9 @@ NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_
 
 $(1)-cloneconfig:
 	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
-	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_MAKEFILE)
-	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_MAKEFILE); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
-		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_MAKEFILE); fi
+	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
+		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
 	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
 else
@@ -1883,7 +1883,7 @@ ifeq ($(UPDATE_GCC),1)
 endif
 ifeq ($(UPDATE_CCORI),1)
 	@#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
-	@tools/board/config.sh CCORI=$(CCORI) $(BOARD_MAKEFILE)
+	@tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG)
 	@#echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
 endif
 	$(Q)make -s gcc-info

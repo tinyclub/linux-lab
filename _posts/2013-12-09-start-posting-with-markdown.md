@@ -29,7 +29,7 @@ Likes **Latex**, it can be converted to *HTML*, *PDF* and the other visual outpu
 
 ### Usage
 
-To use it, at first, please learn [Markdown Syntax][3] or its Chinese translation: <http://wowubuntu.com/markdown/> or [Markdown Cheatsheet][4].
+To use it, at first, please learn [Markdown Syntax][3] or its Chinese translation: <https://www.markdownguide.org/basic-syntax> or [Markdown Cheatsheet][4].
 
 Then, we can write something with a plan text editor, such as gedit or vim, after editing, save the content to a file named with the '.md' suffix.
 

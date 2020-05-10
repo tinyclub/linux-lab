@@ -357,7 +357,7 @@ categories:
 
  [1]: http://tinylab.org
  [2]: /tinysalon/
- [3]: http://wowubuntu.com/markdown/
+ [3]: https://www.markdownguide.org/basic-syntax
  [4]: http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html
  [5]: http://colobu.com/2014/10/09/gitbook-quickstart/
  [6]: http://www.chengweiyang.cn/gitbook/

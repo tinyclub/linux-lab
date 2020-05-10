@@ -130,4 +130,4 @@ Docker 安装/启动：
 [7]: http://tinylab.org/docker-quick-start-docker-gitbook-writing-a-book/
 [8]: http://pandoc.org/demo/example19/Pandoc_0027s-Markdown.html
 [9]: https://github.com/jgm/pandoc-templates
-[10]: http://wowubuntu.com/markdown/
+[10]: https://www.markdownguide.org/basic-syntax

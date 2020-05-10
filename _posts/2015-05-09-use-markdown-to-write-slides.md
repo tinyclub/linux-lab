@@ -180,7 +180,7 @@ categories:
 
  [1]: http://tinylab.org
  [2]: http://johnmacfarlane.net/pandoc/installing.html
- [3]: http://wowubuntu.com/markdown/
+ [3]: https://www.markdownguide.org/basic-syntax
  [4]: http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html
  [5]: http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/
  [6]: http://latex-project.org/guides/

@@ -146,5 +146,5 @@ examples/source/ 下有几份样稿可参照，其中 zhsample.md 为中文样�
  [3]: /use-markdown-to-write-slides/
  [4]: https://github.com/mwhite/resume
  [5]: https://github.com/there4/markdown-resume
- [6]: http://wowubuntu.com/markdown/
+ [6]: https://www.markdownguide.org/basic-syntax
  [7]: http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html

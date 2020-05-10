@@ -392,16 +392,25 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug run
 
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
 endef
 
 first_target := $(firstword $(MAKECMDGOALS))
+ifeq ($(findstring -run,$(first_target)),-run)
+  # use the rest as arguments for "run"
+  APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  x := $(APP_ARGS)
+endif
+
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   # use the rest as arguments for "run"
   APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  ifeq ($(first_target),run)
+    x := $(filter-out $(first_target),$(wordlist 2,$(words $(APP_ARGS)),$(APP_ARGS)))
+  endif
 
 define cli_detectapp
 ifeq ($$(origin $(2)),command line)
@@ -418,7 +427,7 @@ endif
 endef
 
 ifneq ($(APP_ARGS),)
-  APP := $(APP_ARGS)
+  APP := $(firstword $(APP_ARGS))
 else
   APP :=
   $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
@@ -442,16 +451,6 @@ ifeq ($(app),)
 endif
 
 endif # common commands
-
-# If the first argument is "xxx-run"...
-reserve_target := $(first_target:-run=)
-
-ifeq ($(findstring -run,$(first_target)),-run)
-  # use the rest as arguments for "run"
-  RUN_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  x := $(RUN_ARGS)
-endif
-
 
 # Prepare build environment
 
@@ -1300,6 +1299,8 @@ $(1)-build: _$(1)
 else
 $(1)-build: $$(call __stamp_$(1),build)
 endif
+
+$(1)-run: _$(1)
 
 $(1)-release: $(1) $(1)-save $(1)-saveconfig
 
@@ -3419,13 +3420,6 @@ PHONY += env env-list env-prepare env-dump env-save lab-help
 # include .labfini if exist
 $(eval $(call _ti,.labfini))
 
-#
-# override all of the above targets if the first target is XXX-run, treat left parts as its arguments, simplify input
-# but warnings exists about 'overriding recipe for target 'xxx' when arguments are existing targets.
-#
-# ref: https://stackoverflow.com/questions/2214575/passing-arguments-to-make-run#
-#
-
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(APP_ARGS):FORCE;@:)
@@ -3453,21 +3447,6 @@ PHONY += $(APP_TARGETS)
 endif
 
 PHONY += $(APPS)
-
-ifneq ($(RUN_ARGS),)
-# ...and turn them into do-nothing targets
-$(eval $(RUN_ARGS):FORCE;@:)
-
-EXEC_TARGETS  := $(foreach t,$(APPS),$(t:=-run))
-ifneq ($(BOARD_DOWNLOAD),)
-$(EXEC_TARGETS): $(BOARD_DOWNLOAD)
-	$(Q)make $(S) $(subst -run,,$(first_target))
-else
-$(EXEC_TARGETS): $(subst -run,,$(first_target))
-endif
-
-PHONY += $(EXEC_TARGETS)
-endif
 
 # Allow cleanstamp and run a target
 force-%:

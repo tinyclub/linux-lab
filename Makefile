@@ -1202,7 +1202,7 @@ endif
 
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
-		echo $($(call _uc,$(subst list-,,$@))_LIST) | sed -e 's%$($(call _uc,$(subst list-,,$@)))%[$($(call _uc,$(subst list-,,$@)))]%g'; \
+		echo $($(call _uc,$(subst list-,,$@))_LIST) | sed -e 's%\($($(call _uc,$(subst list-,,$@)))\)\([ ]\{1,\}\)%[\1]\2%g;s%\($($(call _uc,$(subst list-,,$@)))\)$$%[\1]%g'; \
 	else					\
 		if [ $(shell make --dry-run -s $(subst list-,,$@)-list >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 			make -s $(subst list-,,$@)-list; \
@@ -1455,7 +1455,7 @@ define gengoals
 #_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
 
 $(1)-list:
-	$$(Q)echo $$($(2)_LIST) | sed -e 's%$$($(2))%[$$($(2))]%g'
+	$$(Q)echo $$($(2)_LIST) | sed -e 's%\($$($(2))\)\([ ]\{1,\}\)%[\1]\2%g;s%\($$($(2))\)$$$$%[\1]%g'
 
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))

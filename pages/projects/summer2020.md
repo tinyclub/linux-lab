@@ -35,10 +35,10 @@ tags:
 
 | 需求                   |  描述                                                                   | 关联项目
 |------------------------|-------------------------------------------------------------------------|-------------
-| Perf Lab  性能实验室   | 基于 Cloud Lab 的易用性和可扩展性，开发一款便利系统性能优化的环境       | Cloud Lab
-| Linux Lab 镜像升级     | 把当前镜像从 Ubuntu 14.04 升级到 Ubuntu 20.04，满足各类软件开发需要     | Linux Lab
-| Linux Lab 模块化支持   | 为 Linux Lab 添加模块化支持，增加可扩展性，进一步提升对各类新软件的支持 | Linux Lab
-| Markdown Lab 功能增强  | 为 Markdown Lab 完善中文支持、美化 PDF 输出格式、增加加密和水印功能等   | Markdown Lab
+| Perf Lab  性能实验室   | 基于 Cloud Lab 的易用性和可扩展性，开发一款便利系统性能优化的环境       | [Cloud Lab](http://tinylab.org/cloud-lab)
+| Linux Lab 镜像升级     | 把当前镜像从 Ubuntu 14.04 升级到 Ubuntu 20.04，满足各类软件开发需要     | [Linux Lab](http://tinylab.org/linux-lab)
+| Linux Lab 模块化支持   | 为 Linux Lab 添加模块化支持，增加可扩展性，进一步提升对各类新软件的支持 | [Linux Lab](http://tinylab.org/linux-lab)
+| Markdown Lab 功能增强  | 为 Markdown Lab 完善中文支持、美化 PDF 输出格式、增加加密和水印功能等   | [Markdown Lab](http://tinylab.org/markdown-lab)
 
 详细需求如下。
 
@@ -51,7 +51,7 @@ tags:
 3. 项目难度：高
 4. 项目社区导师：@rxd
 5. 导师联系方式：rxd@tinylab.org
-6. 合作导师联系方式：lzufalcon, <falcon@tinylab.org>
+6. 合作导师联系方式：lzufalcon, falcon@tinylab.org
 7. 项目产出要求：
    - 在 Cloud Lab 中新增 perf-lab，需兼容 [Cloud Lab 现有接口](http://tinylab.org/how-to-deploy-cloud-labs/)
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
@@ -93,13 +93,15 @@ tags:
 ### 项目三
 
 1. 项目标题：Linux Lab 模块化支持
-2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已支持 Linux、Buildroot、Uboot 和 Qemu 四大核心模块，但是当前模块支持的耦合度非常高。本项需求旨在解耦，把各个模块的功能拆解到独立的模块支持文件中，增加可扩展性，从而方便进一步导入其他软件实验功能。
-3. 项目难度：中
+2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已支持 Linux、Buildroot、Uboot 和 Qemu 四大核心软件，但是当前软件支持的耦合度非常高。本项需求旨在解耦，把各个软件的支持拆解到独立的软件支持文件中，增加可扩展性，从而方便进一步导入其他软件实验功能。
+3. 项目难度：高
 4. 项目社区导师：@lzufalcon
 5. 导师联系方式：falcon@tinylab.org
 6. 合作导师联系方式：
 7. 项目产出要求：
-   - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
+   - 拆解核心 Makefile 为多个文件，方便单独维护
+   - 新增 core 目录，导入函数库、Init、Boot、Test、Debug、Fini 等公共模块文件
+   - 把对软件的支持拆解到 packages 目录下，每个软件有独立支持文件
    - 兼容现有 Linux Lab 功能
 8. 项目技术要求：
    - 基本的 Linux 命令

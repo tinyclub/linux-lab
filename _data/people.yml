@@ -385,3 +385,19 @@ Li Hanlu:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: Linux coder
+
+Luo Xiaogang:
+  name: Luo Xiaogang
+  nickname: rxd
+  archive: true
+  article: true
+  site: tinylab.org
+  email: rxd@tinylab.org
+  github: lxgrxd
+  wechat: lxglxg00
+  wechat-qrcode: true
+  wechat-pay: wechat-pay-rxd-9.68
+  ali-pay: ali-pay-rxd-9.68
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: 多年 ARM linux 系统开发者；开源爱好者。

@@ -31,6 +31,8 @@ tags:
 
 泰晓科技作为 Linux 技术社区加入这一计划，带来了多个具有挑战性的项目需求，欢迎同学们踊跃报名。
 
+如果您对我们的项目感兴趣，欢迎添加项目接口人的微信：tinylab。务必注明 “Summer2020” 信息。
+
 这里是需求梗概，方便速览：
 
 | 需求                   |  描述                                                                   | 关联项目
@@ -51,7 +53,7 @@ tags:
 3. 项目难度：高
 4. 项目社区导师：@rxd
 5. 导师联系方式：rxd@tinylab.org
-6. 合作导师联系方式：lzufalcon, falcon@tinylab.org
+6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
 7. 项目产出要求：
    - 在 Cloud Lab 中新增 perf-lab，需兼容 [Cloud Lab 现有接口](http://tinylab.org/how-to-deploy-cloud-labs/)
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
@@ -72,9 +74,9 @@ tags:
 1. 项目标题：Linux Lab 镜像升级
 2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已经支持国内外的 7 大主流处理器架构和 16 款开发版。当前环境基于 Ubuntu 14.04，难以适应各类软件新版本的开发需要，本项需求旨在升级当前环境到最新的 Ubuntu 20.04 或者其他更为合适的同时期 Linux 发行版。
 3. 项目难度：高
-4. 项目社区导师：@lzufalcon
-5. 导师联系方式：falcon@tinylab.org
-6. 合作导师联系方式：
+4. 项目社区导师：@robin
+5. 导师联系方式：robin@tinylab.org
+6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
 7. 项目产出要求：
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
    - 确保镜像大小不超过 5G
@@ -95,9 +97,9 @@ tags:
 1. 项目标题：Linux Lab 模块化支持
 2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已支持 Linux、Buildroot、Uboot 和 Qemu 四大核心软件，但是当前软件支持的耦合度非常高。本项需求旨在解耦，把各个软件的支持拆解到独立的软件支持文件中，增加可扩展性，从而方便进一步导入其他软件实验功能。
 3. 项目难度：高
-4. 项目社区导师：@lzufalcon
-5. 导师联系方式：falcon@tinylab.org
-6. 合作导师联系方式：
+4. 项目社区导师：@ping.wu
+5. 导师联系方式：ping.wu@tinylab.org
+6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
 7. 项目产出要求：
    - 拆解核心 Makefile 为多个文件，方便单独维护
    - 新增 core 目录，导入函数库、Init、Boot、Test、Debug、Fini 等公共模块文件

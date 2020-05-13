@@ -17,12 +17,12 @@ tags:
 
 > 原文：[Is the whole system idle?](https://lwn.net/Articles/558284/)
 > 原创：By corbet @ July 10, 2013
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [guojian-at-wowo](https://github.com/guojian-at-wowo)
 
 > The [full dynamic tick](https://lwn.net/Articles/549580/) feature that made its debut in the 3.10 kernel can be good for users who want their applications to have full use of one or more CPUs without interference from the kernel. By getting the clock tick out of the way, this feature minimizes kernel overhead and the potential latency problems. Unfortunately, full dynamic tick operation also has the potential to increase power consumption. Work is underway to fix that problem, but it turns out to require a bit of information that is surprisingly hard to get: is the system fully idle or not?
 
-在 3.10 版本内核中首次支持的[完全动态时钟（full dynamic tick）](/lwn-549580)（译者注，从习惯和方便出发，下文直接引用 full dynamic tick， 不再翻译为中文）特性对那些希望使其应用程序充分利用一个或多个处理器而不受内核干扰的用户来说非常有用。取消 tick 后（译者注，即不再以固定周期性的方式触发时钟中断），可以最大限度地减少内核开销和潜在的延迟问题。但不幸的是，这么做仍然存在一定的可能性会导致功耗增加。社区目前正在努力试图解决这个问题，但发现在着手解决这个问题之前存在另一个比较棘手的问题需要克服，就是如何判断当前整个系统已经完全进入了空闲状态。（译者注：本文所介绍的修改最终随 3.12 版本合入内核主线，但在 4.13 版本上又被移除了，具体可以查看内核修改 [commit](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fe5ac724d81a3c7803e60c2232718f212f3f38d4)，修改的原因是一直没有实际的应用（`was added in 2013 ......, but has not been used. This commit therefore removes it.`））
+在 3.10 版本内核中首次支持的[完全动态时钟（full dynamic tick）][1]（译者注，从习惯和方便出发，下文直接引用 full dynamic tick， 不再翻译为中文）特性对那些希望使其应用程序充分利用一个或多个处理器而不受内核干扰的用户来说非常有用。取消 tick 后（译者注，即不再以固定周期性的方式触发时钟中断），可以最大限度地减少内核开销和潜在的延迟问题。但不幸的是，这么做仍然存在一定的可能性会导致功耗增加。社区目前正在努力试图解决这个问题，但发现在着手解决这个问题之前存在另一个比较棘手的问题需要克服，就是如何判断当前整个系统已经完全进入了空闲状态。（译者注：本文所介绍的修改最终随 3.12 版本合入内核主线，但在 4.13 版本上又被移除了，具体可以查看内核修改 [commit][2]，修改的原因是一直没有实际的应用（`was added in 2013 ......, but has not been used. This commit therefore removes it.`））
 
 > The kernel has had the ability to turn off the periodic clock interrupt on idle processors for many years. Each processor, when it goes idle, will simply stop its timer tick; when all processors are idle, the system will naturally have the timer tick disabled systemwide. Fully dynamic tick — where the timer tick can be disabled on non-idle CPUs — adds an interesting complication, though. While most processors can (when the conditions are right) run without the clock tick, one processor must continue to keep the tick enabled so that it can perform a number of necessary system timekeeping operations. Clearly, this "timekeeping CPU" should be able to disable its tick and go idle if nothing else is running in the system, but, in current kernels, there is no way for that CPU to detect this situation.
 
@@ -38,7 +38,7 @@ tags:
 
 > So something smarter needs to be done. That's the cue for an entry by Paul McKenney, whose [seven-part full-system idle patch set](https://lwn.net/Articles/558229/) may well be the solution to this problem.
 
-看起来需要一个更加有效的解决方案。这引起了 Paul McKenney 的兴趣，他提供了[一个包含七个补丁的补丁集，名字叫做 "full-system idle"](https://lwn.net/Articles/558229/)，看上去是一个解决这个问题的好办法。
+看起来需要一个更加有效的解决方案。这引起了 Paul McKenney 的兴趣，他提供了[一个包含七个补丁的补丁集，名字叫做 "full-system idle"][3]，看上去是一个解决这个问题的好办法。
 
 > As one might expect, the solution involves the maintenance of a per-CPU array of idle states. Each CPU can update its status in the array without contending with the other CPUs. But, once again, the naive solution is inadequate. With a per-CPU array, determining whether the system is fully idle requires iterating through the entire array to examine the state of each CPU. So, while maintaining the state becomes cheap, answering the "is the system idle?" question becomes expensive if the number of CPUs is large. Given that the timekeeping code is likely to want to ask that question frequently (at each timer tick, at least), an expensive implementation is not indicated; something else must be done.
 
@@ -60,4 +60,6 @@ Paul 的方法是将上面介绍的两种解决方案的优点结合起来。首
 
 其最终结果是，在较大的系统上，对整个系统的空闲状态的检测将存在一定的延迟，这个延迟值很可能会达到几分之一秒。所以内核停止时钟 tick 的时间会比理论上应该停止的时间晚一会。这与 Paul 的实现方法有关系，他的补丁集中仅仅为了维护这个全局状态变量就足足增加了大约 500 行代码。但是，对于解决大规模系统的可扩展性问题来说，这点代价还是值得的。
 
-[1]: http://tinylab.org
+[1]: /lwn-549580
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fe5ac724d81a3c7803e60c2232718f212f3f38d4
+[3]: https://lwn.net/Articles/558229/

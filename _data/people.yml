@@ -371,3 +371,17 @@ Zhang Binghua:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: 对 Linux 内核代码极度热爱，喜欢和周边的小伙伴们一起讨论研究各种技术
+
+Li Hanlu:
+  name: Li HanLu
+  nickname: lauren
+  archive: true
+  article: true
+  site: lihanlu.cn
+  email: hanlu.li@foxmail.com
+  github: laurenisacoder
+  wechat-qrcode: true
+  wechat-pay: wechat-pay-lauren
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: Linux coder

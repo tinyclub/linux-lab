@@ -335,26 +335,39 @@ RexZ:
   info: One day I will become a man of One Piece.
 
 simowce:
-    name: Guo Chumou
-    nickname: simowce
-    archive: true
-    article: true
-    email: simowce@gmail.com
-    github: simowce
-    ali-pay: ali-pay-simowce-6.66
-    wechat-pay: wechat-pay-simowce-6.66
-    info: 一个对 Linux Kernel 和 Graphic 有浓厚兴趣的普通人
+  name: Guo Chumou
+  nickname: simowce
+  archive: true
+  article: true
+  email: simowce@gmail.com
+  github: simowce
+  ali-pay: ali-pay-simowce-6.66
+  wechat-pay: wechat-pay-simowce-6.66
+  info: 一个对 Linux Kernel 和 Graphic 有浓厚兴趣的普通人
 
 Bai Haowen:
-  name : Bai Haowen
+  name: Bai Haowen
   nickname: Lotte
   archive: true
   article: true
   site: lotte-bai.github.io
-  email : baihaowen08@126.com
-  github : Lotte-Bai
-  wechat : baihaowen08
+  email: baihaowen08@126.com
+  github: Lotte-Bai
+  wechat: baihaowen08
   wechat-pay: wechat-pay-lotte
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: Linux kernel engineer；Linux stability/performance
+
+Zhang Binghua:
+  name: Zhang Binghua
+  nickname: sky
+  archive: true
+  article: true
+  email: 920052390@qq.com
+  github: zhangbinghua
+  ali-pay: ali-pay-sky
+  wechat-pay: wechat-pay-sky
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: 对 Linux 内核代码极度热爱，喜欢和周边的小伙伴们一起讨论研究各种技术

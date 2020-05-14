@@ -3270,7 +3270,11 @@ feature-init: $(if $(FEATURE),feature kernel-init rootdir-init $(MODULE_INIT) $(
 
 PHONY += kernel-init rootdir-init module-init feature-init
 
-_test: $(TEST_PREPARE) $(if $(FI),$(if $(FEATURE),feature-init)) boot-init boot-test boot-finish FORCE
+ifeq ($(FI),1)
+  override TEST_PREPARE += $(if $(FEATURE),feature-init)
+endif
+
+_test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
 
 PHONY += _test
 

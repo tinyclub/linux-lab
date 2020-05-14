@@ -2,7 +2,7 @@
 title: 'Open Source Promotion Plan - Summer 2020'
 tagline: '“开源软件供应链点亮计划——暑期2020”项目提案'
 author: Wu Zhangjin
-draft: true
+draft: false
 layout: page
 permalink: /summer2020/
 description: 国内第一次组织类似 Google Summer of Code 的开源活动，泰晓科技技术社区踊跃报名，将携 Cloud Lab、Linux Lab、Markdown Lab 等项目参加，欢迎大家报名。

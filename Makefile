@@ -2364,7 +2364,7 @@ kernel-feature:
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
-	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-checkout' at first." && exit 1; \
+	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
 	fi
 
 ifneq ($(firstword $(MAKECMDGOALS)),list)

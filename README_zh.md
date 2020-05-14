@@ -147,10 +147,12 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * Linux 0.11 Lab
     * 用于 Linux 0.11 学习
+    * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
     * <http://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
     * 用于 X86 Linux 汇编学习
+    * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <http://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 演示视频

@@ -140,10 +140,12 @@ Related Projects:
 
 * Linux 0.11 Lab
     * Learning Linux 0.11
+    * Download it to `labs/linux-0.11-lab` and use it in Linux Lab directly
     * <http://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
     * Learning X86 Linux Assembly
+    * Download it to `labs/cs630-qemu-lab` and use it in Linux Lab directly
     * <http://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 Demonstration

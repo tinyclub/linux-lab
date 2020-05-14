@@ -3313,7 +3313,7 @@ else
 endif
 
 ifeq ($(DEBUG),uboot)
-  GDB_CMD      ?= $(GDB) $(BIMAGE)
+  GDB_CMD      ?= $(GDB) $(subst .bin,,$(BIMAGE))
   GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_UBOOT)
   DEBUG_DEPS   := uboot-build
 else

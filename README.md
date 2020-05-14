@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.4-rc2 Manual
+% Linux Lab v0.4-rc3 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->

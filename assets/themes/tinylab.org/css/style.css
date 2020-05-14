@@ -431,13 +431,14 @@ a:active {
     display: none;
 }
 #main {
+    width: 100%;
     float: left;
     margin-top: 20px;
     margin-bottom: 10px;
     overflow: hidden;
 }
 #sidebar {
-    width: 32.46%;
+    width: 308px;
     height: auto;
     float: right;
     font-size: 100%;

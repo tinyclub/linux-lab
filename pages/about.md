@@ -5,7 +5,7 @@ tagline: 欢迎联系、关注和打赏泰晓原创
 layout: page
 group: navigation
 permalink: /about/
-order: 50
+order: 51
 ---
 
 泰晓科技 聚焦 Linux，致力于推动业界创造更极致的 Linux 产品。欢迎阅读 [Hello TinyLab / 泰晓科技](/hello-tinylab)，进一步了解本站的由来。

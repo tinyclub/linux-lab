@@ -5,12 +5,13 @@ tagline: 儒码科技简介
 layout: page
 group: navigation
 permalink: /ruma.tech/
-order: 55
+highlight: true
+order: 50
 ---
 
 ## 公司简介
 
-本站创始人于 2019 年初创建了儒码科技，致力于帮助 100 家企业提升 Linux 产品体验。
+本站创始人于 2019 年初创建了儒码科技，未来五年内，致力于帮助 100 家企业提升 Linux 产品体验。
 
 ## 理念和目标
 

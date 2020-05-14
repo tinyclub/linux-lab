@@ -9,7 +9,7 @@
 {% assign list = site.posts %}
 {% assign condition = "album" %}
 {% assign value = page.album %}
-{% assign items_limit = 15 %}
+{% assign items_limit = 5 %}
 {% assign size = 0 %}
 
 {% for item in list %}

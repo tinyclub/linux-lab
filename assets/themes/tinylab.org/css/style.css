@@ -280,7 +280,11 @@ body {
     font-size: 13.34px;
     *font-size: small;
     letter-spacing: 1px;
-    -moz-transform: scale(1.25);
+    -o-transform: scale(1.0);
+    -o-transform-origin: center top 0;
+    -ms-transform: scale(1.0);
+    -ms-transform-origin: center top 0;
+    -moz-transform: scale(1.0);
     -moz-transform-origin: center top 0;
     zoom: 1.25;
 }

@@ -409,4 +409,8 @@ Gao Chengbo:
   article: true
   email: electricpower_gao@163.com
   wechat: TaufikGAO
+  wechat-pay: wechat-pay-blackjack
+  ali-pay: ali-pay-blackjack
+  sponsor: wechat-pay
+  sponsor-qrcode: true
   info: 紫光云虚拟化内核工程师。

@@ -37,10 +37,10 @@ tags:
 
 | 需求                   |  描述                                                                   | 关联项目
 |------------------------|-------------------------------------------------------------------------|-------------
-| Perf Lab  性能实验室   | 基于 Cloud Lab 的易用性和可扩展性，开发一款便利系统性能优化的环境       | [Cloud Lab](http://tinylab.org/cloud-lab)
-| Linux Lab 镜像升级     | 把当前镜像从 Ubuntu 14.04 升级到 Ubuntu 20.04，满足各类软件开发需要     | [Linux Lab](http://tinylab.org/linux-lab)
-| Linux Lab 模块化支持   | 为 Linux Lab 添加模块化支持，增加可扩展性，进一步提升对各类新软件的支持 | [Linux Lab](http://tinylab.org/linux-lab)
-| Markdown Lab 功能增强  | 为 Markdown Lab 完善中文支持、美化 PDF 输出格式、增加加密和水印功能等   | [Markdown Lab](http://tinylab.org/markdown-lab)
+| [Perf Lab  性能实验室][1]   | 基于 Cloud Lab 的易用性和可扩展性，开发一款便利系统性能优化的环境       | [Cloud Lab](http://tinylab.org/cloud-lab)
+| [Linux Lab 镜像升级][2]     | 把当前镜像从 Ubuntu 14.04 升级到 Ubuntu 20.04，满足各类软件开发需要     | [Linux Lab](http://tinylab.org/linux-lab)
+| [Linux Lab 模块化支持][3]   | 为 Linux Lab 添加模块化支持，增加可扩展性，进一步提升对各类新软件的支持 | [Linux Lab](http://tinylab.org/linux-lab)
+| [Markdown Lab 功能增强][4]  | 为 Markdown Lab 完善中文支持、美化 PDF 输出格式、增加加密和水印功能等   | [Markdown Lab](http://tinylab.org/markdown-lab)
 
 详细需求如下。
 
@@ -48,12 +48,12 @@ tags:
 
 ### 项目一
 
-1. 项目标题：Perf Lab 性能实验室
+1. 项目标题：[Perf Lab 性能实验室][1]
 2. 项目描述：性能优化是提升产品用户体验的关键，也是所有产品走向高端的必由之路。Linux 系统上的性能优化工具日新月异，从早年的 Oprofile，Ftrace，Systemtap 到如今的 Perf, eBPF，日渐完善，不断强大。但是对于初学者，这些新工具的使用门槛很高，本项需求的目标是基于 [Cloud Lab](http://tinylab.org/cloud-lab) 构建一个开箱即可上手的系统性能优化工具箱，囊括各种常见的系统性能优化工具，并提供配套的实际开发案例。
 3. 项目难度：高
-4. 项目社区导师：@rxd
+4. 项目社区导师：@luoxiaogang
 5. 导师联系方式：rxd@tinylab.org
-6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
+6. 合作导师联系方式：@wuzhangjin, falcon@tinylab.org
 7. 项目产出要求：
    - 在 Cloud Lab 中新增 perf-lab，需兼容 [Cloud Lab 现有接口](http://tinylab.org/how-to-deploy-cloud-labs/)
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
@@ -71,12 +71,12 @@ tags:
 
 ### 项目二
 
-1. 项目标题：Linux Lab 镜像升级
+1. 项目标题：[Linux Lab 镜像升级][2]
 2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已经支持国内外的 7 大主流处理器架构和 16 款开发版。当前环境基于 Ubuntu 14.04，难以适应各类软件新版本的开发需要，本项需求旨在升级当前环境到最新的 Ubuntu 20.04 或者其他更为合适的同时期 Linux 发行版。
 3. 项目难度：高
-4. 项目社区导师：@robin
+4. 项目社区导师：@robin329
 5. 导师联系方式：robin@tinylab.org
-6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
+6. 合作导师联系方式：@wuzhangjin, falcon@tinylab.org
 7. 项目产出要求：
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
    - 确保镜像大小不超过 5G
@@ -94,12 +94,12 @@ tags:
 
 ### 项目三
 
-1. 项目标题：Linux Lab 模块化支持
+1. 项目标题：[Linux Lab 模块化支持][3]
 2. 项目描述：[Linux Lab](http://tinylab.org/linux-lab) 是一个 Linux 内核实验环境，当前已支持 Linux、Buildroot、Uboot 和 Qemu 四大核心软件，但是当前软件支持的耦合度非常高。本项需求旨在解耦，把各个软件的支持拆解到独立的软件支持文件中，增加可扩展性，从而方便进一步导入其他软件实验功能。
 3. 项目难度：高
-4. 项目社区导师：@ping.wu
+4. 项目社区导师：@pingwuu
 5. 导师联系方式：ping.wu@tinylab.org
-6. 合作导师联系方式：@lzufalcon, falcon@tinylab.org
+6. 合作导师联系方式：@wuzhangjin, falcon@tinylab.org
 7. 项目产出要求：
    - 拆解核心 Makefile 为多个文件，方便单独维护
    - 新增 core 目录，导入函数库、Init、Boot、Test、Debug、Fini 等公共模块文件
@@ -116,10 +116,10 @@ tags:
 
 ### 项目四
 
-1. 项目标题：Markdown Lab 功能增强
+1. 项目标题：[Markdown Lab 功能增强][4]
 2. 项目描述：[Markdown Lab](http://tinylab.org/markdown-lab) 是一个 Markdown 编辑环境，当前内置简历、文档、幻灯和书籍的 Markdown 模板，可导出为 html 和 pdf，本项需求旨在进一步完善中文支持、美化 PDF 输出格式、增加加密和水印功能等。
 3. 项目难度：中
-4. 项目社区导师：@lzufalcon
+4. 项目社区导师：@wuzhangjin
 5. 导师联系方式：falcon@tinylab.org
 6. 合作导师联系方式：
 7. 项目产出要求：
@@ -133,3 +133,8 @@ tags:
 9. 相关的开源软件仓库列表：
    - Cloud Lab: <https://gitee.com/tinylab/cloud-lab>
    - Markdown Lab: <https://gitee.com/tinylab/markdown-lab>
+
+[1]: https://gitee.com/tinylab/cloud-lab/issues/I1H8Q3
+[2]: https://gitee.com/tinylab/cloud-lab/issues/I1HAN4
+[3]: https://gitee.com/tinylab/cloud-lab/issues/I1HAU0
+[4]: https://gitee.com/tinylab/cloud-lab/issues/I1HAV2

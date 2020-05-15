@@ -1,18 +1,18 @@
-shell echo "\nWaiting for 1 secs..."
+shell echo "Waiting for 1 secs..."
 shell sleep 1
-shell echo"\nExecuting gdb commands in local .gdbinit ..."
+shell echo"Executing gdb commands in local .gdbinit ..."
 
-shell echo "\n(gdb) target remote :1234"
+shell echo "(gdb) target remote :1234"
 target remote :1234
 
 shell sleep 1
-shell echo "\n(gdb) break _start"
+shell echo "(gdb) break _start"
 break _start
 
 #shell sleep 1
-#shell echo "\n(gdb) c"
+#shell echo "(gdb) c"
 #c
 
 shell sleep 1
-shell echo "\ngdb bt"
+shell echo "gdb bt"
 bt

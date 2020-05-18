@@ -8,7 +8,7 @@ admin :
   email : wuzhangjin@gmail.com
   github : tinyclub
   weibo : tinylaborg
-  wechat : tinylab-org
+  wechat : tinylab
   wechat-qrcode: true
   ali-pay: ali-pay-admin-9.68
   wechat-pay: wechat-pay-admin-9.68
@@ -25,7 +25,7 @@ Wu Zhangjin:
   email : wuzhangjin@gmail.com
   github : lzufalcon
   weibo : wuzhangjin
-  wechat : lzufalcon
+  wechat : tinylab
   wechat-qrcode: true
   wechat-pay: wechat-pay-falcon-9.68
   sponsor: wechat-pay

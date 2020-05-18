@@ -34,4 +34,4 @@ order: 50
 欢迎随时联络，为提升沟通效率，联络时请备注贵司名称和商业服务需求。
 
 * 邮箱：`contact /AT/ ruma.tech`
-* 微信：`lzufalcon`
+* 微信：`tinylab`

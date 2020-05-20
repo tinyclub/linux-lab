@@ -387,7 +387,8 @@ a:active {
     float: left
 }
 #logo {
-    margin-top: -12px;
+    line-height: 50px;
+    margin-top: -3px;
     font-size: 330%;
     font-weight: 900;
     color: #eee;

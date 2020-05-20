@@ -57,6 +57,7 @@ JB :
   posts:
     title_length: 50
     related_limit: 5
+    album_limit: 5
   sidebar:
     items_limit: 5
   author_box:

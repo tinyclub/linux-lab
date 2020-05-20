@@ -17,11 +17,17 @@
   {% endif %}
 {% endfor %}
 
+{% assign total_num = 0 %}
+
 {% if size != 0 %}
   {{ album_header }}
   <ul id="album_container">
 
   {% for post in site.posts %}
+
+  {% if total_num >= site.JB.posts.album_limit %}
+    {% break %}
+  {% endif %}
 
     {% if post.draft and post.draft == true %}
       {% continue %}
@@ -39,6 +45,7 @@
     <li>
       <a rel="nofollow" href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
     </li>
+    {% assign total_num =  total_num | plus:1 %}
   {% endfor %}
   </ul>
 {% endif %}

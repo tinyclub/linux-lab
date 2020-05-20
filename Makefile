@@ -1294,7 +1294,7 @@ $(1): $(if $(x),_$(1),$(1)-build)
 endif
 
 # Force app building for current building targets can not auto detect code update
-ifeq ($(filter $(first_target), $(1) $(1)-build), $(first_target))
+ifeq ($(filter $(first_target),$(1) $(1)-build build), $(first_target))
 $(1)-build: _$(1)
 else
 $(1)-build: $$(call __stamp_$(1),build)

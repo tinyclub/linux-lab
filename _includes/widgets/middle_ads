@@ -1,6 +1,8 @@
 
 <br/>
 <hr/>
+<article>
+<section>
 <h2>猜你喜欢：</h2>
 <ul>
 {% if page.layout == 'weekly' %}
@@ -10,3 +12,5 @@
   <li><strong>儒码科技：</strong>Linux 技术咨询、培训与服务，<a href="/ruma.tech">联系「儒码科技」</a></li>
   <li><strong>技术交流：</strong>Linux 用户技术交流微信群，联系微信号：tinylab</li>
 </ul>
+</section>
+</article>

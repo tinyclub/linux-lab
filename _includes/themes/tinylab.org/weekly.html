@@ -23,15 +23,11 @@
 
      <div id="main_content_container" class="weekly">
      {{ content }}
-
-     <br/>
-     <hr/>
-     <strong>泰晓资讯</strong>，汇总一周技术趣闻与文章。
-     <br/>
-     <br/>
      </div>
 
-  {% include widgets/sponsor %}
+     {% include widgets/middle_ads %}
+
+     {% include widgets/sponsor %}
 
      {% unless page.album == empty %}
        {% assign album_header = "<h2> Read Album: </h2>" %}

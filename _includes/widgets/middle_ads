@@ -1,0 +1,12 @@
+
+<br/>
+<hr/>
+<h2>猜你喜欢：</h2>
+<ul>
+{% if page.layout == 'weekly' %}
+  <li><strong>泰晓资讯：</strong>汇总一周技术趣闻与文章，<a href="/news">查看「Linux 资讯」</a></li>
+{% endif %}
+  <li><strong>知识星球：</strong>独家 Linux 实战经验与技巧，<a href="https://t.zsxq.com/uB2vJyF">订阅「Linux知识星球」</a></li>
+  <li><strong>儒码科技：</strong>Linux 技术咨询、培训与服务，<a href="/ruma.tech">联系「儒码科技」</a></li>
+  <li><strong>技术交流：</strong>Linux 用户技术交流微信群，联系微信号：tinylab</li>
+</ul>

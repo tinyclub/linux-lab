@@ -44,11 +44,14 @@
 
   </article>
 
+{% include widgets/middle_ads %}
+
 {% if page.group != "home" %}
   {% include widgets/sponsor %}
 {% else %}
   {% include widgets/contact %}
 {% endif %}
+
 {% include widgets/footer_ads %}
 
   {% if page.license != false %}

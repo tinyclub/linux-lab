@@ -44,7 +44,6 @@ tags:
 
 ## 相关文章
 
-  * [如何快速部署云实验环境（Cloud-Lab）][12]
   * [桌面秀（Showdesk.io）— 轻松录制，即时分享][13]
   * [利用 Linux Lab 完成嵌入式系统开发全过程][7]
   * [基于 Docker/Qemu 快速构建 Linux 内核实验环境][6]
@@ -260,52 +259,9 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
 
 ### 互动模式（集中式）
 
-如果学生们在观看老师的演示时也要同步做实验，那么可以通过 `tools/deploy/run` 人手创建一个可以操作的帐号。
+**说明**：以下功能在开源版本中不再提供支持，如需相关功能，请联系我们提供[服务](/ruma.tech)。
 
-例如，为学生 `john` 和 `tom` 分别创建一个 Linux 0.11 Lab：
-
-    $ tools/deploy/run linux-0.11-lab john
-    $ tools/deploy/run linux-0.11-lab tom
-
-查看实验帐号：
-
-    $ tools/deploy/release
-    Lab: linux-0.11-lab-29979, User: tom
-      * VNC: http://localhost:6080/?u=1e6005&p=ktft7s
-      * VNC_VIEWONLY: http://localhost:6080/?r=1e6005w7lxxm
-      * Webssh: http://localhost:4433/?ssh=ssh://tom:n7p7fd@10.66.0.3:22
-    Lab: linux-0.11-lab-29965, User: john
-      * VNC: http://localhost:6080/?u=3699ab&p=7cn9wn
-      * VNC_VIEWONLY: http://localhost:6080/?r=3699ab3mvmmp
-      * Webssh: http://localhost:4433/?ssh=ssh://john:tk9lbf@10.66.0.2:22
-
-默认地址是 `localhost`，如果有一个域名或者主机之外可访问的 IP 地址，可以填入 `.host_name`，例如：
-
-    $ echo tinylab.cloud > .host_name
-    $ tools/deploy/release
-    Lab: linux-0.11-lab-29979, User: tom
-      * VNC: http://tinylab.cloud:6080/?u=1e6005&p=ktft7s
-      * VNC_VIEWONLY: http://tinylab.cloud:6080/?r=1e6005w7lxxm
-      * Webssh: http://tinylab.cloud:4433/?ssh=ssh://tom:n7p7fd@10.66.0.3:22
-    Lab: linux-0.11-lab-29965, User: john
-      * VNC: http://tinylab.cloud:6080/?u=3699ab&p=7cn9wn
-      * VNC_VIEWONLY: http://tinylab.cloud:6080/?r=3699ab3mvmmp
-      * Webssh: http://tinylab.cloud:4433/?ssh=ssh://john:tk9lbf@10.66.0.2:22
-
-对于 Mac 和 Windows 系统，则可以直接填入 eth1 的 IP 地址，例如咱们上面通过 `ifconfig eth1` 获取到的地址：
-
-    $ echo 192.168.99.100 > .host_name
-    $ tools/deploy/release
-    Lab: linux-0.11-lab-29965, User: john
-      * VNC: http://192.168.99.100:6080/?u=d41d8c&p=7cn9wn
-      * VNC_VIEWONLY: http://192.168.99.100:6080/?r=d41d8c3mvmmp
-      * Webssh: http://192.168.99.100:tk9lbf/?ssh=ssh://john:linux-0.11-lab-29965@4433:22
-    Lab: linux-0.11-lab-29979, User: tom
-      * VNC: http://192.168.99.100:6080/?u=d41d8c&p=ktft7s
-      * VNC_VIEWONLY: http://192.168.99.100:6080/?r=d41d8cw7lxxm
-      * Webssh: http://192.168.99.100:n7p7fd/?ssh=ssh://tom:linux-0.11-lab-29979@4433:22
-
-之后即可在 Mac OSX 和 Windows 系统中，访问上述链接开展实验。
+如果学生们在观看老师的演示时也要同步做实验，那么可以人手创建一个可以操作的帐号。
 
 ### 互动模式（分布式）
 
@@ -323,74 +279,7 @@ Cloud Lab 提供的 `Viewonly` 链接可以用于学生，该链接可以多人�
 
 先尽量复用现有的 Lab，如果现有的 Lab 无法满足要求，也可以自行添加。
 
-一个 Lab 主要包括两部分：实验环境和实验源码，下面介绍如何添加它们。
-
-### 添加实验环境
-
-以 `linux-0.11-lab` 为例。
-
-实验环境的配置文件放在 `configs/` 目录下，先看看目录结构：
-
-    $ tree configs/linux-0.11-lab/
-    configs/linux-0.11-lab/
-    ├── docker
-    │   ├── caps
-    │   ├── devices
-    │   ├── limits
-    │   ├── name
-    │   └── volumemap
-    ├── Dockerfile
-    └── system
-        └── home
-            └── ubuntu
-                └── Desktop
-                    ├── help.desktop
-                    ├── lab.desktop
-                    ├── showdesk.desktop
-                    └── showterm.desktop
-
-下面对这 3 部分做介绍：
-
-* `Dockerfile`
-
-    先找一个基础 Docker 镜像，比如 `ubuntu:14.04.5`，又比如 `tinylab/cloud-ubuntu-vm`，然后在该基础上写 Dockerfile，添加新的工具。可通过 `docker search tinylab` 查看现有镜像：
-
-        $ docker search tinylab
-        tinylab/linux-0.11-lab ...
-        tinylab/linux-lab ...
-        tinylab/cs630-qemu-lab ...
-        tinylab/cloud-ubuntu-dev ...
-
-* `docker/`
-
-    该目录用于设置镜像名、配置资源、或者添加需要用到的设备等。镜像名命名规则为 `tinylab/<LAB_NAME>`，例如：`tinylab/linux-0.11-lab`。
-
-* `system/`
-
-    该目录按照 Linux 标准目录结构存放，例如这里添加了几个桌面快捷方式。也可以类似添加其他文件，例如预先编译好的程序或者脚本文件。
-
-除此之外，还有一个比较重要的目录：`tools/`，这里没用到，该目录下可以添加两个重要文件：
-
-* `tools/host-run`
-
-    在启动实验环境之前在主机上运行，可用于做必要的准备，比如说针对 Linux Lab，就需要先插入 nfsd 内核模块。
-
-* `tools/container-run`
-
-    在启动实验环境后在容器内运行，比如 Linux Lab 中用它来启动一些网络服务。
-
-准备好之后，就可以构建 Docker 镜像：
-
-    $ tools/docker/build linux-0.11-lab
-
-构建以后如果觉得该环境有通用性，也可以往 [Cloud Lab 代码仓库][3] 提交。
-
-### 添加实验源码
-
-实验用到的源代码、文档和工具等可以创建一个 Git 仓库存放起来，甚至上传到 Github，然后可作为 git submodule 导入到 `labs/` 目录下。例如：
-
-    $ cd labs/
-    $ git submodule add https://gitee.com/tinylab/linux-0.11-lab.git
+一个 Lab 主要包括两部分：实验环境和实验源码，如需基于 Cloud Lab 添加新的实验环境，欢迎联系我们提供[服务](/ruma.tech)。
 
 ## 录制视频
 
@@ -414,5 +303,4 @@ Cloud Lab 支持自动录制实验过程。登陆进去之前，进行如下设�
  [6]: http://tinylab.org/docker-qemu-linux-lab/
  [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
 [11]: http://weidian.com/?userid=335178200
-[12]: http://tinylab.org/how-to-deploy-cloud-labs/
 [13]: http://tinylab.org/showdesk-record-and-share-your-desktop/

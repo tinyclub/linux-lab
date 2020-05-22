@@ -55,7 +55,7 @@ tags:
 5. 导师联系方式：rxd@tinylab.org
 6. 合作导师联系方式：@wuzhangjin, falcon@tinylab.org
 7. 项目产出要求：
-   - 在 Cloud Lab 中新增 perf-lab，需兼容 [Cloud Lab 现有接口](http://tinylab.org/how-to-deploy-cloud-labs/)
+   - 在 Cloud Lab 中新增 perf-lab，需兼容 Cloud Lab 现有接口
    - 构建并发布基于 Ubuntu 20.04 或同时期 Linux 发行版的 Docker 镜像
    - 集成 ftrace, trace-cmd, kernelshark, perf, ebpf 等性能优化工具
    - 上线 perf-lab 项目首页、中英文用户手册和代码仓库

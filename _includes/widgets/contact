@@ -1,6 +1,6 @@
 {% assign contact = true %}
 
-{% if page.contact != false and contact != false %}
+{% if page.contact == true and contact != false %}
 
 <br>
 <table>

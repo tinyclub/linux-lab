@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 author: "Tiezhu Yang"
 title: "龙芯西安地区招聘Linux内核工程师"
 group: "jobs"
@@ -36,8 +36,7 @@ addrs:
 4. 熟悉中断、设备树、ACPI等；
 5. 熟悉内存管理、文件系统等；
 6. 熟悉内核调测、性能优化等；
-7. 熟悉Linux内核和开源社区；
-8. 热爱Linux和开源。
+7. 热爱Linux内核和开源社区。
 
 * __工作地点__： 西安
 

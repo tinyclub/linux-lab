@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "龙芯实验室欢迎各界英才"
-draft: true
+draft: false
 group: "jobs"
 license: "cc-by-nc-nd-4.0"
 permalink: /loongsonlab-jobs/

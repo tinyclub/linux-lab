@@ -1056,7 +1056,9 @@ echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboard
 endef
 
 ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
-  BOARD_DOWNLOAD := bsp-checkout
+  ifneq ($(app),default)
+    BOARD_DOWNLOAD := bsp-checkout
+  endif
 endif
 
 board: board-save plugin-save board-cleanstamp board-show $(BOARD_DOWNLOAD)

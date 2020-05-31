@@ -108,7 +108,8 @@
        - [ 6.4.2 linux/compiler-gcc7.h: No such file or directory](#-642-linuxcompiler-gcc7h-no-such-file-or-directory)
        - [ 6.4.3 linux-lab/configs: Permission denied](#-643-linux-labconfigs-permission-denied)
        - [ 6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#-644-scriptsmakefileheadersinst-missing-uapi-file)
-       - [ 6.4.5 how to run as root](#-645-how-to-run-as-root)
+       - [ 6.4.5 unable to create file: net/netfilter/xt_dscp.c](#-645-unable-to-create-file-netnetfilterxt_dscpc)
+       - [ 6.4.6 how to run as root](#-646-how-to-run-as-root)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
 
 <!-- toc end -->
@@ -277,7 +278,14 @@ For Linux, please simply choose one directory in `~/Downloads` or `~/Documents`.
 
     $ cd ~/Documents
 
-For Mac OSX, to compile Linux normally, please create a case sensitive filesystem as the working space at first:
+For Windows and Mac OSX, to compile Linux normally, please enable or create a case sensitive filesystem as the working space at first:
+
+**Windows**:
+
+    $ cd /path/to/cloud-lab
+    $ fsutil file SetCaseSensitiveInfo ./ enable
+
+**Mac OSX**:
 
     $ hdiutil -type SPARSE create -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
@@ -1856,7 +1864,15 @@ This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil`
     $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
     $ cd ~/Documents/labspace
 
-### 6.4.5 how to run as root
+
+### 6.4.5 unable to create file: net/netfilter/xt_dscp.c
+
+This means Windows not enable filesystem's case sensitive feature, just enable it:
+
+    $ cd /path/to/cloud-lab
+    $ fsutil file SetCaseSensitiveInfo ./ enable
+
+### 6.4.6 how to run as root
 
 By default, no password required to run as root with:
 

@@ -1,9 +1,9 @@
 
 # TODO List
 
-## V0.4
+## V0.5
 
-* Add uboot support for more archs (aarch64/virt)
+* Merge loongson support
 
 ## Future
 
@@ -32,3 +32,4 @@
   * Virtualization, Container, Hypervisor, User-Mode OS, Real Time, OP-TEE
   * Bootloaders
 * Clean up the 'shortcuts' support, current support differs from system
+* Use "-e TZ=Asia/Shanghai" to set time zone

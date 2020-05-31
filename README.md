@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.4-rc3 Manual
+% Linux Lab v0.4 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -68,6 +68,7 @@
        - [ 4.8.4 Share with 9p virtio](#-484-share-with-9p-virtio)
     - [4.9 Learning Assembly](#49-learning-assembly)
     - [4.10 Running any make goals](#410-running-any-make-goals)
+    - [4.11 More Usage](#411-more-usage)
 - [5. Linux Lab Development](#5-linux-lab-development)
     - [5.1 Choose a board supported by qemu](#51-choose-a-board-supported-by-qemu)
     - [5.2 Create the board directory](#52-create-the-board-directory)
@@ -226,7 +227,7 @@ And here is a list for verified operating systems for references:
 | Ubuntu     | 16.04 + 4.4           | 18.09.4        | terminator              |
 | Ubuntu     | 18.04 + 5.0/4.15      | 18.09.4        | Linux v5.3 has issue    |
 
-Some engineers have run CentOS，Windows 10 and Mac OSX, welcome [reply this issue](https://github.com/tinyclub/linux-lab/issues/5) to share yours, for example:
+Some engineers have run CentOS，Windows 10 and Mac OSX, welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
 
     $ tools/docker/env.sh
     System: Ubuntu 16.04.6 LTS
@@ -1364,6 +1365,12 @@ Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:
 
   `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
 
+## 4.11 More Usage
+
+Read more:
+
+* [Why Using Linux Lab V1.0 (In Chinese)](http://tinylab.org/why-linux-lab)
+* [Why Using Linux Lab V2.0 (In Chinese)](http://tinylab.org/why-linux-lab-v2)
 
 # 5. Linux Lab Development
 

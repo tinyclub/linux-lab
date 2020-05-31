@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.4-rc3 中文手册
+% Linux Lab v0.4 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -28,6 +28,7 @@
        - [ 1.6.1 v0.1 @ 2019.06.28](#-161-v01-@-20190628)
        - [ 1.6.2 v0.2 @ 2019.10.30](#-162-v02-@-20191030)
        - [ 1.6.3 v0.3 @ 2020.03.12](#-163-v03-@-20200312)
+       - [ 1.6.4 v0.4 @ 2020.06.01](#-164-v04-@-20200601)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
     - [2.1 软硬件要求](#21-软硬件要求)
     - [2.2 安装 Docker](#22-安装-docker)
@@ -74,6 +75,7 @@
        - [ 4.8.4 通过 9p virtio 共享文件](#-484-通过-9p-virtio-共享文件)
     - [4.9 学习汇编](#49-学习汇编)
     - [4.10 运行任意的 make 目标](#410-运行任意的-make-目标)
+    - [4.11 更多用法](#411-更多用法)
 - [5. Linux Lab 开发](#5-linux-lab-开发)
     - [5.1 选择一个 qemu 支持的开发板](#51-选择一个-qemu-支持的开发板)
     - [5.2 创建开发板的目录](#52-创建开发板的目录)
@@ -253,6 +255,22 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * [v0.3 rc1](http://tinylab.org/linux-lab-v03-rc1/)
     * 添加多本知名 Linux 图书所用内核支持
 
+### 1.6.4 v0.4 @ 2020.06.01
+
+[v0.4](http://tinylab.org/linux-lab-v0.4/) 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
+
+* [v0.4 rc3](http://tinylab.org/linux-lab-v04-rc3/)
+    * 新增 aarch64/virt Uboot 支持
+    * 临时修复新版本内核上容器内插入 NFSD 模块引起的 Sync 卡死问题
+
+* [v0.4 rc2](http://tinylab.org/linux-lab-v04-rc2/)
+    * 新增第 16 块开发板
+    * 新增 vnc 客户端登陆方法
+
+* [v0.4 rc1](http://tinylab.org/linux-lab-v04-rc1/)
+    * 切换内核镜像到更快的 codeaurora
+    * 添加本地开发板配置和编辑接口
+
 # 2. Linux Lab 安装
 
 ## 2.1 软硬件要求
@@ -274,7 +292,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 | Ubuntu     | 16.04 + 4.4      | 18.09.4        | terminator              |
 | Ubuntu     | 18.04 + 5.0/4.15 | 18.09.4        | 已知 Linux v5.3 有 Bug  |
 
-也有同学在 CentOS，Windows 10，Mac OSX 下成功运行了 Linux Lab，欢迎 [回复 Issue](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ) 分享你的情况，例如：
+也有同学在 CentOS，Windows 10，Mac OSX 下成功运行了 Linux Lab，欢迎查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
 
     $ tools/docker/env.sh
     System: Ubuntu 16.04.6 LTS
@@ -1398,6 +1416,13 @@ Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目�
     $ make uboot-run menuconfig
 
   执行这些带有 `-run` 的目标允许我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
+
+## 4.11 更多用法
+
+欢迎阅读下述文档学习更多用法：
+
+* [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
+* [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
 
 # 5. Linux Lab 开发
 

@@ -1838,7 +1838,7 @@ else
 	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
 endif
 ifeq ($(CCORI), internal)
-	@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
+	-@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
 endif
 	@echo
 
@@ -1881,7 +1881,7 @@ endif
 
 toolchain-switch:
 ifeq ($(UPDATE_GCC),1)
-	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
+	-$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 endif
 ifeq ($(UPDATE_CCORI),1)
 	@#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`

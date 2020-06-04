@@ -44,6 +44,10 @@ tags:
 
 详细需求如下。
 
+## 版权说明
+
+本次活动中由参与的学生新开发的代码需遵循 GPL v2 协议开放源代码，该等协议不影响相关项目原有和后续的版权协议，相关成果归贡献者和泰晓科技技术社区共同所有。
+
 ## 需求列表
 
 ### 项目一
@@ -67,7 +71,6 @@ tags:
 9. 相关的开源软件仓库列表：
    - Cloud Lab: <https://gitee.com/tinylab/cloud-lab>
    - Linux Lab: <https://gitee.com/tinylab/linux-lab>
-
 
 ### 项目二
 

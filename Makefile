@@ -2853,7 +2853,7 @@ endif
 CMDLINE :=
 
 # Init route and ip for guest
-ROUTE := $(shell ip address show br0 | grep "inet " | sed -e "s%.*inet \([0-9\.]*\)/[0-9]* .*%\1%g")
+ROUTE := $(shell ifconfig br0 | grep 'inet ' | tr -d -c '^[0-9. ]' | awk '{print $$1}')
 TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
 IP    := $(basename $(ROUTE)).$(TMP)
 

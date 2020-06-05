@@ -111,6 +111,7 @@
        - [6.3.8 Web 界面无响应](#638-web-界面无响应)
        - [6.3.9 登录 WEB 界面时超时或报错](#639-登录-web-界面时超时或报错)
        - [6.3.10 Ubuntu Snap 问题](#6310-ubuntu-snap-问题)
+       - [6.3.11 如何退出 VNC 客户端全屏模式](#6311-如何退出-vnc-客户端全屏模式)
     - [6.4 Linux Lab 相关](#64-linux-lab-相关)
        - [6.4.1 No working init found](#641-no-working-init-found)
        - [6.4.2 linux/compiler-gcc7.h: No such file or directory](#642-linuxcompiler-gcc7h-no-such-file-or-directory)
@@ -1881,6 +1882,16 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
   * 无法将普通用户添加到 docker 用户组从而导致必须通过 root 用户使用 docker。
   * snap 服务会耗尽 `/dev/loop` 设备从而导致无法挂载文件系统。
+
+### 6.3.11 如何退出 VNC 客户端全屏模式
+
+在进入 VNC 客户端的全屏模式后，不同客户端软件在不同系统上的退出方式可能五花八门，甚至有些可能有 Bug，如果想切回主机，又没有便捷的方式，就会让人抓狂。
+
+这个时候，就推荐下面的方式，理论上，与 VNC 客户端软件无关，那就是在 Linux Lab 内杀掉 VNC 服务：
+
+    $ sudo pkill x11vnc
+
+由于 Linux Lab 会自动恢复掉线的 x11vnc 服务，所以完全不会影响下次登陆。
 
 ## 6.4 Linux Lab 相关
 

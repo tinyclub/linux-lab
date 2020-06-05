@@ -104,6 +104,7 @@
        - [6.3.8 Linux Lab not response](#638-linux-lab-not-response)
        - [6.3.9 VNC login with failures](#639-vnc-login-with-failures)
        - [6.3.10 Ubuntu Snap Issues](#6310-ubuntu-snap-issues)
+       - [6.3.11 How to exit fullscreen mode of vnc clients](#6311-how-to-exit-fullscreen-mode-of-vnc-clients)
     - [6.4 Lab Issues](#64-lab-issues)
        - [6.4.1 No working init found](#641-no-working-init-found)
        - [6.4.2 linux/compiler-gcc7.h: No such file or directory](#642-linuxcompiler-gcc7h-no-such-file-or-directory)
@@ -1834,6 +1835,12 @@ Users report many snap issues, please use apt-get instead:
 
   * users can not be added to docker group and break non-root operation.
   * snap service exhausts the /dev/loop devices and break mount operation.
+
+### 6.3.11 How to exit fullscreen mode of vnc clients
+
+The easiest method is kill the VNC server in Linux Lab:
+
+    $ sudo pkill x11vnc
 
 ## 6.4 Lab Issues
 

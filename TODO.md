@@ -33,3 +33,4 @@
   * Bootloaders
 * Clean up the 'shortcuts' support, current support differs from system
 * Use "-e TZ=Asia/Shanghai" to set time zone
+* Add new ubuntu 20.04 based docker image support

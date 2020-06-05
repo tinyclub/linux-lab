@@ -2871,7 +2871,7 @@ ifeq ($(ROOTDEV),/dev/nfs)
   # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
   IP_FULL  ?= $(IP):$(ROUTE):$(ROUTE):255.255.255.0:linux-lab:$(IFACE):off
   IP_SHORT ?= $(IP)::$(ROUTE):::$(IFACE):off
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR) rw ip=$(IP_SHORT)
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR),nolock,vers=3 rw ip=$(IP_SHORT)
 endif
 
 ifeq ($(DEV_TYPE),hd)

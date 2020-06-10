@@ -1741,7 +1741,7 @@ endif
 
 QEMU_CONFIG_STATUS := config.log
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
-QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --prefix=$(QEMU_PREFIX)
+QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --disable-werror --prefix=$(QEMU_PREFIX)
 qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
 qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 

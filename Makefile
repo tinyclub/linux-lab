@@ -2907,7 +2907,7 @@ CMDLINE += $(call _v,XKCLI,LINUX)
 G ?= 0
 
 # Force using curses based graphic mode for bash/ssh login
-ifneq ($(shell env | grep -q ^XDG; echo $$?), 0)
+ifneq ($(shell env | grep -q ^DISPLAY; echo $$?), 0)
   XTERM := null
 
   ifeq ($(G), 1)
@@ -3341,11 +3341,11 @@ HOME_GDB_INIT ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
 GDB_USER     ?= $(USER)
 
-# Xterm: lxterminal, terminator
+# Xterm: terminator
 ifeq ($(XTERM), null)
   XTERM_STATUS := 1
 else
-  XTERM ?= $(shell tools/xterm.sh lxterminal)
+  XTERM ?= $(shell tools/xterm.sh terminator)
   # Testing should use non-interactive mode, otherwise, enable interactive.
   ifneq ($(TEST),)
     XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"

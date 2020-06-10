@@ -59,5 +59,6 @@
 	path = boards/arm/mcimx6ul-evk/bsp
 	url = https://gitee.com/tinylab/qemu-arm-mcimx6ul-evk.git
 [submodule "boards/mipsel/ls1b/bsp"]
+	ignore = all
 	path = boards/mipsel/ls1b/bsp
 	url = https://gitee.com/tinylab/qemu-mipsel-ls1b.git

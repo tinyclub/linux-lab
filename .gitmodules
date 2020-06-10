@@ -17,7 +17,7 @@
 [submodule "boards/aarch64/raspi3/bsp"]
 	ignore = all
 	path = boards/aarch64/raspi3/bsp
-	url = https://gitee.com/tinylab/qemu-aarch64-raspi3/
+	url = https://gitee.com/tinylab/qemu-aarch64-raspi3.git
 [submodule "boards/aarch64/virt/bsp"]
 	ignore = all
 	path = boards/aarch64/virt/bsp
@@ -58,3 +58,6 @@
 	ignore = all
 	path = boards/arm/mcimx6ul-evk/bsp
 	url = https://gitee.com/tinylab/qemu-arm-mcimx6ul-evk.git
+[submodule "boards/mipsel/ls1b/bsp"]
+	path = boards/mipsel/ls1b/bsp
+	url = https://gitee.com/tinylab/qemu-mipsel-ls1b.git

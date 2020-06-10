@@ -285,7 +285,11 @@ endef
 define fixup_arch
 ifneq ($$(KERNEL_SRC),)
   ifneq ($$(_KERNEL_SRC),$$(KERNEL_SRC))
-    KERNEL_ABS_SRC := $$(KERNEL_SRC)
+    ifneq ($$(findstring $$(TOP_DIR),$$(KERNEL_SRC)),$$(TOP_DIR))
+      KERNEL_ABS_SRC := $$(TOP_DIR)/$$(KERNEL_SRC)
+    else
+      KERNEL_ABS_SRC := $$(KERNEL_SRC)
+    endif
   endif
 endif
 IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?)
@@ -547,7 +551,11 @@ define genverify
  ifneq ($$($(1)_SRC),)
    ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
     _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$$($(2)))
-    $(1)_ABS_SRC := $$($(1)_SRC)
+    ifneq ($$(findstring $$(TOP_DIR),$$($(1)_SRC)),$$(TOP_DIR))
+      $(1)_ABS_SRC := $$(TOP_DIR)/$$($(1)_SRC)
+    else
+      $(1)_ABS_SRC := $$($(1)_SRC)
+    endif
    endif
  endif
 

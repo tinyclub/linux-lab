@@ -48,6 +48,9 @@ ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
 endif
 endif # Warning on user
 
+# Detect system version of docker image
+OS := $(shell lsb_release -c | awk '{printf $$2}')
+
 # Current variables: board, plugin, module
 BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)
 PLUGIN_CONFIG := $(shell cat .plugin_config 2>/dev/null)
@@ -588,6 +591,7 @@ $(eval $(call __vs,ROOTFS,LINUX))
 $(eval $(call __vs,BUILDROOT,LINUX))
 $(eval $(call __vs,UBOOT,LINUX))
 $(eval $(call __vs,QEMU,LINUX))
+$(eval $(call __vs,QTOOL,OS))
 
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)

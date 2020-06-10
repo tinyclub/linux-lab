@@ -56,7 +56,7 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 # Only for current v5.0.10 support
 #KP      ?= 1
 #QP      ?= 1
-QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # prebuilt toolchains, please download it while: make toolchain
 # Available origin: internal, bootlin, arm, linaro

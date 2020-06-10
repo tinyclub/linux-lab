@@ -29,7 +29,7 @@ DTB     ?= $(BSP_KERNEL)/$(LINUX)/imx6ul-liteboard.dtb
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
-QTOOL   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain
 ## Available CCORI: internal, bootlin, arm

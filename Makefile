@@ -1061,7 +1061,7 @@ endef
 
 ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
   ifneq ($(app),default)
-    BOARD_DOWNLOAD := bsp-checkout
+    BOARD_DOWNLOAD := $(BSP_CHECKOUT)
   endif
 endif
 
@@ -1621,6 +1621,7 @@ else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
+BSP_CHECKOUT ?= bsp-checkout
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)
 bsp: force-bsp-checkout
 PHONY += bsp

@@ -1067,6 +1067,7 @@ define showboardvars
 echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(VAR_FILTER)"
 endef
 
+BSP_CHECKOUT ?= bsp-checkout
 ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
   ifneq ($(app),default)
     BOARD_DOWNLOAD := $(BSP_CHECKOUT)
@@ -1295,7 +1296,7 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
 endif
 
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone)
-$$($(1)_bsp_childs): bsp-checkout
+$$($(1)_bsp_childs): $(BSP_CHECKOUT)
 
 _boot: $$(boot_deps)
 
@@ -1629,7 +1630,6 @@ else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
-BSP_CHECKOUT ?= bsp-checkout
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)
 bsp: force-bsp-checkout
 PHONY += bsp

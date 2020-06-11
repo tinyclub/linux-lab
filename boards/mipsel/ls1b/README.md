@@ -1,11 +1,11 @@
 
-# loongson/ls1b board Usage
+# mipsel/ls1b board Usage
 
 Both of boot and network are ok with mainline linux kernel.
 
 ## Select me
 
-    $ make B=loongson/ls1b
+    $ make B=mipsel/ls1b
 
 ## Boot me with initrd
 

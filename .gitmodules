@@ -62,3 +62,7 @@
 	ignore = all
 	path = boards/mipsel/ls1b/bsp
 	url = https://gitee.com/tinylab/qemu-mipsel-ls1b.git
+[submodule "boards/mipsel/ls2k/bsp"]
+	ignore = all
+	path = boards/mipsel/ls2k/bsp
+	url = https://gitee.com/tinylab/qemu-mipsel-ls2k.git

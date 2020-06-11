@@ -3334,7 +3334,7 @@ ifeq ($(DEBUG),uboot)
 else
   GDB_CMD      ?= $(GDB) $(VMLINUX)
   GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_KERNEL)
-  DEBUG_DPES   := kernel-build
+  DEBUG_DEPS   := kernel-build
 endif
 
 HOME_GDB_INIT ?= $(HOME)/.gdbinit

@@ -1060,7 +1060,7 @@ VAR_FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 BTYPE    ?= ^_BASE|^_PLUGIN
 
 define getboardvars
-cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' '
+cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' '
 endef
 
 define showboardvars
@@ -3403,7 +3403,7 @@ PHONY += boot-test _boot
 
 # Show the variables
 ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
-VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | tr -d ' ')
+VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' ')
 VARS += PBK PBR PBD PBQ PBU
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT

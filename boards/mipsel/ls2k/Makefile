@@ -30,9 +30,9 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 # From https://gitee.com/loongsonlab/qemu
 QEMU_GIT:= https://gitee.com/loongsonlab/qemu
-QEMU_SRC:= loongsonlab
+QEMU_SRC:= loongsonlab-qemu
 QEMU    ?= loongson-v1.0
-QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_trusty]  ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 QTOOL[OS_focal]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 XOPTS   ?= -device usb-mouse -device usb-kbd -show-cursor

@@ -13,9 +13,8 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
 
 ## Boot with different rootfs
 
-    $ make boot ROOTDEV=?
-    make boot ROOTDEV=?
-    Makefile:523: *** Kernel Supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs.  Stop.
+    $ make list ROOTDEV
+    /dev/sda [/dev/ram0] /dev/nfs
 
     $ make boot ROOTDEV=/dev/ram0    // default, ramfs
     $ make boot ROOTDEV=/dev/sda     // harddisk
@@ -24,8 +23,8 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
 
 ## Boot with different netdev
 
-    $ make boot NETDEV=?
-    Makefile:2398: *** Kernel Supported NETDEV list: synopgmac rtl8139 e1000.  Stop.
+    $ make list NETDEV
+    [synopgmac] rtl8139 e1000
 
     $ make boot NETDEV=synopgmac     // default
     $ make boot NETDEV=rtl8139

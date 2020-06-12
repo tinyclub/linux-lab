@@ -15,13 +15,16 @@ NETDEV  ?= synopgmac
 LINUX   ?= loongnix-release-1903
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
-KERNEL_GIT := git://cgit.loongnix.org/kernel/linux-3.10.git 
-KERNEL_SRC := loongnix-3.10
+# Mainline v5.7 boots but network not work currently
+# LINUX   ?= v5.7
+
+KERNEL_GIT[LINUX_loongnix-release-1903] := git://cgit.loongnix.org/kernel/linux-3.10.git
+KERNEL_SRC[LINUX_loongnix-release-1903] := loongnix-3.10
 
 ORIIMG  ?= vmlinuz
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
-DTS     ?= $(KERNEL_SRC)/arch/$(ARCH)/loongson/loongson-3/dts/loongson3_ls7a.dts
-DTB     ?= $(BSP_KERNEL)/$(LINUX)/loongson3_ls7a.dtb
+DTS[LINUX_loongnix-release-1903] ?= $(KERNEL_SRC)/arch/$(ARCH)/loongson/loongson-3/dts/loongson3_ls7a.dts
+DTB[LINUX_loongnix-release-1903] ?= $(BSP_KERNEL)/$(LINUX)/loongson3_ls7a.dtb
 
 ROOTDEV_LIST ?= /dev/sda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0

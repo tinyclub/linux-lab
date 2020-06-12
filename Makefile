@@ -318,6 +318,9 @@ endif
 $(eval $(call __vs,KERNEL_SRC,LINUX))
 $(eval $(call __vs,KERNEL_GIT,LINUX))
 
+$(eval $(call __vs,DTS,LINUX))
+$(eval $(call __vs,DTB,LINUX))
+
 #
 # Prefer new binaries to the prebuilt ones control
 #

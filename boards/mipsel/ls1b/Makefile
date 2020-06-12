@@ -3,11 +3,16 @@ _BASE    = 1
 ARCH     = mips
 XARCH    = mipsel
 CPU     ?= mips32r2
-LINUX   ?= v5.2
-BUILDROOT?= 2016.05
 MEM     ?= 128M
+
+BUILDROOT?= 2016.05
+
+# FIXME: network works with v5.2, but not work with >= v5.4 kernels
+LINUX   ?= v5.2
+
 NETDEV_LIST ?= synopgmac
 NETDEV  ?= synopgmac
+
 SERIAL  ?= ttyS0
 
 ORIIMG  ?= vmlinuz

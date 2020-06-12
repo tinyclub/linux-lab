@@ -920,6 +920,13 @@ endif
 
 # TODO: buildroot defconfig for $ARCH
 
+# Allow use short ROOTDEV argument
+ifneq ($(ROOTDEV),)
+  ifneq ($(findstring /dev/,$(ROOTDEV)),/dev/)
+    override ROOTDEV := /dev/$(ROOTDEV)
+  endif
+endif
+
 # Verify rootdev argument
 #$(warning $(call genverify,ROOTDEV,ROOTDEV,,0))
 $(eval $(call genverify,ROOTDEV,ROOTDEV,,0))

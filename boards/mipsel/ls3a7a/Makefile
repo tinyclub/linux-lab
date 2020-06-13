@@ -15,11 +15,11 @@ NETDEV  ?= synopgmac
 LINUX   ?= loongnix-release-1903
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
-# Mainline v5.7 boots but network not work currently
+# Mainline v5.7 boots but network not work currently, let's wait for v5.8
 # LINUX   ?= v5.7
 
 KERNEL_GIT[LINUX_loongnix-release-1903] := git://cgit.loongnix.org/kernel/linux-3.10.git
-KERNEL_SRC[LINUX_loongnix-release-1903] := loongnix-3.10
+KERNEL_SRC[LINUX_loongnix-release-1903] := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz

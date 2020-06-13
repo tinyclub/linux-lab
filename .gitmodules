@@ -70,3 +70,7 @@
 	ignore = all
 	path = boards/mipsel/ls3a7a/bsp
 	url = https://gitee.com/tinylab/qemu-mipsel-ls3a7a.git
+[submodule "boards/mipsel/ls232/bsp"]
+	ignore = all
+	path = boards/mipsel/ls232/bsp
+	url = https://gitee.com/tinylab/qemu-mipsel-ls232.git

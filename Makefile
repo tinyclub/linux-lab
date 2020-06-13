@@ -2886,6 +2886,9 @@ CMDLINE += route=$(ROUTE)
 IFACE   ?= eth0
 CMDLINE += iface=$(IFACE)
 
+# New version of rpc.nfsd in nfs-kernel-server not support old nfs version 2, force using newer nfsver 3
+NFSROOT_EXTRA ?= ,nolock,nfsvers=3
+
 ifeq ($(ROOTDEV),/dev/nfs)
   ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
@@ -2894,7 +2897,7 @@ ifeq ($(ROOTDEV),/dev/nfs)
   # Must specify iface while multiple exist, which happens on ls2k board and triggers not supported dhcp
   IP_FULL  ?= $(IP):$(ROUTE):$(ROUTE):255.255.255.0:linux-lab:$(IFACE):off
   IP_SHORT ?= $(IP)::$(ROUTE):::$(IFACE):off
-  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR),nolock,vers=3 rw ip=$(IP_SHORT)
+  CMDLINE += nfsroot=$(ROUTE):$(ROOTDIR)$(NFSROOT_EXTRA) rw ip=$(IP_SHORT)
 endif
 
 ifeq ($(DEV_TYPE),hd)

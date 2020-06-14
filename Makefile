@@ -754,7 +754,7 @@ endif
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 # Parallel Compiling threads
-HOST_CPU_THREADS := $(shell grep -c processor /proc/cpuinfo)
+HOST_CPU_THREADS := $(shell nproc)
 JOBS ?= $(HOST_CPU_THREADS)
 
 # Emulator configurations

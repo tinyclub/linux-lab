@@ -55,6 +55,11 @@
   description: News for hackers
   group: links
 
+- title: Hardware Benchmark Site
+  permalink: https://www.anandtech.com/
+  description: 硬件评估网站
+  group: links
+
 - title: Embedded Linux and kernel engineering
   permalink: https://bootlin.com/
   description: Embedded Linux and kernel engineering, training

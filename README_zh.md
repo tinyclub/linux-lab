@@ -507,10 +507,9 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-如果只想查看特定的架构，插件或者模糊匹配，可以使用 `ARCH`，`PLUGIN`, `FILTER`:
+如果只想查看特定的架构，插件或者模糊匹配，可以使用 `ARCH`，`FILTER`:
 
     $ make list ARCH=arm
-    $ make list PLUGIN=loongson
     $ make list FILTER=virt
 
 更多用法:
@@ -548,6 +547,8 @@ Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和
 
   - [中天微/C-Sky Linux](https://gitee.com/tinylab/csky)
   - [龙芯/Loongson Linux](https://gitee.com/loongsonlab/loongson)
+
+其中，Loongson 已经在 v5.0 合并进主线。
 
 ### 3.1.4 配置开发板
 

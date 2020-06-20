@@ -442,10 +442,9 @@ List builtin boards:
           LINUX   ?= v5.1
           ROOTDEV ?= /dev/ram0
 
-`ARCH`, `PLUGIN` and `FILTER` arguments are supported:
+`ARCH`, `FILTER` arguments are supported:
 
     $ make list ARCH=arm
-    $ make list PLUGIN=loongson
     $ make list FILTER=virt
 
 and more:
@@ -483,6 +482,8 @@ Here maintains the available plugins:
 
 - [C-Sky Linux](https://gitee.com/tinylab/csky)
 - [Loongson Linux](https://gitee.com/loongsonlab/loongson)
+
+The Loongson plugin has been merged into v5.0.
 
 ### 3.1.4 Configure boards
 

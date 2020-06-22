@@ -1,1 +1,1 @@
-CCVER ?= gcc-8
+CCVER ?= gcc-9

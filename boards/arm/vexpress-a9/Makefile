@@ -20,9 +20,8 @@ GCC[LINUX_v4.12] = 4.7
 GCC[LINUX_v3.16.80] = 4.3
 GCC = 4.7
 
-CCORI[OS_trusty] = linaro
-CCORI[OS_focal]  = internal
-CCORI[UBOOT_v2020.04] = $(call __v,CCORI,OS)
+CCORI[UBOOT_v2020.04,OS_trusty] = linaro
+CCORI[UBOOT_v2020.04,OS_focal]  = internal
 
 BUILDROOT?= 2016.05
 KRN_ADDR?= 0x60003000

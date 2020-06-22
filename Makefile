@@ -466,8 +466,8 @@ endif # common commands
 
 define genbuildenv
 
-GCC_$(2) = $$(call __v,GCC,$(2))
-CCORI_$(2) = $$(call __v,CCORI,$(2))
+GCC_$(2) = $$(call __v,GCC,$(2),$(3))
+CCORI_$(2) = $$(call __v,CCORI,$(2),$(3))
 
 ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
@@ -481,8 +481,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   endif
 endif
 
-HOST_GCC_$(2) = $$(call __v,HOST_GCC,$(2))
-HOST_CCORI_$(2) = $$(call __v,HOST_CCORI,$(2))
+HOST_GCC_$(2) = $$(call __v,HOST_GCC,$(2),$(3))
+HOST_CCORI_$(2) = $$(call __v,HOST_CCORI,$(2),$(3))
 
 ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)
@@ -494,12 +494,14 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
 endif
 endef # genbuildenv
 
+# Customize toolchains for different docker images
 $(eval $(call __vs,CCORI,OS))
+$(eval $(call __vs,GCC,OS))
 
-$(eval $(call genbuildenv,kernel,LINUX))
-$(eval $(call genbuildenv,uboot,UBOOT))
-$(eval $(call genbuildenv,qemu,QEMU))
-$(eval $(call genbuildenv,root,BUILDROOT))
+$(eval $(call genbuildenv,kernel,LINUX,OS))
+$(eval $(call genbuildenv,uboot,UBOOT,OS))
+$(eval $(call genbuildenv,qemu,QEMU,OS))
+$(eval $(call genbuildenv,root,BUILDROOT,OS))
 
 include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 

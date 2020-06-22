@@ -9,7 +9,10 @@ GCC[UBOOT_v2015.07] = 4.3
 BUILDROOT?= 2016.05
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1
+
+# FIXME: broken with gcc 4.7?
 GCC[LINUX_v2.6.36] = 4.3
+
 GCC = 4.7
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000

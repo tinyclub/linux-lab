@@ -1,7 +1,10 @@
 # Configuration for v2.6.10
 KERNEL_GIT[LINUX_v2.6.10] = https://gitee.com/tinylab/tglx-linux-history
 KERNEL_SRC[LINUX_v2.6.10] = tglx-linux-history
+
+# FIXME: this not work in new docker image
 GCC[LINUX_v2.6.10] = 4.4
+
 # Kernel panic - not syncing: Attempted to kill init! on 2019.11, may compiled with too new kernel(v5.1)
 # Tested: Kernel <= v2.6.24.7 boot with /dev/ram0 not work with 2019.11
 BUILDROOT[LINUX_v2.6.10] = 2019.02.2

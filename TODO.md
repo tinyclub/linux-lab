@@ -4,6 +4,7 @@
 ## V0.5
 
 * Merge loongson support
+* Fix up old kernel compiling in new docker image
 
 ## Future
 

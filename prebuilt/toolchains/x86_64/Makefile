@@ -1,1 +1,0 @@
-CCVER ?= gcc-9

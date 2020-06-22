@@ -494,6 +494,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
 endif
 endef # genbuildenv
 
+$(eval $(call __vs,CCORI,OS))
+
 $(eval $(call genbuildenv,kernel,LINUX))
 $(eval $(call genbuildenv,uboot,UBOOT))
 $(eval $(call genbuildenv,qemu,QEMU))

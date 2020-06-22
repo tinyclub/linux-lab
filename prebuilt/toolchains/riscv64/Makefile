@@ -1,8 +1,13 @@
 # Makefile
 
 CCORI ?= gnu-mcu-eclipse
-CCORI_LIST ?= bootlin gnu-mcu-eclipse
+CCORI_LIST ?= internal bootlin gnu-mcu-eclipse
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= riscv64-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+endif
 
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= riscv64-linux-

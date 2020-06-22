@@ -217,8 +217,12 @@ _stamp = $(3)/.stamp_$(1)-$(2)
 ## A=$(call __v,GCC,LINUX), 4.3
 ## B=$(call _v,GCC,LINUX),  4.4 if LINUX is not v2.6.35
 
+define ___v
+$($(1)[$(2)_$($(2))$(if $($(3)),$(comma)$(3)_$($(3)))])
+endef
+
 define __v
-$($(1)[$(2)_$($(2))$(if $(3),$(comma)$(3)_$($(3)))])
+$(if $($(3)),$(if $(call ___v,$1,$2,$3),$(call ___v,$1,$2,$3),$(call ___v,$1,$2)),$(call ___v,$1,$2))
 endef
 
 define _v

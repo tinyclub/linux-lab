@@ -507,7 +507,11 @@ $(eval $(call genbuildenv,uboot,UBOOT,OS))
 $(eval $(call genbuildenv,qemu,QEMU,OS))
 $(eval $(call genbuildenv,root,BUILDROOT,OS))
 
-include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+PREBUILT_TOOLCHAIN_MAKEFILE=$(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+
+ifeq ($(PREBUILT_TOOLCHAIN_MAKEFILE),$(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)))
+  include $(PREBUILT_TOOLCHAIN_MAKEFILE)
+endif
 
 ifneq ($(GCC),)
   # Force using internal CCORI if GCC specified

@@ -229,7 +229,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.2 v0.2 @ 2019.10.30
 
-[v0.2](http://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯全系支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被[某线上课程](https://w.url.cn/s/AMcKZ3a)全程采用。
+[v0.2](http://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯全系支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
 
 * [v0.2 rc3](http://tinylab.org/linux-lab-v0.2-rc3/)
     * 新增原生 Windows 支持，仅需 Docker，无需安装 Virtualbox 或 Vmware

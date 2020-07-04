@@ -290,7 +290,7 @@ For Windows and Mac OSX, to compile Linux normally, please enable or create a ca
 **Mac OSX**:
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Documents/labspace
 
 **Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
@@ -1876,7 +1876,7 @@ To make a consistent working environment, Linux Lab only support using as genera
 This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil` or `Disk Utility` yourself:
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Documents/labspace
 
 

@@ -355,7 +355,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 **Mac OSX**：
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Documents/labspace
 
 对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
@@ -1927,7 +1927,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 这是因为 MAC OSX 缺省的文件系统不区分大小写，请使用 `hdiutil` 或 `Disk Utility` 自己创建一个：
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -no-browse labspace.dmg
+    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Documents/labspace
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c

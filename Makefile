@@ -1132,6 +1132,9 @@ board-config: board-save
 
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
 
+edit: local-edit
+config: local-config
+
 local-edit:
 	$(Q)touch $(BOARD_LABCONFIG)
 	$(Q)vim $(BOARD_LABCONFIG)

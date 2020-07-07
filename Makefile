@@ -2145,7 +2145,7 @@ endif
 internal_module := 0
 ifneq ($(M),)
   ifneq ($(M),)
-    override M := $(patsubst %/,%,$(M))
+    override M := $(subst //,/,$(patsubst %/,%,$(M)))
   endif
   ifeq ($(M),$(wildcard $(M)))
     ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M)),$(KERNEL_MODULE_DIR))
@@ -2153,7 +2153,11 @@ ifneq ($(M),)
       M_PATH = $(subst $(KERNEL_MODULE_DIR)/,,$(M))
       internal_module := 1
     else
-      M_PATH ?= $(M)
+      ifeq ($(findstring $(TOP_DIR),$(M)),$(TOP_DIR))
+        M_PATH ?= $(M)
+      else
+        M_PATH ?= $(TOP_DIR)/$(M)
+      endif
     endif
   else
     ifeq ($(KERNEL_MODULE_DIR)/$(M),$(wildcard $(KERNEL_MODULE_DIR)/$(M)))
@@ -2215,7 +2219,7 @@ ifeq ($(one_module),1)
 endif   # ext_one_module = 1
 
 ifneq ($(M_PATH),)
-  M_PATH := $(patsubst %/,%,$(M_PATH))
+  M_PATH := $(subst //,/,$(patsubst %/,%,$(M_PATH)))
 endif
 
 SCRIPTS_KCONFIG := tools/kernel/config

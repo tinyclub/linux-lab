@@ -2253,7 +2253,8 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 		make -s $(NPD) kernel-olddefconfig; \
 		$(call make_kernel); \
 	fi
-	$(call make_kernel,$(MODULE_PREPARE))
+	# M variable can not be set for modules_prepare target
+	$(call make_kernel,$(MODULE_PREPARE) M=)
 	$(Q)if [ -f $(KERNEL_SRC)/scripts/Makefile.modbuiltin ]; then \
 		$(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
 	else	\

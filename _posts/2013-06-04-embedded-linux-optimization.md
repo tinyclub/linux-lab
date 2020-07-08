@@ -32,4 +32,4 @@ categories:
 
 在准备幻灯时，参考了 [Embedded Linux Wiki](http://elinux.org), [Embedded Linux Optimization](http://free-electrons.com/docs/optimizations/) 等资料。
 
-下载该幻灯片，请点击：[Embedded-Linux-System-Optimization.pdf](/wp-content/uploads/2013/06/Embedded-Linux-System-Optimization.pdf)。
+索取该幻灯片，请联系本文作者微信 tinylab。

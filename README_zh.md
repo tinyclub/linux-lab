@@ -328,9 +328,15 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 **Ubuntu 用户安装手册**
   - doc/install/ubuntu-docker.md
 
+**Arch 用户安装手册**
+  - doc/install/arch-docker.md
+
+**Manjaro 用户安装手册**
+  - doc/install/manjaro-docker.md
+
 **Windows 用户须知**：
 
-  - 请参考 [Docker 官方文档](https://docs.docker.com)确保所用 Windows 版本支持 Docker
+  - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker
 
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
       - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”

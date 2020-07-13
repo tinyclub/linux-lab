@@ -263,6 +263,12 @@ The other issues, please read the [official docker docs](https://docs.docker.com
 **Notes for Ubuntu Users**
   - doc/install/ubuntu-docker.md
 
+**Notes for Arch Users**
+  - doc/install/arch-docker.md
+
+**Notes for Manjaro Users**
+  - doc/install/manjaro-docker.md
+
 **Notes for Windows Users**:
 
   - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)

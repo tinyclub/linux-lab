@@ -1010,6 +1010,11 @@ While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
 compiling a newer qemu 2.12.0, no hang exists. please take notice of such issue
 in the future kernel upgrade.
 
+If already download qemu and its submodules and don't want to upadte the submodules,
+just skip it:
+
+    $ make qemu git_module_status=0
+
 ## 4.4 Using Toolchains
 
 The pace of Linux mainline is very fast, builtin toolchains can not keep up, to

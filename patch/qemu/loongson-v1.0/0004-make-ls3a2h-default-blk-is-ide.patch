@@ -1,0 +1,25 @@
+From a8c33e0b35751857877436ed2fab0c65fedea39a Mon Sep 17 00:00:00 2001
+From: QiaoChong <qiaochong@loongson.cn>
+Date: Tue, 23 Jul 2019 10:29:52 +0800
+Subject: [PATCH 4/6] make ls3a2h default blk is ide.
+
+Signed-off-by: QiaoChong <qiaochong@loongson.cn>
+---
+ hw/mips/mips_ls3a2h.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/mips/mips_ls3a2h.c b/hw/mips/mips_ls3a2h.c
+index f0547ab..3b367e9 100644
+--- a/hw/mips/mips_ls3a2h.c
++++ b/hw/mips/mips_ls3a2h.c
+@@ -1077,6 +1077,7 @@ static void mips_machine_init(MachineClass *mc)
+     mc->desc = "mips ls3a2h platform";
+     mc->init = mips_ls3a2h_init;
+     mc->max_cpus = 16;
++    mc->block_default_type = IF_IDE;
+     mc->default_cpu_type = MIPS_CPU_TYPE_NAME("godson3");
+ }
+ 
+-- 
+1.9.1
+

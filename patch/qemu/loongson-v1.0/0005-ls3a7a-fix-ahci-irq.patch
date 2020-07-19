@@ -1,0 +1,26 @@
+From c8d7b351c0c6a9a778c5eaa93a03deb08d233869 Mon Sep 17 00:00:00 2001
+From: QiaoChong <qiaochong@loongson.cn>
+Date: Tue, 23 Jul 2019 11:51:14 +0800
+Subject: [PATCH 5/6] ls3a7a: fix ahci irq.
+
+Signed-off-by: QiaoChong <qiaochong@loongson.cn>
+---
+ hw/mips/mips_ls3a7a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/mips/mips_ls3a7a.c b/hw/mips/mips_ls3a7a.c
+index 4f05c68..cdfc5b2 100644
+--- a/hw/mips/mips_ls3a7a.c
++++ b/hw/mips/mips_ls3a7a.c
+@@ -1172,7 +1172,7 @@ static int pci_ls3a7a_map_irq(PCIDevice *d, int pin)
+ 
+ 		case 8:
+ 		/*SATA*/
+-		 return 19;
++		 return (fn == 0)?16:(fn == 1)?17:18;
+ 		break;
+ 
+ 		case 9:
+-- 
+1.9.1
+

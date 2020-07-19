@@ -1,0 +1,68 @@
+From a9a2d0229519bc707cdb8a0e1075f0d04394eb23 Mon Sep 17 00:00:00 2001
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+Date: Fri, 19 Jul 2019 20:34:50 +0800
+Subject: [PATCH 4/4] give ls1x clkreg a reasonable default to avoid kernel
+ divide by zero exceptions
+
+---
+ hw/mips/mips_ls1a.c  | 2 +-
+ hw/mips/mips_ls1b.c  | 2 +-
+ hw/mips/mips_ls1c.c  | 2 +-
+ hw/mips/mips_ls232.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hw/mips/mips_ls1a.c b/hw/mips/mips_ls1a.c
+index fe17ed8..0f31d50 100644
+--- a/hw/mips/mips_ls1a.c
++++ b/hw/mips/mips_ls1a.c
+@@ -65,7 +65,7 @@ static struct _loaderparams {
+ 	const char *initrd_filename;
+ } loaderparams;
+ 
+-static int clkreg[2];
++static int clkreg[2] = { 0x3, 0x86184000 };
+ static MemoryRegion *ddrcfg_iomem;
+ static int reg0420[1]={0x2};
+ 
+diff --git a/hw/mips/mips_ls1b.c b/hw/mips/mips_ls1b.c
+index 5450189..36b328d 100644
+--- a/hw/mips/mips_ls1b.c
++++ b/hw/mips/mips_ls1b.c
+@@ -65,7 +65,7 @@ static struct _loaderparams {
+ 	const char *initrd_filename;
+ } loaderparams;
+ 
+-static int clkreg[2];
++static int clkreg[2] = { 0x3, 0x86184000 };
+ static MemoryRegion *ddrcfg_iomem;
+ static int reg0420[2]={0,0x100000};
+ 
+diff --git a/hw/mips/mips_ls1c.c b/hw/mips/mips_ls1c.c
+index eebf6e3..0075a23 100644
+--- a/hw/mips/mips_ls1c.c
++++ b/hw/mips/mips_ls1c.c
+@@ -71,7 +71,7 @@ static struct _loaderparams {
+ #define	PLL_M			0x40
+ #define  FRAC_N         0xff	
+ #define	SDRAM_DIV		SDRAM_DIV_4
+-static int clkreg[2] = {0x800050ac ,0x00008283};//{0x800050ac ,0x8d0082b3 };
++static int clkreg[2] = {0x800050ac ,0x00018283};//{0x800050ac ,0x8d0082b3 };
+ static MemoryRegion *ddrcfg_iomem;
+ static int reg0420[2]={0,0x100000};
+ 
+diff --git a/hw/mips/mips_ls232.c b/hw/mips/mips_ls232.c
+index 314dc3c..c805166 100644
+--- a/hw/mips/mips_ls232.c
++++ b/hw/mips/mips_ls232.c
+@@ -65,7 +65,7 @@ static struct _loaderparams {
+ 	const char *initrd_filename;
+ } loaderparams;
+ 
+-static int clkreg[2];
++static int clkreg[2] = { 0x3, 0x86184000 };
+ static MemoryRegion *ddrcfg_iomem;
+ static int reg0420[2]={0,0x100000};
+ 
+-- 
+1.9.1
+

@@ -1,0 +1,281 @@
+From ff0e4a696f2baec25e5fc580eff271b0ba81036f Mon Sep 17 00:00:00 2001
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+Date: Sun, 28 Jul 2019 14:41:46 +0800
+Subject: [PATCH] comment out unused variables
+
+---
+ hw/mips/mips_ls1a.c   | 8 ++++----
+ hw/mips/mips_ls1b.c   | 8 ++++----
+ hw/mips/mips_ls1c.c   | 8 ++++----
+ hw/mips/mips_ls232.c  | 8 ++++----
+ hw/mips/mips_ls2f1a.c | 8 ++++----
+ hw/mips/mips_ls2h.c   | 8 ++++----
+ hw/mips/mips_ls2k.c   | 8 ++++----
+ hw/mips/mips_ls3a.c   | 8 ++++----
+ hw/mips/mips_ls3a2h.c | 8 ++++----
+ hw/mips/mips_ls3a7a.c | 8 ++++----
+ 10 files changed, 40 insertions(+), 40 deletions(-)
+
+diff --git a/hw/mips/mips_ls1a.c b/hw/mips/mips_ls1a.c
+index d8f421f..6f1eb3f 100644
+--- a/hw/mips/mips_ls1a.c
++++ b/hw/mips/mips_ls1a.c
+@@ -53,9 +53,9 @@
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -270,7 +270,7 @@ static int board_map_irq(int bus,int dev,int func,int pin)
+ 	return irq_num;
+ }
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static PCIBus *pcibus_ls1a_init(qemu_irq *pic, int (*board_map_irq)(int bus,int dev,int func,int pin));
+ 
+diff --git a/hw/mips/mips_ls1b.c b/hw/mips/mips_ls1b.c
+index dbd1d9f..0a9d238 100644
+--- a/hw/mips/mips_ls1b.c
++++ b/hw/mips/mips_ls1b.c
+@@ -53,9 +53,9 @@
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -264,7 +264,7 @@ static void main_cpu_reset(void *opaque)
+ 
+ void *ls1b_intctl_init(hwaddr addr,qemu_irq parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static CPUUnassignedAccess real_do_unassigned_access;
+ static void mips_ls1b_do_unassigned_access(CPUState *cpu, hwaddr addr,
+diff --git a/hw/mips/mips_ls1c.c b/hw/mips/mips_ls1c.c
+index df8a2fb..75e4aea 100644
+--- a/hw/mips/mips_ls1c.c
++++ b/hw/mips/mips_ls1c.c
+@@ -53,9 +53,9 @@
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -270,7 +270,7 @@ static void main_cpu_reset(void *opaque)
+ 
+ void *ls1c_intctl_init(hwaddr addr,qemu_irq parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static CPUUnassignedAccess real_do_unassigned_access;
+ static void mips_ls1a_do_unassigned_access(CPUState *cpu, hwaddr addr,
+diff --git a/hw/mips/mips_ls232.c b/hw/mips/mips_ls232.c
+index 3792d37..3110203 100644
+--- a/hw/mips/mips_ls232.c
++++ b/hw/mips/mips_ls232.c
+@@ -52,9 +52,9 @@
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -262,7 +262,7 @@ static void main_cpu_reset(void *opaque)
+ 
+ 
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static CPUUnassignedAccess real_do_unassigned_access;
+ static void mips_ls232_do_unassigned_access(CPUState *cpu, hwaddr addr,
+diff --git a/hw/mips/mips_ls2f1a.c b/hw/mips/mips_ls2f1a.c
+index 6cf0a4e..fa39549 100644
+--- a/hw/mips/mips_ls2f1a.c
++++ b/hw/mips/mips_ls2f1a.c
+@@ -48,9 +48,9 @@
+ 
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -235,7 +235,7 @@ static int aui_boot_code[] ={
+ 
+ PCIBus *pci_bonito_init(CPUMIPSState *env,qemu_irq *pic, int irq,int (*board_map_irq)(int bus,int dev,int func,int pin),MemoryRegion *ram);
+ int pci_ls1a_init(PCIBus *bus, int devfn, int serialidx, DriveInfo *hd, NICInfo *nd, DriveInfo *flash);
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static CPUUnassignedAccess real_do_unassigned_access;
+ static void mips_ls2h_do_unassigned_access(CPUState *cpu, hwaddr addr,
+diff --git a/hw/mips/mips_ls2h.c b/hw/mips/mips_ls2h.c
+index eb75744..93771f9 100644
+--- a/hw/mips/mips_ls2h.c
++++ b/hw/mips/mips_ls2h.c
+@@ -86,9 +86,9 @@ void memory_region_ref(MemoryRegion *mr)
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -568,7 +568,7 @@ static void main_cpu_reset(void *opaque)
+ 
+ static void *ls1a_intctl_init(MemoryRegion *mr, hwaddr addr, qemu_irq parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static PCIBus *pcibus_ls2h_init(int busno,qemu_irq *pic, int (*board_map_irq)(PCIDevice *d, int irq_num));
+ 
+diff --git a/hw/mips/mips_ls2k.c b/hw/mips/mips_ls2k.c
+index 508ac47..9d9c88c 100644
+--- a/hw/mips/mips_ls2k.c
++++ b/hw/mips/mips_ls2k.c
+@@ -72,9 +72,9 @@ extern target_ulong mypc;
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ static qemu_irq *ls2k_irq,*ls2k_irq1;
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+@@ -734,7 +734,7 @@ static int godson_ipi_init(qemu_irq parent_irq , unsigned long index, gipiState
+ 
+ static void *ls2k_intctl_init(MemoryRegion *mr, hwaddr addr, qemu_irq *parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static PCIBus **pcibus_ls2k_init(int busno,qemu_irq *pic, int (*board_map_irq)(PCIDevice *d, int irq_num), MemoryRegion *ram, MemoryRegion *ram1, MemoryRegion *ram4);
+ 
+diff --git a/hw/mips/mips_ls3a.c b/hw/mips/mips_ls3a.c
+index 818c9d6..183dee1 100644
+--- a/hw/mips/mips_ls3a.c
++++ b/hw/mips/mips_ls3a.c
+@@ -68,9 +68,9 @@ do {} while (0)
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ extern FILE *logfile;
+ static void *boot_params_buf;
+@@ -494,7 +494,7 @@ static PCIBus *pci_bus;
+ 
+ PCIBus *pci_ls3a_init(DeviceState *dev, qemu_irq *pic, int (*board_map_irq)(int bus,int dev,int func,int pin));
+ static void *ls3a_intctl_init(ISABus *isa_bus, CPUMIPSState *env[]);
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static CPUUnassignedAccess real_do_unassigned_access;
+ static void mips_ls3a_do_unassigned_access(CPUState *cpu, hwaddr addr,
+diff --git a/hw/mips/mips_ls3a2h.c b/hw/mips/mips_ls3a2h.c
+index 4f42b12..113e36a 100644
+--- a/hw/mips/mips_ls3a2h.c
++++ b/hw/mips/mips_ls3a2h.c
+@@ -81,9 +81,9 @@ do {} while (0)
+  memory_region_add_subregion(iomem, devaddr, s->mmio[n].memory); \
+ }
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+ 
+@@ -465,7 +465,7 @@ static void main_cpu_reset(void *opaque)
+ 
+ static void *ls1a_intctl_init(MemoryRegion *mr, hwaddr addr, qemu_irq parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static PCIBus *pcibus_ls3a2h_init(int busno,qemu_irq *pic, int (*board_map_irq)(PCIDevice *d, int irq_num),MemoryRegion *iomem_axi,  MemoryRegion *ram, ram_addr_t ram_size);
+ 
+diff --git a/hw/mips/mips_ls3a7a.c b/hw/mips/mips_ls3a7a.c
+index 0ab0830..49106bb 100644
+--- a/hw/mips/mips_ls3a7a.c
++++ b/hw/mips/mips_ls3a7a.c
+@@ -70,9 +70,9 @@ extern target_ulong mypc;
+ #define MAX_IDE_BUS 2
+ #define TARGET_REALPAGE_MASK (TARGET_PAGE_MASK<<2)
+ 
+-static const int ide_iobase[2] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[2] = { 0x3f6, 0x376 };
+-static const int ide_irq[2] = { 14, 15 };
++//static const int ide_iobase[2] = { 0x1f0, 0x170 };
++//static const int ide_iobase2[2] = { 0x3f6, 0x376 };
++//static const int ide_irq[2] = { 14, 15 };
+ static qemu_irq *ls3a7a_irq;
+ 
+ /* i8254 PIT is attached to the IRQ0 at PIC i8259 */
+@@ -743,7 +743,7 @@ static int godson_ipi_init(qemu_irq parent_irq , unsigned long index, gipiState
+ 
+ static void *ls7a_intctl_init(MemoryRegion *mr, hwaddr addr, qemu_irq parent_irq);
+ 
+-static const int sector_len = 32 * 1024;
++//static const int sector_len = 32 * 1024;
+ 
+ static PCIBus **pcibus_ls3a7a_init(int busno,qemu_irq *pic, int (*board_map_irq)(PCIDevice *d, int irq_num), MemoryRegion *ram, MemoryRegion *ram1);
+ 
+-- 
+2.7.4
+

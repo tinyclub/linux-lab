@@ -1,0 +1,51 @@
+From 1c0793bd22cc4a88ed25de48afd44fcd13edb926 Mon Sep 17 00:00:00 2001
+From: QiaoChong <qiaochong@loongson.cn>
+Date: Sun, 14 Jul 2019 13:21:50 +0800
+Subject: [PATCH 6/6] fix ls3a memenv.
+
+Signed-off-by: QiaoChong <qiaochong@loongson.cn>
+---
+ hw/mips/loongson_bootparam.c | 4 ++--
+ hw/mips/mips_ls3a.c          | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hw/mips/loongson_bootparam.c b/hw/mips/loongson_bootparam.c
+index 0a9bcee..19a8da5 100644
+--- a/hw/mips/loongson_bootparam.c
++++ b/hw/mips/loongson_bootparam.c
+@@ -214,8 +214,8 @@ struct efi_memory_map_loongson * init_memory_map(void *g_map)
+   emap->map[0].node_id = 0;
+   //strcpy(emap->map[0].mem_name, "node0_low");
+   emap->map[0].mem_type = 1;
+-  emap->map[0].mem_start = 0x01000000;
+-  emap->map[0].mem_size = atoi(getenv("memsize"));
++  emap->map[0].mem_start = 0x00200000;
++  emap->map[0].mem_size = atoi(getenv("memsize")) - 0x00200000;;
+ #endif
+ 
+   emap->map[1].node_id = 0;
+diff --git a/hw/mips/mips_ls3a.c b/hw/mips/mips_ls3a.c
+index 06b90d9..3d64a47 100644
+--- a/hw/mips/mips_ls3a.c
++++ b/hw/mips/mips_ls3a.c
+@@ -144,7 +144,7 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++	sprintf(memenv,"memsize=%d",loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20));
+ 	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
+ 
+ 
+@@ -210,7 +210,7 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++	sprintf(memenv,"%d",loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20));
+ 	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+-- 
+1.9.1
+

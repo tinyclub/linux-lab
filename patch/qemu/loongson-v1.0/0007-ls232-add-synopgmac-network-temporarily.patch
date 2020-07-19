@@ -1,0 +1,32 @@
+From 8e8d290dd31c71387b730ab9e7c70b938cf9846e Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Fri, 26 Jul 2019 20:50:23 +0800
+Subject: [PATCH] ls232: add synopgmac network temporarily
+
+The real hw supported davicom dm9102? is not supported by qemu currently.
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ hw/mips/mips_ls232.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hw/mips/mips_ls232.c b/hw/mips/mips_ls232.c
+index 314dc3c..1270333 100644
+--- a/hw/mips/mips_ls232.c
++++ b/hw/mips/mips_ls232.c
+@@ -414,6 +414,12 @@ static void mips_ls232_init (MachineState *machine)
+ 	}
+ #endif
+ 
++	/* FIXME: ls232's real network card is not synopgmac, but the real one
++	 * is not supported by qemu currently, enable synopgmac here for only
++	 * qemu network temporarily */
++	if (nb_nics) {
++		gmac_sysbus_create(&nd_table[0], 0x1ff00000, env->irq[2]);
++	}
+ 
+ 	{
+                 MemoryRegion *iomem = g_new(MemoryRegion, 1);
+-- 
+2.7.4
+

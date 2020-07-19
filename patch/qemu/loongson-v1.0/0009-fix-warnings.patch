@@ -1,0 +1,424 @@
+From 75692a52bc12f1d700bcbd80f463dc461121a9a3 Mon Sep 17 00:00:00 2001
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+Date: Sun, 28 Jul 2019 14:26:54 +0800
+Subject: [PATCH 2/2] fix warnings
+
+---
+ hw/mips/ls1asb.c         |  3 ++-
+ hw/mips/ls2k_int.c       |  1 -
+ hw/mips/ls7a_int.c       |  1 -
+ hw/mips/mips_ls1a.c      |  5 +++--
+ hw/mips/mips_ls1b.c      |  5 +++--
+ hw/mips/mips_ls1c.c      |  5 +++--
+ hw/mips/mips_ls232.c     |  4 ++--
+ hw/mips/mips_ls2f1a.c    |  4 ++--
+ hw/mips/mips_ls2fsm502.c |  4 ++--
+ hw/mips/mips_ls2h.c      | 13 ++++++-------
+ hw/mips/mips_ls2k.c      | 17 +++++++----------
+ hw/mips/mips_ls3a.c      |  9 +++++----
+ hw/mips/mips_ls3a2h.c    |  8 ++++----
+ hw/mips/mips_ls3a7a.c    | 20 ++++++++------------
+ 14 files changed, 47 insertions(+), 52 deletions(-)
+
+diff --git a/hw/mips/ls1asb.c b/hw/mips/ls1asb.c
+index 37bd1a8..a3281c9 100644
+--- a/hw/mips/ls1asb.c
++++ b/hw/mips/ls1asb.c
+@@ -14,6 +14,7 @@
+ #include "hw/i2c/i2c.h"
+ #include "exec/address-spaces.h"
+ #include "cpu.h"
++#include "hw/input/i8042.h"
+ 
+ #define PCI_VENDOR_ID_LS1A 0x104a
+ #define PCI_DEVICE_ID_LS1A 0x0
+@@ -611,7 +612,7 @@ static void bonito_iommu_memory_region_class_init(ObjectClass *klass,
+ {
+     IOMMUMemoryRegionClass *imrc = IOMMU_MEMORY_REGION_CLASS(klass);
+ 
+-    imrc->translate = ls1a_pcidma_translate_iommu;
++    imrc->translate = (void*)ls1a_pcidma_translate_iommu;
+ }
+ 
+ static const TypeInfo typhoon_iommu_memory_region_info = {
+diff --git a/hw/mips/ls2k_int.c b/hw/mips/ls2k_int.c
+index cae06a4..2939aa2 100644
+--- a/hw/mips/ls2k_int.c
++++ b/hw/mips/ls2k_int.c
+@@ -86,7 +86,6 @@ static uint64_t ls2k_intctl_mem_readl(void *opaque, hwaddr addr, unsigned size)
+ static void ls2k_intctl_mem_writel(void *opaque, hwaddr addr, uint64_t val, unsigned size)
+ {
+ 	GS232_INTCTLState *s = opaque;
+-	uint32_t saddr;
+ 
+ 	//printf("write reg 0x" TARGET_FMT_plx " %x= %x\n", addr, saddr, (unsigned int)val);
+ 	switch (addr) {
+diff --git a/hw/mips/ls7a_int.c b/hw/mips/ls7a_int.c
+index 524b6b8..67af4b8 100644
+--- a/hw/mips/ls7a_int.c
++++ b/hw/mips/ls7a_int.c
+@@ -106,7 +106,6 @@ static uint64_t ls7a_intctl_mem_readl(void *opaque, hwaddr addr, unsigned size)
+ static void ls7a_intctl_mem_writel(void *opaque, hwaddr addr, uint64_t val, unsigned size)
+ {
+ 	GS232_INTCTLState *s = opaque;
+-	uint32_t saddr;
+ 	int i, j;
+ 
+ 	//printf("write reg 0x" TARGET_FMT_plx " %x= %x\n", addr, saddr, (unsigned int)val);
+diff --git a/hw/mips/mips_ls1a.c b/hw/mips/mips_ls1a.c
+index e293619..d8f421f 100644
+--- a/hw/mips/mips_ls1a.c
++++ b/hw/mips/mips_ls1a.c
+@@ -44,6 +44,7 @@
+ #include "hw/i2c/i2c.h"
+ #include "exec/address-spaces.h"
+ #include "hw/ide/internal.h"
++#include "hw/input/i8042.h"
+ 
+ #define PHYS_TO_VIRT(x) ((x) | ~(target_ulong)0x7fffffff)
+ 
+@@ -204,9 +205,9 @@ static int64_t load_kernel(void)
+ 		 *argv[0] argv[1] 0 env[0] env[1] ...env[i] ,0, argv[0]'s data , argv[1]'s data ,env[0]'data,...,env[i]'s dat,0
+ 		 */
+ 		
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
+ 		setenv("ENV_memsize", memenv, 1);
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 		setenv("ENV_highmemsize", memenv, 1);
+ 		setenv("ENV_cpuclock", "200000000", 0);
+ 		setenv("ENV_busclock", "33333333", 0);
+diff --git a/hw/mips/mips_ls1b.c b/hw/mips/mips_ls1b.c
+index a020d5d..dbd1d9f 100644
+--- a/hw/mips/mips_ls1b.c
++++ b/hw/mips/mips_ls1b.c
+@@ -44,6 +44,7 @@
+ #include "hw/ssi/ssi.h"
+ #include "hw/i2c/i2c.h"
+ #include "exec/address-spaces.h"
++#include "hw/input/i8042.h"
+ 
+ #define PHYS_TO_VIRT(x) ((x) | ~(target_ulong)0x7fffffff)
+ 
+@@ -204,9 +205,9 @@ static int64_t load_kernel(void)
+ 		 *argv[0] argv[1] 0 env[0] env[1] ...env[i] ,0, argv[0]'s data , argv[1]'s data ,env[0]'data,...,env[i]'s dat,0
+ 		 */
+ 		
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
+ 		setenv("ENV_memsize", memenv, 1);
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 		setenv("ENV_highmemsize", memenv, 1);
+ 		setenv("ENV_cpuclock", "200000000", 0);
+ 		setenv("ENV_busclock", "33333333", 0);
+diff --git a/hw/mips/mips_ls1c.c b/hw/mips/mips_ls1c.c
+index 218c3c9..df8a2fb 100644
+--- a/hw/mips/mips_ls1c.c
++++ b/hw/mips/mips_ls1c.c
+@@ -44,6 +44,7 @@
+ #include "hw/i2c/i2c.h"
+ #include "exec/address-spaces.h"
+ #include "hw/ide/internal.h"
++#include "hw/input/i8042.h"
+ 
+ #define PHYS_TO_VIRT(x) ((x) | ~(target_ulong)0x7fffffff)
+ 
+@@ -210,9 +211,9 @@ static int64_t load_kernel(void)
+ 		 *argv[0] argv[1] 0 env[0] env[1] ...env[i] ,0, argv[0]'s data , argv[1]'s data ,env[0]'data,...,env[i]'s dat,0
+ 		 */
+ 		
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
+ 		setenv("ENV_memsize", memenv, 1);
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 		setenv("ENV_highmemsize", memenv, 1);
+ 		setenv("ENV_cpuclock", "2000000", 0);
+ 		setenv("ENV_busclock", "33333333", 0);
+diff --git a/hw/mips/mips_ls232.c b/hw/mips/mips_ls232.c
+index f7dc1fb..3792d37 100644
+--- a/hw/mips/mips_ls232.c
++++ b/hw/mips/mips_ls232.c
+@@ -204,9 +204,9 @@ static int64_t load_kernel(void)
+ 		 *argv[0] argv[1] 0 env[0] env[1] ...env[i] ,0, argv[0]'s data , argv[1]'s data ,env[0]'data,...,env[i]'s dat,0
+ 		 */
+ 		
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
+ 		setenv("ENV_memsize", memenv, 1);
+-		sprintf(memenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 		setenv("ENV_highmemsize", memenv, 1);
+ 		setenv("ENV_cpuclock", "200000000", 0);
+ 		setenv("ENV_busclock", "33333333", 0);
+diff --git a/hw/mips/mips_ls2f1a.c b/hw/mips/mips_ls2f1a.c
+index 38fd787..6cf0a4e 100644
+--- a/hw/mips/mips_ls2f1a.c
++++ b/hw/mips/mips_ls2f1a.c
+@@ -162,8 +162,8 @@ static int64_t load_kernel(void)
+ 		*parg_env++=0;
+ 
+ 		//env
+-		sprintf(memenv,"memsize=%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
+-		sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
++		sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 		for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+diff --git a/hw/mips/mips_ls2fsm502.c b/hw/mips/mips_ls2fsm502.c
+index a336f9c..f795dce 100644
+--- a/hw/mips/mips_ls2fsm502.c
++++ b/hw/mips/mips_ls2fsm502.c
+@@ -160,8 +160,8 @@ static int64_t load_kernel(void)
+ 		*parg_env++=0;
+ 
+ 		//env
+-		sprintf(memenv,"memsize=%d",loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20));
+-		sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++		sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>0x10000000?256:(loaderparams.ram_size>>20)));
++		sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 		for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+diff --git a/hw/mips/mips_ls2h.c b/hw/mips/mips_ls2h.c
+index 5a14ad8..eb75744 100644
+--- a/hw/mips/mips_ls2h.c
++++ b/hw/mips/mips_ls2h.c
+@@ -403,8 +403,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+@@ -473,8 +473,8 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"%d",(int)(loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+ 
+@@ -1223,7 +1223,6 @@ static void bonito_initfn(PCIDevice *dev, Error **errp)
+ {
+     LS2HBonitoState *s = OBJECT_CHECK(LS2HBonitoState, dev, "LS2H_Bonito");
+     SysBusDevice *sysbus = SYS_BUS_DEVICE(s->pcihost);
+-    PCIEPort *p = PCIE_PORT(dev);
+     int busno = s->pcihost->busno;
+ 
+     pci_bridge_initfn(dev, TYPE_PCI_BUS);
+@@ -1393,7 +1392,7 @@ static void bonito_pcihost_initfn(DeviceState *dev, Error **errp)
+ 
+     pci_setup_iommu(pcihost->bus, pci_dma_context_fn, pcihost);
+ 
+-    return 0;
++    return;
+ }
+ 
+ static const char *ls2k_host_root_bus_path(PCIHostState *host_bridge,
+@@ -1427,7 +1426,7 @@ static void bonito_iommu_memory_region_class_init(ObjectClass *klass,
+ {
+     IOMMUMemoryRegionClass *imrc = IOMMU_MEMORY_REGION_CLASS(klass);
+ 
+-    imrc->translate = ls2h_pciedma_translate_iommu;
++    imrc->translate = (void*)ls2h_pciedma_translate_iommu;
+ }
+ 
+ static const TypeInfo typhoon_iommu_memory_region_info = {
+diff --git a/hw/mips/mips_ls2k.c b/hw/mips/mips_ls2k.c
+index 83e4f0b..508ac47 100644
+--- a/hw/mips/mips_ls2k.c
++++ b/hw/mips/mips_ls2k.c
+@@ -62,6 +62,7 @@
+ #include "loongson2k_rom.h"
+ #include "hw/timer/hpet.h"
+ #include "sysemu/device_tree.h"
++#include "dtc/libfdt/libfdt.h"
+ extern target_ulong mypc;
+ 
+ #define PHYS_TO_VIRT(x) ((x) | ~(target_ulong)0x7fffffff)
+@@ -391,8 +392,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>=0xf000000?240:(int)(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(int)(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>=0xf000000?240:(int)(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(int)(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+@@ -462,8 +463,8 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size, char *dtb)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"%d",(int)(loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+ 
+@@ -677,10 +678,6 @@ static uint64_t gipi_readl(void *opaque, hwaddr addr, unsigned size)
+ #endif
+ 	uint64_t ret=0;
+ 	int no = (addr>>8)&3;
+-	uint32_t isr;
+-	uint32_t en;
+-
+-
+ 
+ 	addr &= 0xff;
+ 	if(size!=4) hw_error("size not 4 %d", size);
+@@ -812,8 +809,8 @@ static void mips_ls2k_init(MachineState *machine)
+ 	int i;
+ 	qemu_irq *cpu_irq;
+ 	qemu_irq *cpu_irq1;
+-	cpu_irq = qemu_allocate_irqs(ls2k_set_cpuirq, 0, 8);
+-	cpu_irq1 = qemu_allocate_irqs(ls2k_set_cpuirq, 1, 8);
++	cpu_irq = qemu_allocate_irqs(ls2k_set_cpuirq, (void*)0, 8);
++	cpu_irq1 = qemu_allocate_irqs(ls2k_set_cpuirq, (void*)1, 8);
+ 
+ 	/* init CPUs */
+ 
+diff --git a/hw/mips/mips_ls3a.c b/hw/mips/mips_ls3a.c
+index fffb1b8..818c9d6 100644
+--- a/hw/mips/mips_ls3a.c
++++ b/hw/mips/mips_ls3a.c
+@@ -45,6 +45,7 @@
+ #include "hw/pci/pci_host.h"
+ #include "hw/ssi/ssi.h"
+ #include "loongson_bootparam.h"
++#include "target/mips/internal.h"
+ 
+ #ifdef DEBUG_LS3A
+ #define DPRINTF(fmt, ...) \
+@@ -145,8 +146,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+@@ -213,8 +214,8 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"%d",(int)(loaderparams.ram_size>0x0f000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+ 
+diff --git a/hw/mips/mips_ls3a2h.c b/hw/mips/mips_ls3a2h.c
+index 006f3f0..4f42b12 100644
+--- a/hw/mips/mips_ls3a2h.c
++++ b/hw/mips/mips_ls3a2h.c
+@@ -302,8 +302,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+@@ -370,8 +370,8 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"%d",(int)(loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+ 
+diff --git a/hw/mips/mips_ls3a7a.c b/hw/mips/mips_ls3a7a.c
+index 2e773e8..0ab0830 100644
+--- a/hw/mips/mips_ls3a7a.c
++++ b/hw/mips/mips_ls3a7a.c
+@@ -433,8 +433,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	*parg_env++=0;
+ 
+ 	//env
+-	sprintf(memenv,"memsize=%d",loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"highmemsize=%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"memsize=%d",(int)(loaderparams.ram_size>=0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"highmemsize=%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 
+ 
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+@@ -501,8 +501,8 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 
+ 	//env
+ 
+-	sprintf(memenv,"%d",loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20));
+-	sprintf(highmemenv,"%d",loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0);
++	sprintf(memenv,"%d",(int)(loaderparams.ram_size>0xf000000?240:(loaderparams.ram_size>>20)));
++	sprintf(highmemenv,"%d",(int)(loaderparams.ram_size>0x10000000?(loaderparams.ram_size>>20)-256:0));
+ 	setenv("memsize", memenv, 1);
+ 	setenv("highmemsize", highmemenv, 1);
+ 
+@@ -688,10 +688,6 @@ static uint64_t gipi_readl(void *opaque, hwaddr addr, unsigned size)
+ #endif
+ 	uint64_t ret=0;
+ 	int no = (addr>>8)&3;
+-	uint32_t isr;
+-	uint32_t en;
+-
+-
+ 
+ 	addr &= 0xff;
+ 	if(size!=4) hw_error("size not 4 %d", size);
+@@ -1878,10 +1874,10 @@ static uint32_t ls3a_intctl_mem_readl(void *opaque, hwaddr addr)
+ 		//printf("ret=%x\n",ret);
+ 		break;
+ 	case HT_CONTROL_REGS_BASE + HT_IRQ_VECTOR_REG2:
+-		address_space_read(&address_space_memory, 0xe00100003a0, MEMTXATTRS_UNSPECIFIED, &ret, 4);
++		address_space_read(&address_space_memory, 0xe00100003a0, MEMTXATTRS_UNSPECIFIED, (unsigned char*)&ret, 4);
+ 	break;
+ 	case HT_CONTROL_REGS_BASE + HT_IRQ_VECTOR_REG3:
+-		address_space_read(&address_space_memory, 0xe00100003a4, MEMTXATTRS_UNSPECIFIED, &ret, 4);
++		address_space_read(&address_space_memory, 0xe00100003a4, MEMTXATTRS_UNSPECIFIED, (unsigned char*)&ret, 4);
+ 	break;
+ 	case INT_ROUTER_REGS_BASE + IO_CONTROL_REGS_CORE0_INTISR:
+ 	ret = 0x0f000000|((!!uart_irqstatus)<<10);
+@@ -2020,7 +2016,7 @@ static void ht_set_irq(void *opaque, int irq, int level)
+ {
+ 	LS3a_INTCTLState *s = opaque;
+ 	uint64_t isr;
+-	address_space_read(&address_space_memory, 0xe00100003a0, MEMTXATTRS_UNSPECIFIED, &isr, 8);
++	address_space_read(&address_space_memory, 0xe00100003a0, MEMTXATTRS_UNSPECIFIED, (unsigned char*)&isr, 8);
+ 	*(uint64_t *)(s->ht_irq_reg+HT_IRQ_VECTOR_REG2) = isr; 
+ 	//printf("ht_set_irq %d %d 0x%llx\n", irq, level, (long long)isr);
+ 
+@@ -2029,7 +2025,7 @@ static void ht_set_irq(void *opaque, int irq, int level)
+ 
+ static qemu_irq *ls3a_intctl_init(MemoryRegion *iomem_root, CPUMIPSState *env[])
+ {
+-	qemu_irq *i8259,*ht_irq;
++	qemu_irq *ht_irq;
+ 	LS3a_INTCTLState *s;
+ 	LS3a_func_args *a_irqrouter,*a_htirq;
+ 
+-- 
+2.7.4
+

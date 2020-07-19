@@ -1,0 +1,730 @@
+From 60b45444606a6be887fabe83a75cb259200f93f8 Mon Sep 17 00:00:00 2001
+From: Zhang Fuxin <fxzhang@ict.ac.cn>
+Date: Sun, 28 Jul 2019 13:56:35 +0800
+Subject: [PATCH 1/2] enlarge kernel cmdline size from 256 bytes to 1024 bytes
+
+---
+ hw/mips/mips_ls1a.c      | 13 +++++++------
+ hw/mips/mips_ls1b.c      | 13 +++++++------
+ hw/mips/mips_ls1c.c      | 13 +++++++------
+ hw/mips/mips_ls232.c     | 13 +++++++------
+ hw/mips/mips_ls2f1a.c    | 15 ++++++++-------
+ hw/mips/mips_ls2fsm502.c | 15 ++++++++-------
+ hw/mips/mips_ls2h.c      | 25 +++++++++++++++----------
+ hw/mips/mips_ls2k.c      | 24 ++++++++++++++----------
+ hw/mips/mips_ls3a.c      | 23 +++++++++++++----------
+ hw/mips/mips_ls3a2h.c    | 23 +++++++++++++----------
+ hw/mips/mips_ls3a7a.c    | 23 +++++++++++++----------
+ 11 files changed, 112 insertions(+), 88 deletions(-)
+
+diff --git a/hw/mips/mips_ls1a.c b/hw/mips/mips_ls1a.c
+index 0f31d50..e293619 100644
+--- a/hw/mips/mips_ls1a.c
++++ b/hw/mips/mips_ls1a.c
+@@ -185,12 +185,13 @@ static int64_t load_kernel(void)
+ 	}
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 
+ 
+-#define BOOTPARAM_PHYADDR ((64 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((64 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ 	// should set argc,argv
+ 	//env->gpr[REG][env->current_tc]
+@@ -218,15 +219,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -236,7 +237,7 @@ static int64_t load_kernel(void)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls1b.c b/hw/mips/mips_ls1b.c
+index 36b328d..a020d5d 100644
+--- a/hw/mips/mips_ls1b.c
++++ b/hw/mips/mips_ls1b.c
+@@ -185,12 +185,13 @@ static int64_t load_kernel(void)
+ 	}
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 
+ 
+-#define BOOTPARAM_PHYADDR ((64 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((64 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ 	// should set argc,argv
+ 	//env->gpr[REG][env->current_tc]
+@@ -218,15 +219,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -236,7 +237,7 @@ static int64_t load_kernel(void)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls1c.c b/hw/mips/mips_ls1c.c
+index 0075a23..218c3c9 100644
+--- a/hw/mips/mips_ls1c.c
++++ b/hw/mips/mips_ls1c.c
+@@ -191,12 +191,13 @@ static int64_t load_kernel(void)
+ 	}
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 
+ 
+-#define BOOTPARAM_PHYADDR ((32 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((32 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ 	// should set argc,argv
+ 	//env->gpr[REG][env->current_tc]
+@@ -224,15 +225,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -242,7 +243,7 @@ static int64_t load_kernel(void)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls232.c b/hw/mips/mips_ls232.c
+index c805166..f7dc1fb 100644
+--- a/hw/mips/mips_ls232.c
++++ b/hw/mips/mips_ls232.c
+@@ -185,12 +185,13 @@ static int64_t load_kernel(void)
+ 	}
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 
+ 
+-#define BOOTPARAM_PHYADDR ((64 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((64 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ 	// should set argc,argv
+ 	//env->gpr[REG][env->current_tc]
+@@ -218,15 +219,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -236,7 +237,7 @@ static int64_t load_kernel(void)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls2f1a.c b/hw/mips/mips_ls2f1a.c
+index 729c1be..38fd787 100644
+--- a/hw/mips/mips_ls2f1a.c
++++ b/hw/mips/mips_ls2f1a.c
+@@ -119,12 +119,13 @@ static int64_t load_kernel(void)
+     }
+ 
+     /* Store command line.  */
+-    params_size = 264;
++#define PBUF_SIZE 256
++    params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	
+ 
+-#define BOOTPARAM_PHYADDR ((64 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((64 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ // should set argc,argv
+ //env->gpr[REG][env->current_tc]
+@@ -147,15 +148,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -168,14 +169,14 @@ static int64_t load_kernel(void)
+ 		for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 		{
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 		}
+ 
+ 		for(i=0;environ[i];i++)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls2fsm502.c b/hw/mips/mips_ls2fsm502.c
+index 370f667..a336f9c 100644
+--- a/hw/mips/mips_ls2fsm502.c
++++ b/hw/mips/mips_ls2fsm502.c
+@@ -117,12 +117,13 @@ static int64_t load_kernel(void)
+     }
+ 
+     /* Store command line.  */
+-    params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	
+ 
+-#define BOOTPARAM_PHYADDR ((64 << 20) - 264)
++#define BOOTPARAM_PHYADDR ((64 << 20) - PBUF_SIZE - 8)
+ #define BOOTPARAM_ADDR (0x80000000+BOOTPARAM_PHYADDR)
+ // should set argc,argv
+ //env->gpr[REG][env->current_tc]
+@@ -145,15 +146,15 @@ static int64_t load_kernel(void)
+ 		ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 		//argv0
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"g");
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 		//argv1
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+ 		if (initrd_size > 0) {
+-			ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 					PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 					initrd_size, loaderparams.kernel_cmdline);
+ 		} else {
+-			ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++			ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 		}
+ 		//argv2
+ 		*parg_env++=0;
+@@ -166,14 +167,14 @@ static int64_t load_kernel(void)
+ 		for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 		{
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 		}
+ 
+ 		for(i=0;environ[i];i++)
+ 		{
+ 			if(!strncmp(environ[i],"ENV_",4)){
+ 				*parg_env++=BOOTPARAM_ADDR+ret;
+-				ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++				ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 			}
+ 		}
+ 		*parg_env++=0;
+diff --git a/hw/mips/mips_ls2h.c b/hw/mips/mips_ls2h.c
+index 1c9902e..5a14ad8 100644
+--- a/hw/mips/mips_ls2h.c
++++ b/hw/mips/mips_ls2h.c
+@@ -370,7 +370,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -388,15 +389,15 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+@@ -409,14 +410,14 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 	{
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 	}
+ 
+ 	for(i=0;environ[i];i++)
+ 	{
+ 		if(!strncmp(environ[i],"ENV_",4)){
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 		}
+ 	}
+ 	*parg_env++=0;
+@@ -439,7 +440,11 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 0x100000;
++	//params_size = 0x100000;
++#undef PBUF_SIZE
++#define PBUF_SIZE 0x100000
++	params_size = PBUF_SIZE;
++
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -453,15 +458,15 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	ret =(3+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+diff --git a/hw/mips/mips_ls2k.c b/hw/mips/mips_ls2k.c
+index 45f7cbe..83e4f0b 100644
+--- a/hw/mips/mips_ls2k.c
++++ b/hw/mips/mips_ls2k.c
+@@ -358,7 +358,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -376,15 +377,15 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+@@ -397,14 +398,14 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 	{
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 	}
+ 
+ 	for(i=0;environ[i];i++)
+ 	{
+ 		if(!strncmp(environ[i],"ENV_",4)){
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 		}
+ 	}
+ 	*parg_env++=0;
+@@ -428,7 +429,10 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size, char *dtb)
+ 	char *cmdline;
+ 
+ 	/* Store command line.  */
+-	params_size = 0x100000;
++	//params_size = 0x100000;
++#undef PBUF_SIZE
++#define PBUF_SIZE 0x100000
++	params_size = PBUF_SIZE;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -442,16 +446,16 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size, char *dtb)
+ 	ret =(3+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	cmdline = params_buf+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+diff --git a/hw/mips/mips_ls3a.c b/hw/mips/mips_ls3a.c
+index 3d64a47..fffb1b8 100644
+--- a/hw/mips/mips_ls3a.c
++++ b/hw/mips/mips_ls3a.c
+@@ -112,7 +112,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -130,15 +131,15 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+@@ -151,14 +152,14 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 	{
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 	}
+ 
+ 	for(i=0;environ[i];i++)
+ 	{
+ 		if(!strncmp(environ[i],"ENV_",4)){
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 		}
+ 	}
+ 	*parg_env++=0;
+@@ -181,7 +182,9 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 0x100000;
++#undef PBUF_SIZE
++#define PBUF_SIZE 0x100000
++	params_size = PBUF_SIZE;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -195,15 +198,15 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	ret =(3+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+diff --git a/hw/mips/mips_ls3a2h.c b/hw/mips/mips_ls3a2h.c
+index 3b367e9..006f3f0 100644
+--- a/hw/mips/mips_ls3a2h.c
++++ b/hw/mips/mips_ls3a2h.c
+@@ -269,7 +269,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -287,15 +288,15 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+@@ -308,14 +309,14 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 	{
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 	}
+ 
+ 	for(i=0;environ[i];i++)
+ 	{
+ 		if(!strncmp(environ[i],"ENV_",4)){
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 		}
+ 	}
+ 	*parg_env++=0;
+@@ -338,7 +339,9 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 0x100000;
++#undef PBUF_SIZE
++#define PBUF_SIZE 0x100000
++	params_size = PBUF_SIZE;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -352,15 +355,15 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	ret =(3+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+diff --git a/hw/mips/mips_ls3a7a.c b/hw/mips/mips_ls3a7a.c
+index cdfc5b2..2e773e8 100644
+--- a/hw/mips/mips_ls3a7a.c
++++ b/hw/mips/mips_ls3a7a.c
+@@ -400,7 +400,8 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 264;
++#define PBUF_SIZE 1024
++	params_size = PBUF_SIZE + 8;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -418,15 +419,15 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	ret +=(3+sizeof(pmonenv)/sizeof(char *)+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+@@ -439,14 +440,14 @@ static int set_bootparam(ram_addr_t initrd_offset,long initrd_size)
+ 	for(i=0;i<sizeof(pmonenv)/sizeof(char *);i++)
+ 	{
+ 		*parg_env++=BOOTPARAM_ADDR+ret;
+-		ret +=1+snprintf(params_buf+ret,256-ret,"%s",pmonenv[i]);
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",pmonenv[i]);
+ 	}
+ 
+ 	for(i=0;environ[i];i++)
+ 	{
+ 		if(!strncmp(environ[i],"ENV_",4)){
+ 			*parg_env++=BOOTPARAM_ADDR+ret;
+-			ret +=1+snprintf(params_buf+ret,256-ret,"%s",&environ[i][4]);
++			ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"%s",&environ[i][4]);
+ 		}
+ 	}
+ 	*parg_env++=0;
+@@ -469,7 +470,9 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	int ret;
+ 
+ 	/* Store command line.  */
+-	params_size = 0x100000;
++#undef PBUF_SIZE
++#define PBUF_SIZE 0x100000
++	params_size = PBUF_SIZE;
+ 	params_buf = g_malloc(params_size);
+ 
+ 	parg_env=(void *)params_buf;
+@@ -483,15 +486,15 @@ static int set_bootparam1(ram_addr_t initrd_offset,long initrd_size)
+ 	ret =(3+1)*4;
+ 	//argv0
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+-	ret +=1+snprintf(params_buf+ret,256-ret,"g");
++	ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret,"g");
+ 	//argv1
+ 	*parg_env++=BOOTPARAM_ADDR+ret;
+ 	if (initrd_size > 0) {
+-		ret +=1+snprintf(params_buf+ret,256-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
++		ret +=1+snprintf(params_buf+ret,PBUF_SIZE-ret, "rd_start=0x" TARGET_FMT_lx " rd_size=%li %s",
+ 				PHYS_TO_VIRT((uint32_t)initrd_offset),
+ 				initrd_size, loaderparams.kernel_cmdline);
+ 	} else {
+-		ret +=1+snprintf(params_buf+ret, 256-ret, "%s", loaderparams.kernel_cmdline);
++		ret +=1+snprintf(params_buf+ret, PBUF_SIZE-ret, "%s", loaderparams.kernel_cmdline);
+ 	}
+ 	//argv2
+ 	*parg_env++=0;
+-- 
+2.7.4
+

@@ -1,0 +1,86 @@
+From fe0c59cc2ce8a226930bd26116f22d95e045e2af Mon Sep 17 00:00:00 2001
+From: QiaoChong <qiaochong@loongson.cn>
+Date: Sun, 21 Jul 2019 14:26:13 +0800
+Subject: [PATCH 3/6] ls3a2h: fix axi dma and pcie dma addres space.
+
+Signed-off-by: QiaoChong <qiaochong@loongson.cn>
+---
+ hw/mips/mips_ls3a2h.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/hw/mips/mips_ls3a2h.c b/hw/mips/mips_ls3a2h.c
+index edc2000..f0547ab 100644
+--- a/hw/mips/mips_ls3a2h.c
++++ b/hw/mips/mips_ls3a2h.c
+@@ -675,6 +675,7 @@ static void mips_ls3a2h_init(MachineState *machine)
+ 	MemoryRegion *iomem_axi2 = g_new(MemoryRegion, 1);
+ 	MemoryRegion *iomem_axi3 = g_new(MemoryRegion, 1);
+ 	AddressSpace *as = g_new(AddressSpace, 1);
++	AddressSpace *as_axi = g_new(AddressSpace, 1);
+ 	int i;
+ 
+   gipiState * gipis =g_malloc0(sizeof(gipiState));
+@@ -715,14 +716,24 @@ static void mips_ls3a2h_init(MachineState *machine)
+ 
+ 	MemoryRegion *ram1 = g_new(MemoryRegion, 1);
+ 	memory_region_init_alias(ram1, NULL, "lowmem", ram, 0, 0x10000000);
++	MemoryRegion *ram4 = g_new(MemoryRegion, 1);
++	memory_region_init_alias(ram4, NULL, "aximem", ram, 0, ram_size);
++	MemoryRegion *ram0 = g_new(MemoryRegion, 1);
++	memory_region_init_alias(ram0, NULL, "mem", ram, 0, ram_size);
+ 	memory_region_add_subregion(address_space_mem, 0, ram1);
+-	memory_region_add_subregion(address_space_mem, 0x80000000ULL, ram);
++	memory_region_add_subregion(address_space_mem, 0x80000000ULL, ram0);
+ 
+-        memory_region_init(iomem_axi, NULL,  "ls3a2h axi", UINT64_MAX);
+-	address_space_init(as,iomem_axi, "ls3a2h axi memory");
++        memory_region_init(iomem_axi, OBJECT(address_space_mem),  "ls3a2h axi", UINT64_MAX);
++	address_space_init(as_axi, iomem_axi, "ls3a2h axi memory");
++
++	MemoryRegion *iomem_axidmamem = g_new(MemoryRegion, 1);
++	memory_region_init(iomem_axidmamem, OBJECT(address_space_mem), "system", INT64_MAX);
++	address_space_init(as, iomem_axidmamem, "ls3a2h axi dma memory");
++
++	MemoryRegion *ram_axidmaram = g_new(MemoryRegion, 1);
++	memory_region_init_alias(ram_axidmaram, NULL, "aximem", ram, 0, ram_size);
++	memory_region_add_subregion(iomem_axidmamem, 0, ram_axidmaram);
+ 
+-	MemoryRegion *ram4 = g_new(MemoryRegion, 1);
+-	memory_region_init_alias(ram4, NULL, "aximem", ram, 0, ram_size);
+ 
+ 	memory_region_init_alias(iomem_axi1, NULL, "iosubmem", iomem_axi, 0x10000000, 0x09000000);
+ 	memory_region_init_alias(iomem_axi2, NULL, "iosubdev", iomem_axi, 0x1f000000, 0x01000000);
+@@ -811,7 +822,7 @@ static void mips_ls3a2h_init(MachineState *machine)
+ 	DeviceState *dev;
+ 	dev = sysbus_create_simple("ls2h_fb", -1, NULL);
+ 	sysbus_mmio_map_iomem(iomem_axi, SYS_BUS_DEVICE(dev), 0, 0x1fe50000);
+-	qdev_prop_set_ptr(dev, "root", iomem_axi);
++	qdev_prop_set_ptr(dev, "root", iomem_axidmamem);
+ 
+ 
+ 
+@@ -837,8 +848,8 @@ static void mips_ls3a2h_init(MachineState *machine)
+ 		dev = qdev_create(NULL, "sysbus-ohci");
+ 		qdev_prop_set_uint32(dev, "num-ports", 4);
+ 		qdev_prop_set_uint64(dev, "dma-offset", 0);
+-		qdev_prop_set_ptr(dev, "as", as);
+ 		qdev_init_nofail(dev);
++		qdev_prop_set_ptr(dev, "as", as);
+ 		sysbus_mmio_map_iomem(iomem_axi, SYS_BUS_DEVICE(dev), 0, 0x1fe08000);
+ 		sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, ls3a2h_irq1[1]);
+ 
+@@ -1438,10 +1449,7 @@ static PCIBus *pcibus_ls3a2h_init(int busno, qemu_irq *pic, int (*board_map_irq)
+ 
+     MemoryRegion *ram_pciram = g_new(MemoryRegion, 1);
+     memory_region_init_alias(ram_pciram, NULL, "aximem", ram, 0, ram_size);
+-    MemoryRegion *ram_pcilowram = g_new(MemoryRegion, 1);
+-    memory_region_init_alias(ram_pcilowram, NULL, "axilowmem", ram, 0, 0x10000000);
+-    memory_region_add_subregion(&pcihost->iomem_dmamem, 0x00000000UL, ram_pcilowram);
+-    memory_region_add_subregion(&pcihost->iomem_dmamem, 0x80000000UL, ram_pciram);
++    memory_region_add_subregion(&pcihost->iomem_dmamem, 0x00000000UL, ram_pciram);
+ 
+     return bus2;
+ }
+-- 
+1.9.1
+

@@ -1,0 +1,28 @@
+From 014a57f9d5aa2791253418543bae8d737f4eb89c Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <falcon@tinylab.org>
+Date: Sun, 19 Jul 2020 19:35:17 +0800
+Subject: [PATCH] ls2k: fix up libfdt.h include issue
+
+This breaks qemu building while libfdt-dev installed.
+
+Signed-off-by: Wu Zhangjin <falcon@tinylab.org>
+---
+ hw/mips/mips_ls2k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/mips/mips_ls2k.c b/hw/mips/mips_ls2k.c
+index 9d9c88c..d7bee5a 100644
+--- a/hw/mips/mips_ls2k.c
++++ b/hw/mips/mips_ls2k.c
+@@ -62,7 +62,7 @@
+ #include "loongson2k_rom.h"
+ #include "hw/timer/hpet.h"
+ #include "sysemu/device_tree.h"
+-#include "dtc/libfdt/libfdt.h"
++#include <libfdt.h>
+ extern target_ulong mypc;
+ 
+ #define PHYS_TO_VIRT(x) ((x) | ~(target_ulong)0x7fffffff)
+-- 
+2.7.4
+

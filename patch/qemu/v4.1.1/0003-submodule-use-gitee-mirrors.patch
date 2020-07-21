@@ -1,0 +1,98 @@
+From 18a6b77877267228bb011874605214ee919414ce Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <falcon@tinylab.org>
+Date: Tue, 21 Jul 2020 18:35:41 +0800
+Subject: [PATCH] submodule: use gitee mirrors
+
+Signed-off-by: Wu Zhangjin <falcon@tinylab.org>
+---
+ .gitmodules | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
+
+diff --git a/.gitmodules b/.gitmodules
+index c5c4741..2eb9e1c 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,60 +1,60 @@
+ [submodule "roms/seabios"]
+ 	path = roms/seabios
+-	url = https://git.qemu.org/git/seabios.git/
++	url = https://gitee.com/tinylab/qemu-seabios.git/
+ [submodule "roms/SLOF"]
+ 	path = roms/SLOF
+-	url = https://git.qemu.org/git/SLOF.git
++	url = https://gitee.com/tinylab/qemu-SLOF.git
+ [submodule "roms/ipxe"]
+ 	path = roms/ipxe
+-	url = https://git.qemu.org/git/ipxe.git
++	url = https://gitee.com/tinylab/qemu-ipxe.git
+ [submodule "roms/openbios"]
+ 	path = roms/openbios
+-	url = https://git.qemu.org/git/openbios.git
++	url = https://gitee.com/tinylab/qemu-openbios.git
+ [submodule "roms/openhackware"]
+ 	path = roms/openhackware
+-	url = https://git.qemu.org/git/openhackware.git
++	url = https://gitee.com/tinylab/qemu-openhackware.git
+ [submodule "roms/qemu-palcode"]
+ 	path = roms/qemu-palcode
+-	url = https://git.qemu.org/git/qemu-palcode.git
++	url = https://gitee.com/tinylab/qemu-palcode.git
+ [submodule "roms/sgabios"]
+ 	path = roms/sgabios
+-	url = https://git.qemu.org/git/sgabios.git
++	url = https://gitee.com/tinylab/qemu-sgabios.git
+ [submodule "dtc"]
+ 	path = dtc
+-	url = https://git.qemu.org/git/dtc.git
++	url = https://gitee.com/tinylab/qemu-dtc.git
+ [submodule "roms/u-boot"]
+ 	path = roms/u-boot
+-	url = https://git.qemu.org/git/u-boot.git
++	url = https://gitee.com/tinylab/qemu-u-boot.git
+ [submodule "roms/skiboot"]
+ 	path = roms/skiboot
+-	url = https://git.qemu.org/git/skiboot.git
++	url = https://gitee.com/tinylab/qemu-skiboot.git
+ [submodule "roms/QemuMacDrivers"]
+ 	path = roms/QemuMacDrivers
+-	url = https://git.qemu.org/git/QemuMacDrivers.git
++	url = https://gitee.com/tinylab/qemu-QemuMacDrivers.git
+ [submodule "ui/keycodemapdb"]
+ 	path = ui/keycodemapdb
+-	url = https://git.qemu.org/git/keycodemapdb.git
++	url = https://gitee.com/tinylab/qemu-keycodemapdb.git
+ [submodule "capstone"]
+ 	path = capstone
+-	url = https://git.qemu.org/git/capstone.git
++	url = https://gitee.com/tinylab/qemu-capstone.git
+ [submodule "roms/seabios-hppa"]
+ 	path = roms/seabios-hppa
+-	url = https://git.qemu.org/git/seabios-hppa.git
++	url = https://gitee.com/tinylab/qemu-seabios-hppa.git
+ [submodule "roms/u-boot-sam460ex"]
+ 	path = roms/u-boot-sam460ex
+-	url = https://git.qemu.org/git/u-boot-sam460ex.git
++	url = https://gitee.com/tinylab/qemu-u-boot-sam460ex.git
+ [submodule "tests/fp/berkeley-testfloat-3"]
+ 	path = tests/fp/berkeley-testfloat-3
+-	url = https://git.qemu.org/git/berkeley-testfloat-3.git
++	url = https://gitee.com/tinylab/qemu-berkeley-testfloat-3.git
+ [submodule "tests/fp/berkeley-softfloat-3"]
+ 	path = tests/fp/berkeley-softfloat-3
+-	url = https://git.qemu.org/git/berkeley-softfloat-3.git
++	url = https://gitee.com/tinylab/qemu-berkeley-softfloat-3.git
+ [submodule "roms/edk2"]
+ 	path = roms/edk2
+-	url = https://git.qemu.org/git/edk2.git
++	url = https://gitee.com/tinylab/qemu-edk2.git
+ [submodule "slirp"]
+ 	path = slirp
+-	url = https://git.qemu.org/git/libslirp.git
++	url = https://gitee.com/tinylab/qemu-libslirp.git
+ [submodule "roms/opensbi"]
+ 	path = roms/opensbi
+-	url = 	https://git.qemu.org/git/opensbi.git
++	url = 	https://gitee.com/tinylab/qemu-opensbi.git
+-- 
+2.7.4
+

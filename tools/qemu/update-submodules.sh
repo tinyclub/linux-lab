@@ -9,6 +9,7 @@
 # $ grep testfloat -ur qemu-src/scripts/
 # qemu/scripts/archive-source.sh:submodules="dtc slirp ui/keycodemapdb tests/fp/berkeley-softfloat-3 tests/fp/berkeley-testfloat-3"
 #
+# This script only test for qemu v4.1.1, it may work for qemu >= v4.1.1, if it not work, please modify .gitmodule manually
 
 GITMODULES=$1
 MIRROR_TAG=$2

@@ -1775,7 +1775,12 @@ $(eval $(call genclone,qemu,qemu,Q))
 
 QT ?= $(x)
 
-_qemu:
+QEMU_UPDATE_GITMODULES=tools/qemu/update-submodules.sh
+
+_qemu_update_submodules:
+	$(QEMU_UPDATE_GITMODULES) $(QEMU_ABS_SRC)/.gitmodules
+
+_qemu: _qemu_update_submodules
 	$(call make_qemu,$(QT))
 
 # Toolchains targets

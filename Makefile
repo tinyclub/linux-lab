@@ -342,9 +342,10 @@ $(eval $(call __vs,DTB,LINUX))
 
 define _pb
 ifneq ($$($(call _lc,$1)),)
-  ifeq ($$($(call _lc,$1))),1)
+  ifeq ($$(filter $$($(call _lc,$1)),1 new build),$$($(call _lc,$1)))
     PB$1 := 0
-  else
+  endif
+  ifeq ($$(filter $$($(call _lc,$1)),0 old pre prebuild prebuilt),$$($(call _lc,$1)))
     PB$1 := 1
   endif
 endif
@@ -354,14 +355,15 @@ endef
 define _lpb
 __$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
 ifneq ($$($1),)
-  ifeq ($$($1),1)
+  ifeq ($$(filter $$($1),1 new build),$$($1))
     PB$$(__$(1)) := 0
-  else
+  endif
+  ifeq ($$(filter $$($1),0 old pre prebuild prebuilt),$$($1))
     PB$$(__$(1)) := 1
   endif
 endif
 ifneq ($(BUILD),)
-  ifeq ($(filter $(1),$(BUILD)),$(1))
+  ifeq ($$(filter $(1),$(BUILD)),$(1))
     PB$$(__$(1)) := 0
   endif
 endif

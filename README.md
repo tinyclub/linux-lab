@@ -718,17 +718,17 @@ Boot with PreBuilt Kernel, Dtb and Rootfs:
 
     $ make boot PBK=1 PBD=1 PBR=1
     or
-    $ make boot k=0 d=0 r=0
+    $ make boot k=old d=old r=old
     or
-    $ make boot kernel=0 dtb=0 root=0
+    $ make boot kernel=old dtb=old root=old
 
 Boot with new kernel, dtb and rootfs if exists:
 
     $ make boot PBK=0 PBD=0 PBR=0
     or
-    $ make boot k=1 d=1 r=1
+    $ make boot k=new d=new r=new
     or
-    $ make boot kernel=1 dtb=1 root=1
+    $ make boot kernel=new dtb=new root=new
 
 Boot with new kernel and uboot, build them if not exists:
 

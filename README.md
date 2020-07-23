@@ -375,6 +375,10 @@ Then rerurn linux lab:
 
 ## 2.7 Quickstart: Boot a board
 
+Get into the lab environment, switch directory:
+
+    $ cd /labs/linux-lab
+
 Issue the following command to boot the prebuilt kernel and rootfs on the default `vexpress-a9` board:
 
     $ make boot

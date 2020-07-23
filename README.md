@@ -928,6 +928,36 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
+### 4.1.3 Create new development branch
+
+If want to use a new development branch, please follow such steps:
+
+At first, Get into `linux-stable` or another directory specified with `KERNEL_SRC`, checkout a development branch from a specific version:
+
+    $ cd linux-stable
+    $ git checkout -b linux-v5.1-dev v5.1
+
+And then, clone the necessary configurations and directories for our new branch.
+
+    $ make kernel-clone LINUX=v5.1 LINUX_NEW=linux-v5.1-dev
+
+The v5.1 must be the already supported version, if not, please use the near one in supported list, for example, `i386/pc` board support such versions:
+
+    $ make b=i386/pc list linux
+    v2.6.10 v2.6.11.12 v2.6.12.6 v2.6.21.5 v2.6.24.7 v2.6.34.9 v2.6.35.14 v2.6.36 v4.6.7 [v5.1] v5.2
+
+If want to develop v2.6.38, please try to clone one from v2.6.36:
+
+    $ cd linux-stable
+    $ git checkout -b linux-v2.6.38-dev v2.6.38
+    $ make kernel-clone LINUX=v2.6.36 LINUX_NEW=linux-v2.6.38-dev
+
+In development, please commit asap, and also, please use such commands carefully to avoid destroy your important changes:
+
+* kernel-checkout, checkout a specified kernel version, may override your changes
+* kernel-cleanup, clean up git repository, may remove your changes
+* kernel-clean, clean building history, may run cleanup automatically
+
 ## 4.2 Using Uboot Bootloader
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.

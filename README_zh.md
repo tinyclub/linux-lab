@@ -985,6 +985,39 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel
     $ make boot
 
+### 4.1.4 新建开发分支
+
+如果希望新建一个分支来做开发，那么可以参考如下步骤。
+
+首先在 `linux-stable` 或配置的其他 `KERNEL_SRC` 目录下基于某个内核版本新建一个 git 分支，假设历史版本是 v5.1：
+
+    $ cd linux-stable
+    $ git checkout -b linux-v5.1-dev v5.1
+
+然后通过 `kernel-clone` 从 Linux Lab 的 v5.1 克隆一份配置和相应目录：
+
+    $ make kernel-clone LINUX=v5.1 LINUX_NEW=linux-v5.1-dev
+
+之后就可以跟往常一样开发。
+
+如果基础版本不是 v5.1，那么可以从支持的版本中挑选一个比较接近的，以 `i386/pc` 为例：
+
+    $ make b=i386/pc list linux
+    v2.6.10 v2.6.11.12 v2.6.12.6 v2.6.21.5 v2.6.24.7 v2.6.34.9 v2.6.35.14 v2.6.36 v4.6.7 [v5.1] v5.2
+
+例如，想进行 v2.6.38 开发，可以考虑从 v2.6.36 来克隆，就近的配置更接近，出问题可能更少。
+
+    $ cd linux-stable
+    $ git checkout -b linux-v2.6.38-dev v2.6.38
+
+    $ make kernel-clone LINUX=v2.6.36 LINUX_NEW=linux-v2.6.38-dev
+
+开发过程中，请及时 commit，另外，请慎重使用如下命令，避免清除重要变更：
+
+* kernel-checkout, 检出某个指定版本，可能会覆盖掉当前修改
+* kernel-cleanup, 清理 git 仓库，可能会清理掉当前修改
+* kernel-clean, 清除历史编译记录，可能会自动执行上述 cleanup 动作
+
 ## 4.2 Uboot 引导程序
 
 从当前支持 U-boot 的板子：`versatilepb` 和 `vexpress-a9` 中选择一款：

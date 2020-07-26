@@ -242,13 +242,13 @@ endef
 
 # FIXME: only support "<=" and ">" operator currently.
 define _vsif
- ifeq ($(shell [ $$(/bin/bash -c 'echo -e "$($(3))\n$(5)" | sort -V -C'; echo $$?) -eq $$([ "$4" = "<=" ]; echo $$?) ]; echo $$?),0)
+ ifeq ($(shell [ $$(printf "$($(3))\n$(5)" | sort -V -C; echo $$?) -eq $$([ "$4" = "<=" ]; echo $$?) ]; echo $$?),0)
    $(1) := $(2)
  endif
 endef
 
 define _any
-$(shell if [ $$(/bin/bash -c 'echo -e "$($(1))\n$(3)" | sort -V -C'; echo $$?) -eq $$([ "$2" = "<=" ]; echo $$?) ]; then echo $($(1)); else echo NONE; fi)
+$(shell if [ $$(printf "$($(1))\n$(3)" | sort -V -C; echo $$?) -eq $$([ "$2" = "<=" ]; echo $$?) ]; then echo $($(1)); else echo NONE; fi)
 endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)

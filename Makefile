@@ -240,16 +240,15 @@ define _vs
  $(1) := $$(call _v,$(1),$(2))
 endef
 
-# FIXME: 2.6.120 > 2.6.13, but expr return 0, the same issue for _any
-# must parse VERSION,PATCHLEVEL,SUBLEVEL and calculate like LINUX_VERSION_CODE
+# FIXME: only support "<=" and ">" operator currently.
 define _vsif
- ifeq ($$(shell expr $($(3)) \$(4) $(5)),1)
+ ifeq ($(shell [ $$(/bin/bash -c 'echo -e "$($(3))\n$(5)" | sort -V -C'; echo $$?) -eq $$([ "$4" = "<=" ]; echo $$?) ]; echo $$?),0)
    $(1) := $(2)
  endif
 endef
 
 define _any
-$(shell if [ $$(expr $($(1)) \$(2) $(3)) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
+$(shell if [ $$(/bin/bash -c 'echo -e "$($(1))\n$(3)" | sort -V -C'; echo $$?) -eq $$([ "$2" = "<=" ]; echo $$?) ]; then echo $($(1)); else echo NONE; fi)
 endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)

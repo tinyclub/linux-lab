@@ -240,6 +240,12 @@ define _vs
  $(1) := $$(call _v,$(1),$(2))
 endef
 
+define _vsif
+ ifeq ($$(shell expr $($(3)) \$(4) $(5)),1)
+   $(1) := $(2)
+ endif
+endef
+
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
 $(3)/$(2).$(1)
@@ -284,23 +290,6 @@ $(call _bi,GCC,Makefile)
 $(call _bi,ROOT,Makefile)
 $(call _bi,NET,Makefile)
 $(call _bvi,LINUX,Makefile)
-endef
-
-define fixup_arch
-ifneq ($$(KERNEL_SRC),)
-  ifneq ($$(_KERNEL_SRC),$$(KERNEL_SRC))
-    ifneq ($$(findstring $$(TOP_DIR),$$(KERNEL_SRC)),$$(TOP_DIR))
-      KERNEL_ABS_SRC := $$(TOP_DIR)/$$(KERNEL_SRC)
-    else
-      KERNEL_ABS_SRC := $$(KERNEL_SRC)
-    endif
-  endif
-endif
-# FIXME: If source code not downloaded, use the default ARCH, still not work for old kernels at the first time.
-IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); if [ -d arch ]; then git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?; else echo 0; fi)
-ifneq ($$(IS_ARCH),0)
-  ARCH  := $$(XARCH)
-endif
 endef
 
 # include .labinit if exist

@@ -296,7 +296,8 @@ ifneq ($$(KERNEL_SRC),)
     endif
   endif
 endif
-IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?)
+# FIXME: If source code not downloaded, use the default ARCH, still not work for old kernels at the first time.
+IS_ARCH = $$(shell cd $$(KERNEL_ABS_SRC); if [ -d arch ]; then git show $$(call _v,LINUX,LINUX):arch/$$(ARCH)/boot >/dev/null 2>&1; echo $$$$?; else echo 0; fi)
 ifneq ($$(IS_ARCH),0)
   ARCH  := $$(XARCH)
 endif

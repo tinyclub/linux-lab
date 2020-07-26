@@ -240,6 +240,8 @@ define _vs
  $(1) := $$(call _v,$(1),$(2))
 endef
 
+# FIXME: 2.6.120 > 2.6.13, but expr return 0, the same issue for _any
+# must parse VERSION,PATCHLEVEL,SUBLEVEL and calculate like LINUX_VERSION_CODE
 define _vsif
  ifeq ($$(shell expr $($(3)) \$(4) $(5)),1)
    $(1) := $(2)

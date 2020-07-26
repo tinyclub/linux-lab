@@ -246,6 +246,10 @@ define _vsif
  endif
 endef
 
+define _any
+$(shell if [ $$(expr $($(1)) \$(2) $(3)) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
+endef
+
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
 $(3)/$(2).$(1)

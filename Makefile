@@ -240,15 +240,19 @@ define _vs
  $(1) := $$(call _v,$(1),$(2))
 endef
 
-# FIXME: only support "<=" and ">" operator currently.
+# Convert version string to version number, support 4 levels version string, like: v2.6.30.5
+define _v2v
+$(shell echo $(1) | tr -d '[a-zA-Z]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
+endef
+
 define _vsif
- ifeq ($(shell [ $$(printf "$($(3))\n$(5)" | sort -V -C; echo $$?) -eq $$([ "$4" = "<=" ]; echo $$?) ]; echo $$?),0)
+ ifeq ($$(shell expr $(call _v2v,$($(3))) \$(4) $(call _v2v,$(5))),1)
    $(1) := $(2)
  endif
 endef
 
 define _any
-$(shell if [ $$(printf "$($(1))\n$(3)" | sort -V -C; echo $$?) -eq $$([ "$2" = "<=" ]; echo $$?) ]; then echo $($(1)); else echo NONE; fi)
+$(shell if [ $$(expr $(call _v2v,$($(1))) \$(2) $(call _v2v,$(3))) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
 endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)

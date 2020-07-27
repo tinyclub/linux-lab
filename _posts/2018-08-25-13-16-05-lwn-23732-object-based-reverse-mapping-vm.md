@@ -17,7 +17,7 @@ tags:
 
 > 原文：[The object-based reverse-mapping VM](https://lwn.net/Articles/23732/)
 > 原创：By corbet @ Feb. 25, 2003
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Wen Yang](https://github.com/w-simon)
 
 > The reverse-mapping VM (RMAP) was merged into 2.5 to solve a specific problem: there was no easy way for the kernel to find out which page tables referred to a given physical page. Certain activities - swapping being at the top of the list - require making changes to all relevant page tables. You simply can not swap a page to disk until all of the page table entries pointing to it have been invalidated. The 2.4 kernel handles swapping by scanning through the page tables, one process at a time, and invalidating entries for pages that look like suitable victims. If it happens to find all of the page table entries in time, the page can then be evicted to disk.
@@ -30,7 +30,7 @@ tags:
 
 > Now a new technique, as embodied in [this patch](https://lwn.net/Articles/23584/) by Dave McCracken, has been proposed. This approach, called "object-based reverse mapping," is based on the realization that, in some cases at least, there are other paths from a `struct page` to a page table entry. If those paths can be used, the full RMAP overhead is unnecessary and can be cut out.
 
-Dave McCracken 提交的[补丁](https://lwn.net/Articles/23584/)提出了一种新的解决方法。这种被称之为 “基于对象的反向映射” （"object-based reverse mapping"，译者注，下文直接使用 object-based RMAP，不再翻译）的方法至少说明，我们可以找到新的方法，从 `struct page` 找到映射该物理页的页表条目。如果该方法可行的话，将显著解决 RMAP 的巨大开销问题。
+Dave McCracken 提交的[补丁][1] 提出了一种新的解决方法。这种被称之为 “基于对象的反向映射” （"object-based reverse mapping"，译者注，下文直接使用 object-based RMAP，不再翻译）的方法至少说明，我们可以找到新的方法，从 `struct page` 找到映射该物理页的页表条目。如果该方法可行的话，将显著解决 RMAP 的巨大开销问题。
 
 > By one reckoning, there are two basic types of user-mode page in a Linux system. ***Anonymous*** pages are just plain memory, the kind a process would get from `malloc()`. Most other pages are ***file-backed*** in some way; this means that, behind the scenes, the contents of that page are associated with a file somewhere in the system. File-backed pages include program code and files mapped in with `mmap()`. For these pages, it is possible to find their page table entries without using RMAP entries. To see how, let us refer to the following low-quality graphic, the result of your editor's nonexistent drawing skills:
 
@@ -52,10 +52,13 @@ object-based RMAP 补丁没有更改匿名页的处理方式，因为对于匿�
 
 > Martin Bligh has posted [some initial benchmarks](https://lwn.net/Articles/23740/) showing some moderate improvement in the all-important kernel compilation test. The object-based approach does seem to help with some of the worst RMAP performance regressions. Andrew Morton [pointed out](https://lwn.net/Articles/23742/) a worst-case performance scenario for this approach, but it is not clear how big a problem it would really be. Andrew has included this patch in his [2.5.62-mm3](https://lwn.net/Articles/23567/) tree.
 
-Martin Bligh 发布了[一些初步的基准测试结果](https://lwn.net/Articles/23740/)，对于一些重要的内核编译版本的测试结果显示，情况有了一定的改善。在性能回归测试中可以看到，基于对象的方法确实有助于改进原来最差情况下反向映射的执行效果。Andrew Morton [指出](https://lwn.net/Articles/23742/)了基于这种方法可能会碰到的一种最差的情况，但目前尚不清楚实际运行中它究竟会带来多大的影响。无论如何，Andrew 已在他维护的 [2.5.62-mm3](https://lwn.net/Articles/23567/) 版本中加入了这个补丁。
+Martin Bligh 发布了[一些初步的基准测试结果][2]，对于一些重要的内核编译版本的测试结果显示，情况有了一定的改善。在性能回归测试中可以看到，基于对象的方法确实有助于改进原来最差情况下反向映射的执行效果。Andrew Morton [指出][3] 了基于这种方法可能会碰到的一种最差的情况，但目前尚不清楚实际运行中它究竟会带来多大的影响。无论如何，Andrew 已在他维护的 [2.5.62-mm3][4] 版本中加入了这个补丁。
 
 > Assuming that this patch goes in (it's late in the development process, but that hasn't stopped Linus from taking rather more disruptive VM patches before...), one might wonder if a complete object-based implementation might follow. The answer is "probably not." Anonymous pages tend to be private to individual processes, so there is no long chain of reverse mappings to manage in any case. So even if such pages came to look like file-backed pages (as could happen, say, with a rework of the swapping code), there isn't necessarily much to be gained from the object-based approach.
 
 假定这个补丁会被内核主线所采纳（从目前的开发阶段来看是有点晚，但根据以往的经验，虽然这些补丁在改动上比较激进，但并不排除 Linus 同志仍会将它们继续合入虚拟内存子系统），人们可能会推测后面是否会有一个基于对象技术的更全面的实现。但答案是 “可能不会”。匿名页对于各个进程来说往往是私有的，因此一般情况下不会存在需要管理很多反向映射项的问题。因此，即使可以让这些页（指匿名页）看起来和文件映射页一样工作（这是可能的，例如，通过重新设计页交换部分的代码），但由于匿名页并不能从基于对象的方法上获得好处，所以进一步的统一也没有必要。
 
-[1]: http://tinylab.org
+[1]: https://lwn.net/Articles/23584/
+[2]: https://lwn.net/Articles/23740/
+[3]: https://lwn.net/Articles/23742/
+[4]: https://lwn.net/Articles/23567/

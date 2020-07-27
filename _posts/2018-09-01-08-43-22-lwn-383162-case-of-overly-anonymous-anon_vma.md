@@ -17,24 +17,24 @@ tags:
 
 > 原文：[The case of the overly anonymous anon_vma](https://lwn.net/Articles/383162/)
 > 原创：By corbet @ Apr. 13, 2010
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Wen Yang](https://github.com/w-simon)
 
 > During the stabilization phase of the kernel development cycle, the -rc releases typically happen about once every week. [2.6.34-rc4](http://lwn.net/Articles/383198/) is a clear exception to that rule, coming nearly two weeks after the preceding -rc3 release. The holdup in this case was a nasty regression which occupied a number of kernel developers nearly full time for days. The hunt for this bug is a classic story of what can happen when the code gets too complex.
 
-在内核开发周期的集成阶段，“-rc” 版本通常每周发布一次。但在上一个 “-rc3” 版本发布后经过了将近整整两周的时间，新版本 2.6.34-rc4 才姗姗来迟。背后的具体原因是为了定位一个令人头痛的 bug，以及 bug 解决后执行了一次全面的回归测试，这耗费了众多内核开发人员的大量时间。整个过程称得上是一个经典的案例，它告诉我们，当代码过于复杂时究竟会发生些什么。下面就给大家介绍一下这个故事。
+在内核开发周期的集成阶段，“-rc” 版本通常每周发布一次。但在上一个 “-rc3” 版本发布后经过了将近整整两周的时间，新版本 [2.6.34-rc4][1]  才姗姗来迟。背后的具体原因是为了定位一个令人头痛的 bug，以及 bug 解决后执行了一次全面的回归测试，这耗费了众多内核开发人员的大量时间。整个过程称得上是一个经典的案例，它告诉我们，当代码过于复杂时究竟会发生些什么。下面就给大家介绍一下这个故事。
 
 > Sending email to linux-kernel can be an intimidating prospect for a number of reasons, one of which being that one never knows when a massive thread - involving hundreds of messages copied back to the original sender - might result. Borislav Petkov's [2.6.34-rc3 bug report](https://lwn.net/Articles/383163/) was one such posting. In this case, though, the ensuing thread was in no way inflammatory; it represents, instead, some of the most intensive head-scratching which has been seen on the list for a while.
 
-给 linux-kernel （译者注：内核开发的邮件列表）发送电子邮件的结果可能会超出预期，原因有很多，其中一个原因是说不定就会收到海量的（数百封）的邮件回复。Borislav Petkov 发送的的[有关 2.6.34-rc3 版本测试的错误报告](https://lwn.net/Articles/383163/)就是这样一个帖子。当然这些回复绝对不是针对他个人的，这只是说明社区的确碰到了一个非常令人头痛的问题。
+给 linux-kernel （译者注：内核开发的邮件列表）发送电子邮件的结果可能会超出预期，原因有很多，其中一个原因是说不定就会收到海量的（数百封）的邮件回复。Borislav Petkov 发送的的[有关 2.6.34-rc3 版本测试的错误报告][2] 就是这样一个帖子。当然这些回复绝对不是针对他个人的，这只是说明社区的确碰到了一个非常令人头痛的问题。
 
 > The bug, as reported by Borislav, was a null pointer dereference which would happen reasonably reliably after hibernating (and restarting) the system. It was quickly recognized as being the same as [another bug report](https://bugzilla.kernel.org/show_bug.cgi?id=15680) filed the same day by Steinar H. Gunderson, though this one did not involve hibernation. The common thread was null pointer dereferences provoked by memory pressure. The offending patch was [identified by Linus](https://lwn.net/Articles/383165/) almost immediately; it's worth taking a look at what that patch did.
 
-Borislav 报告的这个错误是有关一个空指针异常，该异常在系统休眠（并重新启动）后必现。很快它被认定与 Steinar H. Gunderson 在同一天提交的另一份错误报告是同一件事情，尽管另一份报告并未涉及系统休眠。这两个错误报告相同的部分都涉及在内存紧张时会导致空指针异常。Linus 几乎立即就[发现了](https://lwn.net/Articles/383165/)导致问题的补丁; 我们一起来看看那个补丁做了什么。
+Borislav 报告的这个错误是有关一个空指针异常，该异常在系统休眠（并重新启动）后必现。很快它被认定与 Steinar H. Gunderson 在同一天提交的 [另一份错误报告][3] 是同一件事情，尽管另一份报告并未涉及系统休眠。这两个错误报告相同的部分都涉及在内存紧张时会导致空指针异常。Linus 几乎立即就[发现了][4] 导致问题的补丁; 我们一起来看看那个补丁做了什么。
 
 > Way back in 2004, LWN [covered the addition of the anon_vma code](http://lwn.net/Articles/75198/); this patch was controversial at the time because the upcoming 2.6.7 kernel was still expected to be an old-style "stable, no new features" release. This patch, a 40-part series which fundamentally reworked the virtual memory subsystem, was not seen as stable material, despite Linus's [attempt](http://lwn.net/Articles/86718/) to characterize it as an "implementation detail." Still, over time, this code has proved solid and has not been changed significantly since - until now.
 
-早在 2004 年，LWN 就[介绍了有关内核增加 `anon_vma` 的事](/lwn-75198)；这个补丁在当时是有争议的，因为当时准备合入该补丁的内核版本 2.6.7 按计划其发布目标是 “稳定，不引入新功能”。尽管 Linus [试图](http://lwn.net/Articles/86718/) 将该补丁描述为 “只是实现细节上的改变” ，但实际情况是该补丁集包含了 40 个补丁修改，从根本上改造了虚拟内存子系统，对内核的稳定有很大的影响。不过，随着时间的推移，这段代码已经被证明是可靠的，并且从那以后也一直没有大的改变。
+早在 2004 年，LWN 就[介绍了有关内核增加 `anon_vma` 的事][5]；这个补丁在当时是有争议的，因为当时准备合入该补丁的内核版本 2.6.7 按计划其发布目标是 “稳定，不引入新功能”。尽管 Linus [试图][6] 将该补丁描述为 “只是实现细节上的改变” ，但实际情况是该补丁集包含了 40 个补丁修改，从根本上改造了虚拟内存子系统，对内核的稳定有很大的影响。不过，随着时间的推移，这段代码已经被证明是可靠的，并且从那以后也一直没有大的改变。
 
 > The problem solved by anon_vma was that of locating all `vm_area_struct` (VMA) structures which reference a given anonymous (heap or stack memory) page. Anonymous pages are not normally shared between processes, but every call to `fork()` will cause all such pages to be shared between the parent and the new child; that sharing will only be broken when one of the processes writes to the page, causing a copy-on-write (COW) operation to take place. Many pages are never written, so the kernel must be able to locate multiple VMAs which reference a given anonymous page. Otherwise, it would not be able to unmap the page, meaning that the page could not be swapped out.
 
@@ -54,7 +54,7 @@ Borislav 报告的这个错误是有关一个空指针异常，该异常在系�
  
 > 	In a workload with 1000 child processes and a VMA with 1000 anonymous pages per process that get COWed, this leads to a system with a million anonymous pages in the same anon_vma, each of which is mapped in just one of the 1000 processes. However, the current rmap code needs to walk them all, leading to O(N) scanning complexity for each page.
 
-这个解决方案在扩展性上远远超过上个版本（译者注，指 2.6 早期所使用的反向映射技术），但随着硬件和应用的发展，其不足之处开始逐渐显现。这导致 Rik van Riel 开始着手解决其性能问题，编写了[这个补丁](http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commitdiff;h=5beb49305251e5669852ed541e8e2f2f7696c53e)，并将其合入了 2.6.34。下面是 Rik 描述这个问题的原话：
+这个解决方案在扩展性上远远超过上个版本（译者注，指 2.6 早期所使用的反向映射技术），但随着硬件和应用的发展，其不足之处开始逐渐显现。这导致 Rik van Riel 开始着手解决其性能问题，编写了[这个补丁][7]，并将其合入了 2.6.34。下面是 Rik 描述这个问题的原话：
 
 	假设一个父进程其 VMA 映射了 1000 个物理页，而该父进程派生（fork）了 1000 个子进程，当这 1000 个子进程对每个匿名页都发生了写入操作（COWed），这将导致系统中存在一百万个匿名页，并且这一百万个匿名页全都指向同一个 anon_vma（译者注，在该场景下这个 anon_vma 所管理的 VMA 链表上实际会有 1001 项（包括父进程），具体参考上图），当我们从任一个匿名页出发寻找其对应的进程（即 VMA）时会发现遍历的这个链表很长但实际对应它的只有一项，也就是说整个搜索算法的时间复杂度是 O（N）的。
 
@@ -115,7 +115,7 @@ Rik 的解决方案是为每个进程创建一个 `anon_vma` 结构，并将它�
 
 > Linus was clearly beginning to [wonder](https://lwn.net/Articles/383170/) when it might all end: "Three independent bugs found and fixed, and still no joy?" He repeatedly considered just reverting the change outright, but he was reluctant to do so; the solution seemed so tantalizingly close. Eventually he [developed another hypothesis](https://lwn.net/Articles/383171/) which seemed plausible. An anonymous page shared between parent and child would initially point to the parent's `anon_vma`:
 
-Linus 显然开始[怀疑](https://lwn.net/Articles/383170/)这事情何时才会了结：“虽然我们发现并修复了三个毫无关系的错误，可是为什么一点也感觉不到快乐呢？” 他反复考虑是否需要彻底回退版本，但他实在不情愿这么做；离最终的解决似乎总是只有一步之遥。最终，他[提出了另一个看似合理的假设](https://lwn.net/Articles/383171/)。考虑如下场景，最初父进程和子进程之间共享的匿名页指向父进程的 `anon_vma`：
+Linus 显然开始[怀疑][8] 这事情何时才会了结：“虽然我们发现并修复了三个毫无关系的错误，可是为什么一点也感觉不到快乐呢？” 他反复考虑是否需要彻底回退版本，但他实在不情愿这么做；离最终的解决似乎总是只有一步之遥。最终，他[提出了另一个看似合理的假设][9]。考虑如下场景，最初父进程和子进程之间共享的匿名页指向父进程的 `anon_vma`：
 
 ![AV Chain](https://static.lwn.net/images/ns/kernel/avchain5.png)
 
@@ -137,6 +137,16 @@ Linus 显然开始[怀疑](https://lwn.net/Articles/383170/)这事情何时才�
 
 > The fix is straightforward; when linking an existing page to an `anon_vma` structure, the kernel needs to pick the one which is highest in the process hierarchy; that guarantees that the `anon_vma` will not go away prematurely. [Early testing](https://lwn.net/Articles/383172/) suggests that the problem has indeed been fixed. In the process, three other problems have been fixed and Linus has come to understand a tricky bit of code which, if he has his way, will soon gain some improved documentation. In other words, it would appear to be an outcome worth waiting for.
 
-修复很简单; 当将一个物理页关联到一个 `anon_vma` 结构体时，内核应该选择进程派生层次中层次最高的那个（译者注，以上面的例子为例，即父进程的 AV）；这保证了 `anon_vma` 不会过早被删除。 [早期测试](https://lwn.net/Articles/383172/)表明问题确实已经得到了解决。在整个过程中，不仅顺带解决了其他三个问题，Linus 还亲自理解和分析了一些棘手的代码，如果按照他的方式，将很快改进一些相关文档。换句话说，这一番折腾还是值得的。
+修复很简单; 当将一个物理页关联到一个 `anon_vma` 结构体时，内核应该选择进程派生层次中层次最高的那个（译者注，以上面的例子为例，即父进程的 AV）；这保证了 `anon_vma` 不会过早被删除。 [早期测试][10] 表明问题确实已经得到了解决。在整个过程中，不仅顺带解决了其他三个问题，Linus 还亲自理解和分析了一些棘手的代码，如果按照他的方式，将很快改进一些相关文档。换句话说，这一番折腾还是值得的。
 
-[1]: http://tinylab.org
+[1]: https://lwn.net/Articles/383198/
+[2]: https://lwn.net/Articles/383163/
+[3]: https://bugzilla.kernel.org/show_bug.cgi?id=15680
+[4]: https://lwn.net/Articles/383165/
+[5]: /lwn-75198
+[6]: https://lwn.net/Articles/86718/
+[7]: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commitdiff;h=5beb49305251e5669852ed541e8e2f2f7696c53e
+[8]: https://lwn.net/Articles/383170/
+[9]: https://lwn.net/Articles/383171/
+[10]: https://lwn.net/Articles/383172/
+

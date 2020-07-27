@@ -182,7 +182,7 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 |Docker    | Cross toolchains available in one command, external ones configurable
 |Acess     | Access via web browsers, available everywhere via web vnc or web ssh
 |Network   | Builtin bridge networking, every board has network (except Raspi3)
-|Boot      | Support serial port, curses (bash friendly) and graphic booting
+|Boot      | Support serial port, curses (bash/ssh friendly) and graphic booting
 |Testing   | Support automatic testing via `make test` target
 |Debugging | debuggable via `make debug` target
 
@@ -327,6 +327,7 @@ Re-login the lab via web browser:
 The other login methods:
 
     $ tools/docker/vnc
+    $ tools/docker/ssh
     $ tools/docker/webssh
 
 Choose one of the method:
@@ -339,6 +340,7 @@ Summary of login methods:
 |   Login Method |   Description      |  Default User    |  Where               |
 |----------------|--------------------|------------------|----------------------|
 |   bash         | docker bash        |  ubuntu          | localhost            |
+|   ssh          | normal ssh         |  ubuntu          | localhost            |
 |   vnc          | normal vnc         |  ubuntu          | localhost+VNC client |
 |   webvnc       | web desktop        |  ubuntu          | anywhere via internet|
 |   webssh       | web ssh            |  ubuntu          | anywhere via internet|
@@ -714,7 +716,7 @@ Boot with graphic (Exit with `CTRL+ALT+2 quit`):
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
-Boot with curses graphic (friendly to bash login, not work for all boards, exit with `ESC+2 quit` or `ALT+2 quit`):
+Boot with curses graphic (friendly to bash/ssh login, not work for all boards, exit with `ESC+2 quit` or `ALT+2 quit`):
 
     $ make b=pc boot G=2 LINUX=v4.6.7
 

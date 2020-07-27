@@ -188,9 +188,9 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 |3   | 预置组件   | 提供上述组件的预先编译版本，并按开发板分类存放，可即时下载使用                       |
 |4   | 根文件系统 | 支持 initrd，harddisk，mmc 和 nfs; ARM 架构提供 Debian 系统                          |
 |5   | Docker     | 交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链                               |
-|6   | 灵活访问   | 支持通过本地或网络访问，支持 bash, vnc, web ssh, web vnc                             |
+|6   | 灵活访问   | 支持通过本地或网络访问，支持 bash, ssh, vnc, web ssh, web vnc                        |
 |7   | 网络       | 内置桥接网络支持，每个开发板都支持网络（Raspi3 是唯一例外）                          |
-|8   | 启动       | 支持串口、Curses（用于 `bash` 访问）和图形化方式启动                                 |
+|8   | 启动       | 支持串口、Curses（用于 `bash/ssh` 访问）和图形化方式启动                             |
 |9   | 测试       | 支持通过 `make test` 命令对目标板进行自动化测试                                      |
 |10  | 调试       | 可通过 `make debug` 命令对目标板进行调试                                             |
 
@@ -392,6 +392,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 其他登录方式：
 
     $ tools/docker/vnc
+    $ tools/docker/ssh
     $ tools/docker/webssh
 
 选择某种登陆方式：
@@ -404,6 +405,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 |   登录方法     |   描述             |  缺省用户        |  登录所在地          |
 |----------------|--------------------|------------------|----------------------|
 |   bash         | docker bash        |  ubuntu          | 本地主机             |
+|   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
 |   vnc          | 普通 桌面          |  ubuntu          | 本地主机+VNC client  |
 |   webvnc       | web 桌面           |  ubuntu          | 互联网在线即可       |
 |   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
@@ -778,7 +780,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
-基于 curses 图形方式启动（这么做适合采用 bash 的登录方式，但不是对所有开发板都有效，退出时需要使用 `ESC+2 quit` 或 `ALT+2 quit`）
+基于 curses 图形方式启动（这么做适合采用 bash/ssh 的登录方式，但不是对所有开发板都有效，退出时需要使用 `ESC+2 quit` 或 `ALT+2 quit`）
 
     $ make b=pc boot G=2 LINUX=v4.6.7
 

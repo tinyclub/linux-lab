@@ -103,9 +103,14 @@
 
   鉴于国内网络问题，每次使用 `docker pull` 命令 pull 镜像时，docker daemon 都会去 Docker Hub 拉取镜像，拉取 Docker 镜像十分缓慢，强烈建议安装 Docker-CE 之后配置国内镜像加速。
 
-  我们可以使用中科大的镜像源来加速（阿里云的docker镜像加速器需要注册账号，每个人都有自己唯一的地址。）。
+  教育网可以使用中科大的镜像源来加速，社会网络建议用阿里云的 Docker 镜像加速器（需要注册账号，每个人都有自己唯一的地址）。
 
-  加速的方法参考 [“USTC Docker 镜像使用帮助”](https://lug.ustc.edu.cn/wiki/mirrors/help/docker), 对于使用 systemd 的系统，譬如 ubuntu 16.04 以上版本，修改 `/etc/docker/daemon.json` 即可（没有该文件的话，请先新建一个）。
+  加速的方法请参考：
+
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+  * [USTC Docker 镜像使用帮助](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)。
+
+  对于使用 systemd 的系统，譬如 ubuntu 16.04 以上版本，修改 `/etc/docker/daemon.json` 即可（没有该文件的话，请先新建一个）。
 
   在该配置文件中加入如下语句，如果要换用其他的镜像源也可以修改其中的 URL 部分：
 

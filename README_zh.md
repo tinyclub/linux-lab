@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.5-rc1 中文手册
+% Linux Lab v0.5-rc2 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -60,6 +60,7 @@
        - [4.1.1 非交互方式配置](#411-非交互方式配置)
        - [4.1.2 使用内核模块](#412-使用内核模块)
        - [4.1.3 使用内核特性](#413-使用内核特性)
+       - [4.1.4 新建开发分支](#414-新建开发分支)
     - [4.2 Uboot 引导程序](#42-uboot-引导程序)
     - [4.3 Qemu 模拟器](#43-qemu-模拟器)
     - [4.4 Toolchain 工具链](#44-toolchain-工具链)

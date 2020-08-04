@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.5-rc1 Manual
+% Linux Lab v0.5-rc2 Manual
 % [TinyLab Community | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -53,6 +53,7 @@
        - [4.1.1 non-interactive configuration](#411-non-interactive-configuration)
        - [4.1.2 using kernel modules](#412-using-kernel-modules)
        - [4.1.3 using kernel features](#413-using-kernel-features)
+       - [4.1.3 Create new development branch](#413-create-new-development-branch)
     - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
     - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
     - [4.4 Using Toolchains](#44-using-toolchains)

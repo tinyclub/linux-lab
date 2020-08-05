@@ -43,7 +43,7 @@ endif
 
 # Check permission issue, must available to ubuntu
 ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
-  $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab')
+  $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab/{*,.git}')
   $(warning WARN: Cancel this warning via: 'export WARN_ON_USER=0')
 endif
 endif # Warning on user

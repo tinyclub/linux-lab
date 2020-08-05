@@ -33,10 +33,11 @@
     - [2.1 软硬件要求](#21-软硬件要求)
     - [2.2 安装 Docker](#22-安装-docker)
     - [2.3 选择工作目录](#23-选择工作目录)
-    - [2.4 下载实验环境](#24-下载实验环境)
-    - [2.5 运行并登录 Linux Lab](#25-运行并登录-linux-lab)
-    - [2.6 更新实验环境并重新运行](#26-更新实验环境并重新运行)
-    - [2.7 快速上手：启动一个开发板](#27-快速上手：启动一个开发板)
+    - [2.4 切换到普通用户帐号](#24-切换到普通用户帐号)
+    - [2.5 下载实验环境](#25-下载实验环境)
+    - [2.6 运行并登录 Linux Lab](#26-运行并登录-linux-lab)
+    - [2.7 更新实验环境并重新运行](#27-更新实验环境并重新运行)
+    - [2.8 快速上手：启动一个开发板](#28-快速上手：启动一个开发板)
 - [3. Linux Lab 入门](#3-linux-lab-入门)
     - [3.1 使用开发板](#31-使用开发板)
        - [3.1.1 列出支持的开发板](#311-列出支持的开发板)
@@ -367,16 +368,42 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
 
-## 2.4 下载实验环境
+## 2.4 切换到普通用户帐号
 
-以 Ubuntu 系统为例:
+下载代码前，请**务必**切到普通用户。Linux Lab 虽未禁用 `root` 帐号，但是不推荐使用 `root` 帐号，否则会有各种权限异常问题。
 
-下载 Cloud Lab，然后再选择 linux-lab 仓库
+查看当前用户 ID，`0` 表示 `root`，非零表示普通用户：
+
+    $ id -u `whoami`
+    1000
+
+如果当前为 `root`，需切到普通用户，请替换 `<USER>` 为自己的帐号名，下同：
+
+    # id -u `whoami`
+    0
+    # sudo -su <USER>
+
+如果目标机器上仅有 `root` 帐号，则**必须**新建一个普通用户帐号，假设取名为 `laber`：
+
+    $ sudo useradd --create-home --shell /bin/bash --user-group --groups adm,sudo laber
+    $ sudo passwd laber
+    $ sudo -su laber
+    $ whoami
+    laber
+
+## 2.5 下载实验环境
+
+下载 Cloud Lab，然后再选择 linux-lab 仓库：
 
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## 2.5 运行并登录 Linux Lab
+如果错误使用了 `root` 帐号来 clone 代码，下载后请**务必**切换到普通用户，并把属主改为普通用户：
+
+    $ sudo -su <USER>
+    $ sudo chown -R <USER>:<USER> -R cloud-lab/{*,.git}
+
+## 2.6 运行并登录 Linux Lab
 
 启动 Linux Lab 并根据控制台上打印的用户名和密码登录实验环境：
 
@@ -419,7 +446,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 如果上述命令不能正常工作，请根据上述命令打印出来的 VNC 服务器信息，自行配置所用客户端。
 
-## 2.6 更新实验环境并重新运行
+## 2.7 更新实验环境并重新运行
 
 为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，比如固化容器：
 
@@ -441,7 +468,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     $ tools/docker/rerun linux-lab
 
-## 2.7 快速上手：启动一个开发板
+## 2.8 快速上手：启动一个开发板
 
 进入实验环境, 切换目录:
 
@@ -1662,7 +1689,7 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
 如果需要在不使用 `sudo` 的情况下执行 `tools` 目录下的命令，请确保将您的帐户添加到 docker 组并重新启动系统以使其生效：
 
-    $ sudo usermod -aG docker $USER
+    $ sudo usermod -aG docker <USER>
     $ newgrp docker
 
 ### 6.1.5 网络不通
@@ -1967,7 +1994,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 这个错误会在执行 `make boot` 时报出，原因可能是由于克隆代码仓库时使用了 `root` 权限，解决方式是修改 `cloud-lab/` 目录的所有者：
 
     $ cd /path/to/cloud-lab
-    $ sudo chown $USER:$USER -R ./
+    $ sudo chown <USER>:<USER> -R ./{*,.git}
     $ tools/docker/rerun linux-lab
 
 为确保环境一致，目前 Linux Lab 仅支持通过普通用户使用，如果是用 `root` 用户下载的代码，请务必确保普通用户可以读写。

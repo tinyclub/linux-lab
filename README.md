@@ -26,10 +26,11 @@
     - [2.1 Hardware and Software Requirement](#21-hardware-and-software-requirement)
     - [2.2 Docker Installation](#22-docker-installation)
     - [2.3 Choose a working directory](#23-choose-a-working-directory)
-    - [2.4 Download the lab](#24-download-the-lab)
-    - [2.5 Run and login the lab](#25-run-and-login-the-lab)
-    - [2.6 Update and rerun the lab](#26-update-and-rerun-the-lab)
-    - [2.7 Quickstart: Boot a board](#27-quickstart-boot-a-board)
+    - [2.4 Switch to normal user](#24-switch-to-normal-user)
+    - [2.5 Download the lab](#25-download-the-lab)
+    - [2.6 Run and login the lab](#26-run-and-login-the-lab)
+    - [2.7 Update and rerun the lab](#27-update-and-rerun-the-lab)
+    - [2.8 Quickstart: Boot a board](#28-quickstart-boot-a-board)
 - [3. Linux Lab Kickstart](#3-linux-lab-kickstart)
     - [3.1 Using boards](#31-using-boards)
        - [3.1.1 List available boards](#311-list-available-boards)
@@ -302,7 +303,30 @@ For Windows and Mac OSX, to compile Linux normally, please enable or create a ca
 
 **Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
 
-## 2.4 Download the lab
+## 2.4 Switch to normal user
+
+Before downloading Linux Lab, please **MUST** switch to normal user.
+
+Check who am i, `0` means root, non-zero means normal user:
+
+    $ id -u `whoami`
+    1000
+
+If current user is `root`, switch to a normal one:
+
+    # id -u `whoami`
+    0
+    # sudo -su <USER>
+
+If no normal user exists, create new:
+
+    $ sudo useradd --create-home --shell /bin/bash --user-group --groups adm,sudo laber
+    $ sudo passwd laber
+    $ sudo -su laber
+    $ whoami
+    laber
+
+## 2.5 Download the lab
 
 Use Ubuntu system as an example:
 
@@ -311,7 +335,12 @@ Download cloud lab framework, pull images and checkout linux-lab repository:
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-## 2.5 Run and login the lab
+If cloned source code with `root` account, please **MUST** switch to normal user and change their owner:
+
+    $ sudo -su <USER>
+    $ sudo chown -R <USER>:<USER> -R cloud-lab/{*,.git}
+
+## 2.6 Run and login the lab
 
 Launch the lab and login with the user and password printed in the console:
 
@@ -354,7 +383,7 @@ If really want to use local vnc clients, please install a vnc client, for exampl
 
 If the above command not work normally, based on the information printed above, please configure the vnc client yourself.
 
-## 2.6 Update and rerun the lab
+## 2.7 Update and rerun the lab
 
 If want a newer version, we **must** back up any local changes at first, for example, save the container:
 
@@ -376,7 +405,7 @@ Then rerurn linux lab:
 
     $ tools/docker/rerun linux-lab
 
-## 2.7 Quickstart: Boot a board
+## 2.8 Quickstart: Boot a board
 
 Get into the lab environment, switch directory:
 
@@ -1612,7 +1641,7 @@ Linux Lab is designed to use pre-installed environment with the docker technolog
 
 To use the tools under `tools` without sudo, please make sure add your account to the docker group and reboot your system to take effect:
 
-    $ sudo usermod -aG docker $USER
+    $ sudo usermod -aG docker <USER>
     $ newgrp docker
 
 ### 6.1.5 Network not work
@@ -1914,7 +1943,7 @@ This means using a newer gcc than the one linux kernel version supported, the so
 This may happen at `make boot` while the repository is cloned with `root` user, please simply update the owner of `cloud-lab/` directory:
 
     $ cd /path/to/cloud-lab
-    $ sudo chown $USER:$USER -R ./
+    $ sudo chown <USER>:<USER> -R ./
     $ tools/docker/rerun linux-lab
 
 To make a consistent working environment, Linux Lab only support using as general user: 'ubuntu'.

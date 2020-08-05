@@ -8,6 +8,8 @@ CPU     ?= qemu64
 MEM     ?= 128M
 SMP     ?= 4
 LINUX   ?= v5.1
+
+GCC = 8
 GCC[LINUX_v3.2] = 4.8
 GCC[LINUX_v2.6.12.6] = 4.8
 

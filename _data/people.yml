@@ -414,3 +414,15 @@ Gao Chengbo:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: 紫光云虚拟化内核工程师。
+
+Liu Lichao:
+  name: 刘立超
+  nickname: 法海
+  archive: true
+  article: true
+  email: liulichao09679@163.com
+  wechat: liulichao_no1
+  wechat-pay: wechat-pay-llc
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: Linux内核工程师，对Linux核心子系统有浓厚兴趣，喜欢分享。

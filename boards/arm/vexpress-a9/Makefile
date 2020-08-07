@@ -19,7 +19,7 @@ GCC[LINUX_v3.18.39] = 4.7
 GCC[LINUX_v3.16.80] = 4.7
 GCC[LINUX_v4.0.9] = 4.7
 GCC[LINUX_v4.12] = 4.7
-GCC = 4.7
+GCC[OS_focal] = 9
 
 # Uboot v2020.04 requires gcc >= 6.0, not supported by old docker image
 CCORI[UBOOT_v2020.04,OS_trusty] = linaro

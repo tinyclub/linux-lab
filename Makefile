@@ -231,8 +231,14 @@ endef
 #$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
 
 define __vs
- ifneq ($$(call __v,$(1),$(2)),)
-  $(3) $(1) := $$(call __v,$(1),$(2))
+ ifneq ($$(call __v,$(1),$(2),$(3)),)
+   $(1) := $$(call __v,$(1),$(2),$(3))
+ endif
+endef
+
+define __vs_override
+ ifneq ($$(call __v,$(1),$(2),$(3)),)
+   override $(1) := $$(call __v,$(1),$(2),$(3))
  endif
 endef
 
@@ -480,7 +486,7 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
       CCORI_$(2) := internal
       CCORI := internal
     else
-      $(eval $(call __vs,CCORI,$(2)))
+      $(eval $(call __vs,CCORI,$(2),$(3)))
     endif
     GCC_$(2)_SWITCH := 1
   endif
@@ -550,7 +556,7 @@ define genverify
    endif
   endif
   # If Linux version specific qemu list defined, use it
-  $$(eval $$(call __vs,$(2)_LIST,$$(if $(3),$(3),LINUX),override))
+  $$(eval $$(call __vs_override,$(2)_LIST,$$(if $(3),$(3),LINUX)))
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))

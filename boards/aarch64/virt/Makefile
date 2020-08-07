@@ -91,6 +91,7 @@ UROOTFS := $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_focal]    ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # prebuilt toolchains, please download it if not internal via: make toolchain
 # Available origin: internal, bootlin, arm, linaro

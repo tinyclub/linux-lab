@@ -429,6 +429,11 @@ Login as `root` user without password(password is empty), just input `root` and 
 
     # uname -a
     Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
+    #
+    # poweroff
+    #
+
+Shutdown the board with the `poweroff` command. If some boards not support `poweroff`, please press `CTRL+a x`. Of course, open another terminal and issue kill or pkill command also can quit qemu.
 
 # 3. Linux Lab Kickstart
 

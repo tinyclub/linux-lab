@@ -492,6 +492,11 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     # uname -a
     Linux linux-lab 5.1.0 #3 SMP Thu May 30 08:44:37 UTC 2019 armv7l GNU/Linux
+    #
+    # poweroff
+    #
+
+键入 `poweroff` 即可关闭板子。部分开发板的关机功能不完善，可通过 `CTRL+a x` （依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
 
 # 3. Linux Lab 入门
 

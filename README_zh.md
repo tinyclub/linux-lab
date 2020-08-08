@@ -456,6 +456,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，比如固化容器：
 
     $ tools/docker/commit linux-lab
+    $ git checkout -- configs/linux-lab/docker/name
 
 然后就可以执行更新了：
 

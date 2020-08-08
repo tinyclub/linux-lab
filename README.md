@@ -393,6 +393,7 @@ If the above command not work normally, based on the information printed above, 
 If want a newer version, we **must** back up any local changes at first, for example, save the container:
 
     $ tools/docker/commit linux-lab
+    $ git checkout -- configs/linux-lab/docker/name
 
 And then update everything:
 

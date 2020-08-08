@@ -290,12 +290,17 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 另外，为了避免走弯路，这里提供了一份验证过的操作系统列表，方便大家参考：
 
-| 操作系统   | 系统&内核版本    | Docker 版本    | 其他                    |
-|------------|------------------|----------------|-------------------------|
-| Ubuntu     | 16.04 + 4.4      | 18.09.4        | terminator              |
-| Ubuntu     | 18.04 + 5.0/4.15 | 18.09.4        | 已知 Linux v5.3 有 Bug  |
+| 操作系统   | 系统版本            | Docker 版本    | 内核版本
+|------------|---------------------|----------------|-----------------------------
+| Ubuntu     | 16.04, 18.04, 20.04 | 18.09.4        | Linux 4.15, 5.0, 5.3, 5.4
+| Debian     | bullseye            | 19.03.7        | Linux 5.4.42
+| Arch Linux |                     | 19.03.11       | Linux 5.4.50, 5.7.4
+| CentOS     | 7.6, 7.7            | 19.03.8        | Linux 3.10, 5.2.9
+| Deepin     | 15.11               | 18.09.6        | Linux 4.15
+| Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
+| Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
 
-也有同学在 CentOS，Windows 10，Mac OSX 下成功运行了 Linux Lab，欢迎查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
+请查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
 
     $ tools/docker/env.sh
     System: Ubuntu 16.04.6 LTS

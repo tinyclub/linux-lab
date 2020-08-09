@@ -3000,6 +3000,11 @@ endif
 
 # Force running git submodule commands
 # FIXME: To test automatically, must checkout with -f, otherwise, will stop with failures.
+ifeq ($(findstring force-,$(MAKECMDGOALS)),force-)
+  ifeq ($(findstring -checkout,$(MAKECMDGOALS)),-checkout)
+    FORCE_CHECKOUT ?= 1
+  endif
+endif
 ifeq ($(FORCE_CHECKOUT),1)
   GIT_CHECKOUT_FORCE ?= -f
 endif

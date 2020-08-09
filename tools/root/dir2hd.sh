@@ -73,7 +73,7 @@ EOF
   chmod a+x $ROOTDIR/init
   chmod a+x $ROOTDIR/etc/init.d/rcS
 
-  cd ${ROOTDIR} && find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
+  cd ${ROOTDIR} && sudo find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
 else
   echo "ERR: $ROOTDIR: invalid root directory." && exit 1
 fi

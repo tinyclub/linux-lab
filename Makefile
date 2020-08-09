@@ -2913,7 +2913,9 @@ IFACE   ?= eth0
 CMDLINE += iface=$(IFACE)
 
 # New version of rpc.nfsd in nfs-kernel-server not support old nfs version 2, force using newer nfsver 3
-NFSROOT_EXTRA ?= ,nolock,v3
+ifneq ($(OS), trusty)
+  NFSROOT_EXTRA ?= ,nolock,v3
+endif
 
 ifeq ($(ROOTDEV),/dev/nfs)
   ifneq ($(shell lsmod | grep -q ^nfsd; echo $$?),0)

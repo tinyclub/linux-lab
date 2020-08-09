@@ -7,13 +7,18 @@ tracer=$1
 cmd=$2
 result=$3
 debug=/sys/kernel/debug/
-tracing=$debug/tracing/
 
 [ -z "$tracer" ] && tracer=function
 [ -z "$cmd" ] && cmd=ls
 [ -z "$result" ] && result=trace
 
-[ ! -d $tracing ] && mount -t debugfs none $debug
+if [ -d $debug ]; then
+  tracing=$debug/tracing/
+  [ ! -d $tracing ] && mount -t debugfs none $debug
+else
+  tracing=/sys/kernel/tracing
+  [ ! -f $tracing/trace ] && mount -t tracefs none $tracing
+fi
 
 echo "[Available Tracers]"
 echo
@@ -25,7 +30,7 @@ echo $tracer > $tracing/current_tracer
 
 echo "[Enabling tracing]"
 [ -f $tracing/tracing_enabled ] && echo 1 > $tracing/tracing_enabled
-echo 1 > $tracing/tracing_on
+[ -f $tracing/tracing_on ] && echo 1 > $tracing/tracing_on
 
 echo "[Running command: $cmd]"
 echo
@@ -33,7 +38,7 @@ $cmd
 
 echo
 echo "[Disabling tracing]"
-echo 0 > $tracing/tracing_on
+[ -f $tracing/tracing_on ] && echo 0 > $tracing/tracing_on
 [ -f $tracing/tracing_enabled ] && echo 0 > $tracing/tracing_enabled
 
 echo "[Recording tracing result from $tracing/$result]"

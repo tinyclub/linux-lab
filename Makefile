@@ -3304,7 +3304,10 @@ raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
 PHONY += raw-test boot-test
 
 # Allow to disable feature-init
-FEATURE_INIT ?= 1
+
+TEST_INIT ?= 1
+TI ?= $(TEST_INIT)
+FEATURE_INIT ?= $(TI)
 FI ?= $(FEATURE_INIT)
 
 kernel-init: kernel-config kernel-olddefconfig

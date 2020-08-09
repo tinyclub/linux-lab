@@ -1723,7 +1723,10 @@ else
   QEMU_ARCH = $(XARCH)
 endif
 
-ifeq ($(QEMU_US), 1)
+# Allow use QEMU_USER_STATIC instead of QEMU_US
+QEMU_USER_STATIC ?= $(QEMU_US)
+
+ifeq ($(QEMU_USER_STATIC), 1)
   QEMU_TARGET ?= $(subst $(space),$(comma),$(addsuffix -linux-user,$(QEMU_ARCH)))
   QEMU_CONF   += --enable-linux-user --static
   QEMU_CONF   += --target-list=$(QEMU_TARGET)

@@ -511,52 +511,102 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
           ARCH     = arm64
           CPU     ?= cortex-a53
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0
           ROOTDEV ?= /dev/mmcblk0
     [ aarch64/virt ]:
           ARCH     = arm64
           CPU     ?= cortex-a57
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
+    [ arm/mcimx6ul-evk ]:
+          ARCH     = arm
+          CPU     ?= cortex-a9
+          LINUX   ?= v5.4
+          ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/mmcblk0
     [ arm/versatilepb ]:
           ARCH     = arm
           CPU     ?= arm926t
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ arm/vexpress-a9 ]:
           ARCH     = arm
           CPU     ?= cortex-a9
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ i386/pc ]:
           ARCH     = x86
-          CPU     ?= i686
+          CPU     ?= qemu32
           LINUX   ?= v5.1
+          ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/hda
+    [ mips64el/ls2k ]:
+          ARCH     = mips
+          CPU     ?= mips64r2
+          LINUX   ?= loongnix-release-1903
+          LINUX[LINUX_loongnix-release-1903] := 04b98684
+          ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/ram0
+    [ mips64el/ls3a7a ]:
+          ARCH     = mips
+          CPU     ?= mips64r2
+          LINUX   ?= loongnix-release-1903
+          LINUX[LINUX_loongnix-release-1903] := 04b98684
+          ROOTDEV_LIST ?= /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/ram0
+    [ mipsel/ls1b ]:
+          ARCH     = mips
+          CPU     ?= mips32r2
+          LINUX   ?= v5.2
+          ROOTDEV_LIST ?= /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/ram0
+    [ mipsel/ls232 ]:
+          ARCH     = mips
+          CPU     ?= mips32r2
+          LINUX   ?= v2.6.32-r190726
+          ROOTDEV_LIST := /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ mipsel/malta ]:
           ARCH     = mips
           CPU     ?= mips32r2
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ ppc/g3beige ]:
           ARCH     = powerpc
           CPU     ?= generic
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ riscv32/virt ]:
           ARCH     = riscv
           CPU     ?= any
           LINUX   ?= v5.0.13
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ riscv64/virt ]:
           ARCH     = riscv
           CPU     ?= any
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ x86_64/pc ]:
           ARCH     = x86
-          CPU     ?= x86_64
+          CPU     ?= qemu64
           LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
+    [ csky/virt ]:
+          ARCH     = csky
+          CPU     ?= ck810
+          LINUX   ?= v4.9.56
+          ROOTDEV ?= /dev/nfs
+
 
 如果只想查看特定的架构，插件或者模糊匹配，可以使用 `ARCH`，`FILTER`:
 

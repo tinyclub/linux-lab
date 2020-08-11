@@ -426,6 +426,7 @@ ifeq ($(findstring -run,$(first_target)),-run)
   x := $(APP_ARGS)
 endif
 
+# common commands
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   # use the rest as arguments for "run"
   APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))

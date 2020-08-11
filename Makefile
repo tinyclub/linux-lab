@@ -446,7 +446,7 @@ ifneq ($$($(2)),)
   override app += $(1)
 endif
 
-endef
+endef #default_detectapp
 
 ifneq ($(APP_ARGS),)
   APP := $(firstword $(APP_ARGS))
@@ -3053,8 +3053,14 @@ endif
 EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
+# Debug listen on a unqiue port, should run exclusively
+ifneq ($(DEBUG),0)
+  DEBUG_LOCK := $(GDBINIT_DIR)/.lock
+  KEEP_UNIQUE := flock -n -x $(DEBUG_LOCK)
+endif
+
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD := sudo $(EMULATOR) $(EMULATOR_OPTS)
+BOOT_CMD := $(KEEP_UNIQUE) sudo $(EMULATOR) $(EMULATOR_OPTS)
 
 ifeq ($(U),1)
   ifeq ($(SD_BOOT),1)
@@ -3408,7 +3414,11 @@ endif
 ifeq ($(XTERM_STATUS), 0)
   DEBUG_CMD  := $(XTERM_CMD)
 else
-  DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
+  DEBUG_CMD  := $(Q)sleep 0.1 && echo "\nLOG: debug server started, please connect it with these commands:\n\n" \
+                                      "    (host) $$ cd /path/to/cloud-lab\n" \
+                                      "    (host) $$ tools/docker/bash linux-lab\n" \
+                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n"
+  #DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
 endif
 
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
@@ -3429,7 +3439,10 @@ ifneq ($(TEST_TIMEOUT),0)
 else
   DEBUG_INIT := _debug_init_1
 endif
-DEBUG_CLIENT := $(DEBUG_DEPS) $(DEBUG_INIT) _debug
+
+ifeq ($(shell pgrep flock >/dev/null; echo $$?), 1)
+  DEBUG_CLIENT := $(DEBUG_DEPS) $(DEBUG_INIT) _debug
+endif
 
 PHONY += _debug _debug_init_1 _debug_init_2
 
@@ -3446,8 +3459,14 @@ _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)
 
+ifneq ($(DEBUG),0)
+  RUN_BOOT_CMD := $(BOOT_CMD) || $(GDB_CMD)
+else
+  RUN_BOOT_CMD := $(BOOT_CMD)
+endif
+
 _boot: $(_BOOT_DEPS)
-	$(BOOT_CMD)
+	$(RUN_BOOT_CMD)
 
 PHONY += boot-test _boot
 

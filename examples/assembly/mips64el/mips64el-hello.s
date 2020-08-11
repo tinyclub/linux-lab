@@ -37,5 +37,5 @@ __start:
                     # exit from this program via calling the sys_exit system call
     move $a0, $0    # or "li $a0, 0", set the normal exit status as 0
                     # you can print the exit status with "echo $?" after executing this program
-    li $v0, 5058    # 4001 is __NR_exit defined in /usr/include/asm/unistd.h
+    li $v0, 5058    # __NR_exit defined in /usr/include/asm/unistd.h
     syscall

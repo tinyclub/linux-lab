@@ -25,6 +25,12 @@
   <meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif%}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  {% if page.nocache == true %}
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  {% endif %}
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="{{ BASE_PATH }}/favicon.ico">
 

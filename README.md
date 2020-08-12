@@ -254,14 +254,14 @@ Docker is required by Linux Lab, please install it at first:
 
      Install Ubuntu via Virtualbox or Vmware Virtual Machine
 
-Before running Linux Lab, please make sure the following command works without sudo and without any issue:
+Before running Linux Lab, please refer to section 6.1.4 and make sure the following command works without sudo and without any issue:
 
     $ docker run hello-world
 
 In China, to use docker service normally, please **must** configure one of chinese docker mirror sites, for example:
 
-  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)(For non Univerisity)
+  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)(For Univerisity)
 
 More docker related issues, such as download slowly, download timeout and download errors, are cleary documented in the 6.1 section of FAQs.
 

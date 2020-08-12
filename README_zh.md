@@ -319,14 +319,14 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
       通过 Virtualbox 或 Vmware 安装 Ubuntu 后使用
 
-在运行 Linux Lab 之前，请确保无需 `sudo` 权限也可以正常运行以下命令：
+在运行 Linux Lab 之前，请参考 6.1.4 节确保无需 `sudo` 权限也可以正常运行以下命令：
 
     $ docker run hello-world
 
 另外，在国内要正常使用 Docker，请**务必**配置好国内的 Docker 镜像加速服务：
 
-  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)（适合企业和家庭网络）
+  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)（适合高校网络）
 
 使用 Linux Lab 过程中的常见 Docker 相关问题，请参考常见问题中的 6.1 节，镜像下载慢、下载超时、下载出错等问题都有详细解决方案。
 

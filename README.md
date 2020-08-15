@@ -260,8 +260,11 @@ Before running Linux Lab, please refer to section 6.1.4 and make sure the follow
 
 In China, to use docker service normally, please **must** configure one of chinese docker mirror sites, for example:
 
-  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)(For non Univerisity)
-  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)(For Univerisity)
+* [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
+    * For non Univerisity users, require login with freely registered account
+
+* [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+    * For Univerisity users
 
 More docker related issues, such as download slowly, download timeout and download errors, are cleary documented in the 6.1 section of FAQs.
 
@@ -1746,6 +1749,13 @@ Please restart docker service after change the accelerate address:
     $ sudo service docker restart
 
 For the other Linux systems, Windows and MacOS System, please refer to [Aliyun Mirror Speedup Document](https://help.aliyun.com/document_detail/60750.html).
+
+IF still slow, please check if the mirror site is configured normally and without typos:
+
+    $ docker info | grep -A1 -i Mirrors
+     Registry Mirrors:
+      https://XXXXX.mirror.aliyuncs.com/
+
 
 ### 6.1.7 Restart Linux Lab after host system shutdown or reboot
 

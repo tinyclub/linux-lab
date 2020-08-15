@@ -65,11 +65,11 @@
 [submodule "boards/mips64el/ls2k/bsp"]
 	ignore = all
 	path = boards/mips64el/ls2k/bsp
-	url = https://gitee.com/tinylab/qemu-mipsel-ls2k.git
+	url = https://gitee.com/tinylab/qemu-mips64el-ls2k.git
 [submodule "boards/mips64el/ls3a7a/bsp"]
 	ignore = all
 	path = boards/mips64el/ls3a7a/bsp
-	url = https://gitee.com/tinylab/qemu-mipsel-ls3a7a.git
+	url = https://gitee.com/tinylab/qemu-mips64el-ls3a7a.git
 [submodule "boards/mipsel/ls232/bsp"]
 	ignore = all
 	path = boards/mipsel/ls232/bsp

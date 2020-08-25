@@ -36,7 +36,7 @@ Dave McCracken 提交的[补丁][1] 提出了一种新的解决方法。这种�
 
 总地来说，在 Linux 系统中，用户态下分配的物理页分两种情况。一种叫 ***匿名页（Anonymous pages）***，它们只是普通的内存，进程可以通过 `malloc()` 获得。另一种***基于文件（file-backed）***；即该物理内存页的内容是来自系统中磁盘上的文件，譬如某个可执行程序的指令（译者注，即文本段）或者通过 `mmap()` 所映射的某个文件的内容。对于第二种物理页，可以不用通过使用 RMAP 的链表项就可以查找到其对应的页表条目。为了详细了解其实现，让我们参考下图，图画得实在不怎么样，请多多包涵：
 
-![Cheezy drawing](https://static.lwn.net/images/ns/ormap.png)
+![Cheezy drawing](/wp-content/uploads/2020/08/lwn-23732/Cheezy-drawing.png)
 
 > The `struct page` structure for a given page is in the upper left corner. One of the fields of that structure is called `mapping`; it points to an `address_space` structure describing the object which backs up that page. That structure includes the inode for the file, various data structures for managing the pages belonging to the file, and two linked lists (`i_mmap` and `i_mmap_shared`) containing the `vm_area_struct` structures for each process which has a mapping into the file. The `vm_area_struct` (usually called a "VMA") describes how the mapping appears in a particular process's address space; the file `/proc/pid/maps` lists out the VMAs for the process with ID ***`pid`***. The VMA provides the information needed to find out what a given page's virtual address is in that process's address space, and that, in turn, can be used to find the correct page table entry.
 

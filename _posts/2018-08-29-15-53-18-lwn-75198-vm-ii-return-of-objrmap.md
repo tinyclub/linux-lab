@@ -38,11 +38,11 @@ Andrea 参考了原先的基于对象的反向映射（object-based reverse mapp
 
 > [Last week](https://lwn.net/Articles/73100/), we raised the possibility that the virtual memory subsystem could see fundamental changes in the course of the 2.6 "stable" series. This week, Linus [confirmed that possibility](https://lwn.net/Articles/75217/) in response to Andrea's object-based reverse mapping patch:
 
-> 	I certainly prefer this to the 4:4 horrors. So it sounds worth it to put it into -mm if everybody else is ok with it.
+> `I certainly prefer this to the 4:4 horrors. So it sounds worth it to put it into -mm if everybody else is ok with it.`
 
 [上周][4]，我们提出是否有可能在 2.6 的 “稳定”版本系列中看到这个重大改变。本周，Linus [确认了这种可能性][5] 并提到了 Andrea 的基于对象的反向映射补丁：
 
-	相对于 “4:4”（译者注，指 [4G/4G 补丁][6]），我更倾向于合入这个补丁（译者注，指 Andrea 的基于对象的反向映射补丁）。如果其他人都觉得没问题的话，我将把它合入 “-mm” 代码版本库。
+`相对于 “4:4”（译者注，指 [4G/4G 补丁][6]），我更倾向于合入这个补丁（译者注，指 Andrea 的基于对象的反向映射补丁）。如果其他人都觉得没问题的话，我将把它合入 “-mm” 代码版本库。`
 
 > Assuming this work goes forward, it has the usual implications for the stable kernel. Even assuming that it stays in the -mm tree for some time, its inclusion into 2.6 is likely to destabilize things for a few releases until all of the obscure bugs are shaken out.
 
@@ -60,7 +60,7 @@ Dave McCracken 提交的补丁起初只解决了部分问题。它解决了那�
 
 我们知道，只有当一个进程发起内存申请请求时内核才会为其创建匿名页；因此，匿名页在创建之初不存在共享的情况。鉴于此，不需要对于一个新建的匿名页维护一个反向映射的链表；也就是说此时只会存在一个映射。Andrea 在补丁中为 `struct page` 添加了一个联合体（union）类型的成员，该联合体中除了包含现有的 `mapping` 指针（用于非匿名内存）外还添加了几个新的成员。其中一个简称为 `vma`，它指向（单个）VMA 结构体，而通过该 VMA 结构体则可以找到其关联的页。因此，假设某个进程的一个连续的虚拟地址区间映射了多个非共享的匿名页，则它们之间的关系看起来有点像下图这样：
 
-![Anonymous reverse mapping](https://static.lwn.net/images/ns/anonvma1.png)
+![Anonymous reverse mapping](/wp-content/uploads/2020/08/lwn-75198/Anonymous-reverse-mapping.png)
 
 > With this structure, the kernel can find the page table which maps a given page by following the pointers through the VMA structure.
 
@@ -70,7 +70,7 @@ Dave McCracken 提交的补丁起初只解决了部分问题。它解决了那�
 
 当进程派生子进程（fork）时，情况会变得复杂一些。此时，将会有多个页表指向相同的匿名页，显然单个 VMA 指针将不再适用。为了解决这个问题，Andrea 创建了一个新的 “anon_vma” 结构体类型，该结构体中包含了一个 VMA 的链表。`struct page` 的 union 成员中新增的第三个成员是指向此结构体类型的指针。数据结构现在看起来如下图所示：
 
-![anonvma](https://static.lwn.net/images/ns/anonvma2.png)
+![anonvma](/wp-content/uploads/2020/08/lwn-75198/anonvma.png)
 
 > If the kernel needs to unmap a page in this scenario, it must follow the linked list and examine every VMA it finds. Once the page is unmapped from every page table found, it can be freed.
 

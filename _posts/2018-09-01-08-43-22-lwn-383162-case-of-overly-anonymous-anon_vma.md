@@ -48,15 +48,15 @@ Borislav 报告的这个错误是有关一个空指针异常，该异常在系�
 
 下面这张图来自 2004 年的文章，展示了整个数据结构：
 
-![anonvma](https://static.lwn.net/images/ns/anonvma2.png)
+![anonvma](/wp-content/uploads/2020/08/lwn-75198/anonvma.png)
  
 > This solution scaled far better than its predecessor, but eventually the world caught up. So Rik van Riel set out to make things faster, writing [this patch](http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commitdiff;h=5beb49305251e5669852ed541e8e2f2f7696c53e), which was merged for 2.6.34. Rik describes the problem this way:
  
-> 	In a workload with 1000 child processes and a VMA with 1000 anonymous pages per process that get COWed, this leads to a system with a million anonymous pages in the same anon_vma, each of which is mapped in just one of the 1000 processes. However, the current rmap code needs to walk them all, leading to O(N) scanning complexity for each page.
+> `In a workload with 1000 child processes and a VMA with 1000 anonymous pages per process that get COWed, this leads to a system with a million anonymous pages in the same anon_vma, each of which is mapped in just one of the 1000 processes. However, the current rmap code needs to walk them all, leading to O(N) scanning complexity for each page.`
 
 这个解决方案在扩展性上远远超过上个版本（译者注，指 2.6 早期所使用的反向映射技术），但随着硬件和应用的发展，其不足之处开始逐渐显现。这导致 Rik van Riel 开始着手解决其性能问题，编写了[这个补丁][7]，并将其合入了 2.6.34。下面是 Rik 描述这个问题的原话：
 
-	假设一个父进程其 VMA 映射了 1000 个物理页，而该父进程派生（fork）了 1000 个子进程，当这 1000 个子进程对每个匿名页都发生了写入操作（COWed），这将导致系统中存在一百万个匿名页，并且这一百万个匿名页全都指向同一个 anon_vma（译者注，在该场景下这个 anon_vma 所管理的 VMA 链表上实际会有 1001 项（包括父进程），具体参考上图），当我们从任一个匿名页出发寻找其对应的进程（即 VMA）时会发现遍历的这个链表很长但实际对应它的只有一项，也就是说整个搜索算法的时间复杂度是 O（N）的。
+`假设一个父进程其 VMA 映射了 1000 个物理页，而该父进程派生（fork）了 1000 个子进程，当这 1000 个子进程对每个匿名页都发生了写入操作（COWed），这将导致系统中存在一百万个匿名页，并且这一百万个匿名页全都指向同一个 anon_vma（译者注，在该场景下这个 anon_vma 所管理的 VMA 链表上实际会有 1001 项（包括父进程），具体参考上图），当我们从任一个匿名页出发寻找其对应的进程（即 VMA）时会发现遍历的这个链表很长但实际对应它的只有一项，也就是说整个搜索算法的时间复杂度是 O（N）的。`
 
 > Essentially, by organizing all anonymous pages which originated in the same parent under the same `anon_vma` structure, the kernel created a monster data structure which it had to traverse every time it needed to reverse-map a page. That led to the kernel scanning large numbers of VMAs which could not possibly reference the page, all while holding locks. The result, says Rik, was "catastrophic failure" when running the AIM benchmark.
 
@@ -77,7 +77,7 @@ Rik 的解决方案是为每个进程创建一个 `anon_vma` 结构，并将它�
 
 每个 `anon_vma_chain` 节点（简称 AVC）用于维护两个链表：一个保存了某个 vma 相关的所有 `anon_vma` 结构（通过结构体类型中的 `same_vma` 维护），另一个保存了与某个 `anon_vma` 结构所对应的所有 VMA（通过结构体类型中的 `same_anon_vma` 维护）。该数据结构设计得比较复杂，因此需要一些图来帮助我们理解。假设一开始，我们只有一个进程，该进程有一个 VMA 映射了匿名页（译者注，处于简单考虑，图上省略了匿名页、进程以及页表等信息）：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain1.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain1.png)
 
 > Here, "AV" is the `anon_vma` structure, and "AVC" is the `anon_vma_chain` structure seen above. The AVC links to both the `anon_vma` and VMA structures through direct pointers. The (blue) linked list pointer is the `same_anon_vma` list, while the (red) pointer is the `same_vma` list. So far, so simple.
 
@@ -87,19 +87,19 @@ Rik 的解决方案是为每个进程创建一个 `anon_vma` 结构，并将它�
 
 假设，该进程执行 fork 操作，导致其 VMA 被复制给子进程；此时我们得到了一个新的 VMA 结构体，但还没有和其他对象建立联系：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain2.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain2.png)
 
 > The kernel needs to link this VMA to the parent's `anon_vma` structure; that requires the addition of a new `anon_vma_chain`:
 
 内核需要将此 VMA 加入到父进程的 `anon_vma` 结构所对应的 VMA 列表中；这需要添加一个新的 `anon_vma_chain`，如下图所示（译者注，在新的设计中，`anon_vma` 不直接管理 VMA 链表，而是通过 `anon_vma_chain` 链表间接管理 VMA 对象）：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain3.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain3.png)
 
 > Note that the new AVC has been added to the blue list of all VMAs referencing a given anon_vma structure. The new VMA also needs its own anon_vma, though:
 
 请注意上图中蓝色环部分，这个双向链表上目前有两个 AVC 对象和 AV 对应（译者注，每个 AVC 都指向一个 VMA 对象，分别代表了父进程和子进程对 AV 所代表的物理页的映射）。除此之外，新的 VMA 也需要自己的 `anon_vma`，所以该图继续发展如下：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain4.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain4.png)
 
 > Now there's yet another `anon_vma_chain` structure linking in the new `anon_vma`. The new red list has been expanded to contain all of the AVCs which reference relevant `anon_vma` structures. As your editor said, it gets complicated; the diagram for the 1000-child scenario which motivated this patch will be left as an exercise for the reader.
 
@@ -117,19 +117,19 @@ Rik 的解决方案是为每个进程创建一个 `anon_vma` 结构，并将它�
 
 Linus 显然开始[怀疑][8] 这事情何时才会了结：“虽然我们发现并修复了三个毫无关系的错误，可是为什么一点也感觉不到快乐呢？” 他反复考虑是否需要彻底回退版本，但他实在不情愿这么做；离最终的解决似乎总是只有一步之遥。最终，他[提出了另一个看似合理的假设][9]。考虑如下场景，最初父进程和子进程之间共享的匿名页指向父进程的 `anon_vma`：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain5.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain5.png)
 
 > But, if both processes were to unmap the page (as could happen during system hibernation, for example), then the child referenced it first, it could end up pointing to the child's `anon_vma` instead:
 
 但是，如果两个进程都取消了对该页的映射（例如，发生了系统休眠，译者注，导致该页被换出），此后子进程恢复运行并先引用该部分内存（译者注，即发生了页换入），则该物理页最终指向了子进程的 `anon_vma`：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain6.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain6.png)
 
 > If the parent mapped the page later, then the child unmapped it (by exiting, perhaps), the parent would be left with an anonymous page pointing to the child's `anon_vma` - which no longer exists:
 
 如果稍后父进程再次映射了该页，而子进程又取消了对该物理页的映射（可能是由于子进程退出等原因），则此后父进程所映射的匿名页指向了一个不存在的 `anon_vma`（译者注，由于子进程退出，相关结构体 AV 和 AVC 也被释放） ：
 
-![AV Chain](https://static.lwn.net/images/ns/kernel/avchain7.png)
+![AV Chain](/wp-content/uploads/2020/08/lwn-383162/avchain7.png)
 
 > Needless to say, that is a situation which is unlikely to lead to anything good in the near future.
 

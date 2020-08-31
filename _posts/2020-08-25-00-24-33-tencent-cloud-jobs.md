@@ -2,7 +2,7 @@
 layout: post
 author: 'Osier Yang'
 title: "腾讯云开放多个高级技术支持专家岗位"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /tencent-cloud-jobs/
 description: "腾讯云大量招聘云服务器、容器、安全、网络高级技术专家。"

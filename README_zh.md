@@ -121,6 +121,7 @@
        - [6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#644-scriptsmakefileheadersinst-missing-uapi-file)
        - [6.4.5 unable to create file: net/netfilter/xt_dscp.c](#645-unable-to-create-file-netnetfilterxt_dscpc)
        - [6.4.6 如何切到 root 用户](#646-如何切到-root-用户)
+       - [6.4.7 提示指定的版本或者配置不存在](#647-提示指定的版本或者配置不存在)
 - [7. 联系并赞助我们](#7-联系并赞助我们)
 
 <!-- toc end -->
@@ -1614,7 +1615,7 @@ Uboot 也提供了许多缺省的配置文件：
 
     kernel: linux-stable/arch/arm/configs/vexpress_defconfig
 
-Linux Lab 也提供许多有效的配置，`-clone` 命令有助于利用现有的配置：
+Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现有的配置：
 
     $ make list kernel
     v4.12 v5.0.10 v5.1
@@ -1642,6 +1643,13 @@ Linux Lab 也提供许多有效的配置，`-clone` 命令有助于利用现有�
     buildroot_2019.02.2_defconfig  linux_v5.1_defconfig
 
 `2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
+
+更多 clone 命令的用法如下：
+
+    $ make qemu-clone QEMU=<old_version> QEMU_NEW=<new_version>
+    $ make uboot-clone UBOOT=<old_version> UBOOT_NEW=<new_version>
+    $ make kernel-clone LINUX=<old_version> LINUX_NEW=<new_version>
+    $ make root-clone BUILDROOT=<old_version> BUILDROOT_NEW=<new_version>
 
 ## 5.6 选择 kernel，rootfs 和 uboot 的版本
 
@@ -2095,6 +2103,31 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 默认情况下，可以免密直接切到 root：
 
     $ sudo -s
+
+### 6.4.7 提示指定的版本或者配置不存在
+
+如果看到如下信息：
+
+    $ make boot ROOTDEV=vda
+    ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
+
+    $ make boot LINUX=v5.8
+    Makefile:594: *** ERR: v5.8 not in supported LINUX list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
+
+    $ make boot QEMU=loongson-v1.1
+    Makefile:606: *** ERR: loongson-v1.1 not in supported QEMU list: loongson-v1.0, clone one please: 'make qemu-clone QEMU_NEW=loongson-v1.1'.
+
+表示当前设置的变量值无效，例如：
+
+* 当前设定的版本还未支持或者还未验证和添加
+    * 可以通过 `xxx-clone` 命令克隆出一个新版本，目前支持：`qemu-clone`, `uboot-clone`, `kernel-clone`, `root-clone`
+    * 克隆完还需要进行配置和编译验证，验证完才能正确使用
+    * 完整添加过程请参考第 5 大节
+
+* 当前设定的变量值未经验证或者根本不支持
+    * 比如说某个板子目前的 `ROOTDEV_LIST` 中只有 sda, ram0 和 nfs
+    * vda 可能根本不支持或者需要重新配置内核后才支持
+    * 这个因板子和内核版本而异，需要具体对待
 
 # 7. 联系并赞助我们
 

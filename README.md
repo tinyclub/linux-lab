@@ -114,6 +114,7 @@
        - [6.4.4 scripts/Makefile.headersinst: Missing UAPI file](#644-scriptsmakefileheadersinst-missing-uapi-file)
        - [6.4.5 unable to create file: net/netfilter/xt_dscp.c](#645-unable-to-create-file-netnetfilterxt_dscpc)
        - [6.4.6 how to run as root](#646-how-to-run-as-root)
+       - [6.4.7 not in supported list](#647-not-in-supported-list)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
 
 <!-- toc end -->
@@ -1561,7 +1562,7 @@ Kernel itself also:
 
     kernel: linux-stable/arch/arm/configs/vexpress_defconfig
 
-Linux Lab itself also provide many working configs too, the `-clone` target is a
+Linux Lab itself also provide many working configs too, the `xxx-clone` target is a
 good helper to utilize existing configs:
 
     $ make list kernel
@@ -1592,6 +1593,13 @@ version info, use `raspi3` as an example:
 
 `2019.02.2` is the buildroot version, `v5.1` is the kernel version, both of these
 variables should be configured in `boards/<BOARD>/Makefile`.
+
+More usage about the `xxx-clone` commands:
+
+    $ make qemu-clone QEMU=<old_version> QEMU_NEW=<new_version>
+    $ make uboot-clone UBOOT=<old_version> UBOOT_NEW=<new_version>
+    $ make kernel-clone LINUX=<old_version> LINUX_NEW=<new_version>
+    $ make root-clone BUILDROOT=<old_version> BUILDROOT_NEW=<new_version>
 
 ## 5.6 Choose the versions of kernel, rootfs and uboot
 
@@ -2041,6 +2049,29 @@ This means Windows not enable filesystem's case sensitive feature, just enable i
 By default, no password required to run as root with:
 
     $ sudo -s
+
+### 6.4.7 not in supported list
+
+Such information means the specified value is not supported currently:
+
+    $ make boot ROOTDEV=vda
+    ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
+
+    $ make boot LINUX=v5.8
+    Makefile:594: *** ERR: v5.8 not in supported LINUX list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
+
+    $ make boot QEMU=loongson-v1.1
+    Makefile:606: *** ERR: loongson-v1.1 not in supported QEMU list: loongson-v1.0, clone one please: 'make qemu-clone QEMU_NEW=loongson-v1.1'.
+
+There are two main types:
+
+* One is the specified version is not there or has not been verified
+    * Please clone one and verify it with the usage of `xxx-clone` from section 5.
+
+* Another is the specified value is invalid or simply not verified
+    * For example, the above vda is not added in the `ROOTDEV_LIST`
+    * This board may not support such type of device or just nobody verify and add it
+    * This differs from board and kernel version
 
 # 7. Contact and Sponsor
 

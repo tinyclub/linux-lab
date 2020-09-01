@@ -561,7 +561,12 @@ define genverify
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
-      verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST), update bsp please: 'make bsp B=$$(BOARD)'
+      verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST),
+      ifeq ($$(filter $$(call _lc,$(1)),$(APPS)),$$(call _lc,$(1)))
+        verify_notice += clone one please: 'make $$(call _lc,$(1))-clone $(1)_NEW=$$($2)'
+      else
+        verify_notice += update may help: 'make bsp B=$$(BOARD)'
+      endif
       ifeq ($$(notice), error)
         $$(error ERR: $$(verify_notice))
       else

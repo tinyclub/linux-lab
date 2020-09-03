@@ -33,6 +33,6 @@ ifeq ($(CCORI), loongnix)
   CCBASE ?= opt/gcc-$(CCVER)-ls232
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   LLPATH ?= $(TOOLCHAIN)/$(CCBASE)/i486-pc-linux-gnu/mipsel-linux/lib:$(TOOLCHAIN)/$(CCBASE)/lib:$(TOOLCHAIN)/$(CCBASE)/mipsel-linux/lib:$(TOOLCHAIN)/$(CCBASE)/sysroot/lib::$(TOOLCHAIN)/$(CCBASE)/sysroot/usr/lib
-  _CCBASE ?= opt/gcc-$(CCVER)-ls232
+  _CCBASE ?= gcc-$(CCVER)-ls232
   CCURL  ?= http://ftp.loongnix.org/toolchain/gcc/release/$(_CCBASE).tar.gz
 endif

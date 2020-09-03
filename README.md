@@ -235,6 +235,7 @@ And here is a list for verified operating systems for references:
 | Deepin     | 15.11               | 18.09.6        | Linux 4.15
 | Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
 | Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
+| Manjaro    |                     | 19.03.11       | Linux 5.8.3
 
 Welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
 
@@ -1802,6 +1803,10 @@ If cpu supports, we also need to make sure it is enabled in bios features, simpl
 Both of the `poweroff` and `reboot` commands not work on these boards currently (LINUX=v5.1):
 
   * mipsel/malta (exclude LINUX=v2.6.36)
+  * mipsel/ls232
+  * mipsel/ls1b
+  * mips64el/ls2k
+  * mips64el/ls3a7a
   * aarch64/raspi3
   * arm/versatilepb
 

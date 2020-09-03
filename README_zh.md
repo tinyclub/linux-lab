@@ -300,6 +300,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 | Deepin     | 15.11               | 18.09.6        | Linux 4.15
 | Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
 | Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
+| Manjaro    |                     | 19.03.11       | Linux 5.8.3
 
 请查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
 
@@ -1851,6 +1852,10 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 当前对以下开发板，基于内核版本 5.1（LINUX=v5.1），`poweroff` 和 `reboot` 命令无法正常工作：
 
   * mipsel/malta (exclude `LINUX=v2.6.36`)
+  * mipsel/ls1b
+  * mipsel/ls232
+  * mips64el/ls2k
+  * mips64el/ls3a7a
   * aarch64/raspi3
   * arm/versatilepb
 

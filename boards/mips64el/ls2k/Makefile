@@ -14,7 +14,7 @@ NETDEV  ?= synopgmac
 LINUX   ?= loongnix-release-1903
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
-KERNEL_GIT := git://cgit.loongnix.org/kernel/linux-3.10.git 
+KERNEL_GIT := http://cgit.loongnix.org/cgit/linux-3.10
 KERNEL_SRC := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz

@@ -41,3 +41,34 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
   Debug automatically:
 
     $ make test DEBUG=1
+
+## Import zipped kernel source
+
+  Sometimes, if the git repository is broken, this method may work.
+
+  Download the zip package of the release-1903 branch from <https://gitee.com/tinylab/loongson-linux-v3.10/tree/release-1903/>.
+
+    $ cd /path/to/linux-lab
+    $ ls tinylab-loongson-linux-v3.10-release-1903.zip
+
+  Decompress the zip package and rename the directory to the value of `KERNEL_SRC` in board's Makefile: `loongnix-linux-3.10`
+
+    $ unzip tinylab-loongson-linux-v3.10-release-1903.zip
+    $ mv tinylab-loongson-linux-v3.10-release-1903 loongnix-linux-3.10
+
+  Enter into the kernel source directory, init it as a git repository
+
+    $ cd loonginx-linux-3.10
+    $ git init
+    $ git add .
+    $ git commit -m "Init loongson linux v3.10"
+
+  Update the commit setting:
+
+    $ sed -i -e "s/04b98684/master/g" boards/mips64el/ls3a7a/Makefile
+
+  Ignore the kernel download step:
+
+    $ make kernel-download -t
+
+  That's all.

@@ -35,3 +35,4 @@
 * Clean up the 'shortcuts' support, current support differs from system
 * Use "-e TZ=Asia/Shanghai" to set time zone
 * Add new ubuntu 20.04 based docker image support
+* Forbind such usage: make BOARD=<ARCH>, which is wrong, right one is: make BOARD=<ARCH>/<BOARD_NAME>

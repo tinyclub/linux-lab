@@ -727,6 +727,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make source root
     $ make source uboot
 
+从 v0.5 开始，所有源代码下载在 Linux Lab 的 `src/` 目录下，历史版本都直接放在 Linux Lab 根目录，请注意该区别。
 
 ### 3.3.2 检出
 
@@ -830,6 +831,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make build kernel
     $ make build root
+
+从 v0.5 开始，所有构建结果存放在 Linux Lab 的 `build/` 目录下，历史版本都放在 `output/` 目录，请注意该区别。
 
 ### 3.3.6 保存
 

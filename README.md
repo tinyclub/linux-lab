@@ -663,6 +663,8 @@ Download one by one:
     $ make source root
     $ make source uboot
 
+After v0.5, the source code are downloaded in `src/`, before, they are saved in the root directory of Linux Lab.
+
 ### 3.3.2 Checking out
 
 Checkout the target version of kernel and builroot:
@@ -764,6 +766,8 @@ Build them one by one:
 
     $ make build kernel
     $ make build root
+
+After v0.5, the building result are stored in `build/`, before they are put in `output/`.
 
 ### 3.3.6 Saving
 

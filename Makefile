@@ -106,16 +106,27 @@ GDBINIT_DIR := $(TOP_DIR)/.gdb
 TOP_SRC     := $(TOP_DIR)/src
 
 # Search board in basic arch list while board name given without arch specified
-BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 csky
-ifneq ($(BOARD_DIR),$(wildcard $(BOARD_DIR)))
+ifneq ($(BOARD),)
+ BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 riscv32 riscv64 csky
+ ifneq ($(BOARD_DIR)/Makefile,$(wildcard $(BOARD_DIR)/Makefile))
   ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
   ifneq ($(ARCH),)
     override BOARD     := $(ARCH)/$(BOARD)
     override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
     #$(info LOG: Current board is $(BOARD))
   else
-    $(error ERR: $(BOARD) not exist, check available boards in 'make list')
+    ifeq ($(filter $(BOARD),$(BASE_ARCHS)),$(BOARD))
+      $(error ERR: $(BOARD) is ARCH, check available boards with 'make list ARCH=$(BOARD)')
+    else
+      matched_boards=$(shell find $(TOP_DIR)/$(BOARDS_DIR) -mindepth 2 -maxdepth 2 -type d -name "*$(BOARD)*" | sed -e 's%$(TOP_DIR)/$(BOARDS_DIR)/%%g')
+      ifneq ($(matched_boards),)
+        $(error ERR: $(BOARD) not exist, do you mean: $(matched_boards), check more with 'make list')
+      else
+        $(error ERR: $(BOARD) not exist, check available boards with 'make list')
+      endif
+    endif
   endif
+ endif
 endif
 
 # Check if it is a plugin
@@ -319,7 +330,9 @@ ifneq ($(BOARD),)
   # include $(BOARD_DIR)/.labinit
   $(eval $(call _bi,labinit))
   $(eval $(call _bi,labconfig))
-  include $(BOARD_MAKEFILE)
+  ifeq ($(BOARD_MAKEFILE), $(wildcard $(BOARD_MAKEFILE)))
+    include $(BOARD_MAKEFILE)
+  endif
   # include $(BOARD_DIR)/.labfini
   $(eval $(call _bi,labfini))
 endif

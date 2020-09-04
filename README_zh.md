@@ -759,7 +759,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 ### 3.3.3 打补丁
 
-给开发板打补丁，补丁包的来源是存放在 `boards/<BOARD>/bsp/patch/linux` 和 `patch/linux/` 路径下：
+给开发板打补丁，补丁包的来源是存放在 `boards/<BOARD>/bsp/patch/linux` 和 `src/patch/linux/` 路径下：
 
     $ make kernel-patch
 
@@ -791,7 +791,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make kernel-defconfig KCFG=bcmrpi3_defconfig
     $ make root-defconfig KCFG=raspberrypi3_64_defconfig
 
-如果仅提供 defconfig 的名字，则搜索所在目录的次序首先是 `boards/<BOARD>`，然后是 buildroot, u-boot 和 linux-stable 各自的缺省配置路径 `buildroot/configs`，`u-boot/configs` 和 `linux-stable/arch/<ARCH>/configs`。
+如果仅提供 defconfig 的名字，则搜索所在目录的次序首先是 `boards/<BOARD>`，然后是 buildroot, u-boot 和 linux-stable 各自的缺省配置路径 `src/buildroot/configs`，`src/u-boot/configs` 和 `src/linux-stable/arch/<ARCH>/configs`。
 
 #### 3.3.4.2 手动配置
 
@@ -982,11 +982,11 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make root-rebuild     // not need for nfs boot
     $ make boot
 
-列出 `modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块：
+列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块：
 
     $ make module-list
 
-如果加上 `m` 参数，除了列出 `modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `linux-stable/` 下的所有模块：
+如果加上 `m` 参数，除了列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `src/linux-stable/` 下的所有模块：
 
     $ make module-list m=hello
          1	m=hello ; M=$PWD/modules/hello
@@ -1030,15 +1030,15 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
     $ make module m=hello
     或
-    $ make kernel x=$PWD/modules/hello/hello.ko
+    $ make kernel x=$PWD/src/modules/hello/hello.ko
 
 
 ### 4.1.3 使用内核特性
 
-内核的众多特性都集中存放在 `feature/linux/`，其中包括了特性的配置补丁，可以用于管理已合入内核主线的特性和未合入的特性功能。
+内核的众多特性都集中存放在 `src/feature/linux/`，其中包括了特性的配置补丁，可以用于管理已合入内核主线的特性和未合入的特性功能。
 
     $ make feature-list
-    [ feature/linux ]:
+    [ /labs/linux-lab/src/feature/linux ]:
       + 9pnet
       + core
         - debug
@@ -1088,7 +1088,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 如果希望新建一个分支来做开发，那么可以参考如下步骤。
 
-首先在 `linux-stable` 或配置的其他 `KERNEL_SRC` 目录下基于某个内核版本新建一个 git 分支，假设历史版本是 v5.1：
+首先在 `src/linux-stable` 或配置的其他 `KERNEL_SRC` 目录下基于某个内核版本新建一个 git 分支，假设历史版本是 v5.1：
 
     $ cd src/linux-stable
     $ git checkout -b linux-v5.1-dev v5.1
@@ -1517,11 +1517,11 @@ Docker 主机：
 
     $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
 
-    $ make boot SHARE=1 SHARE_DIR=modules   # for external modules development
+    $ make boot SHARE=1 SHARE_DIR=src/modules   # for external modules development
 
     $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/   # for internal modules learning
 
-    $ make boot SHARE=1 SHARE_DIR=examples   # for c/assembly learning
+    $ make boot SHARE=1 SHARE_DIR=src/examples   # for c/assembly learning
 
 Qemu 开发板：
 
@@ -1544,9 +1544,9 @@ Qemu 开发板：
 
 ## 4.9 学习汇编
 
-Linux Lab 在 `examples/assembly` 目录下有许多汇编代码的例子：
+Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
-    $ cd examples/assembly
+    $ cd src/examples/assembly
     $ ls
     aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
     $ make -s -C aarch64/

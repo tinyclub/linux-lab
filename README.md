@@ -695,7 +695,7 @@ The same to qemu and uboot.
 
 ### 3.3.3 Patching
 
-Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `patch/linux/`:
+Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `src/patch/linux/`:
 
     $ make kernel-patch
 
@@ -727,7 +727,7 @@ Configure with specified defconfig:
     $ make kernel-defconfig KCFG=bcmrpi3_defconfig
     $ make root-defconfig KCFG=raspberrypi3_64_defconfig
 
-If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: buildroot/configs, u-boot/configs, linux-stable/arch/<ARCH>/configs.
+If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: src/buildroot/configs, src/u-boot/configs, src/linux-stable/arch/<ARCH>/configs.
 
 #### 3.3.4.2 Manual Configuration
 
@@ -924,11 +924,11 @@ Build all internel kernel modules:
     $ make root-rebuild     // not need for nfs boot
     $ make boot
 
-List available modules in `modules/`, `boards/<BOARD>/bsp/modules/`:
+List available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/`:
 
     $ make module-list
 
-If `m` argument specified, list available modules in `modules/`, `boards/<BOARD>/bsp/modules/` and `linux-stable/`:
+If `m` argument specified, list available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/` and `src/linux-stable/`:
 
     $ make module-list m=hello
          1	m=hello ; M=$PWD/modules/hello
@@ -977,12 +977,12 @@ Build external kernel modules (the same as internel modules):
 
 ### 4.1.3 using kernel features
 
-Kernel features are abstracted in `feature/linux/, including their
+Kernel features are abstracted in `src/feature/linux/, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
 and in-mainline features.
 
     $ make feature-list
-    [ feature/linux ]:
+    [ /labs/linux-lab/src/feature/linux ]:
       + 9pnet
       + core
         - debug
@@ -1033,7 +1033,7 @@ For `kft` feature in v2.6.36 for malta board:
 
 If want to use a new development branch, please follow such steps:
 
-At first, Get into `linux-stable` or another directory specified with `KERNEL_SRC`, checkout a development branch from a specific version:
+At first, Get into `src/linux-stable` or another directory specified with `KERNEL_SRC`, checkout a development branch from a specific version:
 
     $ cd src/linux-stable
     $ git checkout -b linux-v5.1-dev v5.1
@@ -1465,11 +1465,11 @@ Host:
 
     $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
 
-    $ make boot SHARE=1 SHARE_DIR=modules   # for external modules development
+    $ make boot SHARE=1 SHARE_DIR=src/modules   # for external modules development
 
     $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/   # for internal modules learning
 
-    $ make boot SHARE=1 SHARE_DIR=examples   # for c/assembly learning
+    $ make boot SHARE=1 SHARE_DIR=src/examples   # for c/assembly learning
 
 Qemu Board:
 
@@ -1492,9 +1492,9 @@ Verified boards with Linux v5.1:
 
 ## 4.9 Learning Assembly
 
-Linux Lab has added many assembly examples in `examples/assembly`:
+Linux Lab has added many assembly examples in `src/examples/assembly`:
 
-    $ cd examples/assembly
+    $ cd src/examples/assembly
     $ ls
     aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
     $ make -s -C aarch64/

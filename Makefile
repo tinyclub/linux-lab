@@ -1408,8 +1408,13 @@ endif
 
 ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
   # Put submodule is root of linux-lab if no directory specified or if not the above cases
-  $(call _uc,$(1))_SROOT := $$(TOP_SRC)
-  $(call _uc,$(1))_SPATH := $$(subst $$(TOP_SRC)/,,$$($(call _uc,$(1))_SRC))
+  ifneq ($1, bsp)
+    $(call _uc,$(1))_SROOT := $$(TOP_SRC)
+    $(call _uc,$(1))_SPATH := $$(subst $$(TOP_SRC)/,,$$($(call _uc,$(1))_SRC))
+  else
+    $(call _uc,$(1))_SROOT := $$(TOP_DIR)
+    $(call _uc,$(1))_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$(1))_DIR))
+  endif
 endif
 
 $(call _uc,$(1))_GITADD = git remote -v

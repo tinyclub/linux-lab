@@ -9,7 +9,7 @@
     -machine usb=on -device nec-usb-xhci,id=xhci \
     -device usb-mouse -device usb-kbd -device sdhci-pci \
     -d guest_errors -nodefaults -no-reboot \
-    -bios output/aarch64/uboot-v2019.10-virt/u-boot.bin \
+    -bios build/aarch64/uboot-v2019.10-virt/u-boot.bin \
     -machine dumpdtb=virt-gicv3.dtb
 
 ## Convert to dts

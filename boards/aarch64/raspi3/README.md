@@ -174,7 +174,7 @@ Since raspi3 qemu not support network yet, please use chroot or docker to run th
     $ make root-menuconfig
     $ make root
 
-    $ make boot KIMAGE=$PWD/output/aarch64/buildroot-2019.02.2-cortex-a53/images/Image DTB=$PWD/output/aarch64/buildroot-2019.02.2-cortex-a53/images/bcm2710-rpi-3-b.dtb INITRD=$PWD/output/aarch64/buildroot-2019.02.2-cortex-a53/images/rootfs.cpio.gz V=1
+    $ make boot KIMAGE=$PWD/build/aarch64/buildroot-2019.02.2-cortex-a53/images/Image DTB=$PWD/build/aarch64/buildroot-2019.02.2-cortex-a53/images/bcm2710-rpi-3-b.dtb INITRD=$PWD/build/aarch64/buildroot-2019.02.2-cortex-a53/images/rootfs.cpio.gz V=1
 
 ## References
 

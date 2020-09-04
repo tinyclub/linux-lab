@@ -1,0 +1,125 @@
+From 8f24f3166c377fcb6d02bb7f5a2d824075ea6193 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <falcon@tinylab.org>
+Date: Fri, 4 Sep 2020 23:29:26 +0800
+Subject: [PATCH] feat: add support for power off and reboot
+
+Signed-off-by: Zhang Fuxin <fxzhang@ict.ac.cn>
+---
+ hw/mips/loongson3a_rom.h     | 28 +++++++++++++++++++++++++++-
+ hw/mips/loongson_bootparam.c |  6 +++---
+ hw/mips/mips_ls3a7a.c        | 16 +++++++++++++++-
+ 3 files changed, 45 insertions(+), 5 deletions(-)
+
+diff --git a/hw/mips/loongson3a_rom.h b/hw/mips/loongson3a_rom.h
+index 7bbe8ff..98c55dc 100644
+--- a/hw/mips/loongson3a_rom.h
++++ b/hw/mips/loongson3a_rom.h
+@@ -113,6 +113,32 @@ static unsigned int aui_boot_code[] = {
+ 0x00000000, //nop
+ 0x00000000, //
+ 0x00000000, //
+-0x00000000, //
++
++/* Reset */
++0x3c0c9000,       /* lui     t0,0x9000     */    
++0x358c0e00,       /* ori     t0,t0,0xe00   */
++0x000c6438,       /* dsll    t0,t0,0x10    */
++0x358c100d,       /* ori     t0,t0,0x100d  */
++0x000c6438,       /* dsll    t0,t0,0x10    */
++0x240d0000,       /* li      t1,0          */
++0xa18d0010,       /* sb      t1,16(t0)     */
++0x240d5500,       /* li      t1,21760      */
++0xad8d0020,       /* sb      t1,32(t0)     */
++0x1000ffff,       /* b       1:            */
++0x00000000,	      /* nop	               */
++0x00000000,	      /* nop	               */
++
++/* Shutdown */
++0x3c0c9000,       /*lui     t0,0x9000     */
++0x358c0e00,       /*ori     t0,t0,0xe00   */
++0x000c6438,       /*dsll    t0,t0,0x10    */
++0x358c100d,       /*ori     t0,t0,0x100d  */
++0x000c6438,       /*dsll    t0,t0,0x10    */
++0x240d00ff,       /*li      t1,255        */
++0xa18d0010,       /*sb      t1,16(t0)     */
++0x340daa00,       /*li      t1,0xaa00     */
++0xad8d0020,       /*sb      t1,32(t0)     */
++0x1000ffff,       /*b       1:            */
++0x00000000,       /*nop                   */
+   }; // <- Inserted by script to terminate array.
+ 
+diff --git a/hw/mips/loongson_bootparam.c b/hw/mips/loongson_bootparam.c
+index 0a9bcee..4fa3fe5 100644
+--- a/hw/mips/loongson_bootparam.c
++++ b/hw/mips/loongson_bootparam.c
+@@ -26,7 +26,6 @@ static int init_boot_param(struct boot_params *bp)
+   init_efi(&(bp->efi));
+   init_reset_system(&(bp->reset_system));
+ 
+-
+   return 0;
+ }
+ 
+@@ -37,8 +36,9 @@ void init_efi(struct efi_loongson *efi)
+ 
+ void init_reset_system(struct efi_reset_system_t *reset)
+ {
+-  reset->Shutdown = 0xffffffffbfc00000ULL;
+-  reset->ResetWarm = 0xffffffffbfc00000ULL;
++  reset->Shutdown = 0xffffffffbfc000dcULL;
++  reset->ResetCold = 0xffffffffbfc000acULL;
++  reset->ResetWarm = 0xffffffffbfc000acULL;
+ }
+ 
+ void init_smbios(struct smbios_tables *smbios)
+diff --git a/hw/mips/mips_ls3a7a.c b/hw/mips/mips_ls3a7a.c
+index 4f05c68..c4999b0 100644
+--- a/hw/mips/mips_ls3a7a.c
++++ b/hw/mips/mips_ls3a7a.c
+@@ -258,6 +258,8 @@ static MemoryRegion *iomem160;
+ static int reg180;
+ static int reg424;
+ 
++static int acpi_tmrof_en = 0;
++
+ static void mips_qemu_writel (void *opaque, hwaddr addr,
+ 		uint64_t val, unsigned size)
+ {
+@@ -290,6 +292,17 @@ static void mips_qemu_writel (void *opaque, hwaddr addr,
+ 
+ 			memory_region_transaction_commit();
+ 			break;
++        /* acpi pm1_en */
++        case 0x100d0010:
++            acpi_tmrof_en = val;
++            break;
++        case 0x100d0020:
++            if (acpi_tmrof_en == 0) {
++                 qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++            } else {
++                 qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++            }
++            break;
+ 	}
+ }
+ 
+@@ -1086,6 +1099,8 @@ static void mips_ls3a7a_init(MachineState *machine)
+ 	SIMPLE_OPS(0xe0010010910,0x10);
+ 	SIMPLE_OPS(0x1fe00100,0x4);
+ 
++	/* acpi */
++	SIMPLE_OPS(0x100d0000,0x100);
+ 
+ 	//mips_qemu_writel((void *)0xe0040000160, 0, 1<<24, 4);
+ 
+@@ -1109,7 +1124,6 @@ DEFINE_MACHINE("ls3a7a", mips_machine_init)
+ #include "hw/pci/pci_host.h"
+ #include "hw/pci/pci_bus.h"
+ 
+-
+ /*
+  * Registers of interrupt controller in sun4m.
+  *
+-- 
+2.7.4
+

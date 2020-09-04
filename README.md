@@ -884,14 +884,14 @@ Get state of a kernel module:
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
 Enable a kernel module:
 
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
 
@@ -937,12 +937,12 @@ Enable one kernel module:
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
 
@@ -1031,7 +1031,7 @@ If want to use a new development branch, please follow such steps:
 
 At first, Get into `linux-stable` or another directory specified with `KERNEL_SRC`, checkout a development branch from a specific version:
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git checkout -b linux-v5.1-dev v5.1
 
 And then, clone the necessary configurations and directories for our new branch.
@@ -1045,7 +1045,7 @@ The v5.1 must be the already supported version, if not, please use the near one 
 
 If want to develop v2.6.38, please try to clone one from v2.6.36:
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git checkout -b linux-v2.6.38-dev v2.6.38
     $ make kernel-clone LINUX=v2.6.36 LINUX_NEW=linux-v2.6.38-dev
 
@@ -1463,7 +1463,7 @@ Host:
 
     $ make boot SHARE=1 SHARE_DIR=modules   # for external modules development
 
-    $ make boot SHARE=1 SHARE_DIR=output/aarch64/linux-v5.1-virt/   # for internal modules learning
+    $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/   # for internal modules learning
 
     $ make boot SHARE=1 SHARE_DIR=examples   # for c/assembly learning
 
@@ -1552,16 +1552,16 @@ We need to prepare the configs for linux, buildroot and even uboot.
 
 Buildroot has provided many examples about buildroot and kernel configuration:
 
-    buildroot: buildroot/configs/qemu_ARCH_BOARD_defconfig
-    kernel: buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
+    buildroot: src/buildroot/configs/qemu_ARCH_BOARD_defconfig
+    kernel: src/buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
 
 Uboot has also provided many default configs:
 
-    uboot: u-boot/configs/vexpress_ca9x4_defconfig
+    uboot: src/u-boot/configs/vexpress_ca9x4_defconfig
 
 Kernel itself also:
 
-    kernel: linux-stable/arch/arm/configs/vexpress_defconfig
+    kernel: src/linux-stable/arch/arm/configs/vexpress_defconfig
 
 Linux Lab itself also provide many working configs too, the `xxx-clone` target is a
 good helper to utilize existing configs:
@@ -1606,7 +1606,7 @@ More usage about the `xxx-clone` commands:
 
 Please use `tag` instead of `branch`, use kernel as an example:
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git tag
     ...
     v5.0

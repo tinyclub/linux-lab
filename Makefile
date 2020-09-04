@@ -103,6 +103,7 @@ FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
 HOME_DIR    := /home/$(USER)/
 GDBINIT_DIR := $(TOP_DIR)/.gdb
+TOP_SRC     := $(TOP_DIR)/src
 
 # Search board in basic arch list while board name given without arch specified
 BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 csky
@@ -167,39 +168,39 @@ PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
 # Core source: remote and local
 #QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_GIT ?= https://gitee.com/mirrors/qemu.git
+QEMU_GIT  ?= https://gitee.com/mirrors/qemu.git
 _QEMU_GIT := $(QEMU_GIT)
 _QEMU_SRC ?= qemu
-QEMU_SRC ?= $(_QEMU_SRC)
+QEMU_SRC  ?= $(_QEMU_SRC)
 
 #UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
-UBOOT_GIT ?= https://gitee.com/mirrors/u-boot.git
+UBOOT_GIT  ?= https://gitee.com/mirrors/u-boot.git
 _UBOOT_GIT := $(UBOOT_GIT)
 _UBOOT_SRC ?= u-boot
-UBOOT_SRC ?= $(_UBOOT_SRC)
+UBOOT_SRC  ?= $(_UBOOT_SRC)
 
 #KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 #KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
-KERNEL_GIT ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
+KERNEL_GIT  ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
 _KERNEL_GIT := $(KERNEL_GIT)
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_SRC ?= linux-stable
-KERNEL_SRC ?= $(_KERNEL_SRC)
+KERNEL_SRC  ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
 #ROOT_GIT ?= https://github.com/buildroot/buildroot
-ROOT_GIT ?= https://gitee.com/mirrors/buildroot.git
+ROOT_GIT  ?= https://gitee.com/mirrors/buildroot.git
 _ROOT_GIT := $(ROOT_GIT)
 _ROOT_SRC ?= buildroot
-ROOT_SRC ?= $(_ROOT_SRC)
+ROOT_SRC  ?= $(_ROOT_SRC)
 
 _LINUX=$(LINUX)
-KERNEL_ABS_SRC := $(TOP_DIR)/$(KERNEL_SRC)
-ROOT_ABS_SRC   := $(TOP_DIR)/$(ROOT_SRC)
-UBOOT_ABS_SRC  := $(TOP_DIR)/$(UBOOT_SRC)
-QEMU_ABS_SRC   := $(TOP_DIR)/$(QEMU_SRC)
+KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
+ROOT_ABS_SRC   := $(TOP_SRC)/$(ROOT_SRC)
+UBOOT_ABS_SRC  := $(TOP_SRC)/$(UBOOT_SRC)
+QEMU_ABS_SRC   := $(TOP_SRC)/$(QEMU_SRC)
 
-BOARD_MAKEFILE      := $(BOARD_DIR)/Makefile
+BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
 # Common functions
 
@@ -579,8 +580,8 @@ define genverify
  ifneq ($$($(1)_SRC),)
    ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
     _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$$($(2)))
-    ifneq ($$(findstring $$(TOP_DIR),$$($(1)_SRC)),$$(TOP_DIR))
-      $(1)_ABS_SRC := $$(TOP_DIR)/$$($(1)_SRC)
+    ifneq ($$(findstring $$(TOP_SRC),$$($(1)_SRC)),$$(TOP_SRC))
+      $(1)_ABS_SRC := $$(TOP_SRC)/$$($(1)_SRC)
     else
       $(1)_ABS_SRC := $$($(1)_SRC)
     endif
@@ -634,14 +635,14 @@ _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
-# Core output: for building in standalone directories
-TOP_OUTPUT      := $(TOP_DIR)/output
-TOP_OUTPUT_ARCH := $(TOP_OUTPUT)/$(XARCH)
-QEMU_OUTPUT     := $(TOP_OUTPUT_ARCH)/qemu-$(QEMU)-$(MACH)
-UBOOT_OUTPUT    := $(TOP_OUTPUT_ARCH)/uboot-$(UBOOT)-$(MACH)
-KERNEL_OUTPUT   := $(TOP_OUTPUT_ARCH)/linux-$(LINUX)-$(MACH)
-ROOT_OUTPUT     := $(TOP_OUTPUT_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
-BSP_OUTPUT      := $(TOP_OUTPUT_ARCH)/bsp-$(MACH)
+# Core build: for building in standalone directories
+TOP_BUILD      := $(TOP_DIR)/build
+TOP_BUILD_ARCH := $(TOP_BUILD)/$(XARCH)
+QEMU_BUILD     := $(TOP_BUILD_ARCH)/qemu-$(QEMU)-$(MACH)
+UBOOT_BUILD    := $(TOP_BUILD_ARCH)/uboot-$(UBOOT)-$(MACH)
+KERNEL_BUILD   := $(TOP_BUILD_ARCH)/linux-$(LINUX)-$(MACH)
+ROOT_BUILD     := $(TOP_BUILD_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
+BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
@@ -649,7 +650,7 @@ ifneq ($(XARCH), i386)
 else
   BUILDROOT_CCPRE  = i686-linux-
 endif
-BUILDROOT_CCPATH = $(ROOT_OUTPUT)/host/usr/bin
+BUILDROOT_CCPATH = $(ROOT_BUILD)/host/usr/bin
 
 # Add internal toolchain to list (the one installed in docker image)
 ifneq ($(CCPRE),)
@@ -788,7 +789,7 @@ ifneq ($(BIOS),)
 endif
 
 # Another qemu-system-$(ARCH)
-QEMU_SYSTEM ?= $(QEMU_OUTPUT)/$(XARCH)-softmmu/qemu-system-$(XARCH)
+QEMU_SYSTEM ?= $(QEMU_BUILD)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 
 ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
   PBQ ?= 0
@@ -820,9 +821,9 @@ endif
 EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
-LINUX_PKIMAGE := $(ROOT_OUTPUT)/images/$(PORIIMG)
-LINUX_KIMAGE  := $(KERNEL_OUTPUT)/$(ORIIMG)
-LINUX_UKIMAGE := $(KERNEL_OUTPUT)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
+LINUX_PKIMAGE := $(ROOT_BUILD)/images/$(PORIIMG)
+LINUX_KIMAGE  := $(KERNEL_BUILD)/$(ORIIMG)
+LINUX_UKIMAGE := $(KERNEL_BUILD)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
 
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
@@ -835,18 +836,18 @@ _DTS := $(DTS)
 
 ifeq ($(DTS),)
   ifneq ($(ORIDTS),)
-    DTS    := $(KERNEL_SRC)/$(ORIDTS)
+    DTS    := $(KERNEL_ABS_SRC)/$(ORIDTS)
     ORIDTB ?= $(ORIDTS:.dts=.dtb)
   endif
   ifneq ($(ORIDTB),)
     ORIDTS := $(ORIDTB:.dtb=.dts)
-    DTS    := $(KERNEL_SRC)/$(ORIDTS)
+    DTS    := $(KERNEL_ABS_SRC)/$(ORIDTS)
   endif
 endif
 
 ifneq ($(DTS),)
   DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(shell echo $(DTS) | sed -e "s%.*/dts/%%g"))
-  LINUX_DTB  := $(KERNEL_OUTPUT)/$(ORIDTB)
+  LINUX_DTB  := $(KERNEL_BUILD)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     ifneq ($(ORIDTB),)
       PBD ?= 0
@@ -899,7 +900,7 @@ ifneq ($(UBOOT),)
 endif
 
 ifneq ($(UBOOT),)
-UBOOT_BIMAGE    := $(UBOOT_OUTPUT)/$(notdir $(BIMAGE))
+UBOOT_BIMAGE    := $(UBOOT_BUILD)/$(notdir $(BIMAGE))
 PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/$(notdir $(BIMAGE))
 
 ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
@@ -968,9 +969,9 @@ ROOTFS_HARDDISK_SUFFIX := .$(FSTYPE)
 ROOTFS_INITRD_SUFFIX   := .cpio.gz
 
 # Real one
-BUILDROOT_ROOTDIR  :=  $(ROOT_OUTPUT)/target
+BUILDROOT_ROOTDIR  :=  $(ROOT_BUILD)/target
 # As a temp variable
-_BUILDROOT_ROOTDIR :=  $(ROOT_OUTPUT)/images/rootfs
+_BUILDROOT_ROOTDIR :=  $(ROOT_BUILD)/images/rootfs
 
 BUILDROOT_UROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
 BUILDROOT_HROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
@@ -1266,15 +1267,15 @@ PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make -C $(QEMU_OUTPUT)/$(2) -j$(JOBS) V=$(V) $(1)
+$(C_PATH) make -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
-$(C_PATH) make O=$(KERNEL_OUTPUT) -C $(KERNEL_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
-make O=$(ROOT_OUTPUT) -C $(ROOT_SRC) V=$(V) -j$(JOBS) $(1)
+make O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
 # FIXME: ugly workaround for uboot, it share code between arm and arm64
@@ -1283,14 +1284,14 @@ $(shell if [ $1 = arm64 ]; then echo arm; else echo $1; fi)
 endef
 
 define make_uboot
-$(C_PATH) make O=$(UBOOT_OUTPUT) -C $(UBOOT_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
 endef
 
 # generate target dependencies
 define gendeps
 
 ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
 __stamp_$(1)=$$(_stamp_$(1))
@@ -1338,7 +1339,7 @@ $$($(1)_bsp_childs): $(BSP_CHECKOUT)
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_OUTPUT)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 
@@ -1367,7 +1368,7 @@ endef # gendeps
 define gensource
 
 ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
 __stamp_$(1)=$$(_stamp_$(1))
@@ -1394,8 +1395,8 @@ endif
 
 ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
   # Put submodule is root of linux-lab if no directory specified or if not the above cases
-  $(call _uc,$(1))_SROOT := $$(TOP_DIR)
-  $(call _uc,$(1))_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$(1))_SRC))
+  $(call _uc,$(1))_SROOT := $$(TOP_SRC)
+  $(call _uc,$(1))_SPATH := $$(subst $$(TOP_SRC)/,,$$($(call _uc,$(1))_SRC))
 endif
 
 $(call _uc,$(1))_GITADD = git remote -v
@@ -1454,15 +1455,15 @@ $(1)-source: $$(call __stamp_$(1),source)
 $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
+	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
 	fi
 	$$(Q)touch $$@
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
 $$(call _stamp_$(1),outdir):
-	$(Q)mkdir -p $$($(call _uc,$(1))_OUTPUT)
+	$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
 
 $(1)-outdir: $$(call __stamp_$(1),outdir)
@@ -1477,25 +1478,25 @@ $(1)-%-cleanstamp:
 	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
 
 $(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_OUTPUT)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_BUILD)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 
 ## clean up $(1) source code
 $(1)-cleanup: $(1)-cleanstamp
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC) -a -e $$($(call _uc,$(1))_SRC)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
+		cd $$($(call _uc,$(1))_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
 	fi
 
 $(1)-clean: $(1)-cleanup
 
 $(1)-clean: $$($(call _uc,$(1))_CLEAN_DEPS)
-ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
 	-$$(Q)$$(call make_$(1),clean)
 endif
 
 $(1)-distclean:
-ifeq ($$($(call _uc,$(1))_OUTPUT)/Makefile, $$(wildcard $$($(call _uc,$(1))_OUTPUT)/Makefile))
+ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
 	-$$(Q)$$(call make_$(1),distclean)
-	$$(Q)rm -rf $$($(call _uc,$(1))_OUTPUT)
+	$$(Q)rm -rf $$($(call _uc,$(1))_BUILD)
 endif
 
 PHONY += $(addprefix $(1)-,cleanstamp cleanup outdir clean distclean)
@@ -1505,7 +1506,7 @@ endef # gensource
 # Generate basic goals
 define gengoals
 
-#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
 
 $(1)-list:
 	$$(Q)echo " $$($(2)_LIST) " | sed -e 's%\($$($(2))\)\([ ]\{1,\}\)%[\1]\2%g;s%^ %%g;s% $$$$%%g'
@@ -1514,10 +1515,10 @@ $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
 
 $$(call _stamp_$(1),patch):
-	@if [ ! -f $$($(call _uc,$(1))_SRC)/.$(1).patched ]; then \
+	@if [ ! -f $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched ]; then \
 	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
-	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC) $$($(call _uc,$(1))_OUTPUT); fi; \
-	  touch $$($(call _uc,$(1))_SRC)/.$(1).patched; \
+	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC_FULL) $$($(call _uc,$(1))_BUILD); fi; \
+	  touch $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched; \
 	else		\
 	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
@@ -1526,9 +1527,9 @@ $$(call _stamp_$(1),patch):
 $(1)-patch: $$(call __stamp_$(1),patch)
 
 $(1)-savepatch:
-	$(Q)cd $$($(call _uc,$(1))_SRC) && git format-patch $$(_$2) && cd $$(TOP_DIR)
+	$(Q)cd $$($(call _uc,$(1))_SRC_FULL) && git format-patch $$(_$2) && cd $$(TOP_DIR)
 	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
-	$(Q)cp $$($(call _uc,$(1))_SRC)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
+	$(Q)cp $$($(call _uc,$(1))_SRC_FULL)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
 
 debug-$(1): $(1)-debug
 
@@ -1548,7 +1549,7 @@ endef # gengoals
 define gencfgs
 
 ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
 __stamp_$(1)=$$(_stamp_$(1))
@@ -1561,7 +1562,7 @@ $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
   $(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(3)CFG)
 else
-  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC)/arch/$$(ARCH)/$$($(3)CFG); do \
+  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($(3)CFG); do \
 		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
   ifneq ($$(_$(3)CFG_FILE),)
     $(3)CFG_FILE := $$(subst //,/,$$(_$(3)CFG_FILE))
@@ -1577,7 +1578,7 @@ endif
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
 $$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
-	$$(Q)mkdir -p $$($(call _uc,$1)_OUTPUT)
+	$$(Q)mkdir -p $$($(call _uc,$1)_BUILD)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
@@ -1634,7 +1635,7 @@ endef #genclone
 define genenvdeps
 
 ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_OUTPUT))
+_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
 __stamp_$(1)=$$(_stamp_$(1))
@@ -1723,7 +1724,7 @@ endif
 ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
 ifeq ($(QEMU_ALL),1)
   PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
-  QEMU_OUTPUT := $(TOP_OUTPUT)/qemu-$(QEMU)-all
+  QEMU_BUILD := $(TOP_BUILD)/qemu-$(QEMU)-all
   QEMU_ARCH = $(ARCH_LIST)
 else
   QEMU_ARCH = $(XARCH)
@@ -1774,8 +1775,8 @@ endif
 QEMU_CONFIG_STATUS := config.log
 QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
 QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --disable-werror --prefix=$(QEMU_PREFIX)
-qemu_make_help := cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
-qemu_make_defconfig := $(Q)cd $(QEMU_OUTPUT) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
+qemu_make_help := cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
+qemu_make_defconfig := $(Q)cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
 
@@ -1959,7 +1960,7 @@ GIT_CLEAN_EXTRAFLAGS[root] := -e dl/
 #$(warning $(call gengoals,root,BUILDROOT))
 $(eval $(call gengoals,root,BUILDROOT))
 
-ROOT_CONFIG_DIR := $(ROOT_SRC)/configs
+ROOT_CONFIG_DIR := $(ROOT_ABS_SRC)/configs
 
 #$(warning $(call gencfgs,root,buildroot,R))
 $(eval $(call gencfgs,root,buildroot,R))
@@ -1975,7 +1976,7 @@ ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 IKM ?= 1
 
 ifeq ($(IKM), 1)
-  ifeq ($(KERNEL_OUTPUT)/.modules.order, $(wildcard $(KERNEL_OUTPUT)/.modules.order))
+  ifeq ($(KERNEL_BUILD)/.modules.order, $(wildcard $(KERNEL_BUILD)/.modules.order))
     KERNEL_MODULES_INSTALL := module-install
   endif
 endif
@@ -2110,9 +2111,9 @@ _KERNEL ?= $(_LINUX)
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
 ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
-KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_SRC)/scripts/kconfig/Makefile)
+KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
 endif
-KERNEL_CONFIG_DIR := $(KERNEL_SRC)/arch/$(ARCH)/configs/
+KERNEL_CONFIG_DIR := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
 KERNEL_CLEAN_DEPS := kernel-modules-clean
@@ -2235,13 +2236,13 @@ ifneq ($(M_PATH),)
 endif
 
 SCRIPTS_KCONFIG := tools/kernel/config
-DEFAULT_KCONFIG := $(KERNEL_OUTPUT)/.config
+DEFAULT_KCONFIG := $(KERNEL_BUILD)/.config
 
 ifneq ($(M_PATH),)
 modules-prompt:
 	@echo
 	@echo "  Current using module is $(M_PATH)."
-	@echo "  to compile modules under $(KERNEL_SRC), use 'make kernel-modules'."
+	@echo "  to compile modules under $(KERNEL_ABS_SRC), use 'make kernel-modules'."
 	@echo
 
 kernel-modules-save:
@@ -2271,7 +2272,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	fi
 	# M variable can not be set for modules_prepare target
 	$(call make_kernel,$(MODULE_PREPARE) M=)
-	$(Q)if [ -f $(KERNEL_SRC)/scripts/Makefile.modbuiltin ]; then \
+	$(Q)if [ -f $(KERNEL_ABS_SRC)/scripts/Makefile.modbuiltin ]; then \
 		$(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
 	else	\
 		$(call make_kernel,modules $(KM)); \
@@ -2320,8 +2321,8 @@ SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 kernel-modules-install-km:
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
-		if [ ! -f $(KERNEL_SRC)/scripts/depmod.sh ]; then \
-		    cd $(KERNEL_OUTPUT) && \
+		if [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ]; then \
+		    cd $(KERNEL_BUILD) && \
 		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
 		    cd $(TOP_DIR); \
 		fi;				\
@@ -2333,18 +2334,18 @@ kernel-modules-install: $(M_I_ROOT)
 	fi
 
 ifeq ($(internal_module),1)
-  M_ABS_PATH := $(KERNEL_OUTPUT)/$(M_PATH)
+  M_ABS_PATH := $(KERNEL_BUILD)/$(M_PATH)
 else
   M_ABS_PATH := $(wildcard $(M_PATH))
 endif
 
 KERNEL_MODULE_CLEAN := tools/module/clean.sh
 kernel-modules-clean-km:
-	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT) $(M_ABS_PATH)
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_BUILD) $(M_ABS_PATH)
 	$(Q)rm -rf .module_config
 
 kernel-modules-clean:
-	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_OUTPUT)
+	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_BUILD)
 
 PHONY += kernel-modules-install-km kernel-modules-install kernel-modules-clean
 
@@ -2414,11 +2415,11 @@ ifeq ($(FEATURE),boot,module)
   FPL := 0
 endif
 
-FEATURE_PATCHED_TAG := $(KERNEL_SRC)/.feature.patched
+FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 
 kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
-	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_OUTPUT) "$(FEATURE)"; \
+	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
 	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
@@ -2672,7 +2673,7 @@ RDK_ADDR ?= -
 RDK_SIZE ?= 0
 DTB_ADDR ?= -
 DTB_SIZE ?= 0
-UCFG_DIR := u-boot/include/configs
+UCFG_DIR := $(UBOOT_ABS_SRC)/include/configs
 
 #$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 $(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
@@ -2708,7 +2709,7 @@ export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
 UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
-UBOOT_CONFIG_DIR := $(UBOOT_SRC)/configs
+UBOOT_CONFIG_DIR := $(UBOOT_ABS_SRC)/configs
 UBOOT_CLEAN_DEPS := $(UBOOT_IMGS_DISTCLEAN)
 
 #$(warning $(call gensource,uboot,UBOOT))
@@ -2859,24 +2860,24 @@ qemu-save:
 
 uboot-saveconfig:
 	-$(call make_uboot,savedefconfig)
-	$(Q)if [ -f $(UBOOT_OUTPUT)/defconfig ]; \
-	then cp $(UBOOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
-	else cp $(UBOOT_OUTPUT)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
+	$(Q)if [ -f $(UBOOT_BUILD)/defconfig ]; \
+	then cp $(UBOOT_BUILD)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	else cp $(UBOOT_BUILD)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig:
 	-$(call make_kernel,savedefconfig M=)
-	$(Q)if [ -f $(KERNEL_OUTPUT)/defconfig ]; \
-	then cp $(KERNEL_OUTPUT)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
-	else cp $(KERNEL_OUTPUT)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
+	$(Q)if [ -f $(KERNEL_BUILD)/defconfig ]; \
+	then cp $(KERNEL_BUILD)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	else cp $(KERNEL_BUILD)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
 
 root-saveconfig:
 	$(call make_root,savedefconfig)
-	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_OUTPUT)/.config; echo $$?) -eq 0 ]; \
-	then cp $(shell grep BR2_DEFCONFIG $(ROOT_OUTPUT)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
-	elif [ -f $(ROOT_OUTPUT)/defconfig ]; \
-	then cp $(ROOT_OUTPUT)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
-	else cp $(ROOT_OUTPUT)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
+	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; echo $$?) -eq 0 ]; \
+	then cp $(shell grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	elif [ -f $(ROOT_BUILD)/defconfig ]; \
+	then cp $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	else cp $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
 
 # Qemu options and kernel command lines
 
@@ -3357,7 +3358,7 @@ PHONY += _test
 # Boot dependencies
 
 # Debug support
-VMLINUX      ?= $(KERNEL_OUTPUT)/vmlinux
+VMLINUX      ?= $(KERNEL_BUILD)/vmlinux
 
 ifneq ($(DEBUG),0)
 
@@ -3480,8 +3481,8 @@ ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
 VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' ')
 VARS += PBK PBR PBD PBQ PBU
 VARS += BOARD FEATURE TFTPBOOT
-VARS += ROOTDIR ROOT_SRC ROOT_OUTPUT ROOT_GIT
-VARS += KERNEL_SRC KERNEL_OUTPUT KERNEL_GIT UBOOT_SRC UBOOT_OUTPUT UBOOT_GIT
+VARS += ROOTDIR ROOT_SRC ROOT_BUILD ROOT_GIT
+VARS += KERNEL_SRC KERNEL_BUILD KERNEL_GIT UBOOT_SRC UBOOT_BUILD UBOOT_GIT
 VARS += ROOT_CONFIG_PATH KERNEL_CONFIG_PATH UBOOT_CONFIG_PATH
 VARS += IP ROUTE BOOT_CMD
 VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM

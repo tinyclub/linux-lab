@@ -943,14 +943,14 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
 使能一个内核模块：
 
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
 
@@ -996,12 +996,12 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel-getconfig m=minix_fs
     Getting kernel config: MINIX_FS ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     $ make kernel-setconfig m=minix_fs
     Setting kernel config: m=minix_fs ...
 
-    output/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
+    build/aarch64/linux-v5.1-virt/.config:CONFIG_MINIX_FS=m
 
     Enable new kernel config: minix_fs ...
 
@@ -1087,7 +1087,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 首先在 `linux-stable` 或配置的其他 `KERNEL_SRC` 目录下基于某个内核版本新建一个 git 分支，假设历史版本是 v5.1：
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git checkout -b linux-v5.1-dev v5.1
 
 然后通过 `kernel-clone` 从 Linux Lab 的 v5.1 克隆一份配置和相应目录：
@@ -1103,7 +1103,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 例如，想进行 v2.6.38 开发，可以考虑从 v2.6.36 来克隆，就近的配置更接近，出问题可能更少。
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git checkout -b linux-v2.6.38-dev v2.6.38
 
     $ make kernel-clone LINUX=v2.6.36 LINUX_NEW=linux-v2.6.38-dev
@@ -1516,7 +1516,7 @@ Docker 主机：
 
     $ make boot SHARE=1 SHARE_DIR=modules   # for external modules development
 
-    $ make boot SHARE=1 SHARE_DIR=output/aarch64/linux-v5.1-virt/   # for internal modules learning
+    $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/   # for internal modules learning
 
     $ make boot SHARE=1 SHARE_DIR=examples   # for c/assembly learning
 
@@ -1605,16 +1605,16 @@ Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目�
 
 Buildroot 已经为 buildroot 和内核配置提供了许多例子：
 
-    buildroot: buildroot/configs/qemu_ARCH_BOARD_defconfig
-    kernel: buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
+    buildroot: src/buildroot/configs/qemu_ARCH_BOARD_defconfig
+    kernel: src/buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
 
 Uboot 也提供了许多缺省的配置文件：
 
-    uboot: u-boot/configs/vexpress_ca9x4_defconfig
+    uboot: src/u-boot/configs/vexpress_ca9x4_defconfig
 
 内核本身也提供了缺省的配置：
 
-    kernel: linux-stable/arch/arm/configs/vexpress_defconfig
+    kernel: src/linux-stable/arch/arm/configs/vexpress_defconfig
 
 Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现有的配置：
 
@@ -1656,7 +1656,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 检出版本时请使用 `tag` 命令而非 `branch` 命令，以 kernel 为例：
 
-    $ cd linux-stable
+    $ cd src/linux-stable
     $ git tag
     ...
     v5.0
@@ -1676,7 +1676,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     或
 
     $ make B=i386/pc
-    $ pushd linux-stable && git checkout v5.4 && popd
+    $ pushd src/linux-stable && git checkout v5.4 && popd
     $ make kernel-clone LINUX_NEW=v5.4 KCFG=i386_defconfig
 
 如果不存在对应的 tag，可以直接使用 commit 号同时为它模拟一个 tag 名字，配置方法如下：

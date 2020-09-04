@@ -1,17 +1,17 @@
 [submodule "qemu"]
-	path = qemu
+	path = src/qemu
 	url = https://gitee.com/mirrors/qemu.git
 	ignore = all
 [submodule "buildroot"]
-	path = buildroot
+	path = src/buildroot
 	url = https://gitee.com/mirrors/buildroot.git
 	ignore = all
 [submodule "linux-stable"]
-	path = linux-stable
+	path = src/linux-stable
 	url = https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
 	ignore = all
 [submodule "u-boot"]
-	path = u-boot
+	path = src/u-boot
 	url = https://gitee.com/mirrors/u-boot.git
 	ignore = all
 [submodule "boards/aarch64/raspi3/bsp"]

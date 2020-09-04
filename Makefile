@@ -3203,7 +3203,7 @@ endif
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards
 
-SYSTEM_TOOL_DIR := system/tools
+SYSTEM_TOOL_DIR := $(TOP_SRC)/system/tools
 
 boot-init: FORCE
 	$(Q)echo "Running $@"

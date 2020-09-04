@@ -6,8 +6,9 @@
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
+TOP_SRC=${TOP_DIR}/src
 
-[ -z "$SYSTEM" ] && SYSTEM=$TOP_DIR/system
+[ -z "$SYSTEM" ] && SYSTEM=$TOP_SRC/system
 echo "LOG: SYSTEM: $SYSTEM"
 
 # The rootdir

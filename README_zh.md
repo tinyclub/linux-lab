@@ -1328,7 +1328,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make BOARD=virt
 
-为测试做准备，在 `system/` 目录下安装必要的文件/脚本：
+为测试做准备，在 `src/system/` 目录下安装必要的文件/脚本：
 
     $ make rootdir
     $ make root-install
@@ -1430,10 +1430,10 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ### 4.8.1 在 rootfs 中安装文件
 
-将文件放在 `system/` 的相对路径中，安装和重新制作 rootfs：
+将文件放在 `src/system/` 的相对路径中，安装和重新制作 rootfs：
 
-    $ mkdir system/root/
-    $ touch system/root/new_file
+    $ mkdir src/system/root/
+    $ touch src/system/root/new_file
     $ make root-install
     $ make root-rebuild
     $ make boot
@@ -1510,7 +1510,7 @@ Docker 主机：
 
     $ make BOARD=virt
 
-    $ make root-install	       # Install mount/umount scripts, ref: system/etc/init.d/S50sharing
+    $ make root-install	       # Install mount/umount scripts, ref: src/system/etc/init.d/S50sharing
     $ make root-rebuild
 
     $ touch hostshare/test     # Create a file in host

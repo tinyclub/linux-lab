@@ -1281,7 +1281,7 @@ Use `aarch64/virt` as the demo board here.
 
     $ make BOARD=virt
 
-Prepare for testing, install necessary files/scripts in `system/`:
+Prepare for testing, install necessary files/scripts in `src/system/`:
 
     $ make rootdir
     $ make root-install
@@ -1380,10 +1380,10 @@ default:
 
 ### 4.8.1 Install files to rootfs
 
-Simply put the files with a relative path in `system/`, install and rebuild the rootfs:
+Simply put the files with a relative path in `src/system/`, install and rebuild the rootfs:
 
-    $ mkdir system/root/
-    $ touch system/root/new_file
+    $ mkdir src/system/root/
+    $ touch src/system/root/new_file
     $ make root-install
     $ make root-rebuild
     $ make boot
@@ -1458,7 +1458,7 @@ Host:
 
     $ make BOARD=virt
 
-    $ make root-install	       # Install mount/umount scripts, ref: system/etc/init.d/S50sharing
+    $ make root-install	       # Install mount/umount scripts, ref: src/system/etc/init.d/S50sharing
     $ make root-rebuild
 
     $ touch hostshare/test     # Create a file in host

@@ -1,10 +1,9 @@
 
 # TODO List
 
-## V0.5
+## V0.6
 
-* Merge loongson support
-* Fix up old kernel compiling in new docker image
+* Add new ubuntu 20.04 based docker image support
 
 ## Future
 
@@ -24,7 +23,6 @@
 * Fix up filesystem issue while rootfs.ext2 is broken (verify and re-generate it)
 * Add real hardware boards support
 * Instruction encoding/decoding support should be added to easier ISA understanding: pwntools
-* Upgrade docker image to ubuntu 20.04 LTS and reduce the size a lot
 * Modulize the core Makefile to 'APP' level, reduce coupling and increase scalability & maintainability
 * More 'APP's and functions: from top to bottom
   * GUI System
@@ -34,5 +32,3 @@
   * Bootloaders
 * Clean up the 'shortcuts' support, current support differs from system
 * Use "-e TZ=Asia/Shanghai" to set time zone
-* Add new ubuntu 20.04 based docker image support
-* Forbind such usage: make BOARD=<ARCH>, which is wrong, right one is: make BOARD=<ARCH>/<BOARD_NAME>

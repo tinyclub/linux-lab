@@ -561,6 +561,9 @@ endif
 ifeq ($(findstring xbsp, x$(MAKECMDGOALS)),xbsp)
   notice := warning
 endif
+ifeq ($(findstring clone, $(MAKECMDGOALS)),clone)
+  notice := ignore
+endif
 
 # generate verify function
 define genverify
@@ -581,10 +584,12 @@ define genverify
       else
         verify_notice += update may help: 'make bsp B=$$(BOARD)'
       endif
-      ifeq ($$(notice), error)
-        $$(error ERR: $$(verify_notice))
-      else
-        $$(warning WARN: $$(verify_notice))
+      ifneq ($$(notice), ignore)
+        ifeq ($$(notice), error)
+          $$(error ERR: $$(verify_notice))
+        else
+          $$(warning WARN: $$(verify_notice))
+        endif
       endif
     endif
   endif
@@ -1621,10 +1626,11 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-ifneq ($$($(call _uc,$2)_NEW),$($(call _uc,$2)))
-
 NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($(call _uc,$2)_NEW)_defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
+
+ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
+
 NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($(call _uc,$2)_NEW)/
 NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 

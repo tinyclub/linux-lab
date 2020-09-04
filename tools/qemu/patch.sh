@@ -11,6 +11,7 @@ QEMU_SRC=$3
 QEMU_OUTPUT=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
+TOP_SRC=${TOP_DIR}/src
 
 QEMU_BASE=${QEMU%.*}
 
@@ -20,8 +21,8 @@ QPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/qemu/${QEMU}/
 QPD_BSP_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU_BASE}/
 QPD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/patch/qemu/${QEMU}/
 
-QPD_BASE=${TOP_DIR}/patch/qemu/${QEMU_BASE}/
-QPD=${TOP_DIR}/patch/qemu/${QEMU}/
+QPD_BASE=${TOP_SRC}/patch/qemu/${QEMU_BASE}/
+QPD=${TOP_SRC}/patch/qemu/${QEMU}/
 
 for d in $QPD_BOARD_BASE $QPD_BOARD $QPD_BSP_BASE $QPD_BSP $QPD_BASE $QPD
 do

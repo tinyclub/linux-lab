@@ -14,8 +14,9 @@ KERNEL_OUTPUT=$6
 FEATURE="$7"
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
+TOP_SRC=${TOP_DIR}/src
 
-KFD_CORE=${TOP_DIR}/feature/linux/core
+KFD_CORE=${TOP_SRC}/feature/linux/core
 
 LINUX_BASE=${LINUX%.*}
 
@@ -23,7 +24,7 @@ MACH=$(basename $BOARD)
 
 KFD_BOARD=${TOP_DIR}/boards/${BOARD}/feature/linux
 KFD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/feature/linux
-KFD=${TOP_DIR}/feature/linux
+KFD=${TOP_SRC}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 
 for d in $KFD_CORE

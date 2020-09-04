@@ -11,6 +11,7 @@ UBOOT_SRC=$3
 UBOOT_OUTPUT=$4
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
+TOP_SRC=${TOP_DIR}/src
 
 UBOOT_BASE=${UBOOT%.*}
 
@@ -20,8 +21,8 @@ UPD_BOARD=${TOP_DIR}/boards/${BOARD}/patch/uboot/${UBOOT}/
 UPD_BSP_BASE=${TOP_DIR}/boards/${BOARD}/bsp/patch/uboot/${UBOOT_BASE}/
 UPD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/patch/uboot/${UBOOT}/
 
-UPD_BASE=${TOP_DIR}/patch/uboot/${UBOOT_BASE}/
-UPD=${TOP_DIR}/patch/uboot/${UBOOT}/
+UPD_BASE=${TOP_SRC}/patch/uboot/${UBOOT_BASE}/
+UPD=${TOP_SRC}/patch/uboot/${UBOOT}/
 
 for d in $UPD_BOARD_BASE $UPD_BOARD $UPD_BSP_BASE $UPD_BSP $UPD_BASE $UPD
 do

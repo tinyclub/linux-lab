@@ -99,11 +99,11 @@ endif
 TOOL_DIR    := tools
 BOARDS_DIR  := boards
 BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
-FEATURE_DIR := feature/linux
 TFTPBOOT    := tftpboot
 HOME_DIR    := /home/$(USER)/
 GDBINIT_DIR := $(TOP_DIR)/.gdb
 TOP_SRC     := $(TOP_DIR)/src
+FEATURE_DIR := $(TOP_SRC)/feature/linux
 
 # Search board in basic arch list while board name given without arch specified
 ifneq ($(BOARD),)
@@ -2148,7 +2148,7 @@ $(eval $(call genclone,kernel,linux,K))
 #$(warning $(call genenvdeps,kernel,LINUX))
 $(eval $(call genenvdeps,kernel,LINUX))
 
-TOP_MODULE_DIR := $(TOP_DIR)/modules
+TOP_MODULE_DIR := $(TOP_SRC)/modules
 ifneq ($(PLUGIN),)
   TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
   ifeq ($(TMP),$(wildcard $(TMP)))

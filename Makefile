@@ -641,6 +641,7 @@ $(eval $(call __vs,ROOTFS,LINUX))
 $(eval $(call __vs,BUILDROOT,LINUX))
 $(eval $(call __vs,UBOOT,LINUX))
 $(eval $(call __vs,QEMU,LINUX))
+$(eval $(call __vs,QEMU,OS))
 $(eval $(call __vs,QTOOL,OS))
 
 _BIMAGE := $(BIMAGE)

@@ -633,6 +633,53 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
     $ make BOARD=malta
     $ make boot
 
+如果存在同名的板子，必须指定架构以示区分，否则系统会默认匹配一个（不一定刚好是你想要的），所以建议明确设定：
+
+    $ make BOARD=mipsel/malta
+
+目前同名的有 `virt`, `pc` 等，可以这样查看同名的板子：
+
+    $ make list FILTER=virt
+    [ aarch64/virt ]:
+          ARCH     = arm64
+          CPU     ?= cortex-a57
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+    [ riscv32/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.0.13
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+    [ riscv64/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+
+    $ make list FILTER=/pc
+    [ i386/pc ]:
+          ARCH     = x86
+          CPU     ?= qemu32
+          LINUX   ?= v5.1
+          ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/hda
+    [ x86_64/pc ]:
+          ARCH     = x86
+          CPU     ?= qemu64
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/ram0
+
+选择时可以这样：
+
+    $ make BOARD=x86_64/pc
+    $ make BOARD=riscv64/virt
+
 如果使用的命令选项是小写的 `board`，这表明创建的开发板的配置不会被保存，提供该选项的目的是为了方便用户同时运行多个开发板而不会相互冲突。
 
     $ make board=malta boot

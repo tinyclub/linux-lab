@@ -569,6 +569,53 @@ By default, the default board: `vexpress-a9` is used, we can configure, build an
     $ make BOARD=malta
     $ make boot
 
+If several boards have the same name, please specify the architecture to distinguish:
+
+    $ make BOARD=mipsel/malta
+
+Currently, such boards have the same name:
+
+    $ make list FILTER=virt
+    [ aarch64/virt ]:
+          ARCH     = arm64
+          CPU     ?= cortex-a57
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+    [ riscv32/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.0.13
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+    [ riscv64/virt ]:
+          ARCH     = riscv
+          CPU     ?= any
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/vda
+
+    $ make list FILTER=/pc
+    [ i386/pc ]:
+          ARCH     = x86
+          CPU     ?= qemu32
+          LINUX   ?= v5.1
+          ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/hda
+    [ x86_64/pc ]:
+          ARCH     = x86
+          CPU     ?= qemu64
+          LINUX   ?= v5.1
+          ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
+          ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
+          ROOTDEV ?= /dev/ram0
+
+Use them like this:
+
+    $ make BOARD=x86_64/pc
+    $ make BOARD=riscv64/virt
+
 If using `board`, it only works on-the-fly, the setting will not be saved, this is helpful to run multiple boards at the same and not to disrupt each other:
 
     $ make board=malta boot

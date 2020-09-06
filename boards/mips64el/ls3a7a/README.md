@@ -48,15 +48,15 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
 
   Download the zip package of the release-1903 branch from <https://gitee.com/tinylab/loongson-linux-v3.10/tree/release-1903/>.
 
-    $ cd /path/to/linux-lab
+    $ cd /path/to/linux-lab/src/
     $ ls tinylab-loongson-linux-v3.10-release-1903.zip
 
-  Decompress the zip package and rename the directory to the value of `KERNEL_SRC` in board's Makefile: `loongnix-linux-3.10`
+  Decompress the zip package and check if the directory: `loongnix-linux-3.10` generated:
 
     $ unzip tinylab-loongson-linux-v3.10-release-1903.zip
-    $ mv tinylab-loongson-linux-v3.10-release-1903 loongnix-linux-3.10
+    $ ls loongnix-linux-3.10
 
-  Enter into the kernel source directory, init it as a git repository
+  Enter into the kernel source directory, init it as a git repository:
 
     $ cd loonginx-linux-3.10
     $ git init

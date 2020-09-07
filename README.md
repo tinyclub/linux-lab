@@ -69,8 +69,11 @@
        - [4.8.3 Transfer via tftp](#483-transfer-via-tftp)
        - [4.8.4 Share with 9p virtio](#484-share-with-9p-virtio)
     - [4.9 Learning Assembly](#49-learning-assembly)
-    - [4.10 Running any make goals](#410-running-any-make-goals)
-    - [4.11 More Usage](#411-more-usage)
+    - [4.10 Learning C](#410-learning-c)
+       - [4.10.1 Host build and Run](#4101-host-build-and-run)
+       - [4.10.2 Cross build and Run](#4102-cross-build-and-run)
+    - [4.11 Running any make goals](#411-running-any-make-goals)
+    - [4.12 More Usage](#412-more-usage)
 - [5. Linux Lab Development](#5-linux-lab-development)
     - [5.1 Choose a board supported by qemu](#51-choose-a-board-supported-by-qemu)
     - [5.2 Create the board directory](#52-create-the-board-directory)
@@ -1547,7 +1550,39 @@ Linux Lab has added many assembly examples in `src/examples/assembly`:
     $ make -s -C aarch64/
     Hello, ARM64!
 
-## 4.10 Running any make goals
+## 4.10 Learning C
+
+### 4.10.1 Host build and Run
+
+Use hello as example:
+
+    $ cd src/examples/c/hello
+    $ make
+    gcc -fno-stack-protector -fomit-frame-pointer -fno-asynchronous-unwind-tables -fno-pie -no-pie -m32 -Wall -Werror -g -o hello hello.c
+    Hello, World!
+
+### 4.10.2 Cross build and Run
+
+Use ARM, MIPS and RISCV as example:
+
+    $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
+    $ arm-linux-gnueabi-gcc -o hello hello.c
+    $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello
+    Hello, World!
+
+    $ sudo apt-get install libc6-dev-mipsel-cross libc6-mipsel-cross
+    $ mipsel-linux-gnu-gcc -o hello hello.c
+    $ qemu-mipsel -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/mipsel-linux-gnu/lib/ /usr/mipsel-linux-gnu/lib/ld-2.30.so ./hello
+    Hello, World!
+
+    $ sudo apt-get install libc6-riscv64-cross libc6-dev-riscv64-cross
+    $ riscv64-linux-gnu-gcc -o hello hello.c
+    $ qemu-riscv64 -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/riscv64-linux-gnu/lib/ /usr/riscv64-linux-gnu/lib/ld-2.31.so ./hello
+    Hello, World!
+
+Above run through `qemu-user`, to run on target boards, please copy the binaries to target boards' rootfs with help from section 4.8.1.
+
+## 4.11 Running any make goals
 
 Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:
 
@@ -1562,7 +1597,7 @@ Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:
 
   `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
 
-## 4.11 More Usage
+## 4.12 More Usage
 
 Read more:
 

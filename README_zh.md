@@ -76,8 +76,11 @@
        - [4.8.3 通过 tftp 传输文件](#483-通过-tftp-传输文件)
        - [4.8.4 通过 9p virtio 共享文件](#484-通过-9p-virtio-共享文件)
     - [4.9 学习汇编](#49-学习汇编)
-    - [4.10 运行任意的 make 目标](#410-运行任意的-make-目标)
-    - [4.11 更多用法](#411-更多用法)
+    - [4.10 学习 C 语言](#410-学习-c-语言)
+       - [4.10.1 本地编译和运行](#4101-本地编译和运行)
+       - [4.10.2 交叉编译和运行](#4102-交叉编译和运行)
+    - [4.11 运行任意的 make 目标](#411-运行任意的-make-目标)
+    - [4.12 更多用法](#412-更多用法)
 - [5. Linux Lab 开发](#5-linux-lab-开发)
     - [5.1 选择一个 qemu 支持的开发板](#51-选择一个-qemu-支持的开发板)
     - [5.2 创建开发板的目录](#52-创建开发板的目录)
@@ -1599,7 +1602,39 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
     $ make -s -C aarch64/
     Hello, ARM64!
 
-## 4.10 运行任意的 make 目标
+## 4.10 学习 C 语言
+
+### 4.10.1 本地编译和运行
+
+以 hello 为例：
+
+    $ cd src/examples/c/hello
+    $ make
+    gcc -fno-stack-protector -fomit-frame-pointer -fno-asynchronous-unwind-tables -fno-pie -no-pie -m32 -Wall -Werror -g -o hello hello.c
+    Hello, World!
+
+### 4.10.2 交叉编译和运行
+
+下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 ARM, MIPS 和 RISCV 为例：
+
+    $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
+    $ arm-linux-gnueabi-gcc -o hello hello.c
+    $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello
+    Hello, World!
+
+    $ sudo apt-get install libc6-dev-mipsel-cross libc6-mipsel-cross
+    $ mipsel-linux-gnu-gcc -o hello hello.c
+    $ qemu-mipsel -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/mipsel-linux-gnu/lib/ /usr/mipsel-linux-gnu/lib/ld-2.30.so ./hello
+    Hello, World!
+
+    $ sudo apt-get install libc6-riscv64-cross libc6-dev-riscv64-cross
+    $ riscv64-linux-gnu-gcc -o hello hello.c
+    $ qemu-riscv64 -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/riscv64-linux-gnu/lib/ /usr/riscv64-linux-gnu/lib/ld-2.31.so ./hello
+    Hello, World!
+
+上面是通过 `qemu-user` 做指令翻译运行，如果要在目标板子上运行，参考 4.8.1 节复制到对应板子的文件系统即可。
+
+## 4.11 运行任意的 make 目标
 
 Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目标，譬如：
 
@@ -1614,7 +1649,7 @@ Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目�
 
   执行这些带有 `-run` 的目标允许我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
 
-## 4.11 更多用法
+## 4.12 更多用法
 
 欢迎阅读下述文档学习更多用法：
 

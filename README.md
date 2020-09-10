@@ -1285,7 +1285,11 @@ And then debug it directly:
 
     $ make debug
 
-It will open a new terminal, load the scripts from `.gdb/kernel.default`, run gdb automatically.
+If login via `vnc` or `webvnc`, It will open a new terminal, load the scripts from `.gdb/kernel.default`, run gdb automatically.
+
+But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this command again to start debugging:
+
+    $ make debug
 
 To customize kernel gdbinit script, simply copy one and edit it manually:
 
@@ -1309,13 +1313,19 @@ find out the code line of a kernel panic address:
 
 ### 4.6.2 Debugging Uboot
 
-to debug uboot with `.gdb/uboot.default`:
+To debug uboot with `.gdb/uboot.default`:
 
     $ make debug uboot
     or
     $ make boot DEBUG=uboot
 
-to automate uboot debug testing:
+If login with `vnc` or `webvnc`, the above command will open a terminal and start debugging automatically.
+
+But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this command again to start real debugging:
+
+    $ make debug uboot
+
+To automate uboot debug testing:
 
     $ make test-debug uboot
     or

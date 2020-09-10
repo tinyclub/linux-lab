@@ -1,0 +1,5 @@
+
+# Host gcc is required for builidroot, uboot and some other packages
+# Use the version as high as possible
+HOST_GCC[OS_trusty] := 8
+HOST_GCC[OS_focal]  := 9

@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.5-rc3 中文手册
+% Linux Lab v0.5 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -277,6 +277,23 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * [v0.4 rc1](http://tinylab.org/linux-lab-v04-rc1/)
     * 切换内核镜像到更快的 codeaurora
     * 添加本地开发板配置和编辑接口
+
+### 1.6.4 v0.5 @ 2020.09.12
+
+[v0.5](http://tinylab.org/linux-lab-v0.5/) 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
+
+* [v0.5 rc3](http://tinylab.org/linux-lab-v05-rc3/)
+    * 修复 arm/vexpress-a9 因编译器配置问题引起的 Uboot 编译失败
+    * 进一步完善文档中对普通用户的使用要求，避免使用 root 带来的诸多问题
+
+* [v0.5 rc2](http://tinylab.org/linux-lab-v05-rc2/)
+    * 进一步改善 Qemu 编译体验，在 Gitee 新增 submodules 镜像，不再有挫折感
+    * 新增 Arch/Manjaro docker 安装文档
+    * 修复 MacOS 大小写敏感的文件系统镜像制作步骤
+
+* [v0.5 rc1](http://tinylab.org/linux-lab-v05-rc1/)
+    * 全面完善并合并早期对龙芯全系处理器的支持
+    * 全面升级开发环境基础镜像到 Ubuntu 20.04
 
 # 2. Linux Lab 安装
 

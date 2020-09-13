@@ -3568,7 +3568,7 @@ endif
 PHONY += $(APP_TARGETS)
 endif
 
-PHONY += $(APPS)
+PHONY += $(APPS) $(patsubst %,_%,$(APPS))
 
 # Allow cleanstamp and run a target
 force-%:

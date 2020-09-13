@@ -51,10 +51,10 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
     $ cd /path/to/linux-lab/src/
     $ ls tinylab-loongson-linux-v3.10-release-1903.zip
 
-  Decompress the zip package and check if the directory: `loongnix-linux-3.10` generated:
+  Decompress the zip package and rename it to `loongnix-linux-3.10`:
 
     $ unzip tinylab-loongson-linux-v3.10-release-1903.zip
-    $ ls loongnix-linux-3.10
+    $ mv loongson-linux-3.10 loongnix-linux-3.10
 
   Enter into the kernel source directory, init it as a git repository:
 
@@ -69,6 +69,6 @@ Both of boot and network are ok with loongnix linux kernel: [git://cgit.loongnix
 
   Ignore the kernel download step:
 
-    $ make kernel-download -t
+    $ make source kernel -t
 
   That's all.

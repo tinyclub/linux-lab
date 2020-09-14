@@ -2042,7 +2042,9 @@ root-rd:
 
 root-rd-rebuild: FORCE
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) USER=$(USER) $(ROOT_GENRD_TOOL)
+	$(Q)rm -rf $(IROOTFS).tmp
+	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL)
+	$(Q)mv $(IROOTFS).tmp $(IROOTFS)
 
 ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
@@ -2050,11 +2052,19 @@ ifeq ($(prebuilt_root_dir), 1)
   ROOT_DIR := root-dir
 endif
 
+ifeq ($(DEV_TYPE),rd)
+  XROOTFS := $(IROOTFS)
+else
+  XROOTFS := $(HROOTFS)
+endif
+
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
 root-rebuild: $(ROOT_DIR)
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS) HROOTFS=$(HROOTFS) FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
+	$(Q)rm -rf $(XROOTFS).tmp
+	$(Q)ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS).tmp HROOTFS=$(HROOTFS).tmp FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
+	$(Q)if [ -f $(XROOTFS).tmp ]; then mv $(XROOTFS).tmp $(XROOTFS); fi
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
 else
 	$(call make_root)
@@ -2101,7 +2111,9 @@ root-dir-rebuild: rootdir
 rootdir:
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
+	$(Q)rm -rf $(ROOTDIR).tmp
+	$(Q)ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
+	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
 endif
 
 rootdir-install: root-install
@@ -2125,7 +2137,9 @@ root-hd:
 
 root-hd-rebuild: FORCE
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
-	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
+	$(Q)rm -rf $(HROOTFS).tmp
+	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
+	$(Q)mv $(HROOTFS).tmp $(HROOTFS)
 
 PHONY += root-hd root-hd-rebuild
 

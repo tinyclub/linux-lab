@@ -17,7 +17,7 @@
 
 [ -z "${USER}" ] && USER=$(whoami)
 
-ROOTDIR=$(echo ${HROOTFS} | sed -e "s%.${FSTYPE}%%g")
+ROOTDIR=$(echo ${HROOTFS} | sed -e "s%.${FSTYPE}.*%%g")
 
 FS_CPIO_GZ=${ROOTDIR}.cpio.gz
 FS_CPIO=${ROOTDIR}.cpio

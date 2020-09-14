@@ -17,7 +17,7 @@ tags:
 
 > 原文：[KS2009: Generic device trees](https://lwn.net/Articles/357487/)
 > 原创：By Jonathan Corbet @ Oct 19, 2009
-> 翻译：By Unicornx of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [WH2136](https://github.com/WH2136)
 
 > Device trees have been the subject of some acrimonious mailing list discussions in the past, but developers don't always have a good sense for what the term means. In an effort to clarify the situation, Grant Likely and Ben Herrenschmidt ran a session on how this abstraction works.
@@ -55,5 +55,3 @@ tags:
 > The device tree abstraction is used by the PowerPC and MicroBlaze architectures now. There is a lot of interest in using it in the ARM architecture code, but the ARM maintainer is a bit skeptical of the idea. Still, it seems like it might be possible to convince him by carefully porting a subarchitecture or two to device trees first. There were some supportive words from the audience; Greg Kroah-Hartman liked how device trees made it possible to remove static device structures from the kernel, while Thomas Gleixner observed that his employees are much happier about doing ports to boards where device trees are used than to other systems. So the use of device trees in the kernel may expand, but, to a great extent, that depends on architecture maintainers who were not present at the summit.
 
 当前 PowerPC 和 MicroBlaze 架构已经采纳了设备树的概念。内核开发者在 ARM 架构上尝试设备树的兴趣也很浓厚但 ARM 架构的主要维护人员对这一新事物仍然持保留态度。为了说服他看上去有必要先基于设备树移植一两个子系统看看效果。与会的观众中有不少支持的声音；Greg Kroah-Hartman 表示他非常喜欢设备树，因为使用它可以清理内核中那些静态的描述设备信息的结构，而 Thomas Gleixner 则指出，他的员工更加乐于在使用设备树的系统上开展移植工作。据此看来设备树在内核上的使用会逐步为大家所接受，当然很大程度上这仍然依赖于体系架构的维护人员的态度，可惜的是他们并没有出席此次峰会。
-
-[1]: http://tinylab.org

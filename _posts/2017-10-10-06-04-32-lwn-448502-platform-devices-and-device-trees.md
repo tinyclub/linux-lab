@@ -18,12 +18,12 @@ tags:
 
 > 原文：[Platform devices and device trees](https://lwn.net/Articles/448502/)
 > 原创：By Jonathan Corbet @ June 21, 2011
-> 翻译：By Unicornx of [TinyLab.org][1] @ Oct 10, 2017
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By Falcon of [TinyLab.org][1]
 
 > The [first part](https://lwn.net/Articles/448499/) of this pair of articles described the kernel's mechanism for dealing with non-discoverable devices: platform devices. The platform device scheme has a long history and is heavily used, but it has some disadvantages, the biggest of which is the need to instantiate these devices in code. There are alternatives coming into play, though; this article will describe how platform devices interact with the device tree mechanism.
 
-[本系列文章的上篇](/lwn-448499)介绍了内核处理那些不能自动枚举的硬件(译者注，即平台设备)的方法。平台设备机制已经存在了很长一段时间并且被广泛应用，但该机制有一些缺点，其中最大的问题就是该方法要求采用硬编码的方式实例化硬件设备。然而现在情况有了一点变化，本文将继续介绍一种新的机制即采用设备树是如何解决平台设备问题的。
+[本系列文章的上篇][2] 介绍了内核处理那些不能自动枚举的硬件(译者注，即平台设备)的方法。平台设备机制已经存在了很长一段时间并且被广泛应用，但该机制有一些缺点，其中最大的问题就是该方法要求采用硬编码的方式实例化硬件设备。然而现在情况有了一点变化，本文将继续介绍一种新的机制即采用设备树是如何解决平台设备问题的。
 
 > The current platform device mechanism is relatively easy to use for a developer trying to bring up Linux on a new system. It's just a matter of creating the descriptions for the devices present on that system and registering all of the devices at boot time. Unfortunately, this approach leads to the proliferation of "board files," each of which describes a single type of computer. Kernels are typically built around a single board file and cannot boot on any other type of system. Board files sort of worked when there were relatively small numbers of embedded system types to deal with. Now Linux-based embedded systems are everywhere, architectures which have typically depended on board files (ARM, in particular) are finding their way into more types of systems, and the whole scheme looks poised to collapse under its own weight.
 
@@ -33,13 +33,13 @@ tags:
 
 解决的方法就是采用“设备树”；本质上来说，一个设备树就是一个特定系统的硬件配置情况的文本描述。在系统引导阶段该设备树描述被传递给内核；内核通过解析该描述得知其自身运行在一个什么样的系统之上。理论上，如果设备树可以将各种系统之间的差别全部在引导阶段就区分开，那么我们就可以只用一个通用的内核来支持非常广泛的不同类型的硬件平台了。
 
-> [This article](http://devicetree.org/Device_Tree_Usage) is a good introduction to the device tree format and how it can be used to describe real-world systems; it is recommended reading for anybody interested in the subject.
+> [This article][3] is a good introduction to the device tree format and how it can be used to describe real-world systems; it is recommended reading for anybody interested in the subject.
 
-[这篇文章](http://devicetree.org/Device_Tree_Usage)给出了设备树格式的很好的介绍以及它是如何被用来描述真实世界的系统的；推荐给所有对设备树感兴趣的人阅读。
+[这篇文章][3] 给出了设备树格式的很好的介绍以及它是如何被用来描述真实世界的系统的；推荐给所有对设备树感兴趣的人阅读。
 
 > It is possible for platform devices to work on a device-tree-enabled system with no extra work at all, especially once [Grant Likely's improvements](https://lwn.net/Articles/448677/) are merged. If the device tree includes a platform device (where such devices, in the device tree context, are those which are direct children of the root or are attached to a "simple bus"), that device will be instantiated and matched against a driver. The memory-mapped I/O and interrupt resources will be marshalled from the device tree description and made available to the device's probe() function in the usual way. The driver need not know that the device was instantiated out of a device tree rather than from a hard-coded platform device definition.
 
-一旦[Grant Likely 的改进补丁](https://lwn.net/Articles/448677/)被合入内核主线，很有可能无需额外的工作我们就可以让平台设备在一个使用设备树的系统上运行起来。特别地，当系统的平台设备在设备树中是直接作为根节点的一级子节点被描述的，或者这些平台设备是连接在一个“简单总线”（译者注，指设备的 `compatible` 属性值为 `simple-bus`）上时，内核能够自动帮助我们创建对应的设备对象同时匹配其驱动。内存映射端口和中断方面的资源信息会自动从设备树的描述中被提取出来并通过 `probe()` 函数被传递给驱动。在这种情况下，驱动无需关心该平台设备是通过旧的基于硬编码方式定义的还是通过设备树由内核自动创建的。
+一旦[Grant Likely 的改进补丁][4] 被合入内核主线，很有可能无需额外的工作我们就可以让平台设备在一个使用设备树的系统上运行起来。特别地，当系统的平台设备在设备树中是直接作为根节点的一级子节点被描述的，或者这些平台设备是连接在一个“简单总线”（译者注，指设备的 `compatible` 属性值为 `simple-bus`）上时，内核能够自动帮助我们创建对应的设备对象同时匹配其驱动。内存映射端口和中断方面的资源信息会自动从设备树的描述中被提取出来并通过 `probe()` 函数被传递给驱动。在这种情况下，驱动无需关心该平台设备是通过旧的基于硬编码方式定义的还是通过设备树由内核自动创建的。
 
 > Life is not always quite that simple, though. Device names appearing in the device tree (in the "compatible" property) tend to take a standardized form which does not necessarily match the name given to the driver in the Linux kernel; among other things, device trees really are meant to work with more than one operating system. So it may be desirable to attach specific names to a platform device for use with device trees. The kernel provides an of_device_id structure which can be used for this purpose:
 
@@ -86,3 +86,6 @@ tags:
 总而言之，使平台设备驱动与设备树一起工作是一件相对直接的工作。主要的工作在于能够提供正确的名字以便内核根据设备树节点的定义将设备和相应的驱动绑定起来，除此之外还有一点对平台设备数据的处理。采用设备树机制后最好的结果是不再需要定义 `platform_device` 类型的静态变量，同时内核中的大量板级模板代码也可以被移除，经过这番改造后的内核将会变得更加轻便和灵活。
 
 [1]: http://tinylab.org
+[2]: /lwn-448499
+[3]: http://devicetree.org/Device_Tree_Usage
+[4]: https://lwn.net/Articles/448677/

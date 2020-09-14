@@ -126,6 +126,7 @@
        - [6.4.5 unable to create file: net/netfilter/xt_dscp.c](#645-unable-to-create-file-netnetfilterxt_dscpc)
        - [6.4.6 如何切到 root 用户](#646-如何切到-root-用户)
        - [6.4.7 提示指定的版本或者配置不存在](#647-提示指定的版本或者配置不存在)
+       - [6.4.8 is not a valid rootfs directory](#648-is-not-a-valid-rootfs-directory)
 - [7. 联系并赞助我们](#7-联系并赞助我们)
 
 <!-- toc end -->
@@ -2246,6 +2247,14 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     * 比如说某个板子目前的 `ROOTDEV_LIST` 中只有 sda, ram0 和 nfs
     * vda 可能根本不支持或者需要重新配置内核后才支持
     * 这个因板子和内核版本而异，需要具体对待
+
+### 6.4.8 is not a valid rootfs directory
+
+如果当前使用的是预制文件系统，说明操作过程中可能有类似 `CTRL+C` 中断了正常根文件系统目录、Ramdisk 或 Hardisk 镜像的创建过程，导致文件系统不完整，在确保 BSP 目录无其他紧要修改的情况下，可以通过如下命令恢复 BSP 仓库为默认设置：
+
+    $ make bsp-cleanup
+
+如果当前使用的是用户自己构建的文件系统，请确保文件系统符合 Linux 的规范，确保相关的基础目录均存在。
 
 # 7. 联系并赞助我们
 

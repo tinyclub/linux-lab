@@ -118,6 +118,7 @@
        - [6.4.5 unable to create file: net/netfilter/xt_dscp.c](#645-unable-to-create-file-netnetfilterxt_dscpc)
        - [6.4.6 how to run as root](#646-how-to-run-as-root)
        - [6.4.7 not in supported list](#647-not-in-supported-list)
+       - [6.4.8 is not a valid rootfs directory](#648-is-not-a-valid-rootfs-directory)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
 
 <!-- toc end -->
@@ -2173,6 +2174,14 @@ There are two main types:
     * For example, the above vda is not added in the `ROOTDEV_LIST`
     * This board may not support such type of device or just nobody verify and add it
     * This differs from board and kernel version
+
+### 6.4.8 is not a valid rootfs directory
+
+If using prebuilt filesystem, this error means the rootfs dir, ramdisk or harddisk creating procedure has been interrupted by `CTRL+C` or similar operations and it means the filesystem is not complete. If no important changes in BSP repository, reset it may help:
+
+    $ make bsp-cleanup
+
+If using external filesystem, please make sure the filesystem architecture follows the Linux standards.
 
 # 7. Contact and Sponsor
 

@@ -977,13 +977,13 @@ Build all internel kernel modules:
 
 List available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/`:
 
-    $ make module-list
+    $ make modules-list
 
 If `m` argument specified, list available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/` and `src/linux-stable/`:
 
-    $ make module-list m=hello
+    $ make modules-list m=hello
          1	m=hello ; M=$PWD/modules/hello
-    $ make module-list m=tun,minix
+    $ make modules-list m=tun,minix
          1	c=TUN ; m=tun ; M=drivers/net
          2	c=MINIX_FS ; m=minix ; M=fs/minix
 
@@ -1003,14 +1003,14 @@ Enable one kernel module:
 
 Build one kernel module (e.g. minix.ko):
 
-    $ make module M=fs/minix/
+    $ make modules M=fs/minix/
     Or
-    $ make module m=minix
+    $ make modules m=minix
 
 Install and clean the module:
 
-    $ make module-install M=fs/minix/
-    $ make module-clean M=fs/minix/
+    $ make modules-install M=fs/minix/
+    $ make modules-clean M=fs/minix/
 
 More flexible usage:
 
@@ -1021,7 +1021,7 @@ More flexible usage:
 
 Build external kernel modules (the same as internel modules):
 
-    $ make module m=hello
+    $ make modules m=hello
     Or
     $ make kernel x=$PWD/modules/hello/hello.ko
 

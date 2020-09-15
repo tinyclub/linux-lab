@@ -1053,13 +1053,13 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块：
 
-    $ make module-list
+    $ make modules-list
 
 如果加上 `m` 参数，除了列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `src/linux-stable/` 下的所有模块：
 
-    $ make module-list m=hello
+    $ make modules-list m=hello
          1	m=hello ; M=$PWD/modules/hello
-    $ make module-list m=tun,minix
+    $ make modules-list m=tun,minix
          1	c=TUN ; m=tun ; M=drivers/net
          2	c=MINIX_FS ; m=minix ; M=fs/minix
 
@@ -1079,14 +1079,14 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 编译一个内核模块（例如：minix.ko）
 
-    $ make module M=fs/minix/
+    $ make modules M=fs/minix/
     或
-    $ make module m=minix
+    $ make modules m=minix
 
 安装和清理模块：
 
-    $ make module-install M=fs/minix/
-    $ make module-clean M=fs/minix/
+    $ make modules-install M=fs/minix/
+    $ make modules-clean M=fs/minix/
 
 其他用法：
 
@@ -1097,7 +1097,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 编译外部内核模块（类似编译内部模块）：
 
-    $ make module m=hello
+    $ make modules m=hello
     或
     $ make kernel x=$PWD/src/modules/hello/hello.ko
 

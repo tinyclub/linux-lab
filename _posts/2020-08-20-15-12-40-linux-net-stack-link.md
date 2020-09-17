@@ -1,12 +1,12 @@
 ---
 layout: post
-author: '刘立超'
-title: "初识Linux网络栈及常用优化方法"
+author: 'Liu Lichao'
+title: "初识 Linux 网络栈及常用优化方法"
 top: false
 draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-net-stack-link/
-description: " 文章摘要 "
+description: "基于 ping 流程窥探 Linux 网络子系统，同时介绍各个模块的优化方法。"
 category:
   - Linux 内核
   - 网络管理
@@ -27,7 +27,8 @@ tags:
 2. Server 端回应 ICMP ECHO_REPLY 报文给 Client
 
 这其中涉及基本的二三层转发原理，比如：直接路由、间接路由、ARP 等概念。
-不是本文重点，最基本的网络通信原理可以参考这篇文章：
+
+这部分不是本文重点，最基本的网络通信原理可以参考这篇文章：
 * [TCP/IP 入门指导](https://mp.weixin.qq.com/s/5mwlij2iL83NdcPFUW6JuQ)
 
 ## ping 报文发送流程
@@ -116,6 +117,7 @@ tags:
 5. 驱动 poll 函数退出前将已经收取的 rx descriptor 回填给网卡
 
 **协议栈层**
+
 1. 驱动层调用 `napi_gro_receive()`，开始协议栈处理，对于 ICMP 报文，经过的处理函数：`ip_rcv()` -> `raw_local_deliver()` -> `raw_rcv()` -> `__sock_queue_rcv_skb()`
 
    现在内核都使用 GRO 机制将驱动层 skb 上送协议栈，GRO 全称 Generic Receive Offload，是网卡硬件的 LRO 功能（Intel 手册使用 RSC 描述）的软件实现，可以将同一条流的报文聚合后再上送协议栈处理，降低 CPU 消耗，提高网络吞吐量。
@@ -124,6 +126,7 @@ tags:
 3. 基于 poll/epoll 机制唤醒等待 socket 的进程 
 
 **应用读取报文**
+
 1. 从 socket buffer 的读取文，并拷贝到用户态
 
 ## 优化点
@@ -156,7 +159,8 @@ tags:
   网卡中断中触发 NET_RX_SOFTIRQ 软中断，软中断中调用驱动 poll 函数，进行轮询收包。NAPI 的好处在于避免了每个报文都触发中断，避免了无意义的上下文切换带来的 Cache/TLB miss 对性能的影响。
 
   但是 Linux 毕竟是通用操作系统，NAPI 轮询收包也要有限制，不能长时间收包，不干其他活。所以 NET_RX_SOFTIRQ 软中断有收包 budget 概念。即，一次最大收取的报文数。
-  收包数超过 netdev_budget（默认300）或者收包时间超过2个 jiffs 后就退出，等待下次软中断执行时再继续收包。驱动层 poll 收包函数默认一次收64个报文。
+
+  收包数超过 netdev_budget（默认300）或者收包时间超过2个 jiffies 后就退出，等待下次软中断执行时再继续收包。驱动层 poll 收包函数默认一次收64个报文。
 
   netdev_budget 调整方法：
 

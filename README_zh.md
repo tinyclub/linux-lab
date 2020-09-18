@@ -2227,7 +2227,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 如果看到如下信息：
 
-    $ make boot ROOTDEV=vda
+    $ make boot ROOTDEV=/dev/vda
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8

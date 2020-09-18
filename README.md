@@ -2156,7 +2156,7 @@ By default, no password required to run as root with:
 
 Such information means the specified value is not supported currently:
 
-    $ make boot ROOTDEV=vda
+    $ make boot ROOTDEV=/dev/vda
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8

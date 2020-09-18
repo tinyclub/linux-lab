@@ -2360,7 +2360,7 @@ endif
 # From linux-stable/scripts/depmod.sh, v5.1
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
-kernel-modules-install-km:
+kernel-modules-install-km: $(M_I_ROOT)
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
 		if [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ]; then \

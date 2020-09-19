@@ -1684,6 +1684,11 @@ Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目�
 
 * [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
 * [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
+* [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+* Linux Lab 视频公开课
+    * [CCTALK](https://www.cctalk.com/m/group/88948325)
+    * [B 站](https://space.bilibili.com/687228362)
+    * [知乎](https://www.zhihu.com/people/wuzhangjin)
 
 # 5. Linux Lab 开发
 

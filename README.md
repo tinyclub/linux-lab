@@ -1617,7 +1617,7 @@ Read more:
 * [Linux Lab Loongson Manual V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
 * Linux Lab Open Video
     * [CCTALK](https://www.cctalk.com/m/group/88948325)
-    * [Bilibili](https://space.bilibili.com/687228362)
+    * [Bilibili](https://space.bilibili.com/687228362/channel/detail?cid=152574)
     * [Zhihu](https://www.zhihu.com/people/wuzhangjin)
 
 # 5. Linux Lab Development

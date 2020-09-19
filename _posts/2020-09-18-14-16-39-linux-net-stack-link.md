@@ -123,7 +123,7 @@ tags:
    现在内核都使用 GRO 机制将驱动层 skb 上送协议栈，GRO 全称 Generic Receive Offload，是网卡硬件的 LRO 功能（Intel 手册使用 RSC 描述）的软件实现，可以将同一条流的报文聚合后再上送协议栈处理，降低 CPU 消耗，提高网络吞吐量。
 
 2. 送入 socket buffer
-3. 基于 poll/epoll 机制唤醒等待 socket 的进程 
+3. 基于 poll/epoll 机制唤醒等待 socket 的进程
 
 **应用读取报文**
 
@@ -171,7 +171,7 @@ tags:
 * **开启高级特性 GRO/RPS/RFS**
 
   GRO（Generic Receive Offload）：驱动送协议栈时，实现同条流报文汇聚后再上送，提高吞吐量。对应 `napi_gro_receive` 函数。
-  
+
   开启方法：
 
       ethtool -K eth0 gro on
@@ -196,7 +196,7 @@ tags:
 * **socket buffer**
 
   `__sock_queue_rcv_skb()` 中会将 skb 放入 socket buffer，其中会检查 socket buffer 是否溢出。所以要保证 socket buffer 足够大。
-  
+
   设置方法：
 
       sysctl -w net.core.rmem_max=xxxxxx   ----  限制最大值

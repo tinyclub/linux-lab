@@ -10,7 +10,7 @@ license: "cc-by-sa-4.0"
 permalink: /lwn-808048/
 description: "LWN 中文翻译，KRSI —— 另一个基于BPF的安全模块"
 category:
-  - 安全
+  - 系统安全
   - LWN
 tags:
   - Linux

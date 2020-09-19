@@ -344,6 +344,7 @@
         - name: Showdesk.io
         - name: Synergy
         - name: Docker
+        - name: Google Script
 
 - name: 行业观察
   categories:
@@ -357,6 +358,8 @@
       categories:
         - name: LWN
     - name: 行业动向
+      categories:
+        - name: ML
     - name: 行业标准
       categories:
         - name: CTA
@@ -413,6 +416,7 @@
         - name: Web 建站系统
           categories:
             - name: Wordpress
+    - name: 移动办公
 
 - name: Linux 运维
   categories:

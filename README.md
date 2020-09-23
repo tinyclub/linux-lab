@@ -982,7 +982,7 @@ List available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/`:
 If `m` argument specified, list available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/` and `src/linux-stable/`:
 
     $ make modules-list m=hello
-         1	m=hello ; M=$PWD/modules/hello
+         1	m=hello ; M=$PWD/src/modules/hello
     $ make modules-list m=tun,minix
          1	c=TUN ; m=tun ; M=drivers/net
          2	c=MINIX_FS ; m=minix ; M=fs/minix

@@ -1058,7 +1058,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 如果加上 `m` 参数，除了列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `src/linux-stable/` 下的所有模块：
 
     $ make modules-list m=hello
-         1	m=hello ; M=$PWD/modules/hello
+         1	m=hello ; M=$PWD/src/modules/hello
     $ make modules-list m=tun,minix
          1	c=TUN ; m=tun ; M=drivers/net
          2	c=MINIX_FS ; m=minix ; M=fs/minix

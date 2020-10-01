@@ -2076,22 +2076,17 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
        800x600       60.32
        640x480       59.94
 
-执行下述 `rm` 操作前务必做好容器和数据备份，例如固化容器：
-
-    $ tools/docker/commit linux-lab
-
-选择一个并对其进行配置：
+更新屏幕尺寸：
 
     $ cd /path/to/cloud-lab
-    $ tools/docker/rm-all
-    $ SCREEN_SIZE=800x600 tools/docker/run linux-lab
+    $ tools/docker/resize 1280x1024   # 指定任意一个尺寸
+    $ tools/docker/resize             # 不带参数则设定为主系统同样的屏幕尺寸
 
-如果要使用默认设置，请先删除手动设置：
+如果需要做到全屏，可按如下步骤操作：
 
-    $ cd /path/to/cloud-lab
-    $ rm configs/linux-lab/docker/.screen_size
-    $ tools/docker/rm-all
-    $ tools/docker/run linux-lab
+1. 如果用到虚拟机，先把虚拟机设置为全屏模式
+2. 然后执行：`tools/docker/resize`，把 Lab 屏幕大小设定为主机系统屏幕大小
+3. 进入到浏览器的 WebVNC 界面，点击左边栏的 FullScreen 按钮即可放大
 
 ### 6.3.6 如何进入全屏模式
 

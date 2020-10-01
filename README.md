@@ -2010,23 +2010,17 @@ Get available screen size values:
        800x600       60.32
        640x480       59.94
 
-Before running rm command, please save all of your data, for example, save the container:
-
-    $ tools/docker/commit linux-lab
-
-Choose one and configure it:
+Update remote screen size:
 
     $ cd /path/to/cloud-lab
-    $ tools/docker/rm-all
-    $ SCREEN_SIZE=800x600 tools/docker/run linux-lab
+    $ tools/docker/resize 1280x1024   # Specifiy anyone above
+    $ tools/docker/resize             # If no argument, Sync with host system
 
-If want the default one, please remove the manual setting at first:
+If want fullscreen, follow these steps:
 
-    $ cd /path/to/cloud-lab
-    $ rm configs/linux-lab/docker/.screen_size
-    $ tools/docker/rm-all
-    $ tools/docker/run linux-lab
-
+1. If using virtual machine, fullscreen virtual machine at fist
+2. Run `tools/docker/resize` to resize remote lab screen size
+3. Enter into WebVNC Interface, Click the FullScreen button at the left sidebar
 
 ### 6.3.6 How to work in fullscreen mode
 

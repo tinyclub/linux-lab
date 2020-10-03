@@ -93,6 +93,7 @@
        - [6.1.5 Network not work](#615-network-not-work)
        - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
        - [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
+       - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
     - [6.2 Qemu Issues](#62-qemu-issues)
        - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
        - [6.2.2 Poweroff hang](#622-poweroff-hang)
@@ -1885,6 +1886,19 @@ If the above methods still not restart the lab, please refer to the methods ment
 If resume from a suspended host system, the lab will restore automatically, no need to do anything to restart it, just use one of the 4 login methods mentioned in the 2.4 section, for example, start a web browser to connect it:
 
     $ tools/docker/vnc
+
+### 6.1.8 the following directives are specified both as a flag and in the configuration file
+
+If getting such error:
+
+    unable to configure the Docker daemon with file /etc/docker/daemon.json: the
+    following directives are specified both as a flag and in the configuration
+    file: registry-mirrors: (from flag: [https://docker.mirrors.ustc.edu.cn/], from
+    file: [https://xxx.mirror.aliyuncs.com])
+
+Means both `/etc/docker/daemon.json` and `/etc/default/docker` configured `registry-mirrors`, please comment the late one and restart docker:
+
+    $ sudo service docker restart
 
 ## 6.2 Qemu Issues
 

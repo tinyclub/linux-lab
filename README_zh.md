@@ -101,6 +101,7 @@
        - [6.1.5 网络不通](#615-网络不通)
        - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
        - [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
+       - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
     - [6.2 Qemu 相关](#62-qemu-相关)
        - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
        - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
@@ -1905,22 +1906,24 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror 站点配置：
-
-`/etc/default/docker`:
-
-    DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
-
-
-`/lib/systemd/system/docker.service`:
-
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进行 Mirror 站点配置：
 
 `/etc/docker/daemon.json`:
 
     {
         "registry-mirrors": ["<your accelerate address>"]
     }
+
+`/lib/systemd/system/docker.service`:
+
+    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+
+`/etc/default/docker`:
+
+    DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
+
+
+注意：以上三种方式不要同时配置，请选择适合 Docker 版本的方式选一种即可，新的 Linux 发行版一般都用 `/etc/docker/daemon.json`。
 
 配置完需要重启 docker 服务才能生效：
 
@@ -1951,6 +1954,19 @@ Ubuntu 系统下，请根据不同版本情况选择下述方法进行 Mirror �
 如果是从休眠中的主机（或虚拟机）系统唤醒，那么 Linux Lab 也会自动恢复，可以直接使用，登陆方式请参考 2.4 节中提供的 4 种登陆方式。例如，直接开一个浏览器去使用：
 
     $ tools/docker/vnc
+
+### 6.1.8 the following directives are specified both as a flag and in the configuration file
+
+如果运行 docker 时遇到如下错误：
+
+    unable to configure the Docker daemon with file /etc/docker/daemon.json: the
+    following directives are specified both as a flag and in the configuration
+    file: registry-mirrors: (from flag: [https://docker.mirrors.ustc.edu.cn/], from
+    file: [https://xxx.mirror.aliyuncs.com])
+
+说明同时在 `/etc/docker/daemon.json` 和 `/etc/default/docker` 中配置了 `registry-mirrors`，请注释掉后面的配置后重启 Docker 服务即可。
+
+    $ sudo service docker restart
 
 ## 6.2 Qemu 相关
 

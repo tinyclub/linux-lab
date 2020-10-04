@@ -1647,6 +1647,8 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 ARM, MIPS 和 RISCV 为例：
 
+    $ sudo apt-get update
+
     $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
     $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello

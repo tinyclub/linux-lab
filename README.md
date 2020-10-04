@@ -1577,6 +1577,8 @@ Use hello as example:
 
 Use ARM, MIPS and RISCV as example:
 
+    $ sudo apt-get update
+
     $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
     $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello

@@ -23,7 +23,7 @@ tags:
 
 Linux 的源码仓库主要有下面三个：
 
-# **linux 仓库**
+## linux 仓库
 
 这个一般指的是 Linus Torvalds 本尊亲自维护的那个仓库。该仓库的官方位置在：<https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/>。大部分情况下我们访问的都是它的镜像，其中 “第二官方” 的镜像在 github，地址是：<https://github.com/torvalds/linux>。对于国内的朋友，推荐访问国内的 mirror，这里我就不列举了，大家网上搜搜。
 
@@ -43,7 +43,7 @@ v5.4-rc8
 ```
 从 3.0 之后的版本，mainline 中的内核版本号只涉及主版本号和次版本号两个：x.y。我们会看到形如 x.y.z 版本的内核一般都是指 stable 版本，这也是接下来要给大家介绍的第二个仓库：**linux-stable 仓库**。
 
-# **linux-stable 仓库**
+## linux-stable 仓库
 
 这个仓库的官方位置在 <https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/>。其 “第二官方” 的镜像在 github，地址是：<https://github.com/gregkh/linux>。其主要维护者是 Linux 社区的另一位大佬 Greg Kroah-Hartman。
 
@@ -57,7 +57,7 @@ v5.4-rc8
 
 - 某些 Linux 版本会被宣布为长期维护（Long Term Support，简称 LTS）版本，譬如 5.4，则于其对应的 stable 分支  `linux-5.6.y` 会得到额外的垂青，也就是说该分支的维护时间会较长，多达几年，所以 `v5.6.y` 的 y 值会变得很大。
 
-# **linux-next 仓库**
+## linux-next 仓库
 
 **linux-next 仓库** 用于存放那些希望在下一个 merge 窗口被合入 mainline 的补丁代码。由 Stephen Rothwell 维护。官方原始仓库位置在：<https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git>。
 
@@ -67,7 +67,7 @@ Linus 一般会在某个正式版本（譬如 v5.4）发布的同时就会为下
 
 以上就是和 Linux 相关的三个主要开发代码仓库，大家搞明白了么？
 
-# 参考文献
+## 参考文献
 
 - [Kernel 官网有关 release 分类的说明](https://www.kernel.org/category/releases.html)
 - [Working with linux-next](https://www.kernel.org/doc/man-pages/linux-next.html)

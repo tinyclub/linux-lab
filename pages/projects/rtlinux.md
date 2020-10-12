@@ -54,6 +54,7 @@ tags:
   * 实时 Linux 测试
     * [Real time testing with Fuego](https://elinux.org/images/4/43/ELC2018_Real-time_testing_with_Fuego-181024m.pdf)
     * [Cyclictest](https://rt.wiki.kernel.org/index.php?title=Cyclictest&diff=7079&oldid=7077)
+  * [LITMUS-RT: multiprocessor real-time scheduling and synchronization](http://www.litmus-rt.org/)
 
 - 本站文章
 

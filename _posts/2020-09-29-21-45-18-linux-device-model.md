@@ -3,16 +3,18 @@ layout: post
 author: 'Liu Lichao'
 title: "自上而下分析 Linux 设备模型"
 top: false
-draft: false
+draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-device-model/
 description: "从字符设备开始，自上而下分析 Linux 设备模型核心实现"
 category:
   - Linux 内核
-  - 设备管理
+  - 设备驱动
+  - 字符设备
 tags:
   - device model
   - driver
+  - 设备模型
 ---
 
 > By 法海 of [TinyLab.org][1]
@@ -192,7 +194,7 @@ sysfs 文件操作进阶阅读：
 
 分层结构：
 
-![分层结构](/wp-content/uploads/2020/10/device-model/分层.png)
+![分层结构](/wp-content/uploads/2020/10/device-model/layers.png)
 
 上面的分层结构设计主要还是基于面向对象的思想，提取最大相同元素为底层数据结构。
 
@@ -227,6 +229,7 @@ dts 描述设备硬件组成，被编译成内核可识别的二进制文件。�
     [    0.793242] [<ffffffff80200498>] do_one_initcall+0x98/0x1c0
 
 重要信息：
+
 1. <font color='red'>这里注册的 platform_device 都属于 platform bus</font>
 
         of_platform_device_create_pdata
@@ -294,3 +297,5 @@ driver 的注册都在具体的驱动模块中实现。只需要一个 platform_
 驱动与设备都是拟人化的概念，在其背后还有 kobj/kset/ktype 等基础数据结构，实现了某些公共功能的抽象，比如引用计数，资源释放等。
 
 设备管理细节很多，不是几篇文章可以涵盖住的，因为解析代码太没意思了，本篇文章主要目的是把设备管理背后的 kobj/kset/ktype 引出来，再稍微说一下设备/驱动 API 背后的原理。希望能对初学者做出方向指导。
+
+[1]: http://tinylab.org

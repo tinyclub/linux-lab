@@ -2,7 +2,7 @@
 layout: post
 author: 'Wang Chen'
 title: "Shell 中的 2>&1 命令是什么，这次彻底搞清楚了"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /shell-redirect-stderr-stdout/
 description: "Shell 中的 2>&1 命令是什么，常常傻傻记不清，这次彻底搞清楚了"

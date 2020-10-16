@@ -2112,6 +2112,7 @@ rootdir:
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	$(Q)rm -rf $(ROOTDIR).tmp
+	$(Q)rm -rf $(ROOTDIR)
 	$(Q)ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
 	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
 endif

@@ -426,3 +426,17 @@ Liu Lichao:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: Linux内核工程师，对Linux核心子系统有浓厚兴趣，喜欢分享。
+
+Sun Jianguo:
+  name: Sun Jianguo
+  nickname: jgsun
+  archive: true
+  article: true
+  site: jgsun.github.io
+  email: jianguo_sun@hotmail.com
+  wechat: hustjgsun
+  wechat-pay: wechat-pay-jgsun
+  ali-pay: ali-pay-jgsun
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: Embedded Linux Engineer

@@ -2502,6 +2502,7 @@ PHONY += kernel-feature-test kernel-features-test features-test feature-test
 
 IMAGE := $(notdir $(ORIIMG))
 
+# aarch64 not add uboot header for kernel image
 ifeq ($(U),1)
   ifeq ($(ARCH),arm64)
     IMAGE := Image
@@ -2789,10 +2790,15 @@ _root-ud-rebuild: FORCE
 
 root-ud-rebuild: root-rd _root-ud-rebuild
 
+# aarch64 not add uboot header for kernel image
 kernel-uimage:
 ifeq ($(PBK), 0)
+ifeq ($(notdir $(UKIMAGE)), uImage)
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
 		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE)
+else
+	$(Q)cp $(KIMAGE) $(UKIMAGE)
+endif
 endif
 
 ifneq ($(INVALID_ROOTFS),1)

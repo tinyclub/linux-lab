@@ -3102,6 +3102,9 @@ endif
 EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
+D ?= 0
+DEBUG ?= $(D)
+
 # Debug listen on a unqiue port, should run exclusively
 ifneq ($(DEBUG),0)
   DEBUG_LOCK := $(GDBINIT_DIR)/.lock
@@ -3197,9 +3200,6 @@ else
     DEBUG = $(subst -,,$(subst debug,,$(firstword $(MAKECMDGOALS))))
   endif
 endif
-
-D ?= 0
-DEBUG ?= $(D)
 
 # Must disable the kaslr feature while debugging, otherwise, breakpoint will not stop and just continue
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel

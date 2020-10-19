@@ -59,7 +59,7 @@ DTB_SIZE?= 2
 UCONFIG ?= qemu-arm.h
 
 BOOTDEV_LIST := tftp flash pflash ram
-BOOTDEV ?= flash
+BOOTDEV ?= ram
 # get FLASH info from `flinfo`: 64M pflash0@0x00000000, 64M pflash1@0x04000000
 # The first one is used for -bios, the second one for environment, dtb and ramdisk if required
 PFLASH_BASE ?= 0x4000000

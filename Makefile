@@ -501,7 +501,7 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
       CCORI_$(2) := internal
       CCORI := internal
     else
-      $(eval $(call __vs,CCORI,$(2),$(3)))
+      $$(eval $$(call __vs,CCORI,$(2),$(3)))
     endif
     GCC_$(2)_SWITCH := 1
   endif

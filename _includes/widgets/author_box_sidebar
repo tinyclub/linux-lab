@@ -9,7 +9,7 @@
 
       {% assign page_url = site.production_url | append: page.url %}
       <div style="padding-top: 10px; padding-bottom: 10px;" id="page_url">
-        <img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/images/xingqiu/planet-free-card-small.png"></img>
+        <a href="https://wx.zsxq.com/dweb2/index/group/455128114458"><img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/images/xingqiu/planet-free-card-small.png"></img></a>
       </div>
 
 </div>

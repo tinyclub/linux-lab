@@ -5,7 +5,7 @@
 
 <div style="margin-left: 10px; margin-top: -18px;">
 
-<a>免费体验星球</a>
+<a href="https://wx.zsxq.com/dweb2/index/group/455128114458">免费体验星球</a>
 
       {% assign page_url = site.production_url | append: page.url %}
       <div style="padding-top: 10px; padding-bottom: 10px;" id="page_url">

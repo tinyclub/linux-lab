@@ -5,13 +5,12 @@
 
 <div style="margin-left: 10px; margin-top: -18px;">
 
-<a>手机扫码阅读</a>
+<a>免费体验星球</a>
 
       {% assign page_url = site.production_url | append: page.url %}
       <div style="padding-top: 10px; padding-bottom: 10px;" id="page_url">
-        <img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/assets/themes/tinylab.org/img/loading.gif"></img>
+        <img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/images/xingqiu/planet-free-card-small.png"></img>
       </div>
-      <script async type="text/javascript">$(document).ready(function () { $('#loading_img_sidebar').hide(); $('#page_url').qrcode({ text: "{{ page_url }}", width: 90, height: 90 }); });</script>
 
 </div>
 

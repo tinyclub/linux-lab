@@ -4,6 +4,8 @@
 % \today
 --><!-- metadata end -->
 
+![Linux Lab Logo](doc/images/linux-lab-logo.jpg)
+
 **订阅公众号，关注项目状态：**
 
 ![扫码订阅 “泰晓科技” 公众号](doc/images/tinylab-wechat.jpg)

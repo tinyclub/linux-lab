@@ -10,6 +10,10 @@ MEM     ?= 128M
 # This is for old linux 0.11 floppy support
 QEMU    ?= v0.10.6
 
+GCC = 9
+# Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
+CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE
+
 ifeq ($(QEMU),v0.10.6)
 QEMU_SDL    := 0
 QEMU_CURSES := 0

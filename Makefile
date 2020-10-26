@@ -1608,6 +1608,8 @@ $$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
 	$$(Q)mkdir -p $$($(call _uc,$1)_BUILD)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
+	$$(Q)$$(if $$(CFGS[$(3)_N]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -d $$n;))
+	$$(Q)$$(if $$(CFGS[$(3)_Y]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -e $$n;))
 	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
@@ -2177,6 +2179,9 @@ $(eval $(call gencfgs,kernel,linux,K))
 $(eval $(call genclone,kernel,linux,K))
 #$(warning $(call genenvdeps,kernel,LINUX))
 $(eval $(call genenvdeps,kernel,LINUX))
+# Get configs must be enabled/disabled for target toolchain and kernel versions
+$(eval $(call __vs,CFGS[K_N],GCC,LINUX))
+$(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
 
 TOP_MODULE_DIR := $(TOP_SRC)/modules
 ifneq ($(PLUGIN),)

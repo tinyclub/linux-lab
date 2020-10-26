@@ -24,6 +24,9 @@ if [ $LINUX_BASE != $LINUX ]; then
   KPD_BASE=${TOP_SRC}/patch/linux/${LINUX_BASE}/
 fi
 
+KPD_ROOT=${TOP_SRC}/patch/linux/
+[ -x "$KPD_ROOT/patch.sh" ] && $KPD_ROOT/patch.sh $KERNEL_SRC
+
 for d in $KPD_BOARD_BASE $KPD_BOARD $KPD_BSP_BASE $KPD_BSP $KPD_BASE $KPD
 do
     echo $d
@@ -40,4 +43,6 @@ do
 
         [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
     done
+
+    [ -x "$d/patch.sh" ] && $d/patch.sh $KERNEL_SRC
 done

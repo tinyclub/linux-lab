@@ -1406,9 +1406,9 @@ ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$(1))_SRC))),$$($(call _uc,$(1))_
     $(call _uc,$(1))_SRC_DEFAULT := 0
   else
     ifneq ($$(PLUGIN_DIR),)
-      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$($(call _uc,$(1))_SRC)),x$$(PLUGIN_DIR))
+      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$(TOP_DIR)/$$($(call _uc,$(1))_SRC)),x$$(PLUGIN_DIR))
         $(call _uc,$(1))_SROOT := $$(PLUGIN_DIR)
-        $(call _uc,$(1))_SPATH := $$(subst $$(PLUGIN_DIR)/,,$$($(call _uc,$(1))_SRC))
+        $(call _uc,$(1))_SPATH := $$(subst $$(PLUGIN_DIR)/,,$$(TOP_DIR)/$$($(call _uc,$(1))_SRC))
         $(call _uc,$(1))_SRC_DEFAULT := 0
       endif
     endif

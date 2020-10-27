@@ -6,7 +6,9 @@
 
 ![Linux Lab Logo](doc/images/linux-lab-logo.jpg)
 
-**Subscribe Wechat**：![Wechat Public](doc/images/tinylab-wechat.jpg)
+**Subscribe Wechat**：
+
+![Wechat Public](doc/images/tinylab-wechat.jpg)
 
 <!-- toc start -->
 

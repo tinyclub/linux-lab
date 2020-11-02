@@ -66,7 +66,6 @@ tags:
 
   * 插件
       * [Loongson](https://gitee.com/loongsonlab/loongson)：国产龙芯处理器开发插件，已全面支持三大系列
-      * [RLK4.0](https://gitee.com/tinylab/rlk4.0)：《奔跑吧Linux内核 4.0》一书课程实验
       * [CSKY](https://gitee.com/tinylab/csky)：中天微国产处理器 [C-SKY Linux](https://c-sky.github.io) 开发插件
 
 ## 相关文章

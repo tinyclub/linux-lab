@@ -15,6 +15,8 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > 2017-08-14 23:42:48
 
+**注意：rlk4.0 插件已经过期，不再维护，建议直接使用 Linux Lab 支持的相关开发板**
+
 盼望着，盼望着，《奔跑吧 Linux 内核》终于如期付梓，预计在 8 月 22 日上市，几大知名图书站点都可以[预订](http://www.epubit.com.cn/book/details/4835)了。
 
 [![RLK4.0 Book](/wp-content/uploads/2017/08/rlk4.0.jpg)](http://www.epubit.com.cn/book/details/4835)

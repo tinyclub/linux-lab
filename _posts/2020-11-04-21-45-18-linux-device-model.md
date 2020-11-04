@@ -3,7 +3,7 @@ layout: post
 author: 'Liu Lichao'
 title: "自上而下分析 Linux 设备模型"
 top: false
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-device-model/
 description: "从字符设备开始，自上而下分析 Linux 设备模型核心实现"

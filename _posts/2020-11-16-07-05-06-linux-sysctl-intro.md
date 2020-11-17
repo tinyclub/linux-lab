@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Wu Junwen'
+author: 'Wu Daemon'
 title: "一文读懂 Linux 内核运行时参数配置"
 draft: true
 top: false
@@ -18,6 +18,9 @@ tags:
   - vm
   - 内存管理
 ---
+
+> By Wu Daemon of [TinyLab.org](http://tinylab.org)
+> 2020/11/16
 
 ## Linux 内核运行时配置简介
 

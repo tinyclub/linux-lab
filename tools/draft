@@ -24,7 +24,7 @@ draft_on="draft:.*true"
 draft_off="draft: false"
 
 # List all drafts
-grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} egrep "^title:|^permalink:" {} | sed -e "s%^permalink:\(.*[/]*\)%permalink: \1/%g" | tr -s '/' \
+grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} egrep "^title:|^permalink:" {} | sed -e "s%^permalink:\(.*[/]*\)%permalink:\1/%g" | tr -s '/' \
 	| tr -d '\n' | sed -e "s%/title:%/\n%g;s%title:%%g;s%permalink: /% http://tinylab.org/%g" | sort | cat -n
 total=`grep -ur "$draft_on" $TOP_DIR/../{_posts,pages}/ | cut -d':' -f1 | egrep -v "/post|/draft" | xargs -I{} grep "^title:" {} | wc -l | tr -d ' '`
 post=""

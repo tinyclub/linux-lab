@@ -105,6 +105,7 @@
        - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
        - [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
        - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
+       - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
     - [6.2 Qemu 相关](#62-qemu-相关)
        - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
        - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
@@ -1977,6 +1978,13 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 说明同时在 `/etc/docker/daemon.json` 和 `/etc/default/docker` 中配置了 `registry-mirrors`，请注释掉后面的配置后重启 Docker 服务即可。
 
     $ sudo service docker restart
+
+### 6.1.9 pathspec FETCH_HEAD did not match any file known to git
+
+如果在 `make boot` 时遇到如下错误，说明容器内网络可能不通，请参考 6.1.5 节。
+
+    Could not resolve host: gitee.com
+    error: pathspec 'FETCH_HEAD' dit not match any file(s) known to git
 
 ## 6.2 Qemu 相关
 

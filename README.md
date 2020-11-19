@@ -98,6 +98,7 @@
        - [6.1.6 Client.Timeout exceeded while waiting headers](#616-clienttimeout-exceeded-while-waiting-headers)
        - [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
        - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
+       - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
     - [6.2 Qemu Issues](#62-qemu-issues)
        - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
        - [6.2.2 Poweroff hang](#622-poweroff-hang)
@@ -1905,6 +1906,13 @@ If getting such error:
 Means both `/etc/docker/daemon.json` and `/etc/default/docker` configured `registry-mirrors`, please comment the late one and restart docker:
 
     $ sudo service docker restart
+
+### 6.1.9 pathspec FETCH_HEAD did not match any file known to git
+
+If get such error while running `make boot`, it means network issue, please refer to section 6.1.5。
+
+    Could not resolve host: gitee.com
+    error: pathspec 'FETCH_HEAD' dit not match any file(s) known to git
 
 ## 6.2 Qemu Issues
 

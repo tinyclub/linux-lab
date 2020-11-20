@@ -3201,7 +3201,7 @@ else
 endif
 
 # Add extra qemu options
-BOOT_CMD += $(XOPTS)
+BOOT_CMD += $(XOPTS) $(XQOPT)
 
 # Get DEBUG option if -debug found in goals
 ifeq (debug,$(firstword $(MAKECMDGOALS)))
@@ -3332,7 +3332,7 @@ ifneq ($(TEST_TIMEOUT),0)
   TEST_LOG_READER ?= tools/qemu/reader.sh
   TEST_RET        ?= $(TEST_LOGGING)/boot.ret
 
-  # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.lo
+  # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
 ifeq ($(findstring serial,$(XOPTS)),serial)
     XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
 else

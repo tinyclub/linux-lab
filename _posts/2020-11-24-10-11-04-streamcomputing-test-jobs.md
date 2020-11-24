@@ -2,7 +2,7 @@
 layout: post
 author: 'Mark Zhan'
 title: "新创 AI 芯片公司希姆计算正在组建测试团队"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /streamcomputing-test-jobs/
 description: "新创 AI 芯片公司希姆计算正在组建测试团队，正在招聘一名软件测试 Leader 和 10 名软件测试工程师。"

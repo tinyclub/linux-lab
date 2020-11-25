@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Daemon'
 title: "一文读懂 Linux 内核运行时参数配置"
-draft: true
+draft: false
 top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-sysctl-intro/

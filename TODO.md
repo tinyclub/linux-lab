@@ -32,3 +32,4 @@
   * Bootloaders
 * Clean up the 'shortcuts' support, current support differs from system
 * Use "-e TZ=Asia/Shanghai" to set time zone
+* Add an interative configure script

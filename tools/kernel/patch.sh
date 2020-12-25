@@ -42,6 +42,11 @@ do
         [ $? -eq 0 ] && continue
 
         [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
+
+        if [ $? -ne 0 ]; then
+            grep -iq "GIT binary patch" $p
+            [ $? -eq 0 ] && pushd ${KERNEL_SRC} && git apply -p1 < $p && popd
+        fi
     done
 
     [ -x "$d/patch.sh" ] && $d/patch.sh $KERNEL_SRC

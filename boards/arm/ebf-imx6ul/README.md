@@ -20,7 +20,7 @@ And the related dtb should be changed in the following sections.
     imx6ull-nand-npi.dtb  zImage
     $ ls boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/
     4.19.35+
-    $ rm boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/v4.19.35+/{source,build}
+    $ rm boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
 
 ### Configure your board
 
@@ -52,7 +52,7 @@ And the related dtb should be changed in the following sections.
 
   Board:
 
-    $ sudo mkdir /boot/dtbs/4.19.35+
+    $ sudo mkdir -p /boot/dtbs/4.19.35+
     $ sudo mv ~/imx6ull-nand-npi.dtb /boot/dtbs/4.19.35+/
     $ sudo mv ~/zImage /boot/vmlinuz-4.19.35+
 

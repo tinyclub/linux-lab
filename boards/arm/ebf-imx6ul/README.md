@@ -84,6 +84,7 @@ And the related dtb should be changed in the following sections.
 
 ## TODO
 
+* Automate the uploading via scp (need allow login with root without password), required by `make boot`
 * Document usage for mmc boards
 * Enable ethernet in Uboot, for dhcp, tftpboot and nfs
 * Enable otg in Linux System and document uploading via otg

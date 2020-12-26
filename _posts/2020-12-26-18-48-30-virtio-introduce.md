@@ -1,0 +1,101 @@
+---
+layout: post
+author: 'Liu Lichao'
+title: "VIRTIO 简介"
+top: false
+draft: false
+license: "cc-by-nc-nd-4.0"
+permalink: /virtio-introduce/
+description: " virtio 简介 "
+category:
+  - 虚拟化
+  - virtio
+tags:
+  - virtio
+---
+
+> By 法海 Name of [TinyLab.org][1]
+> Dec 26, 2020
+
+## 全虚拟化与半虚拟化
+
+全虚拟化指 QEMU 仿真完整的物理设备。比如仿真 e1000 网卡，虚拟机使用 e1000 网卡驱动，QEMU 提供仿真的 e1000 设备。这种方案的优点是虚拟机的内核不需要修改即可运行，因为 QEMU 仿真的设备都是标准的，内核已经支持的设备。这种方案的缺点是效率低，每次访问 e1000 都需要 vm_exit/vm_enter。
+
+为了提高虚拟机的 IO 能力，virtio 协议被制定。virtio 协议定义了各类设备与驱动，定义了它们如何初始化，如何通信，如何通知等。其中，最核心的是设备与驱动的通信机制，避免了每次访问外设寄存器都要 vm_exit/vm_enter 的问题。
+
+使用 virtio 协议的虚拟机方案也称作半虚拟化方案。
+
+## 什么是 virtio
+ 
+全虚拟化方案中，QEMU 模拟整个设备，效率低下，virtio 应运而生，定义了虚拟设备与虚拟机如何通信，提高了虚拟化效率。全虚拟方案中，虚拟机以寄存器的方式访问外设，比如网卡发送一个报文，需要写很多次寄存器(会带来 vm_exit/vm_enter)，virio 协议重点解决的就是这种不必要的性能损失，虚拟机与物理机使用 vring 传输数据，避免了频繁了上下文切换。
+
+### 虚拟机基本运行环境
+
+![虚拟机基本运行环境](/wp-content/uploads/2020/12/virtio-introduce/kvm.jpeg)
+
+KVM 与 QEMU 共同组成了 VMM，为虚拟机运行提供支撑。
+
+Libvirt 是管理虚拟机的工具，为外部管理工具提供虚拟机管理能力，比如为 opensack 提供创建/销毁虚拟机的能力。
+
+### virtio-net
+
+virtio-net 设备是最晚开发完成的，最复杂的 virtio 设备。本文及后续文章，以 virtio-net 为入口，分析 virtio 及设备虚拟化。
+
+最早的 virtio-net 架构图：
+
+![最早的 virtio-net 架构图](/wp-content/uploads/2020/12/virtio-introduce/virio-early.png)
+
+#### 两个通道
+
+1. 控制通道 - 用来协商前端/后端能力，建立数据通道，也可以在运行中设备设备参数。见图中蓝实线。
+2. 数据通道 - 传输数据，见图中红实线。
+
+#### vring
+
+之前提到过，virtio 的核心在于驱动与设备如何通信，这里的精髓就在 vring，vring 是虚拟机分配，与物理机共享的内存。共享内存 + 定义好的描述符格式 + 通知机制 = virtio 通信的高效。
+
+#### 前端/后端
+
+运行在虚拟机中的 virtio 驱动被称作前端，运行在虚拟机外的 virtio 设备被称作后端。
+
+#### 上图的架构中，网络通信流程
+
+1. 虚拟机中 virtio-net driver 通过虚拟 PCIE 总线感知到 QEMU 模拟的 virtio-net device，驱动初始化，两者建立控制通道，协商基本能力，虚拟机分配 vring 并与 QEMU 共享。
+2. 网络发包，虚拟机更新 vring，并通知 KVM， KVM 再通知 QEMU，QEMU 处理待发送的报文
+3. 网络收包，QEMU 收到报文，填充 vring，通过 KVM 向虚拟机触发虚拟中断，虚拟机完成收包
+
+#### 上述方案的性能问题
+
+上下文切换多，报文收发需要在虚拟机/KVM/QEMU 三者间上下文切换
+
+### vhost
+
+vhost 协议是为了将 virtio 的数据通道卸载到其他地方，以实现性能提升。比如用户态的 vhost-user，内核态的 vhost-net。
+
+为什么用‘卸载’这个词呢？联想到 virtio 最初的实现形式，数据平面需要经过 QEMU，效率比较低。然而数据平面的核心操作就是 vring 的通知和前后端填充/提取 vring 的操作。所以，控制平面将 vring 协商好之后，数据平面不需要经过 QEMU。
+
+因此，virtio 数据平面可以脱离 QEMU，被‘卸载’到内核或者用户态。
+
+#### vhost-net/virtio-net 架构
+
+在 vhost-net/virtio-net 架构中，vhost-net 是运行在物理机内核态的后端，virtio-net 是运行在虚拟机内核态的前端。
+
+virtio-net与vhost-net的对应关系见下图：
+![virtio-net](/wp-content/uploads/2020/12/virtio-introduce/vhost-net.jpeg)
+
+控制通道与数据通道是独立的，控制通道通信需要经过：虚拟机内核、QEMU、物理机内核，控制通道的职责是完成能力协商和分配 vring 共享内存，以方便数据通道通信。
+
+## 总结
+
+因为全虚拟化性能低，后来演进出来了 virtio 标准，而后 virtio 从最初完全基于 QEMU 实现，到后来在物理机内核态实现 vhost-net，性能在逐渐提升。再到与 DPDK 搭配的 vhost-user（在物理机用户态实现的 virtio 后端），配合 OVS 使虚拟机间的通信效率提升。
+
+本文从 high level 角度大概说了一下 virtio，很多问题没有说明，希望后面能整理成文。比如：
+1.  控制平面具体做了什么事？怎么实现的？
+2.  数据平面如何通信的？vring 怎么定义的描述符？
+3.  物理机/虚拟机间的中断/通知机制是如何实现的？
+4.  vring 如何在虚拟机与物理机间共享的？地址怎么转换的？
+
+本文参考：
+1. https://www.redhat.com/en/blog/introduction-virtio-networking-and-vhost-net
+2. https://developer.ibm.com/technologies/linux/articles/l-virtio/
+3. virtio spec 1.1

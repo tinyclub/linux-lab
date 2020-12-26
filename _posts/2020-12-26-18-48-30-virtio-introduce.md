@@ -1,20 +1,24 @@
 ---
 layout: post
 author: 'Liu Lichao'
-title: "VIRTIO 简介"
+title: "半虚拟化技术 - VIRTIO 简介"
 top: false
-draft: false
+draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /virtio-introduce/
 description: " virtio 简介 "
 category:
   - 虚拟化
-  - virtio
 tags:
   - virtio
+  - vhost
+  - vring
+  - virtio-net
+  - qemu
+  - kvm
 ---
 
-> By 法海 Name of [TinyLab.org][1]
+> By 法海 of [TinyLab.org][1]
 > Dec 26, 2020
 
 ## 全虚拟化与半虚拟化
@@ -35,7 +39,7 @@ tags:
 
 KVM 与 QEMU 共同组成了 VMM，为虚拟机运行提供支撑。
 
-Libvirt 是管理虚拟机的工具，为外部管理工具提供虚拟机管理能力，比如为 opensack 提供创建/销毁虚拟机的能力。
+Libvirt 是管理虚拟机的工具，为外部管理工具提供虚拟机管理能力，比如为 OpenStack 提供创建/销毁虚拟机的能力。
 
 ### virtio-net
 
@@ -47,7 +51,7 @@ virtio-net 设备是最晚开发完成的，最复杂的 virtio 设备。本文�
 
 #### 两个通道
 
-1. 控制通道 - 用来协商前端/后端能力，建立数据通道，也可以在运行中设备设备参数。见图中蓝实线。
+1. 控制通道 - 用来协商前端/后端能力，建立数据通道，也可以在运行中设置设备参数。见图中蓝实线。
 2. 数据通道 - 传输数据，见图中红实线。
 
 #### vring
@@ -90,12 +94,14 @@ virtio-net与vhost-net的对应关系见下图：
 因为全虚拟化性能低，后来演进出来了 virtio 标准，而后 virtio 从最初完全基于 QEMU 实现，到后来在物理机内核态实现 vhost-net，性能在逐渐提升。再到与 DPDK 搭配的 vhost-user（在物理机用户态实现的 virtio 后端），配合 OVS 使虚拟机间的通信效率提升。
 
 本文从 high level 角度大概说了一下 virtio，很多问题没有说明，希望后面能整理成文。比如：
-1.  控制平面具体做了什么事？怎么实现的？
-2.  数据平面如何通信的？vring 怎么定义的描述符？
-3.  物理机/虚拟机间的中断/通知机制是如何实现的？
-4.  vring 如何在虚拟机与物理机间共享的？地址怎么转换的？
+
+1. 控制平面具体做了什么事？怎么实现的？
+2. 数据平面如何通信的？vring 怎么定义的描述符？
+3. 物理机/虚拟机间的中断/通知机制是如何实现的？
+4. vring 如何在虚拟机与物理机间共享的？地址怎么转换的？
 
 本文参考：
+
 1. https://www.redhat.com/en/blog/introduction-virtio-networking-and-vhost-net
 2. https://developer.ibm.com/technologies/linux/articles/l-virtio/
 3. virtio spec 1.1

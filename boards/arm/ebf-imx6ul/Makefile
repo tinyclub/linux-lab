@@ -35,10 +35,15 @@ QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 # For real board uploading
 #
 # Notes:
+#
 # 1. Must disable serial login password for ip getting automation, `passwd -d debian`
 # 2. Must allow login as root with password, see README.md
-BOARD_IP   ?= $(shell python3 $(TOP_DIR)/tools/helper/getip.py)
-BOARD_PASS ?= linux-lab
+#
+ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
+BOARD_SERIAL   ?= /dev/ttyUSB0
+BOARD_BAUDRATE ?= 115200
+BOARD_PASS     ?= linux-lab
+endif
 
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain

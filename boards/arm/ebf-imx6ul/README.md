@@ -119,6 +119,21 @@ Then, simply upload with following command:
     $ make dtb-upload
     $ make modules-upload
 
+Compile a module and upload it:
+
+    $ make modules m=hello
+    $ make modules-install m=hello
+    $ make modules-upload
+
+Use the module in board (login via `minicom -D /dev/ttyUSB0`):
+
+    $ sudo modprobe hello
+    $ lsmod | grep hello
+    hello                  16384  0
+    $ dmesg | grep hello
+    [ 7337.555712] hello: loading out-of-tree module taints kernel.
+    [ 7337.569959] hello module init
+
 ## TODO
 
 * Document usage for mmc boards

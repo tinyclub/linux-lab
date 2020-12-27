@@ -2356,7 +2356,7 @@ endif
 
 PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
-M_I_ROOT ?= rootdir
+M_I_ROOT ?= root-dir
 ifeq ($(PBR), 0)
   ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
     M_I_ROOT := root-buildroot

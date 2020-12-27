@@ -29,9 +29,9 @@ And the related dtb should be changed in the following sections.
 
 ### Configure your board
 
-Please connect the board to your host via usb cable and ethernet cable, then:
+Please connect the board to your host via usb cable and ethernet cable, then boot it and run:
 
-    $ minicom -D /dev/ttyUSB0
+    $ make boot
     ...
     npi login: debian
     Password: temppwd
@@ -46,7 +46,7 @@ Please connect the board to your host via usb cable and ethernet cable, then:
             TX packets 22  bytes 2978 (2.9 KiB)
             TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` (simply data uploading):
+As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` to easier images uploading:
 
     $ sudo -s
     # passwd root
@@ -56,7 +56,7 @@ As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `r
     $ sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
     $ service sshd restart
 
-### Upload zImage and dtb
+### Upload zImage, dtb and modules
 
 Host or Lab:
 
@@ -125,7 +125,7 @@ Compile a module and upload it:
     $ make modules-install m=hello
     $ make modules-upload
 
-Use the module in board (login via `minicom -D /dev/ttyUSB0`):
+Use the module in board (login via `make boot`):
 
     $ sudo modprobe hello
     $ lsmod | grep hello

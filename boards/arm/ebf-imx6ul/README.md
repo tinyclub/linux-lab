@@ -7,12 +7,17 @@ The board tested uses nand storage, for mmc, please use imx6ul-mmc-npi.dtb.
 
     $ sed -i -e "s/imx6ul-nand-npi.dtb/imx6ul-mmc-npi.dtb/g" boards/arm/ebf-imx6ul/Makefile
 
+The kernel version tested is 4.19.35.
+
 And the related dtb should be changed in the following sections.
+
+### Switch to this board
+
+    $ make BOARD=arm/ebf-imx6ul
 
 ### Compile
 
-    $ make BOARD=arm/ebf-imx6ul
-    $ make kernel
+    $ make kernel-build
     $ make kernel-save
     $ make modules-install
 
@@ -41,30 +46,40 @@ And the related dtb should be changed in the following sections.
             TX packets 22  bytes 2978 (2.9 KiB)
             TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
+  As we can see, the board ip is `192.168.0.112`.
+
+    $ export board_ip=192.168.0.112
 
 ### Upload zImage and dtb
 
   Host or Lab:
 
-    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/zImage debian@192.168.0.112:~/
-    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/imx6ull-nand-npi.dtb debian@192.168.0.112:~/
-    $ scp -r boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/4.19.35+ debian@192.168.0.112:~/
+    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/zImage debian@$board_ip:~/
+    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/imx6ull-nand-npi.dtb debian@$board_ip:~/
+    $ scp -r boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/4.19.35+ debian@$board_ip:~/
 
   Board:
 
-    $ sudo mkdir -p /boot/dtbs/4.19.35+
-    $ sudo mv ~/imx6ull-nand-npi.dtb /boot/dtbs/4.19.35+/
-    $ sudo mv ~/zImage /boot/vmlinuz-4.19.35+
+    $ export kernel_version=4.19.35+
 
-    $ sudo mv ~/4.19.35+ /lib/modules/
-    $ sudo update-initramfs -u -k 4.19.35+
+    $ sudo mkdir -p /boot/dtbs/$kernel_version
+    $ sudo mv ~/imx6ull-nand-npi.dtb /boot/dtbs/$kernel_version/
+    $ sudo mv ~/zImage /boot/vmlinuz-$kernel_version
+
+    $ sudo mv ~/$kernel_version /lib/modules/
+    $ sudo update-initramfs -u -k $kernel_version
 
 ### Boot with new images
 
   Configure via `/boot/uEnv.txt`:
 
     $ sudo sed -i -e "s/uname_r=.*/uname_r=4.19.35+/g" /boot/uEnv.txt
+
+    // nand
     $ sudo sed -i -e "s/dtb=.*/dtb=imx6ull-nand-npi.dtb/g" /boot/uEnv.txt
+    // mmc
+    $ sudo sed -i -e "s/dtb=.*/dtb=imx6ull-mmc-npi.dtb/g" /boot/uEnv.txt
+
     $ sudo reboot
 
   Boot directly via Uboot command line (for nand board), Stop after "ubi0: attached mtd2 (name "rootfs"):

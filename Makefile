@@ -2911,8 +2911,12 @@ ifneq ($(UPLOAD_METHOD),ssh)
   $(error Only support ssh upload method currently)
 endif
 
-# The ip address of target board
-#BOARD_IP   ?= 192.168.0.113
+# The ip address of target board, must make sure python3-serial is installed
+ifeq ($(shell which miniterm >/dev/null 2>&1; echo $$?), 0)
+  BOARD_IP ?= $(shell python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+else
+  BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+endif
 BOARD_PASS ?= linux-lab
 BOARD_USER ?= root
 
@@ -2933,9 +2937,10 @@ REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 
 SSH_PASS  = sshpass -p $(BOARD_PASS)
-SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER)'
 SSH_CMD   = $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
 SCP_CMD   = $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+
+SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
 RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 ifneq ($(DTS),)
@@ -2944,13 +2949,18 @@ ifeq ($(REMOTE_DTB),)
 endif
 DTB_UPLOAD := dtb-upload
 
-dtb-upload: $(call __stamp_kernel,build)
+upload-deps:
+	$(Q)/usr/bin/which $(UPLOAD_DEPS[bin]) >/dev/null 2>&1 || \
+	(echo "LOG: Install missing tools: $(UPLOAD_DEPS[deb])" && \
+	sudo apt-get update -y && sudo apt-get install -y $(UPLOAD_DEPS[deb]))
+
+dtb-upload: upload-deps $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
 	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
 endif
 
-kernel-upload: $(call __stamp_kernel,build) $(DTB_UPLOAD)
+kernel-upload: upload-deps $(call __stamp_kernel,build) $(DTB_UPLOAD)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
 	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
@@ -2961,11 +2971,11 @@ $(LOCAL_MODULES)$(m):
 
 module-upload: modules-upload
 
-modules-upload: $(LOCAL_MODULES)$(m)
+modules-upload: upload-deps $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
-	$(Q)eval "$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
+	$(Q)eval "$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/"
 
 PHONY += $(addsuffix -upload,kernel dtb module modules)
 

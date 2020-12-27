@@ -75,5 +75,6 @@
 	path = boards/mipsel/ls232/bsp
 	url = https://gitee.com/tinylab/qemu-mipsel-ls232.git
 [submodule "boards/arm/ebf-imx6ul/bsp"]
+	ignore = all
 	path = boards/arm/ebf-imx6ul/bsp
 	url = https://gitee.com/tinylab/ebf-imx6ul.git

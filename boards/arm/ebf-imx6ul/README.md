@@ -73,7 +73,7 @@ And the related dtb should be changed in the following sections.
     $ scp kernel/v4.19.35/imx6ull-nand-npi.dtb root@$board_ip:/boot/dtbs/$kernel_version/
 
     // upload kernel modules
-    $ scp -r root/2020.02/rootfs/lib/modules/4.19.35+ root@$board_ip:/lib/modules/
+    $ scp -r root/2020.02/rootfs/lib/modules/$kernel_version root@$board_ip:/lib/modules/
 
     // update initrd.img
     $ ssh root@$board_ip "update-initramfs -u -k $kernel_version"

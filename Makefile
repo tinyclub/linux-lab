@@ -2909,37 +2909,31 @@ kernel-save:
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
-# Upload images to remote board
-ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
+# Required packages for auto login (ssh, serial)
+packages-need:
+	$(Q)/usr/bin/which $(PACKAGES_NEED[bin]) >/dev/null 2>&1 || \
+	(echo "LOG: Install missing tools: $(PACKAGES_NEED[deb])" && \
+	sudo apt-get update -y && sudo apt-get install -y $(PACKAGES_NEED[deb]))
 
-UPLOAD_METHOD ?= ssh
+# Targets for real boards
+ifeq ($(BOARD_VIRT),0)
 
-ifneq ($(UPLOAD_METHOD),ssh)
+# Remote automatical login related parts
+LOGIN_METHOD ?= ssh
+
+ifneq ($(LOGIN_METHOD),ssh)
   $(error Only support ssh upload method currently)
 endif
 
 # The ip address of target board, must make sure python3-serial is installed
-ifeq ($(shell which miniterm >/dev/null 2>&1; echo $$?), 0)
-  BOARD_IP ?= $(shell python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
-else
-  BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
-endif
+BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 
-KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
-ifeq ($(KERNEL_RELEASE),)
-  $(error Linux must be compiled before uploading)
-endif
 ifeq ($(BOARD_IP),)
   $(error BOARD_IP must be configured before uploading)
 endif
 ifeq ($(BOARD_PASS),)
   $(error BOARD_PASS must be configured before uploading)
 endif
-
-REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
-REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
-REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
-LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 
 SSH_PASS  = sshpass -p $(BOARD_PASS)
 SSH_CMD   = $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
@@ -2948,23 +2942,27 @@ SCP_CMD   = $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyC
 SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
 RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
-ifneq ($(DTS),)
-ifeq ($(REMOTE_DTB),)
-  $(error REMOTE_DTB must be configured before uploading)
+KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
+ifeq ($(KERNEL_RELEASE),)
+  $(error Linux must be compiled before uploading)
 endif
 
-upload-deps:
-	$(Q)/usr/bin/which $(UPLOAD_DEPS[bin]) >/dev/null 2>&1 || \
-	(echo "LOG: Install missing tools: $(UPLOAD_DEPS[deb])" && \
-	sudo apt-get update -y && sudo apt-get install -y $(UPLOAD_DEPS[deb]))
+# Upload images to remote board
 
-dtb-upload: upload-deps $(call __stamp_kernel,build)
+ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
+LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
+REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
+REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
+REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
+
+ifneq ($(DTS),)
+dtb-upload: packages-need $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
 	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
 endif
 
-kernel-upload: upload-deps $(call __stamp_kernel,build)
+kernel-upload: packages-need $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
 	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
@@ -2975,7 +2973,7 @@ $(LOCAL_MODULES)$(m):
 
 module-upload: modules-upload
 
-modules-upload: upload-deps $(LOCAL_MODULES)$(m)
+modules-upload: packages-need $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
@@ -2983,7 +2981,23 @@ modules-upload: upload-deps $(LOCAL_MODULES)$(m)
 
 PHONY += $(addsuffix -upload,kernel dtb module modules)
 
-endif # images uploading
+endif # -upload
+
+BOOT_CONFIG ?= uEnv
+ifneq ($(BOOT_CONFIG),uEnv)
+  $(error Only support uEnv configure method currently)
+endif
+
+boot-config: packages-need
+	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
+	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
+
+reboot:
+	$(Q)python3 $(TOP_DIR)/tools/helper/reboot.py
+
+PHONY += boot-config reboot
+
+endif # for real boards
 
 uboot-save:
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
@@ -3615,6 +3629,13 @@ else
 
 # For real boards
 RUN_BOOT_CMD := minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+
+ifeq ($(findstring boot-new,$(MAKECMDGOALS)),boot-new)
+  _BOOT_DEPS := boot-config reboot
+endif
+boot-new: _boot
+
+PHONY += boot-new
 
 _test _debug:
 	$(Q)echo "LOG: This feature is not implemented for real boards."

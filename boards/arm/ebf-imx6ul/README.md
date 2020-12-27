@@ -46,28 +46,37 @@ And the related dtb should be changed in the following sections.
             TX packets 22  bytes 2978 (2.9 KiB)
             TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-  As we can see, the board ip is `192.168.0.112`.
+  As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` (simply data uploading):
 
-    $ export board_ip=192.168.0.112
+    $ sudo -s
+    # passwd root
+    New password: temppwd
+    Retype new passwd: temppwd
+
+    $ sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
+    $ service sshd restart
 
 ### Upload zImage and dtb
 
   Host or Lab:
 
-    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/zImage debian@$board_ip:~/
-    $ scp boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/imx6ull-nand-npi.dtb debian@$board_ip:~/
-    $ scp -r boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/4.19.35+ debian@$board_ip:~/
-
-  Board:
-
+    $ export board_ip=192.168.0.112
     $ export kernel_version=4.19.35+
 
-    $ sudo mkdir -p /boot/dtbs/$kernel_version
-    $ sudo mv ~/imx6ull-nand-npi.dtb /boot/dtbs/$kernel_version/
-    $ sudo mv ~/zImage /boot/vmlinuz-$kernel_version
+    $ pushd boards/arm/ebf-imx6ul/bsp
 
-    $ sudo mv ~/$kernel_version /lib/modules/
-    $ sudo update-initramfs -u -k $kernel_version
+    // upload zimage
+    $ scp kernel/v4.19.35/zImage root@$board_ip:/boot/vmlinuz-$kernel_version
+
+    // upload dtb
+    $ ssh root@$board_ip "mkdir -p /boot/dtbs/$kernel_version/"
+    $ scp kernel/v4.19.35/imx6ull-nand-npi.dtb root@$board_ip:/boot/dtbs/$kernel_version/
+
+    // upload kernel modules
+    $ scp -r root/2020.02/rootfs/lib/modules/4.19.35+ root@$board_ip:/lib/modules/
+
+    // update initrd.img
+    $ ssh root@$board_ip "update-initramfs -u -k $kernel_version"
 
 ### Boot with new images
 

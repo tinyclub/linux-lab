@@ -29,7 +29,7 @@ And the related dtb should be changed in the following sections.
 
 ### Configure your board
 
-  Please connect the board to your host via usb cable and ethernet cable, then:
+Please connect the board to your host via usb cable and ethernet cable, then:
 
     $ minicom -D /dev/ttyUSB0
     ...
@@ -46,7 +46,7 @@ And the related dtb should be changed in the following sections.
             TX packets 22  bytes 2978 (2.9 KiB)
             TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-  As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` (simply data uploading):
+As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` (simply data uploading):
 
     $ sudo -s
     # passwd root
@@ -58,7 +58,7 @@ And the related dtb should be changed in the following sections.
 
 ### Upload zImage and dtb
 
-  Host or Lab:
+Host or Lab:
 
     $ export board_ip=192.168.0.112
     $ export kernel_version=4.19.35+
@@ -80,7 +80,7 @@ And the related dtb should be changed in the following sections.
 
 ### Boot with new images
 
-  Configure via `/boot/uEnv.txt`:
+Configure via `/boot/uEnv.txt`:
 
     $ sudo sed -i -e "s/uname_r=.*/uname_r=4.19.35+/g" /boot/uEnv.txt
 
@@ -91,7 +91,7 @@ And the related dtb should be changed in the following sections.
 
     $ sudo reboot
 
-  Boot directly via Uboot command line (for nand board), Stop after "ubi0: attached mtd2 (name "rootfs"):
+Boot directly via Uboot command line (for nand board), Stop after "ubi0: attached mtd2 (name "rootfs"):
 
     => setenv bootargs "console=ttymxc0,115200 ubi.mtd=1 root=ubi0:rootfs rw rootfstype=ubifs mtdparts=gpmi-nand:8m(uboot),-(rootfs)coherent_pool=1M net.ifnames=0 vt.global_cursor_default=0 quiet"
 
@@ -102,13 +102,25 @@ And the related dtb should be changed in the following sections.
               4722198  Fri Dec 25 20:25:35 2020  initrd.img-4.19.35+
     => bootz 0x80800000 0x88000000:4722198 0x83000000
 
-  Boot directly via Uboot command line (for mmc board):
+Boot directly via Uboot command line (for mmc board):
 
     TODO
 
+## Auto uploading
+
+A new feature is added to upload images via scp automatically, just need to:
+
+  * Enable ssh login as root with `linux-lab` password (see above section: "Configure your board")
+  * Disable serial port login password: `passwd -d debian`, this will also disable ssh login as 'debian', please use `root` instead.
+
+Then, simply upload with following command:
+
+    $ make kernel-upload
+    $ make dtb-upload
+    $ make modules-upload
+
 ## TODO
 
-* Automate the uploading via scp (need allow login with root without password), required by `make boot`
 * Document usage for mmc boards
 * Enable ethernet in Uboot, for dhcp, tftpboot and nfs
 * Enable otg in Linux System and document uploading via otg

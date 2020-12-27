@@ -2927,33 +2927,47 @@ ifeq ($(BOARD_PASS),)
   $(error BOARD_PASS must be configured before uploading)
 endif
 
-SSH_PASS=sshpass -p $(BOARD_PASS)
-SSH_RSH =--rsh='sshpass -e ssh -l $(BOARD_USER)'
+REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
+REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
+REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
+LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 
-SSH_CMD=$(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
-SCP_CMD=$(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
-RSYNC_CMD=SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
+SSH_PASS  = sshpass -p $(BOARD_PASS)
+SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER)'
+SSH_CMD   = $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
+SCP_CMD   = $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
-REMOTE_KERNEL_DIR ?= $(dir $REMOTE_KIMAGE)
+ifneq ($(DTS),)
+ifeq ($(REMOTE_DTB),)
+  $(error REMOTE_DTB must be configured before uploading)
+endif
+DTB_UPLOAD := dtb-upload
 
-kernel-upload: $(addsuffix -upload,_kernel dtb modules)
+dtb-upload: $(call __stamp_kernel,build)
+	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
+	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
+	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
+endif
 
-_kernel-upload:
-	$(Q)echo "Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
+kernel-upload: $(call __stamp_kernel,build) $(DTB_UPLOAD)
+	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
 	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
 
-dtb-upload:
-	$(Q)echo "Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
-	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
-	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
+$(LOCAL_MODULES)$(m):
+	$(Q)make modules-install m=$(m)
+	$(Q)touch $(LOCAL_MODULES)$(m)
 
-modules-upload:
-	$(Q)echo "Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
+module-upload: modules-upload
+
+modules-upload: $(LOCAL_MODULES)$(m)
+	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
-	$(Q)eval "$(RSYNC_CMD) -r $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
-	$(Q)#eval "$(SCP_CMD) -r $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
+	$(Q)eval "$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
+
+PHONY += $(addsuffix -upload,kernel dtb module modules)
 
 endif # images uploading
 

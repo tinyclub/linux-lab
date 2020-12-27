@@ -33,16 +33,12 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # For real board uploading
-BOARD_IP   ?= 192.168.0.113
+#
+# Notes:
+# 1. Must disable serial login password for ip getting automation, `passwd -d debian`
+# 2. Must allow login as root with password, see README.md
+BOARD_IP   ?= $(shell python3 $(TOP_DIR)/tools/helper/getip.py)
 BOARD_PASS ?= linux-lab
-
-KERNEL_RELEASE ?= 4.19.35+
-
-LOCAL_MODULES  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs/lib/modules/$(KERNEL_RELEASE)
-
-REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
-REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
-REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain

@@ -81,7 +81,7 @@ tags:
 	</tr>
 	<tr>
 		<td><a href="/lwn-433904">A group scheduling demonstration</a></td>
-		<td>July 2, 2007</td>
+		<td>March 16, 2011</td>
 	</tr>
 </table>
 
@@ -132,6 +132,19 @@ tags:
 	<tr>
 		<td><a href="/lwn-520076">Software interrupts and realtime</a></td>
 		<td>October 17, 2012</td>
+	</tr>
+</table>
+
+### Preemption
+
+<table width="100%" height="100%" border="1" cellpadding="0" cellspacing="0">
+	<tr>
+		<th width="50%" style="text-align: center;">文章</th>
+		<th width="50%" style="text-align: center;">原文发表时间</th>
+	</tr>
+	<tr>
+		<td><a href="/lwn-563185">Optimizing preemption</a></td>
+		<td>August 14, 2013</td>
 	</tr>
 </table>
 

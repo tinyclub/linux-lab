@@ -2952,7 +2952,6 @@ ifneq ($(DTS),)
 ifeq ($(REMOTE_DTB),)
   $(error REMOTE_DTB must be configured before uploading)
 endif
-DTB_UPLOAD := dtb-upload
 
 upload-deps:
 	$(Q)/usr/bin/which $(UPLOAD_DEPS[bin]) >/dev/null 2>&1 || \
@@ -2965,7 +2964,7 @@ dtb-upload: upload-deps $(call __stamp_kernel,build)
 	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
 endif
 
-kernel-upload: upload-deps $(call __stamp_kernel,build) $(DTB_UPLOAD)
+kernel-upload: upload-deps $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
 	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"

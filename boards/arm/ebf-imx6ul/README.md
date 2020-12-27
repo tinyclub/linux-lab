@@ -56,6 +56,13 @@ As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `r
     $ sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
     $ service sshd restart
 
+Change password for default 'debian' user too:
+
+    $ passwd debian
+    Current password: temppwd
+    New password: linux-lab
+    Retype new passwd: linux-lab
+
 ### Upload zImage, dtb and modules
 
 Host or Lab:
@@ -108,16 +115,24 @@ Boot directly via Uboot command line (for mmc board):
 
 ## Auto uploading
 
-A new feature is added to upload images via scp automatically, just need to:
+A new feature is added to upload images via scp automatically, please refer to "Configure your board" and make sure:
 
-  * Enable ssh login as root with `linux-lab` password (see above section: "Configure your board")
-  * Disable serial port login password: `passwd -d debian`, this will also disable ssh login as 'debian', please use `root` instead.
+  * Enable ssh login as 'root' with 'linux-lab' password.
+  * Change the password of 'debian' user to `linux-lab`.
 
 Then, simply upload with following command:
 
     $ make kernel-upload
     $ make dtb-upload
     $ make modules-upload
+
+Reboot with new images:
+
+    $ make boot-new
+    or
+    $ make boot-config
+    $ make reboot
+    $ make boot
 
 Compile a module and upload it:
 

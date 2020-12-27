@@ -1693,7 +1693,7 @@ endef #genenvdeps
 BSP ?= FETCH_HEAD
 _BSP ?= $(BSP)
 
-# NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time 
+# NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
 __BSP := notexist
 
 ifeq ($(_PLUGIN),1)
@@ -2901,6 +2901,61 @@ kernel-save:
 	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
+
+# Upload images to remote board
+ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
+
+UPLOAD_METHOD ?= ssh
+
+ifneq ($(UPLOAD_METHOD),ssh)
+  $(error Only support ssh upload method currently)
+endif
+
+# The ip address of target board
+#BOARD_IP   ?= 192.168.0.113
+BOARD_PASS ?= linux-lab
+BOARD_USER ?= root
+
+KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
+ifeq ($(KERNEL_RELEASE),)
+  $(error Linux must be compiled before uploading)
+endif
+ifeq ($(BOARD_IP),)
+  $(error BOARD_IP must be configured before uploading)
+endif
+ifeq ($(BOARD_PASS),)
+  $(error BOARD_PASS must be configured before uploading)
+endif
+
+SSH_PASS=sshpass -p $(BOARD_PASS)
+SSH_RSH =--rsh='sshpass -e ssh -l $(BOARD_USER)'
+
+SSH_CMD=$(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
+SCP_CMD=$(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+RSYNC_CMD=SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
+
+REMOTE_KERNEL_DIR ?= $(dir $REMOTE_KIMAGE)
+
+kernel-upload: $(addsuffix -upload,_kernel dtb modules)
+
+_kernel-upload:
+	$(Q)echo "Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
+	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
+	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
+
+dtb-upload:
+	$(Q)echo "Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
+	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
+	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
+
+modules-upload:
+	$(Q)echo "Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
+	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
+	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
+	$(Q)eval "$(RSYNC_CMD) -r $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
+	$(Q)#eval "$(SCP_CMD) -r $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/"
+
+endif # images uploading
 
 uboot-save:
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)

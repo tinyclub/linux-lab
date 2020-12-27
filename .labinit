@@ -8,3 +8,9 @@ HOST_GCC[OS_focal]  := 9
 # miniterm is provided by python3-serial
 UPLOAD_DEPS[bin] := sshpass miniterm
 UPLOAD_DEPS[deb] := sshpass python3-serial
+
+# Default setting for real board
+BOARD_SERIAL   ?= /dev/ttyUSB0
+BOARD_BAUDRATE ?= 115200
+BOARD_USER     ?= root
+BOARD_PASS     ?= linux-lab

@@ -22,6 +22,9 @@ space := $(empty) $(empty)
 USER := ubuntu
 WARN_ON_USER ?= 1
 
+# Default board is virtual
+BOARD_VIRT := 1
+
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
 ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
@@ -1560,7 +1563,11 @@ $(1)-savepatch:
 
 debug-$(1): $(1)-debug
 
+ifeq ($(BOARD_VIRT),1)
 $(1)-debug: _boot
+else
+$(1)-debug: _debug
+endif
 
 $(1)-boot: _boot
 
@@ -2917,8 +2924,6 @@ ifeq ($(shell which miniterm >/dev/null 2>&1; echo $$?), 0)
 else
   BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 endif
-BOARD_PASS ?= linux-lab
-BOARD_USER ?= root
 
 KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
 ifeq ($(KERNEL_RELEASE),)
@@ -3011,6 +3016,9 @@ root-saveconfig:
 	elif [ -f $(ROOT_BUILD)/defconfig ]; \
 	then cp $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else cp $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
+
+# For virtual boards
+ifeq ($(BOARD_VIRT),1)
 
 # Qemu options and kernel command lines
 
@@ -3602,6 +3610,16 @@ ifneq ($(DEBUG),0)
   RUN_BOOT_CMD := $(BOOT_CMD) || $(GDB_CMD)
 else
   RUN_BOOT_CMD := $(BOOT_CMD)
+endif
+
+else
+
+# For real boards
+RUN_BOOT_CMD := minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+
+_test _debug:
+	$(Q)echo "LOG: This feature is not implemented for real boards."
+
 endif
 
 _boot: $(_BOOT_DEPS)

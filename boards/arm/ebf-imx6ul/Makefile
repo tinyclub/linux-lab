@@ -39,11 +39,7 @@ QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 # 1. Must disable serial login password for ip getting automation, `passwd -d debian`
 # 2. Must allow login as root with password, see README.md
 #
-ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
-BOARD_SERIAL   ?= /dev/ttyUSB0
-BOARD_BAUDRATE ?= 115200
-BOARD_PASS     ?= linux-lab
-endif
+BOARD_VIRT := 0
 
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain

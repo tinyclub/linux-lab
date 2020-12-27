@@ -50,8 +50,8 @@ And the related dtb should be changed in the following sections.
 
     $ sudo -s
     # passwd root
-    New password: temppwd
-    Retype new passwd: temppwd
+    New password: linux-lab
+    Retype new passwd: linux-lab
 
     $ sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
     $ service sshd restart

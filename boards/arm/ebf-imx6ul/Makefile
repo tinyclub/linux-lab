@@ -31,6 +31,19 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+
+# For real board uploading
+BOARD_IP   ?= 192.168.0.113
+BOARD_PASS ?= linux-lab
+
+KERNEL_RELEASE ?= 4.19.35+
+
+LOCAL_MODULES  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs/lib/modules/$(KERNEL_RELEASE)
+
+REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
+REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
+REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
+
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain
 ## Available CCORI: internal, bootlin, arm

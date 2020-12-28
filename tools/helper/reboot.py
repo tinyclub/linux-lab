@@ -38,7 +38,8 @@ time.sleep(0.1)
 while ser.inWaiting() > 0:
     out += ser.read(1)
 
-if (out.decode("utf-8").find("$ ")) == -1:
+if (out.decode("utf-8").find("$ ")) == -1 and (out.decode("utf-8").find("# ")) == -1:
+    ser.write(b"\n")
     while out.decode("utf-8").find("login:") == -1:
         out = b''
         time.sleep(0.2)
@@ -57,7 +58,7 @@ if (out.decode("utf-8").find("$ ")) == -1:
             print (out.decode("utf-8"))
 
     ser.write(login_pass.encode() + b"\r\n")
-    while out.decode("utf-8").find("$ ") == -1:
+    while out.decode("utf-8").find("$ ") == -1 and (out.decode("utf-8").find("# ")) == -1:
         out = b''
         time.sleep(0.5)
         while ser.inWaiting() > 0:

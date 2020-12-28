@@ -47,6 +47,8 @@ if (out.decode("utf-8").find("$ ")) == -1 and (out.decode("utf-8").find("# ")) =
             out += ser.read(1)
         #if out != '':
         #    print (out.decode("utf-8"))
+        if (out.decode("utf-8").find("=> ")) != -1:
+            ser.write(b"boot\n");
 
     ser.write(login_user.encode() + b"\r\n")
     while out.decode("utf-8").find("Password:") == -1:

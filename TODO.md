@@ -34,3 +34,4 @@
 * Use "-e TZ=Asia/Shanghai" to set time zone
 * Add an interative configure script
 * Rename 'APP' to 'PKG', allow to add more packages support
+* Add more system, like deepin, openeuler and even rt-thread os

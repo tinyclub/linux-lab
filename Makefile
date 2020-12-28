@@ -2931,11 +2931,12 @@ endif
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+else
+  ifeq ($(BOARD_IP),)
+    $(error Please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
+  endif
 endif
 
-ifeq ($(BOARD_IP),)
-  $(error BOARD_IP must be configured in $(BOARD_MAKEFILE) before uploading)
-endif
 ifeq ($(BOARD_PASS),)
   $(error BOARD_PASS must be configured in $(BOARD_MAKEFILE) before uploading)
 endif
@@ -3655,9 +3656,9 @@ else
 #        Here it is only connect or login.
 
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  RUN_BOOT_CMD ?= $(Q)sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+  RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
-  RUN_BOOT_CMD ?= $(Q)$(SSH_CMD) -t '/bin/bash'
+  RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/bash'
 endif
 
 ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)

@@ -5,7 +5,7 @@
 
 The board tested uses nand storage, for mmc, please use imx6ul-mmc-npi.dtb.
 
-    $ sed -i -e "s/imx6ul-nand-npi.dtb/imx6ul-mmc-npi.dtb/g" boards/arm/ebf-imx6ul/Makefile
+    $ sed -i -e "s/imx6ul-nand-npi.dtb/imx6ul-mmc-npi.dtb/g" boards/arm/ebf-imx6ull/Makefile
 
 The kernel version tested is 4.19.35.
 
@@ -13,7 +13,7 @@ And the related dtb should be changed in the following sections.
 
 ### Switch to this board
 
-    $ make BOARD=arm/ebf-imx6ul
+    $ make BOARD=arm/ebf-imx6ull
 
 ### Compile
 
@@ -21,11 +21,11 @@ And the related dtb should be changed in the following sections.
     $ make kernel-save
     $ make modules-install
 
-    $ ls boards/arm/ebf-imx6ul/bsp/kernel/v4.19.35/
+    $ ls boards/arm/ebf-imx6ull/bsp/kernel/v4.19.35/
     imx6ull-nand-npi.dtb  zImage
-    $ ls boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/
+    $ ls boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/
     4.19.35+
-    $ rm boards/arm/ebf-imx6ul/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
+    $ rm boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
 
 ### Configure your board
 
@@ -70,7 +70,7 @@ Host or Lab:
     $ export board_ip=192.168.0.112
     $ export kernel_version=4.19.35+
 
-    $ pushd boards/arm/ebf-imx6ul/bsp
+    $ pushd boards/arm/ebf-imx6ull/bsp
 
     // upload zimage
     $ scp kernel/v4.19.35/zImage root@$board_ip:/boot/vmlinuz-$kernel_version

@@ -1,33 +1,26 @@
 
 # EmbedFire i.MX6UL/ULL-EVK-PRO Board
 
-## Usage
+## Introduction
 
-The board tested uses nand storage, for mmc, please use imx6ul-mmc-npi.dtb.
+The board tested uses nand storage, for mmc, please use imx6ull-mmc-npi.dtb.
 
-    $ sed -i -e "s/imx6ul-nand-npi.dtb/imx6ul-mmc-npi.dtb/g" boards/arm/ebf-imx6ull/Makefile
+    $ sed -i -e "s/nand/mmc/g" boards/arm/ebf-imx6ull/Makefile
 
 The kernel version tested is 4.19.35.
 
 And the related dtb should be changed in the following sections.
 
-### Switch to this board
+## Switch to this board
 
     $ make BOARD=arm/ebf-imx6ull
 
-### Compile
+## Compile and install
 
     $ make kernel-build
-    $ make kernel-save
     $ make modules-install
 
-    $ ls boards/arm/ebf-imx6ull/bsp/kernel/v4.19.35/
-    imx6ull-nand-npi.dtb  zImage
-    $ ls boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/
-    4.19.35+
-    $ rm boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
-
-### Configure your board
+## Configure your board
 
 Please connect the board to your host via usb cable and ethernet cable, then boot it and run:
 
@@ -63,42 +56,89 @@ Change password for default 'debian' user too:
     New password: linux-lab
     Retype new passwd: linux-lab
 
-### Upload zImage, dtb and modules
+## Upload zImage, dtb and modules
 
-Host or Lab:
+Simply upload with following commands:
+
+    $ make kernel-upload
+    $ make dtb-upload
+    $ make modules-upload
+
+Or upload them with detailed commands:
 
     $ export board_ip=192.168.0.112
     $ export kernel_version=4.19.35+
+    $ export dtb=imx6ull-nand-npi.dtb
+
+    $ make kernel-save
+    $ ls boards/arm/ebf-imx6ull/bsp/kernel/v4.19.35/
+    imx6ull-nand-npi.dtb  zImage
+    $ ls boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/
+    4.19.35+
 
     $ pushd boards/arm/ebf-imx6ull/bsp
 
-    // upload zimage
     $ scp kernel/v4.19.35/zImage root@$board_ip:/boot/vmlinuz-$kernel_version
-
-    // upload dtb
     $ ssh root@$board_ip "mkdir -p /boot/dtbs/$kernel_version/"
-    $ scp kernel/v4.19.35/imx6ull-nand-npi.dtb root@$board_ip:/boot/dtbs/$kernel_version/
+    $ scp kernel/v4.19.35/$dtb root@$board_ip:/boot/dtbs/$kernel_version/
 
-    // upload kernel modules
+    $ rm boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
     $ scp -r root/2020.02/rootfs/lib/modules/$kernel_version root@$board_ip:/lib/modules/
 
-    // update initrd.img
     $ ssh root@$board_ip "update-initramfs -u -k $kernel_version"
 
-### Boot with new images
+## Reboot with new images
 
-Configure via `/boot/uEnv.txt`:
+Simply run these commands in Lab side:
 
-    $ sudo sed -i -e "s/uname_r=.*/uname_r=4.19.35+/g" /boot/uEnv.txt
+    $ make boot-new
+    Or
+    $ make boot-config
+    $ make reboot
+    $ make boot
 
-    // nand
-    $ sudo sed -i -e "s/dtb=.*/dtb=imx6ull-nand-npi.dtb/g" /boot/uEnv.txt
-    // mmc
-    $ sudo sed -i -e "s/dtb=.*/dtb=imx6ull-mmc-npi.dtb/g" /boot/uEnv.txt
+Or run these commands in boards:
 
+    $ export dtb=imx6ull-nand-npi.dtb
+    $ export kernel_version=4.19.35+
+
+    $ sudo sed -i -e "s/uname_r=.*/uname_r=$kernel_version/g" /boot/uEnv.txt
+    $ sudo sed -i -e "s/dtb=.*/dtb=$dtb/g" /boot/uEnv.txt
     $ sudo reboot
 
-Boot directly via Uboot command line (for nand board), Stop after "ubi0: attached mtd2 (name "rootfs"):
+## Compile a kernel module and upload it
+
+    $ make modules m=hello
+    $ make modules-install m=hello
+    $ make modules-upload
+
+## Use kernel module in board
+
+Lab:
+
+    $ make boot
+
+Board:
+
+    $ sudo modprobe hello
+    $ lsmod | grep hello
+    hello                  16384  0
+    $ dmesg | grep hello
+    [ 7337.555712] hello: loading out-of-tree module taints kernel.
+    [ 7337.569959] hello module init
+
+## Load and boot new images with Uboot
+
+If the board can not boot with our images, please fix up it with Uboot.
+
+For the nand board, press the power button and stop it after "ubi0: attached mtd2 (name "rootfs"):
+
+    $ make boot
+    ...
+    ubi0: attached mtd2 ...
+    =>
+
+Then, load normal images and boot manually like this:
 
     => setenv bootargs "console=ttymxc0,115200 ubi.mtd=1 root=ubi0:rootfs rw rootfstype=ubifs mtdparts=gpmi-nand:8m(uboot),-(rootfs)coherent_pool=1M net.ifnames=0 vt.global_cursor_default=0 quiet"
 
@@ -109,45 +149,7 @@ Boot directly via Uboot command line (for nand board), Stop after "ubi0: attache
               4722198  Fri Dec 25 20:25:35 2020  initrd.img-4.19.35+
     => bootz 0x80800000 0x88000000:4722198 0x83000000
 
-Boot directly via Uboot command line (for mmc board):
-
-    TODO
-
-## Auto uploading
-
-A new feature is added to upload images via scp automatically, please refer to "Configure your board" and make sure:
-
-  * Enable ssh login as 'root' with 'linux-lab' password.
-  * Change the password of 'debian' user to `linux-lab`.
-
-Then, simply upload with following command:
-
-    $ make kernel-upload
-    $ make dtb-upload
-    $ make modules-upload
-
-Reboot with new images:
-
-    $ make boot-new
-    or
-    $ make boot-config
-    $ make reboot
-    $ make boot
-
-Compile a module and upload it:
-
-    $ make modules m=hello
-    $ make modules-install m=hello
-    $ make modules-upload
-
-Use the module in board (login via `make boot`):
-
-    $ sudo modprobe hello
-    $ lsmod | grep hello
-    hello                  16384  0
-    $ dmesg | grep hello
-    [ 7337.555712] hello: loading out-of-tree module taints kernel.
-    [ 7337.569959] hello module init
+mmc board use different type of file system, the bootargs and load commands are different, you can refer to the boot logs.
 
 ## TODO
 

@@ -3655,7 +3655,7 @@ else
 #        Here it is only connect or login.
 
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  RUN_BOOT_CMD ?= $(Q)minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+  RUN_BOOT_CMD ?= $(Q)sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
   RUN_BOOT_CMD ?= $(Q)$(SSH_CMD) -t '/bin/bash'
 endif

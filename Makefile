@@ -2930,7 +2930,7 @@ endif
 
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+  BOARD_IP ?= $$(sudo python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
   ifeq ($(BOARD_IP),)
     $(error Please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)

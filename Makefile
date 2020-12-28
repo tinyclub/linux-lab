@@ -3630,14 +3630,21 @@ else
   RUN_BOOT_CMD := $(BOOT_CMD)
 endif
 
+# just map reboot to boot for virtual board
+reboot: _boot
+
 else
 
 # For real boards
+
+# FIXME: The real boot should be able to control the power button
+#        Here it is only connect or login.
 RUN_BOOT_CMD := minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 
 ifeq ($(findstring boot-new,$(MAKECMDGOALS)),boot-new)
   _BOOT_DEPS := boot-config reboot
 endif
+
 boot-new: _boot
 
 PHONY += boot-new

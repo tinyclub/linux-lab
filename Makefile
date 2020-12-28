@@ -3643,7 +3643,7 @@ else
 
 # FIXME: The real boot should be able to control the power button
 #        Here it is only connect or login.
-RUN_BOOT_CMD := minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+RUN_BOOT_CMD := $(Q)minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 
 ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
   _BOOT_DEPS := boot-config reboot

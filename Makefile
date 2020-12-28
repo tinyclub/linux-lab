@@ -2929,13 +2929,15 @@ ifneq ($(LOGIN_METHOD),ssh)
 endif
 
 # The ip address of target board, must make sure python3-serial is installed
-BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+  BOARD_IP ?= $$(python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+endif
 
 ifeq ($(BOARD_IP),)
-  $(error BOARD_IP must be configured before uploading)
+  $(error BOARD_IP must be configured in $(BOARD_MAKEFILE) before uploading)
 endif
 ifeq ($(BOARD_PASS),)
-  $(error BOARD_PASS must be configured before uploading)
+  $(error BOARD_PASS must be configured in $(BOARD_MAKEFILE) before uploading)
 endif
 
 SSH_PASS  = sshpass -p $(BOARD_PASS)
@@ -3006,9 +3008,9 @@ boot-config: packages-need
 	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
 	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
 
-reboot:
-	$(Q)echo "LOG: Rebooting via serial port"
-	$(Q)python3 $(TOP_DIR)/tools/helper/reboot.py
+reboot: packages-need
+	$(Q)echo "LOG: Rebooting via ssh"
+	$(Q)$(SSH_CMD) 'sudo reboot' || true
 
 PHONY += boot-config reboot
 
@@ -3651,7 +3653,12 @@ else
 
 # FIXME: The real boot should be able to control the power button
 #        Here it is only connect or login.
-RUN_BOOT_CMD := $(Q)minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+
+ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+  RUN_BOOT_CMD ?= $(Q)minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
+else
+  RUN_BOOT_CMD ?= $(Q)$(SSH_CMD) -t '/bin/bash'
+endif
 
 ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
   _BOOT_DEPS := boot-config reboot

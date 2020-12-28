@@ -430,7 +430,7 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug run
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug run upload
 
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
@@ -480,6 +480,9 @@ endif
 ifeq ($(app),all)
   override app :=
   $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+  ifeq ($(first_target), upload)
+    override app+= dtb modules
+  endif
 endif
 
 ifeq ($(app),)
@@ -2944,7 +2947,7 @@ RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),$(addsuffix -upload,kernel dtb module modules) boot-config boot),$(MAKECMDGOALS))
+ ifeq ($(filter $(firstword $(MAKECMDGOALS)),$(addsuffix -upload,kernel dtb module modules) boot-config boot upload),$(firstword $(MAKECMDGOALS)))
   KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
   ifeq ($(KERNEL_RELEASE),)
     $(error Linux must be compiled before uploading)
@@ -2954,7 +2957,7 @@ endif
 
 # Upload images to remote board
 
-ifeq ($(findstring -upload,$(MAKECMDGOALS)),-upload)
+ifeq ($(findstring upload,$(MAKECMDGOALS)),upload)
 LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
 REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
@@ -2984,7 +2987,12 @@ modules-upload: packages-need $(LOCAL_MODULES)$(m)
 	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
 	$(Q)eval "$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/"
 
-PHONY += $(addsuffix -upload,kernel dtb module modules)
+# Add dummmy entries for upload target
+ifeq ($(first_target), upload)
+$(addsuffix -upload, root uboot qemu):
+endif
+
+PHONY += $(addsuffix -upload,kernel dtb module modules root uboot qemu) upload
 
 endif # -upload
 

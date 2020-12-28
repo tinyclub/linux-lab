@@ -27,7 +27,7 @@ Please connect the board to your host via usb cable and ethernet cable, then boo
     $ make boot
     ...
     npi login: debian
-    Password: temppwd
+    Password: temppwd    <== default password, will be changed to linux-lab
 
     debian@npi:~$ ifconfig
     eth1: flags=-28605<UP,BROADCAST,RUNNING,MULTICAST,DYNAMIC>  mtu 1500
@@ -39,20 +39,24 @@ Please connect the board to your host via usb cable and ethernet cable, then boo
             TX packets 22  bytes 2978 (2.9 KiB)
             TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
+
+Update login prompt in board:
+
+    debian@npi:~$ sudo sed -i -e "s/temppwd/linux-lab/g" /etc/{issue,issue.net}
+
 As we can see, the board ip is `192.168.0.112`, now, let's allow ssh login as `root` to easier images uploading:
 
-    $ sudo -s
-    # passwd root
+    debian@npi:~$ sudo -s
+    root@npi:/home/debian# passwd root
     New password: linux-lab
     Retype new passwd: linux-lab
 
-    $ sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
-    $ service sshd restart
+    root@npi:/home/debian# sudo sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
+    root@npi:/home/debian# sudo service sshd restart
 
 Change password for default 'debian' user too:
 
-    $ passwd debian
-    Current password: temppwd
+    root@npi:/home/debian# passwd debian
     New password: linux-lab
     Retype new passwd: linux-lab
 
@@ -92,19 +96,21 @@ Or upload them with detailed commands:
 Simply run these commands in Lab side:
 
     $ make boot-new
+
     Or
+
     $ make boot-config
     $ make reboot
     $ make boot
 
 Or run these commands in boards:
 
-    $ export dtb=imx6ull-nand-npi.dtb
-    $ export kernel_version=4.19.35+
+    debian@npi$ export dtb=imx6ull-nand-npi.dtb
+    debian@npi$ export kernel_version=4.19.35+
 
-    $ sudo sed -i -e "s/uname_r=.*/uname_r=$kernel_version/g" /boot/uEnv.txt
-    $ sudo sed -i -e "s/dtb=.*/dtb=$dtb/g" /boot/uEnv.txt
-    $ sudo reboot
+    debian@npi$ sudo sed -i -e "s/uname_r=.*/uname_r=$kernel_version/g" /boot/uEnv.txt
+    debian@npi$ sudo sed -i -e "s/dtb=.*/dtb=$dtb/g" /boot/uEnv.txt
+    debian@npi$ sudo reboot
 
 ## Compile a kernel module and upload it
 
@@ -120,10 +126,11 @@ Lab:
 
 Board:
 
-    $ sudo modprobe hello
-    $ lsmod | grep hello
+    debian@npi$ sudo modprobe hello
+    debian@npi$ lsmod | grep hello
     hello                  16384  0
-    $ dmesg | grep hello
+
+    debian@npi$ dmesg | grep hello
     [ 7337.555712] hello: loading out-of-tree module taints kernel.
     [ 7337.569959] hello module init
 

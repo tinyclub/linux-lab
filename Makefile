@@ -2942,9 +2942,14 @@ SCP_CMD   = $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyC
 SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
 RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
-KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
-ifeq ($(KERNEL_RELEASE),)
-  $(error Linux must be compiled before uploading)
+# KERNEL_RELEASE version info required by -upload and boot-config targets
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(filter $(MAKECMDGOALS),$(addsuffix -upload,kernel dtb module modules) boot-config boot-new),$(MAKECMDGOALS))
+  KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
+  ifeq ($(KERNEL_RELEASE),)
+    $(error Linux must be compiled before uploading)
+  endif
+ endif
 endif
 
 # Upload images to remote board

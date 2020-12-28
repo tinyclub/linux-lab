@@ -22,9 +22,9 @@ And the related dtb should be changed in the following sections.
 
 ## Configure your board
 
-Please connect the board to your host via usb cable and ethernet cable, then boot it and run:
+Please connect the board to your host via usb cable and ethernet cable, then login:
 
-    $ make boot
+    $ make login
     ...
     npi login: debian
     Password: temppwd    <== default password, will be changed to linux-lab
@@ -95,13 +95,13 @@ Or upload them with detailed commands:
 
 Simply run these commands in Lab side:
 
-    $ make boot-new
+    $ make boot
 
     Or
 
     $ make boot-config
     $ make reboot
-    $ make boot
+    $ make login
 
 Or run these commands in boards:
 
@@ -122,7 +122,7 @@ Or run these commands in boards:
 
 Lab:
 
-    $ make boot
+    $ make login
 
 Board:
 
@@ -140,7 +140,7 @@ If the board can not boot with our images, please fix up it with Uboot.
 
 For the nand board, press the power button and stop it after "ubi0: attached mtd2 (name "rootfs"):
 
-    $ make boot
+    $ make login
     ...
     ubi0: attached mtd2 ...
     =>

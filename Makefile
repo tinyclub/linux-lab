@@ -2944,7 +2944,7 @@ RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),$(addsuffix -upload,kernel dtb module modules) boot-config boot-new),$(MAKECMDGOALS))
+ ifeq ($(filter $(MAKECMDGOALS),$(addsuffix -upload,kernel dtb module modules) boot-config boot),$(MAKECMDGOALS))
   KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
   ifeq ($(KERNEL_RELEASE),)
     $(error Linux must be compiled before uploading)
@@ -2994,10 +2994,12 @@ ifneq ($(BOOT_CONFIG),uEnv)
 endif
 
 boot-config: packages-need
+	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
 	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
 
 reboot:
+	$(Q)echo "LOG: Rebooting via serial port"
 	$(Q)python3 $(TOP_DIR)/tools/helper/reboot.py
 
 PHONY += boot-config reboot
@@ -3631,7 +3633,9 @@ else
 endif
 
 # just map reboot to boot for virtual board
-reboot: _boot
+reboot login: _boot
+
+PHONY += reboot login
 
 else
 
@@ -3641,16 +3645,16 @@ else
 #        Here it is only connect or login.
 RUN_BOOT_CMD := minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 
-ifeq ($(findstring boot-new,$(MAKECMDGOALS)),boot-new)
+ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
   _BOOT_DEPS := boot-config reboot
 endif
 
-boot-new: _boot
-
-PHONY += boot-new
-
 _test _debug:
 	$(Q)echo "LOG: This feature is not implemented for real boards."
+
+login: _boot
+
+PHONY += login
 
 endif
 

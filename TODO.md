@@ -35,3 +35,4 @@
 * Add an interative configure script
 * Rename 'APP' to 'PKG', allow to add more packages support
 * Add more system, like deepin, openeuler and even rt-thread os
+* Add bash complete support

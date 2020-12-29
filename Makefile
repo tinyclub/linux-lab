@@ -2913,7 +2913,7 @@ kernel-save:
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 
 # Required packages for auto login (ssh, serial)
-packages-need:
+packages-install:
 	$(Q)/usr/bin/which $(PACKAGES_NEED[bin]) >/dev/null 2>&1 || \
 	(echo "LOG: Install missing tools: $(PACKAGES_NEED[deb])" && \
 	sudo apt-get update -y && sudo apt-get install -y $(PACKAGES_NEED[deb]))
@@ -2967,13 +2967,13 @@ REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: packages-need $(call __stamp_kernel,build)
+dtb-upload: packages-install $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
 	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
 endif
 
-kernel-upload: packages-need $(call __stamp_kernel,build)
+kernel-upload: packages-install $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
 	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
@@ -2984,7 +2984,7 @@ $(LOCAL_MODULES)$(m):
 
 module-upload: modules-upload
 
-modules-upload: packages-need $(LOCAL_MODULES)$(m)
+modules-upload: packages-install $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
@@ -3004,12 +3004,12 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
-boot-config: packages-need
+boot-config: packages-install
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
 	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
 
-reboot: packages-need
+reboot: packages-install
 	$(Q)echo "LOG: Rebooting via ssh"
 	$(Q)$(SSH_CMD) 'sudo reboot' || true
 

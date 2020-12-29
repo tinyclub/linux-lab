@@ -27,7 +27,7 @@ function _makefile_targets {
             ;;
          *)
             # Find makefile targets available in the current directory
-            ignores="^_|-km|features|kernel-modules|module-|module$|FORCE"
+            ignores="^_|-km|features|kernel-modules|module-|module$|FORCE|rootdir|default-"
             if [[ -e "$(pwd)/Makefile" ]]; then
                 common_targets="$(grep "^APP_TARGETS :=" $(pwd)/Makefile | cut -d '=' -f2)"
                 all_apps="$(grep "^APPS :=" $(pwd)/Makefile | cut -d '=' -f2)"

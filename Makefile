@@ -3668,7 +3668,7 @@ endif
 _test _debug:
 	$(Q)echo "LOG: This feature is not implemented for real boards."
 
-login: _boot
+login: packages-install _boot
 
 PHONY += login
 

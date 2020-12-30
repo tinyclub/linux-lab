@@ -1,5 +1,6 @@
 # Copyright (C) 2020 Wu Zhangjin <falcon@tinylab.org>
-_BASE    = 1
+# _BASE: 1, virt; 2, real; 3: virt+real
+_BASE    = 2
 ARCH     = arm
 XARCH    = $(ARCH)
 CPU     ?= cortex-a9
@@ -31,15 +32,6 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
-
-# For real board uploading
-#
-# Notes:
-#
-# 1. Must disable serial login password for ip getting automation, `passwd -d debian`
-# 2. Must allow login as root with password, see README.md
-#
-BOARD_VIRT := 0
 
 #
 ## prebuilt toolchain, please download it if not internal via: make toolchain

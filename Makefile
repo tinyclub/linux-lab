@@ -22,9 +22,6 @@ space := $(empty) $(empty)
 USER := ubuntu
 WARN_ON_USER ?= 1
 
-# Default board is virtual
-BOARD_VIRT := 1
-
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
 ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
@@ -1121,7 +1118,7 @@ FILTER   ?= .*
 # FILTER for board settings
 VAR_FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
-BTYPE    ?= ^_BASE|^_PLUGIN
+BTYPE    ?= ^_BASE *= 1|^_PLUGIN *= 1
 
 define getboardvars
 cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' '
@@ -1226,7 +1223,6 @@ board-info:
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
 		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(VAR_FILTER)"
 
-
 list-default:
 	$(Q)make $(S) board-info BOARD= VAR_FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
 
@@ -1235,6 +1231,9 @@ list-board:
 
 list-short:
 	$(Q)make $(S) board-info BOARD= VAR_FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
+
+list-real:
+	$(Q)make $(S) list BTYPE="^_BASE *= 2|^_PLUGIN *= 2"
 
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"
@@ -1529,7 +1528,7 @@ $(1)-savepatch:
 
 debug-$(1): $(1)-debug
 
-ifeq ($(BOARD_VIRT),1)
+ifeq ($(_VIRT),1)
 $(1)-debug: _boot
 else
 $(1)-debug: _debug
@@ -1673,6 +1672,14 @@ ifeq ($(_PLUGIN),1)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
 else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
+endif
+
+# Check and configure board type
+# If board support virt and real, allow configure it via VIRT
+_VIRT ?= 1
+ VIRT ?= 0
+ifneq ($(_BASE)$(_PLUGIN),1)
+  _VIRT := $(VIRT)
 endif
 
 ifeq ($(firstword $(MAKECMDGOALS)),bsp)
@@ -2882,7 +2889,7 @@ packages-install:
 	sudo apt-get update -y && sudo apt-get install -y $(PACKAGES_NEED[deb]))
 
 # Targets for real boards
-ifeq ($(BOARD_VIRT),0)
+ifeq ($(_VIRT),0)
 
 # Remote automatical login related parts
 LOGIN_METHOD ?= ssh
@@ -2896,7 +2903,7 @@ ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/d
   BOARD_IP ?= $$(sudo python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
   ifeq ($(BOARD_IP),)
-    $(error This is a real board, please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
+    $(error This is a real hardware board, please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
   endif
 endif
 
@@ -3012,7 +3019,7 @@ root-saveconfig:
 	else cp $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
 
 # For virtual boards
-ifeq ($(BOARD_VIRT),1)
+ifeq ($(_VIRT),1)
 
 # Qemu options and kernel command lines
 

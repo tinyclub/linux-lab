@@ -2933,7 +2933,7 @@ ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/d
   BOARD_IP ?= $$(sudo python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
   ifeq ($(BOARD_IP),)
-    $(error Please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
+    $(error This is a real board, please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
   endif
 endif
 

@@ -657,6 +657,9 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
     $ make list-base          # 不包含插件
     $ make list-plugin        # 仅包含插件
     $ make list-full          # 所有板子信息
+    $ make list-real          # 仅真实硬件
+
+**注意**：由于虚拟开发板能直接上手实验，而真实硬件需要额外购买硬件，所以默认情况下没有列出真实硬件开发板，除非明确使用 `list-real`。
 
 ### 3.1.2 选择一个开发板
 

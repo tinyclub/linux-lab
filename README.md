@@ -571,6 +571,9 @@ and more:
     $ make list-base          # no plugin
     $ make list-plugin        # only plugin
     $ make list-full          # everything
+    $ make list-real          # real hardware boards
+
+**Notes**: Except `list-real`, the left commands only list virtual boards, for the real boards require real hardware support.
 
 ### 3.1.2 Choosing a board
 

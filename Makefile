@@ -1216,42 +1216,6 @@ plugin-list-full:
 PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
 # List targets for boards and plugins
-
-INFO ?= raw
-
-# Allow filter by specified arch
-ifeq ($(origin ARCH),command line)
-  _ARCH := $(ARCH)
-endif
-
-ifneq ($(INFO),raw)
-
-# FIXME: ROOTDEV has been set to /dev/vda for riscv32/virt and exported, which is not supported by the other boards
-export ROOTDEV=/dev/ram0
-
-define getboardlist
-find $(BOARDS_DIR)/$(or $(_ARCH),$(2)) -maxdepth 3 -name "Makefile" -exec egrep -H "$(or $(1),$(BTYPE))" {} \; | tr -s '/' | egrep $(FILTER) | sort -t':' -k2 | cut -d':' -f1 | sed -e "s%boards/\(.*\)/Makefile%\1%g"
-endef
-
-list-default:
-	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH CPU LINUX ROOTDEV";)
-
-list-board:
-	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH";)
-
-list-short:
-	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x VAR="ARCH LINUX";)
-
-list-base:
-	$(Q)$(foreach x,$(shell $(call getboardlist,"^_BASE")),make -s board-show b=$x VAR="ARCH";)
-
-list-plugin:
-	$(Q)$(foreach x,$(shell $(call getboardlist,"^_PLUGIN")),make -s board-show b=$x VAR="ARCH";)
-
-list-full:
-	$(Q)$(foreach x,$(shell $(call getboardlist)),make -s board-show b=$x;)
-else
-
 board-info:
 	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(_ARCH),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| tr -s '/' | egrep "$(FILTER)" \
@@ -1280,7 +1244,6 @@ list-plugin:
 
 list-full:
 	$(Q)make $(S) board-info BOARD=
-endif
 
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \

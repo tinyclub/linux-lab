@@ -135,10 +135,9 @@ PLUGIN_DIR  := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
 PLUGIN_FLAG := $(PLUGIN_DIR)/.plugin
 
 ifneq ($(PLUGIN_FLAG), $(wildcard $(PLUGIN_FLAG)))
-  PLUGIN_DIR:=
-  _PLUGIN   := 0
+  PLUGIN_DIR :=
 else
-  _PLUGIN   := 1
+  _PLUGIN   ?= 1
 endif
 
 # add board directories
@@ -1668,7 +1667,7 @@ _BSP ?= $(BSP)
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
 __BSP := notexist
 
-ifeq ($(_PLUGIN),1)
+ifneq ($(_PLUGIN),)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
 else
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
@@ -1678,6 +1677,7 @@ endif
 # If board support virt and real, allow configure it via VIRT
 _VIRT ?= 1
  VIRT ?= 0
+
 ifneq ($(_BASE)$(_PLUGIN),1)
   _VIRT := $(VIRT)
 endif

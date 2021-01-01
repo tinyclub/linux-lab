@@ -1644,7 +1644,7 @@ endif
 endif
 
 $$(call _stamp_$(1),env):
-	$$(Q)make $$(S) env
+	$$(Q)make $$(S) _env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
@@ -3664,7 +3664,7 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
-env: env-prepare
+_env: env-prepare
 env-prepare: toolchain-install
 ifeq ($(GCC_SWITCH),1)
 	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))

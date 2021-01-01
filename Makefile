@@ -1678,7 +1678,12 @@ endif
 _VIRT ?= 1
  VIRT ?= 0
 
-ifneq ($(_BASE)$(_PLUGIN),1)
+# 2 means only support virt
+ifeq ($(_BASE)$(_PLUGIN),2)
+  _VIRT := 0
+endif
+# 3 means virt and real, use as virt by default
+ifeq ($(_BASE)$(_PLUGIN),3)
   _VIRT := $(VIRT)
 endif
 

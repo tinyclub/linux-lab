@@ -36,7 +36,6 @@ function _makefile_targets {
             ignores="^_|-km|features|kernel-modules|module-|module$|FORCE|rootdir|default-"
             if [[ -e "$(pwd)/Makefile" ]]; then
                 BOARDS="$(find $(pwd)/boards/ -maxdepth 3 -name "Makefile" -exec egrep -H "^_BASE|^_PLUGIN" {} \; | tr -s '/' | egrep ".*" | sort -t':' -k2 | cut -d':' -f1 | egrep -v "/module" | sed -e "s%$(pwd)/boards/\(.*\)/Makefile%BOARD=\1%g")"
-                boards="$(find $(pwd)/boards/ -maxdepth 3 -name "Makefile" -exec egrep -H "^_BASE|^_PLUGIN" {} \; | tr -s '/' | egrep ".*" | sort -t':' -k2 | cut -d':' -f1 | egrep -v "/module" | sed -e "s%$(pwd)/boards/\(.*\)/Makefile%board=\1%g")"
                 common_targets="$(grep "^APP_TARGETS :=" $(pwd)/Makefile | cut -d '=' -f2)"
                 all_apps="$(grep "^APPS :=" $(pwd)/Makefile | cut -d '=' -f2)"
                 app_targets=''

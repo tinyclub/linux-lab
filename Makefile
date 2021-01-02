@@ -2907,7 +2907,9 @@ endif
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   BOARD_IP ?= $$(sudo python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
-  ifneq ($(findstring list,$(MAKECMDGOALS)),list)
+  SSH_TARGETS    ?= login boot-config reboot -upload
+  TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
+  ifneq ($(TARGET_MATCHED),)
     ifeq ($(BOARD_IP),)
       $(error This is a real hardware board, please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
     endif

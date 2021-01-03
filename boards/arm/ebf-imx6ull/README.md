@@ -1,6 +1,9 @@
 
 # EmbedFire i.MX6UL/ULL-EVK-PRO Board
 
+This board uses NXP i.MX6ULL Cortex-A7 CPU, it is about 800M, you can buy it
+from: [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/).
+
 ## Introduction
 
 The board tested uses nand storage, for mmc, please use imx6ull-mmc-npi.dtb.

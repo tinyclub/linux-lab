@@ -9,6 +9,9 @@ HOST_GCC[OS_focal]  := 9
 PACKAGES_NEED[bin] := sshpass miniterm
 PACKAGES_NEED[deb] := sshpass python3-serial
 
+# The shop to buy the board
+BOARD_SHOP     ?= https://shop155917374.taobao.com
+
 # Default setting for real board
 BOARD_SERIAL   ?= /dev/ttyUSB0
 BOARD_BAUDRATE ?= 115200

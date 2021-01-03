@@ -1117,7 +1117,7 @@ FILTER   ?= .*
 # FILTER for board settings
 VAR_FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 # all: 0, plugin: 1, noplugin: 2
-BTYPE    ?= ^_BASE *= 1|^_PLUGIN *= 1
+BTYPE    ?= ^_BASE|^_PLUGIN
 
 define getboardvars
 cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' '
@@ -2911,7 +2911,7 @@ else
   TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
   ifneq ($(TARGET_MATCHED),)
     ifeq ($(BOARD_IP),)
-      $(error This is a real hardware board, please configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
+      $(error This is a real hardware board, please buy one from $(BOARD_SHOP) and configure BOARD_SERIAL or BOARD_IP in $(BOARD_MAKEFILE) before uploading)
     endif
   endif
 endif

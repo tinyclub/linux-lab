@@ -573,8 +573,6 @@ and more:
     $ make list-full          # everything
     $ make list-real          # real hardware boards
 
-**Notes**: Except `list-real`, the left commands only list virtual boards, for the real boards require real hardware support.
-
 ### 3.1.2 Choosing a board
 
 By default, the default board: `vexpress-a9` is used, we can configure, build and boot for a specific board with `BOARD`, for example:

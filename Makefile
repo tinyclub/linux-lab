@@ -1234,6 +1234,9 @@ list-short:
 list-real:
 	$(Q)make $(S) list BTYPE="^_BASE *= 2|^_PLUGIN *= 2"
 
+list-virt:
+	$(Q)make $(S) list BTYPE="^_BASE *= 1|^_PLUGIN *= 1"
+
 list-base:
 	$(Q)make $(S) list BTYPE="^_BASE"
 

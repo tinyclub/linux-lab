@@ -39,6 +39,8 @@
     - [3.1 Using boards](#31-using-boards)
        - [3.1.1 List available boards](#311-list-available-boards)
        - [3.1.2 Choosing a board](#312-choosing-a-board)
+          - [3.1.2.1 Real board](#3121-real-board)
+          - [3.1.2.2 Virtual board](#3122-virtual-board)
        - [3.1.3 Using as plugins](#313-using-as-plugins)
        - [3.1.4 Configure boards](#314-configure-boards)
     - [3.2 Build in one command](#32-build-in-one-command)
@@ -572,10 +574,34 @@ and more:
     $ make list-plugin        # only plugin
     $ make list-full          # everything
     $ make list-real          # real hardware boards
+    $ make list-virt          # only virtual boards
 
 ### 3.1.2 Choosing a board
 
-By default, the default board: `vexpress-a9` is used, we can configure, build and boot for a specific board with `BOARD`, for example:
+#### 3.1.2.1 Real board
+
+From version v0.6, to support learn external devices, Linux Lab adds real hardware board support, to use such boards, please buy them and connect them to your develop host correctly.
+
+Only list real boards:
+
+    $ make list-real
+    [ arm/ebf-imx6ull ]:
+      ARCH     = arm
+      CPU     ?= cortex-a9
+      LINUX   ?= v4.19.35
+      ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
+      ROOTDEV ?= /dev/mmcblk0
+
+Because real hardware boards differs from each other, so, board specific document are recommended, for example: `boards/arm/ebf-imx6ull/README.md`.
+
+All supported real hardware boards will be put in the following shop, after bought them, please contact with wechat: `tinylab` and join in the development group.
+
+* [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/)
+
+
+#### 3.1.2.2 Virtual board
+
+By default, the default virtual board: `vexpress-a9` is used, we can configure, build and boot for a specific board with `BOARD`, for example:
 
     $ make BOARD=malta
     $ make boot

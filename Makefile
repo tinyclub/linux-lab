@@ -2912,7 +2912,9 @@ endif
 
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  BOARD_IP ?= $$(sudo python3 $(TOP_DIR)/tools/helper/getip.py $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+  GETIP_TOOL    ?= $(TOP_DIR)/tools/helper/getip.py
+  GETIP_TIMEOUT ?= 2
+  BOARD_IP ?= $$(sudo timeout $(GETIP_TIMEOUT) python3 $(GETIP_TOOL) $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
   SSH_TARGETS    ?= login boot boot-config reboot -upload
   TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
@@ -2944,6 +2946,10 @@ ifneq ($(MAKECMDGOALS),)
  endif
 endif
 
+# Check ip variable
+getip:
+	$(Q)if [ -z "$(BOARD_IP)" ]; then echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && exit 1; fi
+
 # Upload images to remote board
 
 ifeq ($(findstring upload,$(MAKECMDGOALS)),upload)
@@ -2953,16 +2959,16 @@ REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: packages-install $(call __stamp_kernel,build)
+dtb-upload: packages-install getip $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
-	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'"
-	$(Q)eval "$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)"
+	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
+	$(Q)$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
 endif
 
-kernel-upload: packages-install $(call __stamp_kernel,build)
+kernel-upload: packages-install getip $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
-	$(Q)eval "$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'"
-	$(Q)eval "$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)"
+	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
+	$(Q)$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)
 
 $(LOCAL_MODULES)$(m):
 	$(Q)make modules-install m=$(m)
@@ -2970,11 +2976,11 @@ $(LOCAL_MODULES)$(m):
 
 module-upload: modules-upload
 
-modules-upload: packages-install $(LOCAL_MODULES)$(m)
+modules-upload: packages-install getip $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
-	$(Q)eval "$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'"
-	$(Q)eval "$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/"
+	$(Q)$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'
+	$(Q)$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/
 
 # Add dummmy entries for upload target
 ifeq ($(first_target), upload)
@@ -2990,12 +2996,12 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
-boot-config: packages-install
+boot-config: packages-install getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
 	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
 
-reboot: packages-install
+reboot: packages-install getip
 	$(Q)echo "LOG: Rebooting via ssh"
 	$(Q)$(SSH_CMD) 'sudo reboot' || true
 

@@ -27,6 +27,7 @@ ORIIMG  ?= arch/$(ARCH)/boot/zImage
 DIMAGE  ?= imx6ull-nand-npi.dtb
 ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DIMAGE)
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
+KRELEASE?= $(BSP_KERNEL)/$(LINUX)/kernel.release
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/$(DIMAGE)
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 UROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot

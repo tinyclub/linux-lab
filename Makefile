@@ -845,9 +845,10 @@ endif
 EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
-LINUX_PKIMAGE := $(ROOT_BUILD)/images/$(PORIIMG)
-LINUX_KIMAGE  := $(KERNEL_BUILD)/$(ORIIMG)
-LINUX_UKIMAGE := $(KERNEL_BUILD)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
+LINUX_PKIMAGE  := $(ROOT_BUILD)/images/$(PORIIMG)
+LINUX_KIMAGE   := $(KERNEL_BUILD)/$(ORIIMG)
+LINUX_UKIMAGE  := $(KERNEL_BUILD)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
+LINUX_KRELEASE := $(KERNEL_BUILD)/include/config/kernel.release
 
 ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
   PBK ?= 0
@@ -883,14 +884,16 @@ ifneq ($(DTS),)
   endif
 endif
 
-PKIMAGE ?= $(LINUX_PKIMAGE)
-KIMAGE  ?= $(LINUX_KIMAGE)
-UKIMAGE ?= $(LINUX_UKIMAGE)
-DTB     ?= $(LINUX_DTB)
+PKIMAGE  ?= $(LINUX_PKIMAGE)
+KIMAGE   ?= $(LINUX_KIMAGE)
+KRELEASE ?= $(LINUX_KRELEASE)
+UKIMAGE  ?= $(LINUX_UKIMAGE)
+DTB      ?= $(LINUX_DTB)
 
 ifeq ($(PBK),0)
-  KIMAGE  := $(LINUX_KIMAGE)
-  UKIMAGE := $(LINUX_UKIMAGE)
+  KIMAGE   := $(LINUX_KIMAGE)
+  KRELEASE := $(LINUX_KRELEASE)
+  UKIMAGE  := $(LINUX_UKIMAGE)
 endif
 ifeq ($(PBD),0)
   DTB := $(LINUX_DTB)
@@ -2886,6 +2889,7 @@ endif
 kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
+	-cp $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR)
 	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
@@ -2933,7 +2937,7 @@ RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
  ifeq ($(filter $(firstword $(MAKECMDGOALS)),$(addsuffix -upload,kernel dtb module modules) boot-config boot upload),$(firstword $(MAKECMDGOALS)))
-  KERNEL_RELEASE ?= $(shell cat $(KERNEL_BUILD)/include/config/kernel.release)
+  KERNEL_RELEASE ?= $(shell cat $(KRELEASE))
   ifeq ($(KERNEL_RELEASE),)
     $(error Linux must be compiled before uploading)
   endif

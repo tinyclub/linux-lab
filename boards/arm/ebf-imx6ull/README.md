@@ -77,15 +77,12 @@ Or upload them with detailed commands:
     $ export kernel_version=4.19.35+
     $ export dtb=imx6ull-nand-npi.dtb
 
-    $ make kernel-save
     $ ls build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/
     compressed  dts  Image  zImage
     $ ls build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/dts/
     imx6ull-nand-npi.dtb
     $ ls boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/
     4.19.35+
-
-    $ pushd boards/arm/ebf-imx6ull/bsp
 
     $ scp build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/zImage root@$board_ip:/boot/vmlinuz-$kernel_version
     $ ssh root@$board_ip "mkdir -p /boot/dtbs/$kernel_version/"

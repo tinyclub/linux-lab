@@ -32,27 +32,41 @@ order: 60
 
 下面是一般的稿件投递过程。
 
+## 获取访问 “投稿仓库” 权限
+
+首先去 [Gitee][5] 注册一个 gitee 账号，然后联系泰晓科技管理员（微信号：tinylab），将 gitee 账号添加到 “投稿仓库” 的访问用户列表中。
+
+以上操作完成后就可以访问 “投稿仓库” 了，泰晓科技的 “投稿仓库” 地址是: <https://gitee.com/tinylab/tinylab.workspace>。请注意访问该仓库时务必已经注册并登录 [Gitee][5] 且您的 gitee 账号拥有访问该仓库的相应权限。
+
 ## 撰写稿件
 
-首先下载文章仓库：
+稿件的投稿和评审采用 [Gitee][5] 提供的标准的 “Fork + PullRequest 模式”，具体操作请参考 [Gitee 说明文档][6]。 
 
-    $ git clone https://gitee.com/tinylab/tinylab.org
-    $ cd tinylab.org
+fork 泰晓科技的 “投稿仓库” 完成后，就可以下载仓库了，假设您的 gitee 账号是 “jack”：
+
+```
+$ git clone https://gitee.com/jack/tinylab.workspace.git
+$ cd tinylab.workspace
+```
 
 然后生成文章模板, slug 为泰晓科技站内链接（字符中间请使用 `-` 连接），title 为标题。举例如下
 
-    $ tools/post slug=this-is-my-link title="This is 我的文章标题"
-    Creating new post: ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+```
+$ tools/post slug=this-is-my-link title="This is 我的文章标题"
+Creating new post: ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+```
 
-注：执行该命令可能会报系统缺少 rake 命令，无法运行，解决方法很简单，直接安装 rake 即可，`sudo apt-get install rake`。
+注：执行该命令可能会报系统缺少 rake 命令，无法运行，解决方法很简单，直接安装 rake 即可，譬如在 Ubuntu 系统上可以直接运行 `sudo apt-get install rake` 完成安装。
 
-执行 `tools/post` 命令后会在 `./_posts/` 目录下生成名为 `2019-05-21-09-04-37-this-is-my-link.md` 的文章模版，该文件名由时间戳和您提供的 slug 字符串拼接组成。文章发表后可以通过链接 `http://tinylab.org/this-is-my-link` 访问该文章页面如下，其中红色框部分是该文章的站内链接，蓝色框部分是 title 的内容：
+执行 `tools/post` 命令后会在 `./_posts/` 目录下生成名为类似 `2019-05-21-09-04-37-this-is-my-link.md` 的文章模版，该文件名由当前时间戳和您提供的 slug 字符串拼接组成。文章发表后可以通过链接 `http://tinylab.org/this-is-my-link` 访问该文章页面如下，其中红色框部分是该文章的站内链接，蓝色框部分是 title 的内容：
 
 ![tools/post1](/wp-content/uploads/2019/05/post1.png)
 
 接着，参照模板编辑文章。
 
-    $ vim ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+```
+$ vim ./_posts/2019-05-21-09-04-37-this-is-my-link.md
+```
 
 打开后内容如下所示：
 
@@ -64,19 +78,20 @@ Markdown 基本用法请参考 [Markdown 语法说明][2] 以及上面创建的�
 
 如果有附件或者图片资料，请创建目录 `wp-content/uploads/年/月/`，并添加资料进去，然后在文章中通过 Markdown 语法引用。引用图片的方式：
 
-    ![图片简介](/wp-content/uploads/2017/09/xxx.png)
+```
+![图片简介](/wp-content/uploads/2017/09/xxx.png)
+```
 
 ## 递送稿件
 
-撰写完后即可通过 Github/Gitee 发送 Pull Request 进行投稿。
+撰写完后即可通过 [Gitee][5] 发送 Pull Request 进行投稿。具体操作请参考 [Gitee 说明文档][6]。
 
 这一步要求事先做如下准备：
 
-  * 在 Github [Fork][3] 上述 [文章仓库][1]，也可以在 [Gitee](https://gitee.com/tinylab/tinylab.org) Fork 并发送 Pull Request
-  * 您在本地修改后先提交到刚 Fork 的仓库
-  * 然后再进入自己仓库，选择合并到 [文章仓库][1] 的 gh-pages 分支
+  * 您在本地修改后先提交到刚 Fork 的自己账号的仓库
+  * 然后再进入自己仓库，创建 PR 并选择合并到泰晓科技的 “投稿仓库” 的 gh-pages 分支
 
-提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布到网站。
+提交 Pull Request 后，我们会尽快安排人员评审，评审通过后即可发布。
 
 ## 文章模板说明
 
@@ -191,62 +206,9 @@ tags:
 
 关于 **微信公众号的 “赞赏用户”**，需要作者自己提供。另外根据微信公众号的要求，每个人的 “赞赏帐号” 需要采用公众号邀请的方式创建，邀请可以来自 “泰晓科技” 公众号，也可以是其他的公众号，但每个公众号目前最多只能邀请三个，目前 “泰晓科技” 公众号的邀请名额已满，所以如果作者自己已经拥有 “赞赏帐号”，请直接关联 “泰晓科技” 微信公众号就可以了。如果作者目前还没有自己的 “赞赏帐号”，也没有关系，“泰晓科技” 微信公众号提供缺省的打赏账户，一旦有读者为您的文章打赏，“泰晓科技” 将及时与您联系，并将打赏金额通过您方便的方式转赠给您。
 
-## 附录：本地预览文章
-
-如果时间允许，建议提前在本地预览一下文章效果，确保文档显示优雅美观。这一步可通过 Cloud Lab 完成，大体用法如下。
-
-### 安装 Docker
-
-已经为本站的编辑环境创建了一个 Docker 镜像，使用之前需要先安装 Docker，可参考：
-
-* Linux, Mac OSX, Windows 10: [Docker CE](https://store.docker.com/search?type=edition&offering=community)
-* Older Windows: [Docker Toolbox](https://www.docker.com/docker-toolbox)
-
-注意事项：
-
-安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
-
-    $ sudo usermod -aG docker $USER
-
-由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 docker 更换镜像库为本地区的，更换完记得重启 docker 服务。
-
-  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
-
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
-
-### 使用 tinylab.org 编辑环境
-
-安装完 Docker 后，即可下载编辑环境，选择之前先选定一个工作目录。如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
-
-    $ cd /mnt/sda1
-
-在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
-
-    $ cd ~/Documents
-
-之后即可下载并运行：
-
-    $ git clone https://gitee.com/tinylab/cloud-lab.git
-    $ cd cloud-lab/ && tools/docker/choose tinylab.org
-    $ tools/docker/run tinylab.org
-
-运行完以后会通过浏览器自动登陆一个桌面，点击里头的 `Local Page` 即可查看预览效果。
-
-随后把新撰写的文章内容拷贝到 `labs/tinylab.org/_posts` 后，稍等几分钟即可在在预览页面查看，如果发现有问题，请提前进行调整，确保文章质量。
-
-
  [1]: https://github.com/tinyclub/tinylab.org.git
  [2]: https://www.w3cschool.cn/markdownyfsm/
  [3]: https://github.com/tinyclub/tinylab.org#fork-destination-box
  [4]: https://wx.zsxq.com/dweb2/index/group/455128114458
+ [5]: https://gitee.com/
+ [6]: https://gitee.com/help/articles/4128

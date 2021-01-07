@@ -78,16 +78,18 @@ Or upload them with detailed commands:
     $ export dtb=imx6ull-nand-npi.dtb
 
     $ make kernel-save
-    $ ls boards/arm/ebf-imx6ull/bsp/kernel/v4.19.35/
-    imx6ull-nand-npi.dtb  zImage
+    $ ls build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/
+    compressed  dts  Image  zImage
+    $ ls build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/dts/
+    imx6ull-nand-npi.dtb
     $ ls boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/
     4.19.35+
 
     $ pushd boards/arm/ebf-imx6ull/bsp
 
-    $ scp kernel/v4.19.35/zImage root@$board_ip:/boot/vmlinuz-$kernel_version
+    $ scp build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/zImage root@$board_ip:/boot/vmlinuz-$kernel_version
     $ ssh root@$board_ip "mkdir -p /boot/dtbs/$kernel_version/"
-    $ scp kernel/v4.19.35/$dtb root@$board_ip:/boot/dtbs/$kernel_version/
+    $ scp build/arm/linux-v4.19.35-ebf-imx6ull/arch/arm/boot/dts/$dtb root@$board_ip:/boot/dtbs/$kernel_version/
 
     $ rm boards/arm/ebf-imx6ull/bsp/root/2020.02/rootfs/lib/modules/4.19.35+/{source,build}
     $ scp -r root/2020.02/rootfs/lib/modules/$kernel_version root@$board_ip:/lib/modules/

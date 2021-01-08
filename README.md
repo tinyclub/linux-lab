@@ -1890,6 +1890,46 @@ Potential methods of configuration in Ubuntu, depends on docker and ubuntu versi
         "registry-mirrors": ["<your accelerate address>"]
     }
 
+I have put one demo config file as `doc/install/daemon.json`, just copy it to your `/etc/docker/daemon.json`. This way is the ONLY work way for me now (ON UBUNTU 20.04).
+I have change the socks format from `fd://` to `unix://`, enjoy it.
+This is my environment and test output:
+
+```shell
+$ uname -a                   
+Linux none 5.8.0-34-generic #37~20.04.2-Ubuntu SMP Thu Dec 17 14:53:00 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+
+$ sudo dockerd        
+INFO[2021-01-08T21:15:15.526927182+08:00] Starting up                                  
+DEBU[2021-01-08T21:15:15.527274994+08:00] Listener created for HTTP on unix (/var/run/docker.sock) 
+WARN[2021-01-08T21:15:15.527307732+08:00] Binding to IP address without --tlsverify is insecure and gives root access on this machine to everyone who has access to your network.  host="tcp://0.0.0.0:2376"
+WARN[2021-01-08T21:15:15.527316505+08:00] Binding to an IP address, even on localhost, can also give access to scripts run in a browser. Be safe out there!  host="tcp://0.0.0.0:2376"
+WARN[2021-01-08T21:15:16.527506305+08:00] Binding to an IP address without --tlsverify is deprecated. Startup is intentionally being slowed down to show this message  host="tcp://0.0.0.0:2376"
+WARN[2021-01-08T21:15:16.527592606+08:00] Please consider generating tls certificates with client validation to prevent exposing unauthenticated root access to your network  host="tcp://0.0.0.0:2376"
+WARN[2021-01-08T21:15:16.527628289+08:00] You can override this by explicitly specifying '--tls=false' or '--tlsverify=false'  host="tcp://0.0.0.0:2376"
+WARN[2021-01-08T21:15:16.527655507+08:00] Support for listening on TCP without authentication or explicit intent to run without authentication will be removed in the next release  host="tcp://0.0.0.0:2376"
+DEBU[2021-01-08T21:15:31.528451186+08:00] Listener created for HTTP on tcp (0.0.0.0:2376) 
+INFO[2021-01-08T21:15:31.529205767+08:00] detected 127.0.0.53 nameserver, assuming systemd-resolved, so using resolv.conf: /run/systemd/resolve/resolv.conf 
+DEBU[2021-01-08T21:15:31.530171576+08:00] Golang's threads limit set to 112230         
+INFO[2021-01-08T21:15:31.531241032+08:00] parsed scheme: "unix"                         module=grpc
+INFO[2021-01-08T21:15:31.531288346+08:00] scheme "unix" not registered, fallback to default scheme  module=grpc
+DEBU[2021-01-08T21:15:31.531318825+08:00] metrics API listening on /var/run/docker/metrics.sock 
+INFO[2021-01-08T21:15:31.531354155+08:00] ccResolverWrapper: sending update to cc: {[{unix:///run/containerd/containerd.sock  <nil> 0 <nil>}] <nil> <nil>}  module=grpc ....
+
+$ ip addr show docker0
+4: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    link/ether 02:42:a3:c0:fc:a0 brd ff:ff:ff:ff:ff:ff
+    inet 10.66.0.10/16 brd 10.66.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+```
+But `systemd start docker` is still wrong. as [https://docs.docker.com/config/daemon/] shows, We should remove options from `dockerd` in `docker.service`.
+```bash
+$ cat /etc/systemd/system/docker.service.d/docker.conf 
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd
+```
+Happy hacking continue.
+
 Please restart docker service after change the accelerate address:
 
     $ sudo service docker restart

@@ -195,7 +195,7 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 |Prebuilt  | All of above components has been prebuilt
 |Rootfs    | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM
 |Docker    | Cross toolchains available in one command, external ones configurable
-|Acess     | Access via web browsers, available everywhere via web vnc or web ssh
+|Access    | Access via web browsers, available everywhere via web vnc or web ssh
 |Network   | Builtin bridge networking, every board has network (except Raspi3)
 |Boot      | Support serial port, curses (bash/ssh friendly) and graphic booting
 |Testing   | Support automatic testing via `make test` target

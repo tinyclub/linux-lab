@@ -108,6 +108,7 @@
        - [6.1.7 关机或重启主机后如何恢复运行 Linux Lab](#617-关机或重启主机后如何恢复运行-linux-lab)
        - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
        - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
+       - [6.1.10 Docker not work in Ubuntu 20.04](#6110-docker-not-work-in-ubuntu-2004)
     - [6.2 Qemu 相关](#62-qemu-相关)
        - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
        - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
@@ -2011,6 +2012,21 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
     Could not resolve host: gitee.com
     error: pathspec 'FETCH_HEAD' dit not match any file(s) known to git
+
+### 6.1.10 Docker not work in Ubuntu 20.04
+
+如果在 Ubuntu 20.04 下 Docker 不工作，请尝试使用 `doc/install/daemon.json` 并清理 dockerd 的默认参数，更多内容请参考 [docker daemon](https://docs.docker.com/config/daemon/)：
+
+    $ sudo cat /etc/systemd/system/docker.service.d/docker.conf
+    [Service]
+    ExecStart=
+    ExecStart=/usr/bin/dockerd
+
+    $ sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.bak
+    $ sudo cp doc/install/daemon.json /etc/docker/
+    $ sudo service docker restart
+
+**注意**：记得把 `registry-mirrors` 配置为你希望使用的加速器地址。
 
 ## 6.2 Qemu 相关
 

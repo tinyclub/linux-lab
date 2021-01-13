@@ -101,6 +101,7 @@
        - [6.1.7 Restart Linux Lab after host system shutdown or reboot](#617-restart-linux-lab-after-host-system-shutdown-or-reboot)
        - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
        - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
+       - [6.1.10 Docker not work in Ubuntu 20.04](#6110-docker-not-work-in-ubuntu-2004)
     - [6.2 Qemu Issues](#62-qemu-issues)
        - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
        - [6.2.2 Poweroff hang](#622-poweroff-hang)
@@ -1940,6 +1941,21 @@ If get such error while running `make boot`, it means network issue, please refe
 
     Could not resolve host: gitee.com
     error: pathspec 'FETCH_HEAD' dit not match any file(s) known to git
+
+### 6.1.10 Docker not work in Ubuntu 20.04
+
+If docker not work in Ubuntu 20.04, please use `doc/install/daemon.json` and clean up the arguments of dockerd, learn more from [docker daemon](https://docs.docker.com/config/daemon/):
+
+    $ sudo cat /etc/systemd/system/docker.service.d/docker.conf
+    [Service]
+    ExecStart=
+    ExecStart=/usr/bin/dockerd
+
+    $ sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.bak
+    $ sudo cp doc/install/daemon.json /etc/docker/
+    $ sudo service docker restart
+
+Please make sure using the best `registry-mirrors` for better download speed.
 
 ## 6.2 Qemu Issues
 

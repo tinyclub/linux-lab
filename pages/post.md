@@ -36,17 +36,17 @@ order: 60
 
 首先去 [Gitee][5] 注册一个 gitee 账号，然后联系泰晓科技管理员（微信号：tinylab），将 gitee 账号添加到 “投稿仓库” 的访问用户列表中。
 
-以上操作完成后就可以访问 “投稿仓库” 了，泰晓科技的 “投稿仓库” 地址是: <https://gitee.com/tinylab/tinylab.workspace>。请注意访问该仓库时务必已经注册并登录 [Gitee][5] 且您的 gitee 账号拥有访问该仓库的相应权限。
+以上操作完成后就可以访问 “投稿仓库” 了，泰晓科技的 “投稿仓库” 地址是: <https://gitee.com/tinylab/tinylab.org>。请注意访问该仓库时务必已经注册并登录 [Gitee][5] 且您的 gitee 账号拥有访问该仓库的相应权限。
 
 ## 撰写稿件
 
 稿件的投稿和评审采用 [Gitee][5] 提供的标准的 “Fork + PullRequest 模式”，具体操作请参考 [Gitee 说明文档][6]。 
 
-fork 泰晓科技的 “投稿仓库” 完成后，就可以下载仓库了，假设您的 gitee 账号是 “jack”：
+Fork 泰晓科技的 “投稿仓库” 完成后，就可以下载仓库了，假设您的 gitee 账号是 “jack”：
 
 ```
-$ git clone https://gitee.com/jack/tinylab.workspace.git
-$ cd tinylab.workspace
+$ git clone https://gitee.com/jack/tinylab.org.git
+$ cd tinylab.org
 ```
 
 然后生成文章模板, slug 为泰晓科技站内链接（字符中间请使用 `-` 连接），title 为标题。举例如下

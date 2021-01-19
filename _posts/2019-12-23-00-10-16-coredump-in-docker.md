@@ -19,7 +19,7 @@ tags:
 
 ## 背景简介
 
-[《360° 剖析 Linux ELF》](https://w.url.cn/s/AMcKZ3a) 课程使用 [Linux Lab](http://tinylab.org/linux-lab) 来做实验环境，刚开始有学员报告说，当程序出现段错误时，即使用 ulimit 做了配置，也无法正常生成 core 文件。
+[《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283) 课程使用 [Linux Lab](http://tinylab.org/linux-lab) 来做实验环境，刚开始有学员报告说，当程序出现段错误时，即使用 ulimit 做了配置，也无法正常生成 core 文件。
 
 后面分析并解决了这一问题，本文记录一下解决方法。
 

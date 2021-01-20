@@ -5,12 +5,13 @@
 <section>
 <h2>猜你喜欢：</h2>
 <ul>
+  <li><strong>我要投稿：</strong>发表原创技术文章，<a href="http://tinylab.org/post">收获稿费、挚友与行业影响力</a></li>
 {% if page.layout == 'weekly' %}
   <li><strong>泰晓资讯：</strong>汇总一周技术趣闻与文章，<a href="/news">查看「Linux 资讯」</a></li>
 {% endif %}
-  <li><strong>我要投稿：</strong>发表原创技术文章，<a href="http://tinylab.org/post">收获稿费、挚友与行业影响力</a></li>
   <li><strong>知识星球：</strong>独家 Linux 实战经验与技巧，<a href="https://t.zsxq.com/uB2vJyF">订阅「Linux知识星球」</a></li>
-  <li><strong>儒码科技：</strong>Linux 技术咨询、培训与服务，<a href="/ruma.tech">联系「儒码科技」</a></li>
+  <li><strong>泰晓学院：</strong><a href="https://m.cctalk.com/inst/sh8qtdag">泰晓科技视频频道</a>，发布各类 Linux 视频课</li>
+  <li><strong>淘宝小店：</strong>欢迎光临<a href="https://shop155917374.taobao.com/">泰晓科技自营店</a>，购物支持泰晓原创</li>
   <li><strong>技术交流：</strong>Linux 用户技术交流微信群，联系微信号：tinylab</li>
 </ul>
 </section>

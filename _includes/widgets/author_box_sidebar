@@ -5,14 +5,15 @@
 
 <div style="margin-left: 10px; margin-top: -20px;">
 
-<a>手机阅读与分享</a>
+<a>手机阅读分享</a>
 
       {% assign page_url = site.production_url | append: page.url %}
       <div style="padding-top: 10px; padding-bottom: 10px;" id="page_url">
-        <img id="loading_img_sidebar" style="height: 90px; width: 90px;" src="{{ site.production_url}}/assets/themes/tinylab.org/img/loading.gif"></img>
+        <img id="loading_img_sidebar" style="height: 110px; width: 110px;" src="{{ site.production_url}}/assets/themes/tinylab.org/img/loading.gif"></img>
       </div>
-      <script async type="text/javascript">$(document).ready(function () { $('#loading_img_sidebar').hide(); $('#page_url').qrcode({ text: "{{ page_url }}", width: 90, height: 90 }); });</script>
+      <script async type="text/javascript">$(document).ready(function () { $('#loading_img_sidebar').hide(); $('#page_url').qrcode({ text: "{{ page_url }}", width: 110, height: 110 }); });</script>
 
+{% include widgets/sidebar_ads %}
 </div>
 
 {% assign author = null %}

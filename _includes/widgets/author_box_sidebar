@@ -3,7 +3,7 @@
 {% capture author_name %}{% if page.author %}{{ page.author }}{% else %}admin{% endif %}{% endcapture %}
 {% endif %}
 
-<div style="margin-left: 10px; margin-top: -18px;">
+<div style="margin-left: 10px; margin-top: -20px;">
 
 <a>手机阅读与分享</a>
 

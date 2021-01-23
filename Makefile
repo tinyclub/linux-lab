@@ -192,8 +192,8 @@ UBOOT_SRC  ?= $(_UBOOT_SRC)
 #KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 #KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
 KERNEL_GIT  ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
+#KERNEL_GIT ?= git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_GIT := $(KERNEL_GIT)
-# git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_SRC ?= linux-stable
 KERNEL_SRC  ?= $(_KERNEL_SRC)
 

@@ -5,8 +5,8 @@
 <a title="欢迎关注我们的公众号、QQ讨论群" href="http://tinylab.org/about" target="_blank"><img src="/images/contact/tinylab-wechat-qq.jpg" style="max-height:180px; max-width:100%">
 {% endif %}
 
-{% if false %}
-<a title="10 个课时，20 份标准文档，45 份实验素材，数十张图表" href="https://w.url.cn/s/AMcKZ3a" target="_blank"><img src="/images/courses/elf-horizontal-2.jpg" style="max-height:250px; max-width:100%">
+{% if true %}
+<a title="Linux 程序员基本素养必修课，由泰晓科技技术社区创始人主讲" href="https://www.cctalk.com/m/group/88089283" target="_blank"><img src="/images/courses/360-elf.jpg" style="max-height:250px; max-width:100%">
 </a>
 {% endif %}
 

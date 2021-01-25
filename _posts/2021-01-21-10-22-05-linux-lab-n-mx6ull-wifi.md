@@ -1,361 +1,332 @@
 ---
 layout: post
 author: 'Li Hongyan'
-title: "Linux Lab体验首块真实硬件开发板野火i.MX6ULL"
+title: "MacOSX：Linux Lab i.MX6ULL 真板开发全记录"
 draft: true
-# tagline: " 子标题，如果存在的话 "
-# album: " 所属文章系列/专辑，如果有的话"
-# group: " 默认为 original，也可选 translation, news, resume or jobs, 详见 _data/groups.yml"
 license: "cc-by-nc-nd-4.0"
-permalink: /linux-lab-n-mx6ull-wifi/
-description: " "
+permalink: /linux-lab-imx6ull-wifi/
+description: "本文详细介绍了如何在 MacOSX 下通过 Linux Lab 来开发首块适配的 i.MX6ULL Pro 真实硬件开发板。"
 category:
   - Linux Lab
   - WIFI
 tags:
   - 野火
-  - 开发板 
+  - 开发板
   - 真实开发板
   - ARM
+  - i.MX6ULL
   - IMX6ULL
+  - Linux Lab 真板
+  - 串口虚拟化
 ---
+
 > By alitrack of [TinyLab.org](http://tinylab.org)
 > Jan 21, 2021
 
+## 关于 i.MX6ULL Pro 开发板
 
-## 关于野火i.MX6ULL Pro 开发板
-
-首先非常感谢TinyLab提供的由野火i.MX6ULL Pro Linux开发板， 这块开发板是由[泰晓科技技术社区](http://tinylab.org)与[野火电子](https://embedfire.com/)合作适配的首款 Linux Lab 真板，可以直接用 Linux Lab 开展相关实验，大大降低开发板使用门槛，提升 Linux 内核和嵌入式 Linux 技术的学习效率。
+首先非常感谢泰晓科技提供的 “i.MX6ULL Pro” Linux 开发板，这块开发板由 [泰晓科技技术社区](http://tinylab.org) 与 [野火电子](https://embedfire.com/) 合作适配，是首款 Linux Lab 真板，可以直接用 Linux Lab 开展相关实验，大大降低开发板使用门槛，提升 Linux 内核和嵌入式 Linux 技术的学习效率。
 
 **主要配置**：
 
 - CPU：NXP i.MX6ULL Cortex-A7，800M，工业级
 - 内存：512M DDR3L
-- 存储：8GB eMMC或者（512MB Nand-FLASH)
+- 存储：8GB eMMC 或者（512MB Nand-FLASH)
 
 ## 准备工作
 
-- 野火i.MX6ULL Pro(512MB Nand-FLASH) 开发板
-- MacOS
-
+- i.MX6ULL Pro 开发板
+- MacOSX
   - Docker
-  - IP: 192.168.16.194
 - 网线（插开发板eth1）
 - EDUP EP-N8508GS（免驱无线网卡）
 - 4GB 高速SD卡
 
-野火i.MX6ULL Pro 开发板支持SD卡和Wi-Fi，但不同时支持两者，而我刚好有一个很久之前买的Linux免驱mini USB无线网卡，EDUP EP-N8508GS， 本文主要做的尝试就是，
+i.MX6ULL Pro 开发板可以直接从 [泰晓科技自营店](https://shop155917374.taobao.com/) 选购。
 
-* 烧录Debian镜像至SD卡
-* SD卡启动开发板
-* 编译更新zImage, dtb 和modules
-* EDUP EP-N8508GS当作无线网卡
-* EDUP EP-N8508GS当作SoftAP
-* 无网线时，Linux Lab如何访问开发板
+该开发板支持 SD 卡和 Wi-Fi，但不同时支持两者，而笔者刚好有一个很久之前买的 Linux 免驱 mini USB 无线网卡：EDUP EP-N8508GS，本文主要做的尝试就是：
 
-## 烧录Debian镜像至SD卡
+* 烧录 Debian 镜像至 SD 卡
+* SD 卡启动开发板
+* 编译更新 zImage, dtb 和 modules
+* EDUP EP-N8508GS 当作无线网卡
+* EDUP EP-N8508GS 当作 SoftAP 热点
+* 无网线时，Linux Lab 如何访问开发板
 
-* 下载imx6ul Debian镜像
+## 烧录 Debian 镜像至 SD 卡
 
-```
-云盘资料：imx6ul Debian镜像百度云链接
-链接：https://pan.baidu.com/s/1pqVHVIdY97VApz-rVVa8pQ
-提取码：uge1
-```
+* 下载 i.MX6ULL Debian 镜像
 
-* 烧录到SD卡
+> 云盘资料：i.MX6ULL Debian 镜像百度云链接
+> 链接：https://pan.baidu.com/s/1pqVHVIdY97VApz-rVVa8pQ
+> 提取码：uge1
 
-  推荐使用[Etcher](https://www.balena.io/etcher), 也可以使用命令行命令`dd`
+* 烧录到 SD 卡
 
-```bash
-#在macOS上执行以下命令
+推荐使用 [Etcher](https://www.balena.io/etcher), 也可以使用命令行命令 `dd`。
 
-#获得SD卡的信息
-$ diskutil list
-/dev/disk4 (external, physical):
-   #:                       TYPE NAME                    SIZE       IDENTIFIER
-   0:     FDisk_partition_scheme                        *4.0 GB     disk4
-   1:             Windows_FAT_16 ⁨BOOT⁩                    41.9 MB    disk4s1
-   2:                      Linux ⁨⁩                        3.9 GB     disk4s2
+以下命令在 MacOSX 上执行，首先获得 SD 卡的信息：
 
-#卸载，不然会报Resource busy
-$ diskutil unmount /dev/disk4s2
+    $ diskutil list
+    /dev/disk4 (external, physical):
+       #:                       TYPE NAME                    SIZE       IDENTIFIER
+       0:     FDisk_partition_scheme                        *4.0 GB     disk4
+       1:             Windows_FAT_16 ⁨BOOT⁩                    41.9 MB    disk4s1
+       2:                      Linux ⁨⁩                        3.9 GB     disk4s2
 
-#烧录
-$ sudo dd if=~/Downloads/imx6ull-debian-buster-console-armhf-2020-11-26-344M.img of=/dev/disk4s2 bs=1m
-```
+接着卸载，不然会报 Resource busy：
 
+    $ diskutil unmount /dev/disk4s2
 
-## SD启动开发版
+然后烧录：
 
-查好SD卡，并根据文档，调整拨码开关为2-5-8
+    $ sudo dd if=~/Downloads/imx6ull-debian-buster-console-armhf-2020-11-26-344M.img of=/dev/disk4s2 bs=1m
 
-<img src="wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/258.png" alt="调整拨码开关为2-5-8" style="zoom:50%;" />
+## 通过 SD 启动开发版
 
-上电启动。
+插好 SD 卡，并根据文档，调整拨码开关为 **2-5-8**，然后上电启动。
+
+<img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/258.png" alt="调整拨码开关为2-5-8" style="zoom:50%;" />
 
 ## 通过串口访问开发板
 
-野火i.MX6ULL Pro带一个USB转串口(mini USB)和一个micro USB（USB OTG）， 第一个需要安装[CH340驱动](http://www.wch.cn/products/CH340.html)并重启macOS。
+i.MX6ULL Pro 带一个 USB 转串口（mini USB）和一个 micro USB（USB OTG）， 第一个需要安装 [CH340驱动](http://www.wch.cn/products/CH340.html) 并重启 MacOSX。
 
-<img src="wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_otg.png" alt="micro USB" style="zoom:50%;" />
+<img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_otg.png" alt="micro USB" style="zoom:50%;" />
 
+<img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_serial.png" alt="USB转串口" style="zoom:50%;" />
 
-<img src="wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_serial.png" alt="USB转串口" style="zoom:50%;" />
+可以访问串口的终端工具很多，Windows 下如 MobaXterm、secureCRT、xShell、Putty 等，MacOSX 下也可以使用 putty，当然电脑自带的 screen 也够用了。
 
-可以访问串口的终端工具很多，Windows下如MobaXterm、secureCRT、xShell、Putty等，mac下也可以使用putty，当然电脑自带的screen也够用了。
+* 先获得串口名（每台机器，每个 USB 口返回的结果不相同）
 
-1. 先获得串口名（每台机器，每个USB口返回的结果不相同）
+    microUSB：
 
-```bash
-$ ls /dev|grep cu.
-#microUSB
-/dev/cu.usbmodem1234fire56783  
+        $ ls /dev | grep cu.
+        /dev/cu.usbmodem1234fire56783
 
-#USB转串口
-/dev/cu.usbserial-1420
-```
+    USB转串口：
 
-2. 通过串口访问开发板
+        $ ls /dev | grep cu.
+        /dev/cu.usbserial-1420
 
-```bash
-$ screen -L /dev/cu.usbserial-1420 115200 –L
-```
+* 通过串口访问开发板
 
-<img src="wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/screen.png" alt="screen" style="zoom:50%;" />
+        $ screen -L /dev/cu.usbserial-1420 115200 -L
 
-野火的Debian镜像不支持EDUP EP-N8508GS ， 下面试试TinyLab提供的[ebf-imx6ull](https://gitee.com/tinylab/linux-lab/tree/master/boards/arm/ebf-imx6ull)
+<img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/screen.png" alt="screen" style="zoom:50%;" />
 
-## 编译更新zImage, dtb 和modules
+自带的 Debian 镜像不支持 EDUP EP-N8508GS ， 下面试试 TinyLab 提供的 [ebf-imx6ull](https://gitee.com/tinylab/linux-lab/tree/master/boards/arm/ebf-imx6ull)。
+
+## 编译更新 zImage, dtb 和 modules
 
 1. 准备工作目录
 
-```bash
-$ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-$ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
-$ cd ~/Documents/labspace
-```
+        $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
+        $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
+        $ cd ~/Documents/labspace
 
-2. 下载Lab
+2. 下载 Lab
 
-```bash
-$ git clone https://gitee.com/tinylab/cloud-lab.git
-$ cd cloud-lab/ && tools/docker/choose linux-lab
-```
+        $ git clone https://gitee.com/tinylab/cloud-lab.git
+        $ cd cloud-lab/ && tools/docker/choose linux-lab
 
-3. 运行并登录Lab
+3. 运行并登录 Lab
 
-```bash
-$ tools/docker/run linux-lab
-$ tools/docker/bash
-```
+        $ tools/docker/run linux-lab
+        $ tools/docker/bash
 
-4. 选择arm/ebf-imx6ull
+4. 选择 arm/ebf-imx6ull
 
-```bash
-$ make BOARD=arm/ebf-imx6ull
-```
+        $ make BOARD=arm/ebf-imx6ull
 
 5. 编译与安装
 
-```bash
-$ make kernel-build
-$ make modules-install
-```
+        $ make kernel-build
+        $ make modules-install
 
 6. 登录开发板
 
-```bash
-$ BOARD_IP=192.168.16.128  make login
-```
+        $ BOARD_IP=192.168.16.128 make login
+        ...
+        npi login: debian
+        Password: temppwd    <== default password, will be changed to linux-lab
 
-默认登录用户名是root，密码是linux-lab，为方便，建议修改root密码。
+7. 允许 root 登陆并更改 root 密码
 
-7. 上传zImage, dtb 和modules
+    为方便起见，需要允许 root ssh 登录并把密码改为统一的 `linux-lab`。
 
-```bash
-$ make kernel-upload
-$ make dtb-upload
-$ make modules-upload
-```
+        debian@npi:~$ sudo -s
+        root@npi:/home/debian# passwd root
+        New password: linux-lab
+        Retype new passwd: linux-lab
 
-8. 重启
+        root@npi:/home/debian# sudo sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
+        root@npi:/home/debian# sudo service sshd restart
 
-```bash
-$ make boot
-```
 
-至此，SD卡的系统已经更新为Linux-lab的版本。
+8. 上传 zImage, dtb 和 modules
 
-## 配置EDUP EP-N8508GS 为Wi-Fi
+        $ make kernel-upload
+        $ make dtb-upload
+        $ make modules-upload
 
-在新的系统下，EDUP EP-N8508GS支持即插即用。
+9. 切换并用新镜像重新启动开发板
 
-```bash
-$ lsusb
-Bus 001 Device 004: ID 0bda:8176 Realtek Semiconductor Corp. RTL8188CUS 802.11n WLAN Adapter
+        $ make boot
 
-$ iwconfig 
-wlan0     IEEE 802.11  Mode:Master  Tx-Power=20 dBm   
-          Retry short limit:7   RTS thr=2347 B   Fragment thr:off
-          Power Management:off
-```
+至此，SD 卡的系统已经更新为 Linux-lab 的版本。
 
-使用如下命令配置Wi-Fi
+## 配置 EDUP EP-N8508GS 为 Wi-Fi 网卡
 
-```bash
-#connman: WiFi
-$ sudo connmanctl
-connmanctl> tether wifi off
-connmanctl> enable wifi
-connmanctl> scan wifi
-connmanctl> services
-connmanctl> agent on
-connmanctl> connect wifi_*_managed_psk
-connmanctl> quit
-```
+在新的系统下，EDUP EP-N8508GS 支持即插即用。
 
-检查wlan0的IP信息
+    $ lsusb
+    Bus 001 Device 004: ID 0bda:8176 Realtek Semiconductor Corp. RTL8188CUS 802.11n WLAN Adapter
 
-```bash
-$ ifconfig
-wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.16.69  netmask 255.255.255.0  broadcast 192.168.16.255
-        inet6 fe80::ea4e:6ff:fe20:543  prefixlen 64  scopeid 0x20<link>
-        ether e8:4e:06:20:05:43  txqueuelen 1000  (Ethernet)
-        RX packets 218  bytes 37973 (37.0 KiB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 301  bytes 41631 (40.6 KiB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-```
+    $ iwconfig
+    wlan0     IEEE 802.11  Mode:Master  Tx-Power=20 dBm
+              Retry short limit:7   RTS thr=2347 B   Fragment thr:off
+              Power Management:off
 
-## 配置EDUP EP-N8508GS 为softAP
+使用如下命令配置 Wi-Fi：
 
-1. 安装hostapd
+    $ sudo connmanctl
+    connmanctl> tether wifi off
+    connmanctl> enable wifi
+    connmanctl> scan wifi
+    connmanctl> services
+    connmanctl> agent on
+    connmanctl> connect wifi_*_managed_psk
+    connmanctl> quit
 
-```bash
-$ sudo apt install hostapd
-```
+检查 wlan0 的 IP 信息：
 
-2. 配置hostapd(/etc/hostapd/hostapd.conf)
+    $ ifconfig
+    wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 192.168.16.69  netmask 255.255.255.0  broadcast 192.168.16.255
+            inet6 fe80::ea4e:6ff:fe20:543  prefixlen 64  scopeid 0x20<link>
+            ether e8:4e:06:20:05:43  txqueuelen 1000  (Ethernet)
+            RX packets 218  bytes 37973 (37.0 KiB)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 301  bytes 41631 (40.6 KiB)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-```
-interface=wlan0
-hw_mode=g
-channel=1
-wmm_enabled=0
-macaddr_acl=0
-auth_algs=1
-ignore_broadcast_ssid=0
-wpa=2
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-ssid=alitrack
-wpa_passphrase=12345678910
-ieee80211n=1
-```
+## 配置 EDUP EP-N8508GS 为 softAP 热点
+
+1. 安装 hostapd
+
+        $ sudo apt install -y hostapd
+
+2. 配置 hostapd
+
+        $ vim /etc/hostapd/hostapd.conf
+        interface=wlan0
+        hw_mode=g
+        channel=1
+        wmm_enabled=0
+        macaddr_acl=0
+        auth_algs=1
+        ignore_broadcast_ssid=0
+        wpa=2
+        wpa_key_mgmt=WPA-PSK
+        wpa_pairwise=TKIP
+        rsn_pairwise=CCMP
+        ssid=alitrack
+        wpa_passphrase=12345678910
+        ieee80211n=1
 
 3. 配置防火墙
 
-   添加 iptables 规则，将 wlan0 的包通过 eth1 转发
+    添加 iptables 规则，将 wlan0 的包通过 eth1 转发：
 
-```bash
-$ sudo iptables –t nat –A POSTROUTING –o eth1 –j MASQUERADE
-$ sudo iptables –A FORWARD –m conntrack —ctstate RELATED,ESTABLISHED –j ACCEPT
-$ sudo iptables –A FORWARD –i wlan0 –o eth1 –j ACCEPT
-$ sudo sh –c "iptables-save > /etc/iptables.ipv4.nat"
-```
+        $ sudo iptables –t nat –A POSTROUTING –o eth1 –j MASQUERADE
+        $ sudo iptables –A FORWARD –m conntrack —ctstate RELATED,ESTABLISHED –j ACCEPT
+        $ sudo iptables –A FORWARD –i wlan0 –o eth1 –j ACCEPT
+        $ sudo sh –c "iptables-save > /etc/iptables.ipv4.nat"
 
 
-打开内核 IP 转发(/etc/sysctl.conf)
+    打开内核 IP 转发：
 
-```
-net.ipv4.ip_forward=1
-```
+        $ vim /etc/sysctl.conf
+        net.ipv4.ip_forward=1
 
-1. 修改 /etc/network/interface
+4. 配置网络
 
-```
-#auto wlan0
-#allow-hotplug wlan0
-#iface wlan0 inet dhcp
+        $ vim /etc/network/interface
+
+        #auto wlan0
+        #allow-hotplug wlan0
+        #iface wlan0 inet dhcp
 
 
-auto wlan0
-allow-hotplug wlan0
-iface wlan0 inet static
-        address 192.168.0.1
-        netmask 255.255.255.0
-up iptables-restore < /etc/iptables.ipv4.nat
-```
+        auto wlan0
+        allow-hotplug wlan0
+        iface wlan0 inet static
+                address 192.168.0.1
+                netmask 255.255.255.0
+        up iptables-restore < /etc/iptables.ipv4.nat
 
 5. 关闭 wpa_supplicant
 
-```bash
-$ pkill wpa_supplicant
-$ sudo systemctl mask hostapd
-```
+        $ pkill wpa_supplicant
+        $ sudo systemctl mask hostapd
 
-6. 启动hostapd
+6. 启动 hostapd
 
-```bash
-$ sudo systemctl enable hostapd
-$ sudo systemctl start hostapd
-$ sudo systemctl status hostapd
-```
+        $ sudo systemctl enable hostapd
+        $ sudo systemctl start hostapd
+        $ sudo systemctl status hostapd
 
-7. 删除autowifi.sh
+7. 删除 autowifi.sh
 
-```bash
-$ mv /opt/scripts/boot/autowifi.sh ~/
-```
+        $ mv /opt/scripts/boot/autowifi.sh ~/
 
-8. 重启wlan0或者开发板
+8. 重启 wlan0 或者开发板
 
-```bash
-$ sudo ifdown wlan0
-$ sudo ifup wlan0
-$ ifconfig
-wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.0.1  netmask 255.255.255.0  broadcast 192.168.0.255
-        inet6 fe80::ea4e:6ff:fe20:543  prefixlen 64  scopeid 0x20<link>
-        ether e8:4e:06:20:05:43  txqueuelen 1000  (Ethernet)
-        RX packets 788  bytes 116163 (113.4 KiB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 860  bytes 484140 (472.7 KiB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-```
+        $ sudo ifdown wlan0
+        $ sudo ifup wlan0
+        $ ifconfig
+        wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+                inet 192.168.0.1  netmask 255.255.255.0  broadcast 192.168.0.255
+                inet6 fe80::ea4e:6ff:fe20:543  prefixlen 64  scopeid 0x20<link>
+                ether e8:4e:06:20:05:43  txqueuelen 1000  (Ethernet)
+                RX packets 788  bytes 116163 (113.4 KiB)
+                RX errors 0  dropped 0  overruns 0  frame 0
+                TX packets 860  bytes 484140 (472.7 KiB)
+                TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 9. 用手机尝试连接, 成功
 
-## 无网线时Linux Lab访问开发板的办法
+## 无网线时，如何通过 Linux Lab 访问开发板
 
-前面我们提到通过IP来访问开发板，如果非常不凑巧，你没有网线或者有线口可以用， 怎么办？[串口虚拟化](http://tinylab.org/serial-port-over-internet/)可以帮你解决这个问题。
+前面我们提到通过 IP 来访问开发板，如果非常不凑巧，你既没有无线也无网线可以用，怎么办？
 
-1. macOS安装socat
+很不凑巧，MacOSX 下，Docker 内目前无法直接访问串口，需要通过泰晓科技撰写的 [串口虚拟化](http://tinylab.org/serial-port-over-internet/) 来解决这个问题。
 
-```bash
-$ brew install socat
-```
+1. MacOSX 安装 socat
 
-2. macOS上串口转TCP
+        $ brew install socat
 
-```bash
-$ sudo socat tcp-l:54321 /dev/cu.usbserial-1420,clocal=1,nonblock
-```
+2. MacOSX 上串口转 TCP
 
-3. Linux Lab上TCP转虚拟串口
+        $ sudo socat tcp-l:54321 /dev/cu.usbserial-1420,clocal=1,nonblock
 
-```bash
-$ sudo socat pty,link=/dev/tty.virt001,waitslave tcp:192.168.1.168:54321
-```
+3. Linux Lab 上 TCP 转虚拟串口
+
+        $ sudo socat pty,link=/dev/tty.virt001,waitslave tcp:192.168.1.168:54321
 
 4. 登录开发板
 
-```bash
-$ BOARD_SERIAL=/dev/tty.virt001 make login
-```
+        $ BOARD_SERIAL=/dev/tty.virt001 make login
+
+## 小技巧
+
+为了避免每次在命令行输入 `BOARD_IP` 和 `BOARD_SERIAL`，可以把它们配置到 `.labinit` 中。
+
+    $ vim .labinit
+    BOARD_IP := 192.168.16.128
+    BOARD_SERIAL := /dev/tty.virt001
 
 ## 参考
 

@@ -1629,6 +1629,8 @@ Use ARM, MIPS and RISCV as example:
 
 Above run through `qemu-user`, to run on target boards, please copy the binaries to target boards' rootfs with help from section 4.8.1.
 
+The main packages are `libc6-dev`, `libc6` or `libgcc`, but x32 is an expection, it is libx32gcc. please list them via `apt-cache search`.
+
 ## 4.11 Running any make goals
 
 Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:

@@ -1702,6 +1702,8 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 上面是通过 `qemu-user` 做指令翻译运行，如果要在目标板子上运行，参考 4.8.1 节复制到对应板子的文件系统即可。
 
+主要的包是 `libc6-dev`, `libc6` 以及 `libgcc`，x32 是个例外，包名是 libx32gcc。可以通过 `apt-cache search` 检索更详细的列表。
+
 ## 4.11 运行任意的 make 目标
 
 Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目标，譬如：

@@ -63,24 +63,24 @@ i.MX6ULL Pro 开发板可以直接从 [泰晓科技自营店](https://shop155917
 
 * 烧录到 SD 卡
 
-推荐使用 [Etcher](https://www.balena.io/etcher), 也可以使用命令行命令 `dd`。
+    推荐使用 [Etcher](https://www.balena.io/etcher), 也可以使用命令行命令 `dd`。
 
-以下命令在 MacOSX 上执行，首先获得 SD 卡的信息：
+    以下命令在 MacOSX 上执行，首先获得 SD 卡的信息：
 
-    $ diskutil list
-    /dev/disk4 (external, physical):
-       #:                       TYPE NAME                    SIZE       IDENTIFIER
-       0:     FDisk_partition_scheme                        *4.0 GB     disk4
-       1:             Windows_FAT_16 ⁨BOOT⁩                    41.9 MB    disk4s1
-       2:                      Linux ⁨⁩                        3.9 GB     disk4s2
+        $ diskutil list
+        /dev/disk4 (external, physical):
+           #:                       TYPE NAME                    SIZE       IDENTIFIER
+           0:     FDisk_partition_scheme                        *4.0 GB     disk4
+           1:             Windows_FAT_16 ⁨BOOT⁩                    41.9 MB    disk4s1
+           2:                      Linux ⁨⁩                        3.9 GB     disk4s2
 
-接着卸载，不然会报 Resource busy：
+    接着卸载，不然会报 Resource busy：
 
-    $ diskutil unmount /dev/disk4s2
+        $ diskutil unmount /dev/disk4s2
 
-然后烧录：
+    然后烧录：
 
-    $ sudo dd if=~/Downloads/imx6ull-debian-buster-console-armhf-2020-11-26-344M.img of=/dev/disk4s2 bs=1m
+        $ sudo dd if=~/Downloads/imx6ull-debian-buster-console-armhf-2020-11-26-344M.img of=/dev/disk4s2 bs=1m
 
 ## 通过 SD 启动开发版
 

@@ -1608,9 +1608,14 @@ Use hello as example:
 
 ### 4.10.2 Cross build and Run
 
-Use ARM, MIPS and RISCV as example:
+Use X32 (Code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC and RISCV as example:
 
-    $ sudo apt-get update
+    $ sudo apt-get update -y
+
+    $ sudo apt-get install -y libc6-x32 libc6-dev-x32 libx32gcc-8-dev
+    $ gcc -mx32 -o hello hello.c
+    $ ./hello
+    Hello, World!
 
     $ sudo apt-get install -y libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
@@ -1620,6 +1625,12 @@ Use ARM, MIPS and RISCV as example:
     $ sudo apt-get install -y libc6-dev-mipsel-cross libc6-mipsel-cross
     $ mipsel-linux-gnu-gcc -o hello hello.c
     $ qemu-mipsel -L /usr/mipsel-linux-gnu/ ./hello
+    Hello, World!
+
+    $ sudo apt-get install -y libc6-dev-powerpc-cross libc6-powerpc-cross
+    // Must use -static for Linux Lab v0.6, otherwise, there will be segmentation fault
+    $ powerpc-linux-gnu-gcc -static -o hello hello.c
+    $ qemu-ppc -L /usr/powerpc-linux-gnu/ ./hello
     Hello, World!
 
     $ sudo apt-get install -y libc6-riscv64-cross libc6-dev-riscv64-cross

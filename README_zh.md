@@ -1681,9 +1681,14 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 ### 4.10.2 交叉编译和运行
 
-下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 ARM, MIPS 和 RISCV 为例：
+下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 X32 (code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC 和 RISCV 为例：
 
-    $ sudo apt-get update
+    $ sudo apt-get update -y
+
+    $ sudo apt-get install -y libc6-x32 libc6-dev-x32 libx32gcc-8-dev
+    $ gcc -mx32 -o hello hello.c
+    $ ./hello
+    Hello, World!
 
     $ sudo apt-get install -y libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
@@ -1693,6 +1698,12 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
     $ sudo apt-get install -y libc6-dev-mipsel-cross libc6-mipsel-cross
     $ mipsel-linux-gnu-gcc -o hello hello.c
     $ qemu-mipsel -L /usr/mipsel-linux-gnu/ ./hello
+    Hello, World!
+
+    $ sudo apt-get install -y libc6-dev-powerpc-cross libc6-powerpc-cross
+    // Linux Lab v0.6 中，必须加 -static，否则运行时会有段错误
+    $ powerpc-linux-gnu-gcc -static -o hello hello.c
+    $ qemu-ppc -L /usr/powerpc-linux-gnu/ ./hello
     Hello, World!
 
     $ sudo apt-get install -y libc6-riscv64-cross libc6-dev-riscv64-cross

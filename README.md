@@ -1284,7 +1284,7 @@ Run it via docker directly:
 
 Extract it out and run in Linux Lab:
 
-    (host)$ sudo apt-get install qemu-user-static
+    (host)$ sudo apt-get install -y qemu-user-static
 
   ARM32/vexpress-a9 (user: root, password: root):
 
@@ -1612,17 +1612,17 @@ Use ARM, MIPS and RISCV as example:
 
     $ sudo apt-get update
 
-    $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
+    $ sudo apt-get install -y libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
     $ qemu-arm -L /usr/arm-linux-gnueabi/ ./hello
     Hello, World!
 
-    $ sudo apt-get install libc6-dev-mipsel-cross libc6-mipsel-cross
+    $ sudo apt-get install -y libc6-dev-mipsel-cross libc6-mipsel-cross
     $ mipsel-linux-gnu-gcc -o hello hello.c
     $ qemu-mipsel -L /usr/mipsel-linux-gnu/ ./hello
     Hello, World!
 
-    $ sudo apt-get install libc6-riscv64-cross libc6-dev-riscv64-cross
+    $ sudo apt-get install -y libc6-riscv64-cross libc6-dev-riscv64-cross
     $ riscv64-linux-gnu-gcc -o hello hello.c
     $ qemu-riscv64 -L /usr/riscv64-linux-gnu/ ./hello
     Hello, World!

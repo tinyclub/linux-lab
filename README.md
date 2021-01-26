@@ -21,6 +21,7 @@
     - [1.3 Demonstration](#13-demonstration)
        - [1.3.1 Basic Operations](#131-basic-operations)
        - [1.3.2 Cool Operations](#132-cool-operations)
+       - [1.3.3 Video Courses In Chinese](#133-video-courses-in-chinese)
     - [1.4 Project Functions](#14-project-functions)
     - [1.5 Project History](#15-project-history)
        - [1.5.1 Project Origins](#151-project-origins)
@@ -184,6 +185,14 @@ Related Projects:
   * [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
   * [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
   * [Batch testing the debug function of all boards](http://showterm.io/0255c6a8b7d16dc116cbe)
+
+### 1.3.3 Video Courses In Chinese
+
+  * [Linux Lab Open Videos](https://www.cctalk.com/m/group/88948325)
+      * Linux Lab Introduction
+      * Loongson Linux Development
+  * [The Perspective Linux ELF](https://www.cctalk.com/m/group/88089283)
+
 
 ## 1.4 Project Functions
 
@@ -1664,10 +1673,12 @@ Read more:
 * [Why Using Linux Lab V1.0 (In Chinese)](http://tinylab.org/why-linux-lab)
 * [Why Using Linux Lab V2.0 (In Chinese)](http://tinylab.org/why-linux-lab-v2)
 * [Linux Lab Loongson Manual V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
-* Linux Lab Open Video
-    * [CCTALK](https://www.cctalk.com/m/group/88948325)
+* Linux Lab Videos
+    * [CCTALK](https://m.cctalk.com/inst/sh8qtdag)
     * [Bilibili](https://space.bilibili.com/687228362/channel/detail?cid=152574)
     * [Zhihu](https://www.zhihu.com/people/wuzhangjin)
+* Video Courses use Linux Lab as experiment environment
+    * [The Perspective Linux ELF](https://www.cctalk.com/m/group/88089283)
 
 # 5. Linux Lab Development
 

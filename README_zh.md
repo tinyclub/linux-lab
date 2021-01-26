@@ -195,8 +195,10 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.3.3 视频教程
 
-  * [Linux Lab 入门](https://www.bilibili.com/video/BV12K411P79C)
-  * [龙芯 Linux 内核开发](https://www.bilibili.com/video/BV1xz4y1Z7ag)
+  * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
+      * Linux Lab 简介
+      * 龙芯 Linux 内核开发
+  * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
 
 ## 1.4 项目功能
 
@@ -1741,6 +1743,8 @@ Linux Lab 支持通过形如 `<xxx>-run` 方式访问 Makefile 中定义的目�
     * [CCTALK](https://www.cctalk.com/m/group/88948325)
     * [B 站](https://space.bilibili.com/687228362/channel/detail?cid=152574)
     * [知乎](https://www.zhihu.com/people/wuzhangjin)
+* 采用 Linux Lab 作为实验环境的视频课程
+    * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
 
 # 5. Linux Lab 开发
 

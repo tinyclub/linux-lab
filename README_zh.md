@@ -1687,17 +1687,17 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
     $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
-    $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello
+    $ qemu-arm -L /usr/arm-linux-gnueabi/ ./hello
     Hello, World!
 
     $ sudo apt-get install libc6-dev-mipsel-cross libc6-mipsel-cross
     $ mipsel-linux-gnu-gcc -o hello hello.c
-    $ qemu-mipsel -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/mipsel-linux-gnu/lib/ /usr/mipsel-linux-gnu/lib/ld-2.30.so ./hello
+    $ qemu-mipsel -L /usr/mipsel-linux-gnu/ ./hello
     Hello, World!
 
     $ sudo apt-get install libc6-riscv64-cross libc6-dev-riscv64-cross
     $ riscv64-linux-gnu-gcc -o hello hello.c
-    $ qemu-riscv64 -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/riscv64-linux-gnu/lib/ /usr/riscv64-linux-gnu/lib/ld-2.31.so ./hello
+    $ qemu-riscv64 -L /usr/riscv64-linux-gnu/ ./hello
     Hello, World!
 
 上面是通过 `qemu-user` 做指令翻译运行，如果要在目标板子上运行，参考 4.8.1 节复制到对应板子的文件系统即可。

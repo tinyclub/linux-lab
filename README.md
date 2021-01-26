@@ -1614,17 +1614,17 @@ Use ARM, MIPS and RISCV as example:
 
     $ sudo apt-get install libc6-dev-armel-cross libc6-armel-cross
     $ arm-linux-gnueabi-gcc -o hello hello.c
-    $ qemu-arm -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/arm-linux-gnueabi/lib/ /usr/arm-linux-gnueabi/lib/ld-2.31.so ./hello
+    $ qemu-arm -L /usr/arm-linux-gnueabi/ ./hello
     Hello, World!
 
     $ sudo apt-get install libc6-dev-mipsel-cross libc6-mipsel-cross
     $ mipsel-linux-gnu-gcc -o hello hello.c
-    $ qemu-mipsel -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/mipsel-linux-gnu/lib/ /usr/mipsel-linux-gnu/lib/ld-2.30.so ./hello
+    $ qemu-mipsel -L /usr/mipsel-linux-gnu/ ./hello
     Hello, World!
 
     $ sudo apt-get install libc6-riscv64-cross libc6-dev-riscv64-cross
     $ riscv64-linux-gnu-gcc -o hello hello.c
-    $ qemu-riscv64 -E LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/usr/riscv64-linux-gnu/lib/ /usr/riscv64-linux-gnu/lib/ld-2.31.so ./hello
+    $ qemu-riscv64 -L /usr/riscv64-linux-gnu/ ./hello
     Hello, World!
 
 Above run through `qemu-user`, to run on target boards, please copy the binaries to target boards' rootfs with help from section 4.8.1.

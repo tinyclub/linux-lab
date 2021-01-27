@@ -17,7 +17,7 @@ tags:
 
 > 原文：[The pin control subsystem](https://lwn.net/Articles/468759/)
 > 原创：By Jonathan Corbet @ Nov 22, 2011
-> 翻译：By Unicornx of [TinyLab.org][1] @ Nov 2, 2017
+> 翻译：By [unicornx](https://gitee.com/unicornx)
 > 校对：By Tacinight & Falcon of [TinyLab.org][1]
 
 > Classic x86-style processors are designed to fit into a mostly standardized system architecture, so they all tend, in a general sense, to look alike. One of the reasons why it is hard to make a general-purpose kernel for embedded processors is the absence of this standardized architecture. Embedded processors must be extensively configured, at boot time, to be able to run the system they are connected to at all. The 3.1 kernel saw the addition of the "pin controller" subsystem which is intended to help with that task; enhancements are on the way for (presumably) 3.2 as well. This article will provide a superficial overview of how the pin controller works.
@@ -34,7 +34,7 @@ tags:
 
 > The idea behind the pin control subsystem is to create a centralized mechanism for the management and configuration of multi-function pins, replacing a lot of board-specific code. This subsystem is quite thoroughly documented in [Documentation/pinctrl.txt](https://lwn.net/Articles/465077/). A core developer would use the pin control code to describe a processor's multi-function pins and the uses to which each can be put. Developers enabling a specific board can then use that configuration to set up the pins as needed for their deployment.
 
-内核提供一个引脚控制子系统的初衷是创建一套集中的机制用于管理和配置多功能引脚，避免上述冗余重复的板级配置代码。这个子系统的详细介绍参考内核文档 [Documentation/pinctrl.txt](https://lwn.net/Articles/465077/)。内核开发人员可以利用该子系统提供的接口为处理器定义一个引脚控制器，描述清楚该处理器的引脚复用情况。而针对特定电路板定制内核的开发人员则可以基于该引脚控制器来配置引脚。
+内核提供一个引脚控制子系统的初衷是创建一套集中的机制用于管理和配置多功能引脚，避免上述冗余重复的板级配置代码。这个子系统的详细介绍参考内核文档 [Documentation/pinctrl.txt][2]。内核开发人员可以利用该子系统提供的接口为处理器定义一个引脚控制器，描述清楚该处理器的引脚复用情况。而针对特定电路板定制内核的开发人员则可以基于该引脚控制器来配置引脚。
 
 > The first step is to tell the subsystem which pins the processor provides; that is a simple matter of enumerating their names and associating each with an integer pin number. A call to pinctrl_register() will make those pins known to the system as a whole. The mapping of numbers to pins is up to the developer, but it makes sense to, for example, keep a bank of GPIO pins together to simplify coding later on.
 
@@ -58,10 +58,12 @@ tags:
 
 > The [generic pin configuration interface](https://lwn.net/Articles/468770/), currently in its third revision, attempts to bring the details of pin configuration into the pin controller core. To that end, it defines 17 (at last count) parameters that might be settable on a given pin; they vary from the value of the pullup resistor to be used through slew rates for rising or falling signals and whether the pin can be a source of wakeup events. With this code in place, it should become possible to describe the complete configuration of complex pin multiplexors entirely within the pin controller.
 
-以上需求所涉及的[通用引脚配置接口](https://lwn.net/Articles/468770/)，仍然由引脚控制子系统提供，目前还在开发中，处于第三次修订阶段。截至目前为止，接口支持为给定引脚提供最多 17 个参数选项设置；这些选项包括：上拉电阻的阻值设定；电压上升沿和下降沿检测中涉及的电压转换速率（slew rate）；以及引脚是否可以作为唤醒事件的来源等。等该功能完成后，我们就可以使用引脚控制子系统提供的接口对复杂的引脚多路复用进行完整的配置。
+以上需求所涉及的[通用引脚配置接口][3]，仍然由引脚控制子系统提供，目前还在开发中，处于第三次修订阶段。截至目前为止，接口支持为给定引脚提供最多 17 个参数选项设置；这些选项包括：上拉电阻的阻值设定；电压上升沿和下降沿检测中涉及的电压转换速率（slew rate）；以及引脚是否可以作为唤醒事件的来源等。等该功能完成后，我们就可以使用引脚控制子系统提供的接口对复杂的引脚多路复用进行完整的配置。
 
 > The number of pin controller users in the 3.1 kernel is relatively small, but there are a number of patches circulating to expand its usage. With the addition of the configuration interface (in the 3.2 kernel, probably), there will be even more reason to make use of it. One of the more complicated bits of board-level configuration will be supported almost entirely in common code, with all of the usual code quality and maintainability benefits. It is hard to stick a pin into an improvement like that.
 
 当前 3.1 版本的内核中，使用引脚控制子系统的用户数量还相对较少，但是围绕该子系统已经提供了一些补丁。随着配置接口的进一步完善（期望在 3.2 版内核中可以完成支持），我们将有更多的理由使用它。引入该子系统后板级配置中相对比较复杂的这部分内容（译者注：管脚配置）几乎都可以通过内核的通用代码所支持了，这对代码质量的提高和可维护性都是受益匪浅的事情，何乐而不为呢。
 
 [1]: http://tinylab.org
+[2]: https://lwn.net/Articles/465077/
+[3]: https://lwn.net/Articles/468770/

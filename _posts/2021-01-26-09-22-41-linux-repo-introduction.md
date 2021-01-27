@@ -1,6 +1,6 @@
 ---
 layout: post
-draft: true
+draft: false
 top: false
 author: 'Wang Chen'
 title: "Linux 内核的代码仓库管理与开发流程简介"

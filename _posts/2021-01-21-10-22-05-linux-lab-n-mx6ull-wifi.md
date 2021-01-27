@@ -1,11 +1,11 @@
 ---
 layout: post
 author: 'Li Hongyan'
-title: "MacOSX：Linux Lab i.MX6ULL 真板开发全记录"
+title: "Linux Lab 真板开发日志：macOS 开发进阶之 SD 引导、外置无线网卡、虚拟串口"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-lab-imx6ull-wifi/
-description: "本文详细介绍了如何在 MacOSX 下通过 Linux Lab 来开发首块适配的 i.MX6ULL Pro 真实硬件开发板。"
+description: "本文详细介绍了如何在 macOS 下通过 Linux Lab 来开发首块适配的 i.MX6ULL Pro 真实硬件开发板，内容包括使用 SD 卡启动并分别通过无线网卡和虚拟串口通信。"
 category:
   - Linux Lab
   - WIFI
@@ -18,6 +18,7 @@ tags:
   - IMX6ULL
   - Linux Lab 真板
   - 串口虚拟化
+  - macOS
 ---
 
 > By alitrack of [TinyLab.org](http://tinylab.org)
@@ -36,7 +37,7 @@ tags:
 ## 准备工作
 
 - i.MX6ULL Pro 开发板
-- MacOSX
+- macOS
   - Docker
 - 网线（插开发板eth1）
 - EDUP EP-N8508GS（免驱无线网卡）
@@ -65,7 +66,7 @@ i.MX6ULL Pro 开发板可以直接从 [泰晓科技自营店](https://shop155917
 
     推荐使用 [Etcher](https://www.balena.io/etcher), 也可以使用命令行命令 `dd`。
 
-    以下命令在 MacOSX 上执行，首先获得 SD 卡的信息：
+    以下命令在 macOS 上执行，首先获得 SD 卡的信息：
 
         $ diskutil list
         /dev/disk4 (external, physical):
@@ -90,13 +91,13 @@ i.MX6ULL Pro 开发板可以直接从 [泰晓科技自营店](https://shop155917
 
 ## 通过串口访问开发板
 
-i.MX6ULL Pro 带一个 USB 转串口（mini USB）和一个 micro USB（USB OTG）， 第一个需要安装 [CH340驱动](http://www.wch.cn/products/CH340.html) 并重启 MacOSX。
+i.MX6ULL Pro 带一个 USB 转串口（mini USB）和一个 micro USB（USB OTG）， 第一个需要安装 [CH340驱动](http://www.wch.cn/products/CH340.html) 并重启 macOS。
 
 <img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_otg.png" alt="micro USB" style="zoom:50%;" />
 
 <img src="/wp-content/uploads/2021/01/linux-lab/linux-lab-n-mx6ull-wifi/usb_serial.png" alt="USB转串口" style="zoom:50%;" />
 
-可以访问串口的终端工具很多，Windows 下如 MobaXterm、secureCRT、xShell、Putty 等，MacOSX 下也可以使用 putty，当然电脑自带的 screen 也够用了。
+可以访问串口的终端工具很多，Windows 下如 MobaXterm、secureCRT、xShell、Putty 等，macOS 下也可以使用 putty，当然电脑自带的 screen 也够用了。
 
 * 先获得串口名（每台机器，每个 USB 口返回的结果不相同）
 
@@ -302,13 +303,13 @@ i.MX6ULL Pro 带一个 USB 转串口（mini USB）和一个 micro USB（USB OTG�
 
 前面我们提到通过 IP 来访问开发板，如果非常不凑巧，你既没有无线也无网线可以用，怎么办？
 
-很不凑巧，MacOSX 下，Docker 内目前无法直接访问串口，需要通过泰晓科技撰写的 [串口虚拟化](http://tinylab.org/serial-port-over-internet/) 来解决这个问题。
+很不凑巧，macOS 下，Docker 内目前无法直接访问串口，需要通过泰晓科技撰写的 [串口虚拟化](http://tinylab.org/serial-port-over-internet/) 来解决这个问题。
 
-1. MacOSX 安装 socat
+1. macOS 安装 socat
 
         $ brew install socat
 
-2. MacOSX 上串口转 TCP
+2. macOS 上串口转 TCP
 
         $ sudo socat tcp-l:54321 /dev/cu.usbserial-1420,clocal=1,nonblock
 

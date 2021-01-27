@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Li Hongyan'
-title: "Linux Lab 真板开发日志（3）：macOS 开发之 SD 卡、无线网卡、虚拟串口"
+title: "Linux Lab 真板开发日志（3）：macOS 环境之 SD 卡、无线网卡、虚拟串口"
 draft: true
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-lab-imx6ull-part3/

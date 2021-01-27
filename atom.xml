@@ -28,7 +28,7 @@ title : Atom Feed
     {% capture content %}{{ post.content | strip_html | replace: nl0, ' ' | replace: '    ', ' ' | replace: '   ', ' ' | replace: '  ', ' ' | strip | truncate:200 | xml_escape }}{% endcapture %}{% if content.size != 0 %}<content>{{content}}</content>{% endif %}
   </entry>
 {% endfor %}
-{% for page in site.pages %}{% if page.url contains ".html" or page.url contains '/404/' or page.url contains "/assets/" or page.url contains ".css" or page.content contains '% assign' or page.content contains '% include' or page.content contains '% for ' or page.content contains '% if' or page.content contains '{{ site.' %}{% continue %}{% endif %}  <entry>
+{% for page in site.pages %}{% if page.url contains users.xml or page.url contains ".html" or page.url contains '/404/' or page.url contains "/assets/" or page.url contains ".css" or page.content contains '% assign' or page.content contains '% include' or page.content contains '% for ' or page.content contains '% if' or page.content contains '{{ site.' %}{% continue %}{% endif %}  <entry>
     <title>{% capture page_title %}{{ page.title | strip_html | xml_escape | strip }}{%endcapture%}{{page_title}}</title>
     <link href="{{ site.production_url }}{{ page.url }}"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>

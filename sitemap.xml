@@ -26,7 +26,7 @@ title : Sitemap
 {% endfor %}
 
 {% for page in site.pages %}
-{% if page.layout != null and page.layout != 'feed' and page.url != "/" %}{% if page.url contains ".html" %}{% continue %}{% endif %}
+{% if page.layout != null and page.layout != 'feed' and page.url != "/" and page.url != "/ms/" %}{% if page.url contains ".html" %}{% continue %}{% endif %}
 <url>
 	<loc>{{site.production_url}}{{ page.url | remove: 'index.html' }}</loc>
 	{% if page.last_updated %}<lastmod>{{ page.last_updated | date_to_xmlschema }}</lastmod>

@@ -9,7 +9,7 @@ markdown: kramdown
 # markdown: redcarpet
 # redcarpet:
 #  extensions: ["no_intra_emphasis", "autolink", "tables"]
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "tools", "Dockerfile", "plan"]
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "TODO.md", "users.xml", "tools", "Dockerfile", "plan"]
 highlighter: rouge
 
 plugins: [jekyll-paginate]

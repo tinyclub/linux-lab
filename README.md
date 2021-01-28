@@ -1981,6 +1981,16 @@ If docker not work in Ubuntu 20.04, please use `doc/install/daemon.json` and cle
 
 Please make sure using the best `registry-mirrors` for better download speed.
 
+### 6.1.11 Error creating aufs mount
+
+If not work with failure like "error creating aufs mount to ... invalid arguments", that means the storage driver used by docker is not supported by current system, please choose another one from this page: <https://docs.docker.com/storage/storagedriver/select-storage-driver/>, and configure it in `/etc/docker/daemon.json`, for example:
+
+    $ sudo vim /etc/docker/daemon.json
+    {
+      "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"],
+      "storage-driver": "devicemapper"
+    }
+
 ## 6.2 Qemu Issues
 
 ### 6.2.1 Why kvm speedding up is disabled

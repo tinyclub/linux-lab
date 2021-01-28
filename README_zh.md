@@ -2045,6 +2045,16 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 **注意**：记得把 `registry-mirrors` 配置为你希望使用的加速器地址。
 
+### 6.1.11 Error creating aufs mount
+
+If not work with failure like "error creating aufs mount to ... invalid arguments", that means the storage driver used by docker is not supported by current system, please choose another one from this page: <https://docs.docker.com/storage/storagedriver/select-storage-driver/>, and configure it in `/etc/docker/daemon.json`, for example:
+
+    $ sudo vim /etc/docker/daemon.json
+    {
+      "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"],
+      "storage-driver": "devicemapper"
+    }
+
 ## 6.2 Qemu 相关
 
 ### 6.2.1 缺少 KVM 加速

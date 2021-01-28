@@ -17,12 +17,12 @@ tags:
 
 > 原文：[GPIO in the kernel: future directions](https://lwn.net/Articles/533632/)
 > 原创：By Jonathan Corbet @ Jan 23, 2013
-> 翻译：By Unicornx of [TinyLab.org][1] @ Nov 24, 2017
+> 翻译：By [unicornx](https://gitee.com/unicornx)
 > 校对：By [lljgithub](https://github.com/lljgithub)
 
 > [Last week's article](https://lwn.net/Articles/532714/) covered the kernel's current internal API for general-purpose I/O (GPIO) lines. The GPIO API has seen relatively little change in recent years, but that situation may be about to change as the result of a couple of significant patch sets that seek to rework how the GPIO API works in the interest of greater robustness and better performance.
 
-[上周的文章](/lwn-532714)介绍了内核中有关 “通用目的输入输出”（General-Purpose I/O，下文简称 GPIO）API 的当前状态。这些年来，GPIO 的 API 几乎没有什么大的改动，但这种局面很快就会发生变化，因为最近社区提出了一些致力于改善其鲁棒性以及性能的重要补丁。
+[上周的文章][6] 介绍了内核中有关 “通用目的输入输出”（General-Purpose I/O，下文简称 GPIO）API 的当前状态。这些年来，GPIO 的 API 几乎没有什么大的改动，但这种局面很快就会发生变化，因为最近社区提出了一些致力于改善其鲁棒性以及性能的重要补丁。
 
 ### 不再使用整数类型的引脚标识符 (No more numbers)
 
@@ -32,23 +32,25 @@ tags:
 
 > As a result, platform and driver developers have come up with various ways to locate GPIOs of interest. Even your editor once submitted a [patch adding a gpio_lookup() function](https://lkml.org/lkml/2009/10/10/162) to the GPIO API, but that patch didn't pass muster and was eventually dropped in favor of a driver-specific solution. So the number-based API has remained — until now.
 
-因此，平台和驱动的开发人员想出了各种方法来对自己关心的 GPIO 进行编号。作者本人也曾经提交过一个相关补丁 [“新增一个 gpio_lookup() 函数”](https://lkml.org/lkml/2009/10/10/162)，但最终该补丁未获通过而是选择在驱动层实现。总之，到目前为止内核中的 API 依然是使用整数编号来标识 GPIO 引脚的。
+因此，平台和驱动的开发人员想出了各种方法来对自己关心的 GPIO 进行编号。作者本人也曾经提交过一个相关补丁 [“新增一个 gpio_lookup() 函数”][2]，但最终该补丁未获通过而是选择在驱动层实现。总之，到目前为止内核中的 API 依然是使用整数编号来标识 GPIO 引脚的。
 
 > Alexandre Courbot's [descriptor-based GPIO interface](https://lwn.net/Articles/531848/) seeks to change the situation by introducing a new struct gpio_desc * pointer type. GPIO lines would be represented by one of these pointers; what lives behind the pointer would be hidden from GPIO users, though. Internally, gpiolib (the implementation of the GPIO API used by most architectures) is refactored to use descriptors rather than numbers, and a new set of functions is presented to users. These functions will look familiar to users of the current GPIO API:
 
-Alexandre Courbot 提交了一个新的补丁[“基于描述符的 GPIO 接口”](https://lwn.net/Articles/531848/)，试图通过引入一个新的结构体类型 `struct gpio_desc` 来改进当前的实现。GPIO 引脚对象将由该结构体类型指针来标识；所有的细节内容由该结构体类型所封装。在 gpiolib 内部（ gpiolib 模块封装实现了大多数体系结构所使用的 GPIO API）标识符被重构为使用描述符而不再是数字，同时提供了一套新的用户接口函数。这些函数对于当前 GPIO API 的用户来说看起来很熟悉：
+Alexandre Courbot 提交了一个新的补丁[“基于描述符的 GPIO 接口”][3]，试图通过引入一个新的结构体类型 `struct gpio_desc` 来改进当前的实现。GPIO 引脚对象将由该结构体类型指针来标识；所有的细节内容由该结构体类型所封装。在 gpiolib 内部（ gpiolib 模块封装实现了大多数体系结构所使用的 GPIO API）标识符被重构为使用描述符而不再是数字，同时提供了一套新的用户接口函数。这些函数对于当前 GPIO API 的用户来说看起来很熟悉：
 
-	#include <linux/gpio/consumer.h>
-	
-	int gpiod_direction_input(struct gpio_desc *desc);
-	int gpiod_direction_output(struct gpio_desc *desc, int value);
-	int gpiod_get_value(struct gpio_desc *desc);
-	void gpiod_set_value(struct gpio_desc *desc, int value);
-	int gpiod_to_irq(struct gpio_desc *desc);
-	int gpiod_export(struct gpio_desc *desc, bool direction_may_change);
-	int gpiod_export_link(struct device *dev, const char *name,
-			struct gpio_desc *desc);
-	void gpiod_unexport(struct gpio_desc *desc);
+```
+#include <linux/gpio/consumer.h>
+
+int gpiod_direction_input(struct gpio_desc *desc);
+int gpiod_direction_output(struct gpio_desc *desc, int value);
+int gpiod_get_value(struct gpio_desc *desc);
+void gpiod_set_value(struct gpio_desc *desc, int value);
+int gpiod_to_irq(struct gpio_desc *desc);
+int gpiod_export(struct gpio_desc *desc, bool direction_may_change);
+int gpiod_export_link(struct device *dev, const char *name,
+		struct gpio_desc *desc);
+void gpiod_unexport(struct gpio_desc *desc);
+```
 
 > In short: the gpio_ prefix on the existing GPIO functions has been changed to gpiod_ and the integer GPIO number argument is now a struct gpio_desc *. There is also a new include file for the new functions; otherwise the interfaces are identical. The existing, integer-based API still exists, but it has been reimplemented as a layer on top of the descriptor-based API shown here.
 
@@ -58,13 +60,17 @@ Alexandre Courbot 提交了一个新的补丁[“基于描述符的 GPIO 接口�
 
 但是，要使用以上函数的前提是要首先获得 GPIO 引脚的描述符。一种方法是调用下列函数基于传统的 GPIO 整数类型编号获取对应的描述符：
 
-	struct gpio_desc *gpio_to_desc(unsigned gpio);
+```
+struct gpio_desc *gpio_to_desc(unsigned gpio);
+```
 
 > There is also a desc_to_gpio() for going in the opposite direction. Using this function makes it easy to transition existing code over to the new API. Obtaining a descriptor in this manner will ensure that no code accesses a GPIO without having first properly obtained a descriptor for it, but it would be better to do away with the numbers altogether in favor of a more robust way of looking up GPIOs. The patch set adds this functionality in this form:
 
 系统提供了另一个函数 `desc_to_gpio()` 实现相反的功能。使用此函数（译者注，指 `gpio_to_desc()`）可以轻松地将现有的代码转换为使用新的 API。遵循这种方式总是可以保证代码使用正确的描述符去访问对应的 GPIO 引脚，但这么做显然还不够彻底，最好的方法是彻底避免直接使用整数类型的编号来查找 GPIO 引脚。补丁集提供以下函数支持这种能力：
- 
-	struct gpio_desc *gpiod_get(struct device *dev, const char *name);
+
+```
+struct gpio_desc *gpiod_get(struct device *dev, const char *name);
+```
 
 > Here, dev should be the device providing the GPIO line, and "name" describes that line. The dev pointer is needed to disambiguate the name, and because code accessing a GPIO line should know which device it is working through in any case. So, for example, a video acquisition bridge device may need access to GPIO lines with names like "sensor-power", "sensor-reset", "sensor-i2c-clock" and "sensor-i2c-data". The driver could then request those lines by name with gpiod_get() without ever having to be concerned with numbers.
 
@@ -86,7 +92,7 @@ Alexandre Courbot 提交了一个新的补丁[“基于描述符的 GPIO 接口�
 
 > The GPIO interface as described so far is focused on the management of individual GPIO lines. But GPIOs are often used together as a group. As a simple example, consider a pair of GPIOs used as an I2C bus; one line handles data, the other the clock. A bit-banging driver can manage those two lines together to communicate with connected I2C devices; the kernel contains a driver in drivers/i2c/busses/i2-gpio.c for just this purpose.
 
-到目前为止所介绍的 GPIO 接口所提供的功能主要集中于如何管理单个 GPIO 引脚实现独立的功能。但经常需要同时使用多个 GPIO 引脚来实现一个功能。举一个简单的例子，考虑一对用于模拟 I2C 总线接口的 GPIO 引脚；一个传输数据信号，另一个传输时钟信号。实现 I2C 模拟的驱动程序会同时管理这两条线路与连接的 I2C 设备进行通信（译者注，使用 GPIO 模拟 I2C 的技术称之为 “bit-banging”，即使用软件按位检测并处理的方式，具体解释可以参考[Wikipedia Bit Banging 的定义](https://en.wikipedia.org/wiki/Bit_banging)）；Linux 内核提供了一个驱动程序 `drivers/i2c/busses/i2-gpio.c` 可以实现该功能。
+到目前为止所介绍的 GPIO 接口所提供的功能主要集中于如何管理单个 GPIO 引脚实现独立的功能。但经常需要同时使用多个 GPIO 引脚来实现一个功能。举一个简单的例子，考虑一对用于模拟 I2C 总线接口的 GPIO 引脚；一个传输数据信号，另一个传输时钟信号。实现 I2C 模拟的驱动程序会同时管理这两条线路与连接的 I2C 设备进行通信（译者注，使用 GPIO 模拟 I2C 的技术称之为 “bit-banging”，即使用软件按位检测并处理的方式，具体解释可以参考[Wikipedia Bit Banging 的定义][4]）；Linux 内核提供了一个驱动程序 `drivers/i2c/busses/i2-gpio.c` 可以实现该功能。
 
 > Most of the time, managing GPIOs individually, even when they are used as a group, works fine. Computers are quite fast relative to the timing requirements of most of the serial communications protocols that are subject to implementation with GPIO. But there are exceptions, especially when the hardware implementing the GPIO lines themselves is slow; that can make it hard to change multiple lines in a simultaneous manner. But, sometimes, the hardware can change lines simultaneously if properly asked; often the lines are represented by bits in the same device register and can all be changed together with a single I/O memory write operation.
 
@@ -94,10 +100,12 @@ Alexandre Courbot 提交了一个新的补丁[“基于描述符的 GPIO 接口�
 
 > Roland Stigge's [block GPIO patch set](https://lwn.net/Articles/533557/) is an attempt to make that functionality available in the kernel. Code that needs to manipulate multiple GPIOs as a group would start by associating them in a single block with:
 
-Roland Stigge 提供的 [“block GPIO 补丁集”](https://lwn.net/Articles/533557/) 试图在内核中提供对该功能的支持。具体应用中如果需要同时操作多个 GPIO，可以通过以下接口函数将它们关联在一起：
+Roland Stigge 提供的 [“block GPIO 补丁集”][5] 试图在内核中提供对该功能的支持。具体应用中如果需要同时操作多个 GPIO，可以通过以下接口函数将它们关联在一起：
 
-	struct gpio_block *gpio_block_create(unsigned int *gpios, size_t size,
-						const char *name);
+```
+struct gpio_block *gpio_block_create(unsigned int *gpios, size_t size,
+					const char *name);
+```
 
 > gpios points to an array of size GPIO numbers which are to be grouped into a block; the given name can be used to work with the block from user space. The GPIOs should have already been requested with gpio_request(); they also need to have their direction set individually. It's worth noting that the GPIOs need not be located on the same hardware; if they are spread out, or if the underlying driver does not implement the internal block API, the block GPIO interface will just access those lines individually as is done now.
 
@@ -107,9 +115,11 @@ Roland Stigge 提供的 [“block GPIO 补丁集”](https://lwn.net/Articles/53
 
 同时访问一组 GPIO 引脚的函数接口如下：
 
-	unsigned long gpio_block_get(struct gpio_block *block, unsigned long mask);
-	void gpio_block_set(struct gpio_block *block, unsigned long mask,
-			unsigned long values);
+```
+unsigned long gpio_block_get(struct gpio_block *block, unsigned long mask);
+void gpio_block_set(struct gpio_block *block, unsigned long mask,
+		unsigned long values);
+```
 
 > For both functions, block is a GPIO block created as described above, and mask is a bitmask specifying which GPIOs in the block are to be acted upon; each bit in mask enables the corresponding GPIO in the array passed to gpio_block_create(). This API implies that the number of bits in a long forces an upper bound on number of lines grouped into a GPIO block; that seems unlikely to be a problem in real-world use. gpio_block_get() will read the specified lines, simultaneously if possible, and return a bitmask with the result. The lines in a GPIO block can be set as a unit with gpio_block_set().
 
@@ -119,14 +129,18 @@ Roland Stigge 提供的 [“block GPIO 补丁集”](https://lwn.net/Articles/53
 
 释放一组 GPIO 可以调用：
 
-	void gpio_block_free(struct gpio_block *block);
+```
+void gpio_block_free(struct gpio_block *block);
+```
 
 > There is also a pair of registration functions:
 
 还有一对函数用于实现 “GPIO 组” 的注册相关功能：
 
-	int gpio_block_register(struct gpio_block *block);
-	void gpio_block_unregister(struct gpio_block *block);
+```
+int gpio_block_register(struct gpio_block *block);
+void gpio_block_unregister(struct gpio_block *block);
+```
 
 > Registering a GPIO block makes it available to user space. There is a sysfs interface that can be used to query and set the GPIOs in a block. Interestingly, registration also creates a device node (using the name provided to gpio_block_create()); reading from that device returns the current state of the GPIOs in the block, while writing it will set the GPIOs accordingly. There is an ioctl() operation (which, strangely, uses zero as the command number) to set the mask to be used with read and write operations.
 
@@ -137,3 +151,8 @@ Roland Stigge 提供的 [“block GPIO 补丁集”](https://lwn.net/Articles/53
 和前述的基于描述符的 API 修改补丁相比，这个补丁并没有引起大家的太多关注（它显然也还没有和前一个补丁集成）。最可能的原因是，需要该功能的开发人员并不多。当然，对于一个补丁来说，如果有其存在的必要性，同时又没有人反对的话，那么最终也可能被合并到主线中去。
 
 [1]: http://tinylab.org
+[2]: https://lkml.org/lkml/2009/10/10/162
+[3]: https://lwn.net/Articles/531848/
+[4]: https://en.wikipedia.org/wiki/Bit_banging
+[5]: https://lwn.net/Articles/533557/
+[6]: /lwn-532714

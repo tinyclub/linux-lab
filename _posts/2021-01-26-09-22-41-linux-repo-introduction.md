@@ -55,7 +55,7 @@ v5.4-rc8
 
 - 自此之后 `linux-5.6.y` 分支将和 Linus 维护的 mainline 分支分道扬镳，mainline 继续新特性的开发，stable 则只会合入特定的一些 patch 以保证稳定性，并且定期打上 tag：譬如 `v5.6.1`、`v5.6.2` ......
 
-- 某些 Linux 版本会被宣布为长期维护（Long Term Support，简称 LTS）版本，譬如 5.4，则于其对应的 stable 分支  `linux-5.6.y` 会得到额外的垂青，也就是说该分支的维护时间会较长，多达几年，所以 `v5.6.y` 的 y 值会变得很大。
+- 某些 Linux 版本会被宣布为长期维护（Long Term Support，简称 LTS）版本，譬如 5.4，则于其对应的 stable 分支  `linux-5.4.y` 会得到额外的垂青，也就是说该分支的维护时间会较长，多达几年，所以 `v5.4.y` 的 y 值会变得很大。
 
 ## linux-next 仓库
 

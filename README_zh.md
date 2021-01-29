@@ -2047,13 +2047,15 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 ### 6.1.11 Error creating aufs mount
 
-If not work with failure like "error creating aufs mount to ... invalid arguments", that means the storage driver used by docker is not supported by current system, please choose another one from this page: <https://docs.docker.com/storage/storagedriver/select-storage-driver/>, and configure it in `/etc/docker/daemon.json`, for example:
+如果遇到类似错误："error creating aufs mount to ... invalid arguments", 那意味着当前配置的 docker 存储驱动不被支持，可以从 [Storage Driver](https://docs.docker.com/storage/storagedriver/select-storage-driver/) 选配一个，例如:
 
     $ sudo vim /etc/docker/daemon.json
     {
       "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"],
       "storage-driver": "devicemapper"
     }
+
+这里主要是跟内核版本有关，同样的系统升级内核后，Storage Driver 类型可能得相应调整。
 
 ## 6.2 Qemu 相关
 

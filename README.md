@@ -262,7 +262,8 @@ And here is a list for verified operating systems for references:
 
 Welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
 
-    $ tools/docker/env.sh
+    $ cd /path/to/cloud-lab
+    $ tools/docker/env
     System: Ubuntu 16.04.6 LTS
     Linux: 4.4.0-176-generic
     Docker: Docker version 18.09.4, build d14af54

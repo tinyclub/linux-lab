@@ -361,7 +361,8 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 请查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
 
-    $ tools/docker/env.sh
+    $ cd /path/to/cloud-lab/
+    $ tools/docker/env
     System: Ubuntu 16.04.6 LTS
     Linux: 4.4.0-176-generic
     Docker: Docker version 18.09.4, build d14af54

@@ -1,9 +1,9 @@
 
 # TODO List
 
-## V0.6
+## V0.7
 
-* Add new ubuntu 20.04 based docker image support
+* Add [Linux Lab Disk](https://gitee.com/tinylab/linux-lab/issues/I31ZTK) Support
 
 ## Future
 

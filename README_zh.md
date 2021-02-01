@@ -109,6 +109,7 @@
        - [6.1.8 the following directives are specified both as a flag and in the configuration file](#618-the-following-directives-are-specified-both-as-a-flag-and-in-the-configuration-file)
        - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
        - [6.1.10 Docker not work in Ubuntu 20.04](#6110-docker-not-work-in-ubuntu-2004)
+       - [6.1.11 Error creating aufs mount](#6111-error-creating-aufs-mount)
     - [6.2 Qemu 相关](#62-qemu-相关)
        - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
        - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)

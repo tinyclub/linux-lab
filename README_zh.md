@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.6-rc3 中文手册
+% Linux Lab v0.6 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -33,6 +33,7 @@
        - [1.6.3 v0.3 @ 2020.03.12](#163-v03--20200312)
        - [1.6.4 v0.4 @ 2020.06.01](#164-v04--20200601)
        - [1.6.5 v0.5 @ 2020.09.12](#165-v05--20200912)
+       - [1.6.6 v0.6 @ 2021.02.06](#166-v06--20210206)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
     - [2.1 软硬件要求](#21-软硬件要求)
     - [2.2 安装 Docker](#22-安装-docker)
@@ -312,6 +313,24 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * [v0.5 rc1](http://tinylab.org/linux-lab-v05-rc1/)
     * 全面完善并合并早期对龙芯全系处理器的支持
     * 全面升级开发环境基础镜像到 Ubuntu 20.04
+
+### 1.6.6 v0.6 @ 2021.02.06
+
+[v0.6](http://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
+
+* [v0.6 rc3](http://tinylab.org/linux-lab-v06-rc3/)
+    * 新增遗漏的 showterm 命令行录制工具
+    * 进一步完善真实硬件板的支持
+
+* [v0.6 rc2](http://tinylab.org/linux-lab-v06-rc2/)
+    * 新增首块真实硬件开发板 `arm/ebf-imx6ull` 支持
+    * 新增 `packages-install` 目标，允许通过 `.labinit` 配置环境缺少的软件包
+    * 新增命令行自动补全脚本，允许直接在命令行补全板子信息，提升使用效率
+
+* [v0.6 rc1](http://tinylab.org/linux-lab-v06-rc1/)
+    * 修复插件中的 BSP 包下载功能
+    * 修复 x86 架构的内核编译问题
+    * 修复 aarch64/virt 开发板 Uboot 引导问题
 
 # 2. Linux Lab 安装
 

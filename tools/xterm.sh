@@ -2,7 +2,7 @@
 #
 # xterm.sh -- get current terminal
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 
 # Default setting

@@ -2,7 +2,7 @@
 #
 # bash git prompt support
 #
-# Copyright (C) 2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2021 Wu Zhangjin <falcon@ruma.tech>
 #
 
 # Allow commands with '='

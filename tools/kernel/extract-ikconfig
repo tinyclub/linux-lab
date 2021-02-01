@@ -3,7 +3,7 @@
 # extract-ikconfig -- a more human readable script to extract kernel config.gz
 #
 # Author: Wu Zhangjin <lzufalcon@163.com>, 2019.07.19
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 # ref: kernel/configs.c: .rodata ( ... IKCFG_ST.........................IKCFG_ED ... )
 #                                              ^ kernel/config_data.gz ^

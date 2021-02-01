@@ -2,7 +2,7 @@
 #
 # kernel-feature.sh -- Apply the available kernel features
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 
 ARCH=$1

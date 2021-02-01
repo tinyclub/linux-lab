@@ -2,7 +2,7 @@
 #
 # qemu/patch.sh -- Apply the available qemu patchs
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 
 BOARD=$1

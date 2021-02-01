@@ -2,7 +2,7 @@
 #
 # config.sh -- configure board variables
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 
 VS=$1
 Makefile=$2

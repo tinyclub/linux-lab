@@ -2,7 +2,7 @@
 #
 # rd2hd.sh initrd hrootfs fstype -- convert initrd to harddisk image
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 # initrd should be xxx.cpio.gz or xxx.cpio
 #

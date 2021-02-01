@@ -2,7 +2,7 @@
 #
 # sd.sh -- prepare uboot images for sd/mmc boot
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 
 ROOT_IMAGE=${U_ROOT_IMAGE}

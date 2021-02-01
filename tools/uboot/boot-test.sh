@@ -2,7 +2,7 @@
 #
 # boot-test.sh -- check uboot autoboot fails, if fails, will stop at uboot command line and eventually no kernel log output
 #
-# Copyright (C) 2016-2020 Wu Zhangjin <lzufalcon@163.com>
+# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #
 # example:
 #	$ tools/uboot/boot-test.sh versatilepb

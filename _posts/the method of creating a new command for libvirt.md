@@ -46,8 +46,7 @@ libvirt是用于管理虚拟化平台的开源的API，后台程序和管理工�
 ### 增添的命令行参数
 virsh helloworld 后我们设置了一下几个命令行参数：
 --local：表示与本地的libvirtd 相连。
---ip xx.xx.xx.xx: 表示与xx.xx.xx.xx 地址的libvirtd 相连。
-libvirt 描述命令行参数是用vshCmdOptDef 数组表示，也就是--local 和--ip 的要添加到vshCmdOptDef 数组中。
+libvirt 描述命令行参数是用vshCmdOptDef 数组表示，也就是--local 要添加到vshCmdOptDef 数组中。
 virsh helloworld --help 要显示的信息添加到vshCmdInfo 数组中。
     
 #### 增添的数据结构vshCmdOptDef 和 vshCmdInfo
@@ -80,11 +79,14 @@ vshCmdInfo info_helloworld[]: 是virsh helloworld --help 所显示的描述打�
       bool ret = false;
       char *buffer;
 
+      if (!vshCommandOptBool(cmd, "local"))
+        goto cleanup;
+
       vshPrintExtra(ctl, _("Hello World\n")); 
 
       ret = true;
 
-      cleanup:
+    cleanup:
 
       return ret;
     }

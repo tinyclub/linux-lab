@@ -440,6 +440,7 @@ Sun Jianguo:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: Embedded Linux Engineer
+
 Li Hongyan :
   name : 衡数软件 | alitrack.com
   nickname: alitrack
@@ -454,3 +455,17 @@ Li Hongyan :
   sponsor: wechat-pay-alitrack
   sponsor-qrcode: true
   info: 大数据工程师，熟悉Postgres，对Linux感兴趣。
+
+Peng Weilin:
+  name: Peng Weilin
+  nickname: pwl999
+  archive: true
+  article: true
+  site: pwl999.github.io
+  email: marine_wy@163.com
+  wechat: pengweilin888
+  wechat-pay: wechat-pay-pwl
+  ali-pay: ali-pay-pwl
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: Linux爱好者

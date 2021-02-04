@@ -396,13 +396,13 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 其他问题，请参考 [官方 Docker 文档](https://docs.docker.com)。
 
 **Ubuntu 用户安装手册**
-  - doc/install/ubuntu-docker.md
+  - [doc/install/ubuntu-docker.md](doc/install/ubuntu-docker.md)
 
 **Arch 用户安装手册**
-  - doc/install/arch-docker.md
+  - [doc/install/arch-docker.md](doc/install/arch-docker.md)
 
 **Manjaro 用户安装手册**
-  - doc/install/manjaro-docker.md
+  - [doc/install/manjaro-docker.md](doc/install/manjaro-docker.md)
 
 **Windows 用户须知**：
 

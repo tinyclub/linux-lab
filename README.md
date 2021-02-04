@@ -297,13 +297,13 @@ More docker related issues, such as download slowly, download timeout and downlo
 The other issues, please read the [official docker docs](https://docs.docker.com).
 
 **Notes for Ubuntu Users**
-  - doc/install/ubuntu-docker.md
+  - [doc/install/ubuntu-docker.md](doc/install/ubuntu-docker.md)
 
 **Notes for Arch Users**
-  - doc/install/arch-docker.md
+  - [doc/install/arch-docker.md](doc/install/arch-docker.md)
 
 **Notes for Manjaro Users**
-  - doc/install/manjaro-docker.md
+  - [doc/install/manjaro-docker.md](doc/install/manjaro-docker.md)
 
 **Notes for Windows Users**:
 

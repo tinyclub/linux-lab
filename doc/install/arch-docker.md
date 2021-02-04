@@ -48,21 +48,25 @@
 
 ## Step 2: 启动 Docker
 
-### Step 2.1: 开启 Docker 开机自动启动服务
+### Step 2.1: 启动 Docker 守护进程服务并启动
 
-  安装完成后设置 Docker 开机自动启动服务。
+    $ sudo systemctl enable --now docker.socket
 
-    $ sudo systemctl enable docker.service
+### Step 2.2: 开启 Docker 开机自动启动服务并启动
 
+    $ sudo systemctl enable --now docker.service
 
-### Step 2.2: 关闭 Docker 开机自动启动服务
+### Step 2.3: 关闭 Docker 开机自动启动服务
 
     $ sudo systemctl disable docker.service
 
-
-### Step 2.3: 启动 Docker 服务
+### Step 2.4: 启动 Docker 服务
 
     $ sudo systemctl start docker.service
+
+### Step 2.5: 停止 Docker 服务
+
+    $ sudo systemctl stop docker.service
 
 
 ## Step 3: 把工作用户加入 docker 组，避免使用 root 帐号工作

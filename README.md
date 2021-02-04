@@ -253,12 +253,12 @@ And here is a list for verified operating systems for references:
 |------------|---------------------|----------------|-----------------------------
 | Ubuntu     | 16.04, 18.04, 20.04 | 18.09.4        | Linux 4.15, 5.0, 5.3, 5.4
 | Debian     | bullseye            | 19.03.7        | Linux 5.4.42
-| Arch Linux |                     | 19.03.11       | Linux 5.4.50, 5.7.4
+| Arch Linux | rolling-release     | 20.10.3        | Linux 5.4.94, 5.7.4
 | CentOS     | 7.6, 7.7            | 19.03.8        | Linux 3.10, 5.2.9
 | Deepin     | 15.11               | 18.09.6        | Linux 4.15
 | Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
 | Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
-| Manjaro    |                     | 19.03.11       | Linux 5.8.3
+| Manjaro    | rolling-release     | 20.10.3        | Linux 5.8.3
 
 Welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
 

@@ -303,6 +303,7 @@
       categories:
         - name: 启动速度
         - name: Latency
+        - name: 吞吐量
     - name: 系统裁剪
     - name: 实时性
     - name: 功耗优化
@@ -310,6 +311,7 @@
     - name: 虚拟化
       categories:
         - name: Docker
+        - name: libvirt
     - name: 综合优化
 
 - name: 技术漫谈

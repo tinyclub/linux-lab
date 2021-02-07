@@ -318,7 +318,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 [v0.6](http://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
 
-* [v0.6 rc3](http://tinylab.org/linux-lab-v06-rc3/)
+* [v0.6 rc3](http://tinylab.org/linux-lab-v0.6/)
     * 新增遗漏的 showterm 命令行录制工具
     * 进一步完善真实硬件板的支持
 

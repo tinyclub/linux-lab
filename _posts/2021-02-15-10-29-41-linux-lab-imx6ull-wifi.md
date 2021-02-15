@@ -2,7 +2,7 @@
 layout: post
 author: 'Li Hongyan'
 title: "Linux Lab 真板开发日志（3）：macOS 环境之 SD 卡、无线网卡、虚拟串口"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /linux-lab-imx6ull-part3/
 description: "本文详细介绍了如何在 macOS 下通过 Linux Lab 来开发首块适配的 i.MX6ULL Pro 真实硬件开发板，内容包括使用 SD 卡启动并分别通过无线网卡和虚拟串口通信。"

@@ -12,6 +12,8 @@ function _makefile_targets {
     local curr_arg;
     local targets;
 
+    if [ "$(pwd)" == "/labs/linux-lab" ]; then
+
     curr_arg=${COMP_WORDS[COMP_CWORD]}
 
     case $COMP_CWORD in
@@ -53,6 +55,8 @@ function _makefile_targets {
     esac
 
     COMPREPLY=( $(compgen -W "${targets[@]}" -- $curr_arg ) );
+
+    fi # only trigger for /labs/linux-lab/ working directory
 }
 
 complete -F _makefile_targets make

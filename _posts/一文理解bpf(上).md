@@ -1,0 +1,576 @@
+---
+layout: post
+author: 'Wu Daemon'
+title: "一文理解ebpf(下)"
+draft: true
+top: false
+license: "cc-by-nc-nd-4.0"
+permalink: /linux-ebpf/
+description: "本文详细解读了 ebpf使用方法和基本原理"
+category:
+  - 调试和优化
+tags:
+  - Linux
+  - Kprobe
+  - strace
+  - ebpf
+  - perf
+---
+> By Wu Daemon of [TinyLab.org](http://tinylab.org)
+> 2021/2/20
+
+
+
+eBPF在linux内核中将C代码编译成BPF字节码，挂在kprobe/tracepoint等hook上，当hook触发时，linux内核运行字节码 来实现追踪性能。
+
+## eBPF框架
+上篇讲述了bcc工具的使用和基本调用过程，本篇开始正式讲述BPF程序的构成，和 BPF程序如何在用户态和内核态之间互相通信。
+在linux内核中的sample/bpf目录存在许多bpf程序的样例,以 tracex4_kern.c和 tracex4_user.c为例子
+下图是ebpf程序的框架，分为程序执行流和数据通信流。
+
+![image](bpf_map10.png)
+
+对于程序执行流来说，trace_kern.c是分配 slab，释放 slab 时调用的代码，其中申明了 hook处理函数和数据 map，数据 map用来在内核态和用户态之间数据通信，使用 LLVM/clang 编译器编译成 bpf字节码；trace_user.c 用来加载 bpf字节码，陷入内核态，通过 JIT(just in time)编译器将bpf字节码转换成机器汇编码，当 kprobe或者tracepoint追踪到某类事件时执行上述申明的 hook处理函数并获取数据map，将数据传到userspace。
+
+* tracex4_kern.c 
+
+
+其中定义了 "my_map"的一个数据map，数据 map由key/value键值对组成，这里的 value 是一个结构体的变量，用于获得当前运行时间和 ip寄存器，数据map由` __attribute__`,是一个单独的section，编译成elf格式的文件时该结构体变量存在在"maps"段中。接下来申明的是分配slab，释放slab的钩子处理函数，并单独放在"kprobe/kmem_cache_free"，"kretprobe/kmem_cache_alloc_node"两个代码段中。
+
+```
+#include <linux/version.h>
+#include <uapi/linux/bpf.h>
+#include "bpf_helpers.h"
+
+struct pair {
+        u64 val;
+        u64 ip;
+};
+
+struct bpf_map_def SEC("maps") my_map = {
+        .type = BPF_MAP_TYPE_HASH,
+        .key_size = sizeof(long),
+        .value_size = sizeof(struct pair),
+        .max_entries = 1000000,
+};
+SEC("kprobe/kmem_cache_free")
+int bpf_prog1(struct pt_regs *ctx)
+{
+        long ptr = PT_REGS_PARM2(ctx);
+
+        bpf_map_delete_elem(&my_map, &ptr);
+        return 0;
+}
+
+SEC("kretprobe/kmem_cache_alloc_node")
+int bpf_prog2(struct pt_regs *ctx)
+{
+        long ptr = PT_REGS_RC(ctx);
+        long ip = 0;
+
+        /* get ip address of kmem_cache_alloc_node() caller */
+        BPF_KRETPROBE_READ_RET_IP(ip, ctx);
+
+        struct pair v = {
+                .val = bpf_ktime_get_ns(),
+                .ip = ip,
+        };
+
+        bpf_map_update_elem(&my_map, &ptr, &v, BPF_ANY);
+        return 0;
+}
+char _license[] SEC("license") = "GPL";
+u32 _version SEC("version") = LINUX_VERSION_CODE;
+
+```
+
+
+使用clang编译出o文件，同样属于elf文件,可以使用llvm dump出各个section table，如上述自定义的几个段,用SEC 定义就可自定义一个section
+
+```
+#define SEC(NAME) __attribute__((section(NAME), used))
+```
+* tracex4_user.c
+  
+其中定义了一个pair结构体用来接受hook处理函数的数据，首先加载tracex4_kern.o，然后在死循环中轮询获取数据，然后用`printf`打印出来
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <linux/bpf.h>
+#include <sys/resource.h>
+
+#include <bpf/bpf.h>
+#include "bpf_load.h"
+
+struct pair {
+        long long val;
+        __u64 ip;
+};
+
+static __u64 time_get_ns(void)
+{
+        struct timespec ts;
+
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        return ts.tv_sec * 1000000000ull + ts.tv_nsec;
+}
+
+static void print_old_objects(int fd)
+{
+        long long val = time_get_ns();
+        __u64 key, next_key;
+        struct pair v;
+
+        key = write(1, "\e[1;1H\e[2J", 12); /* clear screen */
+
+        key = -1;
+        while (bpf_map_get_next_key(map_fd[0], &key, &next_key) == 0) {
+                bpf_map_lookup_elem(map_fd[0], &next_key, &v);
+                key = next_key;
+                if (val - v.val < 1000000000ll)
+                        /* object was allocated more then 1 sec ago */
+                        continue;
+                printf("obj 0x%llx is %2lldsec old was allocated at ip %llx\n",
+                       next_key, (val - v.val) / 1000000000ll, v.ip);
+        }
+}
+
+int main(int ac, char **argv)
+{
+        struct rlimit r = {RLIM_INFINITY, RLIM_INFINITY};
+        char filename[256];
+        int i;
+
+        snprintf(filename, sizeof(filename), "%s_kern.o", argv[0]);
+
+        if (setrlimit(RLIMIT_MEMLOCK, &r)) {
+                perror("setrlimit(RLIMIT_MEMLOCK, RLIM_INFINITY)");
+                return 1;
+        }
+
+        if (load_bpf_file(filename)) {
+                printf("%s", bpf_log_buf);
+                return 1;
+        }
+
+        for (i = 0; ; i++) {
+                print_old_objects(map_fd[1]);
+                sleep(1);
+        }
+}
+```
+
+## readelf和llvm-objdump解析目标文件
+
+* 读取ELF文件头
+
+```
+wu@ubuntu:~/linux/samples/bpf$ readelf -h tracex4_kern.o
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           Linux BPF
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          8344 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           64 (bytes)
+  Number of section headers:         27
+  Section header string table index: 1
+
+```
+在 readelf 的输出中：
+第 1 行，ELF Header: 指名 ELF 文件头开始。
+第 2 行，Magic 魔数，用来指名该文件是一个 ELF 目标文件。第一个字节 7F 是个固定的数；后面的 3 个字节正是 E, L, F 三个字母的 ASCII 形式。
+第 3 行，CLASS 表示文件类型，这里是 64位的 ELF 格式。
+第 4 行，Data 表示文件中的数据是按照什么格式组织(大端或小端)的，不同处理器平台数据组织格式可能就不同，如x86平台为小端存储格式。
+第 5 行，当前 ELF 文件头版本号，这里版本号为 1 。
+第 6 行，OS/ABI ，指出操作系统类型，ABI 是 Application Binary Interface 的缩写。
+第 7 行，ABI 版本号，当前为 0 。
+第 8 行，Type 表示文件类型。ELF 文件有 3 种类型，一种是如上所示的 Relocatable file 可重定位目标文件，一种是可执行文件(Executable)，另外一种是共享库(Shared Library) 。
+第 9 行，机器平台类型。 这里是bpf虚拟机
+第 10 行，当前目标文件的版本号。
+第 11 行，程序的虚拟地址入口点，因为这还不是可运行的程序，故而这里为零。
+第 12 行，与 11 行同理，这个目标文件没有 Program Headers。
+第 13 行，sections 头开始处，这里 8344 是十进制，表示从地址偏移 0x2098 处开始。
+第 14 行，是一个与处理器相关联的标志，x86 平台上该处为 0 。
+第 15 行，ELF 文件头的字节数。
+第 16 行，因为这个不是可执行程序，故此处大小为 0
+第 19 行，一共有多少个 section 头，这里是 27个。
+打印符号表条目   符号表 .symtab 包括所有用到的相关符号信息，如函数名、变量名
+
+* 打印各个段的内容
+```
+wu@ubuntu:~/linux/samples/bpf$ readelf -S tracex4_kern.o
+There are 27 section headers, starting at offset 0x2098:
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .strtab           STRTAB           0000000000000000  00001f80
+       0000000000000115  0000000000000000           0     0     1
+  [ 2] .text             PROGBITS         0000000000000000  00000040
+       0000000000000000  0000000000000000  AX       0     0     4
+  [ 3] kprobe/kmem_cache PROGBITS         0000000000000000  00000040
+       0000000000000048  0000000000000000  AX       0     0     8
+  [ 4] .relkprobe/kmem_c REL              0000000000000000  00001870
+       0000000000000010  0000000000000010          26     3     8
+  [ 5] kretprobe/kmem_ca PROGBITS         0000000000000000  00000088
+       00000000000000c0  0000000000000000  AX       0     0     8
+  [ 6] .relkretprobe/kme REL              0000000000000000  00001880
+       0000000000000010  0000000000000010          26     5     8
+  [ 7] maps              PROGBITS         0000000000000000  00000148
+       000000000000001c  0000000000000000  WA       0     0     4
+  [ 8] license           PROGBITS         0000000000000000  00000164
+       0000000000000004  0000000000000000  WA       0     0     1
+  [ 9] version           PROGBITS         0000000000000000  00000168
+       0000000000000004  0000000000000000  WA       0     0     4
+  [10] .debug_str        PROGBITS         0000000000000000  0000016c
+       00000000000001e9  0000000000000001  MS       0     0     1
+  [11] .debug_loc        PROGBITS         0000000000000000  00000355
+       0000000000000150  0000000000000000           0     0     1
+  [12] .rel.debug_loc    REL              0000000000000000  00001890
+       0000000000000050  0000000000000010          26    11     8
+  [13] .debug_abbrev     PROGBITS         0000000000000000  000004a5
+       0000000000000101  0000000000000000           0     0     1
+  [14] .debug_info       PROGBITS         0000000000000000  000005a6
+       0000000000000376  0000000000000000           0     0     1
+  [15] .rel.debug_info   REL              0000000000000000  000018e0
+       00000000000004b0  0000000000000010          26    14     8
+  [16] .debug_ranges     PROGBITS         0000000000000000  0000091c
+       0000000000000030  0000000000000000           0     0     1
+  [17] .rel.debug_ranges REL              0000000000000000  00001d90
+       0000000000000040  0000000000000010          26    16     8
+  [18] .BTF              PROGBITS         0000000000000000  0000094c
+       0000000000000569  0000000000000000           0     0     1
+  [19] .rel.BTF          REL              0000000000000000  00001dd0
+       0000000000000030  0000000000000010          26    18     8
+  [20] .BTF.ext          PROGBITS         0000000000000000  00000eb5
+       0000000000000178  0000000000000000           0     0     1
+  [21] .rel.BTF.ext      REL              0000000000000000  00001e00
+       0000000000000140  0000000000000010          26    20     8
+  [22] .eh_frame         PROGBITS         0000000000000000  00001030
+       0000000000000050  0000000000000000   A       0     0     8
+  [23] .rel.eh_frame     REL              0000000000000000  00001f40
+       0000000000000020  0000000000000010          26    22     8
+  [24] .debug_line       PROGBITS         0000000000000000  00001080
+       0000000000000147  0000000000000000           0     0     1
+  [25] .rel.debug_line   REL              0000000000000000  00001f60
+       0000000000000020  0000000000000010          26    24     8
+  [26] .symtab           SYMTAB           0000000000000000  000011c8
+       00000000000006a8  0000000000000018           1    66     8
+
+```
+其中 第二项代表类型 ”NULL”：未使用，如段表的第一个空段;“PROGBITS”：程序数据，如.text、.data、.rodata;“REL”：重定位表，如.rel.text;“NOBITS”：暂时没有数据的程序空间，如.bss;“STRTAB”：字符串表，如.strtab、.shstrtab;“SYMTAB”：符号表，如.symtab
+
+*  llvm-objdump解析BPF ELF格式文件
+```
+wu@ubuntu:~/linux/samples/bpf$ llvm-objdump -h tracex4_kern.o
+
+tracex4_kern.o: file format ELF64-BPF
+
+Sections:
+Idx Name                                Size     VMA              Type
+  0                                     00000000 0000000000000000
+  1 .strtab                             00000115 0000000000000000
+  2 .text                               00000000 0000000000000000 TEXT
+  3 kprobe/kmem_cache_free              00000048 0000000000000000 TEXT
+  4 .relkprobe/kmem_cache_free          00000010 0000000000000000
+  5 kretprobe/kmem_cache_alloc_node     000000c0 0000000000000000 TEXT
+  6 .relkretprobe/kmem_cache_alloc_node 00000010 0000000000000000
+  7 maps                                0000001c 0000000000000000 DATA
+  8 license                             00000004 0000000000000000 DATA
+  9 version                             00000004 0000000000000000 DATA
+... ...
+```
+
+可以使用llvm工具为ebpf程序进行反编译，tracex4_kern.o是elf格式的文件，分为两个代码段，如下所示 ：
+```
+wu@ubuntu:~/linux/samples/bpf$ llvm-objdump -d -r -print-imm-hex tracex4_kern.o
+
+tracex4_kern.o: file format ELF64-BPF
+
+
+Disassembly of section kprobe/kmem_cache_free:
+
+0000000000000000 bpf_prog1:
+       0:       79 11 68 00 00 00 00 00 r1 = *(u64 *)(r1 + 0x68)
+       1:       7b 1a f8 ff 00 00 00 00 *(u64 *)(r10 - 0x8) = r1
+       2:       bf a2 00 00 00 00 00 00 r2 = r10
+       3:       07 02 00 00 f8 ff ff ff r2 += -0x8
+       4:       18 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 r1 = 0x0 ll
+                0000000000000020:  R_BPF_64_64  my_map
+       6:       85 00 00 00 03 00 00 00 call 0x3
+       7:       b7 00 00 00 00 00 00 00 r0 = 0x0
+       8:       95 00 00 00 00 00 00 00 exit
+
+Disassembly of section kretprobe/kmem_cache_alloc_node:
+
+0000000000000000 bpf_prog2:
+       0:       79 12 50 00 00 00 00 00 r2 = *(u64 *)(r1 + 0x50)
+       1:       7b 2a f8 ff 00 00 00 00 *(u64 *)(r10 - 0x8) = r2
+       2:       b7 02 00 00 00 00 00 00 r2 = 0x0
+       3:       7b 2a f0 ff 00 00 00 00 *(u64 *)(r10 - 0x10) = r2
+       4:       79 13 20 00 00 00 00 00 r3 = *(u64 *)(r1 + 0x20)
+       5:       07 03 00 00 08 00 00 00 r3 += 0x8
+       6:       bf a1 00 00 00 00 00 00 r1 = r10
+       7:       07 01 00 00 f0 ff ff ff r1 += -0x10
+       8:       b7 02 00 00 08 00 00 00 r2 = 0x8
+       9:       85 00 00 00 04 00 00 00 call 0x4
+      10:       85 00 00 00 05 00 00 00 call 0x5
+      11:       7b 0a e0 ff 00 00 00 00 *(u64 *)(r10 - 0x20) = r0
+      12:       79 a1 f0 ff 00 00 00 00 r1 = *(u64 *)(r10 - 0x10)
+      13:       7b 1a e8 ff 00 00 00 00 *(u64 *)(r10 - 0x18) = r1
+      14:       bf a2 00 00 00 00 00 00 r2 = r10
+      15:       07 02 00 00 f8 ff ff ff r2 += -0x8
+      16:       bf a3 00 00 00 00 00 00 r3 = r10
+      17:       07 03 00 00 e0 ff ff ff r3 += -0x20
+      18:       18 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 r1 = 0x0 ll
+                0000000000000090:  R_BPF_64_64  my_map
+      20:       b7 04 00 00 00 00 00 00 r4 = 0x0
+      21:       85 00 00 00 02 00 00 00 call 0x2
+      22:       b7 00 00 00 00 00 00 00 r0 = 0x0
+      23:       95 00 00 00 00 00 00 00 exit
+
+             ........
+
+```
+查看其他段的内容,比如maps段和license段 
+```
+wu@ubuntu:~/linux/samples/bpf$ llvm-objdump --section=maps  -s tracex4_kern.o
+
+tracex4_kern.o: file format ELF64-BPF
+
+Contents of section maps:
+ 0000 01000000 08000000 10000000 40420f00  ............@B..
+ 0010 00000000 00000000 00000000           ............
+wu@ubuntu:~/linux/samples/bpf$ llvm-objdump --section=license  -s tracex4_kern.o
+
+tracex4_kern.o: file format ELF64-BPF
+
+Contents of section license:
+ 0000 47504c00                             GPL.
+```
+
+上述bpf程序的字节码，是不能在x86_64平台上直接执行的，当加载bpf程序是需要使用JIT(just in time)编译器将bpf字节码翻译成主机能识别的汇编码，然而对于大多数操作码，ebpf指令集可以和x86或aarch64指令集一一映射。
+
+
+bpf程序自定义了一套指令，有别于x86，ARM64等，而且指令集没这两者丰富，没有浮点计算等。但寄存器功能大同小异， 功能如下所示：
+
+eBPF寄存器| 描述
+---|---
+R1-R5| ebpf程序传入内核函数的参数
+R0 | 内核函数的返回值 ebpf程序退出值
+R6-R9  | 用作数据存储，遵循被调用者使用规则
+R10 | 栈帧
+
+
+## strace工具追踪分析
+
+执行可以看到slab对象的分配地址,以及分配时间
+```
+wu@ubuntu:~/linux/samples/bpf$ sudo  strace -v -f -s 128 -o tracex4.txt ./tracex4
+obj 0xffff9637e3175cc0 is  1sec old was allocated at ip ffffffff99679a9a
+obj 0xffff9637e31750c0 is  1sec old was allocated at ip ffffffff99679a9a
+obj 0xffff9637e3175e00 is  1sec old was allocated at ip ffffffff99679a9a
+obj 0xffff9637e3175780 is  1sec old was allocated at ip ffffffff99679a9a
+... ...
+
+```
+strace追踪到的关键系统调用
+```
+execve("./tracex4", ["./tracex4"], ["LANG=en_US.UTF-8", "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca"..., "TERM=xterm", "DISPLAY=localhost:12.0", "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin", "MAIL=/var/mail/root", "LOGNAME=root", "USER=root", "HOME=/root", "SHELL=/bin/bash", "SUDO_COMMAND=/usr/bin/strace -v -f -s 128 -o tracex4.txt ./tracex4", "SUDO_USER=wu", "SUDO_UID=1000", "SUDO_GID=1000"]) = 0
+... ...
+bpf(BPF_MAP_CREATE, {map_type=BPF_MAP_TYPE_HASH, key_size=8, value_size=16, max_entries=1000000, map_flags=0, inner_map_fd=0, map_name="my_map", map_ifindex=0, btf_fd=0, btf_key_type_id=0, btf_value_type_id=0}, 112) = 4
+
+bpf(BPF_PROG_LOAD, {prog_type=BPF_PROG_TYPE_KPROBE, insn_cnt=9, insns=[{code=BPF_LDX|BPF_DW|BPF_MEM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=104, imm=0}, {code=BPF_STX|BPF_DW|BPF_MEM, dst_reg=BPF_REG_10, src_reg=BPF_REG_1, off=-8, imm=0}, {code=BPF_ALU64|BPF_X|BPF_MOV, dst_reg=BPF_REG_2, src_reg=BPF_REG_10, off=0, imm=0}, {code=BPF_ALU64|BPF_K|BPF_ADD, dst_reg=BPF_REG_2, src_reg=BPF_REG_0, off=0, imm=0xfffffff8}, {code=BPF_LD|BPF_DW|BPF_IMM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=0, imm=0x4}, {code=BPF_LD|BPF_W|BPF_IMM, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}, {code=BPF_JMP|BPF_K|BPF_CALL, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0x3}, {code=BPF_ALU64|BPF_K|BPF_MOV, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}, {code=BPF_JMP|BPF_K|BPF_EXIT, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}], license="GPL", log_level=0, log_size=0, log_buf=NULL, kern_version=KERNEL_VERSION(5, 4, 0), prog_flags=0, prog_name="", prog_ifindex=0, expected_attach_type=BPF_CGROUP_INET_INGRESS, prog_btf_fd=0, func_info_rec_size=0, func_info=NULL, func_info_cnt=0, line_info_rec_size=0, line_info=NULL, line_info_cnt=0, attach_btf_id=0}, 112) = 5
+
+openat(AT_FDCWD, "/sys/kernel/debug/tracing/kprobe_events", O_WRONLY|O_APPEND) = 6
+write(6, "p:kmem_cache_free kmem_cache_free", 33) = 33
+close(6)
+openat(AT_FDCWD, "/sys/kernel/debug/tracing/events/kprobes/kmem_cache_free/id", O_RDONLY) = 6
+read(6, "2145\n", 256)           = 5
+close(6)
+perf_event_open({type=PERF_TYPE_TRACEPOINT, size=0 /* PERF_ATTR_SIZE_??? */, config=2145, sample_period=1, sample_type=PERF_SAMPLE_RAW, read_format=0, disabled=0, inherit=0, pinned=0, exclusive=0, exclusive_user=0, exclude_kernel=0, exclude_hv=0, exclude_idle=0, mmap=0, comm=0, freq=0, inherit_stat=0, enable_on_exec=0, task=0, watermark=0, precise_ip=0 /* arbitrary skid */, mmap_data=0, sample_id_all=0, exclude_host=0, exclude_guest=0, exclude_callchain_kernel=0, exclude_callchain_user=0, mmap2=0, comm_exec=0, use_clockid=0, context_switch=0, write_backward=0, namespaces=0, wakeup_events=1, config1=0}, -1, 0, -1, 0) = 6
+... ...
+openat(AT_FDCWD, "/sys/kernel/debug/tracing/kprobe_events", O_WRONLY|O_APPEND) = 8
+write(8, "r:kmem_cache_alloc_node kmem_cache_alloc_node", 45) = 45
+openat(AT_FDCWD, "/sys/kernel/debug/tracing/events/kprobes/kmem_cache_alloc_node/id", O_RDONLY) = 8
+read(8, "2146\n", 256)           = 5
+close(8)                         = 0
+perf_event_open({type=PERF_TYPE_TRACEPOINT, size=0 /* PERF_ATTR_SIZE_??? */, config=2146, sample_period=1, sample_type=PERF_SAMPLE_RAW, read_format=0, disabled=0, inherit=0, pinned=0, exclusive=0, exclusive_user=0, exclude_kernel=0, exclude_hv=0, exclude_idle=0, mmap=0, comm=0, freq=0, inherit_stat=0, enable_on_exec=0, task=0, watermark=0, precise_ip=0 /* arbitrary skid */, mmap_data=0, sample_id_all=0, exclude_host=0, exclude_guest=0, exclude_callchain_kernel=0, exclude_callchain_user=0, mmap2=0, comm_exec=0, use_clockid=0, context_switch=0, write_backward=0, namespaces=0, wakeup_events=1, config1=0}, -1, 0, -1, 0) = 8
+ioctl(8, PERF_EVENT_IOC_ENABLE, 0) = 0
+ioctl(8, PERF_EVENT_IOC_SET_BPF, 7) = 0
+write(1, "\33[1;1H\33[2J\0\0", 12) = 12
+bpf(BPF_MAP_GET_NEXT_KEY, {map_fd=4, key=0x7ffffaf162b0, next_key=0x7ffffaf162b8}, 112) = 0
+bpf(BPF_MAP_LOOKUP_ELEM, {map_fd=4, key=0x7ffffaf162b8, value=0x7ffffaf162d0, flags=BPF_ANY}, 112) = 0
+... ...
+
+```
+
+
+*  bpf字节码加载分析
+
+  当bpf系统第一个参数cmds=`BPF_PROG_LOAD`时，表示加载 ELF64-BPF 格式的文件，仔细分析下第二个参数`attr`，这个结构体的原型是,发现就是保存了bpf字节码
+  ```
+struct {    /* Used by BPF_PROG_LOAD */
+        __u32         prog_type;
+        __u32         insn_cnt;
+        __aligned_u64 insns;      /* 'const struct bpf_insn *' */
+        __aligned_u64 license;    /* 'const char *' */
+        __u32         log_level;  /* verbosity level of verifier */
+        __u32         log_size;   /* size of user buffer */
+        __aligned_u64 log_buf;    /* user supplied 'char *'
+                                        buffer */
+        __u32         kern_version;
+                                /* checked when prog_type=kprobe
+                                        (since Linux 4.1) */
+};
+ __attribute__((aligned(8)));
+  ```
+
+当加载bpf程序时，BPF_PROG_LOAD表示的是该程序的具体bpf指令，对应`bpf_prog1`这个代码段。strace追踪到的指令如下所示，每条指令的操作码由code(操作码),dst_reg(目标寄存器),src_reg(源寄存器),off(偏移),imm(立即数) 这六部分组成
+```
+insns=[{code=BPF_LDX|BPF_DW|BPF_MEM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=104, imm=0}, {code=BPF_STX|BPF_DW|BPF_MEM, dst_reg=BPF_REG_10, src_reg=BPF_REG_1, off=-8, imm=0}, {code=BPF_ALU64|BPF_X|BPF_MOV, dst_reg=BPF_REG_2, src_reg=BPF_REG_10, off=0, imm=0}, {code=BPF_ALU64|BPF_K|BPF_ADD, dst_reg=BPF_REG_2, src_reg=BPF_REG_0, off=0, imm=0xfffffff8}, {code=BPF_LD|BPF_DW|BPF_IMM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=0, imm=0x4}, {code=BPF_LD|BPF_W|BPF_IMM, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}, {code=BPF_JMP|BPF_K|BPF_CALL, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0x3}, {code=BPF_ALU64|BPF_K|BPF_MOV, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}, {code=BPF_JMP|BPF_K|BPF_EXIT, dst_reg=BPF_REG_0, src_reg=BPF_REG_0, off=0, imm=0}]
+```
+
+指令格式如下图所示,BPF 当前拥有 102 个指令，主要包括三大类：ALU (64bit and 32bit)、内存操作和分支操作。其中指令的格式主要由下面这几部分组成：
+![image](bpf_map2.png)
+
+opcode的低3位表示指令类型
+`BPF_LDX`, `BPF_REG_10`等这些宏在kernel目录tools/include/uapi/linux/bpf.h中定义
+```
+#define         BPF_LDX         0x01
+#define         BPF_MEM         0x60
+#define         BPF_DW		0x18
+... ...
+
+```
+
+
+以第一条bpf指令为例子：
+{code=BPF_LDX|BPF_DW|BPF_MEM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=104, imm=0}
+
+正好对应llvm-objdump解析出来的第一条指令,为内存访问指令
+```
+0:       79 11 68 00 00 00 00 00 r1 = *(u64 *)(r1 + 0x68)
+BPF_LDX|BPF_MEM|BPF_DW=0x79
+```
+该条指令在kernel中的定义为
+```
+/* Memory load, dst_reg = *(uint *) (src_reg + off16) */
+
+#define BPF_LDX_MEM(SIZE, DST, SRC, OFF)                        \
+        ((struct bpf_insn) {                                    \
+                .code  = BPF_LDX | BPF_SIZE(SIZE) | BPF_MEM,    \
+                .dst_reg = DST,                                 \
+                .src_reg = SRC,                                 \
+                .off   = OFF,                                   \
+                .imm   = 0 })
+
+```
+
+ * MAP数据通信分析
+  当bpf系统第一个参数cmds=`BPF_MAP_CREATE`时，表示创建一个数据map，仔细分析下第二个参数`attr`，这个结构体的原型包含了map类型，key的大小，value大小等
+  ```
+union bpf_attr {
+struct {    /* Used by BPF_MAP_CREATE */
+        __u32         map_type;
+        __u32         key_size;    /* size of key in bytes */
+        __u32         value_size;  /* size of value in bytes */
+        __u32         max_entries; /* maximum number of entries
+                                        in a map */
+};
+
+ ```
+
+ 用strace抓取的log分析来看map的类型为`BPF_MAP_TYPE_HASH`,key的大小为8，value大小为16，访问map是`bpf_prog1`第5条字节码，其中的 imm立即数为4代表 map_fd，这是一条伪指令，这条指令是可重定位指令
+
+```
+bpf(BPF_MAP_CREATE, {map_type=BPF_MAP_TYPE_HASH, key_size=8, value_size=16, max_entries=1000000, map_flags=0, inner_map_fd=0, map_name="my_map", map_ifindex=0, btf_fd=0, btf_key_type_id=0, btf_value_type_id=0}, 112) = 4
+
+
+ 0000000000000020:  R_BPF_64_64  my_map
+{code=BPF_LD|BPF_DW|BPF_IMM, dst_reg=BPF_REG_1, src_reg=BPF_REG_1, off=0, imm=0x4}
+
+```
+
+bpf程序访问所有类型的map都可以使用bpf_map_lookup_elem() and bpf_map_update_elem() 函数，socket maps和一些其他额外的map当作特殊用途
+当bpf系统第一个参数cmds=`BPF_MAP_GET_NEXT_KEY` 或者BPF_MAP_LOOKUP_ELEM``时，表示遍历map，仔细分析下第二个参数`attr`，这个结构体的原型包含了map_fd,是bpf系统调用第一个参数cmd=`BPF_MAP_CREATE`返回值，key值，value值等
+```
+struct {    /* Used by BPF_MAP_*_ELEM and BPF_MAP_GET_NEXT_KEY
+                commands */
+        __u32         map_fd;
+        __aligned_u64 key;
+        union {
+        __aligned_u64 value;
+        __aligned_u64 next_key;
+        };
+        __u64         flags;
+};
+
+bpf(BPF_MAP_GET_NEXT_KEY, {map_fd=4, key=0x7ffffaf162b0, next_key=0x7ffffaf162b8}, 112) = 0
+bpf(BPF_MAP_LOOKUP_ELEM, {map_fd=4, key=0x7ffffaf162b8, value=0x7ffffaf162d0, flags=BPF_ANY}, 112) = 0
+```
+
+
+# bpftool介绍
+
+bpftool在内核的tools/bpf/bpftool/ 目录下，使用 make编译就可使用，查看当前运行的bpf程序，如下所示，可以看到当前运行的是 kprobe event 还有map id
+```
+wu@ubuntu:~/linux/samples/bpf$ sudo bpftool prog show
+[sudo] password for wu:
+... ...
+205: kprobe  tag a6cfc4a29f52a193  gpl
+        loaded_at 2021-01-19T11:51:26+0000  uid 0
+        xlated 72B  jited 62B  memlock 4096B  map_ids 72
+206: kprobe  tag d16c41919f3b767a  gpl
+        loaded_at 2021-01-19T11:51:26+0000  uid 0
+        xlated 192B  jited 119B  memlock 4096B  map_ids 72
+```
+查看map的id，可以看到当前使用的是hash map  
+```
+wu@ubuntu:~/linux$ sudo bpftool map show
+72: hash  name my_map  flags 0x0
+        key 8B  value 16B  max_entries 1000000  memlock 88788992B
+
+```
+查看map的所有的内容  查看对应key的value
+
+```
+
+wu@ubuntu:~/linux$ sudo bpftool map dump id 72 
+key: 80 35 43 e5 26 95 ff ff  value: b9 f3 f3 9e 87 6b 00 00  9a 9a c7 86 ff ff ff ff
+key: 80 9c 5f f6 25 95 ff ff  value: 98 85 ac c7 8c 6b 00 00  9a 9a c7 86 ff ff ff ff
+key: 00 4c 9b e4 25 95 ff ff  value: e6 8d c2 b7 7e 6b 00 00  9a 9a c7 86 ff ff ff ff
+key: 80 21 15 f8 26 95 ff ff  value: 60 df 01 fc 5c 6b 00 00  9a 9a c7 86 ff ff ff ff
+key: 80 f5 46 5f 26 95 ff ff  value: 5e e1 73 7b 8d 6b 00 00  9a 9a c7 86 ff ff ff ff
+... ...
+wu@ubuntu:~/linux$ sudo bpftool map lookup id 72 key 0x80 0x35 0x43 0xe5 0x26 0x95 0xff 0xff
+key: 80 35 43 e5 26 95 ff ff  value: b9 f3 f3 9e 87 6b 00 00  9a 9a c7 86 ff ff ff ff
+
+```
+
+
+
+参考文献：
+
+https://blogs.oracle.com/linux/notes-on-bpf-5
+https://www.kernel.org/doc/Documentation/networking/filter.txt

@@ -1,0 +1,342 @@
+---
+layout: post
+author: 'Wu Daemon'
+title: "libelf库使用"
+draft: true
+top: false
+license: "cc-by-nc-nd-4.0"
+permalink: /linux-elf/
+description: "本文详细介绍了libelf库使用通过"
+category:
+  - 调试和优化
+tags:
+  - Linux
+  - libelf
+---
+> By Wu Daemon of [TinyLab.org](http://tinylab.org)
+> 2020/2/20
+
+
+elf文件是linux系统下一类重要文件，可执行文件，共享库文件，coredump文件，目标文件都是elf格式的文件。我们可以使用readelf工具或者libelf库解析，同样可使用libelf开源库解析它们。
+
+# 下载编译 安装
+
+libelf库的编译和安装过程很简单，与众多开源库的安装方法一样，
+
+git clone  https://github.com/WolfgangSt/libelf.git
+
+切换目录，创建一个安装目录
+cd libelf && mkdir ../install
+配置，需要指令库安装的路径  
+./configure --prefix=/home/wu/work/elf/install
+编译 安装
+make && make install
+
+查看安装目录，包含include，lib,share目录，include是头文件，应用开发使用该库需要引用头文件，lib中包含so共享库和静态库，应用程序需要动态链接或者静态链接该库，share目录包含了该库的使用手册
+```
+wu@ubuntu:~/work/elf/install$ tree
+.
+├── include
+│   └── libelf
+│       ├── elf_repl.h
+│       ├── gelf.h
+│       ├── libelf.h
+│       ├── nlist.h
+│       └── sys_elf.h
+├── lib
+│   ├── libelf.a
+│   ├── libelf.so -> libelf.so.0.8.12
+│   ├── libelf.so.0 -> libelf.so.0.8.12
+│   ├── libelf.so.0.8.12
+│   └── pkgconfig
+│       └── libelf.pc
+└── share
+    └── locale
+        └── de
+            └── LC_MESSAGES
+                └── libelf.mo
+
+
+```
+
+#  使用 
+
+使用libelf库的API 编写解析ELF的程序,elf文件包含四种，我们解析目标文件，可执行文件包含了若干个section，打印出.text段得内容
+
+```
+wu@ubuntu:~/work/elf/demo$ ls
+Makefile  parse.c  parse_elf  parse_elf.c  parse_elf.o  test  test.c  tracex4_kern.o
+```
+
+```
+#include <stdio.h>
+#include <libelf.h>
+#include <gelf.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+
+
+static int get_sec(Elf *elf, int i, GElf_Ehdr *ehdr, char **shname,GElf_Shdr *shdr, Elf_Data **data)
+{
+    Elf_Scn *scn;
+
+    scn = elf_getscn(elf, i);  //从elf描述符获取按照节索引获取节接口
+        if (!scn)
+    return 1;
+
+    if (gelf_getshdr(scn, shdr) != shdr) // 通过节结构复制节表头
+        return 2;
+
+    *shname = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name); //  从指定的字符串表中通过偏移获取字符串
+    if (!*shname || !shdr->sh_size)
+                return 3;
+
+    *data = elf_getdata(scn, 0);  //从节中获取节数据（经过了字节序的转换）
+    if (!*data || elf_getdata(scn, *data) != NULL)
+            return 4;
+
+    return 0;
+}
+
+int parse_file(const char *path)
+{
+    Elf *elf;
+    int fd;
+    GElf_Ehdr ehdr;
+    GElf_Shdr shdr;
+    char *shname, *shname_prog;
+    Elf_Data *data;
+
+    if (elf_version(EV_CURRENT) == EV_NONE)
+        return 1;
+
+    fd = open(path, O_RDONLY, 0);  //打开elf文件
+    if (fd < 0)
+    {
+        printf("can not open\n");
+        return -1;
+    }
+    elf = elf_begin(fd, ELF_C_READ, NULL);//获取elf描述符,使用‘读取’的方式
+    if (!elf)
+    {
+        printf("can not get elf desc\n");
+        return -1;
+    }
+
+    if (gelf_getehdr(elf, &ehdr) != &ehdr)
+        return 1;
+    for (int i = 1; i < ehdr.e_shnum; i++) {
+         if (get_sec(elf, i, &ehdr, &shname, &shdr, &data))
+            continue;
+         printf("section %d:%s data %p size %zd link %d flags %d type %d\n",i, shname, data->d_buf, data->d_size,shdr.sh_link, (int) shdr.sh_flags,(int) shdr.sh_type);
+        if(strcmp(shname,".text")==0)
+        {
+            printf(".text data:\n");
+            unsigned char *p=data->d_buf;
+            for(int j=0;j<data->d_size;j++)
+            {
+                if(j%8==0)
+                {
+                    printf("\n");
+                }
+                printf("%4x",*p++);
+            }
+            printf("\n");
+        }
+
+    }
+
+}
+
+int main()
+{
+    parse_file("./parse_elf.o");
+    return 0;
+}
+
+
+```
+Makefile 内容如下 ，使用动态链接elf库，遵循一般的链接规则
+```
+BIN=parse_elf
+OBJS=parse_elf.o
+CC=gcc
+INCLUDE :=-I  /home/wu/work/elf/install/include/
+LIBS:= -L/home/wu/work/elf/install/lib/ -lelf
+$(BIN):$(OBJS)
+    $(CC) -g  $^ -o $@  $(LIBS)
+%.o:%.c
+    $(CC) -g -c $< -o $@ $(INCLUDE)
+
+PHONY:clean
+clean:
+    rm -f $(OBJS) $(BIN)
+
+```
+
+ 编译后，可以使用ldd 查看 可执行文件需要链接得动态库 ，其中包含 libelf.so共享库
+```
+wu@ubuntu:~/work/elf/demo$ ldd parse_elf
+        linux-vdso.so.1 =>  (0x00007ffd22546000)
+        libelf.so.0 => /home/wu/work/elf/install/lib/libelf.so.0 (0x00007f22eca8d000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f22ec6c3000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f22ecca3000)
+```
+
+
+执行程序后的信息如下,我们解析出了.text段的内容，还有其他段的基本信息 ，比如属性和大小等 
+```
+wu@ubuntu:~/work/elf/demo$ ./parse_elf
+wu@ubuntu:~/work/elf/demo$ ./parse_elf
+section 1:.text data 0x7f1dbc7f0040 size 94 link 0 flags 6 type 1
+.text data:
+
+  55  48  89  e5  48  83  ec  10
+  89  7d  fc  83  7d  fc   0  75
+   7  b8   0   0   0   0  eb  14
+  8b  45  fc  83  e8   1  89  c7
+  e8   0   0   0   0  89  c2  8b
+  45  fc   1  d0  c9  c3  55  48
+  89  e5  48  83  ec  10  bf   3
+   0   0   0  e8   0   0   0   0
+  89  45  fc  8b  45  fc  89  c6
+  bf   0   0   0   0  b8   0   0
+   0   0  e8   0   0   0   0  b8
+   0   0   0   0  c9  c3
+section 2:.rela.text data 0x7f1dbc7f0270 size 96 link 11 flags 64 type 4
+section 5:.rodata data 0x7f1dbc7f009e size 8 link 0 flags 2 type 1
+section 6:.comment data 0x7f1dbc7f00a6 size 54 link 0 flags 48 type 1
+section 8:.eh_frame data 0x7f1dbc7f00e0 size 88 link 0 flags 2 type 1
+section 9:.rela.eh_frame data 0x7f1dbc7f02d0 size 48 link 11 flags 64 type 4
+section 10:.shstrtab data 0x7f1dbc7f0300 size 97 link 0 flags 0 type 3
+section 11:.symtab data 0x7f1dbc7f0138 size 288 link 12 flags 0 type 2
+section 12:.strtab data 0x7f1dbc7f0258 size 24 link 0 flags 0 type 3
+
+
+```
+我们把解析的数据使用 echo 命令保存为二进制文件，可以使用hexdump 工具验证下数据的正确性 
+
+
+```
+wu@ubuntu:~/work/elf/demo$ echo 554889e54883ec10897dfc837dfc007507b800000000eb148b45fc83e80189c7e80000000089c28b45fc01d0c9c3554889e54883ec10bf03000000e8000000008945fc8b45fc89c6bf00000000b800000000e800000000b800000000c9c3| xxd -r -ps > test.bin
+wu@ubuntu:~/work/elf/demo$ hexdump test.
+hexdump: test.: No such file or directory
+wu@ubuntu:~/work/elf/demo$ hexdump test.bin
+0000000 4855 e589 8348 10ec 7d89 83fc fc7d 7500
+0000010 b807 0000 0000 14eb 458b 83fc 01e8 c789
+0000020 00e8 0000 8900 8bc2 fc45 d001 c3c9 4855
+0000030 e589 8348 10ec 03bf 0000 e800 0000 0000
+0000040 4589 8bfc fc45 c689 00bf 0000 b800 0000
+0000050 0000 00e8 0000 b800 0000 0000 c3c9
+000005e
+```
+
+然后使用objdump工具将二进制反汇编，得到了汇编指令,这些汇编指令就是对应得parse_elf.c的汇编码
+```
+wu@ubuntu:~/work/elf/demo$ objdump -b binary -m i386:x86-64  -D test.bin
+
+test.bin:     file format binary
+
+
+Disassembly of section .data:
+
+0000000000000000 <.data>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   48 83 ec 10             sub    $0x10,%rsp
+   8:   89 7d fc                mov    %edi,-0x4(%rbp)
+   b:   83 7d fc 00             cmpl   $0x0,-0x4(%rbp)
+   f:   75 07                   jne    0x18
+  11:   b8 00 00 00 00          mov    $0x0,%eax
+  16:   eb 14                   jmp    0x2c
+  18:   8b 45 fc                mov    -0x4(%rbp),%eax
+  1b:   83 e8 01                sub    $0x1,%eax
+  1e:   89 c7                   mov    %eax,%edi
+  20:   e8 00 00 00 00          callq  0x25
+  25:   89 c2                   mov    %eax,%edx
+  27:   8b 45 fc                mov    -0x4(%rbp),%eax
+  2a:   01 d0                   add    %edx,%eax
+  2c:   c9                      leaveq
+  2d:   c3                      retq
+  2e:   55                      push   %rbp
+  2f:   48 89 e5                mov    %rsp,%rbp
+  32:   48 83 ec 10             sub    $0x10,%rsp
+  36:   bf 03 00 00 00          mov    $0x3,%edi
+  3b:   e8 00 00 00 00          callq  0x40
+  40:   89 45 fc                mov    %eax,-0x4(%rbp)
+  43:   8b 45 fc                mov    -0x4(%rbp),%eax
+  46:   89 c6                   mov    %eax,%esi
+  48:   bf 00 00 00 00          mov    $0x0,%edi
+  4d:   b8 00 00 00 00          mov    $0x0,%eax
+  52:   e8 00 00 00 00          callq  0x57
+  57:   b8 00 00 00 00          mov    $0x0,%eax
+  5c:   c9                      leaveq
+  5d:   c3                      retq
+```
+
+
+
+使用readelf 看出各个段的信息,与解析的一致 
+```
+wu@ubuntu:~/work/elf/demo$ readelf -S parse_elf.o
+There are 13 section headers, starting at offset 0x950:
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       00000000000002c9  0000000000000000  AX       0     0     1
+  [ 2] .rela.text        RELA             0000000000000000  000006f0
+       00000000000001b0  0000000000000018   I      11     1     8
+  [ 3] .data             PROGBITS         0000000000000000  00000309
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 4] .bss              NOBITS           0000000000000000  00000309
+       0000000000000000  0000000000000000  WA       0     0     1
+  [ 5] .rodata           PROGBITS         0000000000000000  00000310
+       0000000000000067  0000000000000000   A       0     0     8
+  [ 6] .comment          PROGBITS         0000000000000000  00000377
+       0000000000000036  0000000000000001  MS       0     0     1
+  [ 7] .note.GNU-stack   PROGBITS         0000000000000000  000003ad
+       0000000000000000  0000000000000000           0     0     1
+  [ 8] .eh_frame         PROGBITS         0000000000000000  000003b0
+       0000000000000078  0000000000000000   A       0     0     8
+  [ 9] .rela.eh_frame    RELA             0000000000000000  000008a0
+       0000000000000048  0000000000000018   I      11     8     8
+  [10] .shstrtab         STRTAB           0000000000000000  000008e8
+       0000000000000061  0000000000000000           0     0     1
+  [11] .symtab           SYMTAB           0000000000000000  00000428
+       0000000000000228  0000000000000018          12    10     8
+  [12] .strtab           STRTAB           0000000000000000  00000650
+       0000000000000099  0000000000000000           0     0     1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), l (large)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
+```
+
+使用objdump查看.text这个段，这个打印出来的和libelf打印出来的一致
+```
+wu@ubuntu:~/work/elf/demo$ objdump --section=.text -s parse_elf.o
+
+parse_elf.o:     file format elf64-x86-64
+
+Contents of section .text:
+ 0000 554889e5 4883ec40 48897de8 8975e448  UH..H..@H.}..u.H
+ 0010 8955d848 894dd04c 8945c84c 894dc08b  .U.H.M.L.E.L.M..
+ 0020 45e44863 d0488b45 e84889d6 4889c7e8  E.Hc.H.E.H..H...
+ 0030 00000000 488945f8 48837df8 00750ab8  ....H.E.H.}..u..
+ 0040 01000000 e9bd0000 00488b55 c8488b45  .........H.U.H.E
+ 0050 f84889d6 4889c7e8 00000000 483b45c8  .H..H.......H;E.
+... ...
+```
+
+
+
+
+
+
+

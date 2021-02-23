@@ -2,7 +2,7 @@
 layout: post
 author: 'Jempty.liang'
 title: "一个休眠唤醒失败的案例分享"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /str-failure-fixup/
 description: "本文介绍了 Linux 系统一个休眠唤醒失败的案例。"

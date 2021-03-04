@@ -5,7 +5,7 @@
 <section>
 <h2>猜你喜欢：</h2>
 <ul>
-  <li><strong>我要投稿：</strong>发表原创技术文章，<a href="http://tinylab.org/post">收获稿费、挚友与行业影响力</a></li>
+  <li><strong>我要投稿：</strong>发表原创技术文章，<a href="http://tinylab.org/post">收获福利、挚友与行业影响力</a></li>
 {% if page.layout == 'weekly' %}
   <li><strong>泰晓资讯：</strong>汇总一周技术趣闻与文章，<a href="/news">查看「Linux 资讯」</a></li>
 {% endif %}

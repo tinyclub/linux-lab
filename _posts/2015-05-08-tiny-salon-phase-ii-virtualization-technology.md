@@ -196,9 +196,9 @@ categories:
  [45]: http://www.csdn.net/article/2014-12-15/2823129
  [46]: http://www.intel.com/content/dam/www/public/cn/zh/pdfs/teamsun-casestudy-cn.pdf
  [47]: http://my.oschina.net/u/1431433/blog/384964
- [48]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2tx5s3ij30p018gtbd.jpg
- [49]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1erk2u4tyttj318g0wwdow.jpg
- [50]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2u6k3bnj316616idn7.jpg
- [51]: http://ww1.sinaimg.cn/bmiddle/005wLCQdjw1erk2u0mzckj318g0ww11p.jpg
- [52]: http://ww4.sinaimg.cn/bmiddle/005wLCQdjw1erk2u2ztqsj318g0wwgqt.jpg
- [53]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1erk2tytnhwj318g0wwk0b.jpg
+ [48]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2tx5s3ij30p018gtbd.jpg
+ [49]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2u4tyttj318g0wwdow.jpg
+ [50]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2u6k3bnj316616idn7.jpg
+ [51]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2u1s61gj318g0wwwjy.jpg
+ [52]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2u2ztqsj318g0wwgqt.jpg
+ [53]: /wp-content/uploads/2015/06/salon/005wLCQdjw1erk2tytnhwj318g0wwk0b.jpg

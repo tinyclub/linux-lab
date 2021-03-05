@@ -27,7 +27,7 @@ categories:
 
 下面是这次活动的一些留影，更多活动以及报名方式请访问：[泰晓沙龙][2]
 
-![沙龙活动白板][3] ![品茶用到的闻香杯和斗笠杯][4] ![蜗居茶坊小巷][5] ![茶艺表演][6] ![品茶之余谈科技][7] ![活动结束留影][8]
+![沙龙活动白板][3] ![品茶用到的闻香杯和斗笠杯][4] ![蜗居茶坊小巷][5]  ![品茶之余谈科技][7] ![活动结束留影][8]
 
 
 
@@ -35,9 +35,8 @@ categories:
 
  [1]: http://tinylab.org
  [2]: /tinysalon/
- [3]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1eqdlacahmej30ww18g12q.jpg
- [4]: http://ww4.sinaimg.cn/bmiddle/005wLCQdjw1eqdlahwg24j30ww18gdsz.jpg
- [5]: http://ww3.sinaimg.cn/bmiddle/005wLCQdjw1eqdla1sp5ij30nv0hsgoh.jpg
- [6]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1eqdl9x46bwj30qo0zk78c.jpg
- [7]: http://ww3.sinaimg.cn/bmiddle/005wLCQdjw1eqdla02re0j30zk0qon2x.jpg
- [8]: http://ww2.sinaimg.cn/bmiddle/005wLCQdjw1eqdla7xy3mj30ww18gncr.jpg
+ [3]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5zaq5j30c80gjq42.jpg
+ [4]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5pj1jj30c80gjq4e.jpg
+ [5]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5s9rkj30c8094q4a.jpg
+ [7]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5kqt2j30c80960tx.jpg
+ [8]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks6pjszj30c80gjjtj.jpg

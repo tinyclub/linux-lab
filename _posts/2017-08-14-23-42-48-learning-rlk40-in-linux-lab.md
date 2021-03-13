@@ -3,6 +3,7 @@ layout: post
 draft: false
 author: 'Wu Zhangjin'
 title: "阅读《奔跑吧Linux内核》，当然用Linux Lab做实验"
+album: "Linux Lab"
 permalink: /learning-rlk4.0-in-linux-lab/
 description: "《奔跑吧 Linux 内核》是全球首本Linux 4.x内核分析书籍，本文介绍如何通过Linux Lab来做书中的实验。"
 category:

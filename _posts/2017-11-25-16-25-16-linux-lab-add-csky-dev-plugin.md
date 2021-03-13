@@ -4,6 +4,7 @@ author: 'Wu Zhangjin'
 title: "Linux Lab 新增中天微处理器 Linux 开发插件"
 tagline: "零距离接触国产处理器芯片 Linux 开发环境"
 group: original
+album: "Linux Lab"
 permalink: /linux-lab-add-csky-dev-plugin/
 description: "Linux Lab 开源项目新增国产中天微处理器 Linux 开发插件，助力国产处理器提升系统软件开发效率。"
 category:

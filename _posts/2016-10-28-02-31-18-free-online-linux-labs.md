@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "泰晓携手青云向高校开放在线实验环境"
 group: original
+album: "Linux Lab"
 permalink: /free-online-linux-labs/
 description: "为便利嵌入式 Linux 系统学习，泰晓科技不仅撰写了一系列原创技术文章和一些开源书籍，而且基于 Docker 开发了一系列辅助学习的易构实验环境，如今更是携手青云，让这些环境可以直接通过网络访问，大大降低了学习的门槛。"
 category:

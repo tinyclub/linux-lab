@@ -469,3 +469,17 @@ Peng Weilin:
   sponsor: wechat-pay
   sponsor-qrcode: true
   info: Linux爱好者
+
+Jia Xianhua:
+  name : 贾献华
+  nickname: iosdevlog
+  archive: true
+  article: true
+  site: iosdevlog.com
+  email : iosdevlog@iosdevlog.com
+  github : jiaxianhua
+  weibo : iOSDevLog
+  wechat : gnuhua
+  wechat-qrcode: true
+  avatar: wechat-qrcode
+  info: 移动开发，对嵌入式Linux感兴趣。

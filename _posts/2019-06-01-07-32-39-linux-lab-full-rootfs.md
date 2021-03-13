@@ -5,6 +5,7 @@ title: "Linux Lab 新增全功能 Rootfs 支持"
 draft: false
 group: 'original'
 license: "cc-by-nc-nd-4.0"
+album: "Linux Lab"
 permalink: /linux-lab-full-rootfs/
 description: "Linux Lab 虽然用 buildroot 预先构建了 rootfs，但是仅仅满足基本的内核启动、基础特性验证，无法满足较复杂的应用开发需求，所以本文介绍了如何为 Linux Lab 新增一个全功能的 Rootfs"
 category:

@@ -2,6 +2,7 @@
 title: 网络上的免费在线 Linux 实验系统
 author: Wu Zhangjin
 layout: post
+album: "Linux Lab"
 permalink: /external-free-online-linux-labs/
 tags:
   - Free

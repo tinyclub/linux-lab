@@ -1,4 +1,4 @@
-build
+build/
 output
 .*_config
 .orig
@@ -16,3 +16,6 @@ tglx-linux-history
 force-*
 .lock
 .tmp
+!tools/build/
+tmpfs/
+build.img

@@ -96,6 +96,7 @@
     - [5.5 同时准备 configs 文件](#55-同时准备-configs-文件)
     - [5.6 选择 kernel，rootfs 和 uboot 的版本](#56-选择-kernel，rootfs-和-uboot-的版本)
     - [5.7 配置，编译和启动](#57-配置，编译和启动)
+       - [5.7.1 编译加速并减少磁盘损耗](#571-编译加速并减少磁盘损耗)
     - [5.8 保存生成的镜像文件和配置文件](#58-保存生成的镜像文件和配置文件)
     - [5.9 上传所有工作](#59-上传所有工作)
 - [6. 常见问题](#6-常见问题)
@@ -1895,6 +1896,36 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 同样的方法适用于 rootfs，uboot，甚至 qemu。
 
+### 5.7.1 编译加速并减少磁盘损耗
+
+**注意**：该动作有丢失数据风险，请确保数据安全！
+
+该功能旨在创建一个驻留在内存的临时目录，并挂载为 `/labs/linux-lab/build`，用于存储编译过程中的数据，**如果不主动保存，关机以后，所有编译过程中的数据会全部丢失**。
+
+启动临时缓存（创建一个驻留在内存的文件系统作为 build 目录）：
+
+    $ sudo tools/build/cache
+
+查看临时缓存的使用状态：
+
+    $ sudo tools/build/free
+
+用临时缓存做编译加速：
+
+    $ time sudo make kernel
+
+备份临时缓存到永久的文件（如果觉得 build 目录的数据很重要）：
+
+    $ sudo tools/build/backup
+
+停止使用临时缓存（恢复默认的、存放在磁盘上的 build 目录）：
+
+    $ sudo tools/build/uncache
+
+恢复使用上次备份的缓存作为 build 目录：
+
+    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
+
 ## 5.8 保存生成的镜像文件和配置文件
 
     $ make root-save
@@ -1999,7 +2030,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
     DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
 
 
-注意：以上三种方式不要同时配置，请选择适合 Docker 版本的方式选一种即可，新的 Linux 发行版一般都用 `/etc/docker/daemon.json`。
+**注意**：以上三种方式不要同时配置，请选择适合 Docker 版本的方式选一种即可，新的 Linux 发行版一般都用 `/etc/docker/daemon.json`。
 
 配置完需要重启 docker 服务才能生效：
 

@@ -89,6 +89,7 @@
     - [5.5 At the same time, prepare the configs](#55-at-the-same-time,-prepare-the-configs)
     - [5.6 Choose the versions of kernel, rootfs and uboot](#56-choose-the-versions-of-kernel,-rootfs-and-uboot)
     - [5.7 Configure, build and boot them](#57-configure,-build-and-boot-them)
+       - [5.7.1 Speed up compiling and save disk life](#571-speed-up-compiling-and-save-disk-life)
     - [5.8 Save the images and configs](#58-save-the-images-and-configs)
     - [5.9 Upload everything](#59-upload-everything)
 - [6. FAQs](#6-faqs)
@@ -1812,6 +1813,36 @@ Use kernel as an example:
     $ make boot
 
 The same to rootfs, uboot and even qemu.
+
+### 5.7.1 Speed up compiling and save disk life
+
+**Notes**：This operation may lose data, please take care!
+
+This feature aims to create a ram based temporary filesystem as the 'build' directory, to store the building data, **If not backup them, they will be lost after shutting down the machine**.
+
+Create temporary building cache:
+
+    $ sudo tools/build/cache
+
+Check the status of building cache:
+
+    $ sudo tools/build/free
+
+Use the cache for building speedup:
+
+    $ time sudo make kernel
+
+Backup the cache to a persistent file (If the building file are important to you):
+
+    $ sudo tools/build/backup
+
+Stop the building cache, revert back to use the build directory on the disk:
+
+    $ sudo tools/build/uncache
+
+Use the backup as the build directory:
+
+    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
 
 ## 5.8 Save the images and configs
 

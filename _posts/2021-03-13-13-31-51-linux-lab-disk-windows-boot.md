@@ -42,9 +42,11 @@ tags:
 > 目前 Linux Lab Disk 主要以 U 盘的形态出现，并打上了 Linux Lab 的 Logo，可识别度很高，未来不排除有其他形态的方式出现。
 >
 
+Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等）上以后，可以在关机状态下上电直接启动，也可以在 Windows、Linux 和 MacOS 系统中直接启动当双系统使用，这两种方式都免安装，启动就能用。
+
 下面简单介绍如何在 Windows 系统下利用 VirtualBox 来直接启动 Linux Lab Disk，本文会介绍两种使用方式。
 
-更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)，里面登记了 PC，MacBook 上 Linux Lab Disk 启动的方法。
+更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)，里面登记了 PC，MacBook 上启动 Linux Lab Disk 的方法。
 
 ## 创建映射到 Linux Lab Disk 的 Virtualbox 虚拟硬盘
 
@@ -176,6 +178,19 @@ Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接�
 > 大家可以进某宝检索 “Linux Lab 真盘”，有多个不同外观、速度和容量的款色可以选择。
 >
 > 也可以直接进 [泰晓科技自营店](https://shop155917374.taobao.com/) 直接选购。
+
+## 小结
+
+体验完以后最大的感觉就是便利性，有了一块 Linux Lab 真盘，随时随地随系统都能使用：
+
+* 在主机关机状态下，插入 Linux Lab Disk，按下 F12 （macBook 按 Option）上电选择新识别的盘，上电开机就能用
+* 在三大主流操作系统中（Windows、Linux 和 macOS），均可通过 Virtualbox 等虚拟机直接启动 Linux Lab Disk，无需安装新系统就能直接用
+
+不仅无需安装 Linux Lab，连 Linux 系统也不用安装了，因为 Linux Lab Disk 自带了一套最新的 Ubuntu 20.04.2，所以可以直接当 Linux 开发系统使用。
+
+如果实在想画蛇添足，再安装一个系统，Linux Lab Disk 还可以当安装盘使用，当然，也可以当急救盘。另外，因为有预留了 10G 的 NTFS，还可以用来作数据备份、甚至用来当车载音乐盘。
+
+由于 Linux Lab 的主系统目前只支持 X86_64，所以 macBook M1 暂时并不支持。
 
 ## 参考资料
 

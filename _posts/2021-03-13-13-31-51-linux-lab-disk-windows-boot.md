@@ -134,7 +134,7 @@ VBoxManage internalcommands createrawvmdk -filename F:\VBOX\LinuxLab.vmdk -rawdi
 
 首先在下面的链接下载最新的版本并安装：
 
-* [Releases · DavidBrenner3/VMUB](/wp-content/uploads/2021/03/13/https://github.com/DavidBrenner3/VMUB/releases)
+* [Releases · DavidBrenner3/VMUB](https://github.com/DavidBrenner3/VMUB/releases)
 
 ### 新建启动项
 

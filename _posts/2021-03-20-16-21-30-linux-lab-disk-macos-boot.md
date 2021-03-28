@@ -76,19 +76,21 @@ VBoxManage: error: The raw disk vmdk file was not created
 ### 通过 VBoxManage 创建虚拟硬盘
 
 ```
-$ VBoxManage internalcommands createrawvmdk -filename  "/tmp/LinuxLabDisk.vmdk" -rawdisk /dev/disk2
-RAW host disk access VMDK file /tmp/LinuxLabDisk.vmdk created successfully.
+$ VBoxManage internalcommands createrawvmdk -filename  "/tmp/LinuxLab.vmdk" -rawdisk /dev/disk2
+RAW host disk access VMDK file /tmp/LinuxLab.vmdk created successfully.
 ```
 
-**注意**：具体使用时，建议使用一个永久的地址来存放 LinuxLabDisk.vmdk 文件，因为上述 `/tmp` 目录下的内容在关机以后会丢失。
+**注意**：具体使用时，建议使用一个永久的地址来存放 LinuxLab.vmdk 文件，因为上述 `/tmp` 目录下的内容在关机以后会丢失。
 
 ## 创建 Virtualbox 虚拟机用于启动 Linux Lab Disk 对应的虚拟硬盘
 
-类似于 Windows，首先启动 Virtualbox，并创建一个新的虚拟机：
+类似于 Windows，首先启动 Virtualbox，并创建一个新的虚拟机，这里直接复用 Windows 下的截图：
 
-<!-- TODO：补充一张截图 -->
+![vbox](/wp-content/uploads/2021/03/13/vbox.png)
 
-然后，虚拟硬盘选择之前生成的 LinuxLab.vmdk 即可。
+然后，虚拟硬盘选择之前生成的 LinuxLab.vmdk 即可，类似这样：
+
+![vdisk](/wp-content/uploads/2021/03/13/vdisk.png)
 
 ## 在 Virtualbox 中启动 Linux Lab Disk
 
@@ -100,13 +102,11 @@ RAW host disk access VMDK file /tmp/LinuxLabDisk.vmdk created successfully.
 
 Linux Lab Disk 采用 EFI 引导协议，所以在 Virtualbox 系统配置的 “扩展部分”，请在 “启用 EFI （只针对某些操作系统）” 前打钩：
 
-<!-- TODO：补充一张截图 -->
+![EFI](/wp-content/uploads/2021/03/20/efi.jpg)
 
 ### 加大内存到 4G 左右
 
 同样是 Virtualbox 系统配置，请把 “内存大小” 调整为 4096M 或以上：
-
-<!-- TODO：补充一张截图，得空可以验证下最低需要的内存大小，比如说 2G 是否够用？ -->
 
 否则屏幕会一直黑屏，无法正常启动：
 
@@ -114,19 +114,23 @@ Linux Lab Disk 采用 EFI 引导协议，所以在 Virtualbox 系统配置的 �
 
 而 “网络” 的连接方式请调整为 “桥接网卡”：
 
-<!-- TODO：补充一张截图 -->
+![Bridge](/wp-content/uploads/2021/03/20/bridge.jpg)
 
 否则会出现如下错误：
 
-<!-- TODO：补充一张错误截图 -->
+![NAT Issue](/wp-content/uploads/2021/03/20/nat-issue.jpg)
 
 做完上述调整后，就能正常使用了。
 
 ## 直接使用 Linux Lab 真盘中的 Linux Lab
 
-Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接点击虚拟机内桌面的 Linux Lab 图标即可启动，启动效果如下：
+Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接点击虚拟机内桌面的 Linux Lab 图标即可启动：
 
-<!-- TODO：补充相关截图 -->
+![Boot Linux Lab](/wp-content/uploads/2021/03/20/linux-lab-boot.jpg)
+
+启动效果如下：
+
+![Booted Linux Lab](/wp-content/uploads/2021/03/20/linux-lab-booted.jpg)
 
 至此，在 macOS 下终于成功启动 Linux Lab 真盘里面的 Linux Lab 系统了。
 

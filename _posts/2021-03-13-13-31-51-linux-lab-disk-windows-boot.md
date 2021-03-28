@@ -15,6 +15,8 @@ tags:
   - 启动盘
   - U盘
   - Linux Lab to go
+  - Windows
+  - Virtualbox
 ---
 
 > By 贾献华 of [TinyLab.org][1]

@@ -2,7 +2,7 @@
 layout: post
 author: 'Jia Xianhua'
 title: "Linux Lab 真盘开发日志（1）：在 Windows 下直接启动 Linux Lab Disk，当双系统使用"
-draft: true
+draft: false
 tagline: "在 Windows 系统中通过 VirtualBox 直接启动 Linux Lab Disk 中的 Linux Lab"
 album: "Linux Lab"
 license: "cc-by-nc-nd-4.0"

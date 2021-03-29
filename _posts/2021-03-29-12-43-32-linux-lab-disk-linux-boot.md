@@ -140,17 +140,21 @@ $ sudo kvm -drive file=/dev/sdc,format=raw,index=0,media=disk -m 4G \
     -cpu host -smp 4
 ```
 
+启动过程如下：
+
+![Linux Lab Disk boots on qemu](/wp-content/uploads/2021/03/29/linux-lab-disk-boot.png)
+
 更多详细用法这里不做展开。
 
 ## 直接使用 Linux Lab 真盘中的 Linux Lab
 
 Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接点击虚拟机内桌面的 Linux Lab 图标即可启动：
 
-![Boot Linux Lab](/wp-content/uploads/2021/03/20/linux-lab-boot.jpg)
+![Linux Lab boots on qemu](/wp-content/uploads/2021/03/29/linux-lab-disk-booted.png)
 
 启动效果如下：
 
-![Booted Linux Lab](/wp-content/uploads/2021/03/20/linux-lab-booted.jpg)
+![Linux Lab booted on qemu](/wp-content/uploads/2021/03/29/linux-lab-booted.png)
 
 至此，在 macOS 下终于成功启动 Linux Lab 真盘里面的 Linux Lab 系统了。
 

@@ -50,6 +50,12 @@ Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等�
 
 更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)，里面登记了 PC，MacBook 上启动 Linux Lab Disk 的方法。
 
+## 安装 Virtualbox
+
+Virtualbox 支持所有主流的桌面操作系统，请先按需下载并安装 Windows 上的版本，下载地址如下：
+
+* [Virtualbox 下载](https://www.virtualbox.org/wiki/Downloads)
+
 ## 创建映射到 Linux Lab Disk 的 Virtualbox 虚拟硬盘
 
 ### 查看 Linux Lab Disk 的磁盘编号

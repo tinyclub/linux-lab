@@ -19,7 +19,7 @@ tags:
 
 ## 项目简介
 
-2020 年，中科院软件所与华为 openEuler 项目共同举办了 [“开源软件供应链点亮计划——暑期2020”](https://isrc.iscas.ac.cn/summer2020/) 项目。
+2020 年，中科院软件所与华为 openEuler 团队共同举办了 [“开源软件供应链点亮计划——暑期2020”](https://isrc.iscas.ac.cn/summer2020/) 活动。
 
 该项目与 GSoC 形式类似：
 

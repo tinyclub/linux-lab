@@ -132,6 +132,8 @@
        - [6.4.7 not in supported list](#647-not-in-supported-list)
        - [6.4.8 is not a valid rootfs directory](#648-is-not-a-valid-rootfs-directory)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
+    - [Buy Linux Lab related products](#buy-linux-lab-related-products)
+    - [Contact us and Sponsor via wechat](#contact-us-and-sponsor-via-wechat)
 
 <!-- toc end -->
 
@@ -235,6 +237,12 @@ rootfs, test scripts have been prepared, at that time, all of them were simply p
 They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
 
 # 2. Linux Lab Installation
+
+Linux Lab uses Docker, if have already installed Docker and configured the best mirror site of docker images, it is very easy to install Linux Lab.
+
+If really a Linux newbie or simply don't want to spend time on boring installation, buy the instant Linux Lab Disk:
+
+[![Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 
 ## 2.1 Hardware and Software Requirement
 
@@ -607,10 +615,9 @@ Only list real boards:
 
 Because real hardware boards differs from each other, so, board specific document are recommended, for example: `boards/arm/ebf-imx6ull/README.md`.
 
-All supported real hardware boards will be put in the following shop, after bought them, please contact with wechat: `tinylab` and join in the development group.
+All supported real hardware boards will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
 
-* [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/)
-
+[![Linux Lab Board - IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
 #### 3.1.2.2 Virtual board
 
@@ -2326,6 +2333,10 @@ If using external filesystem, please make sure the filesystem architecture follo
 
 Our contact wechat is **tinylab**, welcome to join our user & developer discussion group.
 
-**Contact us and Sponsor via wechat:**
+## Buy Linux Lab related products
+
+Our community will put Linux Lab Disk, Linux Lab Boards in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com), welcome to buy them if required.
+
+## Contact us and Sponsor via wechat
 
 ![contact-sponsor](doc/images/contact-sponsor.png)

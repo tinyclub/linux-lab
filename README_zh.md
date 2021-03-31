@@ -139,6 +139,8 @@
        - [6.4.7 提示指定的版本或者配置不存在](#647-提示指定的版本或者配置不存在)
        - [6.4.8 is not a valid rootfs directory](#648-is-not-a-valid-rootfs-directory)
 - [7. 联系并赞助我们](#7-联系并赞助我们)
+    - [选购商品支持](#选购商品支持)
+    - [扫码提供赞助](#扫码提供赞助)
 
 <!-- toc end -->
 
@@ -202,6 +204,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
       * Linux Lab 简介
       * 龙芯 Linux 内核开发
   * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
+      * 提供了上百个实验案例，全部通过 Linux Lab 验证
 
 ## 1.4 项目功能
 
@@ -334,6 +337,16 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 修复 aarch64/virt 开发板 Uboot 引导问题
 
 # 2. Linux Lab 安装
+
+Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜像的用户来说，安装 Linux Lab 极其容易，通常三条命令即可，而各大主流桌面系统对 Docker 的支持也很成熟，安装过程很方便。
+
+为了避免重复踩坑，建议先简单浏览以下安装过程，再来实际操作，不要上来就敲命令。
+
+下述安装过程比较详尽，兼顾了各大桌面系统，实际上针对某个系统的用法非常简单。
+
+如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [社区自营店](https://shop155917374.taobao.com) 选购一枚即插即用的 Linux Lab Disk，也可以在淘宝手机 APP 内搜索 “Linux Lab真盘” 后购买。
+
+[![Linux Lab 真盘 - Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 
 ## 2.1 软硬件要求
 
@@ -705,9 +718,11 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 由于不同的真实硬件开发板差异较大，所以在板级目录有提供专门的开发文档，例如：`boards/arm/ebf-imx6ull/README.md`。
 
-所有适配过的开发板会统一放置在如下网店供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的 Linux Lab 开发板群组。
+所有适配过的开发板会统一放置在 [社区自营店](https://shop155917374.taobao.com/) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的 Linux Lab 开发板群组。
 
-* [泰晓科技自营店](https://shop155917374.taobao.com/)
+也可以直接在淘宝手机 APP 内搜索 “Linux Lab真板” 后购买。
+
+[![Linux Lab 真板 - 野火 IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
 #### 3.1.2.2 虚拟开发板
 
@@ -2417,6 +2432,10 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 我们的联系微信是 **tinylab**，欢迎加入 Linux Lab 的用户和开发人员讨论组。
 
-**通过微信扫描下述二维码联系我们或提供赞助：**
+## 选购商品支持
+
+社区会把即插即用 Linux Lab Disk、适配过的开发板等上架到 [社区自营店](https://shop155917374.taobao.com)，欢迎大家选购，也可以在淘宝手机 APP 内搜索 “泰晓科技” 找到我们。
+
+## 扫码提供赞助
 
 ![Linux Lab 需要更多的用户或者赞助~ 加入我们吧！](doc/images/contact-sponsor.png)

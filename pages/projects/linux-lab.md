@@ -23,7 +23,14 @@ tags:
 
 该项目致力于快速构建一个基于 Qemu 的 Linux 内核开发环境。
 
-  * 使用文档：[README.md][2]
+  * 使用文档：[README_zh.md][2]
+
+  * 视频教程
+      * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
+          * Linux Lab 简介
+          * 龙芯 Linux 内核开发
+      * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
+          * 该课程全程采用 Linux Lab 开展实验，提供了上百个实验案例
 
   * 在线演示
       * 命令行
@@ -54,7 +61,7 @@ tags:
       * 基于 Docker，一键安装，几分钟内就可构建，节约生命，生命，生命。
       * 直接通过 Web 访问，非常便捷，便捷，便捷。
       * 已内置支持 7 大架构：ARM, MIPS, PowerPC, X86, Risc-V, Loongson, Csky。
-      * 已内置支持 15 款开发板：i386+X86_64/PC, PowerPC/G3beige, MIPS/Malta, ARM/versatilepb, ARM/vexpress-a9, ARM64/Virt, ARM64/Raspi3, Riscv32+64/Virt, Loongson/{ls1b, ls232, ls2k, ls3a7a}, Csky/ck810 全部升级到了最新的 v5.1（其中 Riscv32/Virt 仅支持 V5.0）。
+      * 已内置支持 18 款开发板：i386+X86_64/PC, PowerPC/G3beige, MIPS/Malta, ARM/versatilepb, ARM/vexpress-a9, ARM/mcimx6ul-evk, ARM/ebf-imx6ull, ARM64/Virt, ARM64/Raspi3, Riscv32+64/Virt, Loongson/{ls1b, ls232, ls2k, ls3a7a}, Csky/ck810 全部升级到了最新的 v5.1（其中 Riscv32/Virt 仅支持 V5.0）。
       * 已内置支持从 Ramfs, Harddisk, NFS rootfs 启动。
       * 一键即可启动，支持 串口 和 图形 启动。
       * 已内建网络支持，可以直接 ping 到外网。
@@ -64,62 +71,54 @@ tags:
       * 支持在线调试和自动化测试框架。
       * 正在添加 树莓派raspi3 和 risc-v 支持。
 
-  * 插件
-      * [Loongson](https://gitee.com/loongsonlab/loongson)：国产龙芯处理器开发插件，已全面支持三大系列
-      * [CSKY](https://gitee.com/tinylab/csky)：中天微国产处理器 [C-SKY Linux](https://c-sky.github.io) 开发插件
+## Linux Lab 真盘
 
-## 相关文章
+  Linux Lab v0.7 版支持 “Linux Lab 真盘”，实现 Linux Lab 的即插即用，完全免安装，进一步提升 Linux Lab 使用体验，快速高效地开展 Linux 相关实验与开发。
 
-  * [利用 Linux Lab 完成嵌入式系统开发全过程][7]
-  * [基于 Docker/Qemu 快速构建 Linux 内核实验环境][6]
-  * [五分钟内搭建 Linux 0.11 的实验环境][4]
-  * [基于 Docker 快速构建 Linux 0.11 实验环境][5]
+![Linux Lab 真盘](/wp-content/uploads/2021/03/linux-lab-disk.png)
+
+  使用文档：
+
+  * [Linux Lab 真盘开发日志（1）：在 Windows 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-windows-boot)
+  * [Linux Lab 真盘开发日志（2）：在 macOS 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-macos-boot)
+  * [Linux Lab 真盘开发日志（3）：在 Linux 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-linux-boot)
+
+  购买地址：
+
+  * [在某宝搜索 “Linux Lab 真板” 即可选购](https://shop155917374.taobao.com/)
+
+## Linux Lab 真板
+
+  Linux Lab v0.6 版支持 “Linux Lab 真板”，实现了对真实嵌入式开发板的完美支持，从此，不仅可以使用 Linux Lab 学习 Linux 内核，还可以用它来做 Linux 驱动开发。
+
+![Linux Lab 真板](/wp-content/uploads/2021/01/linux-lab/ebf-imx6ull.png)
+
+  使用文档：
+
+  * [Linux Lab 真板开发日志（1）：50 天开发纪要与上手初体验](/linux-lab-imx6ull-part1)
+  * [Linux Lab 真板开发日志（2）：macOS 和 Windows 环境之无串口开发](/linux-lab-imx6ull-part2)
+  * [Linux Lab 真板开发日志（3）：macOS 环境之 SD 卡、无线网卡、虚拟串口](/linux-lab-imx6ull-part3)
+  * [Linux Lab 真板开发日志（4）：上手全平台 GUI 库 GuiLite](/linux-lab-imx6ull-part4)
+
+  购买地址：
+
+  * [在某宝搜索 “Linux Lab 真板” 即可选购](https://shop155917374.taobao.com/)
+
+## 更多用法
+
+* [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
+* [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
+* [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+* Linux Lab 视频公开课
+    * [CCTALK](https://www.cctalk.com/m/group/88948325)
+    * [B 站](https://space.bilibili.com/687228362/channel/detail?cid=152574)
+    * [知乎](https://www.zhihu.com/people/wuzhangjin)
+* 采用 Linux Lab 作为实验环境的视频课程
+    * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
 
 ## 五分钟教程
 
-### 准备
-
-以 Ubuntu 和 Qemu 为例。其他 Linux, Mac OSX 和 Windows 10 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。老版本的 Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。
-
-安装完 docker 后如果想免 `sudo` 使用 linux lab，请务必把用户加入到 docker 用户组并重启系统。
-
-    $ sudo usermod -aG docker $USER
-
-由于 docker 镜像文件比较大，有 1G 左右，下载时请耐心等待。另外，为了提高下载速度，建议通过配置 `registry-mirror` 更换镜像库为本地区的（以 ustc 为例），更换完记得重启 docker 服务。
-
-  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
-
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过配置 `bip` 更新 docker 网络环境，并重启 docker 服务。
-
-    $ cat /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
-
-    $ cat /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
-
-如果使用 Docker Toolbox，由于安装的默认 `default` 系统未提供桌面，所以需要先获取该系统的外网地址，即 eth1 网口的 IP 地址，然后在外部系统访问。
-
-    $ ifconfig eth1 | grep 'inet addr' | tr -s ' ' | tr ':' ' ' | cut -d' ' -f4
-    192.168.99.100
-
-如果是自己通过 Virtualbox 安装的 Linux 系统，即使有桌面，也想在外部系统访问时，则可以通过设置 'Network -> Adapter2 -> Host-only Adapter' 来添加一个 eth1 网口设备。
-
-请务必注意，通过 Docker Toolbox 安装的 `default` 系统中默认的 `/root` 目录仅仅挂载在内存中，关闭系统后数据会丢失，请千万不要用它来保存实验数据。可以使用另外的目录来存放，比如 `/mnt/sda1`，它是在 Virtualbox 上外挂的一个虚拟磁盘镜像文件，默认有 17.9 G，足够存放常见的实验环境。
-
-### 工作目录
-
-再次提醒，在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
-
-    $ cd ~/Documents
-
-但是如果使用的是 Docker Toolbox 安装的 `default` 系统，该系统默认的工作目录为 `/root`，它仅仅挂载在内存中，因此在关闭系统后所有数据会丢失，所以需要换一处上面提到的 `/mnt/sda1`，它是外挂的一个磁盘镜像，关闭系统后数据会持续保存。
-
-    $ cd /mnt/sda1
+以 Ubuntu 为例，请先参考其他资料安装好 Docker。
 
 ### 下载
 
@@ -132,7 +131,7 @@ tags:
 
 ### 快速尝鲜
 
-执行 `tools/docker/vnc` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
+执行 `tools/docker/webvnc` 后会打开一个 VNC 网页，根据 console 提示输入密码登陆即可，之后打开桌面的 `Linux Lab` 控制台并执行：
 
     $ make boot
 
@@ -148,25 +147,17 @@ tags:
 默认会启动一个 `versatilepb` 的 ARM 板子，要指定一块开发板，可以用：
 
     $ make list                   # 查看支持的列表
-    $ make BOARD=malta             # 这里选择一块 MIPS 板子：malta
+    $ make BOARD=malta            # 这里选择一块 MIPS 板子：malta
     $ make boot
-
-### 下载更多源码
-
-    $ make core-source -j3             # 同时下载 linux-stable, qemu 和 buildroot
 
 ### 配置
 
-    $ make root-defconfig         # 配置根文件系统
     $ make kernel-checkout        # 检出某个特定的分支（请确保做该操作前本地改动有备份）
     $ make kernel-defconfig       # 配置内核
-
-    $ make root-menuconfig         # 手动配置根文件系统
-    $ make kernel-menuconfig       # 手动配置内核
+    $ make kernel-menuconfig      # 手动配置内核
 
 ### 编译
 
-    $ make root         # 编译根文件系统，稍微有点慢，需要下载带 sysroot 的编译器
     $ make kernel       # 编译内核，采用 Ubuntu 和 emdebian.org 提供的交叉编译器
 
 ### 保存所有改动
@@ -174,18 +165,13 @@ tags:
     $ make save         # 保存新的配置和新产生的镜像
 
     $ make kconfig-save # 保存到 boards/BOARD/
-    $ make rconfig-save
 
-    $ make root-save    # 保存到 prebuilt/
     $ make kernel-save
 
-### 启动新的根文件系统和内核
+### 启动新的内核
 
-需要打开 `boards/BOARD/Makefile` 屏蔽已经编译的 `KIMAG` 和 `ROOTFS`，此时会启动 `output/` 目录下刚编译的 rootfs 和内核：
+只要有新编译的内核，就会自动启动：
 
-    $ vim boards/versatilepb/Makefile
-    #KIMAGE=$(PREBUILT_KERNEL)/$(XARCH)/$(BOARD)/$(LINUX)/zImage
-    #ROOTFS=$(PREBUILT_ROOTFS)/$(XARCH)/$(CPU)/rootfs.cpio.gz
     $ make boot
 
 ### 启动串口
@@ -231,7 +217,7 @@ tags:
 
 <iframe src="http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8/?f=1" width="100%" marginheight="0" marginwidth="0" frameborder="0" scrolling="no" border="0" allowfullscreen></iframe>
 
- [2]: https://gitee.com/tinylab/linux-lab/blob/master/README.md
+ [2]: https://gitee.com/tinylab/linux-lab/blob/master/README_zh.md
  [3]: https://github.com/tinyclub/linux-lab
 [10]: https://gitee.com/tinylab/linux-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/

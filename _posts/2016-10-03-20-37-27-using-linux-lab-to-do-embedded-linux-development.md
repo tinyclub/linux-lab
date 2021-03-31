@@ -21,6 +21,8 @@ tags:
 > By Falcon of [TinyLab.org](http://tinylab.org)
 > 2016-10-03 20:37:27
 
+**注意：该文档已经过期，请直接参考 Linux Lab 提供的[中文用户手册](https://gitee.com/tinylab/linux-lab/blob/master/README_zh.md)**
+
 ## 简介
 
 早在 2013 年，本站发表过一篇文章：[利用 qemu 模拟嵌入式系统制作全过程][1]，该文详细介绍了如何利用 Qemu 来搭建一个基于 ARM 的嵌入式 Linux 系统，内容涵盖：
@@ -52,12 +54,6 @@ tags:
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过配置 `bip` 更新 docker 网络环境，并重启 docker 服务。
-
-    $ cat /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
 请务必注意，通过 Docker Toolbox 安装的 `default` 系统中默认的 `/root` 目录仅仅挂载在内存中，关闭系统后数据会丢失，请千万不要用它来保存实验数据。可以使用另外的目录来存放，比如 `/mnt/sda1`，它是在 Virtualbox 上外挂的一个虚拟磁盘镜像文件，默认有 17.9 G，足够存放常见的实验环境。
 
 在下载实验源码之前，先找一处工作目录。在 Linux 或者 Mac 系统，可以随便在 `~/Downloads` 或者 `~/Documents` 下找一处工作目录，然后进入，比如：
@@ -83,7 +79,7 @@ tags:
 
 上述命令启动容器并运行浏览器，浏览器打开后可点击页面右上角的 Connect 即可进入开发环境，退出浏览器后可用如下命令再次登录：
 
-    $ tools/docker/vnc
+    $ tools/docker/webvnc
 
 关机后可以通如下命令快速恢复：
 

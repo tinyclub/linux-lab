@@ -67,12 +67,6 @@ Docker 镜像加速部分请参考：
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
 ### Linux 和 Mac 系统
 
 在 Linux 和 Mac 系统上，安装完 Docker CE 后就会自动启动 docker 服务。
@@ -122,20 +116,6 @@ Docker 镜像加速部分请参考：
 
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
-
-### 避免网络地址冲突
-
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果上述改法不生效，请在类似 `/lib/systemd/system/docker.service` 这样的文件中修改后再重启 docker 服务。
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
 
 ## 实验目录
 

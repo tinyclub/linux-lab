@@ -13,6 +13,8 @@ tags:
   - LEP
 ---
 
+**注意：该项目已经过期，不再提供维护与支持**
+
 ## 简介
 
 LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
@@ -41,18 +43,6 @@ LEP 是一个开源工具箱，可用于 Linux/Android 可视化分析。
 
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
-
-如果 Docker 默认网络跟局域网地址冲突，可进行修改：
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
-如果上述修改不生效，可以做如下修改：
-
-    $ grep dockerd /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=https://docker.mirrors.ustc.edu.cn
-    $ service docker restart
 
 对于 12.04，更新内核后才能使用 Docker。
 

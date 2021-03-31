@@ -61,12 +61,6 @@ Markdown 本质上彻底解决了内容和样式的纠缠，让我们在撰写�
   * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
   * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
 
-如果 docker 默认的网络环境跟本地的局域网环境地址冲突，请通过如下方式更新 docker 网络环境，并重启 docker 服务。
-
-    $ grep bip /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-    $ service docker restart
-
 ### 下载
 
     $ git clone https://gitee.com/tinylab/cloud-lab.git

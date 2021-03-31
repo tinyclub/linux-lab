@@ -6,7 +6,7 @@
 {% endif %}
 
 {% if true %}
-<a title="某宝检索 “Linux Lab 真盘”，免安装使用 Linux Lab，即插即用，高效率做 Linux 实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/03/linux-lab-disk.png">
+<a title="某宝检索 “Linux Lab 真盘”，免安装使用 Linux Lab，即插即用，高效率做 Linux 实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/03/linux-lab-disk.png" style="max-height:600px; max-width:100%" />
 </a>
 {% endif %}
 

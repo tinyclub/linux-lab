@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Jia Xianhua'
+author: 'Wu Zhangjin'
 title: "Linux Lab 真盘开发日志（3）：在 Linux 下直接启动 Linux Lab Disk，当双系统使用"
 draft: true
 tagline: "在 Linux 系统中通过 VirtualBox, Qemu, kvm 等直接启动 Linux Lab Disk 中的 Linux Lab"

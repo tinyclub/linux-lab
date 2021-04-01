@@ -82,6 +82,9 @@ tags:
   * [Linux Lab 真盘开发日志（1）：在 Windows 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-windows-boot)
   * [Linux Lab 真盘开发日志（2）：在 macOS 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-macos-boot)
   * [Linux Lab 真盘开发日志（3）：在 Linux 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-linux-boot)
+  * [Linux Lab 真盘开发日志（4）：在台式机、笔记本和 macBook 上即插即用](/linux-lab-disk-raw-boot)
+  * [Linux Lab 真盘开发日志（5）：体验透明压缩带来的容量翻倍效果](/linux-lab-disk-transparent-compress)
+  * [Linux Lab 真盘开发日志（6）：体验内存编译的用法和好处](/linux-lab-disk-mem-compile)
 
   购买地址：
 

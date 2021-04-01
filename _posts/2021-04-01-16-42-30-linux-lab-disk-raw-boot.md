@@ -1,6 +1,6 @@
 ---
 layout: post
-author: 'Jia Xianhua'
+author: 'Wu Zhangjin'
 title: "Linux Lab 真盘开发日志（4）：在台式机、笔记本和 macBook 上即插即用"
 draft: true
 tagline: "在 X86_64 主机关机状态下，开机上电引导后免安装使用 Linux Lab"

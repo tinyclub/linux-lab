@@ -1927,7 +1927,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 用临时缓存做编译加速：
 
-    $ time sudo make kernel
+    $ time make kernel
 
 备份临时缓存到永久的文件（如果觉得 build 目录的数据很重要）：
 

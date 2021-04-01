@@ -1837,7 +1837,7 @@ Check the status of building cache:
 
 Use the cache for building speedup:
 
-    $ time sudo make kernel
+    $ time make kernel
 
 Backup the cache to a persistent file (If the building file are important to you):
 

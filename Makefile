@@ -1519,7 +1519,7 @@ $$(call _stamp_$(1),patch):
 	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC_FULL) $$($(call _uc,$(1))_BUILD); fi; \
 	  touch $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched; \
 	else		\
-	  echo "ERR: $(1) patchset has been applied, if want, please do 'make $(1)-cleanup' at first." && exit 1; \
+	  echo "ERR: $(1) patchset has been applied, if want, please backup important changes and do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
 	$$(Q)touch $$@
 
@@ -2460,7 +2460,7 @@ kernel-feature:
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
-	  echo "ERR: feature patchset has been applied, if want, please pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
+	  echo "ERR: feature patchset has been applied, if want, please backup important changes and pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
 	fi
 
 ifneq ($(firstword $(MAKECMDGOALS)),list)

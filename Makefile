@@ -1436,7 +1436,7 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			$$($(call _uc,$(1))_GITADD); \
-			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin); \
+			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin) && touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
@@ -1445,10 +1445,9 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			git fetch --tags origin && \
+			git fetch --tags origin && touch $$@\
 		cd $$(TOP_DIR); \
 	fi
-	$$(Q)touch $$@
 
 $(1)-source: $$(call __stamp_$(1),source)
 

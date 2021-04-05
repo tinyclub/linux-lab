@@ -1455,14 +1455,13 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && touch $$@ && cd $$(TOP_DIR); \
 	fi
-	$$(Q)touch $$@
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
 $$(call _stamp_$(1),outdir):
-	$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
+	$$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
 
 $(1)-outdir: $$(call __stamp_$(1),outdir)
@@ -1516,12 +1515,14 @@ $(1)-help:
 $$(call _stamp_$(1),patch):
 	@if [ ! -f $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched ]; then \
 	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
-	  if [ -f tools/$(1)/patch.sh ]; then tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC_FULL) $$($(call _uc,$(1))_BUILD); fi; \
-	  touch $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched; \
+	  if [ -f tools/$(1)/patch.sh ]; then \
+		tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC_FULL) $$($(call _uc,$(1))_BUILD) && \
+		touch $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched && \
+		touch $$@; \
+	  fi; \
 	else		\
 	  echo "ERR: $(1) patchset has been applied, if want, please backup important changes and do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
-	$$(Q)touch $$@
 
 $(1)-patch: $$(call __stamp_$(1),patch)
 

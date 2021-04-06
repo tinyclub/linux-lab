@@ -14,10 +14,13 @@ tags:
   - 真盘
   - 启动盘
   - U盘
+  - 安装盘
   - Linux Lab to go
+  - Linux Lab Disk
   - macOS
   - Virtualbox
   - EFI
+  - Ubuntu
 ---
 
 > By 贾献华 of [TinyLab.org][1]

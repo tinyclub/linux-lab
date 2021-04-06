@@ -13,11 +13,14 @@ category:
 tags:
   - 真盘
   - 启动盘
+  - 安装盘
   - U盘
   - Linux Lab to go
+  - Linux Lab Disk
   - Linux
   - 内存编译
   - 编译速度
+  - Ubuntu
 ---
 
 > By Wu Zhangjin of [TinyLab.org][1]

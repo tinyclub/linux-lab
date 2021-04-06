@@ -13,8 +13,11 @@ category:
 tags:
   - 真盘
   - 启动盘
+  - 安装盘
+  - Ubuntu
   - U盘
   - Linux Lab to go
+  - Linux Lab Disk
   - Linux
   - Virtualbox
   - Qemu

@@ -1,0 +1,20 @@
+
+- title: 360° 剖析 Linux ELF
+  permalink: https://cctalk.com/m/group/88089283
+  description: Linux 程序员基本素养训练课 —— 程序链接、装载、运行与调试原理，由泰晓科技技术社区创始人授课。
+  group: courses
+
+- title: Rust 语言快速上手
+  permalink: https://cctalk.com/m/group/89507527
+  description: 面向 C 语言程序员的 Rust 语言入门课程，由 RustCC 中文社区负责人授课。
+  group: courses
+
+- title: Linux Lab 公开课
+  permalink: https://cctalk.com/m/group/88948325
+  description: Linux Lab 免费视频教程，由 Linux Lab 开发者授课
+  group: courses
+
+- title: 泰晓沙龙 | 直播课堂
+  permalink: https://cctalk.com/m/group/89433087
+  description: 泰晓科技技术社区线上视频直播沙龙系列活动，由社区邀请嘉宾老师授课
+  group: courses

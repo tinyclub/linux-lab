@@ -55,8 +55,20 @@
 
     {% endif %}
 
+    {% if article.desc %}
+      {% assign article_desc = article.desc %}
+    {% else %}
+      {% assign article_desc = article.description %}
+    {% endif %}
+
+    {% if article.url %}
+      {% assign article_url = article.url %}
+    {% else %}
+      {% assign article_url = article.permalink %}
+    {% endif %}
+
     <h2>
-        {{ top_start }}<a class="tooltip article" href="{{ article.url }}" {{ top_style}}>{% if article.desc %}<span>{{ article.desc }}</span>{% endif %}{{ article.title }}{{ top_end }}</a>
+        {{ top_start }}<a class="tooltip article" href="{{ article_url }}" {{ top_style}}>{% if article_desc %}<span>{{ article_desc }}</span>{% endif %}{{ article.title }}{{ top_end }}</a>
     </h2>
 
     {% if style != "tiny" %}

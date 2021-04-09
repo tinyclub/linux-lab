@@ -1,6 +1,5 @@
 ---
 layout: page
-group: navigation
 toc: false
 title: 人才
 author: Wu Zhangjin

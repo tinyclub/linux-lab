@@ -6,8 +6,7 @@
 {% endif %}
 
 {% if true %}
-<a style="line-height: 150%" title="某宝检索 “Linux Lab 真盘”，免安装使用 Linux Lab，即插即用，高效率做 Linux 实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/03/linux-lab-disk.png" style="max-height:600px; max-width:100%" />
-<br/>如何在 5 分钟内开展 Linux 开发？</a>
+<a title="Linux 程序员基本素养必修课，由泰晓科技技术社区创始人主讲" href="https://cctalk.com/m/group/88089283" target="_blank"><img src="/images/courses/360-elf.jpg" style="max-height:250px; max-width:100%">
 </a>
 {% endif %}
 

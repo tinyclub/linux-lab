@@ -16,7 +16,7 @@
 # Known failures:
 #
 #      1. these boards hang after send 'poweroff' or 'reboot' command: aarch64/raspi3, arm/verstailpb, mipsel/malta
-#         To ignore such failures, run it like: `TIMEOUT_CONTINUE=1 tools/docker/run.sh`
+#         To ignore such failures, run it like: TIMEOUT_CONTINUE=1 tools/docker/run.sh
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)

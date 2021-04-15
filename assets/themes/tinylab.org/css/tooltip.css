@@ -1,5 +1,5 @@
 a.tooltip strong {
-    line-height: 2.5em;
+    line-height: 26px;
     font-size: 17px;
     text-shadow: 0px 0px 1px #ccc
 }
@@ -16,7 +16,7 @@ a.tooltip span div img {
 
 a.tooltip > span {
     z-index: 999;
-    line-height: 2em;
+    line-height: 22px;
     text-align: left;
     position: absolute;
 
@@ -34,17 +34,17 @@ a.tooltip > span {
     font-size: 16px;
     font-style: normal;
 
-    background-color: #fff;
-    color: #345; 
+    background-color: #000;
+    color: #fff;
 
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -o-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
 
 
     filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#999999', GradientType=0);
-    border: 2px dotted #ccc
+    border: 2px #ccc
 }
 
 a.tooltip:hover > span {

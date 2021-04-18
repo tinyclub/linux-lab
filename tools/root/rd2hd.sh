@@ -25,17 +25,17 @@ FS_CPIO=${ROOTDIR}.cpio
 # Calculate the size
 if [ -f ${FS_CPIO_GZ} ]; then
   ROOTFS_SIZE=`ls -s ${FS_CPIO_GZ} | cut -d' ' -f1`
-  ROOTFS_SIZE=$((${ROOTFS_SIZE} * 5))
+  ROOTFS_SIZE=$((${ROOTFS_SIZE} * 10))
 else
   ROOTFS_SIZE=`ls -s ${FS_CPIO} | cut -d' ' -f1`
-  ROOTFS_SIZE=$((${ROOTFS_SIZE} * 2))
+  ROOTFS_SIZE=$((${ROOTFS_SIZE} * 4))
 fi
 
 ROOTFS_SIZE=$(( (${ROOTFS_SIZE} / 1024 + 1) * 1024 ))
 echo "LOG: Rootfs size: $ROOTFS_SIZE (kilo bytes)"
 
 # Create the file system image
-dd if=/dev/zero of=${HROOTFS} bs=1024 count=$ROOTFS_SIZE
+truncate -s $((ROOTFS_SIZE * 1024)) ${HROOTFS}
 yes | mkfs.${FSTYPE} ${HROOTFS}
 
 # Copy content to the fs image

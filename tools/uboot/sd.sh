@@ -21,7 +21,7 @@ if [ "${BOOTDEV}" == "sdcard" -o "${BOOTDEV}" == "sd" -o "${BOOTDEV}" == "mmc" ]
   SD_DIR=${SD_IMG%.*}
   [ -f $SD_IMG ] && rm $SD_IMG
 
-  [ ! -f $SD_IMG ] && dd if=/dev/zero of=$SD_IMG status=none bs=1M count=$((KRN_SIZE+RDK_SIZE+DTB_SIZE+2))
+  [ ! -f $SD_IMG ] && truncate -s $((KRN_SIZE+RDK_SIZE+DTB_SIZE+2))M $SD_IMG
 
   [ -f $SD_IMG ] && mkfs.fat $SD_IMG
 

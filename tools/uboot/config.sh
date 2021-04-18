@@ -80,7 +80,8 @@ if [ -z "$_CONFIG_FILE" ]; then
 	;;
     esac
 
-    dd if=/dev/zero of=$ENV_IMG bs=1M count=1 status=none
+    truncate -s 1M $ENV_IMG
+
     echo -e -n "bootcmdx=${boot_cmd}\0" > $ENV_IMG 
     ##hexdump -C $ENV_IMG
 

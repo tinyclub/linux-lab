@@ -14,7 +14,7 @@ UBOOT_IMAGE=${BIMAGE}
 
 # Save env to the last 1M of pflash
 if [ -n "$ENV_IMG" ]; then
-  [ ! -f $PFLASH_IMG ] && dd if=/dev/zero of=$PFLASH_IMG status=none bs=${PFLASH_BS}K count=$((PFLASH_SIZE * 1024 / PFLASH_BS))
+  [ ! -f $PFLASH_IMG ] && truncate -s $((PFLASH_SIZE * 1024))K $PFLASH_IMG
 
   dd if=$ENV_IMG of=$PFLASH_IMG bs=1M seek=$ENV_OFFSET conv=notrunc status=none
 fi

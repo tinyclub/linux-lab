@@ -2841,7 +2841,11 @@ ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
   UBOOT_DEPS += kernel-uimage
 endif
 
-_uboot-images: $(UBOOT_DEPS)
+ifeq ($(SD_BOOT),1)
+  UBOOT_PACKAGES_INSTALL := packages-install
+endif
+
+_uboot-images: $(UBOOT_PACKAGES_INSTALL) $(UBOOT_DEPS)
 ifeq ($(BOOTDEV),tftp)
 	$(Q)$(UBOOT_TFTP_TOOL)
 endif

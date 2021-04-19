@@ -6,7 +6,7 @@ draft: true
 tagline: "Linux Lab Disk 支持内存编译，零磁盘损耗做内核开发"
 album: "Linux Lab"
 license: "cc-by-nc-nd-4.0"
-permalink: /linux-lab-disk-raw-boot/
+permalink: /linux-lab-disk-mem-compile/
 description: "本文展示了 Linux Lab Disk 内存编译的易用性和好处，内存编译能大幅提升磁盘寿命并提升可用容量"
 category:
   - Linux Lab

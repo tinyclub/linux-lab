@@ -3,7 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "泰晓沙龙|直播预告：软件逆向工程初探，将于2021年4月17日开播"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 permalink: /tinysalon-reveng/
 description: "本次直播活动在简单介绍软件逆向工程基本概念之后，接着介绍相关工具以及开展步骤。"

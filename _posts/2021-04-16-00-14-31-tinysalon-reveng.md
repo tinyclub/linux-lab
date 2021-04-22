@@ -27,7 +27,7 @@ tags:
 
 ## 报名方式
 
-微信扫码或点击链接均可报名：[软件逆向工程初探](https://cctalk.com/m/group/89433087)
+微信扫码或点击链接均可报名：[软件逆向工程初探](https://www.cctalk.com/m/group/89433087)
 
 ![泰晓科技-直播课堂-报名入口](/wp-content/uploads/2021/03/tinylab-salon-video.png)
 

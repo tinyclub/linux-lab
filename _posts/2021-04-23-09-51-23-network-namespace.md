@@ -1,7 +1,8 @@
-yout: post
+---
+layout: post
 author: 'Peng Weilin'
 title: "Network Namespace 详解"
-draft: false
+draft: true
 album: "Linux Namespace"
 license: "cc-by-nc-nd-4.0"
 permalink: /network-namespace/
@@ -27,7 +28,7 @@ tags:
 
 ```
 pwl@ubuntu:~$ sudo unshare --net /bin/bash
-[sudo] password for pwl: 
+[sudo] password for pwl:
 root@ubuntu:~# ll /proc/$$/ns
 total 0
 dr-x--x--x 2 root root 0 3月   7 17:34 ./
@@ -44,12 +45,12 @@ root@ubuntu:~# echo $$
 6700
 ```
 
-2、需要将新的 net namespace 在 `/var/run/netns`文件夹下创建一个链接，才能被`ip netns`命令识别到：
+2、需要将新的 net namespace 在 `/var/run/netns` 文件夹下创建一个链接，才能被 `ip netns` 命令识别到：
 
 ```
 pwl@ubuntu:~$ ip netns show
 pwl@ubuntu:~$ sudo mkdir /var/run/netns
-[sudo] password for pwl: 
+[sudo] password for pwl:
 pwl@ubuntu:~$ ln -s /proc/6700/ns/net /var/run/netns/4026532598
 ln: failed to create symbolic link '/var/run/netns/4026532598': Permission denied
 pwl@ubuntu:~$ sudo ln -s /proc/6700/ns/net /var/run/netns/4026532598
@@ -57,14 +58,14 @@ pwl@ubuntu:~$  ip netns show
 4026532598
 ```
 
-3、创建一对虚拟网卡（veth pair），分别加入到旧 netns 和新 netns 中，配置对应两个同网段ip：
+3、创建一对虚拟网卡（veth pair），分别加入到旧 netns 和新 netns 中，配置对应两个同网段 ip：
 
 ```
 pwl@ubuntu:~$ sudo ip link add veth00 type veth peer name veth10
 pwl@ubuntu:~$ sudo ip link set dev veth10 netns 4026532598
 pwl@ubuntu:~$ sudo ip netns exec 4026532598 ifconfig veth10 10.1.1.1/24 up
 pwl@ubuntu:~$ sudo ifconfig veth00 10.1.1.2/24 up
-pwl@ubuntu:~$ 
+pwl@ubuntu:~$
 ```
 
 4、从新的 netns 中可以 ping 通旧的 netns ：
@@ -89,7 +90,7 @@ PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.040/0.053/0.066/0.013 ms
 ```
 
-5、增加一个网桥设备，让新的 netns 能平通外网：
+5、增加一个网桥设备，让新的 netns 能 ping 通外网：
 
 ```
 pwl@ubuntu:~$ sudo brctl addbr br00
@@ -104,7 +105,9 @@ pwl@ubuntu:~$ sudo ifconfig veth00 0.0.0.0
 pwl@ubuntu:~$ sudo ifconfig br00 10.1.1.3/24 up
 ```
 
-6、增加配置，让新的 netns 能 ping 通外网：（注意：Docker并不会把物理网卡加到网桥中，它是利用 IP Forward 功能把网桥数据转发到物理网卡的，参考[Linux虚拟网络设备之bridge(桥)](https://segmentfault.com/a/1190000009491002) 和 [模拟 Docker网桥连接外网](https://blog.csdn.net/newbei5862/article/details/105004047)）
+6、增加配置，让新的 netns 能 ping 通外网：
+
+（注意：Docker 并不会把物理网卡加到网桥中，它是利用 IP Forward 功能把网桥数据转发到物理网卡的，参考 [Linux虚拟网络设备之bridge(桥)](https://segmentfault.com/a/1190000009491002) 和 [模拟 Docker网桥连接外网](https://blog.csdn.net/newbei5862/article/details/105004047)）
 
 添加 iptables FORWARD 规则，并启动路由转发功能：
 
@@ -141,7 +144,7 @@ Network namespace 对应 `struct net` 结构。因为网络处理的复杂性，
 
 ### copy_net_ns()
 
-clone()和unshare()时如果设置了`CLONE_NEWNET`标志，则会调用 copy_net_ns() 来创建一个新的 network namespace：
+clone() 和 unshare() 时如果设置了 `CLONE_NEWNET` 标志，则会调用 copy_net_ns() 来创建一个新的 network namespace：
 
 ```
 create_new_namespaces() → copy_net_ns() → setup_net():
@@ -196,7 +199,8 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
 
 ### pernet_list
 
-全局链表 pernet_list 链接了多个 ops ，在新 net ns 初始化时逐个调用 ops->init() 。  
+全局链表 pernet_list 链接了多个 ops ，在新 net ns 初始化时逐个调用 ops->init() 。
+
 可以使用 register_pernet_device() 函数向 pernet_list 链表中注册 ops，我们看看有哪些典型的 ops ，具体做了哪些操作。
 
 #### loopback_net_ops
@@ -329,7 +333,7 @@ void sock_net_set(struct sock *sk, struct net *net)
 在网口设备注册时，默认加入到初始 net ns 即 `init_net` 中：
 
 ```
-alloc_netdev() → alloc_netdev_mqs() 
+alloc_netdev() → alloc_netdev_mqs()
 
 struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
 		unsigned char name_assign_type,
@@ -365,19 +369,16 @@ static inline void write_pnet(possible_net_t *pnet, struct net *net)
 }
 ```
 
-## 参考文档：
+## 参考文档
 
-1.[Linux Namespace](https://www.yuque.com/zz-zack/blog/ii93i7)  
-2.[Docker容器网络-基础篇](https://www.yuque.com/zz-zack/blog/ha9t2y)  
-3.[Docker容器网络-实现篇](https://www.yuque.com/zz-zack/blog/oslsy5)  
-4.[Linux内核命名空间之（3）net namespace](https://liumiaocn.blog.csdn.net/article/details/52549595)  
-5.[Linux namespace](https://ixjx.github.io/blog/2019-08-20/Linux-namespace/)  
-6.[查看 Docker 容器的名字空间](https://blog.csdn.net/yeasy/article/details/41694797)  
-7.[Linux虚拟网络设备之bridge(桥)](https://segmentfault.com/a/1190000009491002)  
-8.[模拟 Docker网桥连接外网](https://blog.csdn.net/newbei5862/article/details/105004047)  
-9.[socket编程](https://blog.csdn.net/qq_31918961/article/details/80546537)  
-10.[struct socket 结构详解](https://www.cnblogs.com/sddai/p/5790414.html)  
-11.[iptables零基础快速入门系列](https://www.zsythink.net/archives/tag/iptables/page/2)  
-
-
-
+1. [Linux Namespace](https://www.yuque.com/zz-zack/blog/ii93i7)
+2. [Docker容器网络-基础篇](https://www.yuque.com/zz-zack/blog/ha9t2y)
+3. [Docker容器网络-实现篇](https://www.yuque.com/zz-zack/blog/oslsy5)
+4. [Linux内核命名空间之（3）net namespace](https://liumiaocn.blog.csdn.net/article/details/52549595)
+5. [Linux namespace](https://ixjx.github.io/blog/2019-08-20/Linux-namespace/)
+6. [查看 Docker 容器的名字空间](https://blog.csdn.net/yeasy/article/details/41694797)
+7. [Linux虚拟网络设备之bridge(桥)](https://segmentfault.com/a/1190000009491002)
+8. [模拟 Docker网桥连接外网](https://blog.csdn.net/newbei5862/article/details/105004047)
+9. [socket编程](https://blog.csdn.net/qq_31918961/article/details/80546537)
+10. [struct socket 结构详解](https://www.cnblogs.com/sddai/p/5790414.html)
+11. [iptables零基础快速入门系列](https://www.zsythink.net/archives/tag/iptables/page/2)

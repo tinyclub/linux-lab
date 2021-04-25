@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Linux Lab 真盘开发日志（5）：体验透明压缩带来的可用容量翻倍效果"
-draft: true
+draft: false
 tagline: "Linux Lab Disk 主系统采用支持透明压缩的文件系统"
 album: "Linux Lab"
 license: "cc-by-nc-nd-4.0"

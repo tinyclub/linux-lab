@@ -1,5 +1,5 @@
 ---
-title: 'Open Source Promotion Plan - Summer 2020'
+title: '开源之夏 - Summer 2020'
 tagline: '“开源软件供应链点亮计划——暑期2020”项目提案'
 author: Wu Zhangjin
 draft: false

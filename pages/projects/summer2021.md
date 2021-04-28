@@ -5,7 +5,7 @@ author: Wu Zhangjin
 draft: false
 layout: page
 permalink: /summer2021/
-description: 国内第2届开源之夏，泰晓科技技术社区踊跃报名，将携 4 个 Linux Lab 子项目参加，欢迎大家报名。
+description: 国内第2届开源之夏，泰晓科技技术社区踊跃报名，将携 5 个 Linux Lab 子项目参加，欢迎大家报名。
 update: 2021-04-28
 categories:
   - 开源项目
@@ -27,7 +27,7 @@ tags:
 
 去年报名的几个学生的基础都非常不错，也很投入，不过因为疫情影响，很多学校的课程和作业被延期到了暑期，学生们实际能投入项目的时间非常有限，所以也部分影响了最后的实施效果，尽管如此，有 2 个项目还是争分夺秒努力达成了预期。
 
-今年我们又准备了 4 个小项目，详情见文后的 “项目列表”。
+今年我们又准备了 5 个小项目，详情见文后的 “项目列表”。
 
 ## 去年回顾
 
@@ -225,6 +225,30 @@ Summer2021 项目开发周期为 3 个月，从 7 月 1 日到 10 月 22 日，�
    - Markdown Lab: <https://gitee.com/tinylab/markdown-lab>
    - Rust for Linux: <https://github.com/Rust-for-Linux>
    - Rust: <https://www.rust-lang.org/>
+
+### 项目五
+
+1. 项目标题：Linux Lab Disk 跨平台运行管理软件
+2. 项目描述：Linux Lab 开源项目目前正在开发 v0.7，该版本旨在开发一款免安装、即插即用的 Linux Lab Disk，进一步降低 Linux 内核与嵌入式 Linux 系统的学习与开发门槛，提升学习与开发效率。当前 Linux Lab Disk 采用超高速固态 U 盘，已经可以在 64 位 X86 主机、笔记本和 macBook 上做到开机上电即插即用，也可以在 Windows、Linux 和 macOS 三大主流操作系统上当双系统使用，目前正在开发一款当双系统使用时的跨平台管理软件，方便在作为双系统使用时也能做到 “即插即用”。
+3. 项目难度：高
+4. 项目社区导师：@Falcon
+5. 导师联系方式：falcon@tinylab.org
+6. 合作导师联系方式：@RXD, rxd@tinylab.org
+7. 项目产出要求：
+    - 可以在 Linux 系统下管理并快速启动 Linux Lab Disk
+    - 可以在 Windows 系统下管理并快速启动 Linux Lab Disk
+    - 可以在 macOS 系统下管理并快速启动 Linux Lab Disk
+    - 需要支持 Virtualbox, Qemu 或 Vmware 中至少一种虚拟机
+    - 撰写并发表详细开发与使用文档
+8. 项目技术要求：
+    - 有 Python、Qt 或 Delphi 等某一种图形化软件开发经验
+    - 了解 Virtualbox，Qemu 或 Vmware 中某一种虚拟机的深度命令行工具用法
+    - 有 Windows、Linux 或 macOS 等系统跨平台相关开发经验
+    - 熟练使用 Linux Lab
+9. 相关的开源软件仓库列表：
+   - Cloud Lab: <https://gitee.com/tinylab/cloud-lab>
+   - Markdown Lab: <https://gitee.com/tinylab/markdown-lab>
+   - VMUB: <https://github.com/DavidBrenner3/VMUB>
 
 [1]: https://gitee.com/tinylab/cloud-lab/issues/I1H8Q3
 [2]: https://gitee.com/tinylab/cloud-lab/issues/I1HAN4

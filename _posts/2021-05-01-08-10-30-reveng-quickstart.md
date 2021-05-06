@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "软件逆向工程初探直播课已剪辑并发布，5.1期间9.9￥回看"
+title: "软件逆向工程初探直播课已剪辑并发布，9.9￥回看"
 draft: false
 top: true
 license: "cc-by-nc-nd-4.0"

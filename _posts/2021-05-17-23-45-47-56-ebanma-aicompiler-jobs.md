@@ -2,7 +2,7 @@
 layout: post
 author: 'Chen Jie'
 title: "AI 编译专家 · 斑马智行"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /aicompiler-ebanma-jobs/
 description: "职位招聘：AI 编译专家"

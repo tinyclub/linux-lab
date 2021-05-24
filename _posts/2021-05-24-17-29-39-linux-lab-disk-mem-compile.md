@@ -70,7 +70,7 @@ Linux Lab 的所有编译输出都统一在 `build/` 目录，如果要实现内
 启动非常简单，在编译之前只要执行如下命令：
 
 ```
-$ sudo tools/docker/cache
+$ sudo tools/build/cache
 ```
 
 ### 跟平时一样编译内核
@@ -107,7 +107,7 @@ sys	1m51.298s
 如果要查看内存的使用情况，可以用：
 
 ```
-$ sudo tools/docker/free
+$ sudo tools/build/free
 Filesystem Size  Used Avail Use% Mounted on
 /dev/zram0 5.2G  108M  5.1G   3% /labs/linux-lab/build
 ```

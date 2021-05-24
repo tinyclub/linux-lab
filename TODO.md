@@ -1,9 +1,11 @@
 
 # TODO List
 
-## V0.7
+## V0.8
 
-* Add [Linux Lab Disk](https://gitee.com/tinylab/linux-lab/issues/I31ZTK) Support
+* Add openEuler support
+* Add GuiLite support
+* Add install package support
 
 ## Future
 

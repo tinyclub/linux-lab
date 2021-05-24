@@ -1,9 +1,9 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "软件逆向工程初探直播课已剪辑并发布，9.9￥回看"
+title: "软件逆向工程初探直播课已剪辑并发布，可订阅回看"
 draft: false
-top: true
+top: false
 license: "cc-by-nc-nd-4.0"
 album: "泰晓沙龙"
 permalink: /reveng-quickstart/

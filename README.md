@@ -244,6 +244,13 @@ If really a Linux newbie or simply don't want to spend time on boring installati
 
 [![Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 
+It supports:
+
+* Boot from powered off any 64bit X86 Machine
+* Boot from running Windows, Linux and MacOS
+* Support transparent compress, use 128G as 256G
+* Support memory compling, speedup compling and save disk erase life
+
 ## 2.1 Hardware and Software Requirement
 
 Linux Lab is a full embedded Linux development system, it needs enough calculation capacity and disk & memory storage space, to avoid potential extension issues, here is the recommended configuration:

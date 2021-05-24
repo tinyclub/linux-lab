@@ -203,6 +203,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
   * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
       * Linux Lab 简介
       * 龙芯 Linux 内核开发
+      * Linux Lab Disk 演示
   * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
       * 提供了上百个实验案例，全部通过 Linux Lab 验证
 
@@ -345,6 +346,16 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 下述安装过程比较详尽，兼顾了各大桌面系统，实际上针对某个系统的用法非常简单。
 
 如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [社区自营店](https://shop155917374.taobao.com) 选购一枚即插即用的 Linux Lab Disk，也可以在淘宝手机 APP 内搜索 “Linux Lab真盘” 后购买。
+
+Linux Lab Disk 已经支持如下功能：
+
+* 集成最新的稳定版 Ubuntu，当前版本为 20.04
+* [支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用](http://tinylab.org/linux-lab-disk-raw-boot)
+* [支持在 Windows, Linux 和 macOS 系统下即插即用](http://tinylab.org/linux-lab-disk-windows-boot)
+* [支持透明压缩：可用容量翻倍，128G 可以当 256G 使用](http://tinylab.org/linux-lab-disk-transparent-compress)
+* [支持内存编译：扩大可用容量，提升编译速度，节省擦写寿命](http://tinylab.org/linux-lab-disk-mem-compile)
+
+已经制作多个不同版本：有 32G 高速移动版，也有 64G、128G 超高速固态版，未来也可能制作更大容量版本。
 
 [![Linux Lab 真盘 - Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 

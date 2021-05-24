@@ -1836,11 +1836,11 @@ This feature aims to create a ram based temporary filesystem as the 'build' dire
 
 Create temporary building cache:
 
-    $ sudo tools/build/cache
+    $ make build cache
 
 Check the status of building cache:
 
-    $ sudo tools/build/free
+    $ make build cache
 
 Use the cache for building speedup:
 
@@ -1848,11 +1848,11 @@ Use the cache for building speedup:
 
 Backup the cache to a persistent file (If the building file are important to you):
 
-    $ sudo tools/build/backup
+    $ make build backup
 
 Stop the building cache, revert back to use the build directory on the disk:
 
-    $ sudo tools/build/uncache
+    $ make build uncache
 
 Use the backup as the build directory:
 

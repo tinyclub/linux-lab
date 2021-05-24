@@ -3716,7 +3716,7 @@ BUILD_FREE_TOOL    := tools/build/free
 BUILD_UNCACHE_TOOL := tools/build/uncache
 BUILD_BACKUP_TOOL  := tools/build/backup
 
-cache:
+cache-build:
 	@if [ $(shell grep -q /labs/linux-lab/build /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 		echo "Building cache free status:"; \
 		sudo $(BUILD_FREE_TOOL) || true; \
@@ -3725,17 +3725,17 @@ cache:
 		sudo $(BUILD_CACHE_TOOL) || true; \
 	fi
 
-uncache:
+uncache-build:
 	$(Q)echo "Uncache building ..."
 	$(Q)echo
 	$(Q)sudo $(BUILD_UNCACHE_TOOL) || true
 
-backup:
+backup-build:
 	$(Q)echo "Backing up Cache ..."
 	$(Q)echo
 	$(Q)sudo $(BUILD_BACKUP_TOOL) || true
 
-PHONY += cache uncache backup
+PHONY += cache-build uncache-build backup-build
 
 # include .labfini if exist
 $(eval $(call _ti,.labfini))

@@ -3710,6 +3710,33 @@ default-help:
 
 PHONY += env env-list env-prepare env-dump env-save lab-help
 
+# memory building support
+BUILD_CACHE_TOOL   := tools/build/cache
+BUILD_FREE_TOOL    := tools/build/free
+BUILD_UNCACHE_TOOL := tools/build/uncache
+BUILD_BACKUP_TOOL  := tools/build/backup
+
+cache:
+	@if [ $(shell grep -q /labs/linux-lab/build /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
+		echo "Building cache free status:"; \
+		sudo $(BUILD_FREE_TOOL) || true; \
+	else \
+		echo "Cache building ..."; echo; \
+		sudo $(BUILD_CACHE_TOOL) || true; \
+	fi
+
+uncache:
+	$(Q)echo "Uncache building ..."
+	$(Q)echo
+	$(Q)sudo $(BUILD_UNCACHE_TOOL) || true
+
+backup:
+	$(Q)echo "Backing up Cache ..."
+	$(Q)echo
+	$(Q)sudo $(BUILD_BACKUP_TOOL) || true
+
+PHONY += cache uncache backup
+
 # include .labfini if exist
 $(eval $(call _ti,.labfini))
 

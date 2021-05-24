@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "Linux Lab 真盘开发日志（6）：体验内存编译的用法和好处"
-draft: true
+draft: false
 tagline: "Linux Lab Disk 支持内存编译，零磁盘损耗做内核开发"
 album: "Linux Lab"
 license: "cc-by-nc-nd-4.0"

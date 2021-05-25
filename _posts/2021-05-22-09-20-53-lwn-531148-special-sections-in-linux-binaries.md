@@ -1,13 +1,13 @@
 ---
 layout: post
 author: 'VainPointer'
-title: "LWN 531148: Linux 内核二进制中的非常规节"
+title: "LWN 531148: Linux 内核文件中的非常规节"
 draft: true
 album: "LWN 中文翻译"
 group: "translation"
 license: "cc-by-sa-4.0"
 permalink: /lwn-531148/
-description: "LWN 文章翻译，Linux 内核二进制中的非常规节"
+description: "LWN 文章翻译，Linux 内核文件中的非常规节"
 category:
   - 启动管理
   - LWN
@@ -19,27 +19,27 @@ tags:
 > 原文：[Special sections in Linux binaries](https://lwn.net/Articles/531148/)
 > 原创：By Daniel Pierre Bovet @ **January 3, 2013**
 > 翻译：By [VainPointer](https://gitee.com/vainpointer)
-> 校对：
+> 校对：By [unicornx](https://gitee.com/unicornx)
 
 > A section is an area in an object file that contains information which is useful for linking: the program's code and data, relocation information, and more. It turns out that the Linux kernel has some additional types of sections, called "special sections", that are used to implement various kernel features. Special sections aren't well known, so it is worth shedding some light on the topic.
 
-目标文件中的节（section）包含了用于链接的信息：程序的代码和数据、重定位信息等。本文介绍 Linux 内核中一些附加类型的节，称为“非常规节”，用于实现各种内核特性。非常规节并不广为人知，所以值得对这个话题做一些解释。
+目标文件 (object file) 中的节 (section) 包含了用于链接的信息：程序的代码和数据、重定位信息等。本文介绍 Linux 内核中一些附加类型的节，称为 “非常规节 (special section)”，用于实现各种内核特性。非常规节并不广为人知，所以值得对这个话题做一些解释。
 
-> #### Segments and sections
+> # Segments and sections
 
-#### 段与节
+# 段 (segment) 与节 (section)
 
 > Although Linux supports several binary file formats, ELF ([Executable and Linking Format](http://en.wikipedia.org/wiki/Executable_and_Linkable_Format)) is the preferred format since it is flexible and extensible by design, and it is not bound to any particular processor or architecture. ELF binary files consist of an ELF header followed by a few segments. Each segment, in turn, includes one or more sections. The length of each segment and of each section is specified in the ELF header. Most segments, and thus most sections, have an initial address which is also specified in the ELF header. In addition, each segment has its own access rights.
 
-尽管 Linux 支持几种二进制文件格式，但 ELF ([Executable and Linking Format][1]) 由于其设计得灵活、可拓展，并且不受限于任何特定的处理器或架构，而成为了首选格式。ELF 二进制文件由一个 ELF 头和几个段（segment）组成。每个段又包含一个或多个节。每个段和每个节的长度在 ELF 头中指定。大多数段和节有一个初始地址，也在 ELF 头中指定。此外，每个段都有自己的访问权限。
+尽管 Linux 支持几种二进制文件格式，但 ELF ([Executable and Linking Format][1]) 由于其设计得灵活、可拓展，并且不受限于任何特定的处理器或架构，而成为了首选格式。ELF 二进制文件由一个 ELF 头和几个段组成。每个段又包含一个或多个节。每个段和每个节的长度在 ELF 头中指定。大多数段和节有一个初始地址，也在 ELF 头中指定。此外，每个段都有自己的访问权限。
 
 > The linker merges together all sections of the same type included in the input object files into a single section and assigns an initial address to it. For instance, the `.text` sections of all object files are merged together into a single `.text` section, which by default contains all of the code in the program. Some of the segments defined in an ELF binary file are used by the GNU loader to assign memory regions with specific access rights to the process.
 
-对象文件输入到链接器，相同类型的所有节会被合并到一个节中，并为其指定初始地址。例如，所有对象文件的  `.text` 节合并到一个 `.text` 节中，默认情况下该节包含程序中的所有代码。其中一些段（在 ELF 二进制文件中定义）被 GNU 加载器解析后为进程分配具有特定访问权限的内存区域。
+目标文件输入到链接器，相同类型的所有节会被合并到一个节中，并为其指定初始地址。例如，所有目标文件的  `.text` 节合并到一个 `.text` 节中，默认情况下该节包含程序中的所有代码。GNU 加载器基于 ELF 二进制文件中定义的段来分配内存区域并赋予这些内存区域以特定的访问权限。
 
 > Executable files include four canonical sections called, by convention, `.text`, `.data`, `.rodata`, and `.bss`. The `.text` section contains executable code and is packed into a segment which has the read and execute access rights. The `.data` and `.bss` sections contain initialized and uninitialized data respectively, and are packed into a segment which has the read and write access rights.
 
-可执行文件包括四个典型的节，按惯例称为 `.text`、`.data`、`.rodata` 和 `.bss`。`.text` 节包含可执行代码，并被打包在具有读取和执行访问权限的段（译者注：通常称为 text 段）。`.data` 节和 `.bss` 节分别包含初始化和未初始化的数据，并被打包在具有读写访问权限的段中（译者注：通常称为 data 段）。
+可执行文件包括四个典型的节，按惯例称为 `.text`、`.data`、`.rodata` 和 `.bss`。`.text` 节包含可执行代码，并被打包在具有读取和执行访问权限的段。`.data` 节和 `.bss` 节分别包含初始化和未初始化的数据，并被打包在具有读写访问权限的段中。
 
 > Linux loads the `.text` section into memory only once, no matter how many times an application is loaded. This reduces memory usage and launch time and is safe because the code doesn't change. For that reason, the `.rodata` section, which contains read-only initialized data, is packed into the same segment that contains the `.text` section. The `.data` section contains information that could be changed during application execution, so this section must be copied for every instance.
 
@@ -49,37 +49,37 @@ tags:
 
 “`readelf-S`” 命令列出可执行文件中的节，而 “`readelf-l`” 命令列出可执行文件中的段。
 
-> #### Defining a section
+> # Defining a section
 
-#### 节的定义
+# 节的定义
 
 > Where are the sections declared? If you look at a standard C program you won't find any reference to a section. However, if you look at the assembly version of the C program you will find several assembly directives that define the beginning of a section. More precisely, the "`.text`", "`.data`", and "`.section rodata`" directives identify the beginning of the the three canonical sections mentioned previously, while the "`.comm `" directive defines an area of uninitialized data.
 
-节是在何处被声明的？如果你看一个标准的 C 程序，你将找不到任何一个节的引用。但是，如果你查看 C 程序的汇编版本，你将发现几个定义节的汇编指令。即，“`.text`”、“`.data`” 和 “`.section rodata`” 指令标识了前述的三个典型的节的起始处，而 “`.comm`” 指令定义了未初始化数据的区域。
+节是在何处被声明的？如果你看一个标准的 C 程序，你将找不到任何一个节的引用。但是，如果你查看 C 程序的汇编版本，你将发现几个定义节的汇编标记 (directive)。即，“`.text`”、“`.data`” 和 “`.section rodata`” 标记标识了前述的三个典型的节的起始处，而 “`.comm`” 标记定义了未初始化数据的区域。
 
 > The GNU C compiler translates a source file into the equivalent assembly language file. The next step is carried out by the GNU assembler, which produces an object file. This file is an *ELF relocatable* file which contains only sections (segments which have absolute addresses cannot be defined in a relocatable file). Sections are now filled, with the exception of the `.bss` section, which just has a length associated with it.
 
-GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言文件。下一步由 GNU 汇编程序（译者注：as）生成一个对象文件。此文件是一个仅包含节的 *ELF 可重定位* 文件（具有绝对地址的段不能在可重定位文件中定义）。此时，除了 `.bss` 节只有与其相关联的长度信息，其他节都已填充好了，
+GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言文件。下一步由 GNU 汇编器（译者注：as）生成一个目标文件。此文件是一个仅包含节的 *ELF 可重定位 (relocatable)* 文件（含有绝对地址的段不能在可重定位文件中定义）。此时，除了 `.bss` 节只有与其相关联的长度信息，其他节都已填充好了，
 
 > The assembler scans the assembly lines, translates them into binary code, and inserts the binary code into sections. Each section has its own offset which tells the assembler where to insert the next byte. The assembler acts on one section at a time, which is called the *current section*. In some cases, for instance to allocate space to uninitialized global variables, the assembler does not add bytes in the current section, it just increments its offset.
 
-汇编程序扫描汇编语言的行，将它们转换成二进制代码，并将二进制代码插入到各个节中。每个节都有自己的偏移量，以告知汇编程序在何处插入下一个字节。汇编程序一次一个节地工作，称为*当前节*。在某些情况下，汇编程序不在当前节中添加字节，只增加其偏移量，例如在给未初始化的全局变量分配空间时。
+汇编器 (assembler) 扫描汇编语言的行，将它们转换成二进制代码，并将二进制代码插入到各个节中。每个节都有自己的偏移量，以告知汇编器在何处插入下一个字节。汇编器一次一个节地工作，称为*当前节*。在某些情况下，汇编器不在当前节中添加字节，只增加其偏移量，例如在给未初始化的全局变量分配空间时。
 
 ![sections](/wp-content/uploads/2021/05/lwn-531148.png)
 
 > Each assembly language program is assembled separately; the assembler assumes thus that the starting address of an object program is always 0. The GNU linker receives as input a group of these object files and combines them into a single executable file. This kind of linkage is called *static linkage* because it is performed before running the program.
 
-每一个汇编语言程序都是单独汇编的；汇编程序假定目标程序的起始地址总是 0。GNU 链接器（译者注：ld）接收一组目标文件作为输入，并将它们组合成一个可执行文件。这种链接称为“静态链接”，因为它是在运行程序之前完成的。
+每一个汇编语言程序都是单独汇编的；汇编器假定目标程序的起始地址总是 0。GNU 链接器 (译者注：ld) 接收一组目标文件作为输入，并将它们组合成一个可执行文件。这种链接称为 “静态链接”，因为它是在运行程序之前完成的。
 
 > The linker relies on a linker script to decide which address to assign to each section of the executable file. To get the default script of your system, you can issue the command:
 
 链接器依赖链接器脚本来决定将哪个地址分配给可执行文件的每个部分。要获取系统的默认脚本，可以执行命令：
 
-    `ld --verbose`
+    ld --verbose
 
-> #### Special sections
+> # Special sections
 
-#### 非常规节
+# 非常规节
 
 > If you compare the sections present in a simple executable file, say one associated with `helloworld.c`, with those present in the Linux kernel executable, you will notice that Linux relies on many *special sections* not present in conventional executable files. The number of such sections depends on the hardware platform. On an x86_64 system over 30 special sections are defined, while on an ARM system there are about ten.
 
@@ -122,13 +122,13 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
           .data_nosave .bss .brk 
        05     .notes 
 
-> #### Defining a Linux special section
+> # Defining a Linux special section
 
-#### Linux 非常规节的定义
+# Linux 非常规节的定义
 
 > Special sections are defined in the *Linux linker script*, which is a linker script distinct from the default linker script mentioned above. The corresponding source file is stored in the `kernel/vmlinux.ld.S` in the architecture-specific subtree. This file uses a set of macros defined in the `linux/include/asm_generic/vmlinux.lds.h` header file.
 
-*Linux 链接器脚本*中定义了非常规节，它不同于上面提到的默认链接器脚本。相应的源文件存储在指定架构的子树中的 `kernel/vmlinux.ld.S` 中。此文件使用了在 `linux/include/asm_generic/vmlinux.lds.h` 头文件中定义的一组宏。
+*Linux 链接器脚本* (linker script) 中定义了非常规节，它不同于上面提到的默认链接器脚本。相应的源文件存储在指定架构的子树中的 `kernel/vmlinux.ld.S` 中。此文件使用了在 `linux/include/asm_generic/vmlinux.lds.h` 头文件中定义的一组宏。
 
 > The linker script for the ARM hardware platform contains an easy-to-follow definition of a special section:
 
@@ -153,7 +153,7 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 定义和使用非常规节可概括如下：
 
 * 在 Linux 链接器脚本中定义非常规节 `.special`，同时定义用于分隔的标识符对。
-* 在 Linux 代码中插入 `.section .special` 汇编指令，以指定下一个 `.section` 汇编指令之前的所有字节码必须插入`.special` 中。
+* 在 Linux 代码中插入 `.section .special` 汇编标记，以指定下一个 `.section` 汇编标记之前的所有字节码必须插入`.special` 中。
 * 使用这对标识符对内核中的那些字节码进行操作。
 
 > This technique seems to apply to assembly code only. Luckily, the GNU C compiler offers the non-standard `attribute` construct to create special sections. The
@@ -164,13 +164,13 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 > declaration, for instance, tells the compiler that the code following that declaration must be inserted into the `.init.data` section. To make the code more readable, suitable macros are defined. The `__initdata` macro, for instance, is defined as:
 
-声明告诉编译器该声明后面的代码必须插入到 `.init.data` 节中。为了使代码更具可读性可定义了合适的宏。如将 `__initdata` 宏定义为：
+声明告诉编译器该声明后面的代码必须插入到 `.init.data` 节中。为了使代码更具可读性可定义合适的宏。如将 `__initdata` 宏定义为：
 
     #define __initdata __attribute__((__section__(".init.data")))
 
-> #### Some examples
+> # Some examples
 
-#### 一些例子
+# 一些例子
 
 > As seen in the previous `readelf` listing, all special sections appearing in the Linux kernel end up packed in one of the segments defined in the `vmlinux` ELF header. Each special section fulfills a particular purpose. The following list groups some of the Linux special sections according to the type of information stored in them. Whenever applicable, the name of the macro used in the Linux code to refer to the section is mentioned instead of the special section's name.
 
@@ -186,7 +186,7 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
   仅在 Linux 初始化期间调用的函数被声明为 `__init` 并放在 `.init.text` 节中。系统初始化后，Linux 使用节分隔符来释放分配给该节的页帧。
 
-  声明为 `__sched` 的函数被插入到 `.sched.text` 非常规节中，这样 `get__wchan()` 函数将跳过这些函数，`get__wchan()` 函数在读取 `/proc/PID/wchan` 文件时被调用。该文件会包含进程 `PID` 阻塞时的函数名（更多细节请参阅 [WCHAN the waiting channel][2]）。节分隔符括起要跳过的地址序列。例如，`down__read()` 函数被声明为 `__sched`，因为它没有提供有关阻塞进程的事件的有用信息。
+  声明为 `__sched` 的函数被插入到 `.sched.text` 非常规节中，这样 `get__wchan()` 函数将跳过这些函数，`get__wchan()` 函数在读取 `/proc/PID/wchan` 文件时被调用。该文件会列出导致进程 `PID` 阻塞时的函数名（更多细节请参阅 [WCHAN the waiting channel][2]）。节分隔符括起要跳过的地址序列。例如，`down_read()` 函数被声明为 `__sched`，因为它没有提供有关阻塞进程的事件的有用信息（译者注：`get__wchan()` 希望获得的是哪个函数在调用 `down_read()` 或类似的函数时进入了阻塞 ）。
 
 > - Initialized data
 > 
@@ -206,7 +206,7 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 * 函数指针
 
-  为了在初始化阶段调用 `__init` 函数，Linux 提供了一组可扩展的宏（在 `<Linux/init.h>`  中定义）；`module_init()` 是一个众所周知的例子。这些宏把作为参数传递的函数指针放在 `.initcall*i*.init` 节中（`__init` 函数分为几个类）。在系统初始化期间，Linux 使用节分隔符来连续调用其指向的所有函数。
+  为了在初始化阶段调用 `__init` 函数，Linux 提供了一组可扩展的宏（在 `<Linux/init.h>`  中定义）；`module_init()` 就是一个众所周知的例子。这些宏把作为参数传递的函数指针放在 `.initcall*i*.init` 节中（`__init` 函数分为几个类）。在系统初始化期间，Linux 使用节分隔符来连续调用其指向的所有函数。
 
 > - Pairs of instruction pointers
 > 
@@ -214,7 +214,7 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 * 指令指针对
 
-  `_ASM_EXTABLE(addr1，addr2)` 宏允许页面故障异常处理程序确定异常是否是由地址 `addr1` 处的内核指令引起的（通过尝试读取或写入进程地址空间的一个字节）。如果是，内核跳转到包含*固定代码*的 `addr2`，否则会出现内核 Oops。`__ex_table` 非常规节（请参阅前面的链接器脚本示例）的分隔符设置了将字节码从用户空间传出或传入的关键内核指令的范围。
+  `_ASM_EXTABLE(addr1，addr2)` 宏允许页面故障异常处理程序确定异常是否是由地址 `addr1` 处的内核指令引起的，同时尝试读取或写入一个字节到进程地址空间。如果是，内核跳转到包含*固定代码*的 `addr2`，否则会出现内核 Oops。`__ex_table` 非常规节（请参阅前面的链接器脚本示例）的分隔符设置了将字节码从用户空间传出或传入的关键内核指令的范围。
 
 > - Pairs of addresses
 > 
@@ -242,23 +242,23 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 * 结构体
 
-  内核 [SMP alternatives][3] 提供了“一次内核优化构建可提供给多个给定处理器架构的版本使用”的机制。通过引导时间的代码修补魔术，高级指令当且仅当系统的处理器可被执行时才会被真正释放。此机制由 `alternative()` 宏控制：
+  内核 [SMP alternatives][3] 提供了 “一次内核优化构建可提供给多个给定处理器架构的版本使用” 的机制。通过引导时间的代码修补魔术，高级指令当且仅当系统的处理器可被执行时才会被真正释放。此机制由 `alternative()` 宏控制：
 
       alternative(oldinstr, newinstr, feature);
 
-  该宏首先将 `oldinstr` 存储在 `.text` 常规节中。接着在 `altinstructions` 非常规节的一个结构体中，存储以下字段：`oldinstr` 的地址，`newinstr` 的地址，`feature` 标记，`oldinstr` 的长度以及 `newinstr` 的长度。它将 `newinstr` 存储在 `.altinstr_replacement` 非常规节中。在启动过程的早期，运行着的处理器支持的每个替代指令都直接修补到加载的内核映像中；如果需要，no-op 指令会被填充。
+  该宏首先将 `oldinstr` 存储在 `.text` 常规节中。接着在 `altinstructions` 非常规节的一个结构体中，存储以下字段：`oldinstr` 的地址，`newinstr` 的地址，`feature` 标记，`oldinstr` 的长度以及 `newinstr` 的长度。它将 `newinstr` 存储在 `.altinstr_replacement` 非常规节中。在启动过程的早期，被当前运行的处理器支持的每个替代指令都直接修补到了已加载的内核映像中；如果需要，将会填充 no-op 指令。
 
 > Additional special sections, besides `__ksymtab` and `__ksymtab_strings`, are introduced to handle modules. Kernel objects of the form `*.ko` have an ELF relocatable format and the ELF header of such files defines a pair of special sections called `.modinfo` and `.gnu.linkonce.this_module`. Unlike the special sections of the static kernel, these two sections are "address-less" because kernel objects do not contain segments.
 
-除了`_ksymtab` 和 `_ksymtab_strings` 之外，还引入了其他非常规节来处理模块。内核对象文件 `*.ko` 具有 ELF 可重定位格式，此类文件的 ELF 头定义了一对非常规节，称为 `.modinfo` 和 `.gnu.linkonce.this_module`。与静态内核的非常规节不同，这两个部分“无地址”，因为内核对象文件不包含段。
+除了 `_ksymtab` 和 `_ksymtab_strings` 之外，还引入了其他非常规节来处理模块。内核目标文件 `*.ko` 具有 ELF 可重定位格式，此类文件的 ELF 头定义了一对非常规节，称为 `.modinfo` 和 `.gnu.linkonce.this_module`。与静态内核的非常规节不同，这两个部分 “无地址”，因为内核目标文件不包含段。
 
 > The `.modinfo` section is used by the `modinfo` command to show information about the kernel module. The data stored in the section is not loaded in the kernel address space. The `.gnu.linkonce.this_module` special section includes a `module` structure which contains, among other fields, the module's name. When inserting a module, the `init_module()` system call reads the `module` structure from this special section into an area of dynamic memory.
 
-`modinfo` 命令能解析 `.modinfo` 节来显示有关内核模块的信息。存储在该节中的数据不会加载到内核地址空间中。`.gnu.linkone.this_module` 非常规节包含一个 `module` 结构，其中包含模块名称等字段。插入模块时，`init_module()` 系统调用将 `.modinfo` 非常规节的 `module` 结构体读取到动态内存区域。
+ `.modinfo` 非常规节能被`modinfo` 命令解析来显示有关内核模块的信息。存储在该节中的数据不会加载到内核地址空间中。`.gnu.linkone.this_module` 非常规节包含一个 `module` 结构，其中包含模块名称等字段。插入模块时，`init_module()` 系统调用会将这个非常规节的 `module` 结构体读取到动态内存区域。
 
-> #### Conclusion
+> # Conclusion
 
-#### 小结
+# 小结
 
 > Although special sections can be defined in application programs too, there is no doubt that kernel developers have been quite creative in exploiting them. In fact, the examples listed above are by no means exhaustive and new special sections keep popping up in recent kernel releases. Without special sections, implementing some kernel features like those above would be rather difficult.
 

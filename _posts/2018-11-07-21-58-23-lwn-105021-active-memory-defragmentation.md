@@ -18,16 +18,16 @@ tags:
 
 > 原文：[Active memory defragmentation](https://lwn.net/Articles/105021/)
 > 原创：By corbet @ Oct. 5, 2004
-> 翻译：By [Tacinight](https://github.com/tacinight) of [TinyLab.org][1]
+> 翻译：By [Tacinight](https://github.com/tacinight)
 > 校对：By [Bennnyzhao](https://github.com/Bennnyzhao) & [unicornx](https://github.com/unicornx)
 
 > "High order" allocations, in the kernel, are attempts to obtain multiple, contiguous pages for an application which needs more than one page in a single, physically-contiguous block. These allocations have always been a problem for the kernel to satisfy; once the system has been running for a while, physical memory is usually fragmented to the point that very few groups of adjacent, free pages exist. Last month, this page looked at [Nick Piggin's kswapd changes](https://lwn.net/Articles/101230/) which attempt to mitigate this problem somewhat. There are other people working in this area, however.
 
-在内核中，“高阶” 内存分配指的是，指的是当一个应用需要大于一个页框的连续物理内存块时内核能够为其提供多个连续的页框的功能。但是内核往往难以满足这样的分配请求；系统在运行了一段时间之后，物理内存往往散乱到很少存在连续空闲的页框。上个月，本文的作者还给大家介绍了 [Nick Piggin 的 kswapd 补丁](/lwn-101230)，该补丁也试图缓解内存的碎片问题。当然也还有很多人专注于这一领域尝试着解决问题。
+在内核中，“高阶” 内存分配指的是，指的是当一个应用需要大于一个页框的连续物理内存块时内核能够为其提供多个连续的页框的功能。但是内核往往难以满足这样的分配请求；系统在运行了一段时间之后，物理内存往往散乱到很少存在连续空闲的页框。上个月，本文的作者还给大家介绍了 [Nick Piggin 的 kswapd 补丁][2]，该补丁也试图缓解内存的碎片问题。当然也还有很多人专注于这一领域尝试着解决问题。
 
 > One of those is Marcelo Tosatti, who posted [a patch](https://lwn.net/Articles/104843/) which adds active memory defragmentation to the kernel. At a high level, the algorithm used is relatively simple: to obtain free blocks of order N, start with the largest, smaller blocks you can find, and try to relocate the contents of the pages immediately before and after the block. If enough pages can be moved, a larger block of free pages will have been created.
 
-其中一个就是 Marcelo Tosatti，他向内核中提交了一个动态内存碎片整理的[补丁](https://lwn.net/Articles/104843/)。在抽象层面上，他所给的算法也相当直接易懂：为了获得阶数为 N 的连续内存块，先从你能找到的小于 N 的最大阶数的内存块开始，试图去为该内存块前后非空的页框重定位，如果移走了足够数量的页框，那么一个更大的连续内存块就创建完成了。
+其中一个就是 Marcelo Tosatti，他向内核中提交了一个动态内存碎片整理的[补丁][3]。在抽象层面上，他所给的算法也相当直接易懂：为了获得阶数为 N 的连续内存块，先从你能找到的小于 N 的最大阶数的内存块开始，试图去为该内存块前后非空的页框重定位，如果移走了足够数量的页框，那么一个更大的连续内存块就创建完成了。
 
 > Naturally, this process seems rather more complicated when looked at closely. Not all pages can be relocated; those which are locked or reserved, for example, are not touchable. The patch also declines to work with pages which are currently under writeback; until the writeback I/O completes, those pages must not move. A number of more complicated cases, such as moving pages which are part of a nonlinear mapping, are not handled with the current patch.
 
@@ -51,10 +51,13 @@ tags:
 
 > Dave Hansen [described](https://lwn.net/Articles/105023/) two patches adding hotplug memory support - one done at IBM, and one from Fujitsu. Each apparently has its strong and weak points.
 
-Dave Hansen [介绍了](https://lwn.net/Articles/105023/)两个用于添加内存热拔插支持的补丁，一个来自于 IBM，另一个则是 Fujitsu 提供的。两个补丁各有优缺点。
+Dave Hansen [介绍了][4] 两个用于添加内存热拔插支持的补丁，一个来自于 IBM，另一个则是 Fujitsu 提供的。两个补丁各有优缺点。
 
 > Between Marcelo's work and the hotplug patches, there is a significant amount of experience in moving pages aside to free blocks of memory. An effort to bring together those patches into a single one containing the best of each will probably be necessary before any can be merged. But the end result of that work could be an end to problems with high-order allocations.
 
 在 Marcelo 的工作以及热拔插补丁中，都有大量关于移动页框用以释放成块内存的经验总结。在合并任一补丁前，有必要做些工作将这些补丁中最好的部分提取成一个最佳的方案。这些成果最终可能将为高阶内存分配问题画上一个完美的句号。
 
 [1]: http://tinylab.org
+[2]: /lwn-101230
+[3]: https://lwn.net/Articles/104843/
+[4]: https://lwn.net/Articles/105023/

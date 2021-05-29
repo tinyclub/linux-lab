@@ -25,9 +25,7 @@ tags:
 
 目标文件 (object file) 中的节 (section) 包含了用于链接的信息：程序的代码和数据、重定位信息等。本文介绍 Linux 内核中一些附加类型的节，称为 “非常规节 (special section)”，用于实现各种内核特性。非常规节并不广为人知，所以值得对这个话题做一些解释。
 
-> # Segments and sections
-
-# 段 (segment) 与节 (section)
+### “段” 与 “节”（Segments and sections）
 
 > Although Linux supports several binary file formats, ELF ([Executable and Linking Format](http://en.wikipedia.org/wiki/Executable_and_Linkable_Format)) is the preferred format since it is flexible and extensible by design, and it is not bound to any particular processor or architecture. ELF binary files consist of an ELF header followed by a few segments. Each segment, in turn, includes one or more sections. The length of each segment and of each section is specified in the ELF header. Most segments, and thus most sections, have an initial address which is also specified in the ELF header. In addition, each segment has its own access rights.
 
@@ -49,9 +47,7 @@ tags:
 
 “`readelf -S`” 命令列出可执行文件中的节，而 “`readelf -l`” 命令列出可执行文件中的段。
 
-> # Defining a section
-
-# 节的定义
+### 节的定义（Defining a section）
 
 > Where are the sections declared? If you look at a standard C program you won't find any reference to a section. However, if you look at the assembly version of the C program you will find several assembly directives that define the beginning of a section. More precisely, the "`.text`", "`.data`", and "`.section rodata`" directives identify the beginning of the the three canonical sections mentioned previously, while the "`.comm `" directive defines an area of uninitialized data.
 
@@ -79,9 +75,7 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 ld --verbose
 ```
 
-> # Special sections
-
-# 非常规节
+### 非常规节（Special sections）
 
 > If you compare the sections present in a simple executable file, say one associated with `helloworld.c`, with those present in the Linux kernel executable, you will notice that Linux relies on many *special sections* not present in conventional executable files. The number of such sections depends on the hardware platform. On an x86_64 system over 30 special sections are defined, while on an ARM system there are about ten.
 
@@ -126,9 +120,7 @@ Program Headers:
    05     .notes 
 ```
 
-> # Defining a Linux special section
-
-# Linux 非常规节的定义
+### Linux 非常规节的定义（Defining a Linux special section）
 
 > Special sections are defined in the *Linux linker script*, which is a linker script distinct from the default linker script mentioned above. The corresponding source file is stored in the `kernel/vmlinux.ld.S` in the architecture-specific subtree. This file uses a set of macros defined in the `linux/include/asm_generic/vmlinux.lds.h` header file.
 
@@ -177,9 +169,7 @@ __attribute__((__section__(".init.data")))
 #define __initdata __attribute__((__section__(".init.data")))
 ```
 
-> # Some examples
-
-# 一些例子
+### 一些例子（Some examples）
 
 > As seen in the previous `readelf` listing, all special sections appearing in the Linux kernel end up packed in one of the segments defined in the `vmlinux` ELF header. Each special section fulfills a particular purpose. The following list groups some of the Linux special sections according to the type of information stored in them. Whenever applicable, the name of the macro used in the Linux code to refer to the section is mentioned instead of the special section's name.
 
@@ -269,9 +259,7 @@ alternative(oldinstr, newinstr, feature);
 
  `.modinfo` 非常规节能被`modinfo` 命令解析来显示有关内核模块的信息。存储在该节中的数据不会加载到内核地址空间中。`.gnu.linkone.this_module` 非常规节包含一个 `module` 结构，其中包含模块名称等字段。插入模块时，`init_module()` 系统调用会将这个非常规节的 `module` 结构体读取到动态内存区域。
 
-> # Conclusion
-
-# 小结
+### 小结（Conclusion）
 
 > Although special sections can be defined in application programs too, there is no doubt that kernel developers have been quite creative in exploiting them. In fact, the examples listed above are by no means exhaustive and new special sections keep popping up in recent kernel releases. Without special sections, implementing some kernel features like those above would be rather difficult.
 

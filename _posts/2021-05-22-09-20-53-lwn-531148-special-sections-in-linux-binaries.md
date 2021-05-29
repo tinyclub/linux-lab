@@ -47,7 +47,7 @@ tags:
 
 > The "`readelf -S`" command lists the sections included in an executable file, while the "`readelf -l`" command lists the segments included in an executable file.
 
-“`readelf-S`” 命令列出可执行文件中的节，而 “`readelf-l`” 命令列出可执行文件中的段。
+“`readelf -S`” 命令列出可执行文件中的节，而 “`readelf -l`” 命令列出可执行文件中的段。
 
 > # Defining a section
 
@@ -75,7 +75,9 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 链接器依赖链接器脚本来决定将哪个地址分配给可执行文件的每个部分。要获取系统的默认脚本，可以执行命令：
 
-    ld --verbose
+```shell
+ld --verbose
+```
 
 > # Special sections
 
@@ -89,38 +91,40 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 可以使用 `readelf` 命令从内核可执行文件 `vmlinux` 的 ELF 头中提取数据。在 x86_64 上执行此命令时，会得到如下结果：
 
-    Elf file type is EXEC (Executable file)
-    Entry point 0x1000000
-    There are 6 program headers, starting at offset 64
-    
-    Program Headers:
-      Type           Offset             VirtAddr           PhysAddr
-    	               FileSiz            MemSiz              Flags  Align
-      LOAD           0x0000000000200000 0xffffffff81000000 0x0000000001000000
-    	               0x00000000007a3000 0x00000000007a3000  R E    200000
-      LOAD           0x0000000000a00000 0xffffffff81800000 0x0000000001800000
-    	               0x00000000000c7b40 0x00000000000c7b40  RW     200000
-      LOAD           0x0000000000c00000 0xffffffffff600000 0x00000000018c8000
-    	               0x0000000000000d60 0x0000000000000d60  R E    200000
-      LOAD           0x0000000000e00000 0x0000000000000000 0x00000000018c9000
-    	               0x0000000000010f40 0x0000000000010f40  RW     200000
-      LOAD           0x0000000000eda000 0xffffffff818da000 0x00000000018da000
-    	               0x0000000000095000 0x0000000000163000  RWE    200000
-      NOTE           0x0000000000713e08 0xffffffff81513e08 0x0000000001513e08
-    	               0x0000000000000024 0x0000000000000024         4
-    
-     Section to Segment mapping:
-      Segment Sections...
-       00     .text .notes __ex_table .rodata __bug_table .pci_fixup __ksymtab 
+```
+Elf file type is EXEC (Executable file)
+Entry point 0x1000000
+There are 6 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+	               FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000200000 0xffffffff81000000 0x0000000001000000
+	               0x00000000007a3000 0x00000000007a3000  R E    200000
+  LOAD           0x0000000000a00000 0xffffffff81800000 0x0000000001800000
+	               0x00000000000c7b40 0x00000000000c7b40  RW     200000
+  LOAD           0x0000000000c00000 0xffffffffff600000 0x00000000018c8000
+	               0x0000000000000d60 0x0000000000000d60  R E    200000
+  LOAD           0x0000000000e00000 0x0000000000000000 0x00000000018c9000
+	               0x0000000000010f40 0x0000000000010f40  RW     200000
+  LOAD           0x0000000000eda000 0xffffffff818da000 0x00000000018da000
+	               0x0000000000095000 0x0000000000163000  RWE    200000
+  NOTE           0x0000000000713e08 0xffffffff81513e08 0x0000000001513e08
+	               0x0000000000000024 0x0000000000000024         4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text .notes __ex_table .rodata __bug_table .pci_fixup __ksymtab 
           __ksymtab_gpl __ksymtab_strings __init_rodata __param __modver 
-       01     .data 
-       02     .vsyscall_0 .vsyscall_fn .vsyscall_1 .vsyscall_2 .vsyscall_var_jiffies 
+   01     .data 
+   02     .vsyscall_0 .vsyscall_fn .vsyscall_1 .vsyscall_2 .vsyscall_var_jiffies 
           .vsyscall_var_vgetcpu_mode .vsyscall_var_vsyscall_gtod_data 
-       03     .data..percpu 
-       04     .init.text .init.data .x86_trampoline .x86_cpu_dev.init .altinstructions 
+   03     .data..percpu 
+   04     .init.text .init.data .x86_trampoline .x86_cpu_dev.init .altinstructions 
           .altinstr_replacement .iommu_table .apicdrivers .exit.text .smp_locks 
           .data_nosave .bss .brk 
-       05     .notes 
+   05     .notes 
+```
 
 > # Defining a Linux special section
 
@@ -134,11 +138,12 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 用于 ARM 硬件平台的链接器脚本包含一个易于理解的非常规节的定义：
 
-    . = ALIGN(4);
-    __start___ex_table = .;
-    *(__ex_table)
-    __stop___ex_table = .;
-
+````assembly
+. = ALIGN(4);
+__start___ex_table = .;
+*(__ex_table)
+__stop___ex_table = .;
+````
 
 > The `__ex_table` special section is aligned to a multiple of four bytes. Furthermore, the linker creates a pair of identifiers, namely `__start___ex_table` and `__stop___ex_table`, and sets their addresses to the beginning and the end of `__ex_table`. Linux functions can use these identifiers to iterate through the bytes of `__ex_table`. Those identifiers must be declared as `extern` because they are defined in the linker script.
 
@@ -160,13 +165,17 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
 这种技术似乎只适用于汇编代码。幸运的是，GNU C 编译器提供了非标准的 `attribute` 机制来创建非常规节。例如，
 
-    __attribute__((__section__(".init.data")))
+```c
+__attribute__((__section__(".init.data")))
+```
 
 > declaration, for instance, tells the compiler that the code following that declaration must be inserted into the `.init.data` section. To make the code more readable, suitable macros are defined. The `__initdata` macro, for instance, is defined as:
 
 声明告诉编译器该声明后面的代码必须插入到 `.init.data` 节中。为了使代码更具可读性可定义合适的宏。如将 `__initdata` 宏定义为：
 
-    #define __initdata __attribute__((__section__(".init.data")))
+```c
+#define __initdata __attribute__((__section__(".init.data")))
+```
 
 > # Some examples
 
@@ -236,7 +245,9 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 > 
 >   The kernel's [SMP alternatives](https://lwn.net/Articles/164121/) mechanism allows a single kernel to be built optimally for multiple versions of a given processor architecture. Through the magic of boot-time code patching, advanced instructions can be exploited if, and only if, the system's processor is able to execute those instructions. This mechanism is controlled with the `alternative()` macro:
 >   
->       alternative(oldinstr, newinstr, feature);
+> ```c
+> alternative(oldinstr, newinstr, feature);
+> ```
 >   
 >   This macro first stores `oldinstr` in the `.text` regular section. It then stores in the `.altinstructions` special section a structure that includes the following fields: the address of the `oldinstr`, the address of the `newinstr`, the `feature` flags, the length of the `oldinstr`, and the length of the `newinstr`. It stores `newinstr` in a `.altinstr_replacement` special section. Early in the boot process, every alternative instruction which is supported by the running processor is patched directly into the loaded kernel image; it will be filled with no-op instructions if need be.
 
@@ -244,7 +255,9 @@ GNU C 编译器（译者注：cc1）将源文件翻译为等效的汇编语言�
 
   内核 [SMP alternatives][3] 提供了 “一次内核优化构建可提供给多个给定处理器架构的版本使用” 的机制。通过引导时间的代码修补魔术，高级指令当且仅当系统的处理器可被执行时才会被真正释放。此机制由 `alternative()` 宏控制：
 
-      alternative(oldinstr, newinstr, feature);
+```c
+alternative(oldinstr, newinstr, feature);
+```
 
   该宏首先将 `oldinstr` 存储在 `.text` 常规节中。接着在 `altinstructions` 非常规节的一个结构体中，存储以下字段：`oldinstr` 的地址，`newinstr` 的地址，`feature` 标记，`oldinstr` 的长度以及 `newinstr` 的长度。它将 `newinstr` 存储在 `.altinstr_replacement` 非常规节中。在启动过程的早期，被当前运行的处理器支持的每个替代指令都直接修补到了已加载的内核映像中；如果需要，将会填充 no-op 指令。
 

@@ -483,3 +483,19 @@ Jia Xianhua:
   wechat-qrcode: true
   avatar: wechat-qrcode
   info: 移动开发，对嵌入式Linux感兴趣。
+
+VainPointer:
+  name: 何同一
+  nickname: VainPointer
+  archive: true
+  article: true
+  site: vainpointer.github.io
+  email: vainpointer@aliyun.com
+  wechat: strongnju
+  github: vainpointer
+  ali-pay: ali-pay-vainpointer
+  wechat-pay: wechat-pay-vainpointer
+  sponsor: wechat-pay
+  sponsor-qrcode: true
+  info: Linux 爱好者
+

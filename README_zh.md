@@ -324,7 +324,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 [v0.6](http://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
 
-* [v0.6 rc3](http://tinylab.org/linux-lab-v0.6/)
+* v0.6 rc3
     * 新增遗漏的 showterm 命令行录制工具
     * 进一步完善真实硬件板的支持
 
@@ -342,12 +342,12 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 [v0.7](http://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持透明压缩、内存编译与即插即用。
 
-* [v0.7 rc3](http://tinylab.org/linux-lab-v0.7/)
+* v0.7 rc3
     * 增加 v0.8 开发计划
     * 新增 Linux Lab Disk 使用说明
     * 简化内存编译使用接口
 
-* [v0.7 rc2](http://tinylab.org/linux-lab-v07-rc2/)
+* v0.7 rc2
     * 修复 sd boot，增补缺失的 dosfstools
     * 使用 truncate 取代 dd 创建磁盘镜像文件，提升创建速度
     * 为 source, checkout, patch 等目标新增 make 错误处理

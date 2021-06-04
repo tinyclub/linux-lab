@@ -2,7 +2,7 @@
 layout: post
 author: 'VainPointer'
 title: "LWN 531148: Linux 内核文件中的非常规节"
-draft: true
+draft: false
 album: "LWN 中文翻译"
 group: "translation"
 license: "cc-by-sa-4.0"

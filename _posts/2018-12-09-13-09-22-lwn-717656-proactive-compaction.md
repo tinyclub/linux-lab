@@ -17,7 +17,7 @@ tags:
 
 > 原文：[Proactive compaction](https://lwn.net/Articles/717656/)
 > 原创：By corbet @ Mar. 21, 2017
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Wen Yang](https://github.com/w-simon)
 
 > One of the goals of memory compaction, Vlastimil Babka said at the beginning of his memory-management track session at the 2017 Linux Storage, Filesystem, and Memory-Management Summit, is to make higher-order pages available. These pages — suitably aligned groups of physically contiguous pages — have many uses, including supporting the transparent huge pages feature. Compaction is mostly done on demand in the kernel now; he would like to do more of it ahead of time instead.
@@ -26,11 +26,11 @@ tags:
 
 > The scheme he has in mind involves doing compaction in the background, outside of the context of any specific process. The `kswapd` thread would be woken from the memory-allocation slow path, and would be expected to reclaim a certain number of single pages. It would then wake the separate `kcompactd` thread with a desired size for the higher-order pages. This thread would do compaction until a page of the desired order is available, or until the entire memory zone has been scanned. That may not be enough, though, since, at the end, it will have created only a single higher-order page.
 
-他所想到的一种方案是在后台执行规整，而无需依赖于任何特定的进程上下文（译者注，所谓不依赖于进程上下文即本文要介绍的主动规整（Proactive compaction），这里 “主动” 的含义具体是指在后台任务中增加更多的自主判断来尝试执行更多的内存规整，而不是仅仅在进程运行过程中根据内存分配函数被调用时所传入的有限信息执行规整）。当前内核在内存分配函数的慢路径（slow path，译者注，即函数 [`__alloc_pages_slowpath()`](https://elixir.bootlin.com/linux/v4.10/source/mm/page_alloc.c#L3519)）中会唤醒 `kswapd` 线程，尝试回收（reclaim）一定数量的单个页框。`kswapd` 则会唤醒另一个 `kcompactd` 线程（译者注，相关代码可以参考 [这里](https://elixir.bootlin.com/linux/v4.10/source/mm/vmscan.c#L3353)；`kcompactd` 在 4.6 版本引入，本文发表的时间，内核已经进化到 4.10），并在唤醒该线程的同时指定了期望分配的 “高阶” 内存的大小（译者注，即调用 `wakeup_kcompactd()` 函数时指定的 `alloc_order` 参数）。此线程在执行规整操作中，会一直扫描整个内存域（zone），直到获取足够的页框可以拼凑出给定大小的高阶内存块。但问题是按照目前的做法，`kcompactd` 最多只会创建一个 “高阶” 的内存块，一旦满足给定的要求就会暂停操作，而这往往无法满足更多的内存分配请求。
+他所想到的一种方案是在后台执行规整，而无需依赖于任何特定的进程上下文（译者注，所谓不依赖于进程上下文即本文要介绍的主动规整（Proactive compaction），这里 “主动” 的含义具体是指在后台任务中增加更多的自主判断来尝试执行更多的内存规整，而不是仅仅在进程运行过程中根据内存分配函数被调用时所传入的有限信息执行规整）。当前内核在内存分配函数的慢路径（slow path，译者注，即函数 [`__alloc_pages_slowpath()`][2]）中会唤醒 `kswapd` 线程，尝试回收（reclaim）一定数量的单个页框。`kswapd` 则会唤醒另一个 `kcompactd` 线程（译者注，相关代码可以参考 [这里][3]；`kcompactd` 在 4.6 版本引入，本文发表的时间，内核已经进化到 4.10），并在唤醒该线程的同时指定了期望分配的 “高阶” 内存的大小（译者注，即调用 `wakeup_kcompactd()` 函数时指定的 `alloc_order` 参数）。此线程在执行规整操作中，会一直扫描整个内存域（zone），直到获取足够的页框可以拼凑出给定大小的高阶内存块。但问题是按照目前的做法，`kcompactd` 最多只会创建一个 “高阶” 的内存块，一旦满足给定的要求就会暂停操作，而这往往无法满足更多的内存分配请求。
 
 > He asked the crowd for ideas on how to make this scheme better. Michal Hocko suggested adding a configuration option; the administrator could set a watermark and a time period. The compaction thread would then check each period and try to ensure that the desired number of pages are available. But Babka objected that this behavior doesn't really seem like something that administrators can be expected to configure properly. They are focused on parameters like transparent huge page allocation rates or network throughput and will be hard put to translate that to desired numbers of free pages. It would be better, he said, to have the system tune itself if possible.
 
-![Vlastimil Babka](https://static.lwn.net/images/conf/2017/lsfmm/VlastimilBabka-sm.jpg)
+![Vlastimil Babka](/wp-content/uploads/2021/06/lwn-717656/VlastimilBabka-sm.jpg)
 
 他（Vlastimil Babka）询问与会人员，针对当前的机制是否有好的改进建议。Michal Hocko 提出可以添加一个配置选项；通过这个配置选项系统管理员可以设置一个空闲内存的水位线（watermark）和一个检查周期。然后，`kcompactd` 可以周期性地检查并确保空闲的页框在配置的范围内（译者注：不低于设置的水位线）。但 Babka 对此表示反对，因为他认为对于系统管理员来说，要正确地对这些值进行配置，要求太高。作为系统管理员，他们更关心像透明巨页的分配成功率或者网络吞吐量这些值，但要让他们将这些参数转换为所需的空闲页框数量则不是那么容易。Babka 相信在这一点上还是让系统可以自动进行调节会更好。
 
@@ -44,7 +44,7 @@ Andrea Arcangeli 指出，有必要确保规整后生成的较大的连续页框
 
 > The proactive compaction feature is a work in progress, Babka said; [an RFC patch](https://lwn.net/Articles/717756/) was sent out recently. It tries to track the number of allocations that would have succeeded with more `kcompactd` activity. Essentially, those are situations where there are enough free pages in the system, but they are too fragmented to use. The patches are not currently tracking the importance of allocation requests; perhaps the GFP flags could be used for that purpose. There is also no long-term averaging of demand. For now, it simply runs until there are enough high-order pages available.
 
-Babka 说，主动规整（proactive compaction）功能正在开发中。最近刚提交了一个 [RFC 补丁](https://lwn.net/Articles/717756/)。补丁中试图检验一下在更积极地运行 `kcompactd` 后内存分配的问题是否有所改善。这里所提到的问题具体指的是表面上空闲页框足够，但由于它们太过分散而导致无法满足 “高阶” 内存分配的情况。补丁目前还没有考虑对一些重点分配请求类型（译者注，即上文提到的针对透明巨页和 SLUB 分配器相关的 “高阶” 内存分配请求）进行跟踪统计；如果要做的话或许可以考虑利用内存分配请求函数接口中的 GFP 选项参数。目前也没有统计长期运行后内存分配请求数量的平均值。总之，当前的做法只是简单地执行规整，直到发现已经有足够的 “高阶” 页框可用即可。
+Babka 说，主动规整（proactive compaction）功能正在开发中。最近刚提交了一个 [RFC 补丁][4]。补丁中试图检验一下在更积极地运行 `kcompactd` 后内存分配的问题是否有所改善。这里所提到的问题具体指的是表面上空闲页框足够，但由于它们太过分散而导致无法满足 “高阶” 内存分配的情况。补丁目前还没有考虑对一些重点分配请求类型（译者注，即上文提到的针对透明巨页和 SLUB 分配器相关的 “高阶” 内存分配请求）进行跟踪统计；如果要做的话或许可以考虑利用内存分配请求函数接口中的 GFP 选项参数。目前也没有统计长期运行后内存分配请求数量的平均值。总之，当前的做法只是简单地执行规整，直到发现已经有足够的 “高阶” 页框可用即可。
 
 > One remaining problem is evaluating the value of this work. The existing artificial benchmarks, he said, are reaching their limits in this area.
 
@@ -59,3 +59,6 @@ Babka 说，主动规整（proactive compaction）功能正在开发中。最近
 在会议即将结束前，Arcangeli 建议，如果一个子系统需要分配大内存，可以向规整模块注册自己所需要的页框数（供规整算法参考）。但 Babka 表示，他还是希望尽可能地避免增加类似的调节措施。Johannes Weiner 说，为后台任务增加一个开关还是有必要的，因为只要是主动的操作，都有可能会在某些条件下过度运行导致资源的浪费。但他同时也表示，除了开关，其他的调节参数都应该被避免。与会代表们普遍看好这个功能（Proactive compaction），但都认为在实现上，初期应该尽可能保持简单，如果有必要可以在以后添加更多的复杂功能。
 
 [1]: http://tinylab.org
+[2]: https://elixir.bootlin.com/linux/v4.10/source/mm/page_alloc.c#L3519
+[3]: https://elixir.bootlin.com/linux/v4.10/source/mm/vmscan.c#L3353
+[4]: https://lwn.net/Articles/717756/

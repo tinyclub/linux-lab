@@ -17,7 +17,7 @@ tags:
 
 > 原文：[Memory compaction issues](https://lwn.net/Articles/591998/)
 > 原创：By corbet @ Mar. 26, 2014
-> 翻译：By [unicornx](https://github.com/unicornx) of [TinyLab.org][1]
+> 翻译：By [unicornx](https://github.com/unicornx)
 > 校对：By [Anle Huang](https://github.com/hal0936)
 
 > Memory compaction is the process of relocating active pages in memory in order to create larger, physically contiguous regions — memory defragmentation, in other words. It is useful in a number of ways, not the least of which is making huge pages available. But compaction apparently has some problems of its own; Vlastimil Babka led a brief session in the 2014 Linux Storage, Filesystem, and Memory Management Summit to explore the issue.
@@ -26,7 +26,7 @@ tags:
 
 > After Vlastimil gave a quick overview of how compaction works (also described in [this article](https://lwn.net/Articles/368869/)) and described problems related to compaction overhead, Rik van Riel made the claim that there are two core issues to be looked at in this area: (1) can the compaction code be made to be faster, and (2) when compaction appears to be too expensive, should it just be skipped?
 
-会议中，首先由 Vlastimil 快速概述了内存规整的实现原理（也可参考[这篇文章介绍](/lwn-368869)）并描述了内存规整算法的开销问题，然后 Rik van Riel 做了一个总结，他认为在这个议题上存在两个核心的问题有待解决：（1）是否可以改进规整算法，使其更快，（2）当预期规整处理过于费时的时候，是否可以简单地跳过（忽略）规整处理？
+会议中，首先由 Vlastimil 快速概述了内存规整的实现原理（也可参考[这篇文章介绍][2]）并描述了内存规整算法的开销问题，然后 Rik van Riel 做了一个总结，他认为在这个议题上存在两个核心的问题有待解决：（1）是否可以改进规整算法，使其更快，（2）当预期规整处理过于费时的时候，是否可以简单地跳过（忽略）规整处理？
 
 > It seems that a number of compaction bugs have been fixed over the years, but some clearly remain. How, it was asked, can they be made easier to find? Writing test programs that reveal compaction problems tends to be hard; these problems arise out of specific workloads that exercise the system in certain ways. There does not appear to be any easy way to abstract the problematic access patterns out of the workloads into separate test programs.
 
@@ -37,3 +37,5 @@ tags:
 这意味着内存管理子系统的开发人员还没有真正理解为什么这些问题会发生。在有些工作负载下非常明显地会看到规整的计算开销特别地高，但具体的原因还不清楚。所以，很显然我们还需要更深入地理解问题究竟是如何产生的。为了这个目的，初步的建议是添加一个新的计数器，一旦内核检测到它在规整代码中花费了大量时间，则对该计数器的值加一。如果我们发现该计数器的值开始增加，则表明规整代码中有潜在的错误正在被触发。这样也许有助于我们找出那些错误的位置。
 
 [1]: http://tinylab.org
+[2]: /lwn-368869
+

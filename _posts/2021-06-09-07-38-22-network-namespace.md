@@ -2,7 +2,7 @@
 layout: post
 author: 'Peng Weilin'
 title: "Network Namespace 详解"
-draft: true
+draft: false
 album: "Linux Namespace"
 license: "cc-by-nc-nd-4.0"
 permalink: /network-namespace/

@@ -14,6 +14,16 @@
   description: 面向 C 语言程序员的 Rust 语言入门课程，由 RustCC 中文社区负责人授课。
   group: courses
 
+- title: 软件逆向工程初探
+  permalink: https://www.cctalk.com/m/group/89626746
+  description: 学习软件逆向工程基本概念，并结合案例掌握相关技术、流程和方法。
+  group: courses
+
+- title: Linux内核热补丁技术介绍与实战
+  permalink: https://www.cctalk.com/m/group/89715946
+  description: Linux Livepatch 是一个很好的 Linux 内核学习切入点，涉及内存管理、进程调度、函数回调、程序运行原理等方面，是 ELF 的典型应用案例。
+  group: courses
+
 - title: Linux Lab 公开课
   permalink: https://cctalk.com/m/group/88948325
   description: Linux Lab 免费视频教程，由 Linux Lab 开发者授课。

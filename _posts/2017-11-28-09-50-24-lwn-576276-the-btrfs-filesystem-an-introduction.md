@@ -17,8 +17,8 @@ tags:
 ---
 > 原文：[The Btrfs filesystem: An introduction](https://lwn.net/Articles/576276/)
 > 原创：By Jonathan Corbet @ Dec 11, 2013
-> 翻译：By Tacinight of [TinyLab.org][1] @ Nov 28, 2017
-> 校对：By Unicornx of [TinyLab.org][1]
+> 翻译：By [Tacinight](https://github.com/tacinight)
+> 校对：By [unicornx](https://github.com/unicornx)
 
 > The Btrfs filesystem has been through almost every part of the hype cycle at one point or another in its short history. For a time, it was the next-generation filesystem that was going to solve many of our problems; distributors were racing to see who could be the first to ship it by default. Then it became clear that all those longtime filesystem developers weren't totally out to lunch when they warned that it takes many years to get a filesystem to a point where it can be trusted with important data. At this point, it is possible to go to a conference and hear almost nothing positive about Btrfs; disillusionment appears to have set in. By the time Btrfs is truly ready, some seem to think, it will be thoroughly obsolete.
 
@@ -105,12 +105,16 @@ Btrfs 还提供了一大堆其他 Linux 文件系统不支持的功能。它可�
 > - [Send/receive and ioctl()](https://lwn.net/Articles/581558/): using the send/receive feature for incremental backups, a brief overview of functionality available with ioctl(), and concluding notes.  
 > By the end of the series, we plan to have a reasonably comprehensive introduction to Btrfs in place; stay tuned.
 
-- [入门](https://lwn.net/Articles/577218/)：从哪里获得软件，以及创建和使用 Btrfs 文件系统的基础知识。  
-- [使用多个设备](https://lwn.net/Articles/577961/)：Btrfs 文件系统不限于物理设备；相反，文件系统支持多个 RAID 和类 RAID 配置的多设备文件系统。本文将介绍该功能以及如何使用它。  
-- [子卷和快照](https://lwn.net/Articles/579009/)：在单个存储卷上创建多个文件系统以及相关的快照机制。  
-- [发送/接收和ioctl()](https://lwn.net/Articles/581558/)：使用发送/接收功能进行增量备份，简要介绍 ioctl() 提供的功能以及结束语。  
+- [入门][3]：从哪里获得软件，以及创建和使用 Btrfs 文件系统的基础知识。
+- [使用多个设备][4]：Btrfs 文件系统不限于物理设备；相反，文件系统支持多个 RAID 和类 RAID 配置的多设备文件系统。本文将介绍该功能以及如何使用它。
+- [子卷和快照][5]：在单个存储卷上创建多个文件系统以及相关的快照机制。
+- [发送/接收和 `ioctl()`][6]：使用发送/接收功能进行增量备份，简要介绍 `ioctl()` 提供的功能以及结束语。
 
 在系列的最后，我们计划对 Btrfs 进行合理全面的介绍，敬请关注。
 
 [1]: http://tinylab.org
 [2]: http://tinylab.org/lwn
+[3]: /lwn-577218/
+[4]: /lwn-577961/
+[5]: https://lwn.net/Articles/579009/
+[6]: https://lwn.net/Articles/581558/

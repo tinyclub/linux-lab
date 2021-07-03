@@ -19,7 +19,7 @@ tags:
 
 > 原文：[Filesystem management interfaces](https://lwn.net/Articles/718803/)
 > 原创：By By Jake Edge @ Apr 5, 2017
-> 翻译：By Tacinight of [TinyLab.org][1]
+> 翻译：By [Tacinight](https://github.com/tacinight)
 > 校对：By [cee1](https://github.com/cee1)
 
 > In a filesystem-only session at LSFMM 2017, Steven Whitehouse wanted to discuss an interface for filesystem management. There is currently no interface for administrators and others to receive events of interest from filesystems (and their underlying storage devices), though two have been proposed over the years. Whitehouse wanted to describe the need for such an interface and see if progress could be made on adding something to the kernel.

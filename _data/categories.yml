@@ -17,6 +17,9 @@
       categories:
         - name: EMMC
         - name: UFS
+        - name: SD NAND
+        - name: SD 卡
+        - name: TF 卡
     - name: Video
     - name: Camera
     - name: Audio
@@ -32,6 +35,7 @@
     - name: USB
     - name: 充电
     - name: 传感器
+    - name: CAN
     - name: 硬件杂项
       categories:
         - name: Keys
@@ -45,6 +49,7 @@
     - name: Python
     - name: C++
     - name: Java
+    - name: Rust
     - name: 其他语言
       categories:
         - name: Lua
@@ -117,6 +122,7 @@
       categories:
         - name: Ubuntu
         - name: 在线 Linux
+        - name: Arch Linux
     - name: LiteOS
 
 - name: Linux 开发
@@ -149,6 +155,7 @@
           categories:
             - name: Clutter
             - name: Qt
+            - name: wx-gtk
         - name: Multimedia
           categories:
             - name: GStreamer
@@ -163,6 +170,7 @@
         - name: Unicorn
         - name: Bochs
         - name: Javascript Emulator
+        - name: KVM
     - name: 开发环境
       categories:
         - name: 开发工具
@@ -175,6 +183,7 @@
             - name: Gcc
             - name: 交叉编译
             - name: Pwntools
+            - name: CMake
         - name: 装载与链接
           categories:
             - name: Loader
@@ -198,9 +207,11 @@
             - name: ltrace
             - name: mtrace
             - name: ptrace
+            - name: JTAG
     - name: 引导与启动
       categories:
         - name: Bootloaders
+        - name: EDK2
     - name: 系统初始化
       categories:
         - name: 根文件系统
@@ -236,6 +247,7 @@
             - name: RTC 驱动
             - name: Watchdog 驱动
             - name: 霍尔器件 驱动
+            - name: CAN 驱动
         - name: 构建 Linux 服务
           categories:
             - name: 流量监控
@@ -260,6 +272,7 @@
             - name: Systrace
             - name: JDB
             - name: ADB
+            - name: Fastboot
     - name: Android 模拟器
       categories:
         - name: Goldfish
@@ -327,6 +340,7 @@
       categories:
         - name: Git
         - name: SVN
+        - name: Fossil
     - name: 源码分析
       categories:
         - name: Cscope
@@ -347,6 +361,14 @@
         - name: Synergy
         - name: Docker
         - name: Google Script
+    - name: 代码覆盖率测试
+      categories:
+        - name: gcov
+        - name: Cobertura
+        - name: JTest
+        - name: Clover
+        - name: Emma
+        - name: Kalistick
 
 - name: 行业观察
   categories:
@@ -356,6 +378,9 @@
     - name: 版权协议
       categories:
         - name: GPL
+        - name: Apache
+        - name: MIT
+        - name: EUAL
     - name: 技术动态
       categories:
         - name: LWN

@@ -50,7 +50,7 @@ $ tools/post slug=this-is-my-link title="This is 我的文章标题"
 Creating new post: ./_posts/2019-05-21-09-04-37-this-is-my-link.md
 ```
 
-注：执行该命令可能会报系统缺少 rake 命令，无法运行，解决方法很简单，直接安装 rake 即可，譬如在 Ubuntu 系统上可以直接运行 `sudo apt-get install rake` 完成安装。
+注：执行该命令可能会报系统缺少 rake 命令，无法运行，解决方法很简单，直接安装 rake 即可，譬如在 Ubuntu 系统上可以直接运行 `sudo apt-get install rake` 完成安装。Arch Linux 或其他衍生版本需要安装 `ruby-rake`，即 `sudo pacman -S ruby-rake`。
 
 执行 `tools/post` 命令后会在 `./_posts/` 目录下生成名为类似 `2019-05-21-09-04-37-this-is-my-link.md` 的文章模版，该文件名由当前时间戳和您提供的 slug 字符串拼接组成。文章发表后可以通过链接 `http://tinylab.org/this-is-my-link` 访问该文章页面如下，其中红色框部分是该文章的站内链接，蓝色框部分是 title 的内容：
 

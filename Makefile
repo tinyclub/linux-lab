@@ -901,13 +901,13 @@ endif
 
 # Prebuilt path (not top dir) setting
 ifneq ($(_BIMAGE),)
-  PREBUILT_UBOOT_DIR  ?= $(dir $(_BIMAGE))
+  PREBUILT_UBOOT_DIR  ?= $(subst //,,$(dir $(_BIMAGE))/)
 endif
 ifneq ($(_KIMAGE),)
-  PREBUILT_KERNEL_DIR ?= $(dir $(_KIMAGE))
+  PREBUILT_KERNEL_DIR ?= $(subst //,,$(dir $(_KIMAGE))/)
 endif
 ifneq ($(_ROOTFS),)
-  PREBUILT_ROOT_DIR   ?= $(dir $(_ROOTFS))
+  PREBUILT_ROOT_DIR   ?= $(subst //,,$(dir $(_ROOTFS))/)
 endif
 ifneq ($(_QTOOL),)
   PREBUILT_QEMU_DIR   ?= $(patsubst %/bin/,%,$(dir $(_QTOOL)))

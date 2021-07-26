@@ -19,6 +19,9 @@ CCORI[UBOOT_v2019.10,OS_focal]  = internal
 LINUX   ?= v5.1
 BUILDROOT?= 2019.11.1
 
+# git repos for other kernel fork
+KERNEL_GIT[KERNEL_FORK_openEuler] := https://gitee.com/openeuler/kernel.git
+
 NETDEV_LIST := virtio
 
 NETDEV  ?= virtio

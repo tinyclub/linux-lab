@@ -9,6 +9,9 @@ MEM     ?= 128M
 SMP     ?= 4
 LINUX   ?= v5.1
 
+# git repos for other kernel fork
+KERNEL_GIT[KERNEL_FORK_openEuler] := https://gitee.com/openeuler/kernel.git
+
 GCC = 9
 GCC[LINUX_v3.2] = 4.8
 GCC[LINUX_v2.6.12.6] = 4.8

@@ -205,10 +205,6 @@ _ROOT_SRC ?= buildroot
 ROOT_SRC  ?= $(_ROOT_SRC)
 
 _LINUX=$(LINUX)
-KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
-ROOT_ABS_SRC   := $(TOP_SRC)/$(ROOT_SRC)
-UBOOT_ABS_SRC  := $(TOP_SRC)/$(UBOOT_SRC)
-QEMU_ABS_SRC   := $(TOP_SRC)/$(QEMU_SRC)
 
 BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
@@ -337,8 +333,20 @@ ifneq ($(BOARD),)
 endif
 
 # Customize kernel git repo and local dir
-$(eval $(call __vs,KERNEL_SRC,LINUX))
-$(eval $(call __vs,KERNEL_GIT,LINUX))
+$(eval $(call __vs,KERNEL_SRC,LINUX,KERNEL_FORK))
+$(eval $(call __vs,KERNEL_GIT,LINUX,KERNEL_FORK))
+$(eval $(call __vs,ROOT_SRC,BUILDROOT,ROOT_FORK))
+$(eval $(call __vs,ROOT_GIT,BUILDROOT,ROOT_FORK))
+$(eval $(call __vs,UBOOT_SRC,UBOOT,UBOOT_FORK))
+$(eval $(call __vs,UBOOT_GIT,UBOOT,UBOOT_FORK))
+$(eval $(call __vs,QEMU_SRC,QEMU,QEMU_FORK))
+$(eval $(call __vs,QEMU_GIT,QEMU,QEMU_FORK))
+
+# Allow boards to customize source and repos
+KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
+ROOT_ABS_SRC   := $(TOP_SRC)/$(ROOT_SRC)
+UBOOT_ABS_SRC  := $(TOP_SRC)/$(UBOOT_SRC)
+QEMU_ABS_SRC   := $(TOP_SRC)/$(QEMU_SRC)
 
 $(eval $(call __vs,DTS,LINUX))
 $(eval $(call __vs,DTB,LINUX))

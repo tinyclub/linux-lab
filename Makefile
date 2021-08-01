@@ -325,6 +325,12 @@ ifneq ($(BOARD),)
   # include $(BOARD_DIR)/.labinit
   $(eval $(call _bi,labinit))
   $(eval $(call _bi,labconfig))
+
+  _QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
+  _UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
+  _KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
+  _ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
+
   ifeq ($(BOARD_MAKEFILE), $(wildcard $(BOARD_MAKEFILE)))
     include $(BOARD_MAKEFILE)
   endif
@@ -666,11 +672,6 @@ _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
-
-_QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
-_UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
-_KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
-_ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
 
 # Core build: for building in standalone directories
 TOP_BUILD      := $(TOP_DIR)/build

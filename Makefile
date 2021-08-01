@@ -180,13 +180,13 @@ PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 #QEMU_GIT ?= https://github.com/qemu/qemu.git
 QEMU_GIT  ?= https://gitee.com/mirrors/qemu.git
 _QEMU_GIT := $(QEMU_GIT)
-_QEMU_SRC ?= qemu
+_QEMU_SRC ?= $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK)-qemu),qemu)
 QEMU_SRC  ?= $(_QEMU_SRC)
 
 #UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
 UBOOT_GIT  ?= https://gitee.com/mirrors/u-boot.git
 _UBOOT_GIT := $(UBOOT_GIT)
-_UBOOT_SRC ?= u-boot
+_UBOOT_SRC ?= $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK)-uboot),u-boot)
 UBOOT_SRC  ?= $(_UBOOT_SRC)
 
 #KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
@@ -194,17 +194,17 @@ UBOOT_SRC  ?= $(_UBOOT_SRC)
 KERNEL_GIT  ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
 #KERNEL_GIT ?= git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_GIT := $(KERNEL_GIT)
-_KERNEL_SRC ?= linux-stable
+_KERNEL_SRC ?= $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK)-kernel),linux-stable)
 KERNEL_SRC  ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
 #ROOT_GIT ?= https://github.com/buildroot/buildroot
 ROOT_GIT  ?= https://gitee.com/mirrors/buildroot.git
 _ROOT_GIT := $(ROOT_GIT)
-_ROOT_SRC ?= buildroot
+_ROOT_SRC ?= $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK)-buildroot),buildroot)
 ROOT_SRC  ?= $(_ROOT_SRC)
 
-_LINUX=$(LINUX)
+_LINUX = $(LINUX)
 
 BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 

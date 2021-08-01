@@ -10,7 +10,7 @@ SMP     ?= 4
 LINUX   ?= v5.1
 
 # git repos for other kernel fork
-KERNEL_GIT[KERNEL_FORK_openEuler] := https://gitee.com/openeuler/kernel.git
+KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 
 GCC = 9
 GCC[LINUX_v3.2] = 4.8

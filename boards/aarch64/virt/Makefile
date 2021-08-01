@@ -20,7 +20,7 @@ LINUX   ?= v5.1
 BUILDROOT?= 2019.11.1
 
 # git repos for other kernel fork
-KERNEL_GIT[KERNEL_FORK_openEuler] := https://gitee.com/openeuler/kernel.git
+KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 
 NETDEV_LIST := virtio
 

@@ -667,13 +667,18 @@ _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
+_QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
+_UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
+_KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
+_ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
+
 # Core build: for building in standalone directories
 TOP_BUILD      := $(TOP_DIR)/build
 TOP_BUILD_ARCH := $(TOP_BUILD)/$(XARCH)
-QEMU_BUILD     := $(TOP_BUILD_ARCH)/qemu-$(QEMU)-$(MACH)
-UBOOT_BUILD    := $(TOP_BUILD_ARCH)/uboot-$(UBOOT)-$(MACH)
-KERNEL_BUILD   := $(TOP_BUILD_ARCH)/linux-$(LINUX)-$(MACH)
-ROOT_BUILD     := $(TOP_BUILD_ARCH)/buildroot-$(BUILDROOT)-$(MACH)
+QEMU_BUILD     := $(TOP_BUILD_ARCH)/$(_QEMU_FORK)qemu-$(QEMU)-$(MACH)
+UBOOT_BUILD    := $(TOP_BUILD_ARCH)/$(_UBOOT_FORK)uboot-$(UBOOT)-$(MACH)
+KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(_KERNEL_FORK)linux-$(LINUX)-$(MACH)
+ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(_ROOT_FORK)buildroot-$(BUILDROOT)-$(MACH)
 BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
 
 # Cross Compiler toolchains
@@ -1568,7 +1573,7 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$(call _uc,$1)_CONFIG_FILE ?= $(2)_$$($(call _uc,$(2)))_defconfig
+$(call _uc,$1)_CONFIG_FILE ?= $$(_$(call _uc,$(1))_FORK)$(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
 ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))

@@ -50,7 +50,7 @@ ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/Image
-KIMAGE  ?= $(BSP_KERNEL)/$(_KERNEL_FORK)$(LINUX)/Image
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 
 # Get DRAM start & size via `bdinfo`
 KRN_ADDR?= 0x45000000
@@ -81,20 +81,20 @@ endif
 # Run uboot as bios, use -bios instead of -kernel
 UBOOT_BIOS ?= 1
 
-BIMAGE  ?= $(BSP_UBOOT)/$(_UBOOT_FORK)$(UBOOT)/$(LINUX)/u-boot.bin
-DTS     ?= $(BSP_KERNEL)/$(_KERNEL_FORK)$(LINUX)/virt-gicv3.dts
+BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)/u-boot.bin
+DTS     ?= $(BSP_KERNEL)/$(LINUX)/virt-gicv3.dts
 # DTB is loaded by QEMU automatically at start of RAM, we load a new one for easier customization
 # This is dumped out by qemu, see README.md
-DTB     ?= $(BSP_KERNEL)/$(_KERNEL_FORK)$(LINUX)/virt-gicv3.dtb
-UKIMAGE ?= $(BSP_KERNEL)/$(_KERNEL_FORK)$(LINUX)/Image
+DTB     ?= $(BSP_KERNEL)/$(LINUX)/virt-gicv3.dtb
+UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/Image
 
-ROOTFS  ?= $(BSP_ROOT)/$(_ROOT_FORK)$(BUILDROOT)/rootfs.cpio.gz
-HROOTFS ?= $(BSP_ROOT)/$(_ROOT_FORK)$(BUILDROOT)/rootfs.$(FSTYPE)
-UROOTFS := $(BSP_ROOT)/$(_ROOT_FORK)$(BUILDROOT)/rootfs.cpio.uboot
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
+UROOTFS := $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.uboot
 XKCLI   ?= earlycon
 # Only for current v5.0.10 support
-QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(_QEMU_FORK)$(QEMU)/bin/qemu-system-$(XARCH)
-QTOOL[OS_focal]    ?= $(BSP_QEMU)/$(_QEMU_FORK)$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_focal]    ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # prebuilt toolchains, please download it if not internal via: make toolchain
 # Available origin: internal, bootlin, arm, linaro

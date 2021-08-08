@@ -39,6 +39,6 @@ ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0
 
-KIMAGE  ?= $(BSP_KERNEL)/$(_KERNEL_FORK)$(LINUX)/bzImage
-ROOTFS  ?= $(BSP_ROOT)/$(_ROOT_FORK)$(BUILDROOT)/rootfs.cpio.gz
-ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(_ROOT_FORK)$(BUILDROOT)/rootfs32.cpio.gz
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/bzImage
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz

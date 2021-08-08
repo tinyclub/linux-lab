@@ -141,18 +141,10 @@ else
 endif
 
 # add board directories
-BOARD_ROOT ?= $(BOARD_DIR)/root
-BOARD_KERNEL ?= $(BOARD_DIR)/kernel
-BOARD_UBOOT ?= $(BOARD_DIR)/uboot
-BOARD_QEMU ?= $(BOARD_DIR)/qemu
 BOARD_TOOLCHAIN ?= $(BOARD_DIR)/toolchains
 
 # add a standlaone bsp directory
 BSP_DIR ?= $(BOARD_DIR)/bsp
-BSP_ROOT ?= $(BSP_DIR)/root
-BSP_KERNEL ?= $(BSP_DIR)/kernel
-BSP_UBOOT ?= $(BSP_DIR)/uboot
-BSP_QEMU ?= $(BSP_DIR)/qemu
 BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
 BSP_CONFIG = $(BSP_DIR)/configs
 BSP_PATCH  = $(BSP_DIR)/patch
@@ -170,11 +162,7 @@ MACH ?= $(notdir $(BOARD))
 # Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
 PREBUILT_DIR        := $(TOP_DIR)/prebuilt
 PREBUILT_TOOLCHAINS := $(PREBUILT_DIR)/toolchains
-PREBUILT_ROOT       := $(PREBUILT_DIR)/root
-PREBUILT_KERNEL     := $(PREBUILT_DIR)/kernel
 PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
-PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot
-PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu
 
 # Core source: remote and local
 #QEMU_GIT ?= https://github.com/qemu/qemu.git
@@ -325,6 +313,34 @@ ifneq ($(BOARD),)
   # include $(BOARD_DIR)/.labinit
   $(eval $(call _bi,labinit))
   $(eval $(call _bi,labconfig))
+endif
+
+QEMU_FORK_ := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
+UBOOT_FORK_ := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
+KERNEL_FORK_ := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
+ROOT_FORK_ := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
+
+_QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,/$(QEMU_FORK)),)
+_UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,/$(UBOOT_FORK)),)
+_KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,/$(KERNEL_FORK)),)
+_ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,/$(ROOT_FORK)),)
+
+BSP_QEMU ?= $(BSP_DIR)/qemu$(_QEMU_FORK)
+BSP_UBOOT ?= $(BSP_DIR)/uboot$(_UBOOT_FORK)
+BSP_ROOT ?= $(BSP_DIR)/root$(_ROOT_FORK)
+BSP_KERNEL ?= $(BSP_DIR)/kernel$(_KERNEL_FORK)
+
+PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu$(_QEMU_FORK)
+PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot$(_UBOOT_FORK)
+PREBUILT_ROOT       := $(PREBUILT_DIR)/root$(_ROOT_FORK)
+PREBUILT_KERNEL     := $(PREBUILT_DIR)/kernel$(_KERNEL_FORK)
+
+BOARD_QEMU ?= $(BOARD_DIR)/qemu$(_QEMU_FORK)
+BOARD_UBOOT ?= $(BOARD_DIR)/uboot$(_UBOOT_FORK)
+BOARD_ROOT ?= $(BOARD_DIR)/root$(_ROOT_FORK)
+BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
+
+ifneq ($(BOARD),)
   ifeq ($(BOARD_MAKEFILE), $(wildcard $(BOARD_MAKEFILE)))
     include $(BOARD_MAKEFILE)
   endif
@@ -667,18 +683,13 @@ _KIMAGE := $(KIMAGE)
 _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
-_QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
-_UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
-_KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
-_ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
-
 # Core build: for building in standalone directories
 TOP_BUILD      := $(TOP_DIR)/build
 TOP_BUILD_ARCH := $(TOP_BUILD)/$(XARCH)
-QEMU_BUILD     := $(TOP_BUILD_ARCH)/$(_QEMU_FORK)qemu-$(QEMU)-$(MACH)
-UBOOT_BUILD    := $(TOP_BUILD_ARCH)/$(_UBOOT_FORK)uboot-$(UBOOT)-$(MACH)
-KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(_KERNEL_FORK)linux-$(LINUX)-$(MACH)
-ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(_ROOT_FORK)buildroot-$(BUILDROOT)-$(MACH)
+QEMU_BUILD     := $(TOP_BUILD_ARCH)/$(QEMU_FORK_)qemu-$(QEMU)-$(MACH)
+UBOOT_BUILD    := $(TOP_BUILD_ARCH)/$(UBOOT_FORK_)uboot-$(UBOOT)-$(MACH)
+KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(KERNEL_FORK_)linux-$(LINUX)-$(MACH)
+ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(ROOT_FORK_)buildroot-$(BUILDROOT)-$(MACH)
 BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
 
 # Cross Compiler toolchains
@@ -1621,12 +1632,12 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$$(_$(call _uc,$(1))_FORK)$(2)_$$($(call _uc,$2)_NEW)_defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
 
-NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$2/$$($(call _uc,$2)_NEW)/
+NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$(_$(call _uc,$(1))_FORK)$2/$$($(call _uc,$2)_NEW)/
 NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $(1)-cloneconfig:

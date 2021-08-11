@@ -2030,7 +2030,7 @@ root-buildroot:
 	$(call make_root,$(RT))
 
 # Install system/ to ROOTDIR
-root-install: root-dir
+root-install: $(ROOTDIR)
 	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 PHONY += root-buildroot root-install
@@ -2050,23 +2050,31 @@ endif
 # root ramdisk image
 ifeq ($(FS_TYPE),rd)
   ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
+  IROOTFS_DEPS    := $(ROOTDIR) FORCE
 else
   ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
+  IROOTFS_DEPS    := $(HROOTFS)
 endif
 
-root-rd:
-	$(Q)if [ ! -f "$(IROOTFS)" ]; then make $(S) root-rd-rebuild; fi
-
-root-rd-rebuild: FORCE
+$(IROOTFS): $(IROOTFS_DEPS)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL)
 	$(Q)mv $(IROOTFS).tmp $(IROOTFS)
 
+root-rd: $(IROOTFS)
+
+root-rd-rebuild: $(IROOTFS) FORCE
+
+root-rd-clean:
+	-$(Q)rm -f $(IROOTFS)
+
+PHONY += root-rd root-rd-rebuild root-rd-clean
+
 ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
 ifeq ($(prebuilt_root_dir), 1)
-  ROOT_DIR := root-dir
+  ROOT_REBUILD_DEPS := $(ROOTDIR) FORCE
 endif
 
 ifeq ($(DEV_TYPE),rd)
@@ -2076,27 +2084,25 @@ else
 endif
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
-root-rebuild: $(ROOT_DIR)
+root-rebuild: $(ROOT_REBUILD_DEPS)
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	$(Q)rm -rf $(XROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS).tmp HROOTFS=$(HROOTFS).tmp FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
 	$(Q)if [ -f $(XROOTFS).tmp ]; then mv $(XROOTFS).tmp $(XROOTFS); fi
-	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) _root-ud-rebuild; fi
+	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) root-ud-rebuild; fi
 else
 	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
 endif
 
-ROOT ?= rootdir
+ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
   ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
     ROOT := root-buildroot
   endif
 endif
-
-PHONY += root-rd root-rd-rebuild
 
 # Specify buildroot target
 
@@ -2118,14 +2124,20 @@ endif
 # root directory
 ifneq ($(FS_TYPE),dir)
   ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
+  ifneq ($(FS_TYPE),rd)
+    ROOTDIR_DEPS := $(IROOTFS)
+  endif
+  ifneq ($(FS_TYPE),hd)
+    ROOTDIR_DEPS := $(HROOTFS)
+  endif
 endif
 
-root-dir:
-	$(Q)if [ ! -d "${ROOTDIR}" ]; then make $(NPD) root-dir-rebuild; fi
+root-dir rootdir: $(ROOTDIR)
+root-dir-rebuild rootdir-rebuild: $(ROOTDIR) FORCE
 
-root-dir-rebuild: rootdir
+PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
 
-rootdir:
+$(ROOTDIR): $(ROOTDIR_DEPS)
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	$(Q)rm -rf $(ROOTDIR).tmp
@@ -2134,32 +2146,43 @@ ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
 endif
 
-rootdir-install: root-install
+root-dir-install rootdir-install: root-install
 
-rootdir-clean:
+PHONY += root-dir-install rootdir-install
+
+root-dir-clean rootdir-clean:
 	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
 
-rootdir-distclean: rootdir-clean
+root-dir-distclean rootdir-distclean: rootdir-clean
 
-PHONY += rootdir-distclean
+PHONY += root-dir-distclean rootdir-distclean root-dir-clean rootdir-clean
 
 fullclean: $(call gengoalslist,distclean)
 	$(Q)git clean -fdx
 
-PHONY += root-dir root-dir-rebuild rootdir rootdir-install rootdir-clean
+ifeq ($(FS_TYPE),dir)
+  HROOTFS_DEPS := $(ROOTDIR) FORCE
+endif
+ifeq ($(FS_TYPE),rd)
+  HROOTFS_DEPS := $(IROOTFS)
+endif
 
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
-root-hd:
-	$(Q)if [ ! -f "$(HROOTFS)" ]; then make $(NPD) root-hd-rebuild; fi
-
-root-hd-rebuild: FORCE
+$(HROOTFS): $(HROOTFS_DEPS)
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	$(Q)rm -rf $(HROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 	$(Q)mv $(HROOTFS).tmp $(HROOTFS)
 
-PHONY += root-hd root-hd-rebuild
+root-hd: $(HROOTFS)
+
+root-hd-rebuild: $(HROOTFS) FORCE
+
+root-hd-clean:
+	-$(Q)rm -f $(HROOTFS)
+
+PHONY += root-hd root-hd-rebuild root-hd-clean
 
 # Kernel modules
 
@@ -2371,7 +2394,7 @@ endif
 
 PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
-M_I_ROOT ?= root-dir
+M_I_ROOT ?= $(ROOTDIR)
 ifeq ($(PBR), 0)
   ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
     M_I_ROOT := root-buildroot
@@ -2541,7 +2564,7 @@ endif
 KOPTS ?=
 
 ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
-  ROOT_RD := root-rd
+  ROOT_RD := $(IROOTFS)
   # directory is ok, but is not compressed cpio
   KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
 else
@@ -2801,17 +2824,21 @@ _uboot:
 UBOOT_MKIMAGE := tools/uboot/mkimage
 
 # root uboot image
-root-ud:
-	$(Q)if [ ! -f "$(UROOTFS)" ]; then make $(NPD) root-ud-rebuild; fi
-
-_root-ud-rebuild: FORCE
+$(UROOTFS): $(IROOTFS)
 	@echo "LOG: Generating rootfs image for uboot ..."
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
 
-root-ud-rebuild: root-rd _root-ud-rebuild
+root-ud: $(UROOTFS)
+
+root-ud-rebuild: $(UROOTFS) FORCE
+
+root-ud-clean:
+	-$(Q)rm -f $(UROOTFS)
+
+PHONY += root-ud root-ud-rebuild root-ud-clean
 
 # aarch64 not add uboot header for kernel image
-kernel-uimage:
+$(UKIMAGE): $(KIMAGE)
 ifeq ($(PBK), 0)
 ifeq ($(notdir $(UKIMAGE)), uImage)
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
@@ -2822,11 +2849,8 @@ endif
 endif
 
 ifneq ($(INVALID_ROOTFS),1)
-$(UROOTFS): root-ud
 U_ROOT_IMAGE = $(UROOTFS)
 endif
-
-$(UKIMAGE): kernel-uimage
 
 U_KERNEL_IMAGE = $(UKIMAGE)
 
@@ -2835,8 +2859,6 @@ ifeq ($(DTB),$(wildcard $(DTB)))
 endif
 
 BOOTX := $(if $(UBOOT_BIOS),booti,bootm)
-
-PHONY += $(U_KERNEL_IMAGE) $(U_ROOT_IMAGE)
 
 export CMDLINE PFLASH_IMG PFLASH_SIZE PFLASH_BS ENV_ADDR ENV_OFFSET ENV_SIZE BOOTX BOOTDEV_LIST SD_IMG U_ROOT_IMAGE RDK_SIZE U_DTB_IMAGE DTB_SIZE U_KERNEL_IMAGE KRN_SIZE TFTPBOOT BIMAGE ROUTE BOOTDEV
 
@@ -2856,14 +2878,10 @@ ENV_IMG    := $(TFTPBOOT)/env.img
 export ENV_IMG
 
 UBOOT_DEPS := $(U_DTB_IMAGE)
-ifneq ($(UROOTFS),$(wildcard $(UROOTFS)))
-  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-    UBOOT_DEPS += root-ud
-  endif
+ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  UBOOT_DEPS += $(UROOTFS)
 endif
-ifneq ($(UKIMAGE),$(wildcard $(UKIMAGE)))
-  UBOOT_DEPS += kernel-uimage
-endif
+UBOOT_DEPS += $(UKIMAGE)
 
 ifeq ($(SD_BOOT),1)
   UBOOT_PACKAGES_INSTALL := packages-install

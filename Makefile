@@ -2124,10 +2124,10 @@ endif
 # root directory
 ifneq ($(FS_TYPE),dir)
   ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
-  ifneq ($(FS_TYPE),rd)
+  ifeq ($(FS_TYPE),rd)
     ROOTDIR_DEPS := $(IROOTFS)
   endif
-  ifneq ($(FS_TYPE),hd)
+  ifeq ($(FS_TYPE),hd)
     ROOTDIR_DEPS := $(HROOTFS)
   endif
 endif

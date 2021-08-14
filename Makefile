@@ -3272,14 +3272,8 @@ EMULATOR_OPTS += $(SHARE_OPT)
 D ?= 0
 DEBUG ?= $(D)
 
-# Debug listen on a unqiue port, should run exclusively
-ifneq ($(DEBUG),0)
-  DEBUG_LOCK := $(GDBINIT_DIR)/.lock
-  KEEP_UNIQUE := flock -n -x $(DEBUG_LOCK)
-endif
-
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD := $(KEEP_UNIQUE) sudo $(EMULATOR) $(EMULATOR_OPTS)
+BOOT_CMD := sudo $(EMULATOR) $(EMULATOR_OPTS)
 
 ifeq ($(U),1)
   ifeq ($(SD_BOOT),1)
@@ -3676,7 +3670,10 @@ _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)
 
 ifneq ($(DEBUG),0)
-  RUN_BOOT_CMD := $(BOOT_CMD) || $(GDB_CMD)
+  # Debug listen on a unqiue port, should run exclusively
+  DEBUG_LOCK := $(GDBINIT_DIR)/.lock
+  KEEP_UNIQUE := flock -n -x $(DEBUG_LOCK)
+  RUN_BOOT_CMD := $(KEEP_UNIQUE) $(BOOT_CMD) || $(GDB_CMD)
 else
   RUN_BOOT_CMD := $(BOOT_CMD)
 endif

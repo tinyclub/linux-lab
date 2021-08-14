@@ -2125,7 +2125,10 @@ endif
 ifneq ($(FS_TYPE),dir)
   ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
   ifeq ($(FS_TYPE),rd)
-    ROOTDIR_DEPS := $(IROOTFS)
+    # Fix up circular deps, if rootdir is there, remove dep from irootfs
+    ifneq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+      ROOTDIR_DEPS := $(IROOTFS)
+    endif
   endif
   ifeq ($(FS_TYPE),hd)
     ROOTDIR_DEPS := $(HROOTFS)

@@ -7,7 +7,7 @@
 
 {% if true %}
 <a title="Linux 程序员基本素养必修课，由泰晓科技技术社区创始人主讲" href="https://cctalk.com/m/group/88089283" target="_blank"><img src="/images/courses/360-elf.jpg" style="max-height:250px; max-width:100%">
-<br/>订课就送年度 Linux 知识星球会员</a>
+<br/>订课就送 Linux Lab 实验盘和年度 Linux 知识星球会员</a>
 </a>
 {% endif %}
 

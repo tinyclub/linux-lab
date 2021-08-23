@@ -1,8 +1,8 @@
 <div>
 
 {% if true %}
-<a style="line-height: 150%" title="某宝检索 “Linux Lab系统盘”，免安装使用随身 Linux Lab，已支持 Ubuntu 21.04，即插即用，高效率做 Linux 实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/03/linux-lab-disk.png" style="max-height:500px; max-width:90%" />
-<br/>随身Linux Lab实验盘：128G可当256G使</a>
+<a style="line-height: 150%" title="某宝检索 “Linux Lab真盘”，免安装使用随身 Linux Lab，已支持 Ubuntu 18.04/20.04/21.04 和 Deepin 20.2.3，即插即用，高效率做 Linux 实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/08/linux-lab-disk/deepin.jpg" style="max-height:500px; max-width:90%" />
+<br/>随身Linux Lab实验盘已支持Deepin，能运行Windows和安卓应用</a>
 {% endif %}
 
 {% if false %}

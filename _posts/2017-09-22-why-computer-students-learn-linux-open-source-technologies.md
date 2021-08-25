@@ -263,9 +263,32 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 ![泰晓实验云台](/wp-content/uploads/2017/09/tinylab.cloud.png)
 
+## 离线实验
+
+Cloud Lab 也可以 “离线” 实验，即本地部署。
+
+本地部署也有两种方式，一种是在 PC 系统上自行安装 Linux Lab，另外一种是直接选购免安装的 Linux Lab Disk。
+
+Linux Lab Disk 集成了 Linux Lab, Linux 0.11 Lab, CS630 Qemu Lab，已经支持 Deepin 20.2.3, Ubuntu 18.04.5, 20.04 以及 21.04。
+
+Linux Lab Disk 可以从社区开源小店选购：
+
+* [泰晓科技自营店](https://shop155917374.taobao.com/)
+* 也可以直接在某宝检索关键字：Linux Lab真盘
+
+Linux Lab Disk 使用示例图：
+
+![Linux Lab Disk](/wp-content/uploads/2021/03/linux-lab-disk.png)
+
+另外，也有制作 Pocket Linux Disk，只是预装了常用应用的 Linux 系统，没有内置 Linux Lab，大家可以自行安装与使用，在某宝检索 “Pocket Linux系统” 即可。
+
 ## 演示视频
 
-我们录制了几份课程的实验演示视频，欢迎自由观看：
+我们录制了一些 Linux Lab 视频公开课：
+
+* [Linux Lab 免费视频公开课](https://www.cctalk.com/m/group/88948325)
+
+另外，也录制了几份课程的实验演示视频，欢迎自由观看（部分 showterm.io 链接可能已经失效）：
 
 * [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
     * [CS630 Qemu Lab 基本用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)

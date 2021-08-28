@@ -2,7 +2,7 @@
 layout: post
 author: 'taotieren'
 title: "ArchLinux AUR 打包实战：以 LPCScrypt 工具为例"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /archlinux-aur-packing/
 description: "本文以 NXP 提供的 LPCScrypt 工具为例，详细介绍了 ArchLinux 软件打包的过程。LPCScrypt 工具用于 Linux 等系统下给 Link2 或 LPC Link2 调试器刷 CMSIS DAP 和 J Link 固件。"
@@ -32,7 +32,7 @@ NXP 提供的 `LPCScrypt` 工具支持 Linux、macOS 和 Windows，详情阅读 
 
 Arch 用户或其他 Linux 发行版用户想使用怎么办？
 
-## 工具分析与拆解
+## 待打包软件分析
 
 本节先分析原始包：`lpcscrypt-2.1.2_57.x86_64.deb.bin`，拆解包结构，得到核心二进制工具。
 

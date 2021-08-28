@@ -508,8 +508,7 @@ taotieren:
   email: admin@taotieren.com
   wechat: taotieren
   github: taotieren
-  ali-pay: ali-pay-taotieren
   wechat-pay: wechat-pay-taotieren
   sponsor: wechat-pay
   sponsor-qrcode: true
-  info: 开源贡献者，Arch Linux 用户贡献大量 AUR 包，长期维护开源 EDA KiCad 的 i18n 简体中文、繁体中文（opencc 转换）和简体中文文档手册，
+  info: 开源贡献者，Arch Linux 用户。贡献大量 AUR 包，长期维护开源 EDA KiCad 的 i18n 简体中文、繁体中文（opencc 转换）和简体中文文档手册，

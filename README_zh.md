@@ -564,24 +564,24 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 ## 2.7 更新实验环境并重新运行
 
-为了更新 Linux Lab 的版本，首先 **必须** 备份所有的本地修改，比如固化容器：
+大部分时候，仅需要更新 Linux Lab，主要用于获取新的开发板支持或者相关功能修复：
+
+    $ cd /path/to/cloud-lab/labs/linux-lab/
+    $ git checkout master
+    $ git pull
+
+如果发现有运行故障或者发现社区有升级基础镜像，则可以更新 Cloud Lab：
+
+    $ cd /path/to/cloud-lab
+    $ git checkout master
+    $ git pull
+
+如果改动过 Linux Lab 的运行环境，并且相关改动在以后一定用得上，那么就需要备份所有的本地环境修改，也就是固化容器（通常很慢，不建议执行这一步）：
 
     $ tools/docker/commit linux-lab
     $ git checkout -- configs/linux-lab/docker/name
 
-然后就可以执行更新了：
-
-    $ tools/docker/update linux-lab
-
-如果更新失败，请尝试清理当前运行的容器:
-
-    $ tools/docker/rm-all
-
-如果有必要的话清理整个环境:
-
-    $ tools/docker/clean-all
-
-之后重新运行 Linux Lab：
+之后重新运行 Linux Lab 即可，如果有新的镜像，会自动启用：
 
     $ tools/docker/rerun linux-lab
 

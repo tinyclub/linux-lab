@@ -435,22 +435,22 @@ If the above command not work normally, based on the information printed above, 
 
 ## 2.7 Update and rerun the lab
 
-If want a newer version, we **must** back up any local changes at first, for example, save the container:
+Usually, only need to update Linux Lab itself, to get the new boards support or related fixups:
+
+    $ cd /path/to/cloud-lab/labs/linux-lab/
+    $ git checkout master
+    $ git pull
+
+Sometimes, need to update Cloud Lab, to fix up potential running issues or getting newer docker image:
+
+    $ cd /path/to/cloud-lab
+    $ git checkout master
+    $ git pull
+
+If modified the running environment of Linux Lab locally and want to reuse it in the future, save the container (very slow, not recommend if not necessary):
 
     $ tools/docker/commit linux-lab
     $ git checkout -- configs/linux-lab/docker/name
-
-And then update everything:
-
-    $ tools/docker/update linux-lab
-
-If fails, please try to clean up the containers:
-
-    $ tools/docker/rm-all
-
-Or even clean up the whole environments:
-
-    $ tools/docker/clean-all
 
 Then rerurn linux lab:
 

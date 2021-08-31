@@ -18,9 +18,9 @@ mkdir -p ${ROOTDIR}
 pushd ${ROOTDIR}
 
 if [ -f ${FS_CPIO_GZ} ]; then
-   gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idmv -R ${USER}:${USER} >/dev/null
+   gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idm -R ${USER}:${USER} >/dev/null
 elif [ -f ${FS_CPIO} ]; then
-   sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null
+   sudo cpio --quiet -idm -R ${USER}:${USER} < ${FS_CPIO} >/dev/null
 fi
 
 sudo chown ${USER}:${USER} -R ${ROOTDIR}

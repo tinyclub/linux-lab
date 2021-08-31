@@ -42,7 +42,7 @@ NETDEV  ?= e1000
 
 ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
-ROOTDEV ?= /dev/hda
+ROOTDEV ?= /dev/ram0
 
 SERIAL  ?= ttyS0
 ORIIMG  ?= arch/$(ARCH)/boot/bzImage

@@ -2048,10 +2048,7 @@ ifeq ($(U),1)
 endif
 
 # root ramdisk image
-ifeq ($(FS_TYPE),rd)
-  ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
-  IROOTFS_DEPS    := $(ROOTDIR) FORCE
-else
+ifneq ($(FS_TYPE),rd)
   ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
   IROOTFS_DEPS    := $(HROOTFS)
 endif

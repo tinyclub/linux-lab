@@ -1508,9 +1508,9 @@ $(1)-cleanup: $(1)-cleanstamp
 		cd $$($(call _uc,$(1))_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
 	fi
 
-$(1)-clean: $(1)-cleanup
+$(1)-clean: $(1)-rawclean $(1)-cleanup
 
-$(1)-clean: $$($(call _uc,$(1))_CLEAN_DEPS)
+$(1)-rawclean: $$($(call _uc,$(1))_CLEAN_DEPS)
 ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
 	-$$(Q)$$(call make_$(1),clean)
 endif

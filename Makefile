@@ -2051,6 +2051,11 @@ endif
 ifneq ($(FS_TYPE),rd)
   ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
   IROOTFS_DEPS    := $(HROOTFS)
+else
+  ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+    ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
+    IROOTFS_DEPS    := FORCE
+  endif
 endif
 
 $(IROOTFS): $(IROOTFS_DEPS)

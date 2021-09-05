@@ -1372,6 +1372,12 @@ find out the code line of a kernel panic address:
 
     $ make kernel-calltrace func+offset/length
 
+if the debug port has been used, please try to find out who used the port and kill it:
+
+    $ sudo netstat -tlp | grep 1234
+    tcp        0      0 0.0.0.0:1234            0.0.0.0:*               LISTEN      3943/qemu-xxx
+    $ sudo kill -9 3943
+
 ### 4.6.2 Debugging Uboot
 
 To debug uboot with `.gdb/uboot.default`:

@@ -1489,6 +1489,12 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make kernel-calltrace func+offset/length
 
+如果调试过程中提示端口 1234 被占用，可能是 qemu 服务没有正常退出，手动清理即可：
+
+    $ sudo netstat -tlp | grep 1234
+    tcp        0      0 0.0.0.0:1234            0.0.0.0:*               LISTEN      3943/qemu-xxx
+    $ sudo kill -9 3943
+
 ### 4.6.2 调试 Uboot
 
 如果想调试 Uboot（采用 `.gdb/uboot.default` 调试脚本）：

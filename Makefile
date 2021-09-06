@@ -3601,11 +3601,11 @@ endif
 ifeq ($(DEBUG),uboot)
   GDB_CMD      ?= $(GDB) $(subst .bin,,$(BIMAGE))
   GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_UBOOT)
-  DEBUG_DEPS   := uboot-build
+  DEBUG_DEPS   := force-uboot-build
 else
   GDB_CMD      ?= $(GDB) $(VMLINUX)
   GDB_INIT     ?= $(GDBINIT_DIR)/$(GDB_INIT_KERNEL)
-  DEBUG_DEPS   := kernel-build
+  DEBUG_DEPS   := force-kernel-build
 endif
 
 HOME_GDB_INIT ?= $(HOME)/.gdbinit

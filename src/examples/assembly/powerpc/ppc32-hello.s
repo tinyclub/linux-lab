@@ -15,5 +15,5 @@ _start:
     sc                  # call kernel
 # and exit
     li      0,1         # syscall number (sys_exit)
-    li      3,1         # first argument: exit code
+    li      3,0         # first argument: exit code
     sc                  # call kernel

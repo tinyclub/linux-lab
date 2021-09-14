@@ -1,4 +1,3 @@
-# Please make sure both of toolchain and bsp/qemu are prepared at first
 # ref: https://www.sifive.com/blog/all-aboard-part-1-compiler-args
 
 ARCH = $(shell basename `pwd`)

@@ -1,13 +1,5 @@
-# Please make sure both of toolchain and bsp/qemu are prepared at first
-#
-# cd /path/to/linux-lab
-#
-# make B=riscv64/virt
-# make bsp
-# make toolchain
-#
+# ref: https://www.sifive.com/blog/all-aboard-part-1-compiler-args
 # Compile options, please refer to linux-stable/arch/riscv/Makefile
-#
 
 ARCH = $(shell basename `pwd`)
 ASMS = $(wildcard *.s)

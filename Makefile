@@ -3271,7 +3271,7 @@ else
   endif
 endif
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
+EMULATOR_OPTS ?= -M $(MACH) $(if $(CPU),-cpu $(CPU)) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 D ?= 0

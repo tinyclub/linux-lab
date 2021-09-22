@@ -2238,7 +2238,7 @@ endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
 KERNEL_MODULE_DIR := $(KERNEL_ABS_SRC)
-KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
+KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound samples)
 
 modules ?= $(m)
 module  ?= $(modules)

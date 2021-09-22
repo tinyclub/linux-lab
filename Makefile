@@ -2315,7 +2315,7 @@ ifeq ($(one_module),1)
     endif
 
     ifeq ($(M_PATH),)
-      $(error 'ERR: No such module found: $(module), list all by: `make m-l`')
+      $(error 'ERR: No such module found: $(module), list all by: `make modules-list`')
     else
       $(info LOG: m=$(module) ; M=$(M_PATH))
     endif

@@ -51,7 +51,7 @@ do
         [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
         # apply the patchset maintained by multiple xxx.patch
-        patchset="`find $path $MAXDEPTH -type f -name "*.patch" | sort`"
+        patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
 
         for p in $patchset
         do
@@ -112,6 +112,12 @@ do
                 [ $? -eq 0 ] && continue
 
                 [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
+
+
+                if [ $? -ne 0 ]; then
+                    grep -iq "GIT binary patch" $p
+                    [ $? -eq 0 ] && pushd ${KERNEL_SRC} && git apply -p1 < $p && popd
+                fi
             done #p
 
             echo "Patching more: $f"

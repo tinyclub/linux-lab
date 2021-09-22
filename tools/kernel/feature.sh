@@ -41,7 +41,7 @@ do
         echo "Downloading feature: $f"
         [ -x "$path/download.sh" ] && $path/download.sh
 
-        echo "Appling feature: $f"
+        echo "Applying feature: $f"
 
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
         [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
@@ -52,6 +52,8 @@ do
 
         # apply the patchset maintained by multiple xxx.patch
         patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
+
+        echo "LOG: $patchset"
 
         for p in $patchset
         do
@@ -86,7 +88,7 @@ do
             echo "Downloading feature: $f"
             [ -x "$path/download.sh" ] && $path/download.sh
 
-            echo "Appling feature: $f"
+            echo "Applying feature: $f"
 
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
             [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
@@ -98,7 +100,7 @@ do
             # apply the patchset maintained by multiple xxx.patch
             MAXDEPTH=""
             [ $d/$f == $path ] && MAXDEPTH=" -maxdepth 1 "
-            patchset="`find $path $MAXDEPTH -type f -name "*.patch" | sort`"
+            patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
 
             for p in $patchset
             do

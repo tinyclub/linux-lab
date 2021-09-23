@@ -38,9 +38,6 @@ do
 
         echo "$path"
 
-        echo "Downloading feature: $f"
-        [ -x "$path/download.sh" ] && $path/download.sh
-
         echo "Applying feature: $f"
 
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
@@ -84,9 +81,6 @@ do
             [ ! -d $path ] && continue
 
             echo "$path"
-
-            echo "Downloading feature: $f"
-            [ -x "$path/download.sh" ] && $path/download.sh
 
             echo "Applying feature: $f"
 

@@ -1320,6 +1320,7 @@ endif
 $(1)-patch: $(1)-checkout
 $(1)-defconfig: $(1)-patch
 $(1)-defconfig: $(1)-env
+$(1)-defconfig: $(1)-feature-download
 $(1)-modules-install: $(1)-modules
 $(1)-modules-install-km: $(1)-modules-km
 $(1)-help: $(1)-defconfig
@@ -2496,6 +2497,7 @@ PHONY += modules modules-install modules-clean module module-install module-clea
 
 # Build Kernel
 
+KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
 FPL ?= 1
@@ -2507,6 +2509,11 @@ ifeq ($(FEATURE),boot,module)
 endif
 
 FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
+
+kernel-feature-download:
+ifneq ($(FEATURE),)
+	  $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
+endif
 
 kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \

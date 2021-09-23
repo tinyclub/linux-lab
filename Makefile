@@ -2511,6 +2511,7 @@ FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
+	  tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX); \
 	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	else \
 	  echo "ERR: feature patchset has been applied, if want, please backup important changes and pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \

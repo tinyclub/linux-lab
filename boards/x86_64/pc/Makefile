@@ -42,3 +42,5 @@ ROOTDEV ?= /dev/ram0
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/bzImage
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz
+# Workaround boot issue
+XKCLI    = lpj=246205838

@@ -61,7 +61,7 @@
        - [4.1.1 non-interactive configuration](#411-non-interactive-configuration)
        - [4.1.2 using kernel modules](#412-using-kernel-modules)
        - [4.1.3 using kernel features](#413-using-kernel-features)
-       - [4.1.3 Create new development branch](#413-create-new-development-branch)
+       - [4.1.4 Create new development branch](#413-create-new-development-branch)
     - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
     - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
     - [4.4 Using Toolchains](#44-using-toolchains)
@@ -1140,7 +1140,11 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
-### 4.1.3 Create new development branch
+Clear feature setting (reset feature saved in .labconfig):
+
+    $ make feature feature=
+
+### 4.1.4 Create new development branch
 
 If want to use a new development branch, please follow such steps:
 

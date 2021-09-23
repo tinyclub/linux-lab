@@ -1263,6 +1263,10 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel
     $ make boot
 
+清理 feature 设定（清理 .labconfig 中保存的设定）：
+
+    $ make feature feature=
+
 ### 4.1.4 新建开发分支
 
 如果希望新建一个分支来做开发，那么可以参考如下步骤。

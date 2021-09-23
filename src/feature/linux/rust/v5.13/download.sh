@@ -11,8 +11,7 @@ if [ $? -ne 0 ]; then
     $LABDIR/tools/deps/llvm.sh
 fi
 
-which rustc >/dev/null 2>&1
-if [ $? -ne 0 ]; then
+if [ ! -f ~/.cargo/bin/rustc ]; then
     echo "LOG: Install missing rust environment"
     $LABDIR/tools/deps/rust.sh
 fi

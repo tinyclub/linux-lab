@@ -1290,7 +1290,7 @@ $(C_PATH) make -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
-$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root

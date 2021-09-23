@@ -4,7 +4,8 @@
 #
 
 # Use llvm 12, llvm 13 not work, to be verified
-V=12
+V=$1
+[ -z "$V" ] && V=12
 
 wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- $V
 

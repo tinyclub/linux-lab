@@ -2,6 +2,21 @@
 
 CURDIR=$(cd $(dirname $0)/ && pwd)
 
+# prepare necessary deps
+LABDIR=/labs/linux-lab
+
+which clang >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "LOG: Install missing llvm&clang"
+    $LABDIR/tools/deps/llvm.sh
+fi
+
+which rustc >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "LOG: Install missing rust environment"
+    $LABDIR/tools/deps/rust.sh
+fi
+
 cd $CURDIR
 if [ ! -f feature.downloaded ]; then
     sudo apt update -y && \

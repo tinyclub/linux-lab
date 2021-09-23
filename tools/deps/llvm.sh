@@ -3,9 +3,11 @@
 # llvm.sh
 #
 
-sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+# Use llvm 12, llvm 13 not work, to be verified
+V=12
 
-V=`ls /usr/bin/clang-[0-9]* | sort -u | tail -1 | cut -d '-' -f2`
+wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- $V
+
 sudo ln -sf /usr/bin/clang-$V /usr/bin/clang
 sudo ln -sf /usr/bin/clang-cpp-$V /usr/bin/clang-cpp
 sudo ln -sf /usr/bin/clangd-$V /usr/bin/clangd

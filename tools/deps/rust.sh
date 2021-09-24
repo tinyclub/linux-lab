@@ -6,7 +6,12 @@
 #
 
 # Speed up 'Updating crates.io index'
-mkdir -p $HOME/.cargo/
+TOP_DIR=$(cd $(dirname $0) && pwd)
+
+[ ! -d $TOP_DIR/rust/.cargo ] &&mkdir -p $TOP_DIR/rust/{.cargo,.rustup}
+[ ! -L $HOME/.cargo ] && ln -sf $TOP_DIR/rust/.cargo $HOME/.cargo
+[ ! -L $HOME/.rustup ] && ln -sf $TOP_DIR/rust/.rustup $HOME/.rustup
+
 cat <<EOF > $HOME/.cargo/config
 [source.crates-io]
 registry = "https://github.com/rust-lang/crates.io-index"

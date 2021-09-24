@@ -2276,7 +2276,7 @@ endif
 MODULE ?= $(MODULES)
 ifeq ($(MODULE),)
   ifneq ($(module),)
-    MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',' | sed -e 's%,$$%%g')
+    MODULE := $(shell printf $(module) | tr ',' '\n' | tr '\n' ',' | sed -e 's%,$$%%g')
   endif
 endif
 

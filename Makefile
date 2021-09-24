@@ -819,9 +819,7 @@ else
   endif
 endif
 
-ifneq ($(CCPATH),)
-  C_PATH ?= env PATH=$(CCPATH):$(PATH)$(if $(RUST),:~/.cargo/bin) $(L_PATH)
-endif
+C_PATH ?= env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH)$(if $(RUST_PATH),:$(RUST_PATH)) $(L_PATH)
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
 

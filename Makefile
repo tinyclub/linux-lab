@@ -3682,6 +3682,9 @@ _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)
+ifeq ($(DEV_TYPE),dir)
+_BOOT_DEPS += root-install
+endif
 
 ifneq ($(DEBUG),0)
   # Debug listen on a unqiue port, should run exclusively

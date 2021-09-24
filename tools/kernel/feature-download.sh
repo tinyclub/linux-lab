@@ -36,9 +36,9 @@ do
         path=$d/$f
         [ ! -d $path ] && continue
 
-        echo "$path"
+        #echo "$path"
 
-        echo "Downloading feature: $f"
+        #echo "Downloading feature: $f"
         [ -x "$path/download.sh" ] && $path/download.sh
     done #f
 done #d
@@ -53,9 +53,9 @@ do
         do
             [ ! -d $path ] && continue
 
-            echo "$path"
+            #echo "$path"
 
-            echo "Downloading feature: $f"
+            #echo "Downloading feature: $f"
             [ -x "$path/download.sh" ] && $path/download.sh
 
         done #path

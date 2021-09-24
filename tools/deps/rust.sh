@@ -40,10 +40,6 @@ EOF
 # Install for rustc
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
   sed -e "s%RUSTUP_UPDATE_ROOT=.*%RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup%g" | \
-  sed -e "s%RUSTUP_DIST_UPDATE=.*%RUSTUP_DIST_UPDATE=https://mirrors.tuna.tsinghua.edu.cn/rustup%g" | \
-  sh -s -- -y && \
+  sh -s -- -y --default-toolchain 1.54-x86_64-unknown-linux-gnu --profile minimal && \
   echo "RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup" >> $HOME/.cargo/env && \
-  bash -c "source $HOME/.cargo/env && \
-  rustup default 1.54 && \
-  rustup component add rust-src && \
-  cargo install --locked --version 0.56.0 bindgen"
+  bash -c "source $HOME/.cargo/env && rustup component add rust-src && cargo install --locked --version 0.56.0 bindgen"

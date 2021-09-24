@@ -7,11 +7,11 @@ LABDIR=/labs/linux-lab
 
 which clang >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "LOG: Install missing llvm&clang"
+    echo "LOG: Install missing llvm & clang"
     $LABDIR/tools/deps/llvm.sh
 fi
 
-if [ ! -f ~/.cargo/bin/rustc ]; then
+if [ ! -f ~/.cargo/bin/rustc -o ! -d ~/.rustup/toolchains ]; then
     echo "LOG: Install missing rust environment"
     $LABDIR/tools/deps/rust.sh
 else

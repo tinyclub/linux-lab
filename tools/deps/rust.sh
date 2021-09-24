@@ -8,7 +8,8 @@
 # Speed up 'Updating crates.io index'
 TOP_DIR=$(cd $(dirname $0) && pwd)
 
-[ ! -d $TOP_DIR/rust/.cargo ] &&mkdir -p $TOP_DIR/rust/{.cargo,.rustup}
+[ ! -d $TOP_DIR/rust/.cargo ] && mkdir -p $TOP_DIR/rust/.cargo
+[ ! -d $TOP_DIR/rust/.rustup ] && mkdir -p $TOP_DIR/rust/.rustup
 [ ! -L $HOME/.cargo ] && ln -sf $TOP_DIR/rust/.cargo $HOME/.cargo
 [ ! -L $HOME/.rustup ] && ln -sf $TOP_DIR/rust/.rustup $HOME/.rustup
 

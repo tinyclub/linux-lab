@@ -2720,7 +2720,7 @@ ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 
 	$(Q)make -s kernel-olddefconfig
-	$(Q)$(call make_kernel,prepare M=)
+	$(Q)$(call make_kernel,$(MODULE_PREPARE) M=)
 else
 	$(Q)make -s kernel-olddefconfig
 endif

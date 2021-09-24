@@ -3,13 +3,18 @@
 # llvm.sh
 #
 
-# Use llvm 12, llvm 13 not work, to be verified
-V=12
+# version 12 is verified for rust-for-linux compiling
+V=$1
+[ -z "$V" ] && V=12
 
 wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- $V
 
-sudo ln -sf /usr/bin/clang-$V /usr/bin/clang
-sudo ln -sf /usr/bin/clang-cpp-$V /usr/bin/clang-cpp
-sudo ln -sf /usr/bin/clangd-$V /usr/bin/clangd
-sudo ln -sf /usr/bin/clang++-$V /usr/bin/clang++
-sudo ln -sf /usr/bin/ld.lld-$V /usr/bin/ld.lld
+for t in clang clang-cpp clangd clang++ ld.lld
+do
+  sudo ln -sf /usr/bin/$t-$V /usr/bin/$t
+done
+
+for t in ar as addr2line lto lto2 nm objcopy objdump ranlib readelf size strings strip
+do
+  sudo ln -sf /usr/bin/llvm-$t-$V /usr/bin/llvm-$t
+done

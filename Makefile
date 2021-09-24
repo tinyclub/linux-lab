@@ -1320,7 +1320,6 @@ endif
 $(1)-patch: $(1)-checkout
 $(1)-defconfig: $(1)-patch
 $(1)-defconfig: $(1)-env
-$(1)-defconfig: $(1)-feature-download
 $(1)-modules-install: $(1)-modules
 $(1)-modules-install-km: $(1)-modules-km
 $(1)-help: $(1)-defconfig
@@ -2510,6 +2509,7 @@ endif
 
 FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 
+kernel-defconfig: kernel-feature-download
 kernel-feature-download:
 ifneq ($(FEATURE),)
 	  @$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"

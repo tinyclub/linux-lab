@@ -38,8 +38,11 @@ registry = "git://crates.rustcc.cn/crates.io-index"
 EOF
 
 # Install for rustc
+# more: RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+#       RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static/
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
-  sed -e "s%RUSTUP_UPDATE_ROOT=.*%RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup%g" | \
-  sh -s -- -y --default-toolchain 1.54-x86_64-unknown-linux-gnu --profile minimal && \
-  echo "RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup" >> $HOME/.cargo/env && \
-  bash -c "source $HOME/.cargo/env && rustup component add rust-src && cargo install --locked --version 0.56.0 bindgen"
+  RUSTUP_UPDATE_ROOT=https://mirrors.sjtug.sjtu.edu.cn/rust-static/rustup \
+  RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static/ \
+  sh -s -- -y -v --default-toolchain 1.54-x86_64-unknown-linux-gnu --profile minimal -c rust-src,rustfmt && \
+  echo "RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static/" >> $HOME/.cargo/env && \
+  bash -c "source $HOME/.cargo/env && cargo install --locked --version 0.56.0 bindgen"

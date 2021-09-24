@@ -2512,7 +2512,7 @@ FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 kernel-defconfig: kernel-feature-download
 kernel-feature-download:
 ifneq ($(FEATURE),)
-	  @$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
+	  @$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" /dev/null 2>&1
 endif
 
 kernel-feature:

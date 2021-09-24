@@ -14,6 +14,9 @@ fi
 if [ ! -f ~/.cargo/bin/rustc ]; then
     echo "LOG: Install missing rust environment"
     $LABDIR/tools/deps/rust.sh
+else
+    grep -q .cargo ~/.bashrc
+    [ $? -ne 0 ] && echo '. "$HOME/.cargo/env"' >> ~/.bashrc
 fi
 
 cd $CURDIR

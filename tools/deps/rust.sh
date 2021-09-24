@@ -12,7 +12,7 @@ cat <<EOF > $HOME/.cargo/config
 registry = "https://github.com/rust-lang/crates.io-index"
 
 # Replace it with your preferred mirror source
-replace-with = 'sjtu'
+replace-with = 'ustc'
 
 # Tsinghua University
 [source.tuna]
@@ -38,6 +38,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
   sh -s -- -y && \
   echo "RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup" >> $HOME/.cargo/env && \
   bash -c "source $HOME/.cargo/env && \
-  rustup default beta-2021-06-23 && \
+  rustup default 1.54 && \
   rustup component add rust-src && \
   cargo install --locked --version 0.56.0 bindgen"

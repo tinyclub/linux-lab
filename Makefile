@@ -820,7 +820,7 @@ else
 endif
 
 ifneq ($(CCPATH),)
-  C_PATH ?= env PATH=$(CCPATH):$(PATH) $(L_PATH)
+  C_PATH ?= env PATH=$(CCPATH):$(PATH)$(if $(RUST),:~/.cargo/bin) $(L_PATH)
 endif
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
@@ -2519,6 +2519,7 @@ kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
 	  tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX); \
+	  $(call make_kernel,olddefconfig); \
 	  if [ $(FPL) -eq 1 -a -n "$(FEATURE)" ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	  if [ -z "$(FEATURE)" ]; then rm -rf $(FEATURE_PATCHED_TAG); fi; \
 	else \

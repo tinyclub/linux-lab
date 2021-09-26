@@ -48,15 +48,15 @@ Search more from docker images repository:
 
 Extrat one:
 
-    $ tools/rootfs/docker/extra.sh arm64v8/ubuntu aarch64
+    $ tools/root/docker/extract.sh arm64v8/ubuntu aarch64
 
 Run with docker:
 
-    $ tools/rootfs/docker/run.sh arm64v8/ubuntu aarch64
+    $ tools/root/docker/run.sh arm64v8/ubuntu aarch64
 
 Run with chroot:
 
-    $ tools/rootfs/docker/chroot.sh arm64v8/ubuntu
+    $ tools/root/docker/chroot.sh arm64v8/ubuntu
 
 ## References
 

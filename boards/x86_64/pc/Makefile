@@ -11,6 +11,7 @@ LINUX   ?= v5.1
 
 # git repos for other kernel fork
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
+LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 
 GCC = 9
 GCC[LINUX_v3.2] = 4.8

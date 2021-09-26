@@ -192,8 +192,6 @@ _ROOT_GIT := $(ROOT_GIT)
 _ROOT_SRC ?= $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK)-buildroot),buildroot)
 ROOT_SRC  ?= $(_ROOT_SRC)
 
-_LINUX = $(LINUX)
-
 BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
 # Common functions
@@ -357,6 +355,9 @@ $(eval $(call __vs,UBOOT_SRC,UBOOT,UBOOT_FORK))
 $(eval $(call __vs,UBOOT_GIT,UBOOT,UBOOT_FORK))
 $(eval $(call __vs,QEMU_SRC,QEMU,QEMU_FORK))
 $(eval $(call __vs,QEMU_GIT,QEMU,QEMU_FORK))
+
+# Allow configure default LINUX version for different kernel fork repo
+$(eval $(call __vs,LINUX,KERNEL_FORK))
 
 # Allow boards to customize source and repos
 KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)

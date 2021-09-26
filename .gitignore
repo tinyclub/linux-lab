@@ -13,6 +13,7 @@ hostshare/
 loongsonlab
 loongnix-3.10
 tglx-linux-history
+openeuler-*
 force-*
 .lock
 .tmp

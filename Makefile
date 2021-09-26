@@ -1584,7 +1584,7 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$(call _uc,$1)_CONFIG_FILE ?= $$(_$(call _uc,$(1))_FORK)$(2)_$$($(call _uc,$(2)))_defconfig
+$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
 ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
@@ -1632,12 +1632,12 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$$(_$(call _uc,$(1))_FORK)$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$2)_NEW)_defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
 
-NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$(_$(call _uc,$(1))_FORK)$2/$$($(call _uc,$2)_NEW)/
+NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)/
 NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $(1)-cloneconfig:

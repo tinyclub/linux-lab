@@ -1469,7 +1469,7 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			git fetch --tags origin && touch $$@\
+			git fetch --tags origin && touch $$@; \
 		cd $$(TOP_DIR); \
 	fi
 

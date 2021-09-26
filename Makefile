@@ -2059,11 +2059,16 @@ else
   endif
 endif
 
+# Always update rootfs by default, if there is no really file update, disable it with ROOT_UPDATE=0
+ROOT_UPDATE ?= 1
+
 $(IROOTFS): $(IROOTFS_DEPS)
+ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL)
 	$(Q)mv $(IROOTFS).tmp $(IROOTFS)
+endif
 
 root-rd: $(IROOTFS)
 
@@ -2088,6 +2093,7 @@ endif
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
 root-rebuild: $(ROOT_REBUILD_DEPS)
+ifeq ($(ROOT_UPDATE),1)
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	$(Q)rm -rf $(XROOTFS).tmp
@@ -2098,6 +2104,7 @@ else
 	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
+endif
 endif
 
 ROOT ?= $(ROOTDIR)
@@ -2176,10 +2183,12 @@ endif
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
 $(HROOTFS): $(HROOTFS_DEPS)
+ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	$(Q)rm -rf $(HROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL)
 	$(Q)mv $(HROOTFS).tmp $(HROOTFS)
+endif
 
 root-hd: $(HROOTFS)
 
@@ -2831,8 +2840,10 @@ UBOOT_MKIMAGE := tools/uboot/mkimage
 
 # root uboot image
 $(UROOTFS): $(IROOTFS)
+ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating rootfs image for uboot ..."
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS)
+endif
 
 root-ud: $(UROOTFS)
 

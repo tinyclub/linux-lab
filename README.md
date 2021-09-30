@@ -1144,6 +1144,20 @@ Clear feature setting (reset feature saved in .labconfig):
 
     $ make feature feature=
 
+#### 4.1.3.1 using rust feature
+
+Use `x86_64/pc` as an example：
+
+    $ make BOARD=x86_64/pc
+
+Clone a v5.13 kernel config, because the current latest rust patchset can only be applied to v5.13:
+
+    $ make kernel-clone LINUX_NEW=v5.13
+
+Compile the kernel, and test it with one of the simplest module - `rust_print`:
+
+    $ make test f=rust m=rust_print FPL=0
+
 ### 4.1.4 Create new development branch
 
 If want to use a new development branch, please follow such steps:

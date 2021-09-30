@@ -24,6 +24,10 @@ replace-with = 'ustc'
 [source.tuna]
 registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
 
+# Beijing Foreign Studies University
+[source.bfsu]
+registry = "https://mirrors.bfsu.edu.cn/git/crates.io-index.git"
+
 # University of science and technology of China
 [source.ustc]
 registry = "git://mirrors.ustc.edu.cn/crates.io-index"

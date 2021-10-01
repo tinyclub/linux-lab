@@ -3643,7 +3643,9 @@ else
   DEBUG_CMD  := $(Q)sleep 0.1 && echo "\nLOG: debug server started, please connect it with these commands:\n\n" \
                                       "    (host) $$ cd /path/to/cloud-lab\n" \
                                       "    (host) $$ tools/docker/bash linux-lab\n" \
-                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n"
+                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n" \
+                                      "\n\n" \
+                                      "NOTE: To exit debug server, please press 'CTRL+a x'\n\n"
   #DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
 endif
 

@@ -1654,9 +1654,9 @@ $(1)-cloneconfig:
 	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
 
 $(1)-clonepatch:
-ifneq ($(PATCH_CLONE),0)
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
-	$$(Q)cp -r $$(OLD_$(call _uc,$1)_PATCH_DIR)/*.patch $$(NEW_$(call _uc,$1)_PATCH_DIR)
+ifneq ($(PATCH_CLONE),0)
+	$$(Q)if [ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ]; then cp -r $$(OLD_$(call _uc,$1)_PATCH_DIR)/*.patch $$(NEW_$(call _uc,$1)_PATCH_DIR); fi
 endif
 
 else

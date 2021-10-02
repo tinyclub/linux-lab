@@ -254,6 +254,10 @@ define _any
 $(shell if [ $$(expr $(call _v2v,$($(1))) \$(2) $(call _v2v,$(3))) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
 endef
 
+define _range
+$(shell if [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
+endef
+
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
 $(3)/$(2).$(1)

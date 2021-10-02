@@ -5,7 +5,7 @@ XARCH    = aarch64
 CPU     ?= cortex-a57
 SMP     ?= 2
 MEM     ?= 256M
-XOPTS   ?= -cpu $(CPU) -serial mon:stdio -machine virt,gic_version=3 -machine type=virt,virtualization=true -d guest_errors -nodefaults
+XOPTS   ?= -serial mon:stdio -machine virt,gic_version=3 -machine type=virt,virtualization=true -d guest_errors -nodefaults
 # v2.12.0 has sdl based graphic, boots with G=1, v4.0.0 with vnc output
 QEMU    ?= v4.0.0
 # Enable QEMU_US=1 for qemu-user-static

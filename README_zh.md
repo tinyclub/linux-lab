@@ -69,6 +69,11 @@
        - [4.1.1 非交互方式配置](#411-非交互方式配置)
        - [4.1.2 使用内核模块](#412-使用内核模块)
        - [4.1.3 使用内核特性](#413-使用内核特性)
+          - [4.1.3.1 列出当前支持的 feature](#4131-列出当前支持的-feature)
+          - [4.1.3.2 启用内核模块支持](#4132-启用内核模块支持)
+          - [4.1.3.3 启用 rust feature](#4133-启用-rust-feature)
+          - [4.1.3.4 启用 kft feature](#4134-启用-kft-feature)
+          - [4.1.3.5 清理 feature 设定](#4135-清理-feature-设定)
        - [4.1.4 新建开发分支](#414-新建开发分支)
     - [4.2 Uboot 引导程序](#42-uboot-引导程序)
     - [4.3 Qemu 模拟器](#43-qemu-模拟器)
@@ -1214,6 +1219,8 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 ### 4.1.3 使用内核特性
 
+#### 4.1.3.1 列出当前支持的 feature
+
 内核的众多特性都集中存放在 `src/feature/linux/`，其中包括了特性的配置补丁，可以用于管理已合入内核主线的特性和未合入的特性功能。
 
     $ make feature-list
@@ -1245,11 +1252,29 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 这里列出了针对某项特性验证时使用的内核版本，如果其他条件未改变的话该特性应该可以正常工作。
 
-例如，为了使能内核模块支持，可以执行如下简单的操作：
+#### 4.1.3.2 启用内核模块支持
+
+为了使能内核模块支持，可以执行如下简单的操作：
 
     $ make feature f=module
     $ make kernel-olddefconfig
     $ make kernel
+
+#### 4.1.3.3 启用 rust feature
+
+以 `x86_64/pc` 开发板为例：
+
+    $ make BOARD=x86_64/pc
+
+克隆一份 v5.13 内核的配置，因为当前最新 rust patchset 只能打在 v5.13 内核上：
+
+    $ make kernel-clone LINUX_NEW=v5.13
+
+编译内核，并使用 `rust_print` 模块进行测试：
+
+    $ make test f=rust m=rust_print FPL=0
+
+#### 4.1.3.4 启用 kft feature
 
 为了在 malta 开发板上验证基于 2.6.36 版本的 `kft` 特性，可以执行如下操作：
 
@@ -1262,6 +1287,13 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel-olddefconfig
     $ make kernel
     $ make boot
+
+#### 4.1.3.5 清理 feature 设定
+
+清理 feature 设定（清理 .labconfig 中保存的设定）：
+
+    $ make feature feature=
+
 
 ### 4.1.4 新建开发分支
 

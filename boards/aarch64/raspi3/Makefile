@@ -6,7 +6,6 @@ XARCH    = aarch64
 CPU     ?= cortex-a53
 SMP     ?= 4
 MEM     ?= 1024M
-XOPTS   ?= -cpu $(CPU)
 
 # Ref: https://github.com/bztsrc/raspi3-tutorial#emulation
 UART    ?= 0

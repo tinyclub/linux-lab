@@ -61,7 +61,12 @@
        - [4.1.1 non-interactive configuration](#411-non-interactive-configuration)
        - [4.1.2 using kernel modules](#412-using-kernel-modules)
        - [4.1.3 using kernel features](#413-using-kernel-features)
-       - [4.1.3 Create new development branch](#413-create-new-development-branch)
+          - [4.1.3.1 list supported kernel features](#4131-list-supported-kernel-features)
+          - [4.1.3.2 using kernel modules](#4132-using-kernel-modules)
+          - [4.1.3.3 using rust feature](#4133-using-rust-feature)
+          - [4.1.3.4 using kft feature](#4134-using-kft-feature)
+          - [4.1.3.5 clear feature setting](#4135-clear-feature-setting)
+       - [4.1.4 Create new development branch](#414-create-new-development-branch)
     - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
     - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
     - [4.4 Using Toolchains](#44-using-toolchains)
@@ -1088,6 +1093,8 @@ Build external kernel modules (the same as internel modules):
 
 ### 4.1.3 using kernel features
 
+#### 4.1.3.1 list supported kernel features
+
 Kernel features are abstracted in `src/feature/linux/, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
 and in-mainline features.
@@ -1122,11 +1129,29 @@ and in-mainline features.
 Verified boards and linux versions are recorded there, so, it should work
 without any issue if the environment not changed.
 
+#### 4.1.3.2 using kernel modules
+
 For example, to enable kernel modules support, simply do:
 
     $ make feature f=module
     $ make kernel-olddefconfig
     $ make kernel
+
+#### 4.1.3.3 using rust feature
+
+Use `x86_64/pc` as an example：
+
+    $ make BOARD=x86_64/pc
+
+Clone a v5.13 kernel config, because the current latest rust patchset can only be applied to v5.13:
+
+    $ make kernel-clone LINUX_NEW=v5.13
+
+Compile the kernel, and test it with one of the simplest module - `rust_print`:
+
+    $ make test f=rust m=rust_print FPL=0
+
+#### 4.1.3.4 using kft feature
 
 For `kft` feature in v2.6.36 for malta board:
 
@@ -1140,7 +1165,14 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
-### 4.1.3 Create new development branch
+#### 4.1.3.5 clear feature setting
+
+Clear feature setting (reset feature saved in .labconfig):
+
+    $ make feature feature=
+
+
+### 4.1.4 Create new development branch
 
 If want to use a new development branch, please follow such steps:
 

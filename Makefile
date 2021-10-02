@@ -820,9 +820,7 @@ else
   endif
 endif
 
-ifneq ($(CCPATH),)
-  C_PATH ?= env PATH=$(CCPATH):$(PATH) $(L_PATH)
-endif
+C_PATH ?= env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH)$(if $(RUST_PATH),:$(RUST_PATH)) $(L_PATH)
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
 
@@ -1291,7 +1289,7 @@ $(C_PATH) make -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
-$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
@@ -1651,6 +1649,9 @@ $(1)-cloneconfig:
 else
 $(1)-cloneconfig:
 	$(Q)echo $$($(call _uc,$2)_NEW) already exists!
+	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
+		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
 endif
 
 else
@@ -2248,7 +2249,7 @@ endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
 KERNEL_MODULE_DIR := $(KERNEL_ABS_SRC)
-KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound)
+KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound samples)
 
 modules ?= $(m)
 module  ?= $(modules)
@@ -2286,7 +2287,7 @@ endif
 MODULE ?= $(MODULES)
 ifeq ($(MODULE),)
   ifneq ($(module),)
-    MODULE := $(shell printf $(module) | tr ',' '\n' | cut -d'_' -f1 | tr '\n' ',' | sed -e 's%,$$%%g')
+    MODULE := $(shell printf $(module) | tr ',' '\n' | tr '\n' ',' | sed -e 's%,$$%%g')
   endif
 endif
 
@@ -2325,7 +2326,7 @@ ifeq ($(one_module),1)
     endif
 
     ifeq ($(M_PATH),)
-      $(error 'ERR: No such module found: $(module), list all by: `make m-l`')
+      $(error 'ERR: No such module found: $(module), list all by: `make modules-list`')
     else
       $(info LOG: m=$(module) ; M=$(M_PATH))
     endif
@@ -2506,6 +2507,7 @@ PHONY += modules modules-install modules-clean module module-install module-clea
 
 # Build Kernel
 
+KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
 FPL ?= 1
@@ -2518,10 +2520,19 @@ endif
 
 FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 
+kernel-defconfig: kernel-feature-download
+kernel-feature-download:
+ifneq ($(FEATURE),)
+	  @$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
+endif
+
 kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
-	  if [ $(FPL) -eq 1 ]; then touch $(FEATURE_PATCHED_TAG); fi; \
+	  tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX); \
+	  $(call make_kernel,olddefconfig); \
+	  if [ $(FPL) -eq 1 -a -n "$(FEATURE)" ]; then touch $(FEATURE_PATCHED_TAG); fi; \
+	  if [ -z "$(FEATURE)" ]; then rm -rf $(FEATURE_PATCHED_TAG); fi; \
 	else \
 	  echo "ERR: feature patchset has been applied, if want, please backup important changes and pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
 	fi
@@ -2722,7 +2733,7 @@ ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
 
 	$(Q)make -s kernel-olddefconfig
-	$(Q)$(call make_kernel,prepare M=)
+	$(Q)$(call make_kernel,$(MODULE_PREPARE) M=)
 else
 	$(Q)make -s kernel-olddefconfig
 endif
@@ -3283,7 +3294,7 @@ else
   endif
 endif
 
-EMULATOR_OPTS ?= -M $(MACH) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
+EMULATOR_OPTS ?= -M $(MACH) $(if $(CPU),-cpu $(CPU)) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)
 EMULATOR_OPTS += $(SHARE_OPT)
 
 D ?= 0
@@ -3644,7 +3655,9 @@ else
   DEBUG_CMD  := $(Q)sleep 0.1 && echo "\nLOG: debug server started, please connect it with these commands:\n\n" \
                                       "    (host) $$ cd /path/to/cloud-lab\n" \
                                       "    (host) $$ tools/docker/bash linux-lab\n" \
-                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n"
+                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n" \
+                                      "\n\n" \
+                                      "NOTE: To exit debug server, please press 'CTRL+a x'\n\n"
   #DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
 endif
 
@@ -3685,6 +3698,9 @@ _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)
+ifeq ($(DEV_TYPE),dir)
+_BOOT_DEPS += root-install
+endif
 
 ifneq ($(DEBUG),0)
   # Debug listen on a unqiue port, should run exclusively

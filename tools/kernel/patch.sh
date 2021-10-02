@@ -32,7 +32,7 @@ do
     echo $d
     [ ! -d $d ] && continue
 
-    for p in `find $d -type f -name "*.patch" | sort`
+    for p in `find $d -type f -name "*.patch" -o -name "*.mbx" | sort`
     do
         # Ignore some buggy patch via renaming it with suffix .ignore
         echo $p | grep -q .ignore$

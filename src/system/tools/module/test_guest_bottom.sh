@@ -15,7 +15,7 @@ do
     echo
     echo "module: rmmod $m"
     echo
-    rmmod -f $m &
+    modprobe -r $m &
     sleep 1
 
     echo

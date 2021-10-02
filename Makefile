@@ -1382,7 +1382,7 @@ $(1)-run: _$(1)
 
 $(1)-release: $(1) $(1)-save $(1)-saveconfig
 
-$(1)-new $(1)-clone: $(1)-cloneconfig
+$(1)-new $(1)-clone: $(1)-cloneconfig $(1)-clonepatch
 
 PHONY += $(addprefix $(1)-,save saveconfig savepatch build release new clone)
 
@@ -1642,7 +1642,8 @@ NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NE
 
 ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
 
-NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)/
+OLD_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2))
+NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)
 NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $(1)-cloneconfig:
@@ -1651,18 +1652,26 @@ $(1)-cloneconfig:
 	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
 		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
 	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
+
+$(1)-clonepatch:
+ifneq ($(PATCH_CLONE),0)
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
+	$$(Q)cp -r $$(OLD_$(call _uc,$1)_PATCH_DIR)/*.patch $$(NEW_$(call _uc,$1)_PATCH_DIR)
+endif
+
 else
 $(1)-cloneconfig:
 	$(Q)echo $$($(call _uc,$2)_NEW) already exists!
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
 	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
 		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
+
+$(1)-clonepatch:
 endif
 
 else
   ifeq ($$(MAKECMDGOALS),$(1)-clone)
-    $$(error Usage: make $(1)-clone $(call _uc,$2)_NEW=<$2-version>)
+    $$(error Usage: make $(1)-clone [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
   endif
 endif
 

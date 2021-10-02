@@ -14,8 +14,7 @@ KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 
 GCC = 9
-GCC[LINUX_v3.2] = 4.8
-GCC[LINUX_v2.6.12.6] = 4.8
+GCC[LINUX_$(call _any,LINUX,<=,v3.2)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
 CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE

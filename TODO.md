@@ -1,11 +1,10 @@
 
 # TODO List
 
-## V0.8
+## V0.9
 
-* Add openEuler support
 * Add GuiLite support
-* Add install package support
+* Add RISC-V board support
 
 ## Future
 

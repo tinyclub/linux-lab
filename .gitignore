@@ -17,6 +17,8 @@ openeuler-*
 force-*
 .lock
 .tmp
+*.mbx
+*.cover
 !tools/build/
 tmpfs/
 build.img

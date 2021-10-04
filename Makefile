@@ -2542,16 +2542,14 @@ ifneq ($(FEATURE),)
 endif
 
 FCS ?= 0
-ifneq ($(FEATURE),)
-  ifeq ($(origin F), command line)
-    FCS := 1
-  endif
-  ifeq ($(origin FEATURE), command line)
-    FCS := 1
-  endif
-  ifeq ($(origin FEATURES), command line)
-    FCS := 1
-  endif
+ifeq ($(origin F), command line)
+  FCS := 1
+endif
+ifeq ($(origin FEATURE), command line)
+  FCS := 1
+endif
+ifeq ($(origin FEATURES), command line)
+  FCS := 1
 endif
 
 kernel-feature:

@@ -49,8 +49,16 @@ touch $m
 
 grep -v "^#" $m | grep -q "$_V"
 if [ $? -eq 0 ]; then
-  sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $m
+  if [ -n "$S" ]; then
+    echo "$V := $S" $m
+    sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $m
+  else
+    echo "Clear $V"
+    sed -i -e "/^\($_V[\t:? ]*=[ ]*\).*/d" $m
+  fi
 else
-  echo "$V := $S" $m
-  echo "$V := $S" >> $m
+  if [ -n "$S" ]; then
+    echo "$V := $S" $m
+    echo "$V := $S" >> $m
+  fi
 fi

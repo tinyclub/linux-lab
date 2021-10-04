@@ -1169,7 +1169,8 @@ For `kft` feature in v2.6.36 for malta board:
 
 Clear feature setting (reset feature saved in .labconfig):
 
-    $ make feature feature=
+    $ make feature FEATURE=rust
+    $ make feature FEATURE=
 
 
 ### 4.1.4 Create new development branch

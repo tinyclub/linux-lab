@@ -1288,11 +1288,12 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel
     $ make boot
 
-#### 4.1.3.5 清理 feature 设定
+#### 4.1.3.5 持久化与清理 feature 设定
 
 清理 feature 设定（清理 .labconfig 中保存的设定）：
 
-    $ make feature feature=
+    $ make feature FEATURE=rust
+    $ make feature FEATURE=
 
 
 ### 4.1.4 新建开发分支

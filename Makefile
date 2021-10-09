@@ -464,6 +464,7 @@ endef
 first_target := $(firstword $(MAKECMDGOALS))
 ifeq ($(findstring -run,$(first_target)),-run)
   # use the rest as arguments for "run"
+  reserve_target := $(first_target:-run=)
   APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   x := $(APP_ARGS)
 endif
@@ -3865,6 +3866,15 @@ PHONY += $(APP_TARGETS)
 endif
 
 PHONY += $(APPS) $(patsubst %,_%,$(APPS))
+
+# add alias for linux and buildroot targets
+$(addsuffix -%,linux buildroot): FORCE
+	$(Q)make $(NPD) $(subst buildroot-,root-,$(subst linux-,kernel-,$@))
+
+buildroot: _root
+linux: _kernel
+
+PHONY += linux buildroot
 
 # Allow cleanstamp and run a target
 force-%:

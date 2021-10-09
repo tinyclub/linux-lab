@@ -1207,7 +1207,7 @@ board-edit:
 	$(Q)vim $(BOARD_MAKEFILE)
 
 board-config: board-save
-	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
+	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
 
@@ -1219,7 +1219,7 @@ local-edit:
 	$(Q)vim $(BOARD_LABCONFIG)
 
 local-config: board-save
-	$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
+	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
 
 PHONY += board-config board-edit
 
@@ -1670,7 +1670,7 @@ endif
 
 else
 $(1)-cloneconfig:
-	$(Q)echo $$($(call _uc,$2)_NEW) already exists!
+	$$(Q)echo $$($(call _uc,$2)_NEW) already exists!
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
 	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
 		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi

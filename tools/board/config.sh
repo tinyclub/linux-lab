@@ -50,15 +50,15 @@ touch $m
 grep -v "^#" $m | grep -q "$_V"
 if [ $? -eq 0 ]; then
   if [ -n "$S" ]; then
-    echo "$V := $S" $m
+    echo "$m: $V := $S"
     sed -i -e "s%^\($_V[\t:? ]*=[ ]*\).*%\1$S%g" $m
   else
-    echo "Clear $V"
+    echo "$m: Clear $V"
     sed -i -e "/^\($_V[\t:? ]*=[ ]*\).*/d" $m
   fi
 else
   if [ -n "$S" ]; then
-    echo "$V := $S" $m
+    echo "$m: $V := $S"
     echo "$V := $S" >> $m
   fi
 fi

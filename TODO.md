@@ -5,6 +5,7 @@
 
 * Add GuiLite support
 * Add RISC-V board support
+* Allow config board,plugin,module and mpath in .labconfig
 
 ## Future
 

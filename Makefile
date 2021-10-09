@@ -424,16 +424,6 @@ endif
 
 endef
 
-# Support alias, root -> buildroot, kernel -> linux
-ifneq ($(BUILD),)
-  override BUILD := $(subst buildroot,root,$(subst linux,kernel,$(BUILD)))
-endif
-
-ifeq ($(BUILD),all)
-  override BUILD :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
-endif
-
 #$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
 $(eval $(foreach x,K R D Q U,$(call _pb,$x)))
 
@@ -460,6 +450,24 @@ APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig m
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
 endef
+
+define genaliastarget
+$(strip $(foreach m,$(APP_MAP),$(if $(subst $(call _lc,$(lastword $(subst :,$(space),$m))),,$(firstword $(subst :,$(space),$m))),$(call _lc,$(lastword $(subst :,$(space),$m))))))
+endef
+
+define genaliassource
+$(strip $(subst $(1),,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$(1)))))
+endef
+
+# Support alias, root -> buildroot, kernel -> linux
+ifneq ($(BUILD),)
+  override BUILD := $(call genaliassource,$(BUILD))
+endif
+
+ifeq ($(BUILD),all)
+  override BUILD :=
+  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+endif
 
 first_target := $(firstword $(MAKECMDGOALS))
 ifeq ($(findstring -run,$(first_target)),-run)
@@ -500,7 +508,7 @@ endif
 
 ifneq ($(APP),)
   app ?= $(APP)
-  override app := $(subst buildroot,root,$(subst linux,kernel,$(app)))
+  override app := $(call genaliassource,$(app))
 endif
 
 ifeq ($(app),all)
@@ -3868,13 +3876,12 @@ endif
 PHONY += $(APPS) $(patsubst %,_%,$(APPS))
 
 # add alias for linux and buildroot targets
-$(addsuffix -%,linux buildroot): FORCE
-	$(Q)make $(NPD) $(subst buildroot-,root-,$(subst linux-,kernel-,$@))
+$(foreach t,$(call genaliastarget),$(eval $t:_$(call genaliassource,$t)))
+PHONY += $(call genaliastarget)
 
-buildroot: _root
-linux: _kernel
+$(addsuffix -%,$(call genaliastarget)): FORCE
+	$(Q)make $(NPD) $(call genaliassource,$@)
 
-PHONY += linux buildroot
 
 # Allow cleanstamp and run a target
 force-%:

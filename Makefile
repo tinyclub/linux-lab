@@ -1679,13 +1679,15 @@ $(1)-clonepatch:
 endif
 
 else
+$(1)-cloneconfig $(1)-clonepatch:
+
   ifeq ($$(MAKECMDGOALS),$(1)-clone)
     $$(error Usage: make $(1)-clone [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
   endif
 endif
 
 
-PHONY += $(addprefix $(1)-,cloneconfig)
+PHONY += $(addprefix $(1)-,cloneconfig clonepatch)
 
 endef #genclone
 

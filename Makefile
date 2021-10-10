@@ -1682,7 +1682,12 @@ else
 $(1)-cloneconfig $(1)-clonepatch:
 
   ifeq ($$(findstring clone,$$(MAKECMDGOALS)),clone)
-    $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
+    ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+      $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
+    endif
+    ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
+      $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
+    endif
   endif
 endif
 

@@ -1665,7 +1665,7 @@ $(1)-cloneconfig:
 $(1)-clonepatch:
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
 ifneq ($(PATCH_CLONE),0)
-	$$(Q)if [ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ]; then cp -rf $$(OLD_$(call _uc,$1)_PATCH_DIR)/*.patch $$(NEW_$(call _uc,$1)_PATCH_DIR); fi
+	$$(Q)if [ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ]; then find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \;; fi
 endif
 
 else

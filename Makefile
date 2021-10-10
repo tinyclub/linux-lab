@@ -456,7 +456,7 @@ $(strip $(foreach m,$(APP_MAP),$(if $(subst $(call _lc,$(lastword $(subst :,$(sp
 endef
 
 define genaliassource
-$(strip $(subst $(1),,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$(1)))))
+$(or $(strip $(subst $(1),,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$(1))))),$(1))
 endef
 
 # Support alias, root -> buildroot, kernel -> linux
@@ -3849,6 +3849,17 @@ PHONY += cache-build uncache-build backup-build
 # include .labfini if exist
 $(eval $(call _ti,.labfini))
 
+# add alias for linux and buildroot targets
+aliastarget=$(if $(APP_ARGS),$(filter $APP_ARGS,$(call genaliastarget)),$(call genaliastarget))
+ifneq ($(aliastarget),)
+$(aliastarget):
+	$(Q)make $(NPD) $(call genaliassource,$@)
+PHONY += $(aliastarget)
+endif
+
+$(addsuffix -%,$(call genaliastarget)): FORCE
+	$(Q)make $(NPD) $(call genaliassource,$@)
+
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(APP_ARGS):FORCE;@:)
@@ -3876,14 +3887,6 @@ PHONY += $(APP_TARGETS)
 endif
 
 PHONY += $(APPS) $(patsubst %,_%,$(APPS))
-
-# add alias for linux and buildroot targets
-$(foreach t,$(call genaliastarget),$(eval $t:_$(call genaliassource,$t)))
-PHONY += $(call genaliastarget)
-
-$(addsuffix -%,$(call genaliastarget)): FORCE
-	$(Q)make $(NPD) $(call genaliassource,$@)
-
 
 # Allow cleanstamp and run a target
 force-%:

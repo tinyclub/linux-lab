@@ -1681,8 +1681,8 @@ endif
 else
 $(1)-cloneconfig $(1)-clonepatch:
 
-  ifeq ($$(MAKECMDGOALS),$(1)-clone)
-    $$(error Usage: make $(1)-clone [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
+  ifeq ($$(findstring clone,$$(MAKECMDGOALS)),clone)
+    $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
   endif
 endif
 

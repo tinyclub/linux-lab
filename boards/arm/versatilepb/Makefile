@@ -2,7 +2,7 @@
 _BASE    = 1
 ARCH     = arm
 XARCH    = $(ARCH)
-CPU     ?= arm926t
+CPU     ?= arm926
 MEM     ?= 128M
 UBOOT   ?= v2015.07
 GCC[UBOOT_v2015.07] = 4.3

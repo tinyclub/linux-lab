@@ -1,5 +1,6 @@
 
 # Risc32 Virt Usage
+## Basic Usage
 
 Works perfectly:
 
@@ -12,14 +13,24 @@ Works perfectly:
 Buildroot provides rootfs config and toolchain, mainline linux provides the
 official kernel config, everything goes well. Qemu v4.0.0 has the risc32 board
 support.
+## BIOS
 
 The only difference is riscv32 requires a proxy kernel to do some prepare
 before running the real linux kernel. and the proxy kernel currently is
 replaced by the opensbi project.
 
-## Notes
+Newer qemu and kernel support works with the standard -bios option with opensbi.
 
-v5.1 kernel hangs at booting rootfs, the latest one is v5.0.13.
+We can build one in Linux Lab with these commands:
+
+    $ cd src/examples/
+    $ git clone https://github.com/riscv/opensbi
+    $ cd opensbi
+    // for riscv32
+    $ make all PLATFORM=generic LLVM=1 PLATFORM_RISCV_XLEN=32
+    // for riscv64
+    $ make all PLATFORM=generic LLVM=1 PLATFORM_RISCV_XLEN=64
+    $ ls build/platform/generic/firmware/fw_jump.elf
 
 ## References
 

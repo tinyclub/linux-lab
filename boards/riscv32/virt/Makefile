@@ -37,9 +37,14 @@ FSTYPE  ?= ext2
 # bbl is from https://github.com/riscv/riscv-pk
 # fw_jump.elf is from https://github.com/riscv/opensbi
 
+# New kernel can boot with normal qemu -bios option
+ifeq ($(LINUX),v5.0.13)
 #PORIIMG ?= bbl
 PORIIMG ?= fw_jump.elf
 PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
+else
+BIOS    ?= $(BSP_BIOS)/opensbi/qemu/virt/fw_jump.elf
+endif
 
 KRN_ADDR ?= 0x80400000
 ORIIMG  ?= arch/$(ARCH)/boot/Image

@@ -2,7 +2,7 @@
 _BASE    = 1
 ARCH     = mips
 XARCH    = mipsel
-CPU     ?= mips32r2
+CPU     ?= LS232_1
 BUILDROOT?= 2016.05
 MEM     ?= 256M
 SERIAL  ?= ttyS0

@@ -2,7 +2,8 @@
 _BASE    = 1
 ARCH     = mips
 XARCH    = mipsel
-CPU     ?= mips32r2
+# Not sure, use the default one
+CPU     ?=
 MEM     ?= 128M
 
 BUILDROOT?= 2016.05

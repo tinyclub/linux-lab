@@ -12,8 +12,9 @@ LINUX   ?= v5.1
 
 # FIXME: broken with gcc 4.7?
 GCC[LINUX_v2.6.36] = 4.3
+GCC[LINUX_v4.6.7] = 4.7
+GCC = 9
 
-GCC = 4.7
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
 PFLASH_SIZE ?= 64

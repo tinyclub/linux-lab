@@ -2,8 +2,8 @@
 _BASE    = 1
 ARCH     = mips
 XARCH    = mipsel
-CPU     ?= mips32r2
-#LINUX   ?= v4.6.7
+# Not sure, use the default one
+CPU     ?=
 LINUX   ?= v5.1
 
 # FIXME: need to work with mipsel gcc 9

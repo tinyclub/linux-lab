@@ -32,19 +32,10 @@ ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2
 
-# Proxy kernel image is built in buildroot-output/images/
-# Both of bbl and fw_jump.elf work, but fw_jump.elf is smaller a lot, bbl is deprecated...
-# bbl is from https://github.com/riscv/riscv-pk
 # fw_jump.elf is from https://github.com/riscv/opensbi
-
 # New kernel can boot with normal qemu -bios option
-ifeq ($(LINUX),v5.0.13)
-#PORIIMG ?= bbl
-PORIIMG ?= fw_jump.elf
-PKIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/$(PORIIMG)
-else
-BIOS    ?= $(BSP_BIOS)/opensbi/qemu/virt/fw_jump.elf
-endif
+BIOS[LINUX_v5.0.13]  ?= $(BSP_KERNEL)/$(LINUX)/fw_jump.elf
+BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
 
 KRN_ADDR ?= 0x80400000
 ORIIMG  ?= arch/$(ARCH)/boot/Image

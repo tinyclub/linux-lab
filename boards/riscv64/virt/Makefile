@@ -32,7 +32,7 @@ ROOTDEV ?= /dev/vda
 FSTYPE  ?= ext2
 
 # fw_jump.elf is from https://github.com/riscv/opensbi
-BIOS    ?= $(BSP_BIOS)/opensbi/qemu/virt/fw_jump.elf
+BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
 
 KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image

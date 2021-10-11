@@ -8,6 +8,7 @@ LINUX   ?= v5.1
 
 # FIXME: need to work with mipsel gcc 9
 GCC[LINUX_v2.6.36] = 4.3
+GCC     ?= 9
 
 BUILDROOT?= 2016.05
 MEM     ?= 128M

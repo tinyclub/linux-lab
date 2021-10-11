@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.8-rc3 中文手册
+% Linux Lab v0.8 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -2507,7 +2507,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 ## 选购商品支持
 
-社区会把即插即用 Linux Lab Disk、适配过的开发板等上架到 [社区自营店](https://shop155917374.taobao.com)，欢迎大家选购，也可以在淘宝手机 APP 内搜索 “泰晓科技” 找到我们。
+社区会把即插即用 Linux Lab Disk、适配过的开发板等上架到 [社区自营店](https://shop155917374.taobao.com)，欢迎大家选购，也可以在淘宝手机 APP 内搜索 “Linux Lab真盘” 找到我们。
 
 ## 扫码提供赞助
 

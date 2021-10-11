@@ -2,7 +2,8 @@
 _BASE    = 1
 ARCH     = riscv
 XARCH    = riscv32
-CPU     ?= any
+# Use the default setting
+CPU     ?=
 SMP     ?= 4
 MEM     ?= 128M
 QEMU    ?= v4.0.0

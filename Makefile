@@ -694,6 +694,7 @@ $(eval $(call __vs,UBOOT,LINUX))
 $(eval $(call __vs,QEMU,LINUX))
 $(eval $(call __vs,QEMU,OS))
 $(eval $(call __vs,QTOOL,OS))
+$(eval $(call __vs,BIOS,LINUX))
 
 _BIMAGE := $(BIMAGE)
 _KIMAGE := $(KIMAGE)

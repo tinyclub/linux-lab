@@ -2,7 +2,8 @@
 _BASE    = 1
 ARCH     = powerpc
 XARCH    = ppc
-CPU     ?= generic
+# Not sure, use the default setting
+CPU     ?=
 # Note: <2.6.37 kernel don't have __NR_socket implementation
 LINUX   ?= v5.1
 BUILDROOT?= 2016.05

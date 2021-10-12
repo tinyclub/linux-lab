@@ -6,7 +6,7 @@ XARCH    = mipsel
 CPU     ?=
 LINUX   ?= v5.1
 
-# FIXME: need to work with mipsel gcc 9
+# NOTE: need to update docker image to get 4.3 gcc
 GCC[LINUX_v2.6.36] = 4.3
 GCC     ?= 9
 
@@ -19,6 +19,10 @@ FSTYPE  ?= ext2
 ORIIMG  ?= vmlinuz
 ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0
+
+# FIXME: v2.6.36 built with 4.3 in latest ubuntu 20.4 get 'bootmem alloc of 1048576 bytes failed!' error with ram0 boot
+ROOTDEV[LINUX_v2.6.36] = /dev/hda /dev/nfs
+
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)

@@ -1023,12 +1023,13 @@ ifneq ($(ROOTDEV),)
   endif
 endif
 
+ROOTDEV ?= /dev/ram0
+$(eval $(call _vs,ROOTDEV,LINUX))
+
 # Verify rootdev argument
 #$(warning $(call genverify,ROOTDEV,ROOTDEV,,0))
 $(eval $(call genverify,ROOTDEV,ROOTDEV,,0))
 
-ROOTDEV ?= /dev/ram0
-$(eval $(call _vs,ROOTDEV,LINUX))
 FSTYPE  ?= ext2
 
 ROOTFS_UBOOT_SUFFIX    := .cpio.uboot

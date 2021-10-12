@@ -21,7 +21,8 @@ ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0
 
 # FIXME: v2.6.36 built with 4.3 in latest ubuntu 20.4 get 'bootmem alloc of 1048576 bytes failed!' error with ram0 boot
-ROOTDEV[LINUX_v2.6.36] = /dev/hda /dev/nfs
+ROOTDEV_LIST[LINUX_v2.6.36] = /dev/hda /dev/nfs
+ROOTDEV[LINUX_v2.6.36] = /dev/hda
 
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz

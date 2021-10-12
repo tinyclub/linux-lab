@@ -1302,15 +1302,15 @@ PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
+$(C_PATH) make $(S) -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
 define make_kernel
-$(C_PATH) make O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) make $(S) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root
-make O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $(1)
+make $(S) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $(1)
 endef
 
 # FIXME: ugly workaround for uboot, it share code between arm and arm64
@@ -1319,7 +1319,7 @@ $(shell if [ $1 = arm64 ]; then echo arm; else echo $1; fi)
 endef
 
 define make_uboot
-$(C_PATH) make O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make $(S) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
 endef
 
 # generate target dependencies

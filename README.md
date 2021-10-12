@@ -1082,7 +1082,7 @@ More flexible usage:
     $ make kernel-setconfig m=tun
     $ make kernel x=tun.ko M=drivers/net
     $ make kernel x=drivers/net/tun.ko
-    $ make kernel-run drivers/net/tun.ko
+    $ make do kernel drivers/net/tun.ko
 
 Build external kernel modules (the same as internel modules):
 
@@ -1709,18 +1709,18 @@ The main packages are `libc6-dev`, `libc6` or `libgcc`, but x32 is an expection,
 
 ## 4.11 Running any make goals
 
-Linux Lab allows to access Makefile goals easily via `<xxx>-run`, for example:
+Linux Lab allows to access Makefile goals easily via the `do` target, for example:
 
-    $ make kernel-run help
-    $ make kernel-run menuconfig
+    $ make do kernel help
+    $ make do kernel menuconfig
 
-    $ make root-run help
-    $ make root-run busybox-menuconfig
+    $ make do root help
+    $ make do root busybox-menuconfig
 
-    $ make uboot-run help
-    $ make uboot-run menuconfig
+    $ make do uboot help
+    $ make do uboot menuconfig
 
-  `-run` goals allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+  The `do` goal allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
 
 ## 4.12 More Usage
 

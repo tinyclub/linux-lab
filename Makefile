@@ -446,7 +446,7 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug run upload env
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug do upload env
 
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
@@ -471,18 +471,18 @@ ifeq ($(BUILD),all)
 endif
 
 first_target := $(firstword $(MAKECMDGOALS))
-ifeq ($(findstring -run,$(first_target)),-run)
-  # use the rest as arguments for "run"
-  reserve_target := $(first_target:-run=)
+ifeq ($(findstring -do,$(first_target)),-do)
+  # use the rest as arguments for "do"
+  reserve_target := $(first_target:-do=)
   APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   x := $(APP_ARGS)
 endif
 
 # common commands
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
-  # use the rest as arguments for "run"
+  # use the rest as arguments for "do"
   APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  ifeq ($(first_target),run)
+  ifeq ($(first_target),do)
     x := $(filter-out $(first_target),$(wordlist 2,$(words $(APP_ARGS)),$(APP_ARGS)))
   endif
 
@@ -1340,7 +1340,7 @@ $(1)-modules-install: $(1)-modules
 $(1)-modules-install-km: $(1)-modules-km
 $(1)-help: $(1)-defconfig
 
-$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km run)
+$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km do)
 ifeq ($(firstword $(MAKECMDGOALS)),$(1))
   $(1)_defconfig_childs := $(1)
 endif
@@ -1389,7 +1389,7 @@ else
 $(1)-build: $$(call __stamp_$(1),build)
 endif
 
-$(1)-run: _$(1)
+$(1)-do: _$(1)
 
 $(1)-release: $(1) $(1)-save $(1)-saveconfig
 

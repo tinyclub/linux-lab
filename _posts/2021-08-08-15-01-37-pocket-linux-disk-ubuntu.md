@@ -3,7 +3,6 @@ layout: post
 author: 'Wu Zhangjin'
 title: "社区发布随身 Pocket Linux 系统盘，首批支持 Ubuntu 18.04.5, 20.04.2, 21.04"
 draft: false
-top: true
 tagline: "免安装的 Linux 系统盘来了，支持智能启动+透明倍容+时区兼容"
 license: "cc-by-nc-nd-4.0"
 permalink: /pocket-linux-disk-ubuntu/

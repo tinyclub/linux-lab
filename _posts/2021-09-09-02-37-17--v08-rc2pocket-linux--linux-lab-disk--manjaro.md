@@ -2,7 +2,6 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "社区发布 Linux Lab v0.8-rc2，Pocket Linux 与 Linux Lab Disk 同时支持 Manjaro"
-top: true
 draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /manjaro2go/

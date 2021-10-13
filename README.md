@@ -65,7 +65,7 @@
           - [4.1.3.2 using kernel modules](#4132-using-kernel-modules)
           - [4.1.3.3 using rust feature](#4133-using-rust-feature)
           - [4.1.3.4 using kft feature](#4134-using-kft-feature)
-          - [4.1.3.5 clear feature setting](#4135-clear-feature-setting)
+          - [4.1.3.5 persist or clear feature setting](#4135-persist-or-clear-feature-setting)
        - [4.1.4 Create new development branch](#414-create-new-development-branch)
     - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
     - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
@@ -1165,7 +1165,7 @@ For `kft` feature in v2.6.36 for malta board:
     $ make kernel
     $ make boot
 
-#### 4.1.3.5 clear feature setting
+#### 4.1.3.5 persist or clear feature setting
 
 Clear feature setting (reset feature saved in .labconfig):
 

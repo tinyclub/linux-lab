@@ -60,7 +60,7 @@ Virtualbox 支持所有主流的桌面操作系统，请先按需下载并安装
 在 macOS 中插入 Linux Lab Disk 后，会自动挂载分区，为了创建虚拟硬盘，需要先卸载掉：
 
 ```
-$ df -h | grep usbdata
+$ df -h | egrep "usbdata|linux-lab-disk"
 /dev/disk2s1   10Gi  67Mi   10Gi  1% 38 10533327 0%  /Volumes/usbdata
 $ sudo umount /Volumes/usbdata
 ```
@@ -70,6 +70,12 @@ $ sudo umount /Volumes/usbdata
 ```
 VBoxManage: error: Cannot open the raw disk '/dev/disk2s1': VERR_RESOURCE_BUSY
 VBoxManage: error: The raw disk vmdk file was not created
+```
+
+另外，需要修改设备权属，否则 Virtualbox 启动的时候会提示没有权限：`VERR_ACCESS_DENIED`。
+
+```
+$ sudo chown $USER /dev/disk2
 ```
 
 ### 查看 Linux Lab Disk 对应的设备

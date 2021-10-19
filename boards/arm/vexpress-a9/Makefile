@@ -9,7 +9,7 @@ QEMU    ?= v4.1.1
 # after enabling QEMU_US=1, qemu-system-$(XARCH) will not be compiled
 QEMU_US ?= 0
 UBOOT   ?= v2020.04
-LINUX   ?= v5.1
+LINUX   ?= v5.13
 
 # Uboot breaks 9pnet sharing, disable uboot if 9pnet share used
 UBOOT[SHARE_1] := disabled

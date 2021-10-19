@@ -5,7 +5,7 @@ XARCH    = ppc
 # Not sure, use the default setting
 CPU     ?=
 # Note: <2.6.37 kernel don't have __NR_socket implementation
-LINUX   ?= v5.1
+LINUX   ?= v5.13
 BUILDROOT?= 2016.05
 MEM     ?= 128M
 NETDEV_LIST := pcnet ne2k_pci rtl8139

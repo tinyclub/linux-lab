@@ -4,7 +4,7 @@ ARCH     = mips
 XARCH    = mipsel
 # Not sure, use the default one
 CPU     ?=
-LINUX   ?= v5.1
+LINUX   ?= v5.13
 
 # NOTE: need to update docker image to get 4.3 gcc
 GCC[LINUX_v2.6.36] = 4.3

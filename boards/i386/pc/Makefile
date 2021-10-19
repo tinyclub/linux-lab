@@ -24,7 +24,7 @@ GCC[QEMU_v0.10.6] = 4.4
 endif
 
 SMP     ?= 4
-LINUX   ?= v5.1
+LINUX   ?= v5.13
 BUILDROOT?= 2019.02.2
 
 # Add board detailed configuration

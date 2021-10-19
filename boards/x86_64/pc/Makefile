@@ -7,7 +7,7 @@ XARCH    = x86_64
 CPU     ?= qemu64
 MEM     ?= 128M
 SMP     ?= 4
-LINUX   ?= v5.1
+LINUX   ?= v5.13
 
 # git repos for other kernel fork
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git

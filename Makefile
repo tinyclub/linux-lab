@@ -3584,7 +3584,7 @@ endif
 
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
-boot-test:
+boot-test: bsp-checkout
 	$(Q)echo "Running $@"
 ifeq ($(BOOT_TEST), default)
 	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTER)

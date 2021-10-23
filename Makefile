@@ -1520,6 +1520,7 @@ $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_BUILD)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 
 ## clean up $(1) source code
+$(1)-cleansrc: $(1)-cleanup
 $(1)-cleanup: $(1)-cleanstamp
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		cd $$($(call _uc,$(1))_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \

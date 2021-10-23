@@ -446,7 +446,7 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug do upload env
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug do upload env
 
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
@@ -1527,6 +1527,7 @@ $(1)-cleanup: $(1)-cleanstamp
 	fi
 
 $(1)-clean: $(1)-rawclean
+$(1)-cleanall: $(1)-clean $(1)-cleansrc
 
 $(1)-rawclean: $$($(call _uc,$(1))_CLEAN_DEPS)
 ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
@@ -1539,7 +1540,7 @@ ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD
 	$$(Q)rm -rf $$($(call _uc,$(1))_BUILD)
 endif
 
-PHONY += $(addprefix $(1)-,cleanstamp cleanup outdir clean distclean)
+PHONY += $(addprefix $(1)-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
 
 endef # gensource
 

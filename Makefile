@@ -616,7 +616,7 @@ define genverify
  ifneq ($$($2),)
   ifneq ($$(BSP_$(1)),)
    ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
-    $(2)_LIST ?= $$(shell ls $$(BSP_$(1)))
+    $(2)_LIST ?= $$(shell ls $$(BSP_$(1)) | sort -V)
    endif
   endif
   # If Linux version specific qemu list defined, use it

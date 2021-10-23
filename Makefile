@@ -446,7 +446,7 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean save saveconfig savepatch clone help list debug boot test test-debug do upload env
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env
 
 define gengoalslist
 $(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
@@ -1347,6 +1347,8 @@ ifeq ($(firstword $(MAKECMDGOALS)),$(1))
 endif
 $$($(1)_defconfig_childs): $(1)-defconfig
 
+$(1)-saveall: $(1)-save $(1)-saveconfig
+
 $(1)-save $(1)-saveconfig: $(1)-build
 
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
@@ -1370,7 +1372,7 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
   boot_deps += $(1)-build
 endif
 
-$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch save saveconfig clone)
+$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch saveall save saveconfig clone)
 $$($(1)_bsp_childs): $(BSP_CHECKOUT)
 
 _boot: $$(boot_deps)

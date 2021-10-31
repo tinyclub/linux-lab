@@ -39,3 +39,4 @@
 * Add more system, like deepin, openeuler and even rt-thread os
 * Add bash complete support
 * Add serial port virtualization support, ref: http://tinylab.org/serial-port-over-internet/
+* Add build output support for bsp, put rootfs dir and the other new generated files of bsp to build/bsp-xxx and let bsp-clean works as-is

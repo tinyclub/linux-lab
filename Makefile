@@ -1472,17 +1472,16 @@ endif
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
 $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
-	@echo
-	@echo "Downloading $(1) source ..."
-	@echo
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
 			git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin) && touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
+		echo "Downloading $(1) source ..."; \
 		cd $$($(call _uc,$(1))_SROOT) && \
 			mkdir -p $$($(call _uc,$(1))_SPATH) && \
 			cd $$($(call _uc,$(1))_SPATH) && \

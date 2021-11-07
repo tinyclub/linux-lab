@@ -1,8 +1,8 @@
 <div>
 
 {% if true %}
-<a style="line-height: 150%" title="某宝检索 “Linux Lab真盘”，免安装使用随身 Linux Lab，已支持 Ubuntu 18.04/20.04/21.04, Manjaro 和 Deepin 20.2.3，即插即用，高效率做 Linux 内核实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/09/manjaro-linux-lab-disk-system-size.jpg" style="max-height:500px; max-width:90%" />
-<br/>随身Linux Lab实验盘已适配Manjaro，界面清爽，运行快速</a>
+<a style="line-height: 150%" title="某宝检索 “Linux Lab真盘”，免安装使用随身 Linux Lab，已支持 Ubuntu 18.04/20.04/21.04, Manjaro, Fedora34, Kali Linux, EZGO 14 和 Deepin 20.2.3，即插即用，高效率做 Linux 内核实验与开发" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/11/linux-lab/linux-lab-disk-kali.jpg" style="max-height:500px; max-width:90%" />
+<br/>随身Linux Lab实验盘已适配Kali Linux，别具一格</a>
 {% endif %}
 
 {% if false %}

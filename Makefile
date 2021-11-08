@@ -1306,8 +1306,16 @@ define make_qemu
 $(C_PATH) make $(NPD) -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
 endef
 
+# FIXME: Workaround make tool update after commit: 31110ebbec8688c6e9597b641101afc94e1c762a
+# make-3.81 may be not available in the future, download and install it as /usr/bin/make-3.81
+KMAKE := make
+KMAKE[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make-3.81
+KDEPS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
+$(eval $(call __vs,KMAKE,LINUX))
+$(eval $(call __vs,KDEPS,LINUX))
+
 define make_kernel
-$(C_PATH) make $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) $(KMAKE) $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
 endef
 
 define make_root

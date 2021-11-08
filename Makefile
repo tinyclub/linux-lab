@@ -2970,11 +2970,7 @@ ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
 endif
 UBOOT_DEPS += $(UKIMAGE)
 
-ifeq ($(SD_BOOT),1)
-  UBOOT_PACKAGES_INSTALL := packages-install
-endif
-
-_uboot-images: $(UBOOT_PACKAGES_INSTALL) $(UBOOT_DEPS)
+_uboot-images: $(UBOOT_DEPS)
 ifeq ($(BOOTDEV),tftp)
 	$(Q)$(UBOOT_TFTP_TOOL)
 endif
@@ -3026,12 +3022,6 @@ kernel-save:
 	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
-
-# Required packages for auto login (ssh, serial)
-packages-install:
-	$(Q)/usr/bin/which $(PACKAGES_NEED[bin]) >/dev/null 2>&1 || \
-	(echo "LOG: Install missing tools: $(PACKAGES_NEED[deb])" && \
-	sudo apt-get update -y && sudo apt-get install -y $(PACKAGES_NEED[deb]))
 
 # Targets for real boards
 ifeq ($(_VIRT),0)
@@ -3092,13 +3082,13 @@ REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: packages-install getip $(call __stamp_kernel,build)
+dtb-upload: getip $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
 	$(Q)$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
 endif
 
-kernel-upload: packages-install getip $(call __stamp_kernel,build)
+kernel-upload: getip $(call __stamp_kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
 	$(Q)$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)
@@ -3109,7 +3099,7 @@ $(LOCAL_MODULES)$(m):
 
 module-upload: modules-upload
 
-modules-upload: packages-install getip $(LOCAL_MODULES)$(m)
+modules-upload: getip $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'
@@ -3129,12 +3119,12 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
-boot-config: packages-install getip
+boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
 	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
 
-reboot: packages-install getip
+reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"
 	$(Q)$(SSH_CMD) 'sudo reboot' || true
 
@@ -3795,7 +3785,7 @@ endif
 _test _debug:
 	$(Q)echo "LOG: This feature is not implemented for real boards."
 
-login: packages-install _boot
+login: _boot
 
 PHONY += login
 

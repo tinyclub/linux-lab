@@ -4,11 +4,6 @@
 HOST_GCC[OS_trusty] := 8
 HOST_GCC[OS_focal]  := 9
 
-# Must make sure these packages are installed during the first usage
-# miniterm is provided by python3-serial
-PACKAGES_NEED[bin] := sshpass miniterm mkfs.fat
-PACKAGES_NEED[deb] := sshpass python3-serial dosfstools
-
 # The shop to buy the board
 BOARD_SHOP     ?= https://shop155917374.taobao.com
 

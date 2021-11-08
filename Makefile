@@ -1712,7 +1712,10 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$$(call _stamp_$(1),env):
+$(1)-deps:
+	$$(Q)tools/deps/install.sh "$$($(3)DEPS)"
+
+$$(call _stamp_$(1),env): $(1)-deps
 	$$(Q)make $$(S) _env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
@@ -1762,8 +1765,8 @@ PHONY += bsp
 endif
 
 #$(warning $(call gensource,bsp,BSP))
-$(eval $(call gensource,bsp,BSP))
-$(eval $(call genenvdeps,bsp,BSP))
+$(eval $(call gensource,bsp,BSP,B))
+$(eval $(call genenvdeps,bsp,BSP,B))
 
 # Qemu targets
 
@@ -1872,8 +1875,8 @@ $(eval $(call gendeps,qemu))
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
 $(eval $(call gencfgs,qemu,QEMU,Q))
-#$(warning $(call genenvdeps,qemu,QEMU)
-$(eval $(call genenvdeps,qemu,QEMU))
+#$(warning $(call genenvdeps,qemu,QEMU,Q)
+$(eval $(call genenvdeps,qemu,QEMU,Q))
 #$(warning $(call genclone,qemu,qemu,Q))
 $(eval $(call genclone,qemu,qemu,Q))
 
@@ -2051,7 +2054,7 @@ $(eval $(call gencfgs,root,buildroot,R))
 #$(warning $(call genclone,root,buildroot,R))
 $(eval $(call genclone,root,buildroot,R))
 #$(warning $(call genenvdeps,root,BUILDROOT)
-$(eval $(call genenvdeps,root,BUILDROOT))
+$(eval $(call genenvdeps,root,BUILDROOT,R))
 
 # Build Buildroot
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
@@ -2268,8 +2271,8 @@ $(eval $(call gengoals,kernel,LINUX))
 $(eval $(call gencfgs,kernel,linux,K))
 #$(warning $(call genclone,kernel,linux,K))
 $(eval $(call genclone,kernel,linux,K))
-#$(warning $(call genenvdeps,kernel,LINUX))
-$(eval $(call genenvdeps,kernel,LINUX))
+#$(warning $(call genenvdeps,kernel,LINUX,K))
+$(eval $(call genenvdeps,kernel,LINUX,K))
 # Get configs must be enabled/disabled for target toolchain and kernel versions
 $(eval $(call __vs,CFGS[K_N],GCC,LINUX))
 $(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
@@ -2885,8 +2888,8 @@ $(eval $(call gengoals,uboot,UBOOT))
 $(eval $(call gencfgs,uboot,uboot,U))
 #$(warning $(call genclone,uboot,uboot,U))
 $(eval $(call genclone,uboot,uboot,U))
-#$(warning $(call genenvdeps,uboot,UBOOT))
-$(eval $(call genenvdeps,uboot,UBOOT))
+#$(warning $(call genenvdeps,uboot,UBOOT,U))
+$(eval $(call genenvdeps,uboot,UBOOT,U))
 
 # Specify uboot targets
 UT ?= $(x)

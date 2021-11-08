@@ -7,6 +7,10 @@ deps="$1"
 
 [ -z "$deps" ] && exit 0
 
+CACHED_DIR=$(cd $(dirname $0) && pwd)/cached
+
+[ ! -d $CACHED_DIR ] && mkdir -p $CACHED_DIR
+
 for dep in $deps
 do
   cmd=$(echo $dep | cut -d ';' -f1)
@@ -26,7 +30,7 @@ do
   if [ $? -eq 0 ]; then
     echo $pkg | grep ".deb"
     if [ $? -eq 0 ]; then
-      wget -c $pkg
+      wget -c $pkg -P $CACHED_DIR
       [ $? -ne 0 ] && echo "ERR: Failed to download $pkg" && continue
 
       # backup old cmd if version specified
@@ -36,7 +40,7 @@ do
         sudo cp $old_cmd $tmp_cmd
       fi
 
-      sudo dpkg -i $(basename $pkg)
+      sudo dpkg -i $CACHED_DIR/$(basename $pkg)
 
       if [ $? -eq 0 -a -n "$version" ]; then
         new_cmd=`which $cmd`

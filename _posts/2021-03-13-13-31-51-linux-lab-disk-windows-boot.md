@@ -135,50 +135,9 @@ VBoxManage internalcommands createrawvmdk -filename F:\VBOX\LinuxLab.vmdk -rawdi
 
 ![efi](/wp-content/uploads/2021/03/13/efi.png)
 
-## 通过 VMUB 更自动化的实现 Linux Lab Disk 启动
+## 通过 vmboot 更自动化的实现 Linux Lab Disk 启动
 
-前述过程比较繁琐，所以社区开发有 VMUB，这款软件能够自动完成上述虚拟硬盘的创建和相关设定。
-
-下面简单介绍其用法。
-
-### 下载与安装
-
-首先在下面的链接下载最新的版本并安装：
-
-* [Releases · DavidBrenner3/VMUB](https://github.com/DavidBrenner3/VMUB/releases)
-
-### 新建启动项
-
-启动上述软件并作相关设定如下：
-
-- VM Name 选刚才创建的虚拟机
-- Drive to add and boot: 选择 U盘
-
-![vmub](/wp-content/uploads/2021/03/13/vmub.png)
-
-### 移除之前创建的 LinuxLab.vmdk
-
-为了避免重复，这里可以先移除掉之前创建的虚拟硬盘。
-
-![remove](/wp-content/uploads/2021/03/13/remove.png)
-
-### 点击 Start 启动虚拟机
-
-如果提示错误，不用理会，并不影响实际使用：
-
-![start](/wp-content/uploads/2021/03/13/start.png)
-
-如果虚拟机没有启动，在 VirtualBox 里面启动一下就可以了：
-
-![ubuntu](/wp-content/uploads/2021/03/13/ubuntu.png)
-
-## 直接使用 Linux Lab 真盘中的 Linux Lab
-
-Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接点击虚拟机内桌面的 Linux Lab 图标即可启动，启动效果如下：
-
-![linuxlab](/wp-content/uploads/2021/03/13/linuxlab.png)
-
-至此，在 Windows 下终于成功启动 Linux Lab 真盘里面的 Linux Lab 系统了。
+vmboot 是我们研发的一款智能启动软件，安装以后，插入 Linux Lab Disk 到运行的 Windows 系统即可智能启动。
 
 ## 抢先体验 Linux Lab Disk
 

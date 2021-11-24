@@ -2589,7 +2589,7 @@ kernel-feature:
 	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
 	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
 	  [ $(FCS) -eq 1 ] && tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX); \
-	  $(call make_kernel,olddefconfig); \
+	  make -s kernel-olddefconfig; \
 	  if [ $(FPL) -eq 1 -a -n "$(FEATURE)" ]; then touch $(FEATURE_PATCHED_TAG); fi; \
 	  if [ -z "$(FEATURE)" ]; then rm -rf $(FEATURE_PATCHED_TAG); fi; \
 	else \

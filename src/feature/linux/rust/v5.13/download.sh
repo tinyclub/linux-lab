@@ -11,17 +11,20 @@ if [ $? -ne 0 ]; then
     $LABDIR/tools/deps/llvm.sh
 fi
 
-if [ ! -f ~/.cargo/bin/rustc -o ! -d ~/.rustup/toolchains ]; then
+if [ ! -f "$HOME/.cargo/bin/rustc" -o ! -d "$HOME/.rustup/toolchains" ]; then
     echo "LOG: Install missing rust environment"
     $LABDIR/tools/deps/rust.sh
 fi
 
 # load rust env if required
-if [ -f ~/.cargo/bin/rustc -a -d ~/.rustup/toolchains ]; then
-    # remove the old setting
-    sed -i -e "/.cargo\/env/d" ~/.bashrc
-    # add new with file checking
-    echo '[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"' >> ~/.bashrc
+if [ -f "$HOME/.cargo/bin/rustc" -a -d "$HOME/.rustup/toolchains" ]; then
+    grep -i ".cargo" $HOME/.bashrc
+    if [ $? -ne 0 ]; then
+       # remove the old setting
+       sed -i -e "/.cargo\/env/d" $HOME/.bashrc
+       # add new with file checking
+       echo '[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"' >> $HOME/.bashrc
+    fi
 fi
 
 pushd $CURDIR

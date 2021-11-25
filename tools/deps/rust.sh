@@ -49,4 +49,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
   RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static \
   sh -s -- -y -v --default-toolchain 1.54-x86_64-unknown-linux-gnu --profile minimal -c rust-src,rustfmt && \
   echo "RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static" >> $HOME/.cargo/env && \
-  bash -c "source $HOME/.cargo/env && cargo install --locked --version 0.56.0 bindgen"
+  bash -c "source $HOME/.cargo/env && cargo install --locked --version 0.56.0 bindgen" && exit 0
+
+exit 1

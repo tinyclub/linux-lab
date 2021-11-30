@@ -12,3 +12,6 @@ BOARD_SERIAL   ?= /dev/ttyUSB0
 BOARD_BAUDRATE ?= 115200
 BOARD_USER     ?= root
 BOARD_PASS     ?= linux-lab
+
+# Boards free currently
+BOARD_FREE     ?= arm/vexpress-a9

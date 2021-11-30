@@ -68,11 +68,12 @@ else
 endif
 
 # Board config: B/BOARD persistent, b/board temporarily
+BOARD_DEFAULT ?= arm/vexpress-a9
 board ?= $(b)
 B ?= $(board)
 ifeq ($(B),)
   ifeq ($(BOARD_CONFIG),)
-    BOARD := arm/vexpress-a9
+    BOARD := $(BOARD_DEFAULT)
   else
     BOARD ?= $(BOARD_CONFIG)
   endif
@@ -1479,7 +1480,23 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-$$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir)
+$(1)-license:
+	@if [ "$(1)" = "bsp" -a "$(vip)" != "1" ]; then \
+	    for f in $(BOARD_FREE); do \
+	        [ "$$$$f" = "$b" -o "$$$$f" = "$B" ] && exit 0; \
+	    done ; \
+	    echo "" ;\
+	    echo "Friendship reminder:" ;\
+	    echo "" ;\
+	    echo "  This board is not free,"; \
+	    echo "  Please search 'Linux Lab BSP' and buy one from https://shop155917374.taobao.com"; \
+	    echo "" ;\
+	    echo "Contact us via wechat: tinylab."; \
+	    echo "" ;\
+	    exit 1  ;\
+	fi
+
+$$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
@@ -1520,7 +1537,7 @@ $(1)_source_childs := $(1)-download download-$(1)
 
 $$($(1)_source_childs): $(1)-source
 
-PHONY += $(addprefix $(1)-,source download) download-$(1)
+PHONY += $(addprefix $(1)-,source download license) download-$(1)
 
 $(1)-%-cleanstamp:
 	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))

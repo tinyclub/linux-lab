@@ -1381,8 +1381,10 @@ ifeq ($(filter $(1),$(BUILD)),$(1))
   boot_deps += $(1)-build
 endif
 
+ifeq ($(filter $(BOARD),$(BOARD_FREE)),$(BOARD))
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch saveall save saveconfig clone)
 $$($(1)_bsp_childs): $(BSP_CHECKOUT)
+endif
 
 _boot: $$(boot_deps)
 

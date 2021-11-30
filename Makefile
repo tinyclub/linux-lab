@@ -1483,7 +1483,7 @@ $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPAT
 $(1)-license:
 	@if [ "$(1)" = "bsp" -a "$(vip)" != "1" ]; then \
 	    for f in $(BOARD_FREE); do \
-	        [ "$$$$f" = "$b" -o "$$$$f" = "$B" ] && exit 0; \
+	        [ "$$$$f" = "$(BOARD)" ] && exit 0; \
 	    done ; \
 	    echo "" ;\
 	    echo "Friendship reminder:" ;\

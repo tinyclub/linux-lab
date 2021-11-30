@@ -1490,7 +1490,7 @@ $(1)-license:
 	    echo "" ;\
 	    echo "Friendship reminder:" ;\
 	    echo "" ;\
-	    echo "  This board is not free,"; \
+	    echo "  The Linux Lab BSP of board '$(BOARD)' is not free currently,"; \
 	    echo "  Please search 'Linux Lab BSP' and buy one from https://shop155917374.taobao.com"; \
 	    echo "" ;\
 	    echo "Contact us via wechat: tinylab."; \

@@ -6,7 +6,7 @@ CPU     ?= arm926
 MEM     ?= 128M
 UBOOT   ?= v2015.07
 GCC[UBOOT_v2015.07] = 4.3
-BUILDROOT?= 2016.05
+BUILDROOT?= 2021.08.2
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1
 

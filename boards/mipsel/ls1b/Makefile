@@ -6,7 +6,7 @@ XARCH    = mipsel
 CPU     ?=
 MEM     ?= 128M
 
-BUILDROOT?= 2016.05
+BUILDROOT?= 2021.08.2
 
 # FIXME: network works with v5.2, but not work with >= v5.4 kernels
 LINUX   ?= v5.2

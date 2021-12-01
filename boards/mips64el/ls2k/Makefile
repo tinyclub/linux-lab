@@ -3,7 +3,7 @@ _BASE    = 1
 ARCH     = mips
 XARCH    = mips64el
 CPU     ?= loongson2k
-BUILDROOT?= 2016.05
+BUILDROOT?= 2021.08.2
 MEM     ?= 1024M
 SERIAL  ?= ttyS0
 

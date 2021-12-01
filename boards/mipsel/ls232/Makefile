@@ -3,7 +3,7 @@ _BASE    = 1
 ARCH     = mips
 XARCH    = mipsel
 CPU     ?= LS232_1
-BUILDROOT?= 2016.05
+BUILDROOT?= 2021.08.2
 MEM     ?= 256M
 SERIAL  ?= ttyS0
 

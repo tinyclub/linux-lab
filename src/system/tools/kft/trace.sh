@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # trace.sh -- Trace a function automatically
 #

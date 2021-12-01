@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # test_host_before.sh -- test the kernel feature in host side.
 #

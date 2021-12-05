@@ -330,16 +330,12 @@ The other issues, please read the [official docker docs](https://docs.docker.com
 
   - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)
 
-  - Recommend using old [Docker Toolbox](https://get.daocloud.io/toolbox/), because new docker-ce breaks wsl/wsl2, which breaks VirtualBox
-
-  - If using Docker Toolbox, please don't use docker in Virtualbox directly, but use it with the tools from "cloud-lab" instead.
-
   - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
       - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
 
 ## 2.3 Choose a working directory
 
-For Linux, please simply choose one directory in `~/Downloads` or `~/Documents` or create a new `~/Develop` directory.
+Please simply choose one directory in `~/Downloads` or `~/Documents` or create a new `~/Develop` directory.
 
     $ mkdir ~/Develop
     $ cd ~/Develop

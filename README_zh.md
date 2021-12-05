@@ -483,10 +483,6 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
   - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker
 
-  - 建议使用早期的 [Docker Toolbox](https://get.daocloud.io/toolbox/) 支持，新版的依赖 wsl/wsl2，会导致 Virtualbox 无法正常使用
-
-  - 如果用的是 Docker Toolbox，请不要直接通过 Virtualbox 进去使用 docker，而是通过 "Cloud Lab" 提供的工具来使用
-
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
       - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”
 

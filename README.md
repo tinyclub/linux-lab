@@ -330,31 +330,36 @@ The other issues, please read the [official docker docs](https://docs.docker.com
 
   - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)
 
+  - Recommend using old [Docker Toolbox](https://get.daocloud.io/toolbox/), because new docker-ce breaks wsl/wsl2, which breaks VirtualBox
+
+  - If using Docker Toolbox, please don't use docker in Virtualbox directly, but use it with the tools from "cloud-lab" instead.
+
   - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
       - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
 
 ## 2.3 Choose a working directory
 
-If installed via Docker Toolbox, please enter into the `/mnt/sda1` directory of the `default` system on Virtualbox, otherwise, after poweroff, the data will be lost for the default `/root` directory is only mounted in DRAM.
+For Linux, please simply choose one directory in `~/Downloads` or `~/Documents` or create a new `~/Develop` directory.
 
-    $ cd /mnt/sda1
+    $ mkdir ~/Develop
+    $ cd ~/Develop
 
-For Linux, please simply choose one directory in `~/Downloads` or `~/Documents`.
-
-    $ cd ~/Documents
-
-For Windows and Mac OSX, to compile Linux normally, please enable or create a case sensitive filesystem as the working space at first:
+For Windows and Mac OSX, to compile Linux normally, please enable or create a case sensitive filesystem as the working space at first and please disable git autocrlf switch:
 
 **Windows**:
 
-    $ cd /path/to/cloud-lab
-    $ fsutil file SetCaseSensitiveInfo ./ enable
+    (git bash) $ cd /path/to/cloud-lab
+    (git bash) $ fsutil file SetCaseSensitiveInfo ./ enable
+
+    (git bash) $ git config --global core.autocrlf false
 
 **Mac OSX**:
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Documents/labspace
+    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
+    $ cd ~/Develop/labspace
+
+    $ git config --global core.autocrlf false
 
 **Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
 
@@ -2327,8 +2332,8 @@ To make a consistent working environment, Linux Lab only support using as genera
 This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil` or `Disk Utility` yourself:
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Documents/labspace
+    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
+    $ cd ~/Develop/labspace
 
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c

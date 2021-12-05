@@ -483,31 +483,36 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
   - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker
 
+  - 建议使用早期的 [Docker Toolbox](https://get.daocloud.io/toolbox/) 支持，新版的依赖 wsl/wsl2，会导致 Virtualbox 无法正常使用
+
+  - 如果用的是 Docker Toolbox，请不要直接通过 Virtualbox 进去使用 docker，而是通过 "Cloud Lab" 提供的工具来使用
+
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
       - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”
 
 ## 2.3 选择工作目录
 
-如果您是通过 Docker Toolbox 安装，请在 Virtualbox 上进入 `default` 系统的 `/mnt/sda1`，否则，关机后所有数据会丢失，因为缺省的 `/root` 目录是挂载在内存中的。
+可以简单地在 `~/Downloads` 或 `~/Documents` 下选择一个工作路径，也可以创建一个新的 `~/Develop` 文件夹：
 
-    $ cd /mnt/sda1
+    $ mkdir ~/Develop
+    $ cd ~/Develop
 
-对于 Linux 用户，可以简单地在 `~/Downloads` 或 `~/Documents` 下选择一个工作路径。
-
-    $ cd ~/Documents
-
-对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请先使能或创建一个区分大小写的文件系统作为工作空间：
+对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请先使能或创建一个区分大小写的文件系统作为工作空间，同时请关闭换行符转换：
 
 **Windows**：
 
     (git bash) $ cd /path/to/cloud-lab
     (git bash) $ fsutil file SetCaseSensitiveInfo ./ enable
 
+    (git bash) $ git config --global core.autocrlf false
+
 **Mac OSX**：
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Documents/labspace
+    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
+    $ cd ~/Develop/labspace
+
+    $ git config --global core.autocrlf false
 
 对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
 
@@ -2470,8 +2475,8 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 这是因为 MAC OSX 缺省的文件系统不区分大小写，请使用 `hdiutil` 或 `Disk Utility` 自己创建一个：
 
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Documents/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Documents/labspace
+    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
+    $ cd ~/Develop/labspace
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c
 

@@ -20,6 +20,7 @@ empty :=
 space := $(empty) $(empty)
 
 USER := ubuntu
+UID  := 1000
 WARN_ON_USER ?= 1
 
 # Check running host
@@ -42,7 +43,15 @@ ifeq ($(TEST_TIMEOUT),)
 endif
 
 # Check permission issue, must available to ubuntu
-ifneq ($(shell stat -c '%U' /.git/HEAD),$(USER))
+ifeq ($(shell stat -c '%U' /.git/HEAD),$(USER))
+  WARN_ON_USER=0
+else
+  ifeq ($(shell stat -c '%u' /.git/HEAD),$(UID))
+    WARN_ON_USER=0
+  endif
+endif
+
+ifeq ($(WARN_ON_USER),1)
   $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab/{*,.git}')
   $(warning WARN: Cancel this warning via: 'export WARN_ON_USER=0')
 endif

@@ -964,19 +964,21 @@ ifneq ($(_QTOOL),)
 endif
 
 # Uboot configurations
-
-ifneq ($(UBOOT),)
-  ifeq ($(SHARE),1)
-    ifeq ($(call _v,UBOOT,SHARE),disabled)
-      # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
-      #        versatilepb works with 9pnet + uboot?
-      $(info LOG: 9pnet file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
-      UBOOT :=
-    endif
-  endif
+ifeq ($(U),0)
+  override UBOOT=
 endif
 
 ifneq ($(UBOOT),)
+
+ifeq ($(SHARE),1)
+  ifeq ($(call _v,UBOOT,SHARE),disabled)
+    # FIXME: Disable uboot by default, vexpress-a9 boot with uboot can not use this feature, so, disable it if SHARE=1 give
+    #        versatilepb works with 9pnet + uboot?
+    $(info LOG: 9pnet file sharing enabled with SHARE=1, disable uboot for it breaks sharing)
+    UBOOT :=
+  endif
+endif
+
 UBOOT_BIMAGE    := $(UBOOT_BUILD)/$(notdir $(BIMAGE))
 PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/$(notdir $(BIMAGE))
 

@@ -2145,7 +2145,7 @@ $(IROOTFS): $(IROOTFS_DEPS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
-	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL) || rm $(IROOTFS) && exit 1
+	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL) || (rm $(IROOTFS) && exit 1)
 	$(Q)mv $(IROOTFS).tmp $(IROOTFS)
 endif
 
@@ -2265,7 +2265,7 @@ $(HROOTFS): $(HROOTFS_DEPS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	$(Q)rm -rf $(HROOTFS).tmp
-	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || rm $(HROOTFS) && exit 1
+	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1)
 	$(Q)mv $(HROOTFS).tmp $(HROOTFS)
 endif
 
@@ -2942,7 +2942,7 @@ UBOOT_MKIMAGE := tools/uboot/mkimage
 $(UROOTFS): $(IROOTFS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating rootfs image for uboot ..."
-	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || rm $(UROOTFS) && exit 1
+	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)
 endif
 
 root-ud: $(UROOTFS)
@@ -2959,7 +2959,7 @@ $(UKIMAGE): $(KIMAGE)
 ifeq ($(PBK), 0)
 ifeq ($(notdir $(UKIMAGE)), uImage)
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
-		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE) || rm $(UKIMAGE) && exit 1
+		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE) || (rm $(UKIMAGE) && exit 1)
 else
 	$(Q)cp $(KIMAGE) $(UKIMAGE)
 endif

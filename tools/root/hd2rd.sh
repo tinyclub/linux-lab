@@ -38,7 +38,11 @@ if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
 
   # Add init/linuxrc for basic initramfs
   # ref: linux-stable/Documentation/admin-guide/initrd.rst
-  [ -f $ROOTDIR/linuxrc -a $ROOTDIR/busybox ] && ln -sf $ROOTDIR/busybox $ROOTDIR/linuxrc
+  if [ -f $ROOTDIR/linuxrc -a -f $ROOTDIR/busybox ]; then
+    pushd $ROOTDIR
+    ln -sf busybox linuxrc
+    popd
+  fi
 
   [ ! -f $ROOTDIR/init ] && cat <<EOF > $ROOTDIR/init
 #!/bin/sh

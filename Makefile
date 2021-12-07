@@ -2134,7 +2134,7 @@ ifneq ($(FS_TYPE),rd)
 else
   ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
     ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
-    IROOTFS_DEPS    := FORCE
+    IROOTFS_DEPS    := $(ROOTDIR) FORCE
   endif
 endif
 

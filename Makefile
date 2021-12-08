@@ -43,10 +43,10 @@ ifeq ($(TEST_TIMEOUT),)
 endif
 
 # Check permission issue, must available to ubuntu
-ifeq ($(shell stat -c '%U' /.git/HEAD),$(USER))
+ifeq ($(shell stat -c '%U' /.git/description),$(USER))
   WARN_ON_USER=0
 else
-  ifeq ($(shell stat -c '%u' /.git/HEAD),$(UID))
+  ifeq ($(shell stat -c '%u' /.git/description),$(UID))
     WARN_ON_USER=0
   endif
 endif

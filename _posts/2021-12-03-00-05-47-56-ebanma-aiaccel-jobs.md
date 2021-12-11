@@ -2,7 +2,7 @@
 layout: post
 author: 'Chen Jie'
 title: "职位招聘：AI 推理加速专家 · 斑马智行"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 group: jobs
 permalink: /aiaccel-ebanma-jobs/

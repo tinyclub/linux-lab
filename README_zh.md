@@ -2266,15 +2266,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 这是由于 docker 的 image 没有更新导致，解决的方法是重新运行 lab：
 
-    $ tools/docker/pull linux-lab
     $ tools/docker/rerun linux-lab
-
-    或
-
-    $ tools/docker/update linux-lab
-
-使用 `tools/docker/update`，所有的 docker images 和源码都会被更新，这是推荐的做法。
-
 
 ## 6.3 环境相关
 

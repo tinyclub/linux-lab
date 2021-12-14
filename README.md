@@ -2125,14 +2125,7 @@ Welcome to fix up them.
 
 That's because the docker image is not updated, just rerun the lab (please must not use `tools/docker/restart` here for it not using the new docker image):
 
-    $ tools/docker/pull linux-lab
     $ tools/docker/rerun linux-lab
-
-    Or
-
-    $ tools/docker/update linux-lab
-
-With `tools/docker/update`, every docker images and source code will be updated, it is preferred.
 
 ## 6.3 Environment Issues
 

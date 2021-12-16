@@ -606,7 +606,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 如果改动过 Linux Lab 的运行环境，并且相关改动在以后一定用得上，那么就需要备份所有的本地环境修改，也就是固化容器（通常很慢，不建议执行这一步）：
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
     $ git checkout -- configs/linux-lab/docker/name
 
 之后重新运行 Linux Lab 即可，如果有新的镜像，会自动启用：
@@ -2159,7 +2159,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 如果要恢复容器中已经安装的软件和添加的各类配置，请事先保存好容器：
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
 
 在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
 
@@ -2401,7 +2401,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 **注意**: 下述 clean 和 rerun 命令会清理一些容器和数据，请自行做好相应备份，例如固化容器：
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
 
 使用不匹配的密码时会导致 Web 登录失败，要解决此问题，请清理环境并重新运行。
 

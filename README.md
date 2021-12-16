@@ -455,7 +455,7 @@ Sometimes, need to update Cloud Lab, to fix up potential running issues or getti
 
 If modified the running environment of Linux Lab locally and want to reuse it in the future, save the container (very slow, not recommend if not necessary):
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
     $ git checkout -- configs/linux-lab/docker/name
 
 Then rerurn linux lab:
@@ -2019,7 +2019,7 @@ IF still slow, please check if the mirror site is configured normally and withou
 
 If want to restore the installed softwares and related configurations, please save the container manually:
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
 
 After host system (include virtual machine) shutdown or reboot, you can restart the lab via the "Linux Lab" icon on the desktop, or just like before, issue this command:
 
@@ -2262,7 +2262,7 @@ If normal, that means the login account and password may have been invalid for s
 
 **Note**: The `clean` command will remove some containers and data, please do necessary backup before run it, for example, save the container:
 
-    $ tools/docker/commit linux-lab
+    $ tools/docker/save linux-lab
 
 VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
 

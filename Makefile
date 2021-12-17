@@ -1528,7 +1528,7 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
-			$$(if $$(GIT_FETCH_SHALLOW),git fetch --depth 1 $$(or $$($(call _uc,$(1))_GITREPO),origin) $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin)) && touch $$@; \
+			$$(if $$(GIT_FETCH_SHALLOW),git fetch --progress --depth 1 $$(or $$($(call _uc,$(1))_GITREPO),origin) $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,git fetch --progress --tags $$(or $$($(call _uc,$(1))_GITREPO),origin)) && touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
@@ -1538,7 +1538,7 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			$$(if $$(GIT_FETCH_SHALLOW),git fetch --depth 1 origin tag $$(or $$(__$(call _uc,$(2))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,$$(_$(call _uc,$(2)))),git fetch --tags origin) && touch $$@; \
+			$$(if $$(GIT_FETCH_SHALLOW),git fetch --progress --depth 1 origin tag $$(or $$(__$(call _uc,$(2))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,$$(_$(call _uc,$(2)))),git fetch --progress --tags origin) && touch $$@; \
 		cd $$(TOP_DIR); \
 	fi
 
@@ -1548,7 +1548,7 @@ $(1)-checkout: $(1)-source
 
 $$(call _stamp_$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && touch $$@ && cd $$(TOP_DIR); \
+	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && touch $$@ && cd $$(TOP_DIR); \
 	fi
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)

@@ -1528,7 +1528,7 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
-			$(if $(GIT_FETCH_SHALLOW),git fetch --depth 1 $$(or $$($(call _uc,$(1))_GITREPO),origin) $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin)) && touch $$@; \
+			$$(if $$(GIT_FETCH_SHALLOW),git fetch --depth 1 $$(or $$($(call _uc,$(1))_GITREPO),origin) $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,git fetch --tags $$(or $$($(call _uc,$(1))_GITREPO),origin)) && touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
@@ -1538,7 +1538,7 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			$(if $(GIT_FETCH_SHALLOW),git fetch --depth 1 origin tag $$(or $$(__$(call _uc,$(2))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,$$(_$(call _uc,$(2)))),git fetch --tags origin) && touch $$@; \
+			$$(if $$(GIT_FETCH_SHALLOW),git fetch --depth 1 origin tag $$(or $$(__$(call _uc,$(2))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,$$(_$(call _uc,$(2)))),git fetch --tags origin) && touch $$@; \
 		cd $$(TOP_DIR); \
 	fi
 

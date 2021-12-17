@@ -45,3 +45,6 @@
   * git fetch --depth 1 origin tag tagid
 * Integrate vscode support or add a standalone plugin for vscode
 * Integrate filebrowser support
+* Extend the feature of temp setting with low-case variable, currently, the variables LINUX, BUILDROOT use upper-case but not save
+  * The variables passed with upper-case should be saved automatically
+  * And the one with low-case should be temporally

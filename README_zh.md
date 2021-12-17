@@ -2019,7 +2019,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 查看临时缓存的使用状态（如果已经启用则会显示状态）：
 
-    $ make build cache
+    $ make build status
 
 用临时缓存做编译加速：
 

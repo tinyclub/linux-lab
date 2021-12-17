@@ -725,10 +725,7 @@ ifeq ($(HOST_OS),Windows)
 endif
 
 ifeq ($(CACHE_BUILD),1)
-BUILD_CACHE_TAG    := $(TOP_BUILD)/linux-lab.cache.signed
-$(BUILD_CACHE_TAG): cache-build
-
-PHONY += $(BUILD_CACHE_TAG)
+  CACHE_BUILD_TARGET := cache-build
 endif
 
 # Cross Compiler toolchains
@@ -1528,7 +1525,9 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
-			$$(if $$(GIT_FETCH_SHALLOW),git fetch --progress --depth 1 $$(or $$($(call _uc,$(1))_GITREPO),origin) tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,git fetch --progress --tags $$(or $$($(call _uc,$(1))_GITREPO),origin)) && touch $$@; \
+			git fetch --progress $$(or $$($(call _uc,$(1))_GITREPO),origin) \
+			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
+			&& touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
@@ -1538,7 +1537,9 @@ $$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
 			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
-			$$(if $$(GIT_FETCH_SHALLOW),git fetch --progress --depth 1 origin tag $$(or $$(__$(call _uc,$(2))) && git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) FETCH_HEAD,$$(_$(call _uc,$(2)))),git fetch --progress --tags origin) && touch $$@; \
+			git fetch --progress origin \
+			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
+			&& touch $$@; \
 		cd $$(TOP_DIR); \
 	fi
 
@@ -1553,7 +1554,7 @@ $$(call _stamp_$(1),checkout):
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
-$$(call _stamp_$(1),outdir): $$(BUILD_CACHE_TAG)
+$$(call _stamp_$(1),outdir): $$(CACHE_BUILD_TARGET)
 	$$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
 
@@ -3884,13 +3885,24 @@ BUILD_FREE_TOOL    := tools/build/free
 BUILD_UNCACHE_TOOL := tools/build/uncache
 BUILD_BACKUP_TOOL  := tools/build/backup
 
-cache-build:
+BUILD_CACHE_TAG := $(TOP_BUILD)/linux-lab.cache.signed
+
+ifeq ($(filter $(MAKECMDGOALS),cache-build build cache),$(MAKECMDGOALS))
+cache-build: status-build
+else
+cache-build: $(BUILD_CACHE_TAG)
+endif
+
+$(BUILD_CACHE_TAG):
+	@echo "Cache building ..."; echo; \
+	sudo $(BUILD_CACHE_TOOL) || true;
+
+status-build:
 	@if [ $(shell grep -q $(TOP_BUILD) /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 		echo "Building cache free status:"; \
 		sudo $(BUILD_FREE_TOOL) || true; \
 	else \
-		echo "Cache building ..."; echo; \
-		sudo $(BUILD_CACHE_TOOL) || true; \
+		echo "No cache created for building"; echo; \
 	fi
 
 uncache-build:

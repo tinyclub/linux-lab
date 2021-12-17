@@ -1880,7 +1880,7 @@ Create temporary building cache:
 
 Check the status of building cache:
 
-    $ make build cache
+    $ make build status
 
 Use the cache for building speedup:
 

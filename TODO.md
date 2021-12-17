@@ -40,3 +40,8 @@
 * Add bash complete support
 * Add serial port virtualization support, ref: http://tinylab.org/serial-port-over-internet/
 * Add build output support for bsp, put rootfs dir and the other new generated files of bsp to build/bsp-xxx and let bsp-clean works as-is
+* Add build right deps for the different type of rootfs, which will reduce unnecessary rebuilds
+* Add tag or commit based shallow fetch
+  * git fetch --depth 1 origin tag tagid
+* Integrate vscode support or add a standalone plugin for vscode
+* Integrate filebrowser support

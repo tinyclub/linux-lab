@@ -720,6 +720,15 @@ KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(KERNEL_FORK_)linux-$(LINUX)-$(MACH)
 ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(ROOT_FORK_)buildroot-$(BUILDROOT)-$(MACH)
 BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
 
+ifeq ($(HOST_OS),Windows)
+  CACHE_BUILD  ?= 1
+endif
+
+ifeq ($(CACHE_BUILD),1)
+BUILD_CACHE_TAG    := $(TOP_BUILD)/linux-lab.cache.signed
+$(BUILD_CACHE_TAG): cache-build
+endif
+
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
   BUILDROOT_CCPRE  = $(XARCH)-linux-
@@ -1401,7 +1410,7 @@ endif
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $(BUILD_CACHE_TAG)
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 
@@ -3874,7 +3883,7 @@ BUILD_UNCACHE_TOOL := tools/build/uncache
 BUILD_BACKUP_TOOL  := tools/build/backup
 
 cache-build:
-	@if [ $(shell grep -q /labs/linux-lab/build /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
+	@if [ $(shell grep -q $(TOP_BUILD) /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 		echo "Building cache free status:"; \
 		sudo $(BUILD_FREE_TOOL) || true; \
 	else \

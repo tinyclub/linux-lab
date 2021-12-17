@@ -727,6 +727,8 @@ endif
 ifeq ($(CACHE_BUILD),1)
 BUILD_CACHE_TAG    := $(TOP_BUILD)/linux-lab.cache.signed
 $(BUILD_CACHE_TAG): cache-build
+
+PHONY += $(BUILD_CACHE_TAG)
 endif
 
 # Cross Compiler toolchains
@@ -1410,7 +1412,7 @@ endif
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $(BUILD_CACHE_TAG)
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 
@@ -1551,7 +1553,7 @@ $$(call _stamp_$(1),checkout):
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
-$$(call _stamp_$(1),outdir):
+$$(call _stamp_$(1),outdir): $$(BUILD_CACHE_TAG)
 	$$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
 

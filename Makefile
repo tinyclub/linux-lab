@@ -1157,6 +1157,8 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
     HROOTFS := $(ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
   endif
   UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+  # Generate new rootfs in build target to use the build cache feature
+  UROOTFS := $(subst $(BSP_ROOT),$(BSP_BUILD),$(UROOTFS))
 endif
 
 _ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
@@ -2942,6 +2944,7 @@ UBOOT_MKIMAGE := tools/uboot/mkimage
 $(UROOTFS): $(IROOTFS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating rootfs image for uboot ..."
+	$(Q)mkdir -p $(dir $(UROOTFS))
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)
 endif
 

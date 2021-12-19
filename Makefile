@@ -113,6 +113,7 @@ TFTPBOOT    := tftpboot
 HOME_DIR    := /home/$(USER)/
 GDBINIT_DIR := $(TOP_DIR)/.gdb
 TOP_SRC     := $(TOP_DIR)/src
+TOP_BUILD   := $(TOP_DIR)/build
 FEATURE_DIR := $(TOP_SRC)/feature/linux
 
 # Search board in basic arch list while board name given without arch specified
@@ -373,6 +374,27 @@ $(eval $(call __vs,QEMU_GIT,QEMU,QEMU_FORK))
 
 # Allow configure default LINUX version for different kernel fork repo
 $(eval $(call __vs,LINUX,KERNEL_FORK))
+
+ifeq ($(HOST_OS),Windows)
+  CACHE_BUILD  ?= 1
+endif
+
+ifeq ($(ONESHOT_BUILD),1)
+  CACHE_BUILD := 1
+  CACHE_SRC   := 1
+  FAST_FETCH  := 1
+endif
+
+ifeq ($(CACHE_BUILD),1)
+  CACHE_BUILD_TARGET := cache-build
+endif
+
+ifeq ($(CACHE_BUILD)$(CACHE_SRC)$(FAST_FETCH),111)
+  ifneq ($(LOCAL_FETCH),0)
+    _TOP_SRC := $(TOP_SRC)
+  endif
+  TOP_SRC := $(TOP_BUILD)
+endif
 
 # Allow boards to customize source and repos
 KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
@@ -712,21 +734,12 @@ _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
 # Core build: for building in standalone directories
-TOP_BUILD      := $(TOP_DIR)/build
 TOP_BUILD_ARCH := $(TOP_BUILD)/$(XARCH)
 QEMU_BUILD     := $(TOP_BUILD_ARCH)/$(QEMU_FORK_)qemu-$(QEMU)-$(MACH)
 UBOOT_BUILD    := $(TOP_BUILD_ARCH)/$(UBOOT_FORK_)uboot-$(UBOOT)-$(MACH)
 KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(KERNEL_FORK_)linux-$(LINUX)-$(MACH)
 ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(ROOT_FORK_)buildroot-$(BUILDROOT)-$(MACH)
 BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
-
-ifeq ($(HOST_OS),Windows)
-  CACHE_BUILD  ?= 1
-endif
-
-ifeq ($(CACHE_BUILD),1)
-  CACHE_BUILD_TARGET := cache-build
-endif
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
@@ -1503,6 +1516,14 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
+# Build _PKG_ABS_SRC for local fetch
+ifneq ($(_TOP_SRC),)
+  __$(call _uc,$(1))_ABS_SRC := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)
+  ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_SRC)/.git/HEAD),$$(__$(call _uc,$(1))_ABS_SRC)/.git/HEAD)
+    _$(call _uc,$(1))_ABS_SRC := $$(__$(call _uc,$(1))_ABS_SRC)
+  endif
+endif
+
 $(1)-license: $$(call _stamp_$(1),license)
 
 $$(call _stamp_$(1),license):
@@ -1531,7 +1552,7 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
-			git fetch --progress $$(or $$($(call _uc,$(1))_GITREPO),origin) \
+			git fetch --progress $$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(or $$($(call _uc,$(1))_GITREPO),origin)) \
 			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
 			&& touch $$@; \
 		fi;	\
@@ -1542,7 +1563,7 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
 			mkdir -p $$($(call _uc,$(1))_SPATH) && \
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
-			git remote add origin $$(_$(call _uc,$(1))_GIT) && \
+			git remote add origin $$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(_$(call _uc,$(1))_GIT)) && \
 			git fetch --progress origin \
 			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
 			&& touch $$@; \

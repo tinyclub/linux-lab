@@ -1503,13 +1503,16 @@ endif
 # Build the full src directory
 $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
 
-$(1)-license:
-	@if [ "$(1)" = "bsp" -a "$(vip)" != "1" ]; then \
-	    for f in $(BOARD_FREE); do \
-	        [ "$$$$f" = "$(BOARD)" ] && exit 0; \
-	    done ; \
+$(1)-license: $$(call _stamp_$(1),license)
+
+$$(call _stamp_$(1),license):
+	@if [ "$(1)" = "bsp" ]; then \
+	  for f in $(BOARD_FREE); do \
+	    [ "$$$$f" = "$(BOARD)" ] && touch $$@ && exit 0; \
+	  done ; \
+          if [ "$(vip)" != "1" ]; then \
 	    echo "" ;\
-	    echo "Friendship reminder:" ;\
+	    echo "Friendly reminder:" ;\
 	    echo "" ;\
 	    echo "  The Linux Lab BSP of board '$(BOARD)' is not free currently,"; \
 	    echo "  Please search 'Linux Lab BSP' and buy one from https://shop155917374.taobao.com"; \
@@ -1517,9 +1520,10 @@ $(1)-license:
 	    echo "Contact us via wechat: tinylab."; \
 	    echo "" ;\
 	    exit 1  ;\
+	  fi; \
 	fi
 
-$$(call _stamp_$(1),source): $(1)-license $$(call _stamp_$(1),outdir)
+$$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \

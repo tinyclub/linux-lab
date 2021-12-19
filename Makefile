@@ -1521,6 +1521,8 @@ $$(call _stamp_$(1),license):
 	    echo "" ;\
 	    exit 1  ;\
 	  fi; \
+	else \
+	  touch $$@; \
 	fi
 
 $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license

@@ -1560,9 +1560,11 @@ $$(call _stamp_$(1),checkout):
 
 $(1)-checkout: $$(call __stamp_$(1),checkout)
 
-$$(call _stamp_$(1),outdir): $$(CACHE_BUILD_TARGET)
-	$$(Q)mkdir -p $$($(call _uc,$(1))_BUILD)
+$$(call _stamp_$(1),outdir): $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
+
+$$($(call _uc,$(1))_BUILD): $$(CACHE_BUILD_TARGET)
+	$$(Q)mkdir -p $$@
 
 $(1)-outdir: $$(call __stamp_$(1),outdir)
 
@@ -1684,7 +1686,6 @@ endif
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
 $$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
-	$$(Q)mkdir -p $$($(call _uc,$1)_BUILD)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$(CFGS[$(3)_N]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -d $$n;))
@@ -2959,10 +2960,10 @@ _uboot:
 UBOOT_MKIMAGE := tools/uboot/mkimage
 
 # root uboot image
-$(UROOTFS): $(IROOTFS)
+$(UROOTFS): $(BSP_BUILD) $(IROOTFS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating rootfs image for uboot ..."
-	$(Q)mkdir -p $(dir $(UROOTFS))
+	mkdir -p $(dir $(UROOTFS))
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)
 endif
 

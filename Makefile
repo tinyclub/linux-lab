@@ -3894,11 +3894,14 @@ BUILD_BACKUP_TOOL  := tools/build/backup
 
 BUILD_CACHE_TAG := $(TOP_BUILD)/linux-lab.cache.signed
 
-ifeq ($(filter $(MAKECMDGOALS),cache-build build cache),$(MAKECMDGOALS))
+ifeq ($(MAKECMDGOALS),cache-build)
 cache-build: status-build
-else
-cache-build: $(BUILD_CACHE_TAG)
 endif
+ifeq ($(MAKECMDGOALS),build cache)
+cache-build: status-build
+endif
+
+cache-build: $(BUILD_CACHE_TAG)
 
 $(BUILD_CACHE_TAG):
 	@echo "Cache building ..."; echo; \

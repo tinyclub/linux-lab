@@ -1130,6 +1130,12 @@ ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 
 #$(error ROOTFS_TYPE: $(ROOTFS_TYPE) ROOTDEV_TYPE:= $(ROOTDEV_TYPE))
 
+ifeq ($(origin ROOTFS),command line)
+  ifneq ($(ROOTFS),$(wildcard $(ROOTFS)))
+    $(error rootfs: $(ROOTFS) not exists)
+  endif
+endif
+
 # FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
   ROOTFS := $(dir $(ROOTFS))
@@ -1165,21 +1171,21 @@ FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
 FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
 
 # Buildroot use its own ROOTDIR in /target, not in images/rootfs
-ifeq ($(PREBUILT_IROOTFS),$(ROOTFS))
-  ifeq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),$(BSP_ROOT))
-    BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
-  else
-    BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
-  endif
-  # If new one updated in bsp build directory, use it
-  ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
-    ROOTFS := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
-  endif
-else
-  BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),,$(PREBUILT_ROOT_DIR))/rootfs
-endif
-
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
+  ifeq ($(PREBUILT_IROOTFS),$(ROOTFS))
+    ifeq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),$(BSP_ROOT))
+      BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+    else
+      BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+    endif
+    # use one copy in the bsp build directory if exist
+    ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
+      ROOTFS := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+    endif
+  else
+    BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),,$(PREBUILT_ROOT_DIR))/rootfs
+  endif
+
   ifeq ($(FS_TYPE),dir)
     ROOTDIR := $(FS_PATH)
   else
@@ -2158,25 +2164,10 @@ $(eval $(call genclone,root,buildroot,R))
 $(eval $(call genenvdeps,root,BUILDROOT,R))
 
 # Build Buildroot
-ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
-
-# Install kernel modules?
-IKM ?= 1
-
-ifeq ($(IKM), 1)
-  ifeq ($(KERNEL_BUILD)/.modules.order, $(wildcard $(KERNEL_BUILD)/.modules.order))
-    KERNEL_MODULES_INSTALL := module-install
-  endif
-endif
-
 root-buildroot:
 	$(call make_root,$(RT))
 
-# Install system/ to ROOTDIR
-root-install: $(ROOTDIR)
-	ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
-
-PHONY += root-buildroot root-install
+PHONY += root-buildroot
 
 prebuilt_root_dir ?= $(PBR)
 ifeq ($(FS_TYPE),dir)
@@ -2198,24 +2189,17 @@ ifneq ($(FS_TYPE),rd)
   else
     ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
       IROOTFS_DEPS    := $(ROOTDIR)
-    else
-      ROOT_UPDATE     := 0
     endif
   endif
 else
   ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
     ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
     IROOTFS_DEPS    := $(ROOTDIR)
-  else
-    ROOT_UPDATE     := 0
   endif
 endif
 
-# Always update rootfs by default, if there is no really file update, disable it with ROOT_UPDATE=0
-ROOT_UPDATE ?= 1
-
-$(IROOTFS): $(IROOTFS_DEPS)
-ifeq ($(ROOT_UPDATE),1)
+$(IROOTFS): $(BSP_BUILD) $(IROOTFS_DEPS)
+ifneq ($(IROOTFS_DEPS),)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL) || (rm $(IROOTFS) && exit 1)
@@ -2234,7 +2218,7 @@ PHONY += root-rd root-rd-rebuild root-rd-clean
 ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
 ifeq ($(prebuilt_root_dir), 1)
-  ROOT_REBUILD_DEPS := $(ROOTDIR) FORCE
+  ROOT_REBUILD_DEPS := $(ROOTDIR)
 endif
 
 ifeq ($(DEV_TYPE),rd)
@@ -2245,7 +2229,6 @@ endif
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
 root-rebuild: $(ROOT_REBUILD_DEPS)
-ifeq ($(ROOT_UPDATE),1)
 ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	$(Q)rm -rf $(XROOTFS).tmp
@@ -2256,7 +2239,6 @@ else
 	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
-endif
 endif
 
 ROOT ?= $(ROOTDIR)
@@ -2274,13 +2256,11 @@ ifneq ($(RT),)
   ROOT :=
 endif
 
-_root: $(ROOT)
 ifneq ($(RT),)
+_root: $(ROOT)
 	$(Q)$(call make_root,$(RT))
 else
-	$(Q)make $(NPD) root-install
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
-	$(Q)make $(NPD) root-rebuild
+_root: $(ROOT) root-rebuild
 endif
 
 # root directory
@@ -2302,7 +2282,20 @@ root-dir-rebuild rootdir-rebuild: $(ROOTDIR) FORCE
 
 PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
 
-$(ROOTDIR): $(ROOTDIR_DEPS)
+# Install src/system
+
+ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
+
+# Install kernel modules?
+IKM ?= 1
+
+ifeq ($(IKM), 1)
+  ifeq ($(KERNEL_BUILD)/.modules.order, $(wildcard $(KERNEL_BUILD)/.modules.order))
+    KERNEL_MODULES_INSTALL := module-install
+  endif
+endif
+
+$(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	$(Q)rm -rf $(ROOTDIR).tmp
@@ -2310,10 +2303,8 @@ ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	$(Q)ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
 	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
 endif
-
-root-dir-install rootdir-install: root-install
-
-PHONY += root-dir-install rootdir-install
+	$(Q)ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
 
 root-dir-clean rootdir-clean:
 	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
@@ -2334,8 +2325,8 @@ endif
 
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
-$(HROOTFS): $(HROOTFS_DEPS)
-ifeq ($(ROOT_UPDATE),1)
+$(HROOTFS): $(BSP_BUILD) $(HROOTFS_DEPS)
+ifneq ($(HROOTFS_DEPS),)
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
 	rm -rf $(HROOTFS).tmp
 	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1)
@@ -3013,11 +3004,9 @@ UBOOT_MKIMAGE := tools/uboot/mkimage
 
 # root uboot image
 $(UROOTFS): $(BSP_BUILD) $(IROOTFS)
-ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating rootfs image for uboot ..."
 	mkdir -p $(dir $(UROOTFS))
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)
-endif
 
 root-ud: $(UROOTFS)
 
@@ -3721,7 +3710,7 @@ FI ?= $(FEATURE_INIT)
 kernel-init: kernel-config kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
-rootdir-init: rootdir-clean rootdir root-install
+rootdir-init: rootdir-clean rootdir
 
 module-init: modules modules-install
 
@@ -3856,9 +3845,6 @@ _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)
-ifeq ($(DEV_TYPE),dir)
-_BOOT_DEPS += root-install
-endif
 
 ifneq ($(DEBUG),0)
   # Debug listen on a unqiue port, should run exclusively

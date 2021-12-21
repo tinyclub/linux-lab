@@ -1582,7 +1582,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 为测试做准备，在 `src/system/` 目录下安装必要的文件/脚本：
 
     $ make rootdir
-    $ make root-install
     $ make root-rebuild
 
 直接引导启动（参考 6.2.2 节）
@@ -1685,7 +1684,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ mkdir src/system/root/
     $ touch src/system/root/new_file
-    $ make root-install
     $ make root-rebuild
     $ make boot
 
@@ -1761,7 +1759,6 @@ Docker 主机：
 
     $ make BOARD=virt
 
-    $ make root-install	       # Install mount/umount scripts, ref: src/system/etc/init.d/S50sharing
     $ make root-rebuild
 
     $ touch hostshare/test     # Create a file in host

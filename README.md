@@ -1445,7 +1445,6 @@ Use `aarch64/virt` as the demo board here.
 Prepare for testing, install necessary files/scripts in `src/system/`:
 
     $ make rootdir
-    $ make root-install
     $ make root-rebuild
 
 Simply boot and poweroff (See [poweroff hang](#poweroff-hang)):
@@ -1545,7 +1544,6 @@ Simply put the files with a relative path in `src/system/`, install and rebuild 
 
     $ mkdir src/system/root/
     $ touch src/system/root/new_file
-    $ make root-install
     $ make root-rebuild
     $ make boot
 
@@ -1619,7 +1617,6 @@ Host:
 
     $ make BOARD=virt
 
-    $ make root-install	       # Install mount/umount scripts, ref: src/system/etc/init.d/S50sharing
     $ make root-rebuild
 
     $ touch hostshare/test     # Create a file in host

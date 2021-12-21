@@ -388,7 +388,7 @@ ifeq ($(HOST_OS),Windows)
   CACHE_BUILD  ?= 1
 endif
 
-ifeq ($(ONESHOT_BUILD),1)
+ifeq ($(ONESHOT),1)
   CACHE_BUILD := 1
   CACHE_SRC   := 1
   FAST_FETCH  := 1

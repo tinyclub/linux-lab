@@ -19,8 +19,6 @@
 
 ROOTDIR=$(echo ${HROOTFS} | sed -e "s%.${FSTYPE}.*%%g")
 
-mkdir -p $ROOTDIR
-
 _ROOTDIR=$(dirname ${INITRD})/rootfs
 FS_CPIO_GZ=${_ROOTDIR}.cpio.gz
 FS_CPIO=${_ROOTDIR}.cpio

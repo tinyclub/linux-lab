@@ -1174,16 +1174,16 @@ FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   ifeq ($(PREBUILT_IROOTFS),$(ROOTFS))
     ifeq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),$(BSP_ROOT))
-      BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+      BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD)/root,$(PREBUILT_ROOT_DIR))/rootfs
     else
-      BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+      BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD)/root,$(PREBUILT_ROOT_DIR))/rootfs
     endif
     # use one copy in the bsp build directory if exist
     ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
       ROOTFS := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
     endif
   else
-    BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),,$(PREBUILT_ROOT_DIR))/rootfs
+    BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),root,$(PREBUILT_ROOT_DIR))/rootfs
   endif
 
   ifeq ($(FS_TYPE),dir)

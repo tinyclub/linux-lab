@@ -1800,16 +1800,17 @@ __stamp_$(1)=$$(_stamp_$(1))
 endif
 endif
 
-$(1)-deps:
+$(1)-deps: _env
 	$$(Q)tools/deps/install.sh "$$($(3)DEPS)"
 
 $$(call _stamp_$(1),env): $(1)-deps
-	$$(Q)make $$(S) _env
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
+ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
 ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
+endif
 endif
 	$$(Q)touch $$@
 
@@ -2110,11 +2111,10 @@ ifeq ($(UPDATE_GCC),1)
 	-$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
 endif
 ifeq ($(UPDATE_CCORI),1)
-	@#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
-	@tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG)
-	@#echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	$(Q)#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null
+	$(Q)#echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
 endif
-	$(Q)make -s gcc-info
 
 gcc-switch: toolchain-switch
 
@@ -3895,12 +3895,6 @@ endif
 
 _env: env-prepare
 env-prepare: toolchain-install
-ifeq ($(GCC_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
-endif
-ifeq ($(HOST_GCC_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(HOST_CCORI),CCORI=$(HOST_CCORI)) $(if $(HOST_GCC),GCC=$(HOST_GCC)) b=i386/pc ROOTDEV=/dev/ram0
-endif
 
 env-list: env-dump
 env-dump:

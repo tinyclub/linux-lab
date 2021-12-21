@@ -11,7 +11,11 @@ TOP_DIR := $(CURDIR)
 SUFFIXES :=
 
 # Force set default goal
+ifeq ($(-*-command-variables-*-),)
 .DEFAULT_GOAL := board
+else
+.DEFAULT_GOAL := config
+endif
 
 # Phony targets
 PHONY :=

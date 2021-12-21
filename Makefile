@@ -1087,11 +1087,7 @@ PREBUILT_KERNEL_DIR ?= $(BSP_KERNEL)/$(LINUX)
 PREBUILT_UBOOT_DIR  ?= $(BSP_UBOOT)/$(UBOOT)/$(LINUX)
 PREBUILT_QEMU_DIR   ?= $(BSP_QEMU)/$(QEMU)
 
-PREBUILT_ROOTDIR ?= $(PREBUILT_ROOT_DIR)/rootfs
-
-PREBUILT_UROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
-PREBUILT_HROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
-PREBUILT_IROOTFS ?= $(PREBUILT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+PREBUILT_IROOTFS    ?= $(PREBUILT_ROOT_DIR)/rootfs$(ROOTFS_INITRD_SUFFIX)
 
 # Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
 ROOTFS_TYPE_TOOL  := tools/root/rootfs_type.sh
@@ -1164,11 +1160,25 @@ FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
 FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
 
 # Buildroot use its own ROOTDIR in /target, not in images/rootfs
+ifeq ($(PREBUILT_IROOTFS),$(ROOTFS))
+  ifeq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),$(BSP_ROOT))
+    BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+  else
+    BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD),$(PREBUILT_ROOT_DIR))/rootfs
+  endif
+  # If new one updated in bsp build directory, use it
+  ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
+    ROOTFS := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+  endif
+else
+  BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),,$(PREBUILT_ROOT_DIR))/rootfs
+endif
+
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   ifeq ($(FS_TYPE),dir)
     ROOTDIR := $(FS_PATH)
   else
-    ROOTDIR := $(FS_PATH:$(FS_SUFFIX)=)
+    ROOTDIR := $(BSP_ROOTDIR)
   endif
 
   ifeq ($(FS_TYPE),rd)
@@ -1182,8 +1192,6 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
     HROOTFS := $(ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
   endif
   UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
-  # Generate new rootfs in build target to use the build cache feature
-  UROOTFS := $(subst $(BSP_ROOT),$(BSP_BUILD),$(UROOTFS))
 endif
 
 _ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
@@ -2180,11 +2188,21 @@ endif
 # root ramdisk image
 ifneq ($(FS_TYPE),rd)
   ROOT_GENRD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2rd.sh
-  IROOTFS_DEPS    := $(HROOTFS)
+  ifeq ($(FS_TYPE),hd)
+    IROOTFS_DEPS    := $(HROOTFS)
+  else
+    ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+      IROOTFS_DEPS    := $(ROOTDIR)
+    else
+      ROOT_UPDATE     := 0
+    endif
+  endif
 else
   ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
     ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
-    IROOTFS_DEPS    := $(ROOTDIR) FORCE
+    IROOTFS_DEPS    := $(ROOTDIR)
+  else
+    ROOT_UPDATE     := 0
   endif
 endif
 
@@ -2303,7 +2321,7 @@ fullclean: $(call gengoalslist,distclean)
 	$(Q)git clean -fdx
 
 ifeq ($(FS_TYPE),dir)
-  HROOTFS_DEPS := $(ROOTDIR) FORCE
+  HROOTFS_DEPS := $(ROOTDIR)
 endif
 ifeq ($(FS_TYPE),rd)
   HROOTFS_DEPS := $(IROOTFS)
@@ -2314,9 +2332,9 @@ ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 $(HROOTFS): $(HROOTFS_DEPS)
 ifeq ($(ROOT_UPDATE),1)
 	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
-	$(Q)rm -rf $(HROOTFS).tmp
-	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1)
-	$(Q)mv $(HROOTFS).tmp $(HROOTFS)
+	rm -rf $(HROOTFS).tmp
+	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1)
+	mv $(HROOTFS).tmp $(HROOTFS)
 endif
 
 root-hd: $(HROOTFS)
@@ -3090,7 +3108,9 @@ STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
 root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
-	-cp $(BUILDROOT_IROOTFS) $(PREBUILT_ROOT_DIR)
+ifneq ($(IROOTFS),$(PREBUILT_IROOTFS))
+	-cp $(IROOTFS) $(PREBUILT_ROOT_DIR)
+endif
 ifneq ($(PORIIMG),)
 	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
 	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null || true
@@ -3157,7 +3177,7 @@ getip:
 # Upload images to remote board
 
 ifeq ($(findstring upload,$(MAKECMDGOALS)),upload)
-LOCAL_MODULES  ?= $(PREBUILT_ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
+LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
 REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)

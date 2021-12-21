@@ -21,6 +21,8 @@ _ROOTDIR=$(echo ${HROOTFS} | sed -e "s%.${FSTYPE}%%g")
 FS_CPIO_GZ=${_ROOTDIR}.cpio.gz
 FS_CPIO=${_ROOTDIR}.cpio
 
+mkdir -p $_ROOTDIR
+
 # Convert to cpio.gz from directory
 if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
   # sync with directory content ??
@@ -74,8 +76,8 @@ for i in /etc/init.d/S??* ;do
 done
 EOF
 
-  chmod a+x $ROOTDIR/init
-  chmod a+x $ROOTDIR/etc/init.d/rcS
+  sudo chmod a+x $ROOTDIR/init
+  sudo chmod a+x $ROOTDIR/etc/init.d/rcS
 
   cd ${ROOTDIR} && sudo find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
 else
@@ -103,7 +105,7 @@ elif [ -f ${FS_CPIO} ]; then
    sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null 2>&1
 fi
 
-sudo chown ${USER}:${USER} -R ./
+sudo chown ${USER}:${USER} -R ${ROOTDIR}.tmp
 #sync
 popd
 sudo umount ${ROOTDIR}.tmp

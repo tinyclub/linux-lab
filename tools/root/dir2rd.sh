@@ -65,8 +65,8 @@ for i in /etc/init.d/S??* ;do
 done
 EOF
 
-  chmod a+x $ROOTDIR/init
-  chmod a+x $ROOTDIR/etc/init.d/rcS
+  sudo chmod a+x $ROOTDIR/init
+  sudo chmod a+x $ROOTDIR/etc/init.d/rcS
 
   cd $ROOTDIR/ && sudo find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
 

@@ -12,7 +12,7 @@
 
 [ -z "${USER}" ] && USER=$(whoami)
 
-ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g" | sed -e "s%.cpio%%g")
+ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g;s%.cpio%%g")
 
 [ ! -f ${HROOTFS} ] && echo "Usage: ${HROOTFS} not exists" && exit 1
 
@@ -22,15 +22,15 @@ ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g" | sed -e "s%.cpio%%g")
 mkdir -p ${ROOTDIR}.tmp
 sudo mount ${HROOTFS} ${ROOTDIR}.tmp
 
-cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
+sudo cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
 
-sudo chown ${USER}:${USER} -R ./
+sudo chown ${USER}:${USER} -R ${ROOTDIR}
 sync
 sudo umount ${ROOTDIR}.tmp
 rmdir ${ROOTDIR}.tmp
 
 # building cpio.gz
-FS_CPIO_GZ=${ROOTDIR}.cpio.gz
+FS_CPIO_GZ=${INITRD}
 
 if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
 
@@ -84,12 +84,14 @@ for i in /etc/init.d/S??* ;do
 done
 EOF
 
-  chmod a+x $ROOTDIR/init
-  chmod a+x $ROOTDIR/etc/init.d/rcS
+  sudo chmod a+x $ROOTDIR/init
+  sudo chmod a+x $ROOTDIR/etc/init.d/rcS
 
   cd $ROOTDIR/ && find . | sudo cpio --quiet -R $USER:$USER -H newc -o | gzip -9 -n > ${FS_CPIO_GZ}
+
+  rm -rf $ROOTDIR
 
   exit 0
 fi
 
-echo "ERR: ${ROOTDIR} is not a valid rootfs directory." && exit 1
+echo "ERR: ${HROOTFS} has no a valid rootfs." && exit 1

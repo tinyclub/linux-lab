@@ -15,6 +15,7 @@ FS_CPIO_GZ=${_ROOTDIR}.cpio.gz
 CPIO_GZ=${_ROOTDIR}.cpio
 
 mkdir -p ${ROOTDIR}
+
 pushd ${ROOTDIR}
 
 if [ -f ${FS_CPIO_GZ} ]; then

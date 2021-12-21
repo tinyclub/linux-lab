@@ -19,8 +19,11 @@
 
 ROOTDIR=$(echo ${HROOTFS} | sed -e "s%.${FSTYPE}.*%%g")
 
-FS_CPIO_GZ=${ROOTDIR}.cpio.gz
-FS_CPIO=${ROOTDIR}.cpio
+mkdir -p $ROOTDIR
+
+_ROOTDIR=$(dirname ${INITRD})/rootfs
+FS_CPIO_GZ=${_ROOTDIR}.cpio.gz
+FS_CPIO=${_ROOTDIR}.cpio
 
 # Calculate the size
 if [ -f ${FS_CPIO_GZ} ]; then
@@ -49,7 +52,7 @@ elif [ -f ${FS_CPIO} ]; then
    sudo cpio --quiet -idmv -R ${USER}:${USER} < ${FS_CPIO} >/dev/null 2>&1
 fi
 
-sudo chown ${USER}:${USER} -R ./
+sudo chown ${USER}:${USER} -R ${ROOTDIR}.tmp
 
 #sync
 popd

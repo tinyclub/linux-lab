@@ -8,7 +8,7 @@
 [ -z "$HROOTFS" ] && HROOTFS=$1
 [ -z "$ROOTDIR" ] && ROOTDIR=$2
 
-[ -z "${HROOTFS}" -o "${ROOTDIR}" ] && echo "Usage: $0 rootfs rootdir" && exit 1
+[ -z "${HROOTFS}" -o -z "${ROOTDIR}" ] && echo "Usage: $0 rootfs rootdir" && exit 1
 
 [ -z "${USER}" ] && USER=$(whoami)
 
@@ -21,8 +21,10 @@ ROOTDIR=$(echo ${ROOTDIR} | sed -e "s%/$%%g")
 mkdir -p ${ROOTDIR}.tmp
 sudo mount ${HROOTFS} ${ROOTDIR}.tmp
 
-cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
+sudo cp -ar ${ROOTDIR}.tmp ${ROOTDIR}
 
-sudo chown ${USER}:${USER} -R ./
+sudo chown ${USER}:${USER} -R ${ROOTDIR}
 #sync
 sudo umount ${ROOTDIR}.tmp
+
+rmdir ${ROOTDIR}.tmp

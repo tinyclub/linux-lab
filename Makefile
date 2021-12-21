@@ -1524,7 +1524,7 @@ $(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPAT
 # Build _PKG_ABS_SRC for local fetch
 ifneq ($(_TOP_SRC),)
   __$(call _uc,$(1))_ABS_SRC := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)
-  ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_SRC)/.git/HEAD),$$(__$(call _uc,$(1))_ABS_SRC)/.git/HEAD)
+  ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_SRC)/.git/refs/tags/$$($(call _uc,$(2)))),$$(__$(call _uc,$(1))_ABS_SRC)/.git/$$($(call _uc,$(2))))
     _$(call _uc,$(1))_ABS_SRC := $$(__$(call _uc,$(1))_ABS_SRC)
   endif
 endif

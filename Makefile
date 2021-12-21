@@ -554,7 +554,7 @@ endif
 
 ifeq ($(app),)
   app := kernel
-  ifeq ($(filter $(MAKECMDGOALS),list help),$(MAKECMDGOALS))
+  ifeq ($(filter $(MAKECMDGOALS),list help config),$(MAKECMDGOALS))
     app := default
   endif
 endif
@@ -1250,14 +1250,13 @@ board-config: board-save
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
 
 edit: local-edit
-ifeq ($(MAKECMDGOALS),config)
-config: local-config
-endif
+config: default-config
 
 local-edit:
 	$(Q)touch $(BOARD_LABCONFIG)
 	$(Q)vim $(BOARD_LABCONFIG)
 
+default-config: local-config
 local-config: board-save
 	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
 

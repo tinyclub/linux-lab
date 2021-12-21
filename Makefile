@@ -23,9 +23,14 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 
-USER := ubuntu
-UID  := 1000
+USER := $(or $(UNIX_USER),ubuntu)
+UID  := $(or $(UNIX_UID),1000)
 WARN_ON_USER ?= 1
+
+# Check environment
+ifeq ($(UNIX_USER)$(UNIX_UID),)
+  $(error ERR: Must run with Cloud Lab, please refer to 'Download the lab' part of README.md)
+endif
 
 # Check running host
 LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
@@ -39,7 +44,7 @@ endif
 
 # Warning if run as root
 ifeq ($(WARN_ON_USER), 1)
-# Check running user, must as ubuntu
+# Check running user, must as $(USER)
 ifeq ($(TEST_TIMEOUT),)
   ifneq ($(shell whoami),$(USER))
     $(warning WARN: Please not run as 'root', but as general user: '$(USER)', please try 'sudo -su $(USER)'.)

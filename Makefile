@@ -1254,7 +1254,10 @@ board-config: board-save
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
 
 edit: local-edit
+
+ifeq ($(MAKECMDGOALS),config)
 config: default-config
+endif
 
 local-edit:
 	$(Q)touch $(BOARD_LABCONFIG)

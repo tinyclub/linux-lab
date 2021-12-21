@@ -14,7 +14,7 @@ SUFFIXES :=
 ifeq ($(-*-command-variables-*-),)
 .DEFAULT_GOAL := board
 else
-.DEFAULT_GOAL := config
+.DEFAULT_GOAL := default-config
 endif
 
 # Phony targets

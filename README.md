@@ -842,7 +842,7 @@ Configure with specified defconfig:
 
     $ make B=raspi3
     $ make kernel-defconfig KCFG=bcmrpi3_defconfig
-    $ make root-defconfig KCFG=raspberrypi3_64_defconfig
+    $ make root-defconfig RCFG=raspberrypi3_64_defconfig
 
 If only defconfig name specified, search boards/<BOARD> at first, and then the default configs path of buildroot, u-boot and linux-stable respectivly: src/buildroot/configs, src/u-boot/configs, src/linux-stable/arch/<ARCH>/configs.
 

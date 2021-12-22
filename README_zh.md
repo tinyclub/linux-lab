@@ -996,7 +996,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make B=raspi3
     $ make kernel-defconfig KCFG=bcmrpi3_defconfig
-    $ make root-defconfig KCFG=raspberrypi3_64_defconfig
+    $ make root-defconfig RCFG=raspberrypi3_64_defconfig
 
 如果仅提供 defconfig 的名字，则搜索所在目录的次序首先是 `boards/<BOARD>`，然后是 buildroot, u-boot 和 linux-stable 各自的缺省配置路径 `src/buildroot/configs`，`src/u-boot/configs` 和 `src/linux-stable/arch/<ARCH>/configs`。
 

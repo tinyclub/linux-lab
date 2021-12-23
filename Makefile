@@ -3945,7 +3945,9 @@ cache-build: $(BUILD_CACHE_TAG)
 
 $(BUILD_CACHE_TAG):
 	@echo "Cache building ..."; echo; \
-	sudo $(BUILD_CACHE_TOOL) || true;
+	sudo service nfs-kernel-server stop;   \
+	sudo $(BUILD_CACHE_TOOL) || true; \
+	sudo service nfs-kernel-server start
 
 status-build:
 	@if [ $(shell grep -q $(TOP_BUILD) /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
@@ -3956,14 +3958,14 @@ status-build:
 	fi
 
 uncache-build:
-	$(Q)echo "Uncache building ..."
-	$(Q)echo
-	$(Q)sudo $(BUILD_UNCACHE_TOOL) || true
+	@echo "Uncache building ..."; echo; \
+	sudo service nfs-kernel-server stop;   \
+	sudo $(BUILD_UNCACHE_TOOL) || true; \
+	sudo service nfs-kernel-server start
 
 backup-build:
-	$(Q)echo "Backing up Cache ..."
-	$(Q)echo
-	$(Q)sudo $(BUILD_BACKUP_TOOL) || true
+	@echo "Backing up Cache ..."; echo; \
+	sudo $(BUILD_BACKUP_TOOL) || true
 
 PHONY += cache-build uncache-build backup-build
 

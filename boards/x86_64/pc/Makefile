@@ -13,6 +13,9 @@ LINUX   ?= v5.13
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 
+KERNEL_GIT[KERNEL_FORK_wsl2] := https://gitee.com/mirrors/WSL2-Linux-Kernel.git
+LINUX[KERNEL_FORK_wsl2]   ?= linux-msft-wsl-5.10.16.3
+
 GCC = 9
 GCC[LINUX_$(call _any,LINUX,<=,v5.0)] := 4.8
 

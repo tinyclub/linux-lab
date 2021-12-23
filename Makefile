@@ -3102,7 +3102,10 @@ PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
 
 endif # Uboot specific part
 
-STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
+# strip breaks wsl2 kernel, don't apply with it
+ifneq ($(KERNEL_FORK),wsl2)
+  STRIP_CMD := $(C_PATH) $(CCPRE)strip -s
+endif
 
 # Save the built images
 root-save:
@@ -3120,7 +3123,7 @@ kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
 	-cp $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR)
-	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
+	-$(Q)[ -n "$(STRIP_CMD)" ] && $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
 	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
 	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
 

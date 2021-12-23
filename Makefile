@@ -29,7 +29,7 @@ WARN_ON_USER ?= 1
 
 # Check environment
 ifeq ($(UNIX_USER)$(UNIX_UID),)
-  $(error ERR: Must run with Cloud Lab, please refer to 'Download the lab' part of README.md)
+  $(error ERR: Must run with Cloud Lab as normal user, not as root, please refer to 'Download the lab' part of README.md)
 endif
 
 # Check running host

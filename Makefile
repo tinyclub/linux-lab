@@ -3979,7 +3979,7 @@ PHONY += $(aliastarget)
 endif
 
 $(addsuffix -%,$(call genaliastarget)): FORCE
-	$(Q)make $(NPD) $(call genaliassource,$@)
+	$(Q)$(if $(findstring /,$@),,make $(NPD) $(call genaliassource,$@))
 
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets

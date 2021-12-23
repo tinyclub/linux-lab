@@ -2379,7 +2379,7 @@ $(eval $(call genenvdeps,kernel,LINUX,K))
 $(eval $(call __vs,CFGS[K_N],GCC,LINUX))
 $(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
 
-TOP_MODULE_DIR := $(TOP_SRC)/modules
+TOP_MODULE_DIR := $(or $(_TOP_SRC),$(TOP_SRC))/modules
 ifneq ($(PLUGIN),)
   TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
   ifeq ($(TMP),$(wildcard $(TMP)))

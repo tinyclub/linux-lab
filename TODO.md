@@ -48,3 +48,5 @@
 * Extend the feature of temp setting with low-case variable, currently, the variables LINUX, BUILDROOT use upper-case but not save
   * The variables passed with upper-case should be saved automatically
   * And the one with low-case should be temporally
+* Move KCFG configuration in standalone script, not put it in makefile
+  * Let `make kernel-defconfig x86_64_defconfig` work directly without the need to download the source at first

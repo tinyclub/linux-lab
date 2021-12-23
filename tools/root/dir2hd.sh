@@ -31,9 +31,9 @@ if [ -d ${ROOTDIR} -a -d ${ROOTDIR}/bin -a -d ${ROOTDIR}/etc ]; then
   # Add init/linuxrc for basic initramfs
   # ref: linux-stable/Documentation/admin-guide/initrd.rst
   if [ -f $ROOTDIR/linuxrc -a -f $ROOTDIR/busybox ]; then
-    pushd $ROOTDIR
+    pushd $ROOTDIR >/dev/null
     ln -sf busybox linuxrc
-    popd
+    popd >/dev/null
   fi
 
   [ ! -f $ROOTDIR/init ] && cat <<EOF > $ROOTDIR/init
@@ -97,7 +97,7 @@ yes | mkfs.${FSTYPE} ${HROOTFS}
 # Copy content to fs image
 mkdir -p ${ROOTDIR}.tmp
 sudo mount ${HROOTFS} ${ROOTDIR}.tmp
-pushd ${ROOTDIR}.tmp
+pushd ${ROOTDIR}.tmp >/dev/null
 
 if [ -f ${FS_CPIO_GZ} ]; then
    gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idmv -R ${USER}:${USER} >/dev/null 2>&1
@@ -107,6 +107,6 @@ fi
 
 sudo chown ${USER}:${USER} -R ${ROOTDIR}.tmp
 #sync
-popd
+popd >/dev/null
 sudo umount ${ROOTDIR}.tmp
 rm -rf ${ROOTDIR}.tmp

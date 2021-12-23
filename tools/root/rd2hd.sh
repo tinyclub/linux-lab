@@ -42,7 +42,7 @@ yes | mkfs.${FSTYPE} ${HROOTFS}
 # Copy content to the fs image
 mkdir -p ${ROOTDIR}.tmp
 sudo mount ${HROOTFS} ${ROOTDIR}.tmp
-pushd ${ROOTDIR}.tmp
+pushd ${ROOTDIR}.tmp >/dev/null
 
 if [ -f ${FS_CPIO_GZ} ]; then
    gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idmv -R ${USER}:${USER} >/dev/null 2>&1
@@ -53,6 +53,6 @@ fi
 sudo chown ${USER}:${USER} -R ${ROOTDIR}.tmp
 
 #sync
-popd
+popd >/dev/null
 sudo umount ${ROOTDIR}.tmp
 rm -rf ${ROOTDIR}.tmp

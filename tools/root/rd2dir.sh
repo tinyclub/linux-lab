@@ -16,7 +16,7 @@ CPIO_GZ=${_ROOTDIR}.cpio
 
 mkdir -p ${ROOTDIR}
 
-pushd ${ROOTDIR}
+pushd ${ROOTDIR} >/dev/null
 
 if [ -f ${FS_CPIO_GZ} ]; then
    gzip -cdkf ${FS_CPIO_GZ} | sudo cpio --quiet -idm -R ${USER}:${USER} >/dev/null
@@ -25,4 +25,4 @@ elif [ -f ${FS_CPIO} ]; then
 fi
 
 sudo chown ${USER}:${USER} -R ${ROOTDIR}
-popd
+popd >/dev/null

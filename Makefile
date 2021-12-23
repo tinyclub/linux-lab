@@ -2510,11 +2510,8 @@ endif
 
 PHONY += modules-prompt kernel-modules-save
 
-ifeq ($(internal_module),1)
-  MODULE_PREPARE := prepare
-else
-  MODULE_PREPARE := modules_prepare
-endif
+# Both internal and external modules require modules_prepare (prepare and scripts, such as scripts/mod/modpost)
+MODULE_PREPARE := modules_prepare
 
 kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \

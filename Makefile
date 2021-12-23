@@ -402,7 +402,7 @@ ifeq ($(CACHE_BUILD)$(CACHE_SRC)$(FAST_FETCH),111)
   ifneq ($(LOCAL_FETCH),0)
     _TOP_SRC := $(TOP_SRC)
   endif
-  TOP_SRC := $(TOP_BUILD)
+  TOP_SRC := $(TOP_BUILD)/src
 endif
 
 # Allow boards to customize source and repos
@@ -1594,6 +1594,7 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
 		cd $$(TOP_DIR); \
 	else		\
 		echo "Downloading $(1) source ..."; \
+		[ ! -d $$($(call _uc,$(1))_SROOT) ] && mkdir -p $$($(call _uc,$(1))_SROOT); \
 		cd $$($(call _uc,$(1))_SROOT) && \
 			mkdir -p $$($(call _uc,$(1))_SPATH) && \
 			cd $$($(call _uc,$(1))_SPATH) && \

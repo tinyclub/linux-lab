@@ -1457,7 +1457,7 @@ endif
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config))
+$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $$($(call _uc,$(1))_ABS_SRC)
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 

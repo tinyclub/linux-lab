@@ -519,6 +519,14 @@ ifeq ($(findstring -do,$(first_target)),-do)
   x := $(APP_ARGS)
 endif
 
+ifeq ($(findstring -defconfigx,$(first_target)x),-defconfigx)
+  # use the rest as arguments for "defconfig"
+  reserve_target := $(first_target:-defconfig=)
+  APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  CFG_PREFIX := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(subst force-,,$(first_target)))))))
+  $(CFG_PREFIX)CFG := $(APP_ARGS)
+endif
+
 # common commands
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   # use the rest as arguments for "do"

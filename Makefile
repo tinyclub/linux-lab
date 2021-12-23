@@ -271,11 +271,11 @@ define _vsif
 endef
 
 define _any
-$(shell if [ $$(expr $(call _v2v,$($(1))) \$(2) $(call _v2v,$(3))) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
+$(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \$(2) $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
 endef
 
 define _range
-$(shell if [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ]; then echo $($(1)); else echo NONE; fi)
+$(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
 endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)

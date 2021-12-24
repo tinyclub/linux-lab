@@ -75,7 +75,7 @@ endif
 endif # Warning on user
 
 # Detect system version of docker image
-OS := $(shell lsb_release -c | awk '{printf $$2}')
+OS := $(shell sed -ne "/CODENAME/s/[^=]*=//gp" /etc/lsb-release)
 
 # Current variables: board, plugin, module
 BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)

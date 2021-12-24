@@ -1904,20 +1904,24 @@ $(eval $(call gensource,bsp,BSP,B))
 $(eval $(call genenvdeps,bsp,BSP,B))
 
 # Enable targets required
-general_targets = $(strip $(foreach t,boot test,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
+general_targets ?= $(strip $(foreach t,boot test,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
 
 ifeq ($(general_targets),1)
-  kernel_targets := 1
-  root_targets := 1
+  kernel_targets ?= 1
+  root_targets ?= 1
   ifneq ($(UBOOT),)
     ifneq ($(U),0)
-      uboot_targets := 1
+      uboot_targets ?= 1
     endif
   endif
 endif
 
 # Qemu targets
-ifneq ($(findstring qemu,$(MAKECMDGOALS)),)
+ifeq ($(findstring qemu,$(MAKECMDGOALS)),)
+  qemu_targets ?= 1
+endif
+
+ifeq ($(qemu_targets),1)
 # Notes:
 #
 # 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
@@ -2183,10 +2187,10 @@ PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
 
 # Root targets
 ifneq ($(findstring root,$(MAKECMDGOALS)),)
- root_targets := 1
+ root_targets ?= 1
 endif
 
-ifneq ($(root_targets),)
+ifeq ($(root_targets),1)
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 #$(warning $(call gensource,root,BUILDROOT))
@@ -2391,9 +2395,9 @@ PHONY += root-hd root-hd-rebuild root-hd-clean
 endif # Root targets
 
 # Linux Kernel targets
-kernel_targets = $(strip $(foreach t,linux kernel module,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
+kernel_targets ?= $(strip $(foreach t,linux kernel module,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
 
-ifneq ($(kernel_targets),)
+ifeq ($(kernel_targets),1)
 _LINUX  := $(call _v,LINUX,LINUX)
 _KERNEL ?= $(_LINUX)
 
@@ -2975,9 +2979,9 @@ endif # Kernel targets
 # Uboot targets
 ifneq ($(UBOOT),)
 ifneq ($(findstring uboot,$(MAKECMDGOALS)),)
-  uboot_targets := 1
+  uboot_targets ?= 1
 endif
-ifneq ($(uboot_targets),)
+ifeq ($(uboot_targets),1)
 
 # Uboot targets
 _UBOOT  ?= $(call _v,UBOOT,UBOOT)

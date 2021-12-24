@@ -886,8 +886,10 @@ endif
 
 CCORI_LIST ?= $(CCORI)
 
-ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+ifneq ($(CCORI),)
+ ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
   $(error Supported gcc original list: $(CCORI_LIST))
+ endif
 endif
 
 ifneq ($(LD_LIBRARY_PATH),)
@@ -1058,7 +1060,8 @@ ifeq ($(PBU),0)
   BIMAGE := $(UBOOT_BIMAGE)
 endif
 
-ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
   ifeq ($(U),1)
     app := uboot
   endif
@@ -1067,6 +1070,7 @@ ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
       app := uboot
     endif
   endif
+ endif
 endif
 
 endif # UBOOT != ""
@@ -1861,10 +1865,12 @@ $$(call _stamp_$(1),env): $(1)-deps
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
-ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
-ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
+  ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
-endif
+  endif
+ endif
 endif
 	$$(Q)touch $$@
 
@@ -2170,8 +2176,10 @@ gcc-clean: toolchain-clean
 
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain-list gcc-list gcc-clean gcc
 
-ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
+ifneq ($(MAKECMDGOALS),)
+ ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
   _CCORI := $(shell grep --color=always ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
+ endif
 endif
 
 ifneq ($(_CCORI),$(CCORI))

@@ -278,6 +278,15 @@ define _range
 $(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
 endef
 
+ifeq ($(LATEST_TAG),1)
+define _latest
+$(shell latest=$$(wget $(1) -q -O - | grep -A1 "scrolling.*data-tab='tags'" | tail -1 | sed -e "s/<[^>]*>//g"); if [ -z "$$latest" ]; then echo $(2); else echo $$latest; fi)
+endef
+define _latest
+$(2)
+endef
+endif
+
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
 $(3)/$(2).$(1)
@@ -1854,7 +1863,12 @@ BSP ?= FETCH_HEAD
 _BSP ?= $(BSP)
 
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
-__BSP := notexist
+# Skip update of bsp repo for !vip user
+ifeq ($(vip),1)
+  __BSP := notexist
+else
+  __BSP := master
+endif
 
 ifneq ($(_PLUGIN),)
   BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
@@ -2886,7 +2900,7 @@ kernel-setconfig: FORCE
 
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
-	$(Q)echo "Enabling new kernel config: $(KCONFIG_OPT) ..."
+	$(Q)echo "Configuring new kernel config: $(KCONFIG_OPT) ..."
 ifeq ($(KCONFIG_OPR),m)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD

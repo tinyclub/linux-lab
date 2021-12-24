@@ -50,3 +50,6 @@
   * And the one with low-case should be temporally
 * Move KCFG configuration in standalone script, not put it in makefile
   * Let `make kernel-defconfig x86_64_defconfig` work directly without the need to download the source at first
+* Parse tags better for github.com, gitee.com and gitlab.com
+  * curl -v "https://api.github.com/repos/tinyclub/linux-lab/tags"
+  * curl -v "https://gitee.com/api/v5/repos/tinylab/linux-lab/tags"

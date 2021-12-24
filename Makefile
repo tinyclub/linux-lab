@@ -1342,6 +1342,35 @@ plugin-list-full:
 
 PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
+ifeq ($(findstring list-,$(MAKECMDGOALS)),list-)
+  LIST_GOAL := $(subst list-,,$(MAKECMDGOALS))
+  ifeq ($(filter $(LIST_GOAL),default real virt base plugin full board short),$(LIST_GOAL))
+    BOARD :=
+    VAR_FILTER := ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
+    ifeq ($(LIST_GOAL),board)
+      VAR_FILTER := ^\[ [\./_a-z0-9-]* \]|^ *ARCH
+    endif
+    ifeq ($(LIST_GOAL),short)
+      VAR_FILTER := ^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH
+    endif
+    ifeq ($(LIST_GOAL),full)
+      VAR_FILTER :=
+    endif
+    ifeq ($(LIST_GOAL),real)
+      BTYPE := ^_BASE *[:]= 2|^_PLUGIN *[:]= 2
+    endif
+    ifeq ($(LIST_GOAL),virt)
+      BTYPE := ^_BASE *[:]= 1|^_PLUGIN *[:]= 1
+    endif
+    ifeq ($(LIST_GOAL),base)
+      BTYPE := ^_BASE
+    endif
+    ifeq ($(LIST_GOAL),plugin)
+      BTYPE := ^_PLUGIN
+    endif
+  endif
+endif
+
 # List targets for boards and plugins
 board-info:
 	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(_ARCH),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
@@ -1353,29 +1382,11 @@ board-info:
 		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
 		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(VAR_FILTER)"
 
-list-default:
-	$(Q)make $(S) board-info BOARD= VAR_FILTER="^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV"
+BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin full)
 
-list-board:
-	$(Q)make $(S) board-info BOARD= VAR_FILTER="^\[ [\./_a-z0-9-]* \]|^ *ARCH"
+$(BOARD_INFO_TARGETS): board-info
 
-list-short:
-	$(Q)make $(S) board-info BOARD= VAR_FILTER="^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH"
-
-list-real:
-	$(Q)make $(S) list BTYPE="^_BASE *= 2|^_PLUGIN *= 2"
-
-list-virt:
-	$(Q)make $(S) list BTYPE="^_BASE *= 1|^_PLUGIN *= 1"
-
-list-base:
-	$(Q)make $(S) list BTYPE="^_BASE"
-
-list-plugin:
-	$(Q)make $(S) list BTYPE="^_PLUGIN"
-
-list-full:
-	$(Q)make $(S) board-info BOARD=
+PHONY += list $(BOARD_INFO_TARGETS)
 
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
@@ -1385,8 +1396,6 @@ list-%: FORCE
 			make -s $(subst list-,,$@)-list; \
 		fi		\
 	fi
-
-PHONY += board-info list list-base list-plugin list-full
 
 # Define generic target deps support
 define make_qemu

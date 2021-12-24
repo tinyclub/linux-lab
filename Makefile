@@ -664,7 +664,7 @@ ifneq ($(GCC),)
   GCC_SWITCH := 1
 endif
 
-ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
+ifneq ($(filter $(ARCH),x86 i386 x86_64),$(ARCH))
  ifneq ($(HOST_GCC),)
   # Force using internal CCORI if GCC specified
   ifeq ($(HOST_CCORI),)

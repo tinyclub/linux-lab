@@ -4011,7 +4011,7 @@ uncache-build:
 	@echo "Uncache building ..."; echo; \
 	sudo service nfs-kernel-server stop;   \
 	sudo $(BUILD_UNCACHE_TOOL) || true; \
-	sudo service nfs-kernel-server start
+	[ "x$(HOST_OS)" != "xWindows" ] && sudo service nfs-kernel-server start || true
 
 backup-build:
 	@echo "Backing up Cache ..."; echo; \

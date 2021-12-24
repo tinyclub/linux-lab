@@ -674,7 +674,11 @@ define genverify
  ifneq ($$($2),)
   ifneq ($$(BSP_$(1)),)
    ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
-    $(2)_LIST ?= $$(foreach x,$$(shell ls -d -p $$(BSP_$(1))/*/$(notdir ${ORIIMG}) 2>/dev/null | sort -V),$$(notdir $$(subst //,,$$(dir $$x)/)))
+    ifeq ($(1),KERNEL)
+      $(2)_LIST ?= $$(foreach x,$$(shell ls -d -p $$(BSP_$(1))/*/$(notdir ${ORIIMG}) 2>/dev/null | sort -V),$$(notdir $$(subst //,,$$(dir $$x)/)))
+    else
+      $(2)_LIST ?= $$(shell ls $$(BSP_$(1)) | sort -V)
+    endif
    endif
   endif
   # If Linux version specific qemu list defined, use it

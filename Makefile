@@ -1402,7 +1402,7 @@ list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
 		echo " $($(call _uc,$(subst list-,,$@))_LIST) " | sed -e 's%\([ ]\{1,\}\)\($($(call _uc,$(subst list-,,$@)))\)\([ ]\{1,\}\)%\1[\2]\3%g;s%^ %%g;s% $$%%g'; \
 	else					\
-		if [ $(shell make --dry-run -s $(subst list-,,$@)-list >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
+		if [ $$(shell make --dry-run -s $(subst list-,,$@)-list >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
 			make -s $(subst list-,,$@)-list; \
 		fi		\
 	fi

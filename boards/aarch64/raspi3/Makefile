@@ -1,8 +1,8 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 # Raspberry Pi 3
-_BASE    = 1
-ARCH     = arm64
-XARCH    = aarch64
+_BASE   := 1
+ARCH    := arm64
+XARCH   := aarch64
 CPU     ?= cortex-a53
 SMP     ?= 4
 MEM     ?= 1024M

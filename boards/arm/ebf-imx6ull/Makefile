@@ -1,8 +1,8 @@
 # Copyright (C) 2020 Wu Zhangjin <falcon@tinylab.org>
 # _BASE: 1, virt; 2, real; 3: virt+real
-_BASE    = 2
-ARCH     = arm
-XARCH    = $(ARCH)
+_BASE   := 2
+ARCH    := arm
+XARCH   := $(ARCH)
 CPU     ?= cortex-a9
 MEM     ?= 512M
 QEMU    ?= v4.1.1

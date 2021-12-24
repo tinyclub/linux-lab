@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = mips
-XARCH    = mipsel
+_BASE   := 1
+ARCH    := mips
+XARCH   := mipsel
 # Not sure, use the default one
 CPU     ?=
 MEM     ?= 128M

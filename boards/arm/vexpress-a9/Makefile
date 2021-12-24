@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = arm
-XARCH    = $(ARCH)
+_BASE   := 1
+ARCH    := arm
+XARCH   := $(ARCH)
 CPU     ?= cortex-a9
 MEM     ?= 128M
 QEMU    ?= v4.1.1
@@ -18,15 +18,15 @@ LINUX   ?= v5.13
 UBOOT[SHARE_1] := disabled
 
 # Upgrade to v4.7, supported by old and new docker images
-GCC[LINUX_v3.18.39] = 4.7
-GCC[LINUX_v3.16.80] = 4.7
-GCC[LINUX_v4.0.9] = 4.7
-GCC[LINUX_v4.12] = 4.7
-GCC[OS_focal] = 9
+GCC[LINUX_v3.18.39] := 4.7
+GCC[LINUX_v3.16.80] := 4.7
+GCC[LINUX_v4.0.9] := 4.7
+GCC[LINUX_v4.12] := 4.7
+GCC[OS_focal] := 9
 
 # Uboot v2020.04 requires gcc >= 6.0, not supported by old docker image
-CCORI[UBOOT_v2020.04,OS_trusty] = linaro
-CCORI[UBOOT_v2020.04,OS_focal]  = internal
+CCORI[UBOOT_v2020.04,OS_trusty] := linaro
+CCORI[UBOOT_v2020.04,OS_focal]  := internal
 
 BUILDROOT?= 2021.08.2
 KRN_ADDR?= 0x60003000

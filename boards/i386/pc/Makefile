@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = x86
-XARCH    = i386
+_BASE   := 1
+ARCH    := x86
+XARCH   := i386
 
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
@@ -10,7 +10,7 @@ MEM     ?= 128M
 # This is for old linux 0.11 floppy support
 QEMU    ?= v0.10.6
 
-GCC = 9
+GCC := 9
 GCC[LINUX_$(call _any,LINUX,<=,v5.0)] := 4.8
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
 CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE
@@ -20,7 +20,7 @@ QEMU_SDL    := 0
 QEMU_CURSES := 0
 QEMU_VIRTFS := 0
 QEMU_VNC    :=
-GCC[QEMU_v0.10.6] = 4.4
+GCC[QEMU_v0.10.6] := 4.4
 endif
 
 SMP     ?= 4

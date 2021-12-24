@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = x86
-XARCH    = x86_64
+_BASE   := 1
+ARCH    := x86
+XARCH   := x86_64
 
 # qemu-system-x86_64 -M pc -cpu ?
 CPU     ?= qemu64
@@ -16,7 +16,7 @@ LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 KERNEL_GIT[KERNEL_FORK_wsl2] := https://gitee.com/mirrors/WSL2-Linux-Kernel.git
 LINUX[KERNEL_FORK_wsl2]   ?= $(call _latest,$(KERNEL_GIT[KERNEL_FORK_wsl2]),linux-msft-wsl-5.10.74.3)
 
-GCC = 9
+GCC := 9
 GCC[LINUX_$(call _any,LINUX,<=,v4.18)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
@@ -24,7 +24,7 @@ CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v4.18)] := RETPOLINE
 
 # Force change ARCH for kernel version <= 2.6.23
 # $(eval $(call _vsif,ARCH,$(XARCH),LINUX,<=,v2.6.23))
-ARCH[LINUX_$(call _any,LINUX,<=,v2.6.23)] = $(XARCH)
+ARCH[LINUX_$(call _any,LINUX,<=,v2.6.23)] := $(XARCH)
 $(eval $(call __vs,ARCH,LINUX))
 
 BUILDROOT?= 2019.02.2
@@ -46,4 +46,4 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/bzImage
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 ROOTFS[LINUX_v2.6.12.6]  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs32.cpio.gz
 # Workaround boot issue
-XKCLI    = lpj=246205838 raid=noautodetect
+XKCLI   := lpj=246205838 raid=noautodetect

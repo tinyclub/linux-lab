@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = riscv
-XARCH    = riscv64
+_BASE   := 1
+ARCH    := riscv
+XARCH   := riscv64
 # Use the default setting
 CPU     ?=
 SMP     ?= 4

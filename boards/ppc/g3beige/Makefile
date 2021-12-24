@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = powerpc
-XARCH    = ppc
+_BASE   := 1
+ARCH    := powerpc
+XARCH   := ppc
 # Not sure, use the default setting
 CPU     ?=
 # Note: <2.6.37 kernel don't have __NR_socket implementation

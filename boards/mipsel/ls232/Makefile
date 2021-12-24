@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = mips
-XARCH    = mipsel
+_BASE   := 1
+ARCH    := mips
+XARCH   := mipsel
 CPU     ?= LS232_1
 BUILDROOT?= 2021.08.2
 MEM     ?= 256M

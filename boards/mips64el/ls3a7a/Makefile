@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = mips
-XARCH    = mips64el
+_BASE   := 1
+ARCH    := mips
+XARCH   := mips64el
 CPU     ?= godson3
 BUILDROOT?= 2020.08
 MEM     ?= 1024M

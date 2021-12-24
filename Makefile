@@ -33,7 +33,7 @@ ifeq ($(UNIX_USER)$(UNIX_UID),)
 endif
 
 # Check running host
-LAB_ENV_ID=/home/$(USER)/Desktop/lab.desktop
+LAB_ENV_ID := /home/$(USER)/Desktop/lab.desktop
 ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
   ifneq (../../configs/linux-lab, $(wildcard ../../configs/linux-lab))
     $(error ERR: No Cloud Lab found, please refer to 'Download the lab' part of README.md)
@@ -53,10 +53,10 @@ endif
 
 # Check permission issue, must available to ubuntu
 ifeq ($(shell stat -c '%U' /.git/description),$(USER))
-  WARN_ON_USER=0
+  WARN_ON_USER := 0
 else
   ifeq ($(shell stat -c '%u' /.git/description),$(UID))
-    WARN_ON_USER=0
+    WARN_ON_USER := 0
   endif
 endif
 
@@ -138,7 +138,7 @@ ifneq ($(BOARD),)
     ifeq ($(filter $(BOARD),$(BASE_ARCHS)),$(BOARD))
       $(error ERR: $(BOARD) is ARCH, check available boards with 'make list ARCH=$(BOARD)')
     else
-      matched_boards=$(shell find $(TOP_DIR)/$(BOARDS_DIR) -mindepth 2 -maxdepth 2 -type d -name "*$(BOARD)*" | sed -e 's%$(TOP_DIR)/$(BOARDS_DIR)/%%g')
+      matched_boards := $(shell find $(TOP_DIR)/$(BOARDS_DIR) -mindepth 2 -maxdepth 2 -type d -name "*$(BOARD)*" | sed -e 's%$(TOP_DIR)/$(BOARDS_DIR)/%%g')
       ifneq ($(matched_boards),)
         $(error ERR: $(BOARD) not exist, do you mean: $(matched_boards), check more with 'make list')
       else
@@ -166,8 +166,8 @@ BOARD_TOOLCHAIN ?= $(BOARD_DIR)/toolchains
 # add a standlaone bsp directory
 BSP_DIR ?= $(BOARD_DIR)/bsp
 BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
-BSP_CONFIG = $(BSP_DIR)/configs
-BSP_PATCH  = $(BSP_DIR)/patch
+BSP_CONFIG := $(BSP_DIR)/configs
+BSP_PATCH  := $(BSP_DIR)/patch
 
 # Support old directory arch
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
@@ -216,9 +216,13 @@ BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
 # Common functions
 
-_uc = $(shell echo $1 | tr a-z A-Z)
-_lc = $(shell echo $1 | tr A-Z a-z)
-_stamp = $(3)/.stamp_$(1)-$(2)
+define _uc
+$(shell echo $1 | tr a-z A-Z)
+endef
+
+define _lc
+$(shell echo $1 | tr A-Z a-z)
+endef
 
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]
@@ -521,19 +525,19 @@ ifeq ($(BUILD),all)
 endif
 
 first_target := $(firstword $(MAKECMDGOALS))
-ifeq ($(findstring -do,$(first_target)),-do)
+ifeq ($(findstring -dox,$(first_target)),-dox)
   # use the rest as arguments for "do"
   reserve_target := $(first_target:-do=)
   APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   x := $(APP_ARGS)
-endif
-
-ifeq ($(findstring -defconfigx,$(first_target)x),-defconfigx)
+else
+ ifeq ($(findstring -defconfigx,$(first_target)x),-defconfigx)
   # use the rest as arguments for "defconfig"
   reserve_target := $(first_target:-defconfig=)
   APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   CFG_PREFIX := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
   $(CFG_PREFIX)CFG := $(APP_ARGS)
+ endif
 endif
 
 # common commands
@@ -591,8 +595,8 @@ endif # common commands
 
 define genbuildenv
 
-GCC_$(2) = $$(call __v,GCC,$(2),$(3))
-CCORI_$(2) = $$(call __v,CCORI,$(2),$(3))
+GCC_$(2) := $$(call __v,GCC,$(2),$(3))
+CCORI_$(2) := $$(call __v,CCORI,$(2),$(3))
 
 ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
@@ -607,8 +611,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
 endif
 
 ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
- HOST_GCC_$(2) = $$(call __v,HOST_GCC,$(2),$(3))
- HOST_CCORI_$(2) = $$(call __v,HOST_CCORI,$(2),$(3))
+ HOST_GCC_$(2) := $$(call __v,HOST_GCC,$(2),$(3))
+ HOST_CCORI_$(2) := $$(call __v,HOST_CCORI,$(2),$(3))
 
  ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)
@@ -631,7 +635,7 @@ $(eval $(call genbuildenv,uboot,UBOOT,OS))
 $(eval $(call genbuildenv,qemu,QEMU,OS))
 $(eval $(call genbuildenv,root,BUILDROOT,OS))
 
-PREBUILT_TOOLCHAIN_MAKEFILE=$(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
+PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ifeq ($(PREBUILT_TOOLCHAIN_MAKEFILE),$(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)))
   include $(PREBUILT_TOOLCHAIN_MAKEFILE)
@@ -773,11 +777,11 @@ BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)
-  BUILDROOT_CCPRE  = $(XARCH)-linux-
+  BUILDROOT_CCPRE  := $(XARCH)-linux-
 else
-  BUILDROOT_CCPRE  = i686-linux-
+  BUILDROOT_CCPRE  := i686-linux-
 endif
-BUILDROOT_CCPATH = $(ROOT_BUILD)/host/usr/bin
+BUILDROOT_CCPATH := $(ROOT_BUILD)/host/usr/bin
 
 # Add internal toolchain to list (the one installed in docker image)
 ifneq ($(CCPRE),)
@@ -888,13 +892,13 @@ endif
 
 ifneq ($(LD_LIBRARY_PATH),)
   ifneq ($(LLPATH),)
-    L_PATH=LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
+    L_PATH := LD_LIBRARY_PATH=$(LLPATH):$(LD_LIBRARY_PATH)
   else
-    L_PATH=LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+    L_PATH := LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
   endif
 else
   ifneq ($(LLPATH),)
-    L_PATH=LD_LIBRARY_PATH=$(LLPATH)
+    L_PATH := LD_LIBRARY_PATH=$(LLPATH)
   endif
 endif
 
@@ -1016,7 +1020,7 @@ endif
 
 # Uboot configurations
 ifeq ($(U),0)
-  override UBOOT=
+  override UBOOT :=
 endif
 
 ifneq ($(UBOOT),)
@@ -1185,7 +1189,7 @@ ifneq ($(MAKECMDGOALS),)
 endif
 
 ifneq ($(INVALID_ROOT),1)
-_ROOTFS_TYPE=$(subst $(comma),$(space),$(ROOTFS_TYPE))
+_ROOTFS_TYPE := $(subst $(comma),$(space),$(ROOTFS_TYPE))
 
 FS_TYPE   := $(firstword $(_ROOTFS_TYPE))
 FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
@@ -1313,7 +1317,7 @@ PHONY += board-config board-edit
 
 ifeq ($(filter command line, $(origin P) $(origin PLUGIN)), command line)
   ifeq ($(PLUGIN),)
-    PLUGIN_CLEAN = plugin-clean
+    PLUGIN_CLEAN := plugin-clean
   endif
 endif
 
@@ -1418,10 +1422,10 @@ endef
 define gendeps
 
 ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
+_stamp_$(1) := $$($$($(call _uc,$(1))_BUILD)/.stamp_$(1)-$$(1))
 
 ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
-__stamp_$(1)=$$(_stamp_$(1))
+__stamp_$(1) := $$(_stamp_$(1))
 endif
 endif
 
@@ -1535,7 +1539,7 @@ ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
   endif
 endif
 
-$(call _uc,$(1))_GITADD = git remote -v
+$(call _uc,$(1))_GITADD := git remote -v
 ifneq ($$(_$(call _uc,$(1))_SRC), $$($(call _uc,$(1))_SRC))
   ifeq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
     $(call _uc,$(1))_GETGITURL := 1
@@ -1781,14 +1785,14 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-NEW_$(3)CFG_FILE=$$(_BSP_CONFIG)/$$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$2)_NEW)_defconfig
-NEW_PREBUILT_$(call _uc,$1)_DIR=$$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
+NEW_$(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
 
-OLD_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2))
-NEW_$(call _uc,$1)_PATCH_DIR=$$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)
-NEW_$(call _uc,$1)_GCC=$$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
+OLD_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2))
+NEW_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)
+NEW_$(call _uc,$1)_GCC := $$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $(1)-cloneconfig:
 	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
@@ -1964,9 +1968,9 @@ ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
 ifeq ($(QEMU_ALL),1)
   PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
   QEMU_BUILD := $(TOP_BUILD)/qemu-$(QEMU)-all
-  QEMU_ARCH = $(ARCH_LIST)
+  QEMU_ARCH := $(ARCH_LIST)
 else
-  QEMU_ARCH = $(XARCH)
+  QEMU_ARCH := $(XARCH)
 endif
 
 # Allow use QEMU_USER_STATIC instead of QEMU_US
@@ -2034,7 +2038,7 @@ $(eval $(call genclone,qemu,qemu,Q))
 
 QT ?= $(x)
 
-QEMU_UPDATE_GITMODULES=tools/qemu/update-submodules.sh
+QEMU_UPDATE_GITMODULES := tools/qemu/update-submodules.sh
 
 _qemu_update_submodules:
 	$(QEMU_UPDATE_GITMODULES) $(QEMU_ABS_SRC)/.gitmodules
@@ -2504,7 +2508,7 @@ ifeq ($(one_module),1)
     # Prefer user input instead of preconfigured
     ifneq ($(M_PATH),$(wildcard $(M_PATH)))
       ifneq ($(MODULE_CONFIG),)
-        module = $(MODULE_CONFIG)
+        module := $(MODULE_CONFIG)
       endif
       ifneq ($(MPATH_CONFIG),)
         M_PATH ?= $(MPATH_CONFIG)
@@ -3085,13 +3089,13 @@ endif
 endif
 
 ifneq ($(INVALID_ROOTFS),1)
-U_ROOT_IMAGE = $(UROOTFS)
+  U_ROOT_IMAGE := $(UROOTFS)
 endif
 
-U_KERNEL_IMAGE = $(UKIMAGE)
+U_KERNEL_IMAGE := $(UKIMAGE)
 
 ifeq ($(DTB),$(wildcard $(DTB)))
-  U_DTB_IMAGE=$(DTB)
+  U_DTB_IMAGE := $(DTB)
 endif
 
 BOOTX := $(if $(UBOOT_BIOS),booti,bootm)
@@ -3207,12 +3211,12 @@ ifeq ($(BOARD_PASS),)
   $(error BOARD_PASS must be configured in $(BOARD_MAKEFILE) before uploading)
 endif
 
-SSH_PASS  = sshpass -p $(BOARD_PASS)
-SSH_CMD   = $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
-SCP_CMD   = $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+SSH_PASS  := sshpass -p $(BOARD_PASS)
+SSH_CMD   := $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t $(BOARD_USER)@$(BOARD_IP)
+SCP_CMD   := $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
-SSH_RSH   = --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
-RSYNC_CMD = SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
+SSH_RSH   := --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
+RSYNC_CMD := SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
@@ -3590,10 +3594,10 @@ BOOT_CMD += $(XOPTS) $(XQOPT)
 
 # Get DEBUG option if -debug found in goals
 ifeq (debug,$(firstword $(MAKECMDGOALS)))
-  DEBUG = $(app)
+  DEBUG := $(app)
 else
   ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
-    DEBUG = $(subst -,,$(subst debug,,$(firstword $(MAKECMDGOALS))))
+    DEBUG := $(subst -,,$(subst debug,,$(firstword $(MAKECMDGOALS))))
   endif
 endif
 
@@ -4027,7 +4031,7 @@ PHONY += cache-build uncache-build backup-build
 $(eval $(call _ti,.labfini))
 
 # add alias for linux and buildroot targets
-aliastarget=$(if $(APP_ARGS),$(filter $APP_ARGS,$(call genaliastarget)),$(call genaliastarget))
+aliastarget := $(if $(APP_ARGS),$(filter $APP_ARGS,$(call genaliastarget)),$(call genaliastarget))
 ifneq ($(aliastarget),)
 $(aliastarget):
 	$(Q)make $(NPD) $(call genaliassource,$@)

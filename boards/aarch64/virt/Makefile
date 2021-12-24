@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = arm64
-XARCH    = aarch64
+_BASE   := 1
+ARCH    := arm64
+XARCH   := aarch64
 CPU     ?= cortex-a57
 SMP     ?= 2
 MEM     ?= 256M
@@ -13,8 +13,8 @@ QEMU_US ?= 0
 
 UBOOT   ?= v2019.10
 
-CCORI[UBOOT_v2019.10,OS_trusty] = linaro
-CCORI[UBOOT_v2019.10,OS_focal]  = internal
+CCORI[UBOOT_v2019.10,OS_trusty]:= linaro
+CCORI[UBOOT_v2019.10,OS_focal] := internal
 
 LINUX   ?= v5.13
 BUILDROOT?= 2019.11.1

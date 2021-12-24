@@ -1,19 +1,19 @@
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
-_BASE    = 1
-ARCH     = arm
-XARCH    = $(ARCH)
+_BASE   := 1
+ARCH    := arm
+XARCH   := $(ARCH)
 CPU     ?= arm926
 MEM     ?= 128M
 UBOOT   ?= v2015.07
-GCC[UBOOT_v2015.07] = 4.3
+GCC[UBOOT_v2015.07] := 4.3
 BUILDROOT?= 2021.08.2
 # Need comment ORIDTB for 2.6.36 Linux
 LINUX   ?= v5.1
 
 # FIXME: broken with gcc 4.7?
-GCC[LINUX_v2.6.36] = 4.3
-GCC[LINUX_v4.6.7] = 4.7
-GCC = 9
+GCC[LINUX_v2.6.36] := 4.3
+GCC[LINUX_v4.6.7] := 4.7
+GCC := 9
 
 # get flash info: flinfo
 PFLASH_BASE ?= 0x34000000
@@ -43,8 +43,8 @@ UORIIMG ?= arch/$(ARCH)/boot/uImage
 
 # Old Linux kernel don't support dts
 # FIXME: check which version is the first one support dts
-HAS_DTS[LINUX_v2.6.36] = 0
-HAS_DTS[LINUX_v2.6.14.7] = 0
+HAS_DTS[LINUX_v2.6.36] := 0
+HAS_DTS[LINUX_v2.6.14.7] := 0
 
 HAS_DTS := $(call _v,HAS_DTS,LINUX,1)
 

@@ -12,9 +12,9 @@ endif
 ifeq ($(CCORI), bootlin)
   CCPRE  ?= mips64el-linux-
   CCVER  ?= 2018.11-1
-  CCBASE  = mips64el-n32--uclibc--stable-$(CCVER)
+  CCBASE := mips64el-n32--uclibc--stable-$(CCVER)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
-  CCURL   = https://toolchains.bootlin.com/downloads/releases/toolchains/mips64el-n32/tarballs/$(CCBASE).tar.bz2
+  CCURL  := https://toolchains.bootlin.com/downloads/releases/toolchains/mips64el-n32/tarballs/$(CCBASE).tar.bz2
 endif
 
 ifeq ($(CCORI), lemote)
@@ -24,7 +24,7 @@ ifeq ($(CCORI), lemote)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   LLPATH ?= $(TOOLCHAIN)/$(CCBASE)/x86_64-unknown-linux-gnu/mips64el-unknown-linux-gnu/lib
   _CCBASE ?= mips64el-toolchain-$(CCVER).x64
-  CCURL   = http://mirror.lemote.com:8000/loongson3-toolchain/binaries/v$(CCVER)/$(_CCBASE).tar.xz
+  CCURL  := http://mirror.lemote.com:8000/loongson3-toolchain/binaries/v$(CCVER)/$(_CCBASE).tar.xz
 endif
 
 ifeq ($(CCORI), loongnix)

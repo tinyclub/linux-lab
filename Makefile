@@ -7,8 +7,14 @@
 TOP_DIR := $(CURDIR)
 
 # Disable the implict rules for our Makefile
+# ref: https://stackoverflow.com/questions/4122831/disable-make-builtin-rules-and-variables-from-inside-the-make-file
 .SUFFIXES:
 SUFFIXES :=
+%: %,v
+%: RCS/%,v
+%: RCS/%
+%: s.%
+%: SCCS/s.%
 
 # Force set default goal
 ifeq ($(-*-command-variables-*-),)

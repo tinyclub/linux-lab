@@ -78,10 +78,25 @@ endif # Warning on user
 OS := $(shell sed -ne "/CODENAME/s/[^=]*=//gp" /etc/lsb-release)
 
 # Current variables: board, plugin, module
-BOARD_CONFIG  := $(shell cat .board_config 2>/dev/null)
-PLUGIN_CONFIG := $(shell cat .plugin_config 2>/dev/null)
-MODULE_CONFIG := $(shell cat .module_config 2>/dev/null)
-MPATH_CONFIG  := $(shell cat .mpath_config 2>/dev/null)
+define _uc
+$(shell echo $1 | tr a-z A-Z)
+endef
+
+define _lc
+$(shell echo $1 | tr A-Z a-z)
+endef
+
+define load_config
+ifeq (.$(1)_config,$(wildcard .$(1)_config))
+  $$(call _uc,$(1))_CONFIG := $$(shell cat .$(1)_config 2>/dev/null)
+endif
+endef
+
+#$(warning $(call load_config,board))
+$(eval $(call load_config,board))
+$(eval $(call load_config,plugin))
+$(eval $(call load_config,module))
+$(eval $(call load_config,mpath))
 
 # Verbose logging control
 ifeq ($V, 1)
@@ -223,14 +238,6 @@ ROOT_SRC  ?= $(_ROOT_SRC)
 BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
 # Common functions
-
-define _uc
-$(shell echo $1 | tr a-z A-Z)
-endef
-
-define _lc
-$(shell echo $1 | tr A-Z a-z)
-endef
 
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]

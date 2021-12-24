@@ -1919,14 +1919,16 @@ $(eval $(call genenvdeps,bsp,BSP,B))
 # Enable targets required
 general_targets ?= $(strip $(foreach t,boot test,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
 
-ifeq ($(general_targets),1)
-  kernel_targets ?= 1
-  root_targets ?= 1
+ifneq ($(general_targets),)
+ ifeq ($(filter $(general_targets),0 1),$(general_targets))
+  kernel_targets ?= $(general_targets)
+  root_targets ?= $(general_targets)
   ifneq ($(UBOOT),)
     ifneq ($(U),0)
-      uboot_targets ?= 1
+      uboot_targets ?= $(general_targets)
     endif
   endif
+ endif
 endif
 
 # Qemu targets

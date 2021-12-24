@@ -800,20 +800,20 @@ BUILDROOT_CCPATH := $(ROOT_BUILD)/host/usr/bin
 
 # Add internal toolchain to list (the one installed in docker image)
 ifneq ($(CCPRE),)
-  ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+  ifneq ($(shell which $(CCPRE)gcc),)
     CCORI_INTERNAL := 1
   endif
   # Add builtin toolchain to list (the one builtin the bsp or plugin)
   ifeq ($(CCORI),)
     ifneq ($(CCPATH),)
-      ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+      ifeq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
         CCORI_LIST += builtin
       endif
     endif
   endif
 else
   ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-    ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+    ifneq ($(shell which gcc),)
       CCORI_INTERNAL := 1
     endif
   endif
@@ -826,7 +826,7 @@ ifeq ($(CCORI_INTERNAL), 1)
 endif
 
 # Add buidroot toolchain to list
-ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+ifeq ($(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc,$(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc))
   ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
     CCORI_LIST += buildroot
   endif
@@ -843,12 +843,12 @@ ifeq ($(CCORI), null)
 
   # Check if there is a local toolchain
   ifneq ($(CCPRE),)
-    ifeq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    ifneq ($(shell which $(CCPRE)gcc),)
       CCORI := internal
     endif
   else
     ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-      ifeq ($(shell /usr/bin/which gcc >/dev/null 2>&1; echo $$?),0)
+      ifneq ($(shell which gcc,)
         CCORI := internal
       endif
     endif
@@ -856,13 +856,13 @@ ifeq ($(CCORI), null)
 
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
-    ifeq ($(shell env PATH=$(BUILDROOT_CCPATH) /usr/bin/which $(BUILDROOT_CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    ifeq ($(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc,$(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc))
       CCORI  := buildroot
       CCPATH := $(BUILDROOT_CCPATH)
       CCPRE  := $(BUILDROOT_CCPRE)
     endif
   else
-    ifeq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    ifeq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
       CCORI := builtin
     endif
   endif
@@ -871,7 +871,7 @@ else # CCORI != null
 
   # Check if internal toolchain is there
   ifeq ($(CCORI), internal)
-    ifneq ($(shell /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+    ifeq ($(shell which $(CCPRE)gcc),)
       $(error ERR: No internal toolchain found, please find one via: make toolchain-list)
     endif
   endif
@@ -880,7 +880,7 @@ else # CCORI != null
   ifneq ($(filter $(CCORI), buildroot), $(CCORI))
     ifneq ($(CCPRE),)
       ifneq ($(CCPATH),)
-        ifneq ($(shell env PATH=$(CCPATH) /usr/bin/which $(CCPRE)gcc >/dev/null 2>&1; echo $$?),0)
+        ifneq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
           # If CCORI specified and it is not there, just download one
           ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
             CC_TOOLCHAIN := toolchain-source
@@ -2174,7 +2174,7 @@ toolchain-version: toolchain-info
 
 toolchain-clean:
 ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-  ifeq ($(shell which $(CCVER) 2>&1 >/dev/null; echo $$?),0)
+  ifneq ($(shell which $(CCVER)),)
 	$(Q)sudo apt-get remove --purge $(CCVER)
   endif
 else
@@ -3838,7 +3838,7 @@ VMLINUX      ?= $(KERNEL_BUILD)/vmlinux
 ifneq ($(DEBUG),0)
 
 GDB         ?= $(C_PATH) $(CCPRE)gdb
-ifeq ($(shell which gdb-multiarch >/dev/null 2>&1; echo $$?), 0)
+ifneq ($(shell which gdb-multiarch),)
   GDB_MARCH ?= 1
 endif
 ifeq ($(shell $(GDB) --version >/dev/null 2>&1; echo $$?), 0)

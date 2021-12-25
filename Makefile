@@ -2474,6 +2474,13 @@ $(eval $(call genenvdeps,kernel,LINUX,K))
 $(eval $(call __vs,CFGS[K_N],GCC,LINUX))
 $(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
 
+# Module targets
+ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+  module_targets ?= 1
+endif
+
+ifeq ($(module_targets),1)
+
 TOP_MODULE_DIR := $(or $(_TOP_SRC),$(TOP_SRC))/modules
 ifneq ($(PLUGIN),)
   TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
@@ -2481,7 +2488,9 @@ ifneq ($(PLUGIN),)
     PLUGIN_MODULE_DIR := $(TMP)
   endif
 else
-  PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -maxdepth 5 -type d -name "modules")
+  ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+    PLUGIN_MODULE_DIR := $(shell find $(TOP_DIR)/boards -maxdepth 5 -type d -name "modules")
+  endif
 endif
 
 EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
@@ -2738,6 +2747,8 @@ endif
 endif # skip modules target for list command
 
 PHONY += modules modules-install modules-clean module module-install module-clean
+
+endif # module targets
 
 # Build Kernel
 

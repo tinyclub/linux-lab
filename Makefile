@@ -1936,7 +1936,7 @@ $(eval $(call gensource,bsp,BSP,B))
 $(eval $(call genenvdeps,bsp,BSP,B))
 
 # Enable targets required
-general_targets ?= $(strip $(foreach t,boot test,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
+general_targets ?= $(strip $(foreach t,boot test clean distclean,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
 
 ifneq ($(general_targets),)
  ifeq ($(filter $(general_targets),0 1),$(general_targets))
@@ -2080,6 +2080,10 @@ endif # Qemu targets
 
 # Toolchains targets
 
+toolchain_targets ?= $(strip $(foreach t,gcc toolchain env,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
+
+ifeq ($(toolchain_targets),1)
+
 toolchain-source: toolchain
 download-toolchain: toolchain
 gcc: toolchain
@@ -2220,6 +2224,8 @@ endif
 gcc-switch: toolchain-switch
 
 PHONY += toolchain-switch gcc-switch toolchain-version gcc-version gcc-info
+
+endif # toolchain targets
 
 # Root targets
 ifneq ($(findstring root,$(MAKECMDGOALS)),)

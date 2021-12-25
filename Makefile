@@ -3899,12 +3899,12 @@ GDB_USER     ?= $(USER)
 ifeq ($(XTERM), null)
   XTERM_STATUS := 1
 else
-  XTERM ?= $(shell tools/xterm.sh terminator)
+  XTERM ?= $(shell tools/xterm.sh qterminal)
   # Testing should use non-interactive mode, otherwise, enable interactive.
   ifneq ($(TEST),)
     XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
   else
-    XTERM_CMD    ?= $(XTERM) --working-directory=$(CURDIR) -T "$(GDB_CMD)" -e "$(GDB_CMD)"
+    XTERM_CMD    ?= $(XTERM) --workdir $(CURDIR) --title "$(GDB_CMD)" -e "$(GDB_CMD)"
   endif
   XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
 endif

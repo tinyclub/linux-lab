@@ -1938,12 +1938,14 @@ $(eval $(call gensource,bsp,BSP,B))
 $(eval $(call genenvdeps,bsp,BSP,B))
 
 # Enable targets required
-general_targets ?= $(strip $(foreach t,boot test clean distclean,$(if $(findstring $t,$(MAKECMDGOALS)),1)))
+general_targets ?= 1
 
 ifneq ($(general_targets),)
  ifeq ($(filter $(general_targets),0 1),$(general_targets))
   kernel_targets ?= $(general_targets)
+  module_targets ?= $(general_targets)
   root_targets ?= $(general_targets)
+  toolchain_targets ?= $(general_targets)
   ifneq ($(UBOOT),)
     ifneq ($(U),0)
       uboot_targets ?= $(general_targets)

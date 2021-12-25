@@ -926,7 +926,7 @@ C_PATH ?= env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH)$(if $(RUST_PATH),:$(RUST_PA
 TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 # Parallel Compiling threads
-HOST_CPU_THREADS := $(shell nproc)
+HOST_CPU_THREADS := $$(nproc)
 JOBS ?= $(HOST_CPU_THREADS)
 
 # Emulator configurations
@@ -993,7 +993,7 @@ ifeq ($(DTS),)
 endif
 
 ifneq ($(DTS),)
-  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(shell echo $(DTS) | sed -e "s%.*/dts/%%g"))
+  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(notdir $(DTS)))
   LINUX_DTB  := $(KERNEL_BUILD)/$(ORIDTB)
   ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
     ifneq ($(ORIDTB),)
@@ -3396,7 +3396,7 @@ NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap
 
 ifeq ($(NETDEV), virtio)
   MACADDR_TOOL   := tools/qemu/macaddr.sh
-  RANDOM_MACADDR := $(shell $(MACADDR_TOOL))
+  RANDOM_MACADDR := $$($(MACADDR_TOOL))
   NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
 endif
 
@@ -3404,9 +3404,9 @@ endif
 CMDLINE :=
 
 # Init route and ip for guest
-ROUTE := $(shell ifconfig br0 | grep 'inet ' | tr -d -c '^[0-9. ]' | awk '{print $$1}')
-TMP   := $(shell bash -c 'echo $$(($$RANDOM%230+11))')
-IP    := $(basename $(ROUTE)).$(TMP)
+ROUTE := $$(ifconfig br0 | grep 'inet ' | tr -d -c '^[0-9. ]' | awk '{print $$1}')
+TMP   := $$(bash -c 'echo $$(($$RANDOM%230+11))')
+IP    := $$(basename $(ROUTE)).$(TMP)
 
 CMDLINE += route=$(ROUTE)
 
@@ -3741,7 +3741,7 @@ endif
 CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
 
 ifneq ($(U),1)
-  BOOT_CMD += -append '$(CMDLINE)'
+  BOOT_CMD += -append "$(CMDLINE)"
 endif
 
 BOOT_TEST := default
@@ -3757,7 +3757,7 @@ TEST_TIMEOUT ?= $(TIMEOUT)
 TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
-  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$(shell date +"%Y%m%d-%H%M%S")
+  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$$(date +"%Y%m%d-%H%M%S")
   TEST_ENV        ?= $(TEST_LOGGING)/boot.env
   TEST_LOG        ?= $(TEST_LOGGING)/boot.log
 

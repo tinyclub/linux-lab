@@ -3387,7 +3387,7 @@ CMDLINE :=
 # Init route and ip for guest
 ROUTE := $$(ifconfig br0 | grep 'inet ' | tr -d -c '^[0-9. ]' | awk '{print $$1}')
 TMP   := $$(bash -c 'echo $$(($$RANDOM%230+11))')
-IP    := $$(basename $(ROUTE)).$(TMP)
+IP    := $$(echo $(ROUTE) | cut -d'.' -f1-3).$(TMP)
 
 CMDLINE += route=$(ROUTE)
 

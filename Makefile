@@ -544,7 +544,7 @@ endef
 
 # Support alias, root -> buildroot, kernel -> linux
 ifneq ($(BUILD),)
-  override BUILD := $(call genaliassource,$(BUILD))
+  override BUILD := $(call genaliassource,$(subst $(comma),$(space),$(BUILD)))
 endif
 
 ifeq ($(BUILD),all)

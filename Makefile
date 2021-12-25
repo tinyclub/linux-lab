@@ -550,8 +550,10 @@ else
   # use the rest as arguments for "defconfig"
   reserve_target := $(first_target:-defconfig=)
   APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  CFG_PREFIX := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
-  $(CFG_PREFIX)CFG := $(APP_ARGS)
+  ifneq ($(APP_ARGS),)
+    CFG_PREFIX := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
+    $(CFG_PREFIX)CFG := $(APP_ARGS)
+  endif
  endif
 endif
 

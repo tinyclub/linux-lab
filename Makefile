@@ -1267,12 +1267,10 @@ export GREP_COLOR=32;40
 # FILTER for board name
 FILTER   ?= .*
 # FILTER for board settings
-VAR_FILTER   ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
-# all: 0, plugin: 1, noplugin: 2
-BTYPE    ?= ^_BASE|^_PLUGIN
+VAR_FILTER ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 
 define getboardvars
-cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval " | egrep -v "_BASE|_PLUGIN"  | cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' '
+cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|^$$"  | tr -d '?: ' | cut -d '=' -f1
 endef
 
 define showboardvars
@@ -1367,19 +1365,19 @@ plugin-list-full:
 
 PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
-ifeq ($(findstring list-,$(MAKECMDGOALS)),list-)
-  LIST_GOAL := $(subst list-,,$(MAKECMDGOALS))
+ifeq ($(findstring xlist,x$(first_target)),xlist)
+  # all: 0, plugin: 1, noplugin: 2
+  LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
+  LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
   ifeq ($(filter $(LIST_GOAL),default real virt base plugin full board short),$(LIST_GOAL))
     BOARD :=
-    VAR_FILTER := ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
+    BTYPE ?= ^_BASE|^_PLUGIN
+    VAR_FILTER ?= ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
     ifeq ($(LIST_GOAL),board)
       VAR_FILTER := ^\[ [\./_a-z0-9-]* \]|^ *ARCH
     endif
     ifeq ($(LIST_GOAL),short)
       VAR_FILTER := ^\[ [\./_a-z0-9-]* \]|^ *LINUX|^ *ARCH
-    endif
-    ifeq ($(LIST_GOAL),full)
-      VAR_FILTER :=
     endif
     ifeq ($(LIST_GOAL),real)
       BTYPE := ^_BASE *[:]= 2|^_PLUGIN *[:]= 2
@@ -1411,7 +1409,7 @@ BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugi
 
 $(BOARD_INFO_TARGETS): board-info
 
-PHONY += list $(BOARD_INFO_TARGETS)
+PHONY += $(BOARD_INFO_TARGETS) board-info list
 
 list-%: FORCE
 	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
@@ -3980,7 +3978,7 @@ PHONY += boot-test _boot
 
 # Show the variables
 ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
-VARS := $(shell cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include"| cut -d'?' -f1 | cut -d'=' -f1 | cut -d':' -f1 | cut -d'+' -f1 | tr -d ' ')
+VARS := $(shell $(call getboardvars))
 VARS += PBK PBR PBD PBQ PBU
 VARS += BOARD FEATURE TFTPBOOT
 VARS += ROOTDIR ROOT_SRC ROOT_BUILD ROOT_GIT

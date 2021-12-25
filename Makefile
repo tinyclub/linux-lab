@@ -2195,7 +2195,7 @@ PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain
 
 ifneq ($(MAKECMDGOALS),)
  ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
-  _CCORI := $(shell grep --color=always ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
+  _CCORI := $(shell grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
  endif
 endif
 

@@ -1882,7 +1882,7 @@ _BSP ?= $(BSP)
 ifeq ($(vip),1)
   __BSP := notexist
 else
-  __BSP := master
+  __BSP := origin/master
 endif
 
 ifneq ($(_PLUGIN),)

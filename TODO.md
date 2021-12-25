@@ -53,3 +53,5 @@
 * Parse tags better for github.com, gitee.com and gitlab.com
   * curl -v "https://api.github.com/repos/tinyclub/linux-lab/tags"
   * curl -v "https://gitee.com/api/v5/repos/tinylab/linux-lab/tags"
+* Colorize help output
+  * https://github.com/owenthereal/ccat

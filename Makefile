@@ -239,6 +239,10 @@ BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
 # Common functions
 
+define _stamp
+$($(call _uc,$(1))_BUILD)/.stamp_$(1)-$(2)
+endef
+
 ## Version specific variable
 ## GCC = GCC[LINUX_v2.6.12]
 ##
@@ -1449,14 +1453,6 @@ endef
 # generate target dependencies
 define gendeps
 
-ifeq ($$(_stamp_$(1)),)
-_stamp_$(1) := $$($$($(call _uc,$(1))_BUILD)/.stamp_$(1)-$$(1))
-
-ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
-__stamp_$(1) := $$(_stamp_$(1))
-endif
-endif
-
 $(1)-patch: $(1)-checkout
 $(1)-defconfig: $(1)-patch
 $(1)-defconfig: $(1)-env
@@ -1502,7 +1498,7 @@ endif
 
 _boot: $$(boot_deps)
 
-$$(call __stamp_$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $$($(call _uc,$(1))_ABS_SRC)
+$$(call _stamp,$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $$($(call _uc,$(1))_ABS_SRC)
 	$$(Q)make $$(NPD) _$(1)
 	$$(Q)touch $$@
 
@@ -1514,7 +1510,7 @@ endif
 ifeq ($(filter $(first_target),$(1) $(1)-build build), $(first_target))
 $(1)-build: _$(1)
 else
-$(1)-build: $$(call __stamp_$(1),build)
+$(1)-build: $$(call _stamp,$(1),build)
 endif
 
 $(1)-do: _$(1)
@@ -1529,14 +1525,6 @@ endef # gendeps
 
 # generate xxx-source target
 define gensource
-
-ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
-
-ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
-__stamp_$(1)=$$(_stamp_$(1))
-endif
-endif
 
 $(call _uc,$(1))_SRC_DEFAULT := 1
 
@@ -1604,9 +1592,9 @@ ifneq ($(_TOP_SRC),)
   endif
 endif
 
-$(1)-license: $$(call _stamp_$(1),license)
+$(1)-license: $$(call _stamp,$(1),license)
 
-$$(call _stamp_$(1),license):
+$$(call _stamp,$(1),license):
 	@if [ "$(1)" = "bsp" ]; then \
 	  for f in $(BOARD_FREE); do \
 	    [ "$$$$f" = "$(BOARD)" ] && touch $$@ && exit 0; \
@@ -1626,7 +1614,7 @@ $$(call _stamp_$(1),license):
 	  touch $$@; \
 	fi
 
-$$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
+$$(call _stamp,$(1),source): $$(call _stamp,$(1),outdir) $(1)-license
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
 		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git show --pretty=oneline -q $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
@@ -1651,24 +1639,24 @@ $$(call _stamp_$(1),source): $$(call _stamp_$(1),outdir) $(1)-license
 		cd $$(TOP_DIR); \
 	fi
 
-$(1)-source: $$(call __stamp_$(1),source)
+$(1)-source: $$(call _stamp,$(1),source)
 
 $(1)-checkout: $(1)-source
 
-$$(call _stamp_$(1),checkout):
+$$(call _stamp,$(1),checkout):
 	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && touch $$@ && cd $$(TOP_DIR); \
 	fi
 
-$(1)-checkout: $$(call __stamp_$(1),checkout)
+$(1)-checkout: $$(call _stamp,$(1),checkout)
 
-$$(call _stamp_$(1),outdir): $$($(call _uc,$(1))_BUILD)
+$$(call _stamp,$(1),outdir): $$($(call _uc,$(1))_BUILD)
 	$$(Q)touch $$@
 
 $$($(call _uc,$(1))_BUILD): $$(CACHE_BUILD_TARGET)
 	$$(Q)mkdir -p $$@
 
-$(1)-outdir: $$(call __stamp_$(1),outdir)
+$(1)-outdir: $$(call _stamp,$(1),outdir)
 
 $(1)_source_childs := $(1)-download download-$(1)
 
@@ -1677,7 +1665,7 @@ $$($(1)_source_childs): $(1)-source
 PHONY += $(addprefix $(1)-,source download license) download-$(1)
 
 $(1)-%-cleanstamp:
-	$$(Q)rm -f $$(call _stamp_$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
+	$$(Q)rm -f $$(call _stamp,$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
 
 $(1)-cleanstamp:
 	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_BUILD)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
@@ -1710,15 +1698,13 @@ endef # gensource
 # Generate basic goals
 define gengoals
 
-#_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
-
 $(1)-list:
 	$$(Q)echo " $$($(2)_LIST) " | sed -e 's%\($$($(2))\)\([ ]\{1,\}\)%[\1]\2%g;s%^ %%g;s% $$$$%%g'
 
 $(1)-help:
 	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
 
-$$(call _stamp_$(1),patch):
+$$(call _stamp,$(1),patch):
 	@if [ ! -f $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched ]; then \
 	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
 	  if [ -f tools/$(1)/patch.sh ]; then \
@@ -1730,7 +1716,7 @@ $$(call _stamp_$(1),patch):
 	  echo "ERR: $(1) patchset has been applied, if want, please backup important changes and do 'make $(1)-cleanup' at first." && exit 1; \
 	fi
 
-$(1)-patch: $$(call __stamp_$(1),patch)
+$(1)-patch: $$(call _stamp,$(1),patch)
 
 $(1)-savepatch:
 	$(Q)cd $$($(call _uc,$(1))_SRC_FULL) && git format-patch $$(_$2) && cd $$(TOP_DIR)
@@ -1758,14 +1744,6 @@ endef # gengoals
 
 define gencfgs
 
-ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
-
-ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
-__stamp_$(1)=$$(_stamp_$(1))
-endif
-endif
-
 $(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$(2)))_defconfig
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
@@ -1787,7 +1765,7 @@ endif
 
 _$(3)CFG := $$(notdir $$($(3)CFG_FILE))
 
-$$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
+$$(call _stamp,$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$(CFGS[$(3)_N]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -d $$n;))
@@ -1795,7 +1773,7 @@ $$(call _stamp_$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
 	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
-$(1)-defconfig: $$(call __stamp_$(1),defconfig)
+$(1)-defconfig: $$(call _stamp,$(1),defconfig)
 
 $(1)-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -1865,18 +1843,10 @@ endef #genclone
 
 define genenvdeps
 
-ifeq ($$(_stamp_$(1)),)
-_stamp_$(1)=$$(call _stamp,$(1),$$(1),$$($(call _uc,$(1))_BUILD))
-
-ifneq ($(firstword $(MAKECMDGOALS)),cleanstamp)
-__stamp_$(1)=$$(_stamp_$(1))
-endif
-endif
-
 $(1)-deps: _env
 	$$(Q)tools/deps/install.sh "$$($(3)DEPS)"
 
-$$(call _stamp_$(1),env): $(1)-deps
+$$(call _stamp,$(1),env): $(1)-deps
 ifeq ($$(GCC_$(2)_SWITCH),1)
 	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
 endif
@@ -1889,7 +1859,7 @@ ifneq ($(MAKECMDGOALS),)
 endif
 	$$(Q)touch $$@
 
-$(1)-env: $$(call __stamp_$(1),env)
+$(1)-env: $$(call _stamp,$(1),env)
 
 PHONY += $(1)-env
 
@@ -3294,13 +3264,13 @@ REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: getip $(call __stamp_kernel,build)
+dtb-upload: getip $(call _stamp,kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
 	$(Q)$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
 endif
 
-kernel-upload: getip $(call __stamp_kernel,build)
+kernel-upload: getip $(call _stamp,kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
 	$(Q)$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)

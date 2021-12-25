@@ -21,6 +21,14 @@ TFTP_KERNEL="tftpboot $KRN_ADDR $KERNEL_IMG;"
 [ "$RDK_ADDR" != "-" ] && TFTP_RAMDISK="tftpboot $RDK_ADDR $RAMDISK_IMG;"
 [ "$DTB_ADDR" != "-" ] && TFTP_DTB="tftpboot $DTB_ADDR $DTB_IMG;"
 
+# Get delayed ip, route and cmdline
+echo $IP | grep -q ifconfig
+[ $? -eq 0 ] && IP=`eval echo "$IP"`
+echo $ROUTE | grep -q ifconfig
+[ $? -eq 0 ] && ROUTE=`eval echo "$ROUTE"`
+echo $CMDLINE | grep -q ifconfig
+[ $? -eq 0 ] && CMDLINE=`eval echo "$CMDLINE"`
+
 IPADDR="setenv ipaddr $IP;"
 SERVERIP="setenv serverip $ROUTE;"
 BOOTARGS="setenv bootargs '"$(echo -n "$CMDLINE" | sed 's%"%\\\\"%g')"';"

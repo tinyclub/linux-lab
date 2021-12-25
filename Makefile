@@ -2846,7 +2846,7 @@ dtb: $(DTS)
 	@echo "Building dtb ..."
 	@echo "  DTS: $(DTS)"
 	@echo "  DTB: $(DTB)"
-	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$(CMDLINE)\";%g" $(DTS)
+	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$$(eval echo "$(CMDLINE)")\";%g" $(DTS)
 ifeq ($(_DTS),)
 	$(Q)$(call make_kernel,$(DTB_TARGET))
 else

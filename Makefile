@@ -79,19 +79,19 @@ OS := $(shell sed -ne "/CODENAME/s/[^=]*=//gp" /etc/lsb-release)
 
 # Current variables: board, plugin, module
 define _uc_init
-uc_$1 := $(call _uc,$1)
+uc_$1 := $(shell echo $1 | tr a-z A-Z)
 endef
 
 define _uc
-$(or $(uc_$1),$(shell echo $1 | tr a-z A-Z))
+$(or $(uc_$1),$(eval $(call _uc_init,$1))$(uc_$1))
 endef
 
 define _lc_init
-lc_$1 := $(call _lc,$1)
+lc_$1 := $(shell echo $1 | tr A-Z a-z)
 endef
 
 define _lc
-$(or $(lc_$1),$(shell echo $1 | tr A-Z a-z))
+$(or $(lc_$1),$(eval $(call _lc_init,$1))$(lc_$1))
 endef
 
 define load_config
@@ -524,9 +524,9 @@ SHARE_TAG ?= hostshare
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 
-# Init the lower case and upper case of the above APPS and APP_MAP value
-$(foreach t,bsp $(APPS),$(eval $(call _uc_init,$(t))))
-$(foreach t,$(foreach map,$(APP_MAP),$(lastword $(subst :,$(space),$(map)))),$(eval $(call _lc_init,$(t))))
+# The new _uc and _lc functions can init themselves
+#$(foreach t,bsp $(APPS),$(eval $(call _uc_init,$(t))))
+#$(foreach t,$(foreach map,$(APP_MAP),$(lastword $(subst :,$(space),$(map)))),$(eval $(call _lc_init,$(t))))
 
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 

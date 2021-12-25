@@ -78,12 +78,20 @@ endif # Warning on user
 OS := $(shell sed -ne "/CODENAME/s/[^=]*=//gp" /etc/lsb-release)
 
 # Current variables: board, plugin, module
+define _uc_init
+uc_$1 := $(call _uc,$1)
+endef
+
 define _uc
-$(shell echo $1 | tr a-z A-Z)
+$(or $(uc_$1),$(shell echo $1 | tr a-z A-Z))
+endef
+
+define _lc_init
+lc_$1 := $(call _lc,$1)
 endef
 
 define _lc
-$(shell echo $1 | tr A-Z a-z)
+$(or $(lc_$1),$(shell echo $1 | tr A-Z a-z))
 endef
 
 define load_config
@@ -93,10 +101,7 @@ endif
 endef
 
 #$(warning $(call load_config,board))
-$(eval $(call load_config,board))
-$(eval $(call load_config,plugin))
-$(eval $(call load_config,module))
-$(eval $(call load_config,mpath))
+$(foreach c,board plugin module mpath, $(eval $(call load_config,$c)))
 
 # Verbose logging control
 ifeq ($V, 1)
@@ -518,6 +523,10 @@ SHARE_TAG ?= hostshare
 # Supported apps and their version variable
 APPS := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+
+# Init the lower case and upper case of the above APPS and APP_MAP value
+$(foreach t,bsp $(APPS),$(eval $(call _uc_init,$(t))))
+$(foreach t,$(foreach map,$(APP_MAP),$(lastword $(subst :,$(space),$(map)))),$(eval $(call _lc_init,$(t))))
 
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
@@ -2939,7 +2948,7 @@ endif
 
 kernel-getconfig: FORCE
 	$(Q)$(if $(o), $(foreach _o, $(shell echo $(o) | tr ',' ' '), \
-		__o=$(shell echo $(_o) | tr '[a-z]' '[A-Z]') && \
+		__o=$(call _uc,$(_o)) && \
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 
 _kernel-getconfig:

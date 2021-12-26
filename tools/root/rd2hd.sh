@@ -36,6 +36,7 @@ ROOTFS_SIZE=$(( (${ROOTFS_SIZE} / 1024 + 1) * 1024 ))
 echo "LOG: Rootfs size: $ROOTFS_SIZE (kilo bytes)"
 
 # Create the file system image
+mkdir -p $(dirname ${HROOTFS})
 truncate -s $((ROOTFS_SIZE * 1024)) ${HROOTFS}
 yes | mkfs.${FSTYPE} ${HROOTFS}
 

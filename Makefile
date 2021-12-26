@@ -4000,6 +4000,12 @@ endif
 
 _env: env-prepare
 env-prepare: toolchain-install
+ifeq ($(GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
+endif
+ifeq ($(HOST_GCC_SWITCH),1)
+	$(Q)make $(S) gcc-switch $(if $(HOST_CCORI),CCORI=$(HOST_CCORI)) $(if $(HOST_GCC),GCC=$(HOST_GCC)) b=i386/pc ROOTDEV=/dev/ram0
+endif
 
 env-list: env-dump
 env-dump:

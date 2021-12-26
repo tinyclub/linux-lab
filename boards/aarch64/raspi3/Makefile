@@ -27,7 +27,6 @@ QEMU    ?= v2.12.0
 QEMU_US ?= 0
 
 LINUX   ?= v5.1
-GCC     ?= 9
 
 BUILDROOT?= 2019.02.2
 

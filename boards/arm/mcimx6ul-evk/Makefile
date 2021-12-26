@@ -9,7 +9,6 @@ QEMU    ?= v4.1.1
 ## after enabling QEMU_US=1, qemu-system-$(XARCH) will not be compiled
 QEMU_US ?= 0
 LINUX   ?= v5.4
-GCC     ?= 9
 BUILDROOT?= 2020.02
 
 # Verified netdev options

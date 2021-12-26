@@ -15,3 +15,6 @@ BOARD_PASS     ?= linux-lab
 
 # Boards free currently
 BOARD_FREE     ?= arm/vexpress-a9
+
+# Init gcc version to the newest one we supported
+GCC            ?= 9

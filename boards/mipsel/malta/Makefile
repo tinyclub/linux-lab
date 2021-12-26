@@ -8,7 +8,6 @@ LINUX   ?= v5.13
 
 # NOTE: need to update docker image to get 4.3 gcc
 GCC[LINUX_v2.6.36] := 4.3
-GCC     ?= 9
 
 BUILDROOT?= 2021.08.2
 MEM     ?= 128M

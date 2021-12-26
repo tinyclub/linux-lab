@@ -16,7 +16,6 @@ LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 KERNEL_GIT[KERNEL_FORK_wsl2] := https://gitee.com/mirrors/WSL2-Linux-Kernel.git
 LINUX[KERNEL_FORK_wsl2]   ?= $(call _latest,$(KERNEL_GIT[KERNEL_FORK_wsl2]),linux-msft-wsl-5.10.74.3)
 
-GCC := 9
 GCC[LINUX_$(call _any,LINUX,<=,v4.18)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector

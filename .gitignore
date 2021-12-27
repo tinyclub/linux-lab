@@ -8,6 +8,7 @@ logging
 .swp
 hostshare/
 .labconfig
+.labcustom
 .gdbinit
 *.toc
 loongsonlab

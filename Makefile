@@ -414,9 +414,14 @@ ifneq ($(BOARD),)
   ifeq ($(BOARD_MAKEFILE), $(wildcard $(BOARD_MAKEFILE)))
     include $(BOARD_MAKEFILE)
   endif
+  $(eval $(call _bi,labcustom))
   # include $(BOARD_DIR)/.labfini
   $(eval $(call _bi,labfini))
 endif
+
+# include .labbegin if exist
+$(eval $(call _ti,labbegin))
+$(eval $(call _ti,labcustom))
 
 # Customize kernel git repo and local dir
 $(eval $(call __vs,KERNEL_SRC,LINUX,KERNEL_FORK))
@@ -4077,8 +4082,11 @@ backup-build:
 
 PHONY += cache-build uncache-build backup-build
 
+# include .labend if exist
+$(eval $(call _ti,labend))
+
 # include .labfini if exist
-$(eval $(call _ti,.labfini))
+$(eval $(call _ti,labfini))
 
 # add alias for linux and buildroot targets
 aliastarget := $(if $(APP_ARGS),$(filter $APP_ARGS,$(call genaliastarget)),$(call genaliastarget))

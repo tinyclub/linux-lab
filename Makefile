@@ -17,11 +17,7 @@ SUFFIXES :=
 %: SCCS/s.%
 
 # Force set default goal
-ifeq ($(-*-command-variables-*-),)
 .DEFAULT_GOAL := board
-else
-.DEFAULT_GOAL := default-config
-endif
 
 # Phony targets
 PHONY :=

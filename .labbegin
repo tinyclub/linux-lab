@@ -13,3 +13,10 @@ MAKE[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make-3.81
 ifneq (/usr/bin/make-3.81,$(wildcard /usr/bin/make-3.81))
   DEPS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
 endif
+
+# gcc 4.3 must work with 2.24 binutils (ld), otherwise, the kernel compiled not boot
+# LS is a predefined variable, use LDT (ld tool) instead here
+ifeq ($(ARCH),arm)
+  LDT := 2.34
+  LDT[GCC_4.3]  ?= 2.24
+endif

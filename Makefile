@@ -1872,7 +1872,8 @@ $(1)-deps: $(1)-tools _env
 
 $$(call _stamp,$(1),env): $(1)-deps
 ifeq ($$(GCC_$(2)_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2)))
+	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2))) \
+		$$(if $(LDT)$(LDT[GCC_$(GCC_$(2))]),LDT="$(or $(LDT[GCC_$(GCC_$(2))]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')")
 endif
 ifneq ($(MAKECMDGOALS),)
  ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
@@ -2191,32 +2192,20 @@ gcc-clean: toolchain-clean
 
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain-list gcc-list gcc-clean gcc
 
-ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),toolchain-switch gcc-switch), $(MAKECMDGOALS))
-  _CCORI := $(shell grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' ')
- endif
-endif
-
-ifneq ($(_CCORI),$(CCORI))
-  ifneq ($(filter $(CCORI),buildroot),$(CCORI))
-    UPDATE_CCORI := 1
-  endif
-endif
-
-ifeq ($(CCORI), internal)
-  ifneq ($(CCVER), $(GCC))
-    UPDATE_GCC := 1
-  endif
-endif
-
 toolchain-switch:
-ifeq ($(UPDATE_GCC),1)
-	-$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC)
+ifeq ($(CCORI), internal)
+  ifneq ($(CCVER),$(GCC))
+	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true
+  endif
+  ifneq ($(LDTVER),)
+    ifneq ($(LDTVER),$(LDT))
+	$(Q) update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true
+    endif
+  endif
 endif
-ifeq ($(UPDATE_CCORI),1)
-	$(Q)#echo OLD: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
-	$(Q)tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null
-	$(Q)#echo NEW: `grep --color=always ^CCORI $(BOARD_MAKEFILE)`
+ifneq (buildroot,$(CCORI))
+	$(Q) _CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
+	[ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true
 endif
 
 gcc-switch: toolchain-switch

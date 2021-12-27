@@ -1323,7 +1323,7 @@ board-save:
 ifneq ($(BOARD),)
   ifeq ($(board),)
     ifneq ($(BOARD),$(BOARD_CONFIG))
-	$(Q)$(shell echo "$(BOARD)" > .board_config)
+	$(Q)echo "$(BOARD)" > .board_config
 	$(Q)make $(S) board
     endif
   endif
@@ -1366,7 +1366,7 @@ endif
 plugin-save: $(PLUGIN_CLEAN)
 ifneq ($(PLUGIN),)
   ifeq ($(plugin),)
-	$(Q)$(shell echo "$(PLUGIN)" > .plugin_config)
+	$(Q)echo "$(PLUGIN)" > .plugin_config
   endif
 endif
 
@@ -2578,8 +2578,8 @@ modules-prompt:
 	@echo
 
 kernel-modules-save:
-	$(Q)$(shell echo "$(M_PATH)" > .mpath_config)
-	$(Q)$(shell echo "$(module)" > .module_config)
+	$(Q)echo "$(M_PATH)" > .mpath_config
+	$(Q)echo "$(module)" > .module_config
 
 
 KM ?= M=$(M_PATH)

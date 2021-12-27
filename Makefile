@@ -1324,6 +1324,7 @@ ifneq ($(BOARD),)
   ifeq ($(board),)
     ifneq ($(BOARD),$(BOARD_CONFIG))
 	$(Q)$(shell echo "$(BOARD)" > .board_config)
+	$(Q)make $(S) board
     endif
   endif
 endif

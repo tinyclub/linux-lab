@@ -1861,9 +1861,6 @@ endef #genclone
 define genenvdeps
 
 # This allows to install extra tools has not been installed
-# DEPS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
-# The above make example has already been merged to docker image, ignore it
-
 $$(eval $$(call __vsp,DEPS,$(2)))
 
 $(1)-tools:

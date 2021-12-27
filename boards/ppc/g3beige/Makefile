@@ -6,6 +6,9 @@ XARCH   := ppc
 CPU     ?=
 # Note: <2.6.37 kernel don't have __NR_socket implementation
 LINUX   ?= v5.13
+
+GCC[LINUX_v2.6.36] := 4.3
+
 BUILDROOT?= 2021.08.2
 MEM     ?= 128M
 NETDEV_LIST := pcnet ne2k_pci rtl8139

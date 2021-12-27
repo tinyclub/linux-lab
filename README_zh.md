@@ -1106,7 +1106,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 如果目标内核和 Uboot 不存在，重新编译一个之后再启动：
 
-    $ make boot BUILD="kernel uboot"
+    $ make boot BUILD=kernel,uboot
 
 使用 Uboot 启动（目前仅测试并支持了 `versatilepb` 和 `vexpress-a9` 两款开发板）：
 

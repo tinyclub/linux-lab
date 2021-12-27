@@ -263,13 +263,12 @@ $($(1)[$(2)_$($(2))$(if $($(3)),$(comma)$(3)_$($(3)))])
 endef
 
 define __v
-$(if $($(3)),$(if $(call ___v,$1,$2,$3),$(call ___v,$1,$2,$3),$(if $(call ___v,$1,$2),$(call ___v,$1,$2),$(call ___v,$1,$3))),$(call ___v,$1,$2))
+$(if $($(3)),$(or $(call ___v,$1,$2,$3),$(or $(call ___v,$1,$2),$(call ___v,$1,$3))),$(call ___v,$1,$2))
 endef
 
 define _v
-$(if $(call __v,$1,$2),$(call __v,$1,$2),$(if $3,$3,$($1)))
+$(or $(call __v,$1,$2),$(or $3,$($1)))
 endef
-#$(shell a="$(call __v,$1,$2)"; if [ -n "$$a" ]; then echo "$$a"; else echo $($1); fi)
 
 define __vs
  ifneq ($$(call __v,$(1),$(2),$(3)),)
@@ -714,7 +713,7 @@ define genverify
    endif
   endif
   # If Linux version specific qemu list defined, use it
-  $$(eval $$(call __vs_override,$(2)_LIST,$$(if $(3),$(3),LINUX)))
+  $$(eval $$(call __vs_override,$(2)_LIST,$$(or $(3),LINUX)))
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
@@ -1709,7 +1708,7 @@ $(1)-list:
 	$$(Q)echo " $$($(2)_LIST) " | sed -e 's%\($$($(2))\)\([ ]\{1,\}\)%[\1]\2%g;s%^ %%g;s% $$$$%%g'
 
 $(1)-help:
-	$$(Q)$$(if $$($(1)_make_help),$$(call $(1)_make_help),$$(call make_$(1),help))
+	$$(Q)$$(or $$(call $(1)_make_help),$$(call make_$(1),help))
 
 $$(call _stamp,$(1),patch):
 	@if [ ! -f $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched ]; then \
@@ -1777,13 +1776,13 @@ $$(call _stamp,$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
 	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$(CFGS[$(3)_N]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -d $$n;))
 	$$(Q)$$(if $$(CFGS[$(3)_Y]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -e $$n;))
-	$$(Q)$$(if $$($(1)_make_defconfig),$$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
+	$$(Q)$$(or $$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
 $(1)-defconfig: $$(call _stamp,$(1),defconfig)
 
 $(1)-olddefconfig:
-	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(if $$($(call _uc,$1)_OLDDEFCONFIG),$$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 $(1)-oldconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))

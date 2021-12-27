@@ -625,8 +625,8 @@ endif # common commands
 
 define genbuildenv
 
-GCC_$(2) := $$(call __v,GCC,$(2),$(3))
-CCORI_$(2) := $$(call __v,CCORI,$(2),$(3))
+GCC_$(2) := $$(or $$(call __v,GCC,$(2),$(3)),$(GCC))
+CCORI_$(2) := $$(or $$(call __v,CCORI,$(2),$(3)),$(CCORI))
 
 ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
@@ -676,7 +676,6 @@ ifneq ($(GCC),)
   ifeq ($(CCORI),)
     CCORI := internal
   endif
-  GCC_SWITCH := 1
 endif
 
 ifneq ($(filter $(ARCH),x86 i386 x86_64),$(ARCH))
@@ -685,7 +684,6 @@ ifneq ($(filter $(ARCH),x86 i386 x86_64),$(ARCH))
   ifeq ($(HOST_CCORI),)
     HOST_CCORI := internal
   endif
-  HOST_GCC_SWITCH := 1
  endif
 endif
 
@@ -4002,12 +4000,6 @@ endif
 
 _env: env-prepare
 env-prepare: toolchain-install
-ifeq ($(GCC_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(CCORI),CCORI=$(CCORI)) $(if $(GCC),GCC=$(GCC))
-endif
-ifeq ($(HOST_GCC_SWITCH),1)
-	$(Q)make $(S) gcc-switch $(if $(HOST_CCORI),CCORI=$(HOST_CCORI)) $(if $(HOST_GCC),GCC=$(HOST_GCC)) b=i386/pc ROOTDEV=/dev/ram0
-endif
 
 env-list: env-dump
 env-dump:

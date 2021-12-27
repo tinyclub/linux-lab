@@ -1623,7 +1623,7 @@ ifneq ($(_TOP_SRC),)
   __$(call _uc,$(1))_ABS_SRC := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)/
   __$(call _uc,$(1))_ABS_TAG := $$(__$(call _uc,$(1))_ABS_SRC)/.git/packed-refs
   ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_TAG)),$$(__$(call _uc,$(1))_ABS_TAG))
-    _$(call _uc,$(1))_ABS_SRC := $$(shell cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo $$(__$(call _uc,$(1))_ABS_SRC))
+    _$(call _uc,$(1))_ABS_SRC := $$$$(cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo $$(__$(call _uc,$(1))_ABS_SRC))
     $(call _uc,$(1))_GITADD := cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo From: $$(__$(call _uc,$(1))_ABS_SRC) || $$($(call _uc,$(1))_GITADD)
   endif
 endif
@@ -1631,7 +1631,7 @@ endif
 $$(call _stamp,$(1),source): $$(call _stamp,$(1),outdir) $(1)-license
 	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
 		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
-		if [ $$(shell [ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+		if [ $$$$([ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
 			echo "Updating $(1) source ..."; \
 			$$($(call _uc,$(1))_GITADD); \
 			git fetch --progress $$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(or $$($(call _uc,$(1))_GITREPO),origin)) \

@@ -640,8 +640,8 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
 endif
 
 ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
- HOST_GCC_$(2) := $$(call __v,HOST_GCC,$(2),$(3))
- HOST_CCORI_$(2) := $$(call __v,HOST_CCORI,$(2),$(3))
+ HOST_GCC_$(2) := $$(or $$(call __v,HOST_GCC,$(2),$(3)),$(HOST_GCC))
+ HOST_CCORI_$(2) := $$(or $$(call __v,HOST_CCORI,$(2),$(3)),$(HOST_CCORI))
 
  ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)

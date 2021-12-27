@@ -914,7 +914,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 下载特定开发板的软件包、内核、buildroot 以及 U-boot 的源码：
 
-    $ make source APP="bsp kernel root uboot"
+    $ make source APP=bsp,kernel,root,uboot
     或
     $ make source APP=all
     或
@@ -940,7 +940,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 检出（checkout）您需要的 kernel 和 buildroot 版本：
 
-    $ make checkout APP="kernel root"
+    $ make checkout APP=kernel,root
 
 单独检出相关部分:
 
@@ -980,7 +980,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 使用缺省配置（defconfig）配置 kernel 和 buildroot：
 
-    $ make defconfig APP="kernel root"
+    $ make defconfig APP=kernel,root
 
 单独配置，缺省情况下使用 `boards/<BOARD>/bsp/` 下的 defconfig：
 
@@ -1027,7 +1027,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 一起编译 kernel 和 buildroot：
 
-    $ make build APP="kernel root"
+    $ make build APP=kernel,root
 
 单独编译 kernel 和 buildroot:
 
@@ -1045,8 +1045,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 保存所有的配置以及 rootfs/kernel/dtb 的 image 文件：
 
-    $ make saveconfig APP="kernel root"
-    $ make save APP="kernel root"
+    $ make saveconfig APP=kernel,root
+    $ make save APP=kernel,root
 
 保存配置和 image 文件到 `boards/<BOARD>/bsp/`：
 

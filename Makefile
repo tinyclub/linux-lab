@@ -600,7 +600,7 @@ endif
 
 ifneq ($(APP),)
   app ?= $(APP)
-  override app := $(call genaliassource,$(app))
+  override app := $(call genaliassource,$(subst $(comma),$(space),$(app)))
 endif
 
 ifeq ($(app),all)

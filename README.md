@@ -760,7 +760,7 @@ This function also support uboot, root and qemu.
 
 Download board specific package and the kernel, buildroot source code:
 
-    $ make source APP="bsp kernel root uboot"
+    $ make source APP=bsp,kernel,root,uboot
     Or
     $ make source APP=all
     Or
@@ -786,7 +786,7 @@ After v0.5, the source code are downloaded in `src/`, before, they are saved in 
 
 Checkout the target version of kernel and builroot:
 
-    $ make checkout APP="kernel root"
+    $ make checkout APP=kernel,root
 
 Checkout them one by one:
 
@@ -826,7 +826,7 @@ Apply available patches in `boards/<BOARD>/bsp/patch/linux` and `src/patch/linux
 
 Configure kernel and buildroot with defconfig:
 
-    $ make defconfig APP="kernel root"
+    $ make defconfig APP=kernel,root
 
 Configure one by one, by default, use the defconfig in `boards/<BOARD>/bsp/`:
 
@@ -872,7 +872,7 @@ If only defconfig name specified, search boards/<BOARD> at first, and then the d
 
 Build kernel and buildroot together:
 
-    $ make build APP="kernel root"
+    $ make build APP=kernel,root
 
 Build them one by one:
 
@@ -890,8 +890,8 @@ After v0.5, the building result are stored in `build/`, before they are put in `
 
 Save all of the configs and rootfs/kernel/dtb images:
 
-    $ make save APP="kernel root"
-    $ make saveconfig APP="kernel root"
+    $ make save APP=kernel,root
+    $ make saveconfig APP=kernel,root
 
 Save configs and images to `boards/<BOARD>/bsp/`:
 

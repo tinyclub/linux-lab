@@ -1861,8 +1861,18 @@ endef #genclone
 
 define genenvdeps
 
-$(1)-deps: _env
-	$$(Q)tools/deps/install.sh "$$($(3)DEPS)"
+# This allows to install extra tools has not been installed
+# DEPS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
+# The above make example has already been merged to docker image, ignore it
+
+$$(eval $$(call __vsp,DEPS,$(2)))
+
+$(1)-tools:
+ifneq ($$($(2)_DEPS),)
+	$$(Q)tools/deps/install.sh '$$($(2)_DEPS)'
+endif
+
+$(1)-deps: $(1)-tools _env
 
 $$(call _stamp,$(1),env): $(1)-deps
 ifeq ($$(GCC_$(2)_SWITCH),1)
@@ -4009,8 +4019,13 @@ VARS += LINUX_DTB QEMU_PATH QEMU_SYSTEM
 VARS += TEST_TIMEOUT TEST_RD
 endif
 
+tools-install:
+ifneq ($(DEPS),)
+	$(Q)tools/deps/install.sh '$(DEPS)'
+endif
+
 _env: env-prepare
-env-prepare: toolchain-install
+env-prepare: toolchain-install tools-install
 
 env-list: env-dump
 env-dump:

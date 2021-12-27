@@ -270,6 +270,18 @@ define _v
 $(or $(call __v,$1,$2),$(or $3,$($1)))
 endef
 
+define __vsp
+ ifneq ($$(call __v,$(1),$(2),$(3)),)
+   $(2)_$(1) := $$(call __v,$(1),$(2),$(3))
+ endif
+endef
+
+define __vsp_override
+ ifneq ($$(call __v,$(1),$(2),$(3)),)
+   override $(2)_$(1) := $$(call __v,$(1),$(2),$(3))
+ endif
+endef
+
 define __vs
  ifneq ($$(call __v,$(1),$(2),$(3)),)
    $(1) := $$(call __v,$(1),$(2),$(3))

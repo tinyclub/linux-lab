@@ -31,12 +31,11 @@ space := $(empty) $(empty)
 
 USER := $(or $(UNIX_USER),ubuntu)
 UID  := $(or $(UNIX_UID),1000)
-_UID := $(UID)
 WARN_ON_USER ?= 1
 
 # Check environment
-ifeq ($(UNIX_USER)$(UNIX_UID),)
-  $(error ERR: Must run with Cloud Lab as normal user, not as root, please refer to 'Download the lab' part of README.md)
+ifeq ($(USER)$(UID),)
+  $(error ERR: Must run with latest Cloud Lab as normal user, not as root, please refer to 'Download the lab' part of README.md)
 endif
 
 # Check running host
@@ -53,7 +52,7 @@ endif
 ifeq ($(WARN_ON_USER), 1)
 # Check running user, must as $(USER)
 ifeq ($(TEST_TIMEOUT),)
-  ifneq ($(_UID),$(UID))
+  ifneq ($(shell whoami),$(USER))
     $(warning WARN: Please not run as 'root', but as general user: '$(USER)', please try 'sudo -su $(USER)'.)
   endif
 endif

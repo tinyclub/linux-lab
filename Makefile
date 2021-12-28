@@ -1302,7 +1302,16 @@ ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
   endif
 endif
 
-board: board-save plugin-save board-cleanstamp board-show $(BOARD_DOWNLOAD)
+ifneq ($(BOARD),)
+  ifeq ($(board),)
+    ifneq ($(BOARD),$(BOARD_CONFIG))
+      BOARD_SAVE := board-save
+      BOARD_GOAL := board
+    endif
+  endif
+endif
+
+board: $(BOARD_SAVE) plugin-save board-cleanstamp board-show $(BOARD_DOWNLOAD)
 
 CLEAN_STAMP := $(call gengoalslist,cleanstamp)
 ifneq ($(BOARD),$(BOARD_CONFIG))
@@ -1320,21 +1329,14 @@ board-clean:
 	$(Q)rm -rf .board_config
 
 board-save:
-ifneq ($(BOARD),)
-  ifeq ($(board),)
-    ifneq ($(BOARD),$(BOARD_CONFIG))
 	$(Q)echo "$(BOARD)" > .board_config
-	$(Q)make $(S) board
-    endif
-  endif
-endif
 
 PHONY += board board-init board-clean board-save board-cleanstamp
 
 board-edit:
 	$(Q)vim $(BOARD_MAKEFILE)
 
-board-config: board-save
+board-config: $(BOARD_GOAL)
 	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
@@ -1350,7 +1352,7 @@ local-edit:
 	$(Q)vim $(BOARD_LABCONFIG)
 
 default-config: local-config
-local-config: board-save
+local-config: $(BOARD_GOAL)
 	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
 
 PHONY += board-config board-edit
@@ -3939,7 +3941,7 @@ ifneq ($(BOOT_PREPARE),)
   override BOOT_PREPARE := $(subst $(comma),$(space),$(BOOT_PREPARE))
   _BOOT_DEPS += $(BOOT_PREPARE)
 endif
-_BOOT_DEPS += board-save
+_BOOT_DEPS += $(BOARD_SAVE)
 _BOOT_DEPS += root-$(DEV_TYPE)
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)

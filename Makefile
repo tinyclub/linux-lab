@@ -1586,7 +1586,7 @@ ifeq ($$($(call _uc,$(1))_GIT),)
 endif
 
 ifeq ($$($(call _uc,$(1))_GETGITURL),1)
-  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -e "/path = $$($(call _uc,$(1))_SPATH)/{n;s%.* = *%%g}" -ur $$($(call _uc,$(1))_SROOT)/.gitmodules)
+  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -ne "/path = $$(subst /,\/,$$($(call _uc,$(1))_SPATH))/{n;s/.*url[ ]*=[ ]*//g;p}" $$($(call _uc,$(1))_SROOT)/.gitmodules)
   ifneq ($$(__$(call _uc,$(1))_GIT),)
     _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
     $(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)

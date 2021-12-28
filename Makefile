@@ -729,7 +729,7 @@ define genverify
   ifneq ($$($(2)_LIST),)
     ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
       $$(if $(4),$$(eval $$(call $(4))))
-      verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
+      verify_notice := $$(BOARD): $$($2) not in supported $(2) list: $$($(2)_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
       ifeq ($$(filter $$(call _lc,$(1)),$(APPS)),$$(call _lc,$(1)))
         verify_notice += clone one please: 'make $$(call _lc,$(1))-clone $(2)_NEW=$$($2)'
       else

@@ -2288,7 +2288,7 @@ endif
 
 root-rd: $(IROOTFS)
 
-root-rd-rebuild: $(IROOTFS) FORCE
+root-rd-rebuild: root-dir root-rd-clean $(IROOTFS) FORCE
 
 root-rd-clean:
 	-$(Q)rm -f $(IROOTFS)
@@ -2358,7 +2358,7 @@ ifneq ($(FS_TYPE),dir)
 endif
 
 root-dir rootdir: $(ROOTDIR)
-root-dir-rebuild rootdir-rebuild: $(ROOTDIR) FORCE
+root-dir-rebuild rootdir-rebuild: root-dir-clean $(ROOTDIR) FORCE
 
 PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
 
@@ -2377,17 +2377,20 @@ endif
 
 $(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
+# To avoid remove important data of users, if the file system is there, just update it
+ifneq ($(ROOTDIR)/init,$(wildcard $(ROOTDIR)/init))
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	$(Q)rm -rf $(ROOTDIR).tmp
 	$(Q)rm -rf $(ROOTDIR)
 	$(Q)ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
 	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
 endif
+endif
 	$(Q)ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
 
 root-dir-clean rootdir-clean:
-	-$(Q)if [ "$(ROOTDIR)" = "$(PREBUILT_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
+	-$(Q)if [ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
 
 root-dir-distclean rootdir-distclean: rootdir-clean
 
@@ -2415,7 +2418,7 @@ endif
 
 root-hd: $(HROOTFS)
 
-root-hd-rebuild: $(HROOTFS) FORCE
+root-hd-rebuild: root-hd-clean $(HROOTFS) FORCE
 
 root-hd-clean:
 	-$(Q)rm -f $(HROOTFS)
@@ -3107,7 +3110,7 @@ $(UROOTFS): $(BSP_BUILD) $(IROOTFS)
 
 root-ud: $(UROOTFS)
 
-root-ud-rebuild: $(UROOTFS) FORCE
+root-ud-rebuild: root-ud-clean $(UROOTFS) FORCE
 
 root-ud-clean:
 	-$(Q)rm -f $(UROOTFS)

@@ -2370,7 +2370,7 @@ ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 IKM ?= 1
 
 ifeq ($(IKM), 1)
-  ifeq ($(KERNEL_BUILD)/.modules.order, $(wildcard $(KERNEL_BUILD)/.modules.order))
+  ifeq ($(KERNEL_BUILD)/modules.order, $(wildcard $(KERNEL_BUILD)/modules.order))
     KERNEL_MODULES_INSTALL := module-install
   endif
 endif

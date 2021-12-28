@@ -781,7 +781,7 @@ F ?= $(f)
 FEATURES ?= $(F)
 FEATURE ?= $(FEATURES)
 ifneq ($(FEATURE),)
-  FEATURE_ENVS := $(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+  FEATURE_ENVS := $(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
 			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH) ]; then \
 			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH); \
 			elif [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH) ]; then \
@@ -2598,7 +2598,7 @@ PHONY += modules-prompt kernel-modules-save
 MODULE_PREPARE := modules_prepare
 
 kernel-modules-km: $(KERNEL_MODULES_DEPS)
-	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
+	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
 		make -s $(NPD) feature feature=module; \
 		make -s $(NPD) kernel-olddefconfig; \
 		$(call make_kernel); \
@@ -2652,7 +2652,7 @@ endif
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km: $(M_I_ROOT)
-	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
 		if [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ]; then \
 		    cd $(KERNEL_BUILD) && \
@@ -2662,7 +2662,7 @@ kernel-modules-install-km: $(M_I_ROOT)
 	fi
 
 kernel-modules-install: $(M_I_ROOT)
-	$(Q)if [ "$(shell $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 		$(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
 	fi
 
@@ -2698,23 +2698,23 @@ PHONY += _module module-list module-list-full _module-install _module-clean modu
 
 kernel-module: module
 module: FORCE
-	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
 		echo "\nBuilding module: $(m) ...\n" && make $(NPD) _module m=$(m);) echo '')
-	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nBuilding module: $(_M) ...\n" && make $(NPD) _module M=$(_M);) echo '')
 
 kernel-module-install: module-install
 module-install: FORCE
-	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
 		echo "\nInstalling module: $(m) ...\n" && make $(NPD) _module-install m=$(m);) echo '')
-	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nInstalling module: $(_M) ...\n" && make $(NPD) _module-install M=$(_M);) echo '')
 
 kernel-module-clean: module-clean
 module-clean: FORCE
-	$(Q)$(if $(module), $(foreach m, $(shell echo $(module) | tr ',' ' '), \
+	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
 		echo "\nCleaning module: $(m) ...\n" && make $(NPD) _module-clean m=$(m);) echo '')
-	$(Q)$(if $(M), $(foreach _M, $(shell echo $(M) | tr ',' ' '), \
+	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
 
 PHONY += kernel-module kernel-module-install kernel-module-clean
@@ -2954,7 +2954,7 @@ ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
 endif
 
 kernel-getconfig: FORCE
-	$(Q)$(if $(o), $(foreach _o, $(shell echo $(o) | tr ',' ' '), \
+	$(Q)$(if $(o), $(foreach _o, $(subst $(comma),$(space),$(o)), \
 		__o=$(call _uc,$(_o)) && \
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 
@@ -2965,7 +2965,7 @@ _kernel-getconfig:
 kernel-config: kernel-setconfig
 kernel-setconfig: FORCE
 	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
-		$(shell p=$(shell echo $(setting) | cut -d'=' -f1) && \
+		$(shell p=$(firstword $(subst =,$(space),$(setting))) && \
 		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
 		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $o;), echo '')
 
@@ -3353,8 +3353,8 @@ kernel-saveconfig:
 
 root-saveconfig:
 	$(call make_root,savedefconfig)
-	$(Q)if [ $(shell grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; echo $$?) -eq 0 ]; \
-	then cp $(shell grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	$(Q)if [ $$(grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; echo $$?) -eq 0 ]; \
+	then cp $$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_BUILD)/defconfig ]; \
 	then cp $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else cp $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
@@ -3674,13 +3674,13 @@ SYSTEM_TOOL_DIR := $(TOP_SRC)/system/tools
 
 boot-init: FORCE
 	$(Q)echo "Running $@"
-	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+	$(Q)$(if $(FEATURE),$(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
 
 boot-finish: FORCE
 	$(Q)echo "Running $@"
-	$(Q)$(if $(FEATURE),$(foreach f, $(shell echo $(FEATURE) | tr ',' ' '), \
+	$(Q)$(if $(FEATURE),$(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
 		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
 		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
 
@@ -3790,11 +3790,11 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 boot-test: bsp-checkout
 	$(Q)echo "Running $@"
 ifeq ($(BOOT_TEST), default)
-	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTER)
+	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER)
 else
 	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
 		echo "\nRebooting test: $r\n" && \
-		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(shell echo ,$(FEATURE))) $(TEST_AFTER);)
+		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER);)
 endif
 
 raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE

@@ -1646,7 +1646,9 @@ $$(call _stamp,$(1),source): $$(call _stamp,$(1),outdir) $(1)-license
 			mkdir -p $$($(call _uc,$(1))_SPATH) && \
 			cd $$($(call _uc,$(1))_SPATH) && \
 			git init &&		\
-			git remote add origin $$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(_$(call _uc,$(1))_GIT)) && \
+			REMOTE_REPO=$$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(_$(call _uc,$(1))_GIT)) && \
+			echo "From: $$$$REMOTE_REPO" && \
+			git remote add origin $$$$REMOTE_REPO && \
 			git fetch --progress origin \
 			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
 			&& touch $$@; \

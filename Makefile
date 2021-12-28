@@ -731,7 +731,7 @@ define genverify
       $$(if $(4),$$(eval $$(call $(4))))
       verify_notice := $$($2) not in supported $(2) list: $$($(2)_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
       ifeq ($$(filter $$(call _lc,$(1)),$(APPS)),$$(call _lc,$(1)))
-        verify_notice += clone one please: 'make $$(call _lc,$(1))-clone $(1)_NEW=$$($2)'
+        verify_notice += clone one please: 'make $$(call _lc,$(1))-clone $(2)_NEW=$$($2)'
       else
         verify_notice += update may help: 'make bsp B=$$(BOARD)'
       endif

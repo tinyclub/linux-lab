@@ -31,8 +31,8 @@ WARN_ON_USER ?= 1
 
 # Check running host
 LAB_ENV_ID := /home/$(USER)/Desktop/lab.desktop
-ifneq ($(LAB_ENV_ID),$(wildcard $(LAB_ENV_ID)))
-  ifneq (../../configs/linux-lab, $(wildcard ../../configs/linux-lab))
+ifeq ($(wildcard $(LAB_ENV_ID)),)
+  ifeq ($(wildcard ../../configs/linux-lab),)
     $(error ERR: No Cloud Lab found, please refer to 'Download the lab' part of README.md)
   else
     $(error ERR: Please not try Linux Lab in local host, but use it with Cloud Lab, please refer to 'Run and login the lab' part of README.md)
@@ -85,9 +85,9 @@ $(or $(lc_$1),$(eval $(call _lc_init,$1))$(lc_$1))
 endef
 
 define load_config
-ifeq (.$1_config,$(wildcard .$1_config))
-  $$(call _uc,$1)_CONFIG := $$(shell cat .$1_config 2>/dev/null)
-endif
+  ifneq ($(wildcard .$1_config),)
+    $$(call _uc,$1)_CONFIG := $$(shell cat .$1_config 2>/dev/null)
+  endif
 endef
 
 #$(warning $(call load_config,board))
@@ -146,7 +146,7 @@ FEATURE_DIR := $(TOP_SRC)/feature/linux
 # Search board in basic arch list while board name given without arch specified
 ifneq ($(BOARD),)
  BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 riscv32 riscv64 csky
- ifneq ($(BOARD_DIR)/Makefile,$(wildcard $(BOARD_DIR)/Makefile))
+ ifeq ($(wildcard $(BOARD_DIR)/Makefile),)
   ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
   ifneq ($(ARCH),)
     override BOARD     := $(ARCH)/$(BOARD)
@@ -172,7 +172,7 @@ BOARD_PREFIX := $(subst /,,$(dir $(BOARD)))
 PLUGIN_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
 PLUGIN_FLAG  := $(PLUGIN_DIR)/.plugin
 
-ifneq ($(PLUGIN_FLAG), $(wildcard $(PLUGIN_FLAG)))
+ifeq ($(wildcard $(PLUGIN_FLAG)),)
   PLUGIN_DIR :=
 else
   _PLUGIN    ?= 1
@@ -188,7 +188,7 @@ BSP_CONFIG      := $(BSP_DIR)/configs
 BSP_PATCH       := $(BSP_DIR)/patch
 
 # Support old directory arch
-ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
+ifneq ($(wildcard $(BSP_DIR)),)
   _BSP_CONFIG := $(BSP_CONFIG)
 else
   _BSP_CONFIG := $(BOARD_DIR)
@@ -328,7 +328,7 @@ endef
 # include $3/$2.lowcase($1)_$1
 define _i
   $1_$2 := $$(call _vf,$1,$2,$3,$4)
-  ifeq ($$($1_$2),$$(wildcard $$($1_$2)))
+  ifneq ($$(wildcard $$($1_$2)),)
     include $$($1_$2)
   endif
 endef
@@ -402,7 +402,7 @@ BOARD_ROOT   ?= $(BOARD_DIR)/root$(_ROOT_FORK)
 BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 
 ifneq ($(BOARD),)
-  ifeq ($(BOARD_MAKEFILE), $(wildcard $(BOARD_MAKEFILE)))
+  ifneq ($(wildcard $(BOARD_MAKEFILE)),)
     include $(BOARD_MAKEFILE)
   endif
   $(eval $(call _bi,labcustom))
@@ -670,7 +670,7 @@ $(eval $(call genbuildenv,root,BUILDROOT,OS))
 
 PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
-ifeq ($(PREBUILT_TOOLCHAIN_MAKEFILE),$(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)))
+ifneq ($(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)),)
   include $(PREBUILT_TOOLCHAIN_MAKEFILE)
 endif
 
@@ -708,7 +708,7 @@ endif
 define genverify
  ifneq ($$($2),)
   ifneq ($$(BSP_$1),)
-   ifeq ($$(BSP_$1), $$(wildcard $$(BSP_$1)))
+   ifneq ($$(wildcard $$(BSP_$1)),)
     ifeq ($1,KERNEL)
       $2_LIST ?= $$(filter-out $$(shell cd $$(BSP_$1) && ls -d -p */* | sed -ne "/\/.*\//{s%/.*%%g;p}"),$$(shell cd $$(BSP_$1) && ls -d * 2>/dev/null | sort -V))
     else
@@ -822,7 +822,7 @@ ifneq ($(CCPRE),)
   # Add builtin toolchain to list (the one builtin the bsp or plugin)
   ifeq ($(CCORI),)
     ifneq ($(CCPATH),)
-      ifeq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
+      ifneq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
         CCORI_LIST += builtin
       endif
     endif
@@ -842,7 +842,7 @@ ifeq ($(CCORI_INTERNAL), 1)
 endif
 
 # Add buidroot toolchain to list
-ifeq ($(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc,$(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc))
+ifneq ($(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc),)
   ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
     CCORI_LIST += buildroot
   endif
@@ -872,13 +872,13 @@ ifeq ($(CCORI), null)
 
   # Check if buildroot version exists
   ifeq ($(CCPATH),)
-    ifeq ($(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc,$(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc))
+    ifneq ($(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc),)
       CCORI  := buildroot
       CCPATH := $(BUILDROOT_CCPATH)
       CCPRE  := $(BUILDROOT_CCPRE)
     endif
   else
-    ifeq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
+    ifneq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
       CCORI := builtin
     endif
   endif
@@ -896,9 +896,9 @@ else # CCORI != null
   ifneq ($(filter $(CCORI), buildroot), $(CCORI))
     ifneq ($(CCPRE),)
       ifneq ($(CCPATH),)
-        ifneq ($(CCPATH)/$(CCPRE)gcc,$(wildcard $(CCPATH)/$(CCPRE)gcc))
+        ifeq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
           # If CCORI specified and it is not there, just download one
-          ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+          ifneq ($(wildcard $(TOOLCHAIN)),)
             CC_TOOLCHAIN := toolchain-source
           else
             $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
@@ -953,7 +953,7 @@ endif
 # Another qemu-system-$(ARCH)
 QEMU_SYSTEM      ?= $(QEMU_BUILD)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 
-ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+ifneq ($(wildcard $(QEMU_SYSTEM)),)
   PBQ ?= 0
 else
   PBQ := 1
@@ -961,21 +961,21 @@ endif
 
 ifeq ($(PBQ), 1)
   ifneq ($(QTOOL),)
-    ifeq ($(QTOOL),$(wildcard $(QTOOL)))
+    ifneq ($(wildcard $(QTOOL)),)
       QEMU_SYSTEM := $(QTOOL)
     endif
   endif
 
   QTOOL_LINUX ?= $(call __v,QTOOL,LINUX)
   ifneq ($(QTOOL_LINUX),)
-    ifeq ($(QTOOL_LINUX),$(wildcard $(QTOOL_LINUX)))
+    ifneq ($(wildcard $(QTOOL_LINUX)),)
       QEMU_SYSTEM := $(QTOOL_LINUX)
     endif
   endif
 endif
 
 ifneq ($(QEMU),)
-  ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
+  ifneq ($(wildcard $(QEMU_SYSTEM)),)
     QEMU_PATH := env PATH=$(dir $(QEMU_SYSTEM)):$(PATH)
   endif
 endif
@@ -988,7 +988,7 @@ LINUX_KIMAGE   := $(KERNEL_BUILD)/$(ORIIMG)
 LINUX_UKIMAGE  := $(KERNEL_BUILD)/$(or $(UORIIMG),$(notdir $(UKIMAGE)))
 LINUX_KRELEASE := $(KERNEL_BUILD)/include/config/kernel.release
 
-ifeq ($(LINUX_KIMAGE),$(wildcard $(LINUX_KIMAGE)))
+ifneq ($(wildcard $(LINUX_KIMAGE)),)
   PBK ?= 0
 else
   PBK := 1
@@ -1011,7 +1011,7 @@ endif
 ifneq ($(DTS),)
   DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(notdir $(DTS)))
   LINUX_DTB  := $(KERNEL_BUILD)/$(ORIDTB)
-  ifeq ($(LINUX_DTB),$(wildcard $(LINUX_DTB)))
+  ifneq ($(wildcard $(LINUX_DTB)),)
     ifneq ($(ORIDTB),)
       PBD ?= 0
     else
@@ -1070,16 +1070,16 @@ endif
 UBOOT_BIMAGE    := $(UBOOT_BUILD)/$(notdir $(BIMAGE))
 PREBUILT_BIMAGE := $(PREBUILT_UBOOT_DIR)/$(notdir $(BIMAGE))
 
-ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
+ifneq ($(wildcard $(UBOOT_BIMAGE)),)
   PBU ?= 0
 else
   PBU := 1
 endif
 
-ifeq ($(UBOOT_BIMAGE),$(wildcard $(UBOOT_BIMAGE)))
+ifneq ($(wildcard $(UBOOT_BIMAGE)),)
   U ?= 1
 else
-  ifeq ($(PREBUILT_BIMAGE),$(wildcard $(PREBUILT_BIMAGE)))
+  ifneq ($(wildcard $(PREBUILT_BIMAGE)),)
     U ?= 1
   else
     U := 0
@@ -1162,8 +1162,8 @@ PBR ?= 0
 _PBR := $(PBR)
 
 ifeq ($(_PBR), 0)
-  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
-    ifeq ($(PREBUILT_IROOTFS),$(wildcard $(PREBUILT_IROOTFS)))
+  ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
+    ifneq ($(wildcard $(PREBUILT_IROOTFS)),)
       PBR := 1
     endif
   endif
@@ -1176,7 +1176,7 @@ endif
 
 # Prefer ROOTFS: command line > environment override > buildroot > prebuilt
 ifeq ($(PBR),0)
-  ifeq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+  ifneq ($(wildcard $(BUILDROOT_IROOTFS)),)
     ROOTFS  := $(BUILDROOT_IROOTFS)
     IROOTFS := $(BUILDROOT_IROOTFS)
     UROOTFS := $(BUILDROOT_UROOTFS)
@@ -1191,7 +1191,7 @@ ROOTDEV_TYPE := $(shell $(ROOTDEV_TYPE_TOOL) $(ROOTDEV))
 #$(error ROOTFS_TYPE: $(ROOTFS_TYPE) ROOTDEV_TYPE:= $(ROOTDEV_TYPE))
 
 ifeq ($(origin ROOTFS),command line)
-  ifneq ($(ROOTFS),$(wildcard $(ROOTFS)))
+  ifeq ($(wildcard $(ROOTFS)),)
     $(error rootfs: $(ROOTFS) not exists)
   endif
 endif
@@ -1239,7 +1239,7 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
       BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD)/root,$(PREBUILT_ROOT_DIR))/rootfs
     endif
     # use one copy in the bsp build directory if exist
-    ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
+    ifneq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)),)
       ROOTFS    := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
     endif
   else
@@ -1290,7 +1290,7 @@ echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardva
 endef
 
 BSP_CHECKOUT ?= bsp-checkout
-ifneq ($(BSP_ROOT),$(wildcard $(BSP_ROOT)))
+ifeq ($(wildcard $(BSP_ROOT)),)
   ifneq ($(app),default)
     BOARD_DOWNLOAD := $(BSP_CHECKOUT)
   endif
@@ -1627,7 +1627,7 @@ $$(call _stamp,$1,license):
 ifneq ($(_TOP_SRC),)
   __$(call _uc,$1)_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$1)_SRC)/
   __$(call _uc,$1)_ABS_TAG  := $$(__$(call _uc,$1)_ABS_SRC)/.git/packed-refs
-  ifeq ($$(wildcard $$(__$(call _uc,$1)_ABS_TAG)),$$(__$(call _uc,$1)_ABS_TAG))
+  ifneq ($$(wildcard $$(__$(call _uc,$1)_ABS_TAG)),)
     _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && echo $$(__$(call _uc,$1)_ABS_SRC))
     $(call _uc,$1)_GITADD   := cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && echo From: $$(__$(call _uc,$1)_ABS_SRC) || $$($(call _uc,$1)_GITADD)
   endif
@@ -1702,12 +1702,12 @@ $1-clean: $1-rawclean
 $1-cleanall: $1-clean $1-cleansrc
 
 $1-rawclean: $$($(call _uc,$1)_CLEAN_DEPS)
-ifeq ($$($(call _uc,$1)_BUILD)/Makefile, $$(wildcard $$($(call _uc,$1)_BUILD)/Makefile))
+ifneq ($$(wildcard $$($(call _uc,$1)_BUILD)/Makefile),)
 	-$$(Q)$$(call make_$1,clean)
 endif
 
 $1-distclean:
-ifeq ($$($(call _uc,$1)_BUILD)/Makefile, $$(wildcard $$($(call _uc,$1)_BUILD)/Makefile))
+ifneq ($$(wildcard $$($(call _uc,$1)_BUILD)/Makefile),)
 	-$$(Q)$$(call make_$1,distclean)
 	$$(Q)rm -rf $$($(call _uc,$1)_BUILD)
 endif
@@ -1815,7 +1815,7 @@ ifneq ($$($(call _uc,$2)_NEW),)
 NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
-ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
+ifeq ($$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)),)
 
 OLD_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$1)_FORK_)$2/$$($(call _uc,$2))
 NEW_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$1)_FORK_)$2/$$($(call _uc,$2)_NEW)
@@ -2135,7 +2135,7 @@ ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
 	$(Q)sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
   endif
 else
-  ifneq ($(CCPATH), $(wildcard $(CCPATH)))
+  ifeq ($(wildcard $(CCPATH)),)
 	@echo
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
@@ -2162,7 +2162,7 @@ toolchain-info:
 	@echo Remote.: $(CCURL)
 	@echo Local..: $(CCPATH)
 	@echo Tool...: $(CCPRE)gcc
-ifneq ($(CCPATH), $(wildcard $(CCPATH)))
+ifeq ($(wildcard $(CCPATH)),)
 	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
 else
 	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
@@ -2182,7 +2182,7 @@ ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
 	$(Q)sudo apt-get remove --purge $(CCVER)
   endif
 else
-  ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
+  ifneq ($(wildcard $(TOOLCHAIN)),)
     ifneq ($(CCBASE),)
 	$(Q)rm -rf $(TOOLCHAIN)/$(CCBASE)
     endif
@@ -2267,12 +2267,12 @@ ifneq ($(FS_TYPE),rd)
   ifeq ($(FS_TYPE),hd)
     IROOTFS_DEPS    := $(HROOTFS)
   else
-    ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+    ifneq ($(wildcard $(ROOTDIR)),)
       IROOTFS_DEPS  := $(ROOTDIR)
     endif
   endif
 else
-  ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+  ifneq ($(wildcard $(ROOTDIR)),)
     ROOT_GENRD_TOOL := $(TOOL_DIR)/root/dir2rd.sh
     IROOTFS_DEPS    := $(ROOTDIR)
   endif
@@ -2323,7 +2323,7 @@ endif
 
 ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
-  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+  ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
     ROOT := root-buildroot
   endif
 endif
@@ -2348,7 +2348,7 @@ ifneq ($(FS_TYPE),dir)
   ROOT_GENDIR_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2dir.sh
   ifeq ($(FS_TYPE),rd)
     # Fix up circular deps, if rootdir is there, remove dep from irootfs
-    ifneq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
+    ifeq ($(wildcard $(ROOTDIR)),)
       ROOTDIR_DEPS := $(IROOTFS)
     endif
   endif
@@ -2370,7 +2370,7 @@ ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 IKM ?= 1
 
 ifeq ($(IKM), 1)
-  ifeq ($(KERNEL_BUILD)/modules.order, $(wildcard $(KERNEL_BUILD)/modules.order))
+  ifneq ($(wildcard $(KERNEL_BUILD)/modules.order),)
     KERNEL_MODULES_INSTALL := module-install
   endif
 endif
@@ -2378,7 +2378,7 @@ endif
 $(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 # To avoid remove important data of users, if the file system is there, just update it
-ifneq ($(ROOTDIR)/init,$(wildcard $(ROOTDIR)/init))
+ifeq ($(wildcard $(ROOTDIR)/init),)
 	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
 	$(Q)rm -rf $(ROOTDIR).tmp
 	$(Q)rm -rf $(ROOTDIR)
@@ -2475,7 +2475,7 @@ ifeq ($(module_targets),1)
 TOP_MODULE_DIR := $(or $(_TOP_SRC),$(TOP_SRC))/modules
 ifneq ($(PLUGIN),)
   TMP := $(TOP_DIR)/boards/$(PLUGIN)/modules
-  ifeq ($(TMP),$(wildcard $(TMP)))
+  ifneq ($(wildcard $(TMP)),)
     PLUGIN_MODULE_DIR := $(TMP)
   endif
 else
@@ -2499,7 +2499,7 @@ ifneq ($(M),)
   ifneq ($(M),)
     override M := $(subst //,/,$(patsubst %/,%,$(M)))
   endif
-  ifeq ($(M),$(wildcard $(M)))
+  ifneq ($(wildcard $(M)),)
     ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M)),$(KERNEL_MODULE_DIR))
       # Convert to relative path: must related to top dir of linux kernel, otherwise, will be compiled in source directory
       M_PATH = $(subst $(KERNEL_MODULE_DIR)/,,$(M))
@@ -2512,7 +2512,7 @@ ifneq ($(M),)
       endif
     endif
   else
-    ifeq ($(KERNEL_MODULE_DIR)/$(M),$(wildcard $(KERNEL_MODULE_DIR)/$(M)))
+    ifneq ($(wildcard $(KERNEL_MODULE_DIR)/$(M)),)
       M_PATH ?= $(M)
       internal_module := 1
     else
@@ -2544,7 +2544,7 @@ endif
 ifeq ($(one_module),1)
   ifeq ($(module),)
     # Prefer user input instead of preconfigured
-    ifneq ($(M_PATH),$(wildcard $(M_PATH)))
+    ifeq ($(wildcard $(M_PATH)),)
       ifneq ($(MODULE_CONFIG),)
         module := $(MODULE_CONFIG)
       endif
@@ -2646,7 +2646,7 @@ PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-lis
 
 M_I_ROOT ?= $(ROOTDIR)
 ifeq ($(PBR), 0)
-  ifneq ($(BUILDROOT_IROOTFS),$(wildcard $(BUILDROOT_IROOTFS)))
+  ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
     M_I_ROOT := root-buildroot
   endif
 endif
@@ -2849,7 +2849,7 @@ DTC := tools/kernel/dtc
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
 
-  ifeq ($(DTS),$(wildcard $(DTS)))
+  ifneq ($(wildcard $(DTS)),)
 
 # FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
 dtb: $(DTS)
@@ -3134,7 +3134,7 @@ endif
 
 U_KERNEL_IMAGE := $(UKIMAGE)
 
-ifeq ($(DTB),$(wildcard $(DTB)))
+ifneq ($(wildcard $(DTB)),)
   U_DTB_IMAGE  := $(DTB)
 endif
 
@@ -3410,7 +3410,7 @@ ifneq ($(OS), trusty)
 endif
 
 ifeq ($(ROOTDEV),/dev/nfs)
-  ifneq ($(wildcard /proc/fs/nfsd),/proc/fs/nfsd)
+  ifeq ($(wildcard /proc/fs/nfsd),)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
   # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt
@@ -3582,7 +3582,7 @@ else # U != 1
   endif
 
   ifneq ($(INITRD),)
-    ifeq ($(INITRD),$(wildcard $(INITRD)))
+    ifneq ($(wildcard $(INITRD)),)
       BOOT_CMD += -initrd $(INITRD)
     else
       BOOT_CMD += -initrd $(IROOTFS)
@@ -3590,7 +3590,7 @@ else # U != 1
   endif
 
   ifneq ($(DTB),)
-    ifeq ($(DTB),$(wildcard $(DTB)))
+    ifneq ($(wildcard $(DTB)),)
       BOOT_CMD += -dtb $(DTB)
     endif
   endif
@@ -3657,7 +3657,7 @@ endif
 ifeq ($(DEBUG),0)
   KVM_DEV ?= /dev/kvm
   ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
-    ifeq ($(KVM_DEV),$(wildcard $(KVM_DEV)))
+    ifneq ($(wildcard $(KVM_DEV)),)
       BOOT_CMD += -enable-kvm
     endif
   endif
@@ -3854,13 +3854,13 @@ ifneq ($(GDB_ARCH), 1)
   endif
 endif
 
-ifeq ($(GDBINIT_DIR)/kernel.user, $(wildcard $(GDBINIT_DIR)/kernel.user))
+ifneq ($(wildcard $(GDBINIT_DIR)/kernel.user),)
   GDB_INIT_KERNEL ?= kernel.user
 else
   GDB_INIT_KERNEL ?= kernel.default
 endif
 
-ifeq ($(GDBINIT_DIR)/uboot.user, $(wildcard $(GDBINIT_DIR)/uboot.user))
+ifneq ($(wildcard $(GDBINIT_DIR)/uboot.user),)
   GDB_INIT_UBOOT  ?= uboot.user
 else
   GDB_INIT_UBOOT  ?= uboot.default

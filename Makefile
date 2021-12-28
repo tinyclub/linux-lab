@@ -25,14 +25,9 @@ comma := ,
 empty :=
 space := $(empty) $(empty)
 
-USER := $(or $(UNIX_USER),ubuntu)
-UID  := $(or $(UNIX_UID),1000)
+USER  := $(or $(UNIX_USER),ubuntu)
+UID   := $(or $(UNIX_UID),1000)
 WARN_ON_USER ?= 1
-
-# Check environment
-ifeq ($(USER)$(UID),)
-  $(error ERR: Must run with latest Cloud Lab as normal user, not as root, please refer to 'Download the lab' part of README.md)
-endif
 
 # Check running host
 LAB_ENV_ID := /home/$(USER)/Desktop/lab.desktop
@@ -46,27 +41,27 @@ endif
 
 # Warning if run as root
 ifeq ($(WARN_ON_USER), 1)
-# Check running user, must as $(USER)
-ifeq ($(TEST_TIMEOUT),)
-  ifneq ($(shell whoami),$(USER))
-    $(warning WARN: Please not run as 'root', but as general user: '$(USER)', please try 'sudo -su $(USER)'.)
+  # Check running user, must as $(USER)
+  ifeq ($(TEST_TIMEOUT),)
+    ifneq ($(shell whoami),$(USER))
+      $(warning WARN: Please not run as 'root', but as general user: '$(USER)', please try 'sudo -su $(USER)'.)
+    endif
   endif
-endif
 
-# Check permission issue, must available to ubuntu
-FILE_USER_UID=$(shell stat -c '%U %u' /.git/description)
-ifeq ($(firstword $(FILE_USER_UID)),$(USER))
-  WARN_ON_USER := 0
-else
-  ifeq ($(word 2,$(FILE_USER_UID)),$(UID))
+  # Check permission issue, must available to ubuntu
+  FILE_USER_UID=$(shell stat -c '%U %u' /.git/description)
+  ifeq ($(firstword $(FILE_USER_UID)),$(USER))
     WARN_ON_USER := 0
+  else
+    ifeq ($(word 2,$(FILE_USER_UID)),$(UID))
+      WARN_ON_USER := 0
+    endif
   endif
-endif
 
-ifneq ($(WARN_ON_USER),0)
-  $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab/{*,.git}')
-  $(warning WARN: Cancel this warning via: 'export WARN_ON_USER=0')
-endif
+  ifneq ($(WARN_ON_USER),0)
+    $(warning WARN: Lab should **NOT** belong to 'root', please change their owner in host: 'sudo chown $$USER:$$USER -R /path/to/cloud-lab/{*,.git}')
+    $(warning WARN: Cancel this warning via: 'export WARN_ON_USER=0')
+  endif
 endif # Warning on user
 
 # Detect system version of docker image
@@ -173,24 +168,24 @@ ifneq ($(BOARD),)
 endif
 
 # Check if it is a plugin
-BOARD_PREFIX:= $(subst /,,$(dir $(BOARD)))
-PLUGIN_DIR  := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
-PLUGIN_FLAG := $(PLUGIN_DIR)/.plugin
+BOARD_PREFIX := $(subst /,,$(dir $(BOARD)))
+PLUGIN_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD_PREFIX)
+PLUGIN_FLAG  := $(PLUGIN_DIR)/.plugin
 
 ifneq ($(PLUGIN_FLAG), $(wildcard $(PLUGIN_FLAG)))
   PLUGIN_DIR :=
 else
-  _PLUGIN   ?= 1
+  _PLUGIN    ?= 1
 endif
 
 # add board directories
 BOARD_TOOLCHAIN ?= $(BOARD_DIR)/toolchains
 
 # add a standlaone bsp directory
-BSP_DIR ?= $(BOARD_DIR)/bsp
-BSP_TOOLCHAIN ?= $(BSP_DIR)/toolchains
-BSP_CONFIG := $(BSP_DIR)/configs
-BSP_PATCH  := $(BSP_DIR)/patch
+BSP_DIR         ?= $(BOARD_DIR)/bsp
+BSP_TOOLCHAIN   ?= $(BSP_DIR)/toolchains
+BSP_CONFIG      := $(BSP_DIR)/configs
+BSP_PATCH       := $(BSP_DIR)/patch
 
 # Support old directory arch
 ifeq ($(BSP_DIR),$(wildcard $(BSP_DIR)))
@@ -200,7 +195,7 @@ else
 endif
 
 # Get the machine name for qemu-system-$(XARCH)
-MACH ?= $(notdir $(BOARD))
+MACH          ?= $(notdir $(BOARD))
 
 # Prebuilt directories (in standalone prebuilt repo, github.com/tinyclub/prebuilt)
 PREBUILT_DIR        := $(TOP_DIR)/prebuilt
@@ -208,17 +203,17 @@ PREBUILT_TOOLCHAINS := $(PREBUILT_DIR)/toolchains
 PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
 
 # Core source: remote and local
-#QEMU_GIT ?= https://github.com/qemu/qemu.git
-QEMU_GIT  ?= https://gitee.com/mirrors/qemu.git
-_QEMU_GIT := $(QEMU_GIT)
-_QEMU_SRC ?= $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK)-qemu),qemu)
-QEMU_SRC  ?= $(_QEMU_SRC)
+#QEMU_GIT   ?= https://github.com/qemu/qemu.git
+QEMU_GIT    ?= https://gitee.com/mirrors/qemu.git
+_QEMU_GIT   := $(QEMU_GIT)
+_QEMU_SRC   ?= $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK)-qemu),qemu)
+QEMU_SRC    ?= $(_QEMU_SRC)
 
-#UBOOT_GIT ?= https://github.com/u-boot/u-boot.git
-UBOOT_GIT  ?= https://gitee.com/mirrors/u-boot.git
-_UBOOT_GIT := $(UBOOT_GIT)
-_UBOOT_SRC ?= $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK)-uboot),u-boot)
-UBOOT_SRC  ?= $(_UBOOT_SRC)
+#UBOOT_GIT  ?= https://github.com/u-boot/u-boot.git
+UBOOT_GIT   ?= https://gitee.com/mirrors/u-boot.git
+_UBOOT_GIT  := $(UBOOT_GIT)
+_UBOOT_SRC  ?= $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK)-uboot),u-boot)
+UBOOT_SRC   ?= $(_UBOOT_SRC)
 
 #KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
 #KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
@@ -229,11 +224,11 @@ _KERNEL_SRC ?= $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK)-kernel),linux-stabl
 KERNEL_SRC  ?= $(_KERNEL_SRC)
 
 # Use faster mirror instead of git://git.buildroot.net/buildroot.git
-#ROOT_GIT ?= https://github.com/buildroot/buildroot
-ROOT_GIT  ?= https://gitee.com/mirrors/buildroot.git
-_ROOT_GIT := $(ROOT_GIT)
-_ROOT_SRC ?= $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK)-buildroot),buildroot)
-ROOT_SRC  ?= $(_ROOT_SRC)
+#ROOT_GIT   ?= https://github.com/buildroot/buildroot
+ROOT_GIT    ?= https://gitee.com/mirrors/buildroot.git
+_ROOT_GIT   := $(ROOT_GIT)
+_ROOT_SRC   ?= $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK)-buildroot),buildroot)
+ROOT_SRC    ?= $(_ROOT_SRC)
 
 BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 
@@ -367,7 +362,7 @@ $(call _bi,NET,Makefile)
 $(call _bvi,LINUX,Makefile)
 endef
 
-# include .labinit if exist
+# include $(TOP_DIR)/.labinit if exist
 $(eval $(call _ti,labinit))
 
 $(eval $(call _ti,labconfig))
@@ -380,30 +375,30 @@ ifneq ($(BOARD),)
   $(eval $(call _bi,labconfig))
 endif
 
-QEMU_FORK_ := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
-UBOOT_FORK_ := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
+QEMU_FORK_   := $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK))/,)
+UBOOT_FORK_  := $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK))/,)
 KERNEL_FORK_ := $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK))/,)
-ROOT_FORK_ := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
+ROOT_FORK_   := $(if $(ROOT_FORK),$(call _lc,$(ROOT_FORK))/,)
 
-_QEMU_FORK := $(if $(QEMU_FORK),$(call _lc,/$(QEMU_FORK)),)
-_UBOOT_FORK := $(if $(UBOOT_FORK),$(call _lc,/$(UBOOT_FORK)),)
+_QEMU_FORK   := $(if $(QEMU_FORK),$(call _lc,/$(QEMU_FORK)),)
+_UBOOT_FORK  := $(if $(UBOOT_FORK),$(call _lc,/$(UBOOT_FORK)),)
 _KERNEL_FORK := $(if $(KERNEL_FORK),$(call _lc,/$(KERNEL_FORK)),)
-_ROOT_FORK := $(if $(ROOT_FORK),$(call _lc,/$(ROOT_FORK)),)
+_ROOT_FORK   := $(if $(ROOT_FORK),$(call _lc,/$(ROOT_FORK)),)
 
-BSP_QEMU ?= $(BSP_DIR)/qemu$(_QEMU_FORK)
-BSP_UBOOT ?= $(BSP_DIR)/uboot$(_UBOOT_FORK)
-BSP_ROOT ?= $(BSP_DIR)/root$(_ROOT_FORK)
-BSP_KERNEL ?= $(BSP_DIR)/kernel$(_KERNEL_FORK)
-BSP_BIOS ?= $(BSP_DIR)/bios$(_KERNEL_FORK)
+BSP_QEMU     ?= $(BSP_DIR)/qemu$(_QEMU_FORK)
+BSP_UBOOT    ?= $(BSP_DIR)/uboot$(_UBOOT_FORK)
+BSP_ROOT     ?= $(BSP_DIR)/root$(_ROOT_FORK)
+BSP_KERNEL   ?= $(BSP_DIR)/kernel$(_KERNEL_FORK)
+BSP_BIOS     ?= $(BSP_DIR)/bios$(_KERNEL_FORK)
 
-PREBUILT_QEMU       := $(PREBUILT_DIR)/qemu$(_QEMU_FORK)
-PREBUILT_UBOOT      := $(PREBUILT_DIR)/uboot$(_UBOOT_FORK)
-PREBUILT_ROOT       := $(PREBUILT_DIR)/root$(_ROOT_FORK)
-PREBUILT_KERNEL     := $(PREBUILT_DIR)/kernel$(_KERNEL_FORK)
+PREBUILT_QEMU   := $(PREBUILT_DIR)/qemu$(_QEMU_FORK)
+PREBUILT_UBOOT  := $(PREBUILT_DIR)/uboot$(_UBOOT_FORK)
+PREBUILT_ROOT   := $(PREBUILT_DIR)/root$(_ROOT_FORK)
+PREBUILT_KERNEL := $(PREBUILT_DIR)/kernel$(_KERNEL_FORK)
 
-BOARD_QEMU ?= $(BOARD_DIR)/qemu$(_QEMU_FORK)
-BOARD_UBOOT ?= $(BOARD_DIR)/uboot$(_UBOOT_FORK)
-BOARD_ROOT ?= $(BOARD_DIR)/root$(_ROOT_FORK)
+BOARD_QEMU   ?= $(BOARD_DIR)/qemu$(_QEMU_FORK)
+BOARD_UBOOT  ?= $(BOARD_DIR)/uboot$(_UBOOT_FORK)
+BOARD_ROOT   ?= $(BOARD_DIR)/root$(_ROOT_FORK)
 BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 
 ifneq ($(BOARD),)
@@ -415,7 +410,7 @@ ifneq ($(BOARD),)
   $(eval $(call _bi,labfini))
 endif
 
-# include .labbegin if exist
+# include $(TOP_DIR)/.labbegin if exist
 $(eval $(call _ti,labbegin))
 $(eval $(call _ti,labcustom))
 
@@ -437,9 +432,9 @@ ifeq ($(HOST_OS),Windows)
 endif
 
 ifeq ($(ONESHOT),1)
-  CACHE_BUILD := 1
-  CACHE_SRC   := 1
-  FAST_FETCH  := 1
+  CACHE_BUILD  := 1
+  CACHE_SRC    := 1
+  FAST_FETCH   := 1
 endif
 
 ifeq ($(CACHE_BUILD),1)
@@ -450,7 +445,7 @@ ifeq ($(CACHE_BUILD)$(CACHE_SRC)$(FAST_FETCH),111)
   ifneq ($(LOCAL_FETCH),0)
     _TOP_SRC := $(TOP_SRC)
   endif
-  TOP_SRC := $(TOP_BUILD)/src
+  TOP_SRC    := $(TOP_BUILD)/src
 endif
 
 # Allow boards to customize source and repos
@@ -526,18 +521,14 @@ ifeq ($(origin SHARE_DIR),command line)
 else
   SHARE ?= 0
 endif
-SHARE_DIR ?= hostshare
-HOST_SHARE_DIR ?= $(SHARE_DIR)
+SHARE_DIR       ?= hostshare
+HOST_SHARE_DIR  ?= $(SHARE_DIR)
 GUEST_SHARE_DIR ?= /hostshare
-SHARE_TAG ?= hostshare
+SHARE_TAG       ?= hostshare
 
 # Supported apps and their version variable
-APPS := kernel uboot root qemu
+APPS    := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
-
-# The new _uc and _lc functions can init themselves
-#$(foreach t,bsp $(APPS),$(eval $(call _uc_init,$(t))))
-#$(foreach t,$(foreach map,$(APP_MAP),$(lastword $(subst :,$(space),$(map)))),$(eval $(call _lc_init,$(t))))
 
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
@@ -567,15 +558,15 @@ first_target := $(firstword $(MAKECMDGOALS))
 ifeq ($(findstring -dox,$(first_target)),-dox)
   # use the rest as arguments for "do"
   reserve_target := $(first_target:-do=)
-  APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  x := $(APP_ARGS)
+  APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  x              := $(APP_ARGS)
 else
  ifeq ($(findstring -defconfigx,$(first_target)x),-defconfigx)
   # use the rest as arguments for "defconfig"
   reserve_target := $(first_target:-defconfig=)
-  APP_ARGS := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+  APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   ifneq ($(APP_ARGS),)
-    CFG_PREFIX := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
+    CFG_PREFIX   := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
     $(CFG_PREFIX)CFG := $(APP_ARGS)
   endif
  endif
@@ -624,9 +615,10 @@ ifeq ($(app),all)
 endif
 
 ifeq ($(app),)
-  app := kernel
   ifeq ($(filter $(MAKECMDGOALS),list help config),$(MAKECMDGOALS))
     app := default
+  else
+    app := kernel
   endif
 endif
 
@@ -636,14 +628,14 @@ endif # common commands
 
 define genbuildenv
 
-GCC_$(2) := $$(or $$(call __v,GCC,$(2),$(3)),$(GCC))
+GCC_$(2)   := $$(or $$(call __v,GCC,$(2),$(3)),$(GCC))
 CCORI_$(2) := $$(or $$(call __v,CCORI,$(2),$(3)),$(CCORI))
 
 ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
   ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
     ifeq ($$(CCORI_$(2))$$(CCORI),)
       CCORI_$(2) := internal
-      CCORI := internal
+      CCORI      := internal
     else
       $$(eval $$(call __vs,CCORI,$(2),$(3)))
     endif
@@ -652,7 +644,7 @@ ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
 endif
 
 ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
- HOST_GCC_$(2) := $$(or $$(call __v,HOST_GCC,$(2),$(3)),$(HOST_GCC))
+ HOST_GCC_$(2)   := $$(or $$(call __v,HOST_GCC,$(2),$(3)),$(HOST_GCC))
  HOST_CCORI_$(2) := $$(or $$(call __v,HOST_CCORI,$(2),$(3)),$(HOST_CCORI))
 
  ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
@@ -779,7 +771,7 @@ $(eval $(call genverify,QEMU,QEMU))
 f ?= $(feature)
 F ?= $(f)
 FEATURES ?= $(F)
-FEATURE ?= $(FEATURES)
+FEATURE  ?= $(FEATURES)
 ifneq ($(FEATURE),)
   FEATURE_ENVS := $(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
 			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH) ]; then \
@@ -820,7 +812,7 @@ ifneq ($(XARCH), i386)
 else
   BUILDROOT_CCPRE  := i686-linux-
 endif
-BUILDROOT_CCPATH := $(ROOT_BUILD)/host/usr/bin
+BUILDROOT_CCPATH   := $(ROOT_BUILD)/host/usr/bin
 
 # Add internal toolchain to list (the one installed in docker image)
 ifneq ($(CCPRE),)
@@ -943,7 +935,7 @@ else
   endif
 endif
 
-C_PATH ?= env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH)$(if $(RUST_PATH),:$(RUST_PATH)) $(L_PATH)
+C_PATH    ?= env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH)$(if $(RUST_PATH),:$(RUST_PATH)) $(L_PATH)
 
 #$(info Using gcc: $(CCPATH)/$(CCPRE)gcc, $(CCORI))
 
@@ -951,15 +943,15 @@ TOOLCHAIN ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 
 # Parallel Compiling threads
 HOST_CPU_THREADS := $$(nproc)
-JOBS ?= $(HOST_CPU_THREADS)
+JOBS             ?= $(HOST_CPU_THREADS)
 
 # Emulator configurations
 ifneq ($(BIOS),)
-  BIOS_ARG := -bios $(BIOS)
+  BIOS_ARG       := -bios $(BIOS)
 endif
 
 # Another qemu-system-$(ARCH)
-QEMU_SYSTEM ?= $(QEMU_BUILD)/$(XARCH)-softmmu/qemu-system-$(XARCH)
+QEMU_SYSTEM      ?= $(QEMU_BUILD)/$(XARCH)-softmmu/qemu-system-$(XARCH)
 
 ifeq ($(QEMU_SYSTEM),$(wildcard $(QEMU_SYSTEM)))
   PBQ ?= 0
@@ -988,7 +980,7 @@ ifneq ($(QEMU),)
   endif
 endif
 
-EMULATOR := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
+EMULATOR       := $(QEMU_PATH) $(XENVS) qemu-system-$(XARCH) $(BIOS_ARG)
 
 # Linux configurations
 LINUX_PKIMAGE  := $(ROOT_BUILD)/images/$(PORIIMG)
@@ -1147,13 +1139,13 @@ ROOTFS_HARDDISK_SUFFIX := .$(FSTYPE)
 ROOTFS_INITRD_SUFFIX   := .cpio.gz
 
 # Real one
-BUILDROOT_ROOTDIR  :=  $(ROOT_BUILD)/target
+BUILDROOT_ROOTDIR   :=  $(ROOT_BUILD)/target
 # As a temp variable
-_BUILDROOT_ROOTDIR :=  $(ROOT_BUILD)/images/rootfs
+_BUILDROOT_ROOTDIR  :=  $(ROOT_BUILD)/images/rootfs
 
-BUILDROOT_UROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
-BUILDROOT_HROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
-BUILDROOT_IROOTFS := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+BUILDROOT_UROOTFS   := $(_BUILDROOT_ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+BUILDROOT_HROOTFS   := $(_BUILDROOT_ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
+BUILDROOT_IROOTFS   := $(_BUILDROOT_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
 
 PREBUILT_ROOT_DIR   ?= $(BSP_ROOT)/$(BUILDROOT)
 PREBUILT_KERNEL_DIR ?= $(BSP_KERNEL)/$(LINUX)
@@ -1163,8 +1155,8 @@ PREBUILT_QEMU_DIR   ?= $(BSP_QEMU)/$(QEMU)
 PREBUILT_IROOTFS    ?= $(PREBUILT_ROOT_DIR)/rootfs$(ROOTFS_INITRD_SUFFIX)
 
 # Check default rootfs type: dir, hardisk (.img, .ext*, .vfat, .f2fs, .cramfs...), initrd (.cpio.gz, .cpio), uboot (.uboot)
-ROOTFS_TYPE_TOOL  := tools/root/rootfs_type.sh
-ROOTDEV_TYPE_TOOL := tools/root/rootdev_type.sh
+ROOTFS_TYPE_TOOL    := tools/root/rootfs_type.sh
+ROOTDEV_TYPE_TOOL   := tools/root/rootdev_type.sh
 
 PBR ?= 0
 _PBR := $(PBR)
@@ -1206,18 +1198,18 @@ endif
 
 # FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
-  ROOTFS := $(dir $(ROOTFS))
-  ROOTFS_TYPE  := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
+  ROOTFS          := $(dir $(ROOTFS))
+  ROOTFS_TYPE     := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 endif
 
 ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
-  INVALID_ROOTFS := 1
-  INVALID_ROOT := 1
+  INVALID_ROOTFS  := 1
+  INVALID_ROOT    := 1
 endif
 
 ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
   INVALID_ROOTDEV := 1
-  INVALID_ROOT := 1
+  INVALID_ROOT    := 1
 endif
 
 ifneq ($(MAKECMDGOALS),)
@@ -1234,9 +1226,9 @@ endif
 ifneq ($(INVALID_ROOT),1)
 _ROOTFS_TYPE := $(subst $(comma),$(space),$(ROOTFS_TYPE))
 
-FS_TYPE   := $(firstword $(_ROOTFS_TYPE))
-FS_PATH   := $(word 2,$(_ROOTFS_TYPE))
-FS_SUFFIX := $(word 3,$(_ROOTFS_TYPE))
+FS_TYPE      := $(firstword $(_ROOTFS_TYPE))
+FS_PATH      := $(word 2,$(_ROOTFS_TYPE))
+FS_SUFFIX    := $(word 3,$(_ROOTFS_TYPE))
 
 # Buildroot use its own ROOTDIR in /target, not in images/rootfs
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
@@ -1248,7 +1240,7 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
     endif
     # use one copy in the bsp build directory if exist
     ifeq ($(wildcard $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)), $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX))
-      ROOTFS := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+      ROOTFS    := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
     endif
   else
     BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),root,$(PREBUILT_ROOT_DIR))/rootfs
@@ -1265,12 +1257,14 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   else
     IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
   endif
+
   ifeq ($(FS_TYPE),hd)
     HROOTFS := $(ROOTFS)
   else
     HROOTFS := $(ROOTDIR)$(ROOTFS_HARDDISK_SUFFIX)
   endif
-  UROOTFS := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
+
+  UROOTFS   := $(ROOTDIR)$(ROOTFS_UBOOT_SUFFIX)
 endif
 
 _ROOTDEV_TYPE := $(subst $(comma),$(space),$(ROOTDEV_TYPE))
@@ -1283,7 +1277,7 @@ BOARD_TOOL := ${TOOL_DIR}/board/show.sh
 
 export GREP_COLOR=32;40
 # FILTER for board name
-FILTER   ?= .*
+FILTER     ?= .*
 # FILTER for board settings
 VAR_FILTER ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 
@@ -1390,6 +1384,7 @@ ifeq ($(findstring xlist,x$(first_target)),xlist)
   # all: 0, plugin: 1, noplugin: 2
   LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
   LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
+
   ifeq ($(filter $(LIST_GOAL),default real virt base plugin full board short),$(LIST_GOAL))
     BOARD :=
     BTYPE ?= ^_BASE|^_PLUGIN
@@ -1478,6 +1473,7 @@ $(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfi
 ifeq ($(firstword $(MAKECMDGOALS)),$(1))
   $(1)_defconfig_childs := $(1)
 endif
+
 $$($(1)_defconfig_childs): $(1)-defconfig
 
 $(1)-saveall: $(1)-save $(1)-saveconfig
@@ -1485,29 +1481,36 @@ $(1)-saveall: $(1)-save $(1)-saveconfig
 $(1)-save $(1)-saveconfig: $(1)-build
 
 $(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
+
 ifeq ($$(PB$$($(1)_APP_TYPE)),0)
   ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
     boot_deps += $(1)-build
   endif
 endif
+
 $(1)_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$(1)))))
+
 ifeq ($$($$($(1)_app_type)),1)
   ifeq ($$(origin $$($(1)_app_type)),command line)
     boot_deps += $(1)-build
   endif
 endif
+
 ifeq ($$($(1)),1)
   ifeq ($$(origin $(1)),command line)
     boot_deps += $(1)-build
   endif
 endif
+
 ifeq ($(filter $(1),$(BUILD)),$(1))
-  boot_deps += $(1)-build
+  boot_deps   += $(1)-build
 endif
 
 ifeq ($(filter $(BOARD),$(BOARD_FREE)),$(BOARD))
+
 $(1)_bsp_childs := $(addprefix $(1)-,defconfig patch saveall save saveconfig clone)
 $$($(1)_bsp_childs): $(BSP_CHECKOUT)
+
 endif
 
 _boot: $$(boot_deps)
@@ -1586,13 +1589,13 @@ ifeq ($$($(call _uc,$(1))_GIT),)
 endif
 
 ifeq ($$($(call _uc,$(1))_GETGITURL),1)
-  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -ne "/path = $$(subst /,\/,$$($(call _uc,$(1))_SPATH))/{n;s/.*url[ ]*=[ ]*//g;p}" $$($(call _uc,$(1))_SROOT)/.gitmodules)
+  __$(call _uc,$(1))_GIT  := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -ne "/path = $$(subst /,\/,$$($(call _uc,$(1))_SPATH))/{n;s/.*url[ ]*=[ ]*//g;p}" $$($(call _uc,$(1))_SROOT)/.gitmodules)
   ifneq ($$(__$(call _uc,$(1))_GIT),)
     _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
-    $(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
+    $(call _uc,$(1))_GIT  := $$(__$(call _uc,$(1))_GIT)
   endif
 else
-  _$(call _uc,$(1))_GIT := $$($(call _uc,$(1))_GIT)
+  _$(call _uc,$(1))_GIT   := $$($(call _uc,$(1))_GIT)
 endif
 
 # Build the full src directory
@@ -1622,11 +1625,11 @@ $$(call _stamp,$(1),license):
 
 # Build _PKG_ABS_SRC for local fetch
 ifneq ($(_TOP_SRC),)
-  __$(call _uc,$(1))_ABS_SRC := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)/
-  __$(call _uc,$(1))_ABS_TAG := $$(__$(call _uc,$(1))_ABS_SRC)/.git/packed-refs
+  __$(call _uc,$(1))_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)/
+  __$(call _uc,$(1))_ABS_TAG  := $$(__$(call _uc,$(1))_ABS_SRC)/.git/packed-refs
   ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_TAG)),$$(__$(call _uc,$(1))_ABS_TAG))
     _$(call _uc,$(1))_ABS_SRC := $$$$(cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo $$(__$(call _uc,$(1))_ABS_SRC))
-    $(call _uc,$(1))_GITADD := cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo From: $$(__$(call _uc,$(1))_ABS_SRC) || $$($(call _uc,$(1))_GITADD)
+    $(call _uc,$(1))_GITADD   := cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo From: $$(__$(call _uc,$(1))_ABS_SRC) || $$($(call _uc,$(1))_GITADD)
   endif
 endif
 
@@ -1766,7 +1769,7 @@ $(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$(2))
 $(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
 ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
-  $(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(3)CFG)
+  $(3)CFG_FILE  := $$(_BSP_CONFIG)/$$($(3)CFG)
 else
   _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($(3)CFG); do \
 		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
@@ -1940,7 +1943,7 @@ ifneq ($(general_targets),)
  ifeq ($(filter $(general_targets),0 1),$(general_targets))
   kernel_targets ?= $(general_targets)
   module_targets ?= $(general_targets)
-  root_targets ?= $(general_targets)
+  root_targets   ?= $(general_targets)
   toolchain_targets ?= $(general_targets)
   ifneq ($(UBOOT),)
     ifneq ($(U),0)
@@ -1997,10 +2000,10 @@ endif
 ARCH_LIST ?= arm aarch64 i386 x86_64 mipsel mips64el ppc ppc64 riscv32 riscv64
 ifeq ($(QEMU_ALL),1)
   PREBUILT_QEMU_DIR := $(PREBUILT_QEMU)/$(QEMU)
-  QEMU_BUILD := $(TOP_BUILD)/qemu-$(QEMU)-all
-  QEMU_ARCH := $(ARCH_LIST)
+  QEMU_BUILD        := $(TOP_BUILD)/qemu-$(QEMU)-all
+  QEMU_ARCH         := $(ARCH_LIST)
 else
-  QEMU_ARCH := $(XARCH)
+  QEMU_ARCH         := $(XARCH)
 endif
 
 # Allow use QEMU_USER_STATIC instead of QEMU_US
@@ -2015,9 +2018,6 @@ else
   ifeq ($(QCFG),)
     # Qemu > 4.0 requires libsdl2, which is not installable in current lab
     # (too old ubuntu), use vnc instead
-    #QEMU_MAJOR_VER := $(subst v,,$(firstword $(subst .,$(space),$(QEMU))))
-    #QEMU_SDL ?= $(shell [ $(QEMU_MAJOR_VER) -ge 4 ];echo $$?)
-    #QEMU_VNC ?= $(shell [ $(QEMU_MAJOR_VER) -lt 4 ];echo $$?)
     QEMU_SDL    ?= 1
     QEMU_CURSES ?= 1
     ifneq ($(QEMU_SDL),0)
@@ -2033,11 +2033,11 @@ else
     endif
 
     ifneq ($(QEMU_VIRTFS),0)
-      QEMU_CONF += --enable-virtfs
+      QEMU_CONF   += --enable-virtfs
     endif
 
     ifeq ($(QEMU_CURSES),1)
-      QEMU_CONF += --enable-curses
+      QEMU_CONF   += --enable-curses
     endif
   endif
 
@@ -2045,10 +2045,10 @@ else
   QEMU_CONF   += --target-list=$(QEMU_TARGET)
 endif
 
-QEMU_CONFIG_STATUS := config.log
-QEMU_PREFIX ?= $(PREBUILT_QEMU_DIR)
-QEMU_CONF_CMD := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --disable-werror --prefix=$(QEMU_PREFIX)
-qemu_make_help := cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
+QEMU_CONFIG_STATUS  := config.log
+QEMU_PREFIX         ?= $(PREBUILT_QEMU_DIR)
+QEMU_CONF_CMD       := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --disable-werror --prefix=$(QEMU_PREFIX)
+qemu_make_help      := cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
 qemu_make_defconfig := $(Q)cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
@@ -2183,9 +2183,9 @@ ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
   endif
 else
   ifeq ($(TOOLCHAIN), $(wildcard $(TOOLCHAIN)))
-     ifneq ($(CCBASE),)
+    ifneq ($(CCBASE),)
 	$(Q)rm -rf $(TOOLCHAIN)/$(CCBASE)
-     endif
+    endif
   endif
 endif
 
@@ -2268,7 +2268,7 @@ ifneq ($(FS_TYPE),rd)
     IROOTFS_DEPS    := $(HROOTFS)
   else
     ifeq ($(ROOTDIR), $(wildcard $(ROOTDIR)))
-      IROOTFS_DEPS    := $(ROOTDIR)
+      IROOTFS_DEPS  := $(ROOTDIR)
     endif
   endif
 else
@@ -2400,10 +2400,10 @@ fullclean: $(call gengoalslist,distclean)
 	$(Q)git clean -fdx
 
 ifeq ($(FS_TYPE),dir)
-  HROOTFS_DEPS := $(ROOTDIR)
+  HROOTFS_DEPS  := $(ROOTDIR)
 endif
 ifeq ($(FS_TYPE),rd)
-  HROOTFS_DEPS := $(IROOTFS)
+  HROOTFS_DEPS  := $(IROOTFS)
 endif
 
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
@@ -2488,8 +2488,8 @@ EXT_MODULE_DIR := $(TOP_MODULE_DIR) $(PLUGIN_MODULE_DIR)
 KERNEL_MODULE_DIR := $(KERNEL_ABS_SRC)
 KERNEL_SEARCH_PATH := $(addprefix $(KERNEL_MODULE_DIR)/,drivers kernel fs block crypto mm net security sound samples)
 
-modules ?= $(m)
-module  ?= $(modules)
+modules  ?= $(m)
+module   ?= $(modules)
 ifeq ($(module),all)
   module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
 endif
@@ -2619,11 +2619,11 @@ kernel-modules:
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
-  MF ?= egrep "$(IMF)"
+  MF  ?= egrep "$(IMF)"
   internal_search := 1
 else
   IMF :=.*
-  MF := cat
+  MF  := cat
 endif
 
 # If m or M argument specified, search modules in kernel source directory
@@ -2866,7 +2866,7 @@ else
 endif
 
 # Pass kernel command line in dts, require to build dts for every boot
-KCLI_DTS ?= 0
+KCLI_DTS   ?= 0
 ifeq ($(KCLI_DTS),1)
   BOOT_DTB := dtb
 endif
@@ -2883,11 +2883,11 @@ ifeq ($(KT),$(IMAGE))
 endif
 
 ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)
-  ksetconfig := 1
+  ksetconfig  := 1
 endif
 
 # Caching commandline variables
-makeclivar := $(-*-command-variables-*-)
+makeclivar    := $(-*-command-variables-*-)
 
 ifeq ($(ksetconfig),1)
 
@@ -2895,53 +2895,53 @@ ifeq ($(ksetconfig),1)
 ifneq ($(m),)
   KCONFIG_SET_OPT := -m $(m)
   KCONFIG_GET_OPT := -s $(m)
-  KCONFIG_OPR := m
-  KCONFIG_OPT := $(m)
+  KCONFIG_OPR     := m
+  KCONFIG_OPT     := $(m)
 endif
 
 # c/o added for module option, when it is not the same as module name
 ifneq ($(c),)
   KCONFIG_SET_OPT := -m $(c)
   KCONFIG_GET_OPT := -s $(c)
-  KCONFIG_OPR := m
-  KCONFIG_OPT := $(c)
+  KCONFIG_OPR     := m
+  KCONFIG_OPT     := $(c)
 endif
 
 ifneq ($(o),)
   KCONFIG_SET_OPT := -m $(o)
   KCONFIG_GET_OPT := -s $(o)
-  KCONFIG_OPR := m
-  KCONFIG_OPT := $(o)
+  KCONFIG_OPR     := m
+  KCONFIG_OPT     := $(o)
 endif
 
 ifneq ($(s),)
-  tmp := $(subst =,$(space),$(s))
+  tmp             := $(subst =,$(space),$(s))
   KCONFIG_SET_OPT := --set-str $(tmp)
-  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_OPT     := $(firstword $(tmp))
   KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
-  KCONFIG_OPR := s
+  KCONFIG_OPR     := s
 endif
 
 ifneq ($(v),)
-  tmp := $(subst =,$(space),$(v))
+  tmp             := $(subst =,$(space),$(v))
   KCONFIG_SET_OPT := --set-val $(tmp)
-  KCONFIG_OPT := $(firstword $(tmp))
+  KCONFIG_OPT     := $(firstword $(tmp))
   KCONFIG_GET_OPT := -s $(KCONFIG_OPT)
-  KCONFIG_OPR := v
+  KCONFIG_OPR     := v
 endif
 
 ifneq ($(y),)
   KCONFIG_SET_OPT := -e $(y)
   KCONFIG_GET_OPT := -s $(y)
-  KCONFIG_OPR := y
-  KCONFIG_OPT := $(y)
+  KCONFIG_OPR     := y
+  KCONFIG_OPT     := $(y)
 endif
 
 ifneq ($(n),)
   KCONFIG_SET_OPT := -d $(n)
   KCONFIG_GET_OPT := -s $(n)
-  KCONFIG_OPR := n
-  KCONFIG_OPT := $(n)
+  KCONFIG_OPR     := n
+  KCONFIG_OPT     := $(n)
 endif
 
 endif #ksetconfig
@@ -3032,14 +3032,14 @@ _UBOOT  ?= $(call _v,UBOOT,UBOOT)
 
 PFLASH_BASE ?= 0
 PFLASH_SIZE ?= 0
-BOOTDEV ?= none
-KRN_ADDR ?= -
-KRN_SIZE ?= 0
-RDK_ADDR ?= -
-RDK_SIZE ?= 0
-DTB_ADDR ?= -
-DTB_SIZE ?= 0
-UCFG_DIR := $(UBOOT_ABS_SRC)/include/configs
+BOOTDEV     ?= none
+KRN_ADDR    ?= -
+KRN_SIZE    ?= 0
+RDK_ADDR    ?= -
+RDK_SIZE    ?= 0
+DTB_ADDR    ?= -
+DTB_SIZE    ?= 0
+UCFG_DIR    := $(UBOOT_ABS_SRC)/include/configs
 
 #$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 $(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
@@ -3061,14 +3061,14 @@ ifeq ($(findstring flash,$(BOOTDEV)),flash)
 endif
 ifeq ($(BOOTDEV),ram)
   U_BOOT_CMD := bootcmd4
-  RAM_BOOT ?= 1
+  RAM_BOOT   ?= 1
 endif
 
 ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
-  RDK_ADDR := -
+  RDK_ADDR   := -
 endif
 ifeq ($(DTS),)
-  DTB_ADDR := -
+  DTB_ADDR   := -
 endif
 
 export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
@@ -3135,7 +3135,7 @@ endif
 U_KERNEL_IMAGE := $(UKIMAGE)
 
 ifeq ($(DTB),$(wildcard $(DTB)))
-  U_DTB_IMAGE := $(DTB)
+  U_DTB_IMAGE  := $(DTB)
 endif
 
 BOOTX := $(if $(UBOOT_BIOS),booti,bootm)
@@ -3147,7 +3147,7 @@ UBOOT_SD_TOOL     := $(TOOL_DIR)/uboot/sd.sh
 UBOOT_PFLASH_TOOL := $(TOOL_DIR)/uboot/pflash.sh
 UBOOT_ENV_TOOL    := $(TOOL_DIR)/uboot/env.sh
 
-TFTP_IMGS := $(addprefix $(TFTPBOOT)/,ramdisk dtb uImage)
+TFTP_IMGS  := $(addprefix $(TFTPBOOT)/,ramdisk dtb uImage)
 
 # require by env saving, whenever boot from pflash
 PFLASH_IMG := $(TFTPBOOT)/pflash.img
@@ -3234,9 +3234,9 @@ endif
 
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  GETIP_TOOL    ?= $(TOP_DIR)/tools/helper/getip.py
-  GETIP_TIMEOUT ?= 2
-  BOARD_IP ?= $$(sudo timeout $(GETIP_TIMEOUT) python3 $(GETIP_TOOL) $(BOARD_SERIAL) $(BOARD_BAUDRATE))
+  GETIP_TOOL     ?= $(TOP_DIR)/tools/helper/getip.py
+  GETIP_TIMEOUT  ?= 2
+  BOARD_IP       ?= $$(sudo timeout $(GETIP_TIMEOUT) python3 $(GETIP_TOOL) $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
   SSH_TARGETS    ?= login boot boot-config reboot -upload
   TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
@@ -3382,7 +3382,6 @@ endef
 $(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
 
 # TODO: net driver for $BOARD
-#NET = " -net nic,model=smc91c111,macaddr=DE:AD:BE:EF:3E:03 -net tap"
 NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap
 
 ifeq ($(NETDEV), virtio)
@@ -3524,7 +3523,7 @@ ifeq ($(REBOOT_TYPE), reboot)
     TEST_FINISH := reboot
   endif
 else
-  TEST_FINISH := poweroff
+  TEST_FINISH   := poweroff
 endif
 
 ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
@@ -3536,7 +3535,7 @@ SMP ?= 1
 
 # If proxy kernel exists, hack the default -kernel option
 ifneq ($(PORIIMG),)
-  KERNEL_OPT ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
+  KERNEL_OPT   ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
 else
   ifeq ($(U),1)
     KERNEL_OPT ?= $(if $(UBOOT_BIOS),-bios,-kernel) $(QEMU_KIMAGE)
@@ -3622,7 +3621,7 @@ ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
 endif
 
 ifeq ($(G),0)
-  BOOT_CMD += -nographic
+  BOOT_CMD   += -nographic
 else
   ifeq ($(G), 2)
     BOOT_CMD += -curses
@@ -3645,12 +3644,12 @@ endif
 # ref: https://unix.stackexchange.com/questions/396013/hardware-breakpoint-in-gdb-qemu-missing-start-kernel
 #      https://www.spinics.net/lists/newbies/msg59708.html
 ifneq ($(DEBUG),0)
-    BOOT_CMD += -s
-    # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
-    ifneq ($(XARCH),x86_64)
-      BOOT_CMD += -S
-    endif
-    CMDLINE  += nokaslr
+  BOOT_CMD   += -s
+  # workaround error of x86_64: "Remote 'g' packet reply is too long:", just skip the "-S" option
+  ifneq ($(XARCH),x86_64)
+    BOOT_CMD += -S
+  endif
+  CMDLINE    += nokaslr
 endif
 
 # Debug not work with -enable-kvm
@@ -3663,12 +3662,6 @@ ifeq ($(DEBUG),0)
     endif
   endif
 endif
-
-# Silence qemu warnings and errors
-#ifneq ($(V), 1)
-#  QUIET_OPT ?= 2>/dev/null
-#endif
-#BOOT_CMD += $(QUIET_OPT)
 
 # ROOTDEV=/dev/nfs for file sharing between guest and host
 # SHARE=1 is another method, but only work on some boards
@@ -3735,11 +3728,12 @@ ifneq ($(U),1)
   BOOT_CMD += -append "$(CMDLINE)"
 endif
 
-BOOT_TEST := default
 ifneq ($(TEST_REBOOT), 0)
   ifeq ($(findstring power,$(REBOOT_TYPE)),power)
     BOOT_TEST := loop
   endif
+else
+    BOOT_TEST := default
 endif
 
 # By default, seconds
@@ -3782,10 +3776,10 @@ endif
 endif
 
 TEST_XOPTS ?= $(XOPTS)
-TEST_RD ?= $(if $(TEST_ROOTDEV),$(TEST_ROOTDEV),/dev/nfs)
+TEST_RD    ?= $(if $(TEST_ROOTDEV),$(TEST_ROOTDEV),/dev/nfs)
 # Override TEST_RD if ROOTDEV specified
 ifeq ($(origin ROOTDEV), command line)
-  TEST_RD := $(ROOTDEV)
+  TEST_RD  := $(ROOTDEV)
 endif
 
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
@@ -3819,7 +3813,7 @@ rootdir-init: rootdir-clean rootdir
 module-init: modules modules-install
 
 ifeq ($(findstring module,$(FEATURE)),module)
-  MODULE_INIT := module-init
+  MODULE_INIT  := module-init
 endif
 
 ifneq ($(TEST_RD),/dev/nfs)
@@ -3882,9 +3876,9 @@ else
   DEBUG_DEPS   := force-kernel-build
 endif
 
-HOME_GDB_INIT ?= $(HOME)/.gdbinit
+HOME_GDB_INIT  ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
-GDB_USER     ?= $(USER)
+GDB_USER       ?= $(USER)
 
 # Xterm: terminator
 ifeq ($(XTERM), null)
@@ -3893,9 +3887,9 @@ else
   XTERM ?= $(shell tools/xterm.sh qterminal)
   # Testing should use non-interactive mode, otherwise, enable interactive.
   ifneq ($(TEST),)
-    XTERM_CMD    ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
+    XTERM_CMD  ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
   else
-    XTERM_CMD    ?= $(XTERM) --workdir $(CURDIR) --title "$(GDB_CMD)" -e "$(GDB_CMD)"
+    XTERM_CMD  ?= $(XTERM) --workdir $(CURDIR) --title "$(GDB_CMD)" -e "$(GDB_CMD)"
   endif
   XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
 endif
@@ -3952,8 +3946,8 @@ _BOOT_DEPS += $(BOOT_DTB)
 
 ifneq ($(DEBUG),0)
   # Debug listen on a unqiue port, should run exclusively
-  DEBUG_LOCK := $(GDBINIT_DIR)/.lock
-  KEEP_UNIQUE := flock -n -x $(DEBUG_LOCK)
+  DEBUG_LOCK   := $(GDBINIT_DIR)/.lock
+  KEEP_UNIQUE  := flock -n -x $(DEBUG_LOCK)
   RUN_BOOT_CMD := $(KEEP_UNIQUE) $(BOOT_CMD) || $(GDB_CMD)
 else
   RUN_BOOT_CMD := $(BOOT_CMD)
@@ -4072,10 +4066,10 @@ backup-build:
 
 PHONY += cache-build uncache-build backup-build
 
-# include .labend if exist
+# include $(TOP_DIR)/.labend if exist
 $(eval $(call _ti,labend))
 
-# include .labfini if exist
+# include $(TOP_DIR)/.labfini if exist
 $(eval $(call _ti,labfini))
 
 # add alias for linux and buildroot targets
@@ -4096,11 +4090,6 @@ endif
 
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
 PREFIX_TARGETS := list
-SILENT_TARGETS := list
-define silent_flag
-$(shell if [ "$(filter $(patsubst %-,,$(1)),$(SILENT_TARGETS))" = "$(1)" ]; then echo $$?; fi)
-endef
-
 define real_target
 $(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
 endef

@@ -13,6 +13,17 @@ echo
 echo "module: Starting testing: $MODULES ..."
 echo
 
+depmod=0
+mdir=/lib/modules/`uname -r`/
+if [ -d $mdir ]; then
+  if [ ! -f $mdir/modules.dep.bin ]; then
+    which depmod && depmod -A && depmod=1
+  else
+    depmod=1
+  fi
+fi
+
+
 for m in $MODULES
 do
 
@@ -22,9 +33,15 @@ do
 
     m_args=$(eval echo \$${m}_args)
     echo
-    echo "module: modprobe $m $m_args"
+    if [ "$depmod" = "1" ]; then
+      echo "module: modprobe $m $m_args"
+      modprobe $m $m_args &
+    else
+      m=$(find /lib/modules/`uname -r`/ -name "$m.ko")
+      echo "module: insmod $m $m_args"
+      insmod $m $m_args &
+    fi
     echo
-    modprobe $m $m_args &
     sleep 1
 
     echo

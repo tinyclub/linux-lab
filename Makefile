@@ -1575,7 +1575,7 @@ ifneq ($$(_$(call _uc,$(1))_SRC), $$($(call _uc,$(1))_SRC))
 else
   ifneq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
     $(call _uc,$(1))_GITREPO := $(1)-$$(subst /,-,$$(BOARD))-$$(notdir $$(patsubst %/,%,$$($(call _uc,$(1))_SPATH)))
-    $(call _uc,$(1))_GITADD  := if [ $$$$(git remote | grep -q $$($(call _uc,$(1))_GITREPO); echo $$$$?) -ne 0 ]; then git remote add $$($(call _uc,$(1))_GITREPO) $$($(call _uc,$(1))_GIT); fi
+    $(call _uc,$(1))_GITADD  := git remote | grep -q $$($(call _uc,$(1))_GITREPO) || git remote add $$($(call _uc,$(1))_GITREPO) $$($(call _uc,$(1))_GIT)
   endif
 endif
 
@@ -1584,7 +1584,7 @@ ifeq ($$($(call _uc,$(1))_GIT),)
 endif
 
 ifeq ($$($(call _uc,$(1))_GETGITURL),1)
-  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && grep -A1 "path = $$($(call _uc,$(1))_SPATH)" -ur $$($(call _uc,$(1))_SROOT)/.gitmodules | tail -1 | cut -d'=' -f2 | tr -d ' ')
+  __$(call _uc,$(1))_GIT := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -e "/path = $$($(call _uc,$(1))_SPATH)/{n;s%.* = *%%g}" -ur $$($(call _uc,$(1))_SROOT)/.gitmodules)
   ifneq ($$(__$(call _uc,$(1))_GIT),)
     _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
     $(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)

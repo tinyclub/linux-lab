@@ -718,7 +718,7 @@ define genverify
   ifneq ($$(BSP_$(1)),)
    ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
     ifeq ($(1),KERNEL)
-      $(2)_LIST ?= $$(foreach x,$$(shell ls -d -p $$(BSP_$(1))/*/$(notdir ${ORIIMG}) 2>/dev/null | sort -V),$$(notdir $$(subst //,,$$(dir $$x)/)))
+      $(2)_LIST ?= $$(filter-out $$(shell cd $$(BSP_$(1)) && ls -d -p */* | sed -ne "/\/.*\//{s%/.*%%g;p}"),$$(shell cd $$(BSP_$(1)) && ls -d * 2>/dev/null | sort -V))
     else
       $(2)_LIST ?= $$(shell ls $$(BSP_$(1)) | sort -V)
     endif

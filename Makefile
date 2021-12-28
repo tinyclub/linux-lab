@@ -312,14 +312,14 @@ define _range
 $(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
 endef
 
-ifeq ($(LATEST_TAG),1)
-define _latest
-$(shell latest=$$(wget $(1) -q -O - | grep -A1 "scrolling.*data-tab='tags'" | tail -1 | sed -e "s/<[^>]*>//g"); if [ -z "$$latest" ]; then echo $(2); else echo $$latest; fi)
+define _latest_init
+latest_$1 := $(shell tmp=$$(mktemp) && wget -v $(2) -O $$tmp && echo $$(grep -A1 "scrolling.*data-tab='tags'" $$tmp | tail -1 | sed -e "s/<[^>]*>//g") && rm $$tmp || echo $(3))
 endef
+
+# name: $1, url: $2, default: $3
 define _latest
-$(2)
+$(or $(latest_$1),$(eval $(call _latest_init,$1,$2,$3))$(latest_$1))
 endef
-endif
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f

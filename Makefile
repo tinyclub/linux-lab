@@ -85,8 +85,8 @@ $(or $(lc_$1),$(eval $(call _lc_init,$1))$(lc_$1))
 endef
 
 define load_config
-ifeq (.$(1)_config,$(wildcard .$(1)_config))
-  $$(call _uc,$(1))_CONFIG := $$(shell cat .$(1)_config 2>/dev/null)
+ifeq (.$1_config,$(wildcard .$1_config))
+  $$(call _uc,$1)_CONFIG := $$(shell cat .$1_config 2>/dev/null)
 endif
 endef
 
@@ -235,7 +235,7 @@ BOARD_MAKEFILE := $(BOARD_DIR)/Makefile
 # Common functions
 
 define _stamp
-$($(call _uc,$(1))_BUILD)/.stamp_$(1)-$(2)
+$($(call _uc,$1)_BUILD)/.stamp_$1-$2
 endef
 
 ## Version specific variable
@@ -249,11 +249,11 @@ endef
 ## B=$(call _v,GCC,LINUX),  4.4 if LINUX is not v2.6.35
 
 define ___v
-$($(1)[$(2)_$($(2))$(if $($(3)),$(comma)$(3)_$($(3)))])
+$($1[$2_$($2)$(if $($3),$(comma)$3_$($3))])
 endef
 
 define __v
-$(if $($(3)),$(or $(call ___v,$1,$2,$3),$(or $(call ___v,$1,$2),$(call ___v,$1,$3))),$(call ___v,$1,$2))
+$(if $($3),$(or $(call ___v,$1,$2,$3),$(or $(call ___v,$1,$2),$(call ___v,$1,$3))),$(call ___v,$1,$2))
 endef
 
 define _v
@@ -261,54 +261,54 @@ $(or $(call __v,$1,$2),$(or $3,$($1)))
 endef
 
 define __vsp
- ifneq ($$(call __v,$(1),$(2),$(3)),)
-   $(2)_$(1) := $$(call __v,$(1),$(2),$(3))
+ ifneq ($$(call __v,$1,$2,$3),)
+   $2_$1 := $$(call __v,$1,$2,$3)
  endif
 endef
 
 define __vsp_override
- ifneq ($$(call __v,$(1),$(2),$(3)),)
-   override $(2)_$(1) := $$(call __v,$(1),$(2),$(3))
+ ifneq ($$(call __v,$1,$2,$3),)
+   override $2_$1 := $$(call __v,$1,$2,$3)
  endif
 endef
 
 define __vs
- ifneq ($$(call __v,$(1),$(2),$(3)),)
-   $(1) := $$(call __v,$(1),$(2),$(3))
+ ifneq ($$(call __v,$1,$2,$3),)
+   $1 := $$(call __v,$1,$2,$3)
  endif
 endef
 
 define __vs_override
- ifneq ($$(call __v,$(1),$(2),$(3)),)
-   override $(1) := $$(call __v,$(1),$(2),$(3))
+ ifneq ($$(call __v,$1,$2,$3),)
+   override $1 := $$(call __v,$1,$2,$3)
  endif
 endef
 
 define _vs
- $(1) := $$(call _v,$(1),$(2))
+ $1 := $$(call _v,$1,$2)
 endef
 
 # Convert version string to version number, support 4 levels version string, like: v2.6.30.5
 define _v2v
-$(shell echo $(1) | tr -d '[a-zA-Z]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
+$(shell echo $1 | tr -d '[a-zA-Z]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
 endef
 
 define _vsif
- ifeq ($$(shell expr $(call _v2v,$($(3))) \$(4) $(call _v2v,$(5))),1)
-   $(1) := $(2)
+ ifeq ($$(shell expr $(call _v2v,$($3)) \$4 $(call _v2v,$5)),1)
+   $1 := $2
  endif
 endef
 
 define _any
-$(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \$(2) $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
+$(shell echo $($1) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \$2 $(call _v2v,$3)) -eq 1 ] && echo $($1))
 endef
 
 define _range
-$(shell echo $($(1)) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($(1))) \>= $(call _v2v,$(2))) -eq 1 -a $$(expr $(call _v2v,$($(1))) \<= $(call _v2v,$(3))) -eq 1 ] && echo $($(1)))
+$(shell echo $($1) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \>= $(call _v2v,$2)) -eq 1 -a $$(expr $(call _v2v,$($1)) \<= $(call _v2v,$3)) -eq 1 ] && echo $($1))
 endef
 
 define _latest_init
-latest_$1 := $(shell tmp=$$(mktemp) && wget -v $(2) -O $$tmp && echo $$(grep -A1 "scrolling.*data-tab='tags'" $$tmp | tail -1 | sed -e "s/<[^>]*>//g") && rm $$tmp || echo $(3))
+latest_$1 := $(shell tmp=$$(mktemp) && wget -v $2 -O $$tmp && echo $$(grep -A1 "scrolling.*data-tab='tags'" $$tmp | tail -1 | sed -e "s/<[^>]*>//g") && rm $$tmp || echo $3)
 endef
 
 # name: $1, url: $2, default: $3
@@ -318,40 +318,40 @@ endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _f
-$(3)/$(2).$(1)
+$3/$2.$1
 endef
 
 define _vf
-$(call _f,$(if $(4),$(call _lc,$1)_$($1),$(1)),$(2),$(3))
+$(call _f,$(if $4,$(call _lc,$1)_$($1),$1),$2,$3)
 endef
 
-# include $(3)/$(2).lowcase($(1))_$(1)
+# include $3/$2.lowcase($1)_$1
 define _i
-  $(1)_$(2) := $$(call _vf,$(1),$(2),$(3),$(4))
-  ifeq ($$($(1)_$(2)),$$(wildcard $$($(1)_$(2))))
-    include $$($(1)_$(2))
+  $1_$2 := $$(call _vf,$1,$2,$3,$4)
+  ifeq ($$($1_$2),$$(wildcard $$($1_$2)))
+    include $$($1_$2)
   endif
 endef
 
 # include $(BOARD_DIR)/Makefile.linux_$(LINUX)
 define _vi
-$(call _i,$(1),$(2),$(3),1)
+$(call _i,$1,$2,$3,1)
 endef
 
 define _bvi
-$(call _vi,$(1),$(2),$(BOARD_DIR))
+$(call _vi,$1,$2,$(BOARD_DIR))
 endef
 
 define _bi
-$(call _i,$(1),$(2),$(BOARD_DIR))
+$(call _i,$1,$2,$(BOARD_DIR))
 endef
 
 define _ti
-$(call _i,$(1),$(2),$(TOP_DIR))
+$(call _i,$1,$2,$(TOP_DIR))
 endef
 
 define _hi
-$(call _i,$(1),$(2),$(HOME_DIR))
+$(call _i,$1,$2,$(HOME_DIR))
 endef
 
 # Include board detailed configuration
@@ -485,26 +485,26 @@ endif
 endef
 
 define _lpb
-__$(1) := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$(1))))))
+__$1 := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$1)))))
 ifneq ($$($1),)
   ifeq ($$(filter $$($1),1 new build),$$($1))
-    PB$$(__$(1)) := 0
+    PB$$(__$1) := 0
   endif
   ifeq ($$(filter $$($1),0 old pre prebuild prebuilt),$$($1))
-    PB$$(__$(1)) := 1
+    PB$$(__$1) := 1
   endif
 endif
 ifneq ($(BUILD),)
-  ifeq ($$(filter $(1),$(BUILD)),$(1))
-    PB$$(__$(1)) := 0
+  ifeq ($$(filter $1,$(BUILD)),$1)
+    PB$$(__$1) := 0
   endif
 endif
 
 endef # _lpb
 
 define default_detectbuild
-ifneq ($$($(2)),)
-  override BUILD += $(1)
+ifneq ($$($2),)
+  override BUILD += $1
 endif
 
 endef
@@ -533,7 +533,7 @@ APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
 define gengoalslist
-$(foreach m,$(or $(2),$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$(1)))
+$(foreach m,$(or $2,$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$1))
 endef
 
 define genaliastarget
@@ -541,7 +541,7 @@ $(strip $(foreach m,$(APP_MAP),$(if $(subst $(call _lc,$(lastword $(subst :,$(sp
 endef
 
 define genaliassource
-$(or $(strip $(subst $(1),,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$(1))))),$(1))
+$(or $(strip $(subst $1,,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$1)))),$1)
 endef
 
 # Support alias, root -> buildroot, kernel -> linux
@@ -581,15 +581,15 @@ ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   endif
 
 define cli_detectapp
-ifeq ($$(origin $(2)),command line)
-  APP += $(1)
+ifeq ($$(origin $2),command line)
+  APP += $1
 endif
 
 endef
 
 define default_detectapp
-ifneq ($$($(2)),)
-  override app += $(1)
+ifneq ($$($2),)
+  override app += $1
 endif
 
 endef #default_detectapp
@@ -628,31 +628,31 @@ endif # common commands
 
 define genbuildenv
 
-GCC_$(2)   := $$(or $$(call __v,GCC,$(2),$(3)),$(GCC))
-CCORI_$(2) := $$(or $$(call __v,CCORI,$(2),$(3)),$(CCORI))
+GCC_$2   := $$(or $$(call __v,GCC,$2,$3),$(GCC))
+CCORI_$2 := $$(or $$(call __v,CCORI,$2,$3),$(CCORI))
 
-ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
-  ifneq ($$(CCORI_$(2))$$(GCC_$(2)),)
-    ifeq ($$(CCORI_$(2))$$(CCORI),)
-      CCORI_$(2) := internal
+ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
+  ifneq ($$(CCORI_$2)$$(GCC_$2),)
+    ifeq ($$(CCORI_$2)$$(CCORI),)
+      CCORI_$2 := internal
       CCORI      := internal
     else
-      $$(eval $$(call __vs,CCORI,$(2),$(3)))
+      $$(eval $$(call __vs,CCORI,$2,$3))
     endif
-    GCC_$(2)_SWITCH := 1
+    GCC_$2_SWITCH := 1
   endif
 endif
 
 ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
- HOST_GCC_$(2)   := $$(or $$(call __v,HOST_GCC,$(2),$(3)),$(HOST_GCC))
- HOST_CCORI_$(2) := $$(or $$(call __v,HOST_CCORI,$(2),$(3)),$(HOST_CCORI))
+ HOST_GCC_$2   := $$(or $$(call __v,HOST_GCC,$2,$3),$(HOST_GCC))
+ HOST_CCORI_$2 := $$(or $$(call __v,HOST_CCORI,$2,$3),$(HOST_CCORI))
 
- ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
-  ifneq ($$(HOST_CCORI_$(2))$$(HOST_GCC_$(2)),)
-    ifeq ($$(HOST_CCORI_$(2))$$(HOST_CCORI),)
-      HOST_CCORI_$(2) := internal
+ ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
+  ifneq ($$(HOST_CCORI_$2)$$(HOST_GCC_$2),)
+    ifeq ($$(HOST_CCORI_$2)$$(HOST_CCORI),)
+      HOST_CCORI_$2 := internal
     endif
-    HOST_GCC_$(2)_SWITCH := 1
+    HOST_GCC_$2_SWITCH := 1
   endif
  endif
 endif
@@ -707,23 +707,23 @@ endif
 # generate verify function
 define genverify
  ifneq ($$($2),)
-  ifneq ($$(BSP_$(1)),)
-   ifeq ($$(BSP_$(1)), $$(wildcard $$(BSP_$(1))))
-    ifeq ($(1),KERNEL)
-      $(2)_LIST ?= $$(filter-out $$(shell cd $$(BSP_$(1)) && ls -d -p */* | sed -ne "/\/.*\//{s%/.*%%g;p}"),$$(shell cd $$(BSP_$(1)) && ls -d * 2>/dev/null | sort -V))
+  ifneq ($$(BSP_$1),)
+   ifeq ($$(BSP_$1), $$(wildcard $$(BSP_$1)))
+    ifeq ($1,KERNEL)
+      $2_LIST ?= $$(filter-out $$(shell cd $$(BSP_$1) && ls -d -p */* | sed -ne "/\/.*\//{s%/.*%%g;p}"),$$(shell cd $$(BSP_$1) && ls -d * 2>/dev/null | sort -V))
     else
-      $(2)_LIST ?= $$(shell ls $$(BSP_$(1)) | sort -V)
+      $2_LIST ?= $$(shell ls $$(BSP_$1) | sort -V)
     endif
    endif
   endif
   # If Linux version specific qemu list defined, use it
-  $$(eval $$(call __vs_override,$(2)_LIST,$$(or $(3),LINUX)))
-  ifneq ($$($(2)_LIST),)
-    ifneq ($$(filter $$($2), $$($(2)_LIST)), $$($2))
-      $$(if $(4),$$(eval $$(call $(4))))
-      verify_notice := $$(BOARD): $$($2) not in supported $(2) list: $$($(2)_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
-      ifeq ($$(filter $$(call _lc,$(1)),$(APPS)),$$(call _lc,$(1)))
-        verify_notice += clone one please: 'make $$(call _lc,$(1))-clone $(2)_NEW=$$($2)'
+  $$(eval $$(call __vs_override,$2_LIST,$$(or $3,LINUX)))
+  ifneq ($$($2_LIST),)
+    ifneq ($$(filter $$($2), $$($2_LIST)), $$($2))
+      $$(if $4,$$(eval $$(call $4)))
+      verify_notice := $$(BOARD): $$($2) not in supported $2 list: $$($2_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
+      ifeq ($$(filter $$(call _lc,$1),$(APPS)),$$(call _lc,$1))
+        verify_notice += clone one please: 'make $$(call _lc,$1)-clone $2_NEW=$$($2)'
       else
         verify_notice += update may help: 'make bsp B=$$(BOARD)'
       endif
@@ -738,13 +738,13 @@ define genverify
   endif
  endif
  # Strip prefix of LINUX to get the real version, e.g. XXX-v3.10, XXX may be the customized repo name
- ifneq ($$($(1)_SRC),)
-   ifneq ($$(_$(1)_SRC), $$($(1)_SRC))
-    _$(2) := $$(subst $$(shell basename $$($(1)_SRC))-,,$$($(2)))
-    ifneq ($$(findstring $$(TOP_SRC),$$($(1)_SRC)),$$(TOP_SRC))
-      $(1)_ABS_SRC := $$(TOP_SRC)/$$($(1)_SRC)
+ ifneq ($$($1_SRC),)
+   ifneq ($$(_$1_SRC), $$($1_SRC))
+    _$2 := $$(subst $$(shell basename $$($1_SRC))-,,$$($2))
+    ifneq ($$(findstring $$(TOP_SRC),$$($1_SRC)),$$(TOP_SRC))
+      $1_ABS_SRC := $$(TOP_SRC)/$$($1_SRC)
     else
-      $(1)_ABS_SRC := $$($(1)_SRC)
+      $1_ABS_SRC := $$($1_SRC)
     endif
    endif
  endif
@@ -1286,7 +1286,7 @@ cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eva
 endef
 
 define showboardvars
-echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $(1),$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(VAR_FILTER)"
+echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(VAR_FILTER)"
 endef
 
 BSP_CHECKOUT ?= bsp-checkout
@@ -1436,18 +1436,18 @@ list-%: FORCE
 
 # Define generic target deps support
 define make_qemu
-$(C_PATH) make $(NPD) -C $(QEMU_BUILD)/$(2) -j$(JOBS) V=$(V) $(1)
+$(C_PATH) make $(NPD) -C $(QEMU_BUILD)/$2 -j$(JOBS) V=$(V) $1
 endef
 
 # Customize make-3.81 for old kernel <= v2.6.29
 $(eval $(call __vs,MAKE,LINUX))
 
 define make_kernel
-$(C_PATH) $(MAKE) $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $(1)
+$(C_PATH) $(MAKE) $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $1
 endef
 
 define make_root
-make $(NPD) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $(1)
+make $(NPD) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $1
 endef
 
 # FIXME: ugly workaround for uboot, it share code between arm and arm64
@@ -1456,155 +1456,155 @@ $(shell if [ $1 = arm64 ]; then echo arm; else echo $1; fi)
 endef
 
 define make_uboot
-$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $(1)
+$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $1
 endef
 
 # generate target dependencies
 define gendeps
 
-$(1)-patch: $(1)-checkout
-$(1)-defconfig: $(1)-patch
-$(1)-defconfig: $(1)-env
-$(1)-modules-install: $(1)-modules
-$(1)-modules-install-km: $(1)-modules-km
-$(1)-help: $(1)-defconfig
+$1-patch: $1-checkout
+$1-defconfig: $1-patch
+$1-defconfig: $1-env
+$1-modules-install: $1-modules
+$1-modules-install-km: $1-modules-km
+$1-help: $1-defconfig
 
-$(1)_defconfig_childs := $(addprefix $(1)-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km do)
-ifeq ($(firstword $(MAKECMDGOALS)),$(1))
-  $(1)_defconfig_childs := $(1)
+$1_defconfig_childs := $(addprefix $1-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km do)
+ifeq ($(firstword $(MAKECMDGOALS)),$1)
+  $1_defconfig_childs := $1
 endif
 
-$$($(1)_defconfig_childs): $(1)-defconfig
+$$($1_defconfig_childs): $1-defconfig
 
-$(1)-saveall: $(1)-save $(1)-saveconfig
+$1-saveall: $1-save $1-saveconfig
 
-$(1)-save $(1)-saveconfig: $(1)-build
+$1-save $1-saveconfig: $1-build
 
-$(1)_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(1))))))
+$1_APP_TYPE := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$1)))))
 
-ifeq ($$(PB$$($(1)_APP_TYPE)),0)
-  ifeq ($$(origin PB$$($(1)_APP_TYPE)),command line)
-    boot_deps += $(1)-build
+ifeq ($$(PB$$($1_APP_TYPE)),0)
+  ifeq ($$(origin PB$$($1_APP_TYPE)),command line)
+    boot_deps += $1-build
   endif
 endif
 
-$(1)_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$(1)))))
+$1_app_type := $(subst x,,$(firstword $(foreach i,k u r q,$(findstring x$i,x$1))))
 
-ifeq ($$($$($(1)_app_type)),1)
-  ifeq ($$(origin $$($(1)_app_type)),command line)
-    boot_deps += $(1)-build
+ifeq ($$($$($1_app_type)),1)
+  ifeq ($$(origin $$($1_app_type)),command line)
+    boot_deps += $1-build
   endif
 endif
 
-ifeq ($$($(1)),1)
-  ifeq ($$(origin $(1)),command line)
-    boot_deps += $(1)-build
+ifeq ($$($1),1)
+  ifeq ($$(origin $1),command line)
+    boot_deps += $1-build
   endif
 endif
 
-ifeq ($(filter $(1),$(BUILD)),$(1))
-  boot_deps   += $(1)-build
+ifeq ($(filter $1,$(BUILD)),$1)
+  boot_deps   += $1-build
 endif
 
 ifeq ($(filter $(BOARD),$(BOARD_FREE)),$(BOARD))
 
-$(1)_bsp_childs := $(addprefix $(1)-,defconfig patch saveall save saveconfig clone)
-$$($(1)_bsp_childs): $(BSP_CHECKOUT)
+$1_bsp_childs := $(addprefix $1-,defconfig patch saveall save saveconfig clone)
+$$($1_bsp_childs): $(BSP_CHECKOUT)
 
 endif
 
 _boot: $$(boot_deps)
 
-$$(call _stamp,$(1),build): $$(if $$($(call _uc,$(1))_CONFIG_STATUS),,$$($(call _uc,$(1))_BUILD)/$$(or $$($(call _uc,$(1))_CONFIG_STATUS),.config)) $$($(call _uc,$(1))_ABS_SRC)
-	$$(Q)make $$(NPD) _$(1)
+$$(call _stamp,$1,build): $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config)) $$($(call _uc,$1)_ABS_SRC)
+	$$(Q)make $$(NPD) _$1
 	$$(Q)touch $$@
 
-ifeq ($$(findstring $(1),$$(firstword $$(MAKECMDGOALS))),$(1))
-$(1): $(if $(x),_$(1),$(1)-build)
+ifeq ($$(findstring $1,$$(firstword $$(MAKECMDGOALS))),$1)
+$1: $(if $(x),_$1,$1-build)
 endif
 
 # Force app building for current building targets can not auto detect code update
-ifeq ($(filter $(first_target),$(1) $(1)-build build), $(first_target))
-$(1)-build: _$(1)
+ifeq ($(filter $(first_target),$1 $1-build build), $(first_target))
+$1-build: _$1
 else
-$(1)-build: $$(call _stamp,$(1),build)
+$1-build: $$(call _stamp,$1,build)
 endif
 
-$(1)-do: _$(1)
+$1-do: _$1
 
-$(1)-release: $(1) $(1)-save $(1)-saveconfig
+$1-release: $1 $1-save $1-saveconfig
 
-$(1)-new $(1)-clone: $(1)-cloneconfig $(1)-clonepatch
+$1-new $1-clone: $1-cloneconfig $1-clonepatch
 
-PHONY += $(addprefix $(1)-,save saveconfig savepatch build release new clone)
+PHONY += $(addprefix $1-,save saveconfig savepatch build release new clone)
 
 endef # gendeps
 
 # generate xxx-source target
 define gensource
 
-$(call _uc,$(1))_SRC_DEFAULT := 1
+$(call _uc,$1)_SRC_DEFAULT := 1
 
-ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$(1))_SRC))),$$($(call _uc,$(1))_SRC))
-  ifeq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$(1))_SRC)),x$$(BSP_DIR))
-    $(call _uc,$(1))_SROOT := $$(BSP_DIR)
-    $(call _uc,$(1))_SPATH := $$(subst $$(BSP_DIR)/,,$$($(call _uc,$(1))_SRC))
-    $(call _uc,$(1))_SRC_DEFAULT := 0
+ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$1)_SRC))),$$($(call _uc,$1)_SRC))
+  ifeq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$1)_SRC)),x$$(BSP_DIR))
+    $(call _uc,$1)_SROOT := $$(BSP_DIR)
+    $(call _uc,$1)_SPATH := $$(subst $$(BSP_DIR)/,,$$($(call _uc,$1)_SRC))
+    $(call _uc,$1)_SRC_DEFAULT := 0
   else
     ifneq ($$(PLUGIN_DIR),)
-      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$(TOP_DIR)/$$($(call _uc,$(1))_SRC)),x$$(PLUGIN_DIR))
-        $(call _uc,$(1))_SROOT := $$(PLUGIN_DIR)
-        $(call _uc,$(1))_SPATH := $$(subst $$(PLUGIN_DIR),,$$(TOP_DIR)/$$($(call _uc,$(1))_SRC))
-        $(call _uc,$(1))_SRC_DEFAULT := 0
+      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$(TOP_DIR)/$$($(call _uc,$1)_SRC)),x$$(PLUGIN_DIR))
+        $(call _uc,$1)_SROOT := $$(PLUGIN_DIR)
+        $(call _uc,$1)_SPATH := $$(subst $$(PLUGIN_DIR),,$$(TOP_DIR)/$$($(call _uc,$1)_SRC))
+        $(call _uc,$1)_SRC_DEFAULT := 0
       endif
     endif
   endif
 endif
 
-ifeq ($$($(call _uc,$(1))_SRC_DEFAULT),1)
+ifeq ($$($(call _uc,$1)_SRC_DEFAULT),1)
   # Put submodule is root of linux-lab if no directory specified or if not the above cases
   ifneq ($1, bsp)
-    $(call _uc,$(1))_SROOT := $$(TOP_SRC)
-    $(call _uc,$(1))_SPATH := $$(subst $$(TOP_SRC)/,,$$($(call _uc,$(1))_SRC))
+    $(call _uc,$1)_SROOT := $$(TOP_SRC)
+    $(call _uc,$1)_SPATH := $$(subst $$(TOP_SRC)/,,$$($(call _uc,$1)_SRC))
   else
-    $(call _uc,$(1))_SROOT := $$(TOP_DIR)
-    $(call _uc,$(1))_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$(1))_DIR))
+    $(call _uc,$1)_SROOT := $$(TOP_DIR)
+    $(call _uc,$1)_SPATH := $$(subst $$(TOP_DIR)/,,$$($(call _uc,$1)_DIR))
   endif
 endif
 
-$(call _uc,$(1))_GITADD := git remote -v
-ifneq ($$(_$(call _uc,$(1))_SRC), $$($(call _uc,$(1))_SRC))
-  ifeq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
-    $(call _uc,$(1))_GETGITURL := 1
+$(call _uc,$1)_GITADD := git remote -v
+ifneq ($$(_$(call _uc,$1)_SRC), $$($(call _uc,$1)_SRC))
+  ifeq ($$(_$(call _uc,$1)_GIT), $$($(call _uc,$1)_GIT))
+    $(call _uc,$1)_GETGITURL := 1
   endif
 else
-  ifneq ($$(_$(call _uc,$(1))_GIT), $$($(call _uc,$(1))_GIT))
-    $(call _uc,$(1))_GITREPO := $(1)-$$(subst /,-,$$(BOARD))-$$(notdir $$(patsubst %/,%,$$($(call _uc,$(1))_SPATH)))
-    $(call _uc,$(1))_GITADD  := git remote | grep -q $$($(call _uc,$(1))_GITREPO) || git remote add $$($(call _uc,$(1))_GITREPO) $$($(call _uc,$(1))_GIT)
+  ifneq ($$(_$(call _uc,$1)_GIT), $$($(call _uc,$1)_GIT))
+    $(call _uc,$1)_GITREPO := $1-$$(subst /,-,$$(BOARD))-$$(notdir $$(patsubst %/,%,$$($(call _uc,$1)_SPATH)))
+    $(call _uc,$1)_GITADD  := git remote | grep -q $$($(call _uc,$1)_GITREPO) || git remote add $$($(call _uc,$1)_GITREPO) $$($(call _uc,$1)_GIT)
   endif
 endif
 
-ifeq ($$($(call _uc,$(1))_GIT),)
-  $(call _uc,$(1))_GETGITURL := 1
+ifeq ($$($(call _uc,$1)_GIT),)
+  $(call _uc,$1)_GETGITURL := 1
 endif
 
-ifeq ($$($(call _uc,$(1))_GETGITURL),1)
-  __$(call _uc,$(1))_GIT  := $$(shell [ -f $$($(call _uc,$(1))_SROOT)/.gitmodules ] && sed -ne "/path = $$(subst /,\/,$$($(call _uc,$(1))_SPATH))/{n;s/.*url[ ]*=[ ]*//g;p}" $$($(call _uc,$(1))_SROOT)/.gitmodules)
-  ifneq ($$(__$(call _uc,$(1))_GIT),)
-    _$(call _uc,$(1))_GIT := $$(__$(call _uc,$(1))_GIT)
-    $(call _uc,$(1))_GIT  := $$(__$(call _uc,$(1))_GIT)
+ifeq ($$($(call _uc,$1)_GETGITURL),1)
+  __$(call _uc,$1)_GIT  := $$(shell [ -f $$($(call _uc,$1)_SROOT)/.gitmodules ] && sed -ne "/path = $$(subst /,\/,$$($(call _uc,$1)_SPATH))/{n;s/.*url[ ]*=[ ]*//g;p}" $$($(call _uc,$1)_SROOT)/.gitmodules)
+  ifneq ($$(__$(call _uc,$1)_GIT),)
+    _$(call _uc,$1)_GIT := $$(__$(call _uc,$1)_GIT)
+    $(call _uc,$1)_GIT  := $$(__$(call _uc,$1)_GIT)
   endif
 else
-  _$(call _uc,$(1))_GIT   := $$($(call _uc,$(1))_GIT)
+  _$(call _uc,$1)_GIT   := $$($(call _uc,$1)_GIT)
 endif
 
 # Build the full src directory
-$(call _uc,$(1))_SRC_FULL := $$($(call _uc,$(1))_SROOT)/$$($(call _uc,$(1))_SPATH)
+$(call _uc,$1)_SRC_FULL := $$($(call _uc,$1)_SROOT)/$$($(call _uc,$1)_SPATH)
 
-$(1)-license: $$(call _stamp,$(1),license)
+$1-license: $$(call _stamp,$1,license)
 
-$$(call _stamp,$(1),license):
-	@if [ "$(1)" = "bsp" ]; then \
+$$(call _stamp,$1,license):
+	@if [ "$1" = "bsp" ]; then \
 	  for f in $(BOARD_FREE); do \
 	    [ "$$$$f" = "$(BOARD)" ] && touch $$@ && exit 0; \
 	  done ; \
@@ -1625,272 +1625,272 @@ $$(call _stamp,$(1),license):
 
 # Build _PKG_ABS_SRC for local fetch
 ifneq ($(_TOP_SRC),)
-  __$(call _uc,$(1))_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$(1))_SRC)/
-  __$(call _uc,$(1))_ABS_TAG  := $$(__$(call _uc,$(1))_ABS_SRC)/.git/packed-refs
-  ifeq ($$(wildcard $$(__$(call _uc,$(1))_ABS_TAG)),$$(__$(call _uc,$(1))_ABS_TAG))
-    _$(call _uc,$(1))_ABS_SRC := $$$$(cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo $$(__$(call _uc,$(1))_ABS_SRC))
-    $(call _uc,$(1))_GITADD   := cd $$(__$(call _uc,$(1))_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && echo From: $$(__$(call _uc,$(1))_ABS_SRC) || $$($(call _uc,$(1))_GITADD)
+  __$(call _uc,$1)_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$1)_SRC)/
+  __$(call _uc,$1)_ABS_TAG  := $$(__$(call _uc,$1)_ABS_SRC)/.git/packed-refs
+  ifeq ($$(wildcard $$(__$(call _uc,$1)_ABS_TAG)),$$(__$(call _uc,$1)_ABS_TAG))
+    _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && echo $$(__$(call _uc,$1)_ABS_SRC))
+    $(call _uc,$1)_GITADD   := cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && echo From: $$(__$(call _uc,$1)_ABS_SRC) || $$($(call _uc,$1)_GITADD)
   endif
 endif
 
-$$(call _stamp,$(1),source): $$(call _stamp,$(1),outdir) $(1)-license
-	$$(Q)if [ -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-		[ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL);	\
-		if [ $$$$([ -d $$($(call _uc,$(1))_SRC_FULL) ] && cd $$($(call _uc,$(1))_SRC_FULL) && git cat-file -e $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
-			echo "Updating $(1) source ..."; \
-			$$($(call _uc,$(1))_GITADD); \
-			git fetch --progress $$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(or $$($(call _uc,$(1))_GITREPO),origin)) \
-			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
+$$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
+	$$(Q)if [ -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
+		[ -d $$($(call _uc,$1)_SRC_FULL) ] && cd $$($(call _uc,$1)_SRC_FULL);	\
+		if [ $$$$([ -d $$($(call _uc,$1)_SRC_FULL) ] && cd $$($(call _uc,$1)_SRC_FULL) && git cat-file -e $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) >/dev/null 2>&1; echo $$$$?) -ne 0 ]; then \
+			echo "Updating $1 source ..."; \
+			$$($(call _uc,$1)_GITADD); \
+			git fetch --progress $$(or $$(_$(call _uc,$1)_ABS_SRC),$$(or $$($(call _uc,$1)_GITREPO),origin)) \
+			$$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && (git tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) || true),--tags) \
 			&& touch $$@; \
 		fi;	\
 		cd $$(TOP_DIR); \
 	else		\
-		echo "Downloading $(1) source ..."; \
-		[ ! -d $$($(call _uc,$(1))_SROOT) ] && mkdir -p $$($(call _uc,$(1))_SROOT); \
-		cd $$($(call _uc,$(1))_SROOT) && \
-			mkdir -p $$($(call _uc,$(1))_SPATH) && \
-			cd $$($(call _uc,$(1))_SPATH) && \
+		echo "Downloading $1 source ..."; \
+		[ ! -d $$($(call _uc,$1)_SROOT) ] && mkdir -p $$($(call _uc,$1)_SROOT); \
+		cd $$($(call _uc,$1)_SROOT) && \
+			mkdir -p $$($(call _uc,$1)_SPATH) && \
+			cd $$($(call _uc,$1)_SPATH) && \
 			git init &&		\
-			REMOTE_REPO=$$(or $$(_$(call _uc,$(1))_ABS_SRC),$$(_$(call _uc,$(1))_GIT)) && \
+			REMOTE_REPO=$$(or $$(_$(call _uc,$1)_ABS_SRC),$$(_$(call _uc,$1)_GIT)) && \
 			echo "From: $$$$REMOTE_REPO" && \
 			git remote add origin $$$$REMOTE_REPO && \
 			git fetch --progress origin \
-			$$(if $$(if $$(__$(call _uc,$(2))),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) && (git tag $$(or $$(__$(call _uc,$(2))),$$(_$(call _uc,$(2)))) || true),--tags) \
+			$$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && (git tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) || true),--tags) \
 			&& touch $$@; \
 		cd $$(TOP_DIR); \
 	fi
 
-$(1)-source: $$(call _stamp,$(1),source)
+$1-source: $$(call _stamp,$1,source)
 
-$(1)-checkout: $(1)-source
+$1-checkout: $1-source
 
-$$(call _stamp,$(1),checkout):
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-	cd $$($(call _uc,$(1))_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$(2)) && touch $$@ && cd $$(TOP_DIR); \
+$$(call _stamp,$1,checkout):
+	$$(Q)if [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
+	cd $$($(call _uc,$1)_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) && touch $$@ && cd $$(TOP_DIR); \
 	fi
 
-$(1)-checkout: $$(call _stamp,$(1),checkout)
+$1-checkout: $$(call _stamp,$1,checkout)
 
-$$(call _stamp,$(1),outdir): $$($(call _uc,$(1))_BUILD)
+$$(call _stamp,$1,outdir): $$($(call _uc,$1)_BUILD)
 	$$(Q)touch $$@
 
-$$($(call _uc,$(1))_BUILD): $$(CACHE_BUILD_TARGET)
+$$($(call _uc,$1)_BUILD): $$(CACHE_BUILD_TARGET)
 	$$(Q)mkdir -p $$@
 
-$(1)-outdir: $$(call _stamp,$(1),outdir)
+$1-outdir: $$(call _stamp,$1,outdir)
 
-$(1)_source_childs := $(1)-download download-$(1)
+$1_source_childs := $1-download download-$1
 
-$$($(1)_source_childs): $(1)-source
+$$($1_source_childs): $1-source
 
-PHONY += $(addprefix $(1)-,source download license) download-$(1)
+PHONY += $(addprefix $1-,source download license) download-$1
 
-$(1)-%-cleanstamp:
-	$$(Q)rm -f $$(call _stamp,$(1),$$(subst $(1)-,,$$(subst -cleanstamp,,$$@)))
+$1-%-cleanstamp:
+	$$(Q)rm -f $$(call _stamp,$1,$$(subst $1-,,$$(subst -cleanstamp,,$$@)))
 
-$(1)-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$(1))_BUILD)/.stamp_$(1)-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
+$1-cleanstamp:
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
 
-## clean up $(1) source code
-$(1)-cleansrc: $(1)-cleanup
-$(1)-cleanup: $(1)-cleanstamp
-	$$(Q)if [ -d $$($(call _uc,$(1))_SRC_FULL) -a -e $$($(call _uc,$(1))_SRC_FULL)/.git ]; then \
-		cd $$($(call _uc,$(1))_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$(1)]) && cd $$(TOP_DIR); \
+## clean up $1 source code
+$1-cleansrc: $1-cleanup
+$1-cleanup: $1-cleanstamp
+	$$(Q)if [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
+		cd $$($(call _uc,$1)_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$1]) && cd $$(TOP_DIR); \
 	fi
 
-$(1)-clean: $(1)-rawclean
-$(1)-cleanall: $(1)-clean $(1)-cleansrc
+$1-clean: $1-rawclean
+$1-cleanall: $1-clean $1-cleansrc
 
-$(1)-rawclean: $$($(call _uc,$(1))_CLEAN_DEPS)
-ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
-	-$$(Q)$$(call make_$(1),clean)
+$1-rawclean: $$($(call _uc,$1)_CLEAN_DEPS)
+ifeq ($$($(call _uc,$1)_BUILD)/Makefile, $$(wildcard $$($(call _uc,$1)_BUILD)/Makefile))
+	-$$(Q)$$(call make_$1,clean)
 endif
 
-$(1)-distclean:
-ifeq ($$($(call _uc,$(1))_BUILD)/Makefile, $$(wildcard $$($(call _uc,$(1))_BUILD)/Makefile))
-	-$$(Q)$$(call make_$(1),distclean)
-	$$(Q)rm -rf $$($(call _uc,$(1))_BUILD)
+$1-distclean:
+ifeq ($$($(call _uc,$1)_BUILD)/Makefile, $$(wildcard $$($(call _uc,$1)_BUILD)/Makefile))
+	-$$(Q)$$(call make_$1,distclean)
+	$$(Q)rm -rf $$($(call _uc,$1)_BUILD)
 endif
 
-PHONY += $(addprefix $(1)-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
+PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
 
 endef # gensource
 
 # Generate basic goals
 define gengoals
 
-$(1)-list:
-	$$(Q)echo " $$($(2)_LIST) " | sed -e 's%\($$($(2))\)\([ ]\{1,\}\)%[\1]\2%g;s%^ %%g;s% $$$$%%g'
+$1-list:
+	$$(Q)echo " $$($2_LIST) " | sed -e 's%\($$($2)\)\([ ]\{1,\}\)%[\1]\2%g;s%^ %%g;s% $$$$%%g'
 
-$(1)-help:
-	$$(Q)$$(or $$(call $(1)_make_help),$$(call make_$(1),help))
+$1-help:
+	$$(Q)$$(or $$(call $1_make_help),$$(call make_$1,help))
 
-$$(call _stamp,$(1),patch):
-	@if [ ! -f $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched ]; then \
-	  $($(call _uc,$(1))_PATCH_EXTRAACTION) \
-	  if [ -f tools/$(1)/patch.sh ]; then \
-		tools/$(1)/patch.sh $$(BOARD) $$($2) $$($(call _uc,$(1))_SRC_FULL) $$($(call _uc,$(1))_BUILD) && \
-		touch $$($(call _uc,$(1))_SRC_FULL)/.$(1).patched && \
+$$(call _stamp,$1,patch):
+	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
+	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
+	  if [ -f tools/$1/patch.sh ]; then \
+		tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD) && \
+		touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched && \
 		touch $$@; \
 	  fi; \
 	else		\
-	  echo "ERR: $(1) patchset has been applied, if want, please backup important changes and do 'make $(1)-cleanup' at first." && exit 1; \
+	  echo "ERR: $1 patchset has been applied, if want, please backup important changes and do 'make $1-cleanup' at first." && exit 1; \
 	fi
 
-$(1)-patch: $$(call _stamp,$(1),patch)
+$1-patch: $$(call _stamp,$1,patch)
 
-$(1)-savepatch:
-	$(Q)cd $$($(call _uc,$(1))_SRC_FULL) && git format-patch $$(_$2) && cd $$(TOP_DIR)
-	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
-	$(Q)cp $$($(call _uc,$(1))_SRC_FULL)/*.patch $$(BSP_PATCH)/$(call _lc,$(2))/$$($2)/
+$1-savepatch:
+	$(Q)cd $$($(call _uc,$1)_SRC_FULL) && git format-patch $$(_$2) && cd $$(TOP_DIR)
+	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$2)/$$($2)/
+	$(Q)cp $$($(call _uc,$1)_SRC_FULL)/*.patch $$(BSP_PATCH)/$(call _lc,$2)/$$($2)/
 
-debug-$(1): $(1)-debug
+debug-$1: $1-debug
 
 ifeq ($(_VIRT),1)
-$(1)-debug: _boot
+$1-debug: _boot
 else
-$(1)-debug: _debug
+$1-debug: _debug
 endif
 
-$(1)-boot: _boot
+$1-boot: _boot
 
-$(1)-test: _test
+$1-test: _test
 
-$(1)-test-debug:
-	$$(Q)make _test DEBUG=$(1)
+$1-test-debug:
+	$$(Q)make _test DEBUG=$1
 
-PHONY += $(addprefix $(1)-,list help checkout patch debug boot test)
+PHONY += $(addprefix $1-,list help checkout patch debug boot test)
 
 endef # gengoals
 
 define gencfgs
 
-$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$(2)))_defconfig
-$(3)CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
+$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
+$3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
-ifeq ($$($(3)CFG),$$($(call _uc,$1)_CONFIG_FILE))
-  $(3)CFG_FILE  := $$(_BSP_CONFIG)/$$($(3)CFG)
+ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
+  $3CFG_FILE  := $$(_BSP_CONFIG)/$$($3CFG)
 else
-  _$(3)CFG_FILE := $$(shell for f in $$($(3)CFG) $(_BSP_CONFIG)/$$($(3)CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($(3)CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($(3)CFG); do \
+  _$3CFG_FILE := $$(shell for f in $$($3CFG) $(_BSP_CONFIG)/$$($3CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($3CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($3CFG); do \
 		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
-  ifneq ($$(_$(3)CFG_FILE),)
-    $(3)CFG_FILE := $$(subst //,/,$$(_$(3)CFG_FILE))
+  ifneq ($$(_$3CFG_FILE),)
+    $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
   else
-    $$(error $$($(3)CFG): can not be found, please pass a valid $(1) defconfig)
+    $$(error $$($3CFG): can not be found, please pass a valid $1 defconfig)
   endif
 endif
 
-ifeq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($(3)CFG_FILE)),$$($(call _uc,$1)_CONFIG_DIR))
-  $(3)CFG_BUILTIN := 1
+ifeq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($3CFG_FILE)),$$($(call _uc,$1)_CONFIG_DIR))
+  $3CFG_BUILTIN := 1
 endif
 
-_$(3)CFG := $$(notdir $$($(3)CFG_FILE))
+_$3CFG := $$(notdir $$($3CFG_FILE))
 
-$$(call _stamp,$(1),defconfig): $$(if $$($(3)CFG_BUILTIN),,$$($(3)CFG_FILE))
+$$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE))
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
-	$$(Q)$$(if $$($(3)CFG_BUILTIN),,cp $$($(3)CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
-	$$(Q)$$(if $$(CFGS[$(3)_N]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -d $$n;))
-	$$(Q)$$(if $$(CFGS[$(3)_Y]),$$(foreach n,$$(CFGS[$(3)_N]),$$(SCRIPTS_$(3)CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$(3)CFG) -e $$n;))
-	$$(Q)$$(or $$(call $(1)_make_defconfig),$$(call make_$(1),$$(_$(3)CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
+	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
+	$$(Q)$$(if $$(CFGS[$3_N]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -d $$n;))
+	$$(Q)$$(if $$(CFGS[$3_Y]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -e $$n;))
+	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
-$(1)-defconfig: $$(call _stamp,$(1),defconfig)
+$1-defconfig: $$(call _stamp,$1,defconfig)
 
-$(1)-olddefconfig:
+$1-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
-$(1)-oldconfig:
+$1-oldconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
-$(1)-menuconfig:
+$1-menuconfig:
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
-PHONY += $(addprefix $(1)-,defconfig olddefconfig oldconfig menuconfig)
+PHONY += $(addprefix $1-,defconfig olddefconfig oldconfig menuconfig)
 
 endef # gencfgs
 
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-NEW_$(3)CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$(1))_FORK_)$(2)_$$($(call _uc,$2)_NEW)_defconfig
+NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifneq ($$(NEW_PREBUILT_$(call _uc,$1)_DIR),$$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)))
 
-OLD_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2))
-NEW_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$(1))_FORK_)$2/$$($(call _uc,$2)_NEW)
+OLD_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$1)_FORK_)$2/$$($(call _uc,$2))
+NEW_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$1)_FORK_)$2/$$($(call _uc,$2)_NEW)
 NEW_$(call _uc,$1)_GCC := $$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
-$(1)-cloneconfig:
-	$$(Q)if [ -f "$$($(3)CFG_FILE)" ]; then cp $$($(3)CFG_FILE) $$(NEW_$(3)CFG_FILE); fi
+$1-cloneconfig:
+	$$(Q)if [ -f "$$($3CFG_FILE)" ]; then cp $$($3CFG_FILE) $$(NEW_$3CFG_FILE); fi
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
 	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
 		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
 	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
 
-$(1)-clonepatch:
+$1-clonepatch:
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
 ifneq ($(PATCH_CLONE),0)
 	$$(Q)if [ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ]; then find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \;; fi
 endif
 
 else
-$(1)-cloneconfig:
+$1-cloneconfig:
 	$$(Q)echo $$($(call _uc,$2)_NEW) already exists!
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
 	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
 		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
 
-$(1)-clonepatch:
+$1-clonepatch:
 endif
 
 else
-$(1)-cloneconfig $(1)-clonepatch:
+$1-cloneconfig $1-clonepatch:
 
   ifeq ($$(findstring clone,$$(MAKECMDGOALS)),clone)
-    ifeq ($$(findstring $(1),$$(MAKECMDGOALS)),$(1))
+    ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
       $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
     endif
-    ifeq ($$(findstring $(2),$$(MAKECMDGOALS)),$(2))
+    ifeq ($$(findstring $2,$$(MAKECMDGOALS)),$2)
       $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
     endif
   endif
 endif
 
 
-PHONY += $(addprefix $(1)-,cloneconfig clonepatch)
+PHONY += $(addprefix $1-,cloneconfig clonepatch)
 
 endef #genclone
 
 define genenvdeps
 
 # This allows to install extra tools has not been installed
-$$(eval $$(call __vsp,DEPS,$(2)))
+$$(eval $$(call __vsp,DEPS,$2))
 
-$(1)-tools:
-ifneq ($$($(2)_DEPS),)
-	$$(Q)tools/deps/install.sh '$$($(2)_DEPS)'
+$1-tools:
+ifneq ($$($2_DEPS),)
+	$$(Q)tools/deps/install.sh '$$($2_DEPS)'
 endif
 
-$(1)-deps: $(1)-tools _env
+$1-deps: $1-tools _env
 
-$$(call _stamp,$(1),env): $(1)-deps
-ifeq ($$(GCC_$(2)_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$(2)),CCORI=$$(CCORI_$(2))) $$(if $$(GCC_$(2)),GCC=$$(GCC_$(2))) \
-		$$(if $(LDT)$(LDT[GCC_$(GCC_$(2))]),LDT="$(or $(LDT[GCC_$(GCC_$(2))]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')")
+$$(call _stamp,$1,env): $1-deps
+ifeq ($$(GCC_$2_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
+		$$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')")
 endif
 ifneq ($(MAKECMDGOALS),)
  ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
-  ifeq ($$(HOST_GCC_$(2)_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$(2)),CCORI=$$(HOST_CCORI_$(2))) $$(if $$(HOST_GCC_$(2)),GCC=$$(HOST_GCC_$(2))) b=i386/pc ROOTDEV=/dev/ram0
+  ifeq ($$(HOST_GCC_$2_SWITCH),1)
+	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0
   endif
  endif
 endif
 	$$(Q)touch $$@
 
-$(1)-env: $$(call _stamp,$(1),env)
+$1-env: $$(call _stamp,$1,env)
 
-PHONY += $(1)-env
+PHONY += $1-env
 
 endef #genenvdeps
 
@@ -4091,7 +4091,7 @@ endif
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
 PREFIX_TARGETS := list
 define real_target
-$(shell if [ "$(filter $(1),$(PREFIX_TARGETS))" = "$(1)" ]; then echo $(1)-$(2); else echo $(2)-$(1); fi)
+$(shell if [ "$(filter $1,$(PREFIX_TARGETS))" = "$1" ]; then echo $1-$2; else echo $2-$1; fi)
 endef
 
 ifneq ($(BOARD_DOWNLOAD),)

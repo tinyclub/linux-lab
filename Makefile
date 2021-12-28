@@ -2435,7 +2435,7 @@ _KERNEL ?= $(_LINUX)
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
 ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
-KERNEL_OLDDEFCONFIG := $(shell tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
+KERNEL_OLDDEFCONFIG := $$(tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
 endif
 KERNEL_CONFIG_DIR := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=

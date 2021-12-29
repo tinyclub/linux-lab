@@ -1717,7 +1717,7 @@ $1-%-cleanstamp:
 	$$(Q)rm -f $$(call _stamp,$1,$$(subst $1-,,$$(subst -cleanstamp,,$$@)))
 
 $1-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp)
+	$$(Q)rm -rf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp license)
 
 ## clean up $1 source code
 $1-cleansrc: $1-cleanup

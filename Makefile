@@ -3761,18 +3761,17 @@ TEST_TIMEOUT ?= $(TIMEOUT)
 TEST_UBOOT ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
-  TEST_LOGGING    ?= $(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$$(date +"%Y%m%d-%H%M%S")
-  TEST_ENV        ?= $(TEST_LOGGING)/boot.env
-  TEST_LOG        ?= $(TEST_LOGGING)/boot.log
+  TEST_ENV        ?= $$TEST_LOGGING/boot.env
+  TEST_LOG        ?= $$TEST_LOGGING/boot.log
 
   # ref: https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile
   # Must create pipe.in and pipe.out, if only one pipe, the guess output will work as guest input
   # and breaks uboot autoboot progress
 
-  TEST_LOG_PIPE   ?= $(TEST_LOGGING)/boot.log.pipe
-  TEST_LOG_PID    ?= $(TEST_LOGGING)/boot.log.pid
+  TEST_LOG_PIPE   ?= $$TEST_LOGGING/boot.log.pipe
+  TEST_LOG_PID    ?= $$TEST_LOGGING/boot.log.pid
   TEST_LOG_READER ?= tools/qemu/reader.sh
-  TEST_RET        ?= $(TEST_LOGGING)/boot.ret
+  TEST_RET        ?= $$TEST_LOGGING/boot.ret
 
   # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
 ifeq ($(findstring serial,$(XOPTS)),serial)
@@ -3784,7 +3783,8 @@ endif
   # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
   TIMEOUT_CONTINUE ?= 0
 
-  TEST_BEFORE ?= mkdir -p $(TEST_LOGGING) && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
+  TEST_LOGGING ?= TEST_LOGGING=$(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$$(date +"%Y%m%d-%H%M%S")
+  TEST_BEFORE ?= $(TEST_LOGGING); mkdir -p $$TEST_LOGGING && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
 	&& sleep 1 && sudo timeout $(TEST_TIMEOUT)
   TEST_AFTER  ?= ; echo $$? > $(TEST_RET); sudo kill -9 $$(cat $(TEST_LOG_PID)); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \

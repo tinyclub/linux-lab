@@ -292,7 +292,7 @@ endef
 
 # Convert version string to version number, support 4 levels version string, like: v2.6.30.5
 define _v2v
-$(shell echo $1 | tr -d '[a-zA-Z]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
+$(shell echo $1 | tr -d -c '[0-9.]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
 endef
 
 define _vsif

@@ -1840,24 +1840,24 @@ NEW_$(call _uc,$1)_PATCH_DIR := $$(BSP_PATCH)/$$($(call _uc,$1)_FORK_)$2/$$($(ca
 NEW_$(call _uc,$1)_GCC := $$(if $$(call __v,GCC,$(call _uc,$2)),GCC[$(call _uc,$2)_$$($(call _uc,$2)_NEW)] = $$(call __v,GCC,$(call _uc,$2)))
 
 $1-cloneconfig:
-	$$(Q)if [ -f "$$($3CFG_FILE)" ]; then cp $$($3CFG_FILE) $$(NEW_$3CFG_FILE); fi
+	$$(Q)[ -f "$$($3CFG_FILE)" ] && cp $$($3CFG_FILE) $$(NEW_$3CFG_FILE) || true
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
-	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
-		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG) \
+	       || ([ -n "$$(NEW_$(call _uc,$1)_GCC)" ] && sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG) || true)
 	$$(Q)mkdir -p $$(NEW_PREBUILT_$(call _uc,$1)_DIR)
 
 $1-clonepatch:
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
 ifneq ($(PATCH_CLONE),0)
-	$$(Q)if [ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ]; then find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \;; fi
+	$$(Q)[ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ] && find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \; || true
 endif
 
 else
 $1-cloneconfig:
 	$$(Q)echo $$($(call _uc,$2)_NEW) already exists!
 	$$(Q)tools/board/config.sh $(call _uc,$2)=$$($(call _uc,$2)_NEW) $$(BOARD_LABCONFIG)
-	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG); if [ $$$$? -ne 0 -a -n "$$(NEW_$(call _uc,$1)_GCC)" ]; then \
-		sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG); fi
+	$$(Q)grep -q "GCC\[$(call _uc,$2)_$$($(call _uc,$2)_NEW)" $$(BOARD_LABCONFIG) \
+	       || ([ -n "$$(NEW_$(call _uc,$1)_GCC)" ] && sed -i -e "/GCC\[$(call _uc,$2)_$$($(call _uc,$2))/a $$(NEW_$(call _uc,$1)_GCC)" $$(BOARD_LABCONFIG) || true)
 
 $1-clonepatch:
 endif

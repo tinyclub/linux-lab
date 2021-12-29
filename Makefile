@@ -1540,7 +1540,7 @@ endif
 
 _boot: $$(boot_deps)
 
-$$(call _stamp,$1,build): $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config)) $$($(call _uc,$1)_ABS_SRC)
+$$(call _stamp,$1,build): $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config))
 	$$(Q)make $$(NPD) _$1
 	$$(Q)touch $$@
 
@@ -1659,8 +1659,8 @@ ifneq ($(_TOP_SRC),)
   __$(call _uc,$1)_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$1)_SRC)/
   __$(call _uc,$1)_ABS_TAG  := $$(__$(call _uc,$1)_ABS_SRC)/.git/packed-refs
   ifneq ($$(wildcard $$(__$(call _uc,$1)_ABS_TAG)),)
-    _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) && echo $$(__$(call _uc,$1)_ABS_SRC))
-    $(call _uc,$1)_GITADD   := cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) && echo From: $$(__$(call _uc,$1)_ABS_SRC) || $$($(call _uc,$1)_GITADD)
+    _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) 2>/dev/null && echo $$(__$(call _uc,$1)_ABS_SRC))
+    $(call _uc,$1)_GITADD   := cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) 2>/dev/null && echo From: $$(__$(call _uc,$1)_ABS_SRC) || $$($(call _uc,$1)_GITADD)
   endif
 endif
 
@@ -1668,7 +1668,7 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 	$$(Q)if [ -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
 	  [ -d $$($(call _uc,$1)_SRC_FULL) ] \
 	    && cd $$($(call _uc,$1)_SRC_FULL) \
-	    && git cat-file -e $$($1_tag) \
+	    && git cat-file -e $$($1_tag) 2>/dev/null \
 	    || (echo "Updating $1 source ..." \
 	       && $$($(call _uc,$1)_GITADD) \
 	       && git fetch --progress $$(or $$(_$(call _uc,$1)_ABS_SRC),$$(or $$($(call _uc,$1)_GITREPO),origin)) \
@@ -1926,15 +1926,13 @@ endef #genenvdeps
 
 # Build bsp targets
 # Always checkout the latest commit for bsp
-BSP ?= FETCH_HEAD
+BSP ?= origin/master
 _BSP ?= $(BSP)
 
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
 # Skip update of bsp repo for !vip user
 ifeq ($(vip),1)
   __BSP := notexist
-else
-  __BSP := origin/master
 endif
 
 ifneq ($(_PLUGIN),)

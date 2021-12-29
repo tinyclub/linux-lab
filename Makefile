@@ -3095,7 +3095,7 @@ endif
 export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
-UBOOT_PATCH_EXTRAACTION := if [ -n "$$(UCONFIG)" ]; then $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG); fi;
+UBOOT_PATCH_EXTRAACTION := [ -n "$$(UCONFIG)" ] && $$(UBOOT_CONFIG_TOOL) $$(UCFG_DIR) $$(UCONFIG) || true
 UBOOT_CONFIG_DIR := $(UBOOT_ABS_SRC)/configs
 UBOOT_CLEAN_DEPS := $(UBOOT_IMGS_DISTCLEAN)
 
@@ -3228,20 +3228,20 @@ root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 ifneq ($(IROOTFS),$(PREBUILT_IROOTFS))
-	-cp $(IROOTFS) $(PREBUILT_ROOT_DIR)
+	cp $(IROOTFS) $(PREBUILT_ROOT_DIR) || true
 endif
 ifneq ($(PORIIMG),)
-	-cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR)
-	-$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null || true
+	cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null || true
 endif
 
 kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
-	-cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR)
-	-cp $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR)
-	-$(Q)[ -n "$(STRIP_CMD)" ] && $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
-	-if [ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ]; then cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR); fi
-	-if [ -n "$(DTS)" -a -f "$(LINUX_DTB)" ]; then cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR); fi
+	cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR) || true
+	cp $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)[ -n "$(STRIP_CMD)" ] && $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
+	[ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ] && cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR) || true
+	[ -n "$(DTS)" -a -f "$(LINUX_DTB)" ] && cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR) || true
 
 # Targets for real boards
 ifeq ($(_VIRT),0)

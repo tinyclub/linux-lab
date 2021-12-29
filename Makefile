@@ -1822,6 +1822,7 @@ $$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE))
 
 $1-defconfig: $$(call _stamp,$1,defconfig)
 
+$1-oldefconfig: $1-olddefconfig
 $1-olddefconfig:
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
@@ -2461,13 +2462,11 @@ _KERNEL ?= $(_LINUX)
 # kernel remove oldnoconfig after 4.19 and use olddefconfig instead,
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
-ifeq ($(filter kernel-olddefconfig,$(MAKECMDGOALS)),kernel-olddefconfig)
-KERNEL_OLDDEFCONFIG := $$(tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
-endif
-KERNEL_CONFIG_DIR := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs/
+KERNEL_OLDDEFCONFIG     := $$(tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
+KERNEL_CONFIG_DIR       := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs/
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
-KERNEL_CLEAN_DEPS := kernel-modules-clean
+KERNEL_CLEAN_DEPS       := kernel-modules-clean
 
 kernel-oldnoconfig: kernel-olddefconfig
 

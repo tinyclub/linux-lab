@@ -147,16 +147,18 @@ FEATURE_DIR := $(TOP_SRC)/feature/linux
 ifneq ($(BOARD),)
  BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 riscv32 riscv64 csky
  ifeq ($(wildcard $(BOARD_DIR)/Makefile),)
-  ARCH := $(shell for arch in $(BASE_ARCHS); do if [ -d $(TOP_DIR)/$(BOARDS_DIR)/$$arch/$(BOARD) ]; then echo $$arch; break; fi; done)
+  ARCH := $(strip $(firstword $(foreach arch,$(BASE_ARCHS),$(if $(wildcard $(TOP_DIR)/$(BOARDS_DIR)/$(arch)/$(BOARD)),$(arch) ))))
   ifneq ($(ARCH),)
     override BOARD     := $(ARCH)/$(BOARD)
     override BOARD_DIR := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
     #$(info LOG: Current board is $(BOARD))
   else
-    ifeq ($(filter $(BOARD),$(BASE_ARCHS)),$(BOARD))
-      $(error ERR: $(BOARD) is ARCH, check available boards with 'make list ARCH=$(BOARD)')
+    _ARCH              := $(firstword $(subst /,$(space),$(BOARD)))
+    ifeq ($(filter $(_ARCH),$(BASE_ARCHS)),$(_ARCH))
+      $(error ERR: do you mean the $(_ARCH) boards, please list with 'make list ARCH=$(_ARCH)')
     else
-      matched_boards := $(shell find $(TOP_DIR)/$(BOARDS_DIR) -mindepth 2 -maxdepth 2 -type d -name "*$(BOARD)*" | sed -e 's%$(TOP_DIR)/$(BOARDS_DIR)/%%g')
+      MACH             := $(notdir $(BOARD))
+      matched_boards   := $(strip $(foreach arch,$(BASE_ARCHS),$(if $(wildcard $(TOP_DIR)/$(BOARDS_DIR)/$(arch)/$(MACH)),$(arch)/$(MACH) )))
       ifneq ($(matched_boards),)
         $(error ERR: $(BOARD) not exist, do you mean: $(matched_boards), check more with 'make list')
       else
@@ -527,8 +529,15 @@ GUEST_SHARE_DIR ?= /hostshare
 SHARE_TAG       ?= hostshare
 
 # Supported apps and their version variable
-APPS    := kernel uboot root qemu
-APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT uboot:UBOOT qemu:QEMU
+APPS    := kernel root qemu
+APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT qemu:QEMU
+
+ifneq ($(UBOOT),)
+  ifeq ($(U),1)
+    APPS    += uboot
+    APP_MAP += uboot:UBOOT
+  endif
+endif
 
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
@@ -1407,12 +1416,15 @@ ifeq ($(findstring xlist,x$(first_target)),xlist)
     ifeq ($(LIST_GOAL),plugin)
       BTYPE := ^_PLUGIN
     endif
+
+    ifeq ($(origin ARCH),command line)
+      ARCH_FILTER := $(ARCH)
+    endif
   endif
 endif
-
 # List targets for boards and plugins
 board-info:
-	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(_ARCH),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
+	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(ARCH_FILTER),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
 		| tr -s '/' | egrep "$(FILTER)" \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \

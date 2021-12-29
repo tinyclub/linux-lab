@@ -4114,7 +4114,7 @@ endif
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
 PREFIX_TARGETS := list
 define real_target
-$(shell if [ "$(filter $1,$(PREFIX_TARGETS))" = "$1" ]; then echo $1-$2; else echo $2-$1; fi)
+$(if $(filter $1,$(PREFIX_TARGETS)),$1-$2,$2-$1)
 endef
 
 ifneq ($(BOARD_DOWNLOAD),)

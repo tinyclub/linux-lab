@@ -1444,10 +1444,11 @@ $(BOARD_INFO_TARGETS): board-info
 PHONY += $(BOARD_INFO_TARGETS) board-info list
 
 list-%: FORCE
-	$(Q)if [ -n "$($(call _uc,$(subst list-,,$@))_LIST)" ]; then \
-		echo " $($(call _uc,$(subst list-,,$@))_LIST) " | sed -e 's%\([ ]\{1,\}\)\($($(call _uc,$(subst list-,,$@)))\)\([ ]\{1,\}\)%\1[\2]\3%g;s%^ %%g;s% $$%%g'; \
-	else					\
-		make -s $(subst list-,,$@)-list 2>/dev/null || true; \
+	$(Q)list="$($(call _uc,$(subst list-,,$@))_LIST)"; \
+	if [ -n "$$list" ]; then \
+	  echo " $$list " | sed -e 's%\([ ]\{1,\}\)\($($(call _uc,$(subst list-,,$@)))\)\([ ]\{1,\}\)%\1[\2]\3%g;s%^ %%g;s% $$%%g'; \
+	else \
+	  make -s $(subst list-,,$@)-list 2>/dev/null || true; \
 	fi
 
 # Define generic target deps support

@@ -1311,7 +1311,12 @@ ifneq ($(BOARD),)
   ifeq ($(board),)
     ifneq ($(BOARD),$(BOARD_CONFIG))
       BOARD_SAVE := board-save
-      BOARD_GOAL := board
+      # Remove circular dep
+      ifneq ($(MAKECMDGOALS),)
+	ifneq ($(MAKECMDGOALS),board)
+          BOARD_GOAL := board
+        endif
+      endif
     endif
   endif
 endif

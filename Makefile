@@ -1316,7 +1316,9 @@ ifneq ($(BOARD),)
   endif
 endif
 
-board: $(BOARD_SAVE) plugin-save board-cleanstamp board-show $(BOARD_DOWNLOAD)
+ifneq ($(first_target),list)
+board: $(BOARD_SAVE) plugin-save board-cleanstamp board-show default-config $(BOARD_DOWNLOAD)
+endif
 
 CLEAN_STAMP := $(call gengoalslist,cleanstamp)
 ifneq ($(BOARD),$(BOARD_CONFIG))

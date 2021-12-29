@@ -1472,13 +1472,8 @@ define make_root
 make $(NPD) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $1
 endef
 
-# FIXME: ugly workaround for uboot, it share code between arm and arm64
-define uboot_arch
-$(shell if [ $1 = arm64 ]; then echo arm; else echo $1; fi)
-endef
-
 define make_uboot
-$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(call uboot_arch,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $1
+$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(subst arm64,arm,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $1
 endef
 
 # generate target dependencies

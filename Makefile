@@ -86,7 +86,7 @@ endef
 
 define load_config
   ifneq ($(wildcard .$1_config),)
-    $$(call _uc,$1)_CONFIG := $$(shell cat .$1_config 2>/dev/null)
+    $(call _uc,$1)_CONFIG := $(shell cat .$1_config 2>/dev/null)
   endif
 endef
 
@@ -263,20 +263,20 @@ $(or $(call __v,$1,$2),$(or $3,$($1)))
 endef
 
 define __vsp
- ifneq ($$(call __v,$1,$2,$3),)
-   $2_$1 := $$(call __v,$1,$2,$3)
+ ifneq ($(call __v,$1,$2,$3),)
+   $2_$1 := $(call __v,$1,$2,$3)
  endif
 endef
 
 define __vsp_override
- ifneq ($$(call __v,$1,$2,$3),)
-   override $2_$1 := $$(call __v,$1,$2,$3)
+ ifneq ($(call __v,$1,$2,$3),)
+   override $2_$1 := $(call __v,$1,$2,$3)
  endif
 endef
 
 define __vs
- ifneq ($$(call __v,$1,$2,$3),)
-   $1 := $$(call __v,$1,$2,$3)
+ ifneq ($(call __v,$1,$2,$3),)
+   $1 := $(call __v,$1,$2,$3)
  endif
 endef
 
@@ -287,7 +287,7 @@ define __vs_override
 endef
 
 define _vs
- $1 := $$(call _v,$1,$2)
+$1 := $(call _v,$1,$2)
 endef
 
 # Convert version string to version number, support 4 levels version string, like: v2.6.30.5
@@ -296,7 +296,7 @@ $(shell echo $1 | tr -d -c '[0-9.]' | awk -F"." '{ printf("%d\n",$$1*16777216 + 
 endef
 
 define _vsif
- ifeq ($$(shell expr $(call _v2v,$($3)) \$4 $(call _v2v,$5)),1)
+ ifeq ($(shell expr $(call _v2v,$($3)) \$4 $(call _v2v,$(5))),1)
    $1 := $2
  endif
 endef

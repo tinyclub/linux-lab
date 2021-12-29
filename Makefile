@@ -1744,11 +1744,10 @@ $1-help:
 $$(call _stamp,$1,patch):
 	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
 	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
-	  if [ -f tools/$1/patch.sh ]; then \
-		tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD) && \
-		touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched && \
-		touch $$@; \
-	  fi; \
+	  [ -f tools/$1/patch.sh ] \
+	    && tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD) \
+	    && touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched \
+	    && touch $$@; \
 	else		\
 	  echo "ERR: $1 patchset has been applied, if want, please backup important changes and do 'make $1-cleanup' at first." && exit 1; \
 	fi

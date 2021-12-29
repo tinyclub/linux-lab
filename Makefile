@@ -1700,10 +1700,10 @@ $$(call _stamp,$1,checkout):
 $1-checkout: $$(call _stamp,$1,checkout)
 
 $$(call _stamp,$1,outdir): $$($(call _uc,$1)_BUILD)
+	$$(Q)mkdir -p $$<
 	$$(Q)touch $$@
 
 $$($(call _uc,$1)_BUILD): $$(CACHE_BUILD_TARGET)
-	$$(Q)mkdir -p $$@
 
 $1-outdir: $$(call _stamp,$1,outdir)
 

@@ -2626,16 +2626,16 @@ MODULE_PREPARE := modules_prepare
 
 kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
-		make -s $(NPD) feature feature=module; \
-		make -s $(NPD) kernel-olddefconfig; \
-		$(call make_kernel); \
+	  make -s $(NPD) feature feature=module; \
+	  make -s $(NPD) kernel-olddefconfig; \
+	  $(call make_kernel); \
 	fi
 	# M variable can not be set for modules_prepare target
 	$(call make_kernel,$(MODULE_PREPARE) M=)
 	$(Q)if [ -f $(KERNEL_ABS_SRC)/scripts/Makefile.modbuiltin ]; then \
-		$(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
+	  $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
 	else	\
-		$(call make_kernel,modules $(KM)); \
+	  $(call make_kernel,modules $(KM)); \
 	fi
 
 kernel-modules:
@@ -2680,17 +2680,15 @@ SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km: $(M_I_ROOT)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-		$(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
-		if [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ]; then \
-		    cd $(KERNEL_BUILD) && \
-		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
-		fi;				\
+	  $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+	  [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \
+	    && cd $(KERNEL_BUILD) \
+	    && INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"') || true; \
 	fi
 
 kernel-modules-install: $(M_I_ROOT)
-	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-		$(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR));	\
-	fi
+	$(Q)[ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ] \
+	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) || true
 
 ifeq ($(internal_module),1)
   M_ABS_PATH := $(KERNEL_BUILD)/$(M_PATH)

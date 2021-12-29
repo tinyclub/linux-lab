@@ -1681,8 +1681,10 @@ $1-checkout: $1-source
 
 $$(call _stamp,$1,checkout):
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
-	  && cd $$($(call _uc,$1)_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) && touch $$@ || \
-	  (echo "ERR: There are some changes, please backup them ondemand and run 'make kernel-cleanup'." && exit 1)
+	  && cd $$($(call _uc,$1)_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) && touch $$@ \
+	  || (echo "ERR: Failed to checkout $$(_$2) of $1 in $$($(call _uc,$1)_SRC_FULL)" \
+	     && echo "ERR: Please backup important changes on demand and run 'make kernel-cleanup'." \
+	     && exit 1)
 
 $1-checkout: $$(call _stamp,$1,checkout)
 

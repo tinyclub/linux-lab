@@ -4070,11 +4070,11 @@ $(BUILD_CACHE_TAG):
 	sudo service nfs-kernel-server start
 
 status-build:
-	@if [ $(shell grep -q $(TOP_BUILD) /proc/mounts >/dev/null 2>&1; echo $$?) -eq 0 ]; then \
-		echo "Building cache free status:"; \
-		sudo $(BUILD_FREE_TOOL) || true; \
+	@if grep -q $(TOP_BUILD) /proc/mounts >/dev/null 2>&1; then \
+	  echo "Building cache free status:"; \
+	  sudo $(BUILD_FREE_TOOL) || true; \
 	else \
-		echo "No cache created for building"; echo; \
+	  echo "No cache created for building"; echo; \
 	fi
 
 uncache-build:

@@ -13,7 +13,7 @@ _V=$(echo $V | sed -e "s/\[/\\\[/g;s/\]/\\\]/g")
 S=$(echo $1 | cut -d'=' -f2-)
 
 # Ignore BOARD setting
-for v in BOARD board b B V Q S NPD
+for v in BOARD board b B V Q S NPD vip
 do
   [ "x$V" == "x$v" ] && exit 0
 done

@@ -3799,7 +3799,7 @@ endif
 endif
 
 TEST_XOPTS ?= $(XOPTS)
-TEST_RD    ?= $(if $(TEST_ROOTDEV),$(TEST_ROOTDEV),/dev/nfs)
+TEST_RD    ?= $(or $(TEST_ROOTDEV),/dev/nfs)
 # Override TEST_RD if ROOTDEV specified
 ifeq ($(origin ROOTDEV), command line)
   TEST_RD  := $(ROOTDEV)

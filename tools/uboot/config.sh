@@ -6,9 +6,10 @@
 #
 # Example: ./config.sh 127.168.1.3 127.168.1.1 /dev/ram - 0x7fc0 - - include/configs/versatile.h
 
-_CONFIG_DIR=$1
+_UBOOT_DIR=$1
 _CONFIG_FILE=$2
-CONFIG_FILE=$1/$2
+CONFIG_FILE=$1/include/configs/$2
+UBOOT_VERSION=$3
 
 KERNEL_IMG=uImage
 RAMDISK_IMG=ramdisk
@@ -124,9 +125,15 @@ echo $CONFIG_BOOTCOMMAND
 CONFIGS="CONFIG_EXTRA_ENV_SETTINGS FLASH_MAX_SECTOR_SIZE CONFIG_BOOTCOMMAND CONFIG_SYS_CBSIZE CONFIG_INITRD_TAG CONFIG_OF_LIBFDT CONFIG_SYS_BOOTM_LEN $EXTRA_CONFIGS"
 
 # Reset changes
-pushd $_CONFIG_DIR
-git checkout -- $_CONFIG_FILE
-popd
+pushd $_UBOOT_DIR >/dev/null
+git checkout -- include/configs/$_CONFIG_FILE
+
+# FIXME: mkimage build error with host-side libfdt-dev, we can remove libfdt-dev or simply disable mkimage build
+echo "LOG: Disable mkimage to fix up build error with host side libfdt-dev"
+git checkout -- tools/Makefile
+sed -i -e "/hostprogs-.*mkimage/s/^/# /g" tools/Makefile
+
+popd 2>/dev/null
 
 # Update the new one
 # Insert the new configs in the end of the external #if .. #endif condition

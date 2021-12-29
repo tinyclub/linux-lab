@@ -1660,7 +1660,6 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 			$$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && (git tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) || true),--tags) \
 			&& touch $$@; \
 		fi;	\
-		cd $$(TOP_DIR); \
 	else		\
 		echo "Downloading $1 source ..."; \
 		[ ! -d $$($(call _uc,$1)_SROOT) ] && mkdir -p $$($(call _uc,$1)_SROOT); \
@@ -1674,7 +1673,6 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 			git fetch --progress origin \
 			$$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) && (git tag $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2))) || true),--tags) \
 			&& touch $$@; \
-		cd $$(TOP_DIR); \
 	fi
 
 $1-source: $$(call _stamp,$1,source)
@@ -1682,9 +1680,9 @@ $1-source: $$(call _stamp,$1,source)
 $1-checkout: $1-source
 
 $$(call _stamp,$1,checkout):
-	$$(Q)if [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
-	cd $$($(call _uc,$1)_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) && touch $$@ && cd $$(TOP_DIR); \
-	fi
+	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	  && cd $$($(call _uc,$1)_SRC_FULL) && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) && touch $$@ || \
+	  (echo "ERR: There are some changes, please backup them ondemand and run 'make kernel-cleanup'." && exit 1)
 
 $1-checkout: $$(call _stamp,$1,checkout)
 
@@ -1711,9 +1709,8 @@ $1-cleanstamp:
 ## clean up $1 source code
 $1-cleansrc: $1-cleanup
 $1-cleanup: $1-cleanstamp
-	$$(Q)if [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
-		cd $$($(call _uc,$1)_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$1]) && cd $$(TOP_DIR); \
-	fi
+	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	  && cd $$($(call _uc,$1)_SRC_FULL) && git reset --hard && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$1])
 
 $1-clean: $1-rawclean
 $1-cleanall: $1-clean $1-cleansrc
@@ -1757,7 +1754,7 @@ $$(call _stamp,$1,patch):
 $1-patch: $$(call _stamp,$1,patch)
 
 $1-savepatch:
-	$(Q)cd $$($(call _uc,$1)_SRC_FULL) && git format-patch $$(_$2) && cd $$(TOP_DIR)
+	$(Q)cd $$($(call _uc,$1)_SRC_FULL) && git format-patch $$(_$2)
 	$(Q)mkdir -p $$(BSP_PATCH)/$(call _lc,$2)/$$($2)/
 	$(Q)cp $$($(call _uc,$1)_SRC_FULL)/*.patch $$(BSP_PATCH)/$(call _lc,$2)/$$($2)/
 
@@ -2065,8 +2062,8 @@ endif
 QEMU_CONFIG_STATUS  := config.log
 QEMU_PREFIX         ?= $(PREBUILT_QEMU_DIR)
 QEMU_CONF_CMD       := $(QEMU_ABS_SRC)/configure $(QEMU_CONF) --disable-werror --prefix=$(QEMU_PREFIX)
-qemu_make_help      := cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) --help && cd $(TOP_DIR)
-qemu_make_defconfig := $(Q)cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) && cd $(TOP_DIR)
+qemu_make_help      := cd $(QEMU_BUILD) && $(QEMU_CONF_CMD) --help
+qemu_make_defconfig := $(Q)cd $(QEMU_BUILD) && $(QEMU_CONF_CMD)
 
 _QEMU  ?= $(call _v,QEMU,QEMU)
 
@@ -2156,9 +2153,7 @@ else
 	@echo
 	@echo "Downloading prebuilt toolchain ..."
 	@echo
-	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && \
-		tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN) && \
-		cd $(TOP_DIR)
+	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
   endif
 endif
 
@@ -2677,7 +2672,6 @@ kernel-modules-install-km: $(M_I_ROOT)
 		if [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ]; then \
 		    cd $(KERNEL_BUILD) && \
 		    INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"'); \
-		    cd $(TOP_DIR); \
 		fi;				\
 	fi
 

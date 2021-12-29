@@ -640,7 +640,7 @@ define genbuildenv
 GCC_$2   := $$(or $$(call __v,GCC,$2,$3),$(GCC))
 CCORI_$2 := $$(or $$(call __v,CCORI,$2,$3),$(CCORI))
 
-ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
+ifeq ($$(findstring $1,$$(_MAKECMDGOALS)),$1)
   ifneq ($$(CCORI_$2)$$(GCC_$2),)
     ifeq ($$(CCORI_$2)$$(CCORI),)
       CCORI_$2 := internal
@@ -656,7 +656,7 @@ ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
  HOST_GCC_$2   := $$(or $$(call __v,HOST_GCC,$2,$3),$(HOST_GCC))
  HOST_CCORI_$2 := $$(or $$(call __v,HOST_CCORI,$2,$3),$(HOST_CCORI))
 
- ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
+ ifeq ($$(findstring $1,$$(_MAKECMDGOALS)),$1)
   ifneq ($$(HOST_CCORI_$2)$$(HOST_GCC_$2),)
     ifeq ($$(HOST_CCORI_$2)$$(HOST_CCORI),)
       HOST_CCORI_$2 := internal
@@ -672,6 +672,14 @@ $(eval $(call __vs,CCORI,OS))
 $(eval $(call __vs,GCC,OS))
 $(eval $(call __vs,HOST_GCC,OS))
 
+# Hacking for gcc switch when building kernel modules with: make modules m=hello
+ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+  _MAKECMDGOALS := $(MAKECMDGOALS) kernel
+else
+  _MAKECMDGOALS := $(MAKECMDGOALS)
+endif
+
+#$(warning $(call genbuildenv,kernel,LINUX,OS))
 $(eval $(call genbuildenv,kernel,LINUX,OS))
 $(eval $(call genbuildenv,uboot,UBOOT,OS))
 $(eval $(call genbuildenv,qemu,QEMU,OS))

@@ -1661,7 +1661,7 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 	    || (echo "Updating $1 source ..." \
 	       && $$($(call _uc,$1)_GITADD) \
 	       && git fetch --progress $$(or $$(_$(call _uc,$1)_ABS_SRC),$$(or $$($(call _uc,$1)_GITREPO),origin)) \
-	          $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) || true),--tags) \
+	          $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) FETCH_HEAD || true),--tags) \
 	       && touch $$@); \
 	else		\
 	  echo "Downloading $1 source ..."; \
@@ -1674,7 +1674,7 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 	    && echo "From: $$$$REMOTE_REPO" \
 	    && git remote add origin $$$$REMOTE_REPO \
 	    && git fetch --progress origin \
-	       $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) || true),--tags) \
+	       $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) FETCH_HEAD || true),--tags) \
 	    && touch $$@; \
 	fi
 

@@ -1633,6 +1633,9 @@ $$(call _stamp,$1,license):
 	  for f in $(BOARD_FREE); do \
 	    [ "$$$$f" = "$(BOARD)" ] && touch $$@ && exit 0; \
 	  done ; \
+	  if [ -d "$$($(call _uc,$1)_ROOT)" ]; then \
+	    touch $$@ && exit 0; \
+	  fi ; \
           if [ "$(vip)" != "1" ]; then \
 	    echo "" ;\
 	    echo "Friendly reminder:" ;\

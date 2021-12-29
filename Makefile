@@ -777,18 +777,20 @@ $(eval $(call genverify,UBOOT,UBOOT))
 $(eval $(call genverify,QEMU,QEMU))
 
 # Kernel features configuration, e.g. kft, gcs ...
-f ?= $(feature)
-F ?= $(f)
+f        ?= $(feature)
+F        ?= $(f)
 FEATURES ?= $(F)
 FEATURE  ?= $(FEATURES)
 ifneq ($(FEATURE),)
   FEATURE_ENVS := $(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
-			$(shell if [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH) ]; then \
-			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(XARCH).$(MACH); \
-			elif [ -f $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH) ]; then \
-			echo $(FEATURE_DIR)/$(f)/$(LINUX)/env.$(MACH); fi))
+    $(shell f_env=$(FEATURE_DIR)/$(f)/$(LINUX); \
+    if [ -f $$f_env/env.$(XARCH).$(MACH) ]; then \
+      echo $$f_env/env.$(XARCH).$(MACH); \
+    elif [ -f $$f_env/env.$(MACH) ]; then \
+      echo $$f_env/env.$(MACH); \
+    fi))
 
-  ifneq ($(FEATURE_ENVS),)
+  ifneq ($(wildcard $(FEATURE_ENVS)),)
     include $(FEATURE_ENVS)
   endif
 endif

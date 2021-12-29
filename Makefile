@@ -1789,8 +1789,8 @@ $3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
   $3CFG_FILE  := $$(_BSP_CONFIG)/$$($3CFG)
 else
-  _$3CFG_FILE := $$(shell for f in $$($3CFG) $(_BSP_CONFIG)/$$($3CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($3CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($3CFG); do \
-		if [ -f $$$$f ]; then echo $$$$f; break; fi; done)
+  $3CFG_FILES := $$($3CFG) $(_BSP_CONFIG)/$$($3CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($3CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($3CFG)
+  _$3CFG_FILE := $$(firstword $$(strip $$(foreach f,$$($3CFG_FILES),$$(wildcard $$f) )))
   ifneq ($$(_$3CFG_FILE),)
     $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
   else

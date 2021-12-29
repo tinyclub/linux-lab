@@ -2329,12 +2329,12 @@ ifeq ($(prebuilt_root_dir), 1)
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	$(Q)rm -rf $(XROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS).tmp HROOTFS=$(HROOTFS).tmp FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
-	$(Q)if [ -f $(XROOTFS).tmp ]; then mv $(XROOTFS).tmp $(XROOTFS); fi
-	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) root-ud-rebuild; fi
+	$(Q)[ -f $(XROOTFS).tmp ] && mv $(XROOTFS).tmp $(XROOTFS) || true
+	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) root-ud-rebuild || true
 else
 	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
-	$(Q)if [ $(build_root_uboot) -eq 1 ]; then make $(S) $(BUILDROOT_UROOTFS); fi
+	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
 endif
 
 ROOT ?= $(ROOTDIR)
@@ -2393,20 +2393,20 @@ endif
 
 $(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
 ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
-# To avoid remove important data of users, if the file system is there, just update it
-ifeq ($(wildcard $(ROOTDIR)/init),)
-	@echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."
-	$(Q)rm -rf $(ROOTDIR).tmp
-	$(Q)rm -rf $(ROOTDIR)
-	$(Q)ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL)
-	$(Q)mv $(ROOTDIR).tmp $(ROOTDIR)
+	@# To avoid remove important data of users, if the file system is there, just update it
+	$(Q)if [ ! -f $(ROOTDIR)/init ]; then \
+	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
+	  rm -rf $(ROOTDIR).tmp; \
+	  rm -rf $(ROOTDIR); \
+	  ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL); \
+	  mv $(ROOTDIR).tmp $(ROOTDIR); \
+	fi
 endif
-endif
-	$(Q)ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
-	$(Q)if [ -n "$(KERNEL_MODULES_INSTALL)" ]; then make $(NPD) $(KERNEL_MODULES_INSTALL); fi
+	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+	$(Q)[ -n "$(KERNEL_MODULES_INSTALL)" ] && echo "LOG: Install modules" && make $(NPD) $(KERNEL_MODULES_INSTALL) || true
 
 root-dir-clean rootdir-clean:
-	-$(Q)if [ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ]; then rm -rf $(ROOTDIR); fi
+	$(Q)[ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ] && rm -rf $(ROOTDIR) || true
 
 root-dir-distclean rootdir-distclean: rootdir-clean
 

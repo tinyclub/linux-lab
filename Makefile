@@ -529,15 +529,8 @@ GUEST_SHARE_DIR ?= /hostshare
 SHARE_TAG       ?= hostshare
 
 # Supported apps and their version variable
-APPS    := kernel root qemu
-APP_MAP ?= bsp:BSP kernel:LINUX root:BUILDROOT qemu:QEMU
-
-ifneq ($(UBOOT),)
-  ifeq ($(U),1)
-    APPS    += uboot
-    APP_MAP += uboot:UBOOT
-  endif
-endif
+APPS    := kernel uboot root qemu
+APP_MAP ?= bsp:BSP kernel:LINUX uboot:UBOOT root:BUILDROOT qemu:QEMU
 
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
@@ -1338,7 +1331,8 @@ ifneq ($(BOARD),$(BOARD_CONFIG))
   BOARD_CLEAN_STAMP := $(CLEAN_STAMP)
 endif
 
-board-cleanstamp: $(BOARD_CLEAN_STAMP)
+board-cleanstamp:
+	$(Q)[ -n "$(BOARD_CLEAN_STAMP)" ] && make $(NPD) $(BOARD_CLEAN_STAMP) || true
 
 board-show:
 	$(Q)$(call showboardvars)

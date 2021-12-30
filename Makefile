@@ -2099,7 +2099,7 @@ QT ?= $(x)
 QEMU_UPDATE_GITMODULES := tools/qemu/update-submodules.sh
 
 _qemu_update_submodules:
-	$(QEMU_UPDATE_GITMODULES) $(QEMU_ABS_SRC)/.gitmodules
+	[ -f $(QEMU_ABS_SRC)/.gitmodules ] && $(QEMU_UPDATE_GITMODULES) $(QEMU_ABS_SRC)/.gitmodules || true
 
 _qemu: _qemu_update_submodules
 	$(call make_qemu,$(QT))

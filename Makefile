@@ -1899,17 +1899,13 @@ endif
 $1-deps: $1-tools _env
 
 $$(call _stamp,$1,env): $1-deps
-ifeq ($$(GCC_$2_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
-		$$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')")
-endif
-ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),x86_64/pc i386/pc),$(MAKECMDGOALS))
-  ifeq ($$(HOST_GCC_$2_SWITCH),1)
-	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0
-  endif
- endif
-endif
+	$$(Q)[ "$$(GCC_$2_SWITCH)" = "1" ] \
+	  && make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
+	     $$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')") || true
+	$$(Q)if [ -z "$(filter $(MAKECMDGOALS),x86_64/pc i386/pc)" ]; then \
+	  [ "$$(HOST_GCC_$2_SWITCH)" = "1" ] \
+	    && make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0 || true; \
+	fi
 	$$(Q)touch $$@
 
 $1-env: $$(call _stamp,$1,env)
@@ -2118,17 +2114,16 @@ endif
 SCRIPT_GETCCVER := tools/gcc/version.sh
 
 ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
-  _CCVER := gcc-$(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
+  _CCVER := $(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
 
   ifneq ($(CCVER),)
     ifeq ($(CCVER),$(_CCVER))
       CCVER_EXIST := 0
     endif
-    ifeq ($(CCVER),$(subst gcc-,,$(_CCVER)))
-      CCVER_EXIST := 0
-    endif
     ifneq ($(CCVER_EXIST),0)
-      CCVER_EXIST := $(shell which gcc-$(subst gcc-,,$(CCVER)) 2>&1 >/dev/null; echo $$?)
+      ifneq ($(wildcard $(CCPATH)/$(CCPRE)gcc-$(CCVER)),)
+        CCVER_EXIST := 0
+      endif
       ifeq ($(CCVER_EXIST),0)
         ifeq ($(origin CCVER),command line)
           $(warning gcc: $(CCVER) already installed.)
@@ -2214,20 +2209,14 @@ gcc-clean: toolchain-clean
 PHONY += toolchain-source download-toolchain toolchain toolchain-clean toolchain-list gcc-list gcc-clean gcc
 
 toolchain-switch:
-ifeq ($(CCORI), internal)
-  ifneq ($(CCVER),$(GCC))
-	$(Q)update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true
-  endif
-  ifneq ($(LDTVER),)
-    ifneq ($(LDTVER),$(LDT))
-	$(Q) update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true
-    endif
-  endif
-endif
-ifneq (buildroot,$(CCORI))
-	$(Q) _CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
-	[ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true
-endif
+	$(Q) if [ "$(CCORI)" = "internal" ]; then \
+	  [ -n "$(GCC)" -a "$(CCVER)" != "$(GCC)" ] && update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true; \
+	  [ -n "$(LDT)" -a "$(LDTVER)" != "$(LDT)" ] && update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true; \
+	fi ; \
+	if [ "buildroot" != "$(CCORI)" ]; then \
+	  _CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
+	  [ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true; \
+	fi
 
 gcc-switch: toolchain-switch
 

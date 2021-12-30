@@ -1982,7 +1982,7 @@ ifneq ($(general_targets),)
 endif
 
 # Qemu targets
-ifeq ($(findstring qemu,$(MAKECMDGOALS)),)
+ifneq ($(findstring qemu,$(MAKECMDGOALS)),)
   qemu_targets ?= 1
 endif
 
@@ -2490,7 +2490,7 @@ $(eval $(call __vs,CFGS[K_N],GCC,LINUX))
 $(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
 
 # Module targets
-ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+ifneq ($(findstring module,$(MAKECMDGOALS)),)
   module_targets ?= 1
 endif
 

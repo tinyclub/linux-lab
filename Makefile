@@ -87,6 +87,7 @@ endef
 define load_config
   ifneq ($(wildcard .$1_config),)
     $(call _uc,$1)_CONFIG := $(shell cat .$1_config 2>/dev/null)
+    ENV_FILES += .$1_config
   endif
 endef
 
@@ -137,7 +138,7 @@ TOOL_DIR    := tools
 BOARDS_DIR  := boards
 BOARD_DIR   := $(TOP_DIR)/$(BOARDS_DIR)/$(BOARD)
 TFTPBOOT    := tftpboot
-HOME_DIR    := /home/$(USER)/
+HOME_DIR    := /home/$(USER)
 GDBINIT_DIR := $(TOP_DIR)/.gdb
 TOP_SRC     := $(TOP_DIR)/src
 TOP_BUILD   := $(TOP_DIR)/build
@@ -332,6 +333,7 @@ define _i
   $1_$2 := $$(call _vf,$1,$2,$3,$4)
   ifneq ($$(wildcard $$($1_$2)),)
     include $$($1_$2)
+    ENV_FILES += $$($1_$2)
   endif
 endef
 
@@ -406,6 +408,7 @@ BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 ifneq ($(BOARD),)
   ifneq ($(wildcard $(BOARD_MAKEFILE)),)
     include $(BOARD_MAKEFILE)
+    ENV_FILES += $(BOARD_MAKEFILE)
   endif
   $(eval $(call _bi,labcustom))
   # include $(BOARD_DIR)/.labfini
@@ -682,6 +685,7 @@ PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ifneq ($(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)),)
   include $(PREBUILT_TOOLCHAIN_MAKEFILE)
+  ENV_FILES += $(PREBUILT_TOOLCHAIN_MAKEFILE)
 endif
 
 ifneq ($(GCC),)
@@ -793,6 +797,7 @@ ifneq ($(FEATURE),)
 
   ifneq ($(wildcard $(FEATURE_ENVS)),)
     include $(FEATURE_ENVS)
+    ENV_FILES += $(FEATURE_ENVS)
   endif
 endif
 
@@ -1321,7 +1326,7 @@ ifneq ($(BOARD),)
 endif
 
 ifneq ($(first_target),list)
-board: $(BOARD_SAVE) plugin-save board-cleanstamp board-show default-config $(BOARD_DOWNLOAD)
+board: $(BOARD_SAVE) plugin-save board-show default-config $(BOARD_DOWNLOAD)
 endif
 
 CLEAN_STAMP := $(call gengoalslist,cleanstamp)
@@ -1335,9 +1340,9 @@ board-cleanstamp:
 board-show:
 	$(Q)$(call showboardvars)
 
-board-init: $(CLEAN_STAMP)
+board-init:
 
-board-clean:
+board-clean: board-cleanstamp
 	$(Q)rm -rvf .board_config
 
 board-save:
@@ -1685,7 +1690,7 @@ $1-source: $$(call _stamp,$1,source)
 
 $1-checkout: $1-source
 
-$$(call _stamp,$1,checkout):
+$$(call _stamp,$1,checkout): $$(ENV_FILES)
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \
 	  && echo "Checking out $$(_$2) ..." \
@@ -3987,8 +3992,12 @@ endif
 tools-install:
 	$(Q)[ -n "$(DEPS)" ] && tools/deps/install.sh '$(DEPS)' || true
 
-_env: env-prepare
+_env: env-prepare env-files
 env-prepare: toolchain-install tools-install
+
+PHONY += $(ENV_FILES)
+
+env-files: $(ENV_FILES)
 
 env-list: env-dump
 env-dump:
@@ -4001,7 +4010,7 @@ env-save: board-config
 default-help:
 	$(Q)cat README.md
 
-PHONY += env env-list env-prepare env-dump env-save lab-help
+PHONY += env env-files env-list env-prepare env-dump env-save lab-help
 
 # memory building support
 BUILD_CACHE_TOOL   := tools/build/cache

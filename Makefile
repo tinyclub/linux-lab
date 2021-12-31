@@ -87,7 +87,6 @@ endef
 define load_config
   ifneq ($(wildcard .$1_config),)
     $(call _uc,$1)_CONFIG := $(shell cat .$1_config 2>/dev/null)
-    ENV_FILES += .$1_config
   endif
 endef
 
@@ -333,7 +332,6 @@ define _i
   $1_$2 := $$(call _vf,$1,$2,$3,$4)
   ifneq ($$(wildcard $$($1_$2)),)
     include $$($1_$2)
-    ENV_FILES += $$($1_$2)
   endif
 endef
 
@@ -408,7 +406,6 @@ BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 ifneq ($(BOARD),)
   ifneq ($(wildcard $(BOARD_MAKEFILE)),)
     include $(BOARD_MAKEFILE)
-    ENV_FILES += $(BOARD_MAKEFILE)
   endif
   $(eval $(call _bi,labcustom))
   # include $(BOARD_DIR)/.labfini
@@ -685,7 +682,6 @@ PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
 ifneq ($(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)),)
   include $(PREBUILT_TOOLCHAIN_MAKEFILE)
-  ENV_FILES += $(PREBUILT_TOOLCHAIN_MAKEFILE)
 endif
 
 ifneq ($(GCC),)
@@ -797,7 +793,6 @@ ifneq ($(FEATURE),)
 
   ifneq ($(wildcard $(FEATURE_ENVS)),)
     include $(FEATURE_ENVS)
-    ENV_FILES += $(FEATURE_ENVS)
   endif
 endif
 
@@ -1357,6 +1352,11 @@ board-config: $(BOARD_GOAL)
 	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_MAKEFILE) $(LINUX);)
 
 BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
+
+# Trace the changes of the frequently used config files automatically, the changes will trigger remake of some targets
+# TODO: more config files should be added, but some of the files may have some issues, which changes all the time and breaks the remake logic
+ENV_FILES := .board_config $(BOARD_LABCONFIG)
+$(ENV_FILES):
 
 edit: local-edit
 
@@ -4000,8 +4000,6 @@ tools-install:
 
 _env: env-prepare
 env-prepare: toolchain-install tools-install
-
-PHONY += $(ENV_FILES)
 
 env-list: env-dump
 env-dump:

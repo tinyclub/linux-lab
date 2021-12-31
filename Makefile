@@ -154,7 +154,7 @@ ifneq ($(BOARD),)
     #$(info LOG: Current board is $(BOARD))
   else
     _ARCH              := $(firstword $(subst /,$(space),$(BOARD)))
-    ifeq ($(filter $(_ARCH),$(BASE_ARCHS)),$(_ARCH))
+    ifneq ($(filter $(_ARCH),$(BASE_ARCHS)),)
       $(error ERR: do you mean the $(_ARCH) boards, please list with 'make list ARCH=$(_ARCH)')
     else
       MACH             := $(notdir $(BOARD))
@@ -476,10 +476,10 @@ $(eval $(call __vs,DTB,LINUX))
 
 define _pb
 ifneq ($$($(call _lc,$1)),)
-  ifeq ($$(filter $$($(call _lc,$1)),1 new build),$$($(call _lc,$1)))
+  ifneq ($$(filter $$($(call _lc,$1)),1 new build),)
     PB$1 := 0
   endif
-  ifeq ($$(filter $$($(call _lc,$1)),0 old pre prebuild prebuilt),$$($(call _lc,$1)))
+  ifneq ($$(filter $$($(call _lc,$1)),0 old pre prebuild prebuilt),)
     PB$1 := 1
   endif
 endif
@@ -489,15 +489,15 @@ endef
 define _lpb
 __$1 := $(subst x,,$(firstword $(foreach i,K U D R Q,$(findstring x$i,x$(call _uc,$1)))))
 ifneq ($$($1),)
-  ifeq ($$(filter $$($1),1 new build),$$($1))
+  ifneq ($$(filter $$($1),1 new build),)
     PB$$(__$1) := 0
   endif
-  ifeq ($$(filter $$($1),0 old pre prebuild prebuilt),$$($1))
+  ifneq ($$(filter $$($1),0 old pre prebuild prebuilt),)
     PB$$(__$1) := 1
   endif
 endif
 ifneq ($(BUILD),)
-  ifeq ($$(filter $1,$(BUILD)),$1)
+  ifneq ($$(filter $1,$(BUILD)),)
     PB$$(__$1) := 0
   endif
 endif
@@ -617,7 +617,7 @@ ifeq ($(app),all)
 endif
 
 ifeq ($(app),)
-  ifeq ($(filter $(MAKECMDGOALS),list help config),$(MAKECMDGOALS))
+  ifneq ($(filter $(MAKECMDGOALS),list help config),)
     app := default
   else
     app := kernel
@@ -645,7 +645,7 @@ ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   endif
 endif
 
-ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
+ifeq ($$(filter $(XARCH),i386 x86_64),)
  HOST_GCC_$2   := $$(or $$(call __v,HOST_GCC,$2,$3),$(HOST_GCC))
  HOST_CCORI_$2 := $$(or $$(call __v,HOST_CCORI,$2,$3),$(HOST_CCORI))
 
@@ -691,7 +691,7 @@ ifneq ($(GCC),)
   endif
 endif
 
-ifneq ($(filter $(ARCH),x86 i386 x86_64),$(ARCH))
+ifeq ($(filter $(XARCH),i386 x86_64),)
  ifneq ($(HOST_GCC),)
   # Force using internal CCORI if GCC specified
   ifeq ($(HOST_CCORI),)
@@ -729,10 +729,10 @@ define genverify
   # If Linux version specific qemu list defined, use it
   $$(eval $$(call __vs_override,$2_LIST,$$(or $3,LINUX)))
   ifneq ($$($2_LIST),)
-    ifneq ($$(filter $$($2), $$($2_LIST)), $$($2))
+    ifeq ($$(filter $$($2), $$($2_LIST)),)
       $$(if $4,$$(eval $$(call $4)))
       verify_notice := $$(BOARD): $$($2) not in supported $2 list: $$($2_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
-      ifeq ($$(filter $$(call _lc,$1),$(APPS)),$$(call _lc,$1))
+      ifneq ($$(filter $$(call _lc,$1),$(APPS)),)
         verify_notice += clone one please: 'make $$(call _lc,$1)-clone $2_NEW=$$($2)'
       else
         verify_notice += update may help: 'make bsp B=$$(BOARD)'
@@ -840,7 +840,7 @@ ifneq ($(CCPRE),)
     endif
   endif
 else
-  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifneq ($(filter $(XARCH),i386 x86_64),)
     ifneq ($(shell which gcc),)
       CCORI_INTERNAL := 1
     endif
@@ -848,14 +848,14 @@ else
 endif
 
 ifeq ($(CCORI_INTERNAL), 1)
-  ifneq ($(filter internal, $(CCORI_LIST)), internal)
+  ifeq ($(filter internal, $(CCORI_LIST)),)
     CCORI_LIST += internal
   endif
 endif
 
 # Add buidroot toolchain to list
 ifneq ($(wildcard $(BUILDROOT_CCPATH)/$(BUILDROOT_CCPRE)gcc),)
-  ifneq ($(filter buildroot, $(CCORI_LIST)), buildroot)
+  ifeq ($(filter buildroot, $(CCORI_LIST)),)
     CCORI_LIST += buildroot
   endif
   ifeq ($(CCORI), buildroot)
@@ -875,7 +875,7 @@ ifeq ($(CCORI), null)
       CCORI := internal
     endif
   else
-    ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+    ifneq ($(filter $(XARCH),i386 x86_64),)
       ifneq ($(shell which gcc,)
         CCORI := internal
       endif
@@ -905,7 +905,7 @@ else # CCORI != null
   endif
 
   # Check if external toolchain downloaded
-  ifneq ($(filter $(CCORI), buildroot), $(CCORI))
+  ifneq ($(CCORI), buildroot)
     ifneq ($(CCPRE),)
       ifneq ($(CCPATH),)
         ifeq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
@@ -930,7 +930,7 @@ endif
 CCORI_LIST ?= $(CCORI)
 
 ifneq ($(CCORI),)
- ifneq ($(filter $(CCORI), $(CCORI_LIST)), $(CCORI))
+ ifeq ($(filter $(CCORI), $(CCORI_LIST)),)
   $(error Supported gcc original list: $(CCORI_LIST))
  endif
 endif
@@ -1104,12 +1104,12 @@ ifeq ($(PBU),0)
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),boot test), $(MAKECMDGOALS))
+ ifneq ($(filter $(MAKECMDGOALS),boot test),)
   ifeq ($(U),1)
     app := uboot
   endif
   ifneq ($(U),0)
-    ifeq ($(filter command line,$(foreach i,PBU u uboot,$(origin $i))),command line)
+    ifneq ($(filter command line,$(foreach i,PBU u uboot,$(origin $i))),)
       app := uboot
     endif
   endif
@@ -1225,7 +1225,7 @@ ifneq ($(findstring not support yet,$(ROOTDEV_TYPE)),)
 endif
 
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),$(MAKECMDGOALS))
+ ifneq ($(filter $(MAKECMDGOALS),_boot root-dir-rebuild root-rd-rebuild root-hd-rebuild),)
   ifeq ($(INVALID_ROOTFS),1)
     $(error rootfs: $(ROOTFS_TYPE), try run 'make bsp' to get newer rootfs.)
   endif
@@ -1373,7 +1373,7 @@ PHONY += board-config board-edit
 
 # Plugin targets
 
-ifeq ($(filter command line, $(origin P) $(origin PLUGIN)), command line)
+ifneq ($(filter command line, $(origin P) $(origin PLUGIN)),)
   ifeq ($(PLUGIN),)
     PLUGIN_CLEAN := plugin-clean
   endif
@@ -1405,7 +1405,7 @@ ifneq ($(findstring xlist,x$(first_target)),)
   LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
   LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
 
-  ifeq ($(filter $(LIST_GOAL),default real virt base plugin full board short),$(LIST_GOAL))
+  ifneq ($(filter $(LIST_GOAL),default real virt base plugin full board short),)
     BOARD :=
     BTYPE ?= ^_BASE|^_PLUGIN
     VAR_FILTER ?= ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
@@ -1521,11 +1521,11 @@ ifeq ($$($1),1)
   endif
 endif
 
-ifeq ($(filter $1,$(BUILD)),$1)
+ifneq ($(filter $1,$(BUILD)),)
   boot_deps   += $1-build
 endif
 
-ifeq ($(filter $(BOARD),$(BOARD_FREE)),$(BOARD))
+ifneq ($(filter $(BOARD),$(BOARD_FREE)),)
 
 $1_bsp_childs := $(addprefix $1-,defconfig patch saveall save saveconfig clone)
 $$($1_bsp_childs): $(BSP_CHECKOUT)
@@ -1543,7 +1543,7 @@ $1: $(if $(x),_$1,$1-build)
 endif
 
 # Force app building for current building targets can not auto detect code update
-ifeq ($(filter $(first_target),$1 $1-build build), $(first_target))
+ifneq ($(filter $(first_target),$1 $1-build build),)
 $1-build: _$1
 else
 $1-build: $$(call _stamp,$1,build)
@@ -1902,7 +1902,7 @@ $$(call _stamp,$1,env): $1-deps
 	$$(Q)[ "$$(GCC_$2_SWITCH)" = "1" ] \
 	  && make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
 	     $$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))" LDTVER="$$$$($(CCPRE)ld -v | tr -d -c '[0-9.]')") || true
-	$$(Q)if [ -z "$(filter $(MAKECMDGOALS),x86_64/pc i386/pc)" ]; then \
+	$$(Q)if [ -z "$(filter $(XARCH),x86_64 i386)" ]; then \
 	  [ "$$(HOST_GCC_$2_SWITCH)" = "1" ] \
 	    && make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0 || true; \
 	fi
@@ -1958,7 +1958,7 @@ $(eval $(call genenvdeps,bsp,BSP,B))
 general_targets ?= 1
 
 ifneq ($(general_targets),)
- ifeq ($(filter $(general_targets),0 1),$(general_targets))
+ ifneq ($(filter $(general_targets),0 1),)
   kernel_targets ?= $(general_targets)
   module_targets ?= $(general_targets)
   root_targets   ?= $(general_targets)
@@ -2107,13 +2107,13 @@ download-toolchain: toolchain
 gcc: toolchain
 
 include $(PREBUILT_TOOLCHAINS)/Makefile
-ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+ifneq ($(filter $(XARCH),i386 x86_64),)
   include $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 endif
 
 SCRIPT_GETCCVER := tools/gcc/version.sh
 
-ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
+ifneq ($(filter $(CCORI),internal buildroot),)
   _CCVER := $(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
 
   ifneq ($(CCVER),)
@@ -2140,7 +2140,7 @@ ifeq ($(filter $(CCORI),internal buildroot),$(CCORI))
 endif
 
 toolchain-install:
-ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+ifneq ($(filter $(XARCH),i386 x86_64),)
   ifneq ($(CCVER_EXIST),0)
 	@echo
 	@echo "Installing prebuilt toolchain ..."
@@ -2192,7 +2192,7 @@ gcc-version: toolchain-info
 toolchain-version: toolchain-info
 
 toolchain-clean:
-ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+ifneq ($(filter $(XARCH),i386 x86_64),)
   ifneq ($(shell which $(CCVER)),)
 	$(Q)sudo apt-get remove --purge $(CCVER)
   endif
@@ -2751,7 +2751,7 @@ KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
 KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
 
 FPL ?= 1
-ifeq ($(filter $(FEATURE),debug module boot nfsroot initrd), $(FEATURE))
+ifneq ($(filter $(FEATURE),debug module boot nfsroot initrd),)
   FPL := 0
 endif
 ifeq ($(FEATURE),boot,module)
@@ -2886,7 +2886,7 @@ ifeq ($(KT),$(IMAGE))
   KERNEL_DEPS := $(CC_TOOLCHAIN) $(KERNEL_DTB) $(ROOT_RD)
 endif
 
-ifeq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),_kernel-setconfig)
+ifneq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),)
   ksetconfig  := 1
 endif
 
@@ -2950,13 +2950,13 @@ endif
 
 endif #ksetconfig
 
-ifeq ($(filter _kernel-getconfig,$(MAKECMDGOALS)),_kernel-getconfig)
+ifneq ($(filter _kernel-getconfig,$(MAKECMDGOALS)),)
   ifneq ($(o),)
     KCONFIG_GET_OPT := -s $(o)
   endif
 endif
 
-ifeq ($(filter kernel-getconfig,$(MAKECMDGOALS)),kernel-getconfig)
+ifneq ($(filter kernel-getconfig,$(MAKECMDGOALS)),)
   o ?= $m
 endif
 
@@ -3263,7 +3263,7 @@ RSYNC_CMD := SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
- ifeq ($(filter $(firstword $(MAKECMDGOALS)),$(addsuffix -upload,kernel dtb module modules) boot-config boot upload),$(firstword $(MAKECMDGOALS)))
+ ifneq ($(filter $(firstword $(MAKECMDGOALS)),$(addsuffix -upload,kernel dtb module modules) boot-config boot upload),)
   KERNEL_RELEASE ?= $(shell cat $(KRELEASE))
   ifeq ($(KERNEL_RELEASE),)
     $(error Linux must be compiled before uploading)
@@ -3377,7 +3377,7 @@ define netdev_help
  ifeq ($$(MACH), malta)
   EMULATOR += -kernel $(_KIMAGE)
  endif
- ifneq ($$(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k), $(BOARD))
+ ifeq ($$(filter $(BOARD),riscv32/virt riscv64/virt loongson/ls1b loongson/ls2k),)
   $$(info $$(shell $(EMULATOR) -M $$(MACH) -net nic,model=?))
  endif
 endef
@@ -3659,7 +3659,7 @@ endif
 # KVM speedup for x86 architecture, assume our host is x86 currently
 ifeq ($(DEBUG),0)
   KVM_DEV ?= /dev/kvm
-  ifeq ($(filter $(XARCH),i386 x86_64),$(XARCH))
+  ifneq ($(filter $(XARCH),i386 x86_64),)
     ifneq ($(wildcard $(KVM_DEV)),)
       BOOT_CMD += -enable-kvm
     endif
@@ -3687,7 +3687,7 @@ PHONY += boot-init boot-finish
 
 # Test support
 ifneq ($(TEST),)
- ifeq ($(filter _boot, $(MAKECMDGOALS)), _boot)
+ ifneq ($(filter _boot, $(MAKECMDGOALS)),)
   TEST_KCLI :=
   ifneq ($(FEATURE),)
     TEST_KCLI += feature=$(subst $(space),$(comma),$(strip $(FEATURE)))
@@ -3993,7 +3993,7 @@ _boot: $(_BOOT_DEPS)
 PHONY += boot-test _boot
 
 # Show the variables
-ifeq ($(filter env-dump,$(MAKECMDGOALS)),env-dump)
+ifneq ($(filter env-dump,$(MAKECMDGOALS)),)
 VARS := $(shell $(call getboardvars))
 VARS += PBK PBR PBD PBQ PBU
 VARS += BOARD FEATURE TFTPBOOT

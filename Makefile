@@ -1656,21 +1656,36 @@ ifneq ($(_TOP_SRC),)
   __$(call _uc,$1)_ABS_SRC  := $$(_TOP_SRC)/$$($(call _uc,$1)_SRC)/
   __$(call _uc,$1)_ABS_TAG  := $$(__$(call _uc,$1)_ABS_SRC)/.git/packed-refs
   ifneq ($$(wildcard $$(__$(call _uc,$1)_ABS_TAG)),)
-    _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) 2>/dev/null && echo $$(__$(call _uc,$1)_ABS_SRC))
-    $(call _uc,$1)_GITADD   := cd $$(__$(call _uc,$1)_ABS_SRC) && git cat-file -e $$($1_tag) 2>/dev/null && echo From: $$(__$(call _uc,$1)_ABS_SRC) || $$($(call _uc,$1)_GITADD)
+    _$(call _uc,$1)_ABS_SRC := $$$$(cd $$(__$(call _uc,$1)_ABS_SRC); git cat-file -e $$($1_tag) 2>/dev/null && echo $$(__$(call _uc,$1)_ABS_SRC); cd $$($(call _uc,$1)_SRC_FULL))
   endif
 endif
 
-$$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
+$$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license $$(ENV_FILES)
 	$$(Q)if [ -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
-	  [ -d $$($(call _uc,$1)_SRC_FULL) ] \
-	    && cd $$($(call _uc,$1)_SRC_FULL) \
-	    && git cat-file -e $$($1_tag) 2>/dev/null \
-	    || (echo "Updating $1 source ..." \
-	       && $$($(call _uc,$1)_GITADD) \
-	       && git fetch --progress $$(or $$(_$(call _uc,$1)_ABS_SRC),$$(or $$($(call _uc,$1)_GITREPO),origin)) \
-	          $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) FETCH_HEAD || true),--tags) \
-	       && touch $$@); \
+	  if [ -d $$($(call _uc,$1)_SRC_FULL) ]; then \
+	    cd $$($(call _uc,$1)_SRC_FULL); \
+	    git cat-file -e $$($1_tag) 2>/dev/null; \
+	    if [ $$$$? -ne 0 ]; then \
+	       echo "Updating $1 source ..."; \
+	       REMOTE_REPO="$$(_$(call _uc,$1)_ABS_SRC)"; \
+	       cd $$($(call _uc,$1)_SRC_FULL); \
+	       if [ -z "$$$$REMOTE_REPO" ]; then \
+		 REMOTE_REPO=$$($(call _uc,$1)_GITREPO); \
+		 if [ -n "$$$$REMOTE_REPO" ]; then \
+	           $$($(call _uc,$1)_GITADD); \
+		 else \
+	           REMOTE_REPO=$$$$(git remote -v | grep fetch | tr '\t' ' ' | cut -d' ' -f2); \
+		 fi ; \
+	       fi ; \
+	       echo "From: $$$$REMOTE_REPO"; \
+	       echo "To: $$$$PWD"; \
+	       echo "Target: $$($1_tag)"; \
+	       echo "Progress:"; \
+	       git fetch --verbose --progress "$$(or $$$$REMOTE_REPO,origin)" \
+	          $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) FETCH_HEAD || true),--tags); \
+	       touch $$@; \
+	    fi ; \
+	  fi ; \
 	else		\
 	  echo "Downloading $1 source ..."; \
 	  [ ! -d $$($(call _uc,$1)_SROOT) ] && mkdir -p $$($(call _uc,$1)_SROOT); \
@@ -1678,9 +1693,13 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license
 	    && mkdir -p $$($(call _uc,$1)_SPATH) \
 	    && cd $$($(call _uc,$1)_SPATH) \
 	    && git init 		\
-	    && REMOTE_REPO=$$(or $$(_$(call _uc,$1)_ABS_SRC),$$(_$(call _uc,$1)_GIT)) \
+	    && REMOTE_REPO="$$(or $$(_$(call _uc,$1)_ABS_SRC),$$(_$(call _uc,$1)_GIT))" \
+	    && cd $$($(call _uc,$1)_SRC_FULL) \
 	    && echo "From: $$$$REMOTE_REPO" \
-	    && git remote add origin $$$$REMOTE_REPO \
+	    && echo "To: $$$$PWD" \
+	    && echo "Target: $$($1_tag)" \
+	    && echo "Progress:" \
+	    && git remote add origin "$$$$REMOTE_REPO" \
 	    && git fetch --progress origin \
 	       $$(if $$(if $$(__$(call _uc,$2)),,$$(GIT_FETCH_SHALLOW)),--depth 1 tag $$($1_tag) && (git tag $$($1_tag) FETCH_HEAD || true),--tags) \
 	    && touch $$@; \

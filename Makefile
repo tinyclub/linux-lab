@@ -637,7 +637,7 @@ ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   ifneq ($$(CCORI_$2)$$(GCC_$2),)
     ifeq ($$(CCORI_$2)$$(CCORI),)
       CCORI_$2 := internal
-      CCORI      := internal
+      CCORI    := internal
     else
       $$(eval $$(call __vs,CCORI,$2,$3))
     endif
@@ -2114,51 +2114,34 @@ endif
 SCRIPT_GETCCVER := tools/gcc/version.sh
 
 ifneq ($(filter $(CCORI),internal buildroot),)
-  _CCVER := $(shell $(SCRIPT_GETCCVER) $(CCPRE) $(CCPATH))
-
-  ifneq ($(CCVER),)
-    ifeq ($(CCVER),$(_CCVER))
-      CCVER_EXIST := 0
-    endif
-    ifneq ($(CCVER_EXIST),0)
-      ifneq ($(wildcard $(CCPATH)/$(CCPRE)gcc-$(CCVER)),)
-        CCVER_EXIST := 0
-      endif
-      ifeq ($(CCVER_EXIST),0)
-        ifeq ($(origin CCVER),command line)
-          $(warning gcc: $(CCVER) already installed.)
-        endif
-      endif
-    endif
-  else
-    CCVER := $(_CCVER)
-    CCVER_EXIST := 0
-  endif
-  ifeq ($(CCVER_EXIST),0)
-    override CCVER := $(_CCVER)
-  endif
+  CCVER := $$($(SCRIPT_GETCCVER) $(CCVER) $(CCPATH) $(CCPRE))
 endif
 
-toolchain-install:
 ifneq ($(filter $(XARCH),i386 x86_64),)
-  ifneq ($(CCVER_EXIST),0)
-	@echo
-	@echo "Installing prebuilt toolchain ..."
-	@echo
-	$(Q)sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-	$(Q)sudo apt-get -y update
-	$(Q)sudo apt-get install -y --force-yes $(CCVER)
-	$(Q)sudo apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib
-	$(Q)sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/$(CCVER) 46
-  endif
+  TOOLCHAIN_INSTALL := toolchain-install-x86
+  TOOLCHAIN_CLEAN := toolchain-clean-x86
 else
-  ifeq ($(wildcard $(CCPATH)),)
-	@echo
-	@echo "Downloading prebuilt toolchain ..."
-	@echo
-	$(Q)cd $(TOOLCHAIN) && wget -c $(CCURL) && tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN)
-  endif
+  TOOLCHAIN_INSTALL := toolchain-install-nonx86
+  TOOLCHAIN_CLEAN := toolchain-clean-nonx86
 endif
+
+toolchain-install: $(TOOLCHAIN_INSTALL)
+
+toolchain-install-x86:
+	$(Q)if ! which gcc-$(CCVER) >/dev/null; then \
+	  echo "Installing prebuilt toolchain ...";  \
+	  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; \
+	  sudo apt-get -y update; \
+	  sudo apt-get install -y --force-yes gcc-$(CCVER); \
+	  sudo apt-get install -y --force-yes libc6-dev libc6-dev-i386 lib32gcc-8-dev gcc-multilib; \
+	  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(CCVER) 46; \
+	fi
+
+toolchain-install-nonx86:
+	$(Q)if [ -z "$(CCPATH)" -o ! -d "$(CCPATH)" ]; then \
+	  echo "Downloading prebuilt toolchain ..."; \
+	  cd $(TOOLCHAIN) && wget -c $(CCURL) && tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN); \
+	fi
 
 toolchain: toolchain-install gcc-info
 
@@ -2177,32 +2160,22 @@ toolchain-info:
 	@echo Remote.: $(CCURL)
 	@echo Local..: $(CCPATH)
 	@echo Tool...: $(CCPRE)gcc
-ifeq ($(wildcard $(CCPATH)),)
-	@echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
-else
-	@echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1`
-endif
-ifeq ($(CCORI), internal)
-	-@echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc`
-endif
-	@echo
+	@[ -n "$(CCPATH)" -a -d "$(CCPATH)" ] \
+	  && echo Version: `/usr/bin/env PATH=$(CCPATH):$(PATH) $(CCPRE)gcc --version | head -1` \
+	  || echo Version: Not downloaded, please download it: make toolchain CCORI=$(CCORI)
+	@[ "$(CCORI)" = "internal" ] && echo More...: `/usr/bin/update-alternatives --list $(CCPRE)gcc` || true
 
 gcc-info: toolchain-info
 gcc-version: toolchain-info
 toolchain-version: toolchain-info
 
-toolchain-clean:
-ifneq ($(filter $(XARCH),i386 x86_64),)
-  ifneq ($(shell which $(CCVER)),)
-	$(Q)sudo apt-get remove --purge $(CCVER)
-  endif
-else
-  ifneq ($(wildcard $(TOOLCHAIN)),)
-    ifneq ($(CCBASE),)
-	$(Q)rm -rf $(TOOLCHAIN)/$(CCBASE)
-    endif
-  endif
-endif
+toolchain-clean: $(TOOLCHAIN_CLEAN)
+
+toolchain-clean-x86:
+	$(Q)which gcc-$(CCVER) >/dev/null && sudo apt-get remove --purge gcc-$(CCVER) || true
+
+toolchain-clean-nonx86:
+	$(Q)[ -n "$(TOOLCHAIN)" -a -d "$(TOOLCHAIN)" -a -n "$(CCBASE)" ] && rm -rvf $(TOOLCHAIN)/$(CCBASE) || true
 
 gcc-clean: toolchain-clean
 
@@ -2213,10 +2186,8 @@ toolchain-switch:
 	  [ -n "$(GCC)" -a "$(CCVER)" != "$(GCC)" ] && update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true; \
 	  [ -n "$(LDT)" -a "$(LDTVER)" != "$(LDT)" ] && update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true; \
 	fi ; \
-	if [ "buildroot" != "$(CCORI)" ]; then \
-	  _CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
-	  [ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true; \
-	fi
+	_CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
+	[ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true; \
 
 gcc-switch: toolchain-switch
 

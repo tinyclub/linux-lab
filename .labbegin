@@ -16,7 +16,9 @@ endif
 
 # gcc 4.3 must work with 2.24 binutils (ld), otherwise, the kernel compiled not boot
 # LS is a predefined variable, use LDT (ld tool) instead here
-ifeq ($(ARCH),arm)
+ifeq ($(CCORI),internal)
+ ifeq ($(ARCH),arm)
   LDT := 2.34
   LDT[GCC_4.3]  ?= 2.24
+ endif
 endif

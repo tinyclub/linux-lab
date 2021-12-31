@@ -1775,7 +1775,7 @@ $1-list:
 $1-help:
 	$$(Q)$$(or $$(call $1_make_help),$$(call make_$1,help))
 
-$$(call _stamp,$1,patch):
+$$(call _stamp,$1,patch): $$(ENV_FILES)
 	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
 	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
 	  [ -f tools/$1/patch.sh ] \
@@ -1835,7 +1835,7 @@ endif
 
 _$3CFG := $$(notdir $$($3CFG_FILE))
 
-$$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE))
+$$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$(CFGS[$3_N]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -d $$n;))
@@ -3997,12 +3997,10 @@ endif
 tools-install:
 	$(Q)[ -n "$(PKGS)" ] && tools/deps/install.sh '$(PKGS)' || true
 
-_env: env-prepare env-files
+_env: env-prepare
 env-prepare: toolchain-install tools-install
 
 PHONY += $(ENV_FILES)
-
-env-files: $(ENV_FILES)
 
 env-list: env-dump
 env-dump:
@@ -4015,7 +4013,7 @@ env-save: board-config
 default-help:
 	$(Q)cat README.md
 
-PHONY += env env-files env-list env-prepare env-dump env-save lab-help
+PHONY += env env-list env-prepare env-dump env-save lab-help
 
 # memory building support
 BUILD_CACHE_TOOL   := tools/build/cache

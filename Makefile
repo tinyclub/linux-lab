@@ -557,13 +557,13 @@ ifeq ($(BUILD),all)
 endif
 
 first_target := $(firstword $(MAKECMDGOALS))
-ifeq ($(findstring -dox,$(first_target)),-dox)
+ifneq ($(findstring -dox,$(first_target)),)
   # use the rest as arguments for "do"
   reserve_target := $(first_target:-do=)
   APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
   x              := $(APP_ARGS)
 else
- ifeq ($(findstring -defconfigx,$(first_target)x),-defconfigx)
+ ifneq ($(findstring -defconfigx,$(first_target)x),)
   # use the rest as arguments for "defconfig"
   reserve_target := $(first_target:-defconfig=)
   APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
@@ -633,7 +633,7 @@ define genbuildenv
 GCC_$2   := $$(or $$(call __v,GCC,$2,$3),$(GCC))
 CCORI_$2 := $$(or $$(call __v,CCORI,$2,$3),$(CCORI))
 
-ifeq ($$(findstring $1,$$(_MAKECMDGOALS)),$1)
+ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   ifneq ($$(CCORI_$2)$$(GCC_$2),)
     ifeq ($$(CCORI_$2)$$(CCORI),)
       CCORI_$2 := internal
@@ -649,7 +649,7 @@ ifneq ($$(filter $(ARCH),x86 i386 x86_64),$(ARCH))
  HOST_GCC_$2   := $$(or $$(call __v,HOST_GCC,$2,$3),$(HOST_GCC))
  HOST_CCORI_$2 := $$(or $$(call __v,HOST_CCORI,$2,$3),$(HOST_CCORI))
 
- ifeq ($$(findstring $1,$$(_MAKECMDGOALS)),$1)
+ ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   ifneq ($$(HOST_CCORI_$2)$$(HOST_GCC_$2),)
     ifeq ($$(HOST_CCORI_$2)$$(HOST_CCORI),)
       HOST_CCORI_$2 := internal
@@ -666,7 +666,7 @@ $(eval $(call __vs,GCC,OS))
 $(eval $(call __vs,HOST_GCC,OS))
 
 # Hacking for gcc switch when building kernel modules with: make modules m=hello
-ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+ifneq ($(findstring module,$(MAKECMDGOALS)),)
   _MAKECMDGOALS := $(MAKECMDGOALS) kernel
 else
   _MAKECMDGOALS := $(MAKECMDGOALS)
@@ -703,14 +703,14 @@ endif
 # tuning notify method
 notice := error
 # stop error for force targets ??
-ifeq ($(findstring xforce, x$(MAKECMDGOALS)), xforce)
+ifneq ($(findstring xforce, x$(MAKECMDGOALS)),)
   notice := warning
 endif
 # warning instead of error for bsp downloading
-ifeq ($(findstring xbsp, x$(MAKECMDGOALS)),xbsp)
+ifneq ($(findstring xbsp, x$(MAKECMDGOALS)),)
   notice := warning
 endif
-ifeq ($(findstring clone, $(MAKECMDGOALS)),clone)
+ifneq ($(findstring clone, $(MAKECMDGOALS)),)
   notice := ignore
 endif
 
@@ -751,7 +751,7 @@ define genverify
  ifneq ($$($1_SRC),)
    ifneq ($$(_$1_SRC), $$($1_SRC))
     _$2 := $$(subst $$(shell basename $$($1_SRC))-,,$$($2))
-    ifneq ($$(findstring $$(TOP_SRC),$$($1_SRC)),$$(TOP_SRC))
+    ifeq ($$(findstring $$(TOP_SRC),$$($1_SRC)),)
       $1_ABS_SRC := $$(TOP_SRC)/$$($1_SRC)
     else
       $1_ABS_SRC := $$($1_SRC)
@@ -1132,7 +1132,7 @@ endif
 
 # Allow use short ROOTDEV argument
 ifneq ($(ROOTDEV),)
-  ifneq ($(findstring /dev/,$(ROOTDEV)),/dev/)
+  ifeq ($(findstring /dev/,$(ROOTDEV)),)
     override ROOTDEV := /dev/$(ROOTDEV)
   endif
 endif
@@ -1209,17 +1209,17 @@ ifeq ($(origin ROOTFS),command line)
 endif
 
 # FIXME: workaround if the .cpio.gz or .ext2 are removed and only rootfs/ exists
-ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+ifneq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),)
   ROOTFS          := $(dir $(ROOTFS))
   ROOTFS_TYPE     := $(shell $(ROOTFS_TYPE_TOOL) $(ROOTFS))
 endif
 
-ifeq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),not invalid or not exists)
+ifneq ($(findstring not invalid or not exists,$(ROOTFS_TYPE)),)
   INVALID_ROOTFS  := 1
   INVALID_ROOT    := 1
 endif
 
-ifeq ($(findstring not support yet,$(ROOTDEV_TYPE)),not support yet)
+ifneq ($(findstring not support yet,$(ROOTDEV_TYPE)),)
   INVALID_ROOTDEV := 1
   INVALID_ROOT    := 1
 endif
@@ -1245,7 +1245,7 @@ FS_SUFFIX    := $(word 3,$(_ROOTFS_TYPE))
 # Buildroot use its own ROOTDIR in /target, not in images/rootfs
 ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   ifeq ($(PREBUILT_IROOTFS),$(ROOTFS))
-    ifeq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),$(BSP_ROOT))
+    ifneq ($(findstring $(BSP_ROOT),$(PREBUILT_IROOTFS)),)
       BSP_ROOTDIR ?= $(subst $(BSP_ROOT),$(BSP_BUILD)/root,$(PREBUILT_ROOT_DIR))/rootfs
     else
       BSP_ROOTDIR ?= $(subst $(TOP_DIR),$(BSP_BUILD)/root,$(PREBUILT_ROOT_DIR))/rootfs
@@ -1400,7 +1400,7 @@ plugin-list-full:
 
 PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
 
-ifeq ($(findstring xlist,x$(first_target)),xlist)
+ifneq ($(findstring xlist,x$(first_target)),)
   # all: 0, plugin: 1, noplugin: 2
   LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
   LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
@@ -1538,7 +1538,7 @@ $$(call _stamp,$1,build): $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,
 	$$(Q)make $$(NPD) _$1
 	$$(Q)touch $$@
 
-ifeq ($$(findstring $1,$$(firstword $$(MAKECMDGOALS))),$1)
+ifneq ($$(findstring $1,$$(firstword $$(MAKECMDGOALS))),)
 $1: $(if $(x),_$1,$1-build)
 endif
 
@@ -1565,13 +1565,13 @@ define gensource
 $(call _uc,$1)_SRC_DEFAULT := 1
 
 ifneq ($$(notdir $(patsubst %/,%,$$($(call _uc,$1)_SRC))),$$($(call _uc,$1)_SRC))
-  ifeq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$1)_SRC)),x$$(BSP_DIR))
+  ifneq ($$(findstring x$$(BSP_DIR),x$$($(call _uc,$1)_SRC)),)
     $(call _uc,$1)_SROOT := $$(BSP_DIR)
     $(call _uc,$1)_SPATH := $$(subst $$(BSP_DIR)/,,$$($(call _uc,$1)_SRC))
     $(call _uc,$1)_SRC_DEFAULT := 0
   else
     ifneq ($$(PLUGIN_DIR),)
-      ifeq ($$(findstring x$$(PLUGIN_DIR),x$$(TOP_DIR)/$$($(call _uc,$1)_SRC)),x$$(PLUGIN_DIR))
+      ifneq ($$(findstring x$$(PLUGIN_DIR),x$$(TOP_DIR)/$$($(call _uc,$1)_SRC)),)
         $(call _uc,$1)_SROOT := $$(PLUGIN_DIR)
         $(call _uc,$1)_SPATH := $$(subst $$(PLUGIN_DIR),,$$(TOP_DIR)/$$($(call _uc,$1)_SRC))
         $(call _uc,$1)_SRC_DEFAULT := 0
@@ -1803,7 +1803,7 @@ else
   endif
 endif
 
-ifeq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($3CFG_FILE)),$$($(call _uc,$1)_CONFIG_DIR))
+ifneq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($3CFG_FILE)),)
   $3CFG_BUILTIN := 1
 endif
 
@@ -1871,11 +1871,11 @@ endif
 else
 $1-cloneconfig $1-clonepatch:
 
-  ifeq ($$(findstring clone,$$(MAKECMDGOALS)),clone)
-    ifeq ($$(findstring $1,$$(MAKECMDGOALS)),$1)
+  ifneq ($$(findstring clone,$$(MAKECMDGOALS)),)
+    ifneq ($$(findstring $1,$$(MAKECMDGOALS)),)
       $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
     endif
-    ifeq ($$(findstring $2,$$(MAKECMDGOALS)),$2)
+    ifneq ($$(findstring $2,$$(MAKECMDGOALS)),)
       $$(error Usage: make $$(MAKECMDGOALS) [$(call _uc,$2)=<old-$2-version>] $(call _uc,$2)_NEW=<new-$2-version>)
     endif
   endif
@@ -1990,7 +1990,7 @@ ifeq ($(qemu_targets),1)
 #
 
 
-ifeq ($(findstring qemu,$(MAKECMDGOALS)),qemu)
+ifneq ($(findstring qemu,$(MAKECMDGOALS)),)
  ifeq ($(QEMU),)
   $(error ERR: No qemu version specified, please configure QEMU= in $(BOARD_MAKEFILE) or pass it manually)
  endif
@@ -2486,7 +2486,7 @@ ifneq ($(PLUGIN),)
     PLUGIN_MODULE_DIR := $(TMP)
   endif
 else
-  ifeq ($(findstring module,$(MAKECMDGOALS)),module)
+  ifneq ($(findstring module,$(MAKECMDGOALS)),)
     PLUGIN_MODULE_DIR := $$(find $(TOP_DIR)/boards -maxdepth 5 -type d -name "modules")
   endif
 endif
@@ -2507,12 +2507,12 @@ ifneq ($(M),)
     override M := $(subst //,/,$(patsubst %/,%,$(M)))
   endif
   ifneq ($(wildcard $(M)),)
-    ifeq ($(findstring $(KERNEL_MODULE_DIR),$(M)),$(KERNEL_MODULE_DIR))
+    ifneq ($(findstring $(KERNEL_MODULE_DIR),$(M)),)
       # Convert to relative path: must related to top dir of linux kernel, otherwise, will be compiled in source directory
       M_PATH = $(subst $(KERNEL_MODULE_DIR)/,,$(M))
       internal_module := 1
     else
-      ifeq ($(findstring $(TOP_DIR),$(M)),$(TOP_DIR))
+      ifneq ($(findstring $(TOP_DIR),$(M)),)
         M_PATH ?= $(M)
       else
         M_PATH ?= $(TOP_DIR)/$(M)
@@ -2543,7 +2543,7 @@ endif
 # Only check module exists for 'module' target
 one_module := 0
 ifeq ($(MC),1)
-  ifeq ($(findstring _module,$(MAKECMDGOALS)),_module)
+  ifneq ($(findstring _module,$(MAKECMDGOALS)),)
     one_module := 1
   endif
 endif
@@ -2840,7 +2840,7 @@ endif
 # Allow to accept external kernel compile options, such as XXX_CONFIG=y
 KOPTS ?=
 
-ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+ifneq ($(findstring /dev/null,$(ROOTDEV)),)
   ROOT_RD := $(IROOTFS)
   # directory is ok, but is not compressed cpio
   KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
@@ -3007,7 +3007,7 @@ _kernel: $(KERNEL_DEPS)
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
 
-ifeq ($(findstring calltrace,$(MAKECMDGOALS)),calltrace)
+ifneq ($(findstring calltrace,$(MAKECMDGOALS)),)
   ifneq ($(lastcall),)
     LASTCALL ?= $(lastcall)
   endif
@@ -3047,10 +3047,10 @@ DTB_SIZE    ?= 0
 #$(warning $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 $(eval $(call genverify,BOOTDEV,BOOTDEV,UBOOT))
 
-ifeq ($(findstring sd,$(BOOTDEV)),sd)
+ifneq ($(findstring sd,$(BOOTDEV)),)
   SD_BOOT ?= 1
 endif
-ifeq ($(findstring mmc,$(BOOTDEV)),mmc)
+ifneq ($(findstring mmc,$(BOOTDEV)),)
   SD_BOOT ?= 1
 endif
 
@@ -3059,7 +3059,7 @@ U_BOOT_CMD ?= bootcmd1
 ifeq ($(SD_BOOT),1)
   U_BOOT_CMD := bootcmd2
 endif
-ifeq ($(findstring flash,$(BOOTDEV)),flash)
+ifneq ($(findstring flash,$(BOOTDEV)),)
   U_BOOT_CMD := bootcmd3
 endif
 ifeq ($(BOOTDEV),ram)
@@ -3067,7 +3067,7 @@ ifeq ($(BOOTDEV),ram)
   RAM_BOOT   ?= 1
 endif
 
-ifneq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+ifeq ($(findstring /dev/ram,$(ROOTDEV)),)
   RDK_ADDR   := -
 endif
 ifeq ($(DTS),)
@@ -3161,7 +3161,7 @@ ENV_IMG    := $(TFTPBOOT)/env.img
 export ENV_IMG
 
 UBOOT_DEPS := $(U_DTB_IMAGE)
-ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
   UBOOT_DEPS += $(UROOTFS)
 endif
 UBOOT_DEPS += $(UKIMAGE)
@@ -3170,7 +3170,7 @@ _uboot-images: $(UBOOT_DEPS)
 ifeq ($(BOOTDEV),tftp)
 	$(Q)$(UBOOT_TFTP_TOOL)
 endif
-ifeq ($(findstring flash,$(BOOTDEV)),flash)
+ifneq ($(findstring flash,$(BOOTDEV)),)
 	$(Q)$(UBOOT_PFLASH_TOOL)
 endif
 ifeq ($(SD_BOOT),1)
@@ -3277,7 +3277,7 @@ getip:
 
 # Upload images to remote board
 
-ifeq ($(findstring upload,$(MAKECMDGOALS)),upload)
+ifneq ($(findstring upload,$(MAKECMDGOALS)),)
 LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
 REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
@@ -3430,7 +3430,7 @@ endif
 # Ramdisk init configuration
 RDINIT ?= /init
 
-ifeq ($(findstring /dev/null,$(ROOTDEV)),/dev/null)
+ifneq ($(findstring /dev/null,$(ROOTDEV)),)
   CMDLINE += rdinit=$(RDINIT)
 else
   CMDLINE += root=$(ROOTDEV)
@@ -3500,8 +3500,8 @@ endif
 
 # Force running git submodule commands
 # FIXME: To test automatically, must checkout with -f, otherwise, will stop with failures.
-ifeq ($(findstring force-,$(MAKECMDGOALS)),force-)
-  ifeq ($(findstring -checkout,$(MAKECMDGOALS)),-checkout)
+ifneq ($(findstring force-,$(MAKECMDGOALS)),)
+  ifneq ($(findstring -checkout,$(MAKECMDGOALS)),)
     FORCE_CHECKOUT ?= 1
   endif
 endif
@@ -3529,7 +3529,7 @@ else
   TEST_FINISH   := poweroff
 endif
 
-ifneq ($(findstring reboot,$(TEST_FINISH)),reboot)
+ifeq ($(findstring reboot,$(TEST_FINISH)),)
   EXIT_ACTION ?= -no-reboot
 endif
 
@@ -3563,7 +3563,7 @@ ifeq ($(U),1)
   ifeq ($(RAM_BOOT),1)
     BOOT_CMD += -device loader,file=$(UKIMAGE),addr=$(KRN_ADDR)
     BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
-    ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+    ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
       BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
     endif
   endif
@@ -3580,7 +3580,7 @@ ifeq ($(U),1)
     BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw$(if $(UBOOT_BIOS),$(comma)unit=1)
   endif
 else # U != 1
-  ifeq ($(findstring /dev/ram,$(ROOTDEV)),/dev/ram)
+  ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
     INITRD ?= 1
   endif
 
@@ -3599,11 +3599,11 @@ else # U != 1
   endif
 endif # U != 1
 
-ifeq ($(findstring /dev/hda,$(ROOTDEV)),/dev/hda)
+ifneq ($(findstring /dev/hda,$(ROOTDEV)),)
   BOOT_CMD += -hda $(HROOTFS)
 endif
 
-ifeq ($(findstring /dev/sda,$(ROOTDEV)),/dev/sda)
+ifneq ($(findstring /dev/sda,$(ROOTDEV)),)
   # Ref: https://blahcat.github.io/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64/
   ifeq ($(MACH), virt)
     BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-sda -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi -device scsi-hd,drive=virtio-sda
@@ -3614,11 +3614,11 @@ endif
 
 # FIXME: Currently, BOOTDEV and ROOTDEV can not be sed to sd/mmc at the same time
 # but it should work when the rootfs is put in a specified partition of the same sdcard.
-ifeq ($(findstring /dev/mmc,$(ROOTDEV)),/dev/mmc)
+ifneq ($(findstring /dev/mmc,$(ROOTDEV)),)
   BOOT_CMD += -drive if=sd,file=$(HROOTFS),format=raw,id=mmc0
 endif
 
-ifeq ($(findstring /dev/vda,$(ROOTDEV)),/dev/vda)
+ifneq ($(findstring /dev/vda,$(ROOTDEV)),)
   # Ref: https://wiki.debian.org/Arm64Qemu
   BOOT_CMD += -drive if=none,file=$(HROOTFS),format=raw,id=virtio-vda -device virtio-blk-device,drive=virtio-vda
 endif
@@ -3638,7 +3638,7 @@ BOOT_CMD += $(XOPTS) $(XQOPT)
 ifeq (debug,$(firstword $(MAKECMDGOALS)))
   DEBUG := $(app)
 else
-  ifeq ($(findstring debug,$(firstword $(MAKECMDGOALS))),debug)
+  ifneq ($(findstring debug,$(firstword $(MAKECMDGOALS))),)
     DEBUG := $(subst -,,$(subst debug,,$(firstword $(MAKECMDGOALS))))
   endif
 endif
@@ -3691,7 +3691,7 @@ ifneq ($(TEST),)
   TEST_KCLI :=
   ifneq ($(FEATURE),)
     TEST_KCLI += feature=$(subst $(space),$(comma),$(strip $(FEATURE)))
-    ifeq ($(findstring module,$(FEATURE)),module)
+    ifneq ($(findstring module,$(FEATURE)),)
       TEST_KCLI += module=$(subst $(space),$(comma),$(strip $(MODULE)))
     endif
   endif
@@ -3732,7 +3732,7 @@ ifneq ($(U),1)
 endif
 
 ifneq ($(TEST_REBOOT), 0)
-  ifeq ($(findstring power,$(REBOOT_TYPE)),power)
+  ifneq ($(findstring power,$(REBOOT_TYPE)),)
     BOOT_TEST := loop
   endif
 else
@@ -3758,7 +3758,7 @@ ifneq ($(TEST_TIMEOUT),0)
   TEST_RET        ?= $$TEST_LOGGING/boot.ret
 
   # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
-ifeq ($(findstring serial,$(XOPTS)),serial)
+ifneq ($(findstring serial,$(XOPTS)),)
     XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
 else
     XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
@@ -3815,7 +3815,7 @@ rootdir-init: rootdir-clean rootdir
 
 module-init: modules modules-install
 
-ifeq ($(findstring module,$(FEATURE)),module)
+ifneq ($(findstring module,$(FEATURE)),)
   MODULE_INIT  := module-init
 endif
 
@@ -3974,7 +3974,7 @@ else
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/bash'
 endif
 
-ifeq ($(findstring boot,$(MAKECMDGOALS)),boot)
+ifneq ($(findstring boot,$(MAKECMDGOALS)),)
   _BOOT_DEPS := boot-config reboot
 endif
 

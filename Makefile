@@ -2262,11 +2262,6 @@ root-buildroot:
 
 PHONY += root-buildroot
 
-prebuilt_root_dir ?= $(PBR)
-ifeq ($(FS_TYPE),dir)
-  prebuilt_root_dir := 1
-endif
-
 build_root_uboot ?= 0
 ifeq ($(U),1)
   ifeq ($(DEV_TYPE),rd)
@@ -2308,12 +2303,14 @@ root-rd-clean:
 
 PHONY += root-rd root-rd-rebuild root-rd-clean
 
-ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
+ROOT_GENDISK_TOOL     := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
-ifeq ($(prebuilt_root_dir), 1)
-  ROOT_REBUILD_DEPS := $(ROOTDIR)
+ROOT_REBUILD_DEPS     := $(ROOTDIR)
+ifeq ($(PBR), 1)
+  ROOTDIR_GOAL        := root-dir-bsp
   ROOT_REBUILD_TARGET := root-rebuild-prebuilt
 else
+  ROOTDIR_GOAL        := root-dir-buildroot
   ROOT_REBUILD_TARGET := root-rebuild-buildroot
 endif
 
@@ -2338,7 +2335,6 @@ root-rebuild-buildroot:
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
 
-ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
   ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
     ROOT := root-buildroot
@@ -2349,16 +2345,7 @@ endif
 
 RT ?= $(x)
 
-ifneq ($(RT),)
-  ROOT :=
-endif
-
-ifneq ($(RT),)
-_root: $(ROOT)
-	$(Q)$(call make_root,$(RT))
-else
-_root: $(ROOT) root-rebuild
-endif
+_root: root-rebuild
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2383,26 +2370,26 @@ PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
 
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
-# Install kernel modules?
-IKM ?= 1
+root-dir-install: root-dir-install-system root-dir-install-modules
 
-ifeq ($(IKM), 1)
-  ifneq ($(wildcard $(KERNEL_BUILD)/modules.order),)
-    KERNEL_MODULES_INSTALL := module-install
-  endif
-endif
+root-dir-install-system: src/system
+	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
-$(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
-	@# To avoid remove important data of users, if the file system is there, just update it
-	$(Q)if [ "$(ROOTDIR)" != "$(BUILDROOT_ROOTDIR)" -a ! -f $(ROOTDIR)/init ]; then \
+root-dir-install-modules: $(KERNEL_BUILD)
+	$(Q)echo "LOG: Install modules" && make $(NPD) module-install || true
+
+$(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
+
+root-dir-bsp: $(BSP_BUILD) $(ROOTDIR_DEPS)
+	$(Q)if [ ! -f $(ROOTDIR)/init ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \
 	  rm -rf $(ROOTDIR); \
 	  ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL); \
 	  mv $(ROOTDIR).tmp $(ROOTDIR); \
 	fi
-	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
-	$(Q)[ -n "$(KERNEL_MODULES_INSTALL)" ] && echo "LOG: Install modules" && make $(NPD) $(KERNEL_MODULES_INSTALL) || true
+
+root-dir-buildroot: root-buildroot
 
 root-dir-clean rootdir-clean:
 	$(Q)[ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ] && rm -rvf $(ROOTDIR) || true
@@ -2619,7 +2606,7 @@ kernel-modules-km: $(KERNEL_MODULES_DEPS)
 	  make -s $(NPD) kernel-olddefconfig; \
 	  $(call make_kernel); \
 	fi
-	# M variable can not be set for modules_prepare target
+	@# M variable can not be set for modules_prepare target
 	$(call make_kernel,$(MODULE_PREPARE) M=)
 	$(Q)if [ -f $(KERNEL_ABS_SRC)/scripts/Makefile.modbuiltin ]; then \
 	  $(call make_kernel,$(if $(m),$(m).ko,modules) $(KM)); \
@@ -2655,25 +2642,21 @@ kernel-modules-list-full:
 
 PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
-M_I_ROOT ?= $(ROOTDIR)
-ifeq ($(PBR), 0)
-  ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
-    M_I_ROOT := root-buildroot
-  endif
-endif
-
 # From linux-stable/scripts/depmod.sh, v5.1
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
-kernel-modules-install-km: $(M_I_ROOT)
+kernel-modules-install-km: $(ROOTDIR_GOAL)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-	  $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
-	  [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \
-	    && cd $(KERNEL_BUILD) \
-	    && INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"') || true; \
+	  modules_order=$(subst M=,,$(KM))/modules.order; \
+	  if [ -n "$(KM)" -a -f "$$modules_order" ]; then \
+	    $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+	    [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \
+	      && cd $(KERNEL_BUILD) \
+	      && INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"') || true; \
+	  fi ; \
 	fi
 
-kernel-modules-install: $(M_I_ROOT)
+kernel-modules-install: $(ROOTDIR_GOAL)
 	$(Q)[ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ] \
 	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) || true
 

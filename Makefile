@@ -1901,14 +1901,23 @@ $1-tools:
 
 $1-deps: $1-tools _env
 
-$$(call _stamp,$1,env): $1-deps
-	$$(Q)[ "$$(GCC_$2_SWITCH)" = "1" ] \
-	  && make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
+$1-gcc:
+	$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
 	     $$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))") || true
-	$$(Q)if [ -z "$(filter $(XARCH),x86_64 i386)" ]; then \
-	  [ "$$(HOST_GCC_$2_SWITCH)" = "1" ] \
-	    && make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0; \
-	fi
+$1-hostgcc:
+	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0
+
+ifeq ($$(GCC_$2_SWITCH),1)
+  $1_GCC := $1-gcc
+endif
+
+ifeq ($(filter $(XARCH),x86_64 i386),)
+  ifeq ($$(GCC_$2_SWITCH),1)
+    $1_HOSTGCC := $1-hostgcc
+  endif
+endif
+
+$$(call _stamp,$1,env): $1-deps $$($1_GCC) $$($1_HOSTGCC)
 	$$(Q)touch $$@
 
 $1-env: $$(call _stamp,$1,env)
@@ -2122,10 +2131,11 @@ endif
 
 ifeq ($(CCORI),internal)
   TOOLCHAIN_INSTALL := toolchain-install-internal
-  TOOLCHAIN_CLEAN := toolchain-clean-internal
+  TOOLCHAIN_CLEAN   := toolchain-clean-internal
+  TOOLCHAIN_SWITCH  := toolchain-switch-internal
 else
   TOOLCHAIN_INSTALL := toolchain-install-external
-  TOOLCHAIN_CLEAN := toolchain-clean-external
+  TOOLCHAIN_CLEAN   := toolchain-clean-external
 endif
 
 gcc-install: toolchain-install
@@ -2201,21 +2211,20 @@ gcc-clean: toolchain-clean
 
 PHONY += toolchain-clean toolchain-clean-internal toolchain-clean-external gcc-clean gcc-uninstall gcc-remove
 
-toolchain-switch:
-	$(Q) if [ "$(CCORI)" = "internal" ]; then \
-	  [ -n "$(GCC)" -a "$(CCVER)" != "$(GCC)" ] && update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true; \
-	  [ -n "$(LDT)" -a "$(LDTVER)" != "$(LDT)" ] && update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true; \
-	fi ; \
-	if [ -f "$(BOARD_LABCONFIG)" ]; then \
-	  _CCORI=$$(grep ^CCORI $(BOARD_LABCONFIG) | cut -d '=' -f2 | tr -d ' '); \
-	else \
-	  _CCORI=$$(grep ^CCORI $(BOARD_MAKEFILE) | cut -d '=' -f2 | tr -d ' '); \
-	fi
-	$(Q)[ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true; \
+toolchain-switch: $(TOOLCHAIN_SWITCH) toolchain-switch-ccori
+
+toolchain-switch-internal:
+	$(Q)[ -n "$(GCC)" -a "$(CCVER)" != "$(GCC)" ] && update-alternatives --verbose --set $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) || true
+	$(Q)[ -n "$(LDT)" -a "$(LDTVER)" != "$(LDT)" ] && update-alternatives --verbose --set $(CCPRE)ld /usr/bin/$(CCPRE)ld-$(LDT) || true
+
+toolchain-switch-ccori:
+	$(Q)if [ -f "$(BOARD_LABCONFIG)" ]; then board_config=$(BOARD_LABCONFIG); else board_config=$(BOARD_MAKEFILE); fi ; \
+	_CCORI=$$(grep ^CCORI $$board_config | cut -d '=' -f2 | tr -d ' '); \
+	[ "$$_CCORI" != "$(CCORI)" ] && tools/board/config.sh CCORI=$(CCORI) $(BOARD_LABCONFIG) >/dev/null || true
 
 gcc-switch: toolchain-switch
 
-PHONY += toolchain-switch gcc-switch
+PHONY += toolchain-switch gcc-switch toolchain-switch-internal toolchain-switch-ccori
 
 endif # toolchain targets
 

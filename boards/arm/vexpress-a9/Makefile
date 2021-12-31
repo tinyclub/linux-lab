@@ -9,8 +9,6 @@ QEMU    ?= v4.1.1
 # after enabling QEMU_US=1, qemu-system-$(XARCH) will not be compiled
 QEMU_US ?= 0
 UBOOT   ?= v2020.04
-# Disable Uboot by default, enable it with 'export U=1 or make boot U=1'
-U       ?= 0
 
 LINUX   ?= v5.13
 

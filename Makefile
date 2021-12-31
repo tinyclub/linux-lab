@@ -1732,15 +1732,13 @@ $1-clean: $1-rawclean
 $1-cleanall: $1-clean $1-cleansrc
 
 $1-rawclean: $$($(call _uc,$1)_CLEAN_DEPS)
-ifneq ($$(wildcard $$($(call _uc,$1)_BUILD)/Makefile),)
-	-$$(Q)$$(call make_$1,clean)
-endif
+	$$(Q)[ -f $$($(call _uc,$1)_BUILD)/Makefile ] && $$(call make_$1,clean) || true
 
 $1-distclean:
-ifneq ($$(wildcard $$($(call _uc,$1)_BUILD)/Makefile),)
-	-$$(Q)$$(call make_$1,distclean)
-	$$(Q)rm -rvf $$($(call _uc,$1)_BUILD)
-endif
+	$$(Q)if [ -f $$($(call _uc,$1)_BUILD)/Makefile ]; then
+	  $$(call make_$1,distclean); \
+	  rm -rvf $$($(call _uc,$1)_BUILD); \
+	fi
 
 PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
 
@@ -1860,9 +1858,7 @@ $1-cloneconfig:
 
 $1-clonepatch:
 	$$(Q)mkdir -p $$(NEW_$(call _uc,$1)_PATCH_DIR)
-ifneq ($(PATCH_CLONE),0)
-	$$(Q)[ -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ] && find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \; || true
-endif
+	$$(Q)[ "$(PATCH_CLONE)" != "0" -a -d $$(OLD_$(call _uc,$1)_PATCH_DIR) ] && find $$(OLD_$(call _uc,$1)_PATCH_DIR)/ -name "*.patch" -exec cp -rf {} $$(NEW_$(call _uc,$1)_PATCH_DIR) \; || true
 
 else
 $1-cloneconfig:
@@ -1898,9 +1894,7 @@ define genenvdeps
 $$(eval $$(call __vsp,DEPS,$2))
 
 $1-tools:
-ifneq ($$($2_DEPS),)
-	$$(Q)tools/deps/install.sh '$$($2_DEPS)'
-endif
+	$$(Q)[ -n "$$($2_DEPS)" ] && tools/deps/install.sh '$$($2_DEPS)' || true
 
 $1-deps: $1-tools _env
 
@@ -2285,6 +2279,9 @@ ROOT_GENDISK_TOOL := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
 ifeq ($(prebuilt_root_dir), 1)
   ROOT_REBUILD_DEPS := $(ROOTDIR)
+  ROOT_REBUILD_TARGET := root-rebuild-prebuilt
+else
+  ROOT_REBUILD_TARGET := root-rebuild-buildroot
 endif
 
 ifeq ($(DEV_TYPE),rd)
@@ -2294,18 +2291,19 @@ else
 endif
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
-root-rebuild: $(ROOT_REBUILD_DEPS)
-ifeq ($(prebuilt_root_dir), 1)
+root-rebuild: $(ROOT_REBUILD_DEPS) $(ROOT_REBUILD_TARGET)
+
+root-rebuild-prebuilt:
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
 	$(Q)rm -rf $(XROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) INITRD=$(IROOTFS).tmp HROOTFS=$(HROOTFS).tmp FSTYPE=$(FSTYPE) USER=$(USER) $(ROOT_GENDISK_TOOL)
 	$(Q)[ -f $(XROOTFS).tmp ] && mv $(XROOTFS).tmp $(XROOTFS) || true
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) root-ud-rebuild || true
-else
+
+root-rebuild-buildroot:
 	$(call make_root)
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
-endif
 
 ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
@@ -2362,16 +2360,14 @@ ifeq ($(IKM), 1)
 endif
 
 $(ROOTDIR): $(BSP_BUILD) $(ROOTDIR_DEPS) src/system $(KERNEL_BUILD)
-ifneq ($(ROOTDIR), $(BUILDROOT_ROOTDIR))
 	@# To avoid remove important data of users, if the file system is there, just update it
-	$(Q)if [ ! -f $(ROOTDIR)/init ]; then \
+	$(Q)if [ "$(ROOTDIR)" != "$(BUILDROOT_ROOTDIR)" -a ! -f $(ROOTDIR)/init ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \
 	  rm -rf $(ROOTDIR); \
 	  ROOTDIR=$(ROOTDIR).tmp USER=$(USER) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS) $(ROOT_GENDIR_TOOL); \
 	  mv $(ROOTDIR).tmp $(ROOTDIR); \
 	fi
-endif
 	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 	$(Q)[ -n "$(KERNEL_MODULES_INSTALL)" ] && echo "LOG: Install modules" && make $(NPD) $(KERNEL_MODULES_INSTALL) || true
 
@@ -2395,12 +2391,12 @@ endif
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
 $(HROOTFS): $(BSP_BUILD) $(HROOTFS_DEPS)
-ifneq ($(HROOTFS_DEPS),)
-	@echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."
-	rm -rf $(HROOTFS).tmp
-	ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1)
-	mv $(HROOTFS).tmp $(HROOTFS)
-endif
+	$(Q)if [ -n "$(HROOTFS_DEPS)" ]; then \
+	  echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."; \
+	  rm -rf $(HROOTFS).tmp; \
+	  ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS).tmp INITRD=$(IROOTFS) $(ROOT_GENHD_TOOL) || (rm $(HROOTFS) && exit 1); \
+	  mv $(HROOTFS).tmp $(HROOTFS); \
+	fi
 
 root-hd: $(HROOTFS)
 
@@ -2622,9 +2618,7 @@ kernel-modules-list: kernel-modules-list-full
 
 kernel-modules-list-full:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=$$PWD/\1%g" | tr -s '/' | cat -n
-ifeq ($(internal_search),1)
-	$(Q)find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | tr -s '/' | cat -n
-endif
+	$(Q)[ "$(internal_search)" = "1" ] && find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | tr -s '/' | cat -n || true
 
 PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
@@ -2739,9 +2733,7 @@ FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
 
 kernel-defconfig: kernel-feature-download
 kernel-feature-download:
-ifneq ($(FEATURE),)
-	  @$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
-endif
+	  @[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 
 FCS ?= 0
 ifeq ($(origin F), command line)
@@ -2838,13 +2830,13 @@ dtb: $(DTS)
 	@echo "  DTS: $(DTS)"
 	@echo "  DTB: $(DTB)"
 	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$$(eval echo "$(CMDLINE)")\";%g" $(DTS)
-ifeq ($(_DTS),)
-	$(Q)$(call make_kernel,$(DTB_TARGET))
-else
-	$(Q)sed -i -e "s%^#include%/include/%g" $(DTS)
-	$(Q)mkdir -p $(dir $(DTB))
-	$(Q)$(DTC) -I dts -O dtb -o $(DTB) $(DTS)
-endif
+	$(Q)if [ -z "$(_DTS)" ]; then \
+	  $(call make_kernel,$(DTB_TARGET)); \
+	else \
+	  sed -i -e "s%^#include%/include/%g" $(DTS); \
+	  mkdir -p $(dir $(DTB)); \
+	  $(DTC) -I dts -O dtb -o $(DTB) $(DTS); \
+	fi
 
 # Pass kernel command line in dts, require to build dts for every boot
 KCLI_DTS   ?= 0
@@ -2956,15 +2948,14 @@ kernel-setconfig: FORCE
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)echo "Configuring new kernel config: $(KCONFIG_OPT) ..."
-ifeq ($(KCONFIG_OPR),m)
-	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES
-	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD
-
-	$(Q)make -s kernel-olddefconfig
-	$(Q)$(call make_kernel,$(MODULE_PREPARE) M=)
-else
-	$(Q)make -s kernel-olddefconfig
-endif
+	$(Q)if [ "$(KCONFIG_OPR)" = "m" ]; then \
+	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES; \
+	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD; \
+	  make -s kernel-olddefconfig; \
+	  $(call make_kernel,$(MODULE_PREPARE) M=); \
+	else \
+	  make -s kernel-olddefconfig; \
+	fi
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
@@ -3085,7 +3076,7 @@ UBOOT_MKIMAGE := tools/uboot/mkimage
 # root uboot image
 $(UROOTFS): $(BSP_BUILD) $(IROOTFS)
 	@echo "LOG: Generating rootfs image for uboot ..."
-	mkdir -p $(dir $(UROOTFS))
+	$(Q)mkdir -p $(dir $(UROOTFS))
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)
 
 root-ud: $(UROOTFS)
@@ -3099,14 +3090,13 @@ PHONY += root-ud root-ud-rebuild root-ud-clean
 
 # aarch64 not add uboot header for kernel image
 $(UKIMAGE): $(KIMAGE)
-ifeq ($(PBK), 0)
-ifeq ($(notdir $(UKIMAGE)), uImage)
-	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) \
-		-n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE) || (rm $(UKIMAGE) && exit 1)
-else
-	$(Q)cp $(KIMAGE) $(UKIMAGE)
-endif
-endif
+	$(Q)if [ "$(PBK)" = "0" ]; then \
+	  if [ "$(notdir $(UKIMAGE))"  = "uImage" ]; then \
+	    $(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T kernel -C none -a $(KRN_ADDR) -e $(KRN_ADDR) -n 'Linux-$(LINUX)' -d $(KIMAGE) $(UKIMAGE) || (rm $(UKIMAGE) && exit 1); \
+	  else \
+	    cp -v $(KIMAGE) $(UKIMAGE); \
+	  fi; \
+	fi
 
 ifneq ($(INVALID_ROOTFS),1)
   U_ROOT_IMAGE := $(UROOTFS)
@@ -3144,30 +3134,20 @@ endif
 UBOOT_DEPS += $(UKIMAGE)
 
 _uboot-images: $(UBOOT_DEPS)
-ifeq ($(BOOTDEV),tftp)
-	$(Q)$(UBOOT_TFTP_TOOL)
-endif
-ifneq ($(findstring flash,$(BOOTDEV)),)
-	$(Q)$(UBOOT_PFLASH_TOOL)
-endif
-ifeq ($(SD_BOOT),1)
-	$(Q)$(UBOOT_SD_TOOL)
-endif
+	$(Q)[ "$(BOOTDEV)" = "tftp" ] && $(UBOOT_TFTP_TOOL) || true
+	$(Q)[ "$(BOOTDEV)" = "flash" -o "$(BOOTDEV)" = "pflash" ] && $(UBOOT_PFLASH_TOOL) || true
+	$(Q)[ "$(SD_BOOT)" = "1" ] && $(UBOOT_SD_TOOL) || true
 
 uboot-images: _uboot-images
 	$(Q)$(UBOOT_CONFIG_TOOL)
-ifneq ($(BOOTDEV),none)
-	$(Q)$(UBOOT_ENV_TOOL)
-endif
+	$(Q)[ "$(BOOTDEV)" != "none" ] && $(UBOOT_ENV_TOOL) || true
 
 uboot-images-clean:
 	$(Q)rm -rvf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
 
 uboot-images-distclean: uboot-images-clean
 	$(Q)rm -rvf $(UROOTFS)
-ifeq ($(PBK), 0)
-	$(Q)rm -rvf $(UKIMAGE)
-endif
+	$(Q)[ "$(PBK)" = "0" ] && rm -rvf $(UKIMAGE) || true
 
 UBOOT_IMGS := uboot-images
 UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
@@ -3186,21 +3166,19 @@ endif
 root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
-ifneq ($(IROOTFS),$(PREBUILT_IROOTFS))
-	cp $(IROOTFS) $(PREBUILT_ROOT_DIR) || true
-endif
-ifneq ($(PORIIMG),)
-	cp $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR) || true
-	$(Q)$(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null || true
-endif
+	$(Q)[ "$(IROOTFS)" != "$(PREBUILT_IROOTFS)" ] && cp -v $(IROOTFS) $(PREBUILT_ROOT_DIR) || true
+	$(Q)if [ -n "($(PORIIMG)" ]; then \
+	  cp -v $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR); \
+	  $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null; \
+	fi
 
 kernel-save:
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
-	cp $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR) || true
-	cp $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)cp -v $(LINUX_KIMAGE) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)cp -v $(LINUX_KRELEASE) $(PREBUILT_KERNEL_DIR) || true
 	$(Q)[ -n "$(STRIP_CMD)" ] && $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(ORIIMG)) 2>/dev/null || true
-	[ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ] && cp $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR) || true
-	[ -n "$(DTS)" -a -f "$(LINUX_DTB)" ] && cp $(LINUX_DTB) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)[ -n "$(UORIIMG)" -a -f "$(LINUX_UKIMAGE)" ] && cp -v $(LINUX_UKIMAGE) $(PREBUILT_KERNEL_DIR) || true
+	$(Q)[ -n "$(DTS)" -a -f "$(LINUX_DTB)" ] && cp -v $(LINUX_DTB) $(PREBUILT_KERNEL_DIR) || true
 
 # Targets for real boards
 ifeq ($(_VIRT),0)
@@ -3313,34 +3291,40 @@ endif # for real boards
 
 uboot-save:
 	$(Q)mkdir -p $(PREBUILT_UBOOT_DIR)
-	-cp $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR)
+	$(Q)cp -v $(UBOOT_BIMAGE) $(PREBUILT_UBOOT_DIR) || true
 
 
 qemu-save:
 	$(Q)mkdir -p $(PREBUILT_QEMU_DIR)
-	-$(Q)$(call make_qemu,install)
-	-$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),$(call make_qemu,install,$(_QEMU_TARGET));echo '';)
+	$(Q)$(call make_qemu,install) || true
+	$(Q)$(foreach _QEMU_TARGET,$(subst $(comma),$(space),$(QEMU_TARGET)),$(call make_qemu,install,$(_QEMU_TARGET)) || true;echo '';)
 
 uboot-saveconfig:
-	-$(call make_uboot,savedefconfig)
-	$(Q)if [ -f $(UBOOT_BUILD)/defconfig ]; \
-	then cp $(UBOOT_BUILD)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
-	else cp $(UBOOT_BUILD)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); fi
+	$(Q)$(call make_uboot,savedefconfig) || true
+	$(Q)if [ -f $(UBOOT_BUILD)/defconfig ]; then \
+	  cp -v $(UBOOT_BUILD)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	else \
+	  cp -v $(UBOOT_BUILD)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig:
-	-$(call make_kernel,savedefconfig M=)
-	$(Q)if [ -f $(KERNEL_BUILD)/defconfig ]; \
-	then cp $(KERNEL_BUILD)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
-	else cp $(KERNEL_BUILD)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); fi
+	$(Q)$(call make_kernel,savedefconfig M=) || true
+	$(Q)if [ -f $(KERNEL_BUILD)/defconfig ]; then \
+	  cp -v $(KERNEL_BUILD)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	else \
+	  cp -v $(KERNEL_BUILD)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	fi
 
 root-saveconfig:
-	$(call make_root,savedefconfig)
-	$(Q)if [ $$(grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; echo $$?) -eq 0 ]; \
-	then cp $$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
-	elif [ -f $(ROOT_BUILD)/defconfig ]; \
-	then cp $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
-	else cp $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); fi
+	$(Q)$(call make_root,savedefconfig) || true
+	$(Q)if grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; then \
+	  cp -v $$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	elif [ -f $(ROOT_BUILD)/defconfig ]; then \
+	  cp -v $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	else \
+	  cp -v $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	fi
 
 # For virtual boards
 ifeq ($(_VIRT),1)
@@ -3692,8 +3676,7 @@ ifneq ($(TEST),)
     TEST_KCLI += test_case="$(TEST_CASE)"
   endif
 
-  MODULE_ARGS := $(foreach m_args,$(addsuffix _args,$(subst $(comma),$(space),$(MODULE))), \
-	$(shell eval 'echo $(m_args)=\"'\$$$(m_args)'\"'))
+  MODULE_ARGS := $(foreach m_args,$(addsuffix _args,$(subst $(comma),$(space),$(MODULE))), $(shell eval 'echo $(m_args)=\"'\$$$(m_args)'\"'))
 
   TEST_KCLI += $(MODULE_ARGS)
 
@@ -3717,9 +3700,9 @@ else
 endif
 
 # By default, seconds
-TIMEOUT ?= 0
+TIMEOUT      ?= 0
 TEST_TIMEOUT ?= $(TIMEOUT)
-TEST_UBOOT ?= $(U)
+TEST_UBOOT   ?= $(U)
 
 ifneq ($(TEST_TIMEOUT),0)
   TEST_ENV        ?= $$TEST_LOGGING/boot.env
@@ -3765,14 +3748,15 @@ endif
 export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_XOPTS TEST_RET TEST_RD TEST_LOG_READER V
 
 boot-test: bsp-checkout
-	$(Q)echo "Running $@"
-ifeq ($(BOOT_TEST), default)
-	$(Q)$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER)
-else
-	$(Q)$(foreach r,$(shell seq 0 $(TEST_REBOOT)), \
-		echo "\nRebooting test: $r\n" && \
-		$(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER);)
-endif
+	$(Q)echo "Running $@" ; \
+	if [ "$(BOOT_TEST)" = "default" ]; then \
+	  $(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
+	else \
+	  for r in $$(seq 0 $(TEST_REBOOT)); do \
+	    echo "\nRebooting test: $$r\n"; \
+	    $(TEST_BEFORE) make $(NPD) _boot $(makeclivar) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
+	  done ; \
+	fi
 
 raw-test: $(TEST_PREPARE) boot-init boot-test boot-finish FORCE
 
@@ -3780,10 +3764,10 @@ PHONY += raw-test boot-test
 
 # Allow to disable feature-init
 
-TEST_INIT ?= 1
-TI ?= $(TEST_INIT)
+TEST_INIT    ?= 1
+TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
-FI ?= $(FEATURE_INIT)
+FI           ?= $(FEATURE_INIT)
 
 kernel-init: kernel-config kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
@@ -3883,13 +3867,12 @@ else
                                       "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n" \
                                       "\n\n" \
                                       "NOTE: To exit debug server, please press 'CTRL+a x'\n\n"
-  #DEBUG_CMD  := $(Q)echo "\nLOG: Please run this in another terminal:\n\n    " $(GDB_CMD) "\n"
 endif
 
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
-	$(Q)cp $(notdir $(GDBINIT_DIR))/$(notdir $(GDB_INIT)) .gdbinit
+	$(Q)cp -v $(notdir $(GDBINIT_DIR))/$(notdir $(GDB_INIT)) .gdbinit
 	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
 	$(Q)$(DEBUG_CMD) &
 
@@ -3942,8 +3925,8 @@ else
 
 # For real boards
 
-# FIXME: The real boot should be able to control the power button
-#        Here it is only connect or login.
+# FIXME: The real boot should be able to control the power button Here it is
+# only connect or login.
 
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
@@ -3983,9 +3966,7 @@ VARS += TEST_TIMEOUT TEST_RD
 endif
 
 tools-install:
-ifneq ($(DEPS),)
-	$(Q)tools/deps/install.sh '$(DEPS)'
-endif
+	$(Q)[ -n "$(DEPS)" ] && tools/deps/install.sh '$(DEPS)' || true
 
 _env: env-prepare
 env-prepare: toolchain-install tools-install
@@ -3994,7 +3975,7 @@ env-list: env-dump
 env-dump:
 	@echo \#[ $(BOARD) ]:
 	@echo -n " "
-	-@echo $(foreach v,$(or $(VAR),$(VARS)),"    $(v)=\"$($(v))\"\n") | tr -s '/'
+	@echo $(foreach v,$(or $(VAR),$(VARS)),"    $(v)=\"$($(v))\"\n") | tr -s '/' | uniq || true
 
 env-save: board-config
 

@@ -2323,15 +2323,24 @@ root-rd-clean:
 
 PHONY += root-rd root-rd-rebuild root-rd-clean
 
-ROOT_GENDISK_TOOL     := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
+ROOT_GENDISK_TOOL       := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
-ROOT_REBUILD_DEPS     := $(ROOTDIR)
-ifeq ($(PBR), 1)
-  ROOTDIR_GOAL        := root-dir-bsp
-  ROOT_REBUILD_TARGET := root-rebuild-prebuilt
-else
-  ROOTDIR_GOAL        := root-dir-buildroot
-  ROOT_REBUILD_TARGET := root-rebuild-buildroot
+ROOTDIR_GOAL            := root-dir-simple
+ROOT_REBUILD_TARGET     := root-rebuild-prebuilt
+
+ifeq ($(PBR), 0)
+  ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
+    ROOTDIR_GOAL        := root-dir-buildroot
+  endif
+  ifneq ($(FS_TYPE),dir)
+    ROOT_REBUILD_TARGET := root-rebuild-buildroot
+  endif
+endif
+ROOT_REBUILD_DEPS       := $(ROOTDIR_GOAL)
+
+# No need to rebuild all the time
+ifeq ($(wildcard $(ROOTDIR)),)
+  MODULE_ROOTDIR_GOAL   := $(ROOTDIR_GOAL)
 endif
 
 ifeq ($(DEV_TYPE),rd)
@@ -2341,7 +2350,7 @@ else
 endif
 
 # This is used to repackage the updated root directory, for example, `make r-i` just executed.
-root-rebuild: $(ROOT_REBUILD_DEPS) $(ROOT_REBUILD_TARGET)
+root-rebuild: $(ROOT_REBUILD_DEPS) root-dir-install $(ROOT_REBUILD_TARGET)
 
 root-rebuild-prebuilt:
 	@echo "LOG: Generating $(DEV_TYPE) with $(ROOT_GENDISK_TOOL) ..."
@@ -2355,6 +2364,7 @@ root-rebuild-buildroot:
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
 
+ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
   ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
     ROOT := root-buildroot
@@ -2365,7 +2375,13 @@ endif
 
 RT ?= $(x)
 
-_root: root-rebuild
+ifneq ($(RT),)
+_root:
+	$(Q)$(call make_root,$(RT))
+else
+_root: $(ROOT)
+	$(Q)make $(S) root-rebuild
+endif
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2396,12 +2412,12 @@ root-dir-install-system: src/system
 	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
 
 root-dir-install-modules: $(KERNEL_BUILD)
-	$(Q)echo "LOG: Install modules" && make $(NPD) module-install || true
+	$(Q)echo "LOG: Install modules" && make $(S) module-install || true
 
 $(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
 
-root-dir-bsp: $(BSP_BUILD) $(ROOTDIR_DEPS)
-	$(Q)if [ ! -f $(ROOTDIR)/init ]; then \
+root-dir-simple: $(BSP_BUILD) $(ROOTDIR_DEPS)
+	$(Q)if [ ! -d $(ROOTDIR)/bin ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \
 	  rm -rf $(ROOTDIR); \
@@ -2665,7 +2681,7 @@ PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-lis
 # From linux-stable/scripts/depmod.sh, v5.1
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
-kernel-modules-install-km: $(ROOTDIR_GOAL)
+kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
 	  modules_order=$(subst M=,,$(KM))/modules.order; \
 	  if [ -n "$(KM)" -a -f "$$modules_order" ]; then \
@@ -2676,7 +2692,7 @@ kernel-modules-install-km: $(ROOTDIR_GOAL)
 	  fi ; \
 	fi
 
-kernel-modules-install: $(ROOTDIR_GOAL)
+kernel-modules-install: $(MODULE_ROOTDIR_GOAL)
 	$(Q)[ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ] \
 	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) || true
 
@@ -2731,7 +2747,7 @@ module-clean: FORCE
 	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
 
-PHONY += kernel-module kernel-module-install kernel-module-clean
+PHONY += kernel-module kernel-module-install kernel-module-clean module-install module-clean
 
 # If no M, m/module/modules, M_PATH specified, compile internel modules by default
 ifneq ($(firstword $(MAKECMDGOALS)),list)

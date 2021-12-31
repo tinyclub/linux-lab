@@ -1340,7 +1340,7 @@ board-show:
 board-init: $(CLEAN_STAMP)
 
 board-clean:
-	$(Q)rm -rf .board_config
+	$(Q)rm -rvf .board_config
 
 board-save:
 	$(Q)echo "$(BOARD)" > .board_config
@@ -1387,7 +1387,7 @@ ifneq ($(PLUGIN),)
 endif
 
 plugin-clean:
-	$(Q)rm -rf .plugin_config
+	$(Q)rm -rvf .plugin_config
 
 plugin: plugin-save
 	$(Q)echo $(PLUGIN)
@@ -1711,10 +1711,10 @@ $$($1_source_childs): $1-source
 PHONY += $(addprefix $1-,source download license) download-$1
 
 $1-%-cleanstamp:
-	$$(Q)rm -f $$(call _stamp,$1,$$(subst $1-,,$$(subst -cleanstamp,,$$@)))
+	$$(Q)rm -vf $$(call _stamp,$1,$$(subst $1-,,$$(subst -cleanstamp,,$$@)))
 
 $1-cleanstamp:
-	$$(Q)rm -rf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp license)
+	$$(Q)rm -rvf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp license)
 
 ## clean up $1 source code
 $1-cleansrc: $1-cleanup
@@ -1733,7 +1733,7 @@ endif
 $1-distclean:
 ifneq ($$(wildcard $$($(call _uc,$1)_BUILD)/Makefile),)
 	-$$(Q)$$(call make_$1,distclean)
-	$$(Q)rm -rf $$($(call _uc,$1)_BUILD)
+	$$(Q)rm -rvf $$($(call _uc,$1)_BUILD)
 endif
 
 PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
@@ -2271,7 +2271,7 @@ root-rd: $(IROOTFS)
 root-rd-rebuild: root-dir root-rd-clean $(IROOTFS) FORCE
 
 root-rd-clean:
-	-$(Q)rm -f $(IROOTFS)
+	-$(Q)rm -vf $(IROOTFS)
 
 PHONY += root-rd root-rd-rebuild root-rd-clean
 
@@ -2370,7 +2370,7 @@ endif
 	$(Q)[ -n "$(KERNEL_MODULES_INSTALL)" ] && echo "LOG: Install modules" && make $(NPD) $(KERNEL_MODULES_INSTALL) || true
 
 root-dir-clean rootdir-clean:
-	$(Q)[ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ] && rm -rf $(ROOTDIR) || true
+	$(Q)[ "$(ROOTDIR)" = "$(BSP_ROOTDIR)" ] && rm -rvf $(ROOTDIR) || true
 
 root-dir-distclean rootdir-distclean: rootdir-clean
 
@@ -2401,7 +2401,7 @@ root-hd: $(HROOTFS)
 root-hd-rebuild: root-hd-clean $(HROOTFS) FORCE
 
 root-hd-clean:
-	-$(Q)rm -f $(HROOTFS)
+	-$(Q)rm -vf $(HROOTFS)
 
 PHONY += root-hd root-hd-rebuild root-hd-clean
 
@@ -2653,7 +2653,7 @@ endif
 KERNEL_MODULE_CLEAN := tools/module/clean.sh
 kernel-modules-clean-km:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_BUILD) $(M_ABS_PATH)
-	$(Q)rm -rf .module_config
+	$(Q)rm -rvf .module_config
 
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_BUILD)
@@ -3087,7 +3087,7 @@ root-ud: $(UROOTFS)
 root-ud-rebuild: root-ud-clean $(UROOTFS) FORCE
 
 root-ud-clean:
-	-$(Q)rm -f $(UROOTFS)
+	$(Q)rm -vf $(UROOTFS) || true
 
 PHONY += root-ud root-ud-rebuild root-ud-clean
 
@@ -3155,12 +3155,12 @@ ifneq ($(BOOTDEV),none)
 endif
 
 uboot-images-clean:
-	$(Q)rm -rf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
+	$(Q)rm -rvf $(TFTP_IMGS) $(PFLASH_IMG) $(SD_IMG) $(ENV_IMG)
 
 uboot-images-distclean: uboot-images-clean
-	$(Q)rm -rf $(UROOTFS)
+	$(Q)rm -rvf $(UROOTFS)
 ifeq ($(PBK), 0)
-	$(Q)rm -rf $(UKIMAGE)
+	$(Q)rm -rvf $(UKIMAGE)
 endif
 
 UBOOT_IMGS := uboot-images

@@ -10,7 +10,10 @@ MEM     ?= 128M
 # This is for old linux 0.11 floppy support
 QEMU    ?= v0.10.6
 
-GCC[LINUX_$(call _any,LINUX,<=,v5.0)] := 4.8
+# Without 4.4, v2.6.36 rejects to build for the vdso compile issue, see commit in src/linux-stable: de2a8c
+GCC[LINUX_$(call _any,LINUX,<=,v2.6.36)] := 4.4
+GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.0)] := 4.8
+
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
 CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE
 

@@ -2769,13 +2769,7 @@ kernel-feature-download:
 	  @[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 
 FCS ?= 0
-ifeq ($(origin F), command line)
-  FCS := 1
-endif
-ifeq ($(origin FEATURE), command line)
-  FCS := 1
-endif
-ifeq ($(origin FEATURES), command line)
+ifneq ($(filter command line,$(foreach i,F FEATURE FEATURES,$(origin $i))),)
   FCS := 1
 endif
 

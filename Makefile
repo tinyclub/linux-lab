@@ -1894,10 +1894,10 @@ endef #genclone
 define genenvdeps
 
 # This allows to install extra tools has not been installed
-$$(eval $$(call __vsp,DEPS,$2))
+$$(eval $$(call __vsp,PKGS,$2))
 
 $1-tools:
-	$$(Q)[ -n "$$($2_DEPS)" ] && tools/deps/install.sh '$$($2_DEPS)' || true
+	$$(Q)[ -n "$$($2_PKGS)" ] && tools/deps/install.sh '$$($2_PKGS)' || true
 
 $1-deps: $1-tools _env
 
@@ -3999,7 +3999,7 @@ VARS += TEST_TIMEOUT TEST_RD
 endif
 
 tools-install:
-	$(Q)[ -n "$(DEPS)" ] && tools/deps/install.sh '$(DEPS)' || true
+	$(Q)[ -n "$(PKGS)" ] && tools/deps/install.sh '$(PKGS)' || true
 
 _env: env-prepare env-files
 env-prepare: toolchain-install tools-install

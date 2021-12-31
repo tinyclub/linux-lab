@@ -11,7 +11,7 @@
 MAKE := make
 MAKE[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make-3.81
 ifeq ($(wildcard /usr/bin/make-3.81),)
-  DEPS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
+  PKGS[LINUX_$(call _any,LINUX,<=,v2.6.29)] := make;http://cn.archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_3.81-8.2ubuntu3_amd64.deb;3.81
 endif
 
 # gcc 4.3 must work with 2.24 binutils (ld), otherwise, the kernel compiled not boot

@@ -3,19 +3,19 @@
 # install.sh -- install one directly or download it at first and then install one, only accept deb currently
 #
 
-deps="$1"
+pkgs="$1"
 
-[ -z "$deps" ] && exit 0
+[ -z "$pkgs" ] && exit 0
 
 CACHED_DIR=$(cd $(dirname $0) && pwd)/cached
 
 [ ! -d $CACHED_DIR ] && mkdir -p $CACHED_DIR
 
-for dep in $deps
+for pkg in $pkgs
 do
-  cmd=$(echo $dep | cut -d ';' -f1)
-  pkg=$(echo $dep | cut -d ';' -f2)
-  version=$(echo $dep | cut -d ';' -f3)
+  cmd=$(echo $pkg | cut -d ';' -f1)
+  pkg=$(echo $pkg | cut -d ';' -f2)
+  version=$(echo $pkg | cut -d ';' -f3)
 
   # ignore cmd already installed
   if [ -z "$version" ]; then

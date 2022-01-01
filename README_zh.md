@@ -1289,9 +1289,9 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
     $ make BOARD=x86_64/pc
 
-克隆一份 v5.13 内核的配置，因为当前最新 rust patchset 只能打在 v5.13 内核上：
+切换到 v5.13 内核，因为当前最新 rust patchset 只能打在 v5.13 内核上：
 
-    $ make kernel-clone LINUX_NEW=v5.13
+    $ make config LINUX=v5.13
 
 编译内核，并使用 `rust_print` 模块进行测试：
 

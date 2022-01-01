@@ -12,7 +12,9 @@ QEMU    ?= v0.10.6
 
 # Without 4.4, v2.6.36 rejects to build for the vdso compile issue, see commit in src/linux-stable: de2a8c
 GCC[LINUX_$(call _any,LINUX,<=,v2.6.36)] := 4.4
-GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.0)] := 4.8
+# The _range means >= and <=, so, the last version argument please use a possible maximum version: vX.Y.1023 (can not be bigger than 1023)
+# v5.1 did work with v4.8, use 9 here for newer support
+GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.0.1023)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
 CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE

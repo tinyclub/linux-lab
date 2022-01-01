@@ -281,8 +281,8 @@ define __vs
 endef
 
 define __vs_override
- ifneq ($$(call __v,$1,$2,$3),)
-   override $1 := $$(call __v,$1,$2,$3)
+ ifneq ($(call __v,$1,$2,$3),)
+   override $1 := $(call __v,$1,$2,$3)
  endif
 endef
 
@@ -290,9 +290,13 @@ define _vs
 $1 := $(call _v,$1,$2)
 endef
 
-# Convert version string to version number, support 4 levels version string, like: v2.6.30.5
+# Convert version string to version number, support 4 levels version string, like: v2.6.30.5, v4.4.297, we support: v1024.1023.1023.1023
+define _v2v_init
+vn_$(subst .,,$1) := $(shell echo $1 | tr -d -c '[0-9.]' | awk -F"." '{ printf("%d\n",$$1*1073741824 + $$2*1048576 + $$3*1024 + $$4);}')
+endef
+
 define _v2v
-$(shell echo $1 | tr -d -c '[0-9.]' | awk -F"." '{ printf("%d\n",$$1*16777216 + $$2*65536 + $$3*256 + $$4);}')
+$(or $(vn_$(subst .,,$1)),$(eval $(call _v2v_init,$1))$(vn_$(subst .,,$1)))
 endef
 
 define _vsif

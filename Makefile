@@ -2689,7 +2689,7 @@ SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
-	  modules_order=$(subst M=,,$(KM))/modules.order; \
+	  modules_order=$(M_ABS_PATH)/modules.order; \
 	  if [ -n "$(KM)" -a -f "$$modules_order" ]; then \
 	    $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
 	    [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \

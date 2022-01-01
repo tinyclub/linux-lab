@@ -50,7 +50,7 @@ do
         # apply the patchset maintained by multiple xxx.patch
         patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
 
-        echo "LOG: $patchset"
+        [ -n "$patchset" ] && echo "LOG: $patchset"
 
         for p in $patchset
         do

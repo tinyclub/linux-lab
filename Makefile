@@ -3837,7 +3837,7 @@ kernel-init: kernel-config kernel-olddefconfig
 
 rootdir-init: rootdir-clean rootdir
 
-module-init: modules modules-install
+module-init: modules
 
 ifneq ($(findstring module,$(FEATURE)),)
   MODULE_INIT  := module-init
@@ -3847,7 +3847,7 @@ ifneq ($(TEST_RD),/dev/nfs)
   ROOT_REBUILD := root-rebuild
 endif
 
-feature-init: $(if $(FEATURE),feature kernel-init rootdir-init $(MODULE_INIT) $(ROOT_REBUILD)) FORCE
+feature-init: $(if $(FEATURE),feature kernel-init $(MODULE_INIT)) FORCE
 
 PHONY += kernel-init rootdir-init module-init feature-init
 

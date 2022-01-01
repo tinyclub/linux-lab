@@ -14,10 +14,10 @@ QEMU    ?= v0.10.6
 GCC[LINUX_$(call _any,LINUX,<=,v2.6.36)] := 4.4
 # The _range means >= and <=, so, the last version argument please use a possible maximum version: vX.Y.1023 (can not be bigger than 1023)
 # v5.1 did work with v4.8, use 9 here for newer support
-GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.0.1023)] := 4.8
+GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.1.1023)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
-CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1)] := RETPOLINE
+CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := RETPOLINE
 
 ifeq ($(QEMU),v0.10.6)
 QEMU_SDL    := 0

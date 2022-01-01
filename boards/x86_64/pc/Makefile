@@ -16,11 +16,11 @@ LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 KERNEL_GIT[KERNEL_FORK_wsl2] := https://gitee.com/mirrors/WSL2-Linux-Kernel.git
 LINUX[KERNEL_FORK_wsl2]   ?= $(call _latest,wsl2,$(KERNEL_GIT[KERNEL_FORK_wsl2]),linux-msft-wsl-5.10.74.3)
 
-GCC[LINUX_$(call _any,LINUX,<=,v4.18)] := 4.8
+GCC[LINUX_$(call _any,LINUX,<=,v5.1.1023)] := 4.8
 
 # Disable RETPOLINE for Linux <= v4.18, enabled by gcc=9 by default, but conflicts with fcf-protector
 # Boot2docker use v4.19, but require retpoline support
-CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v4.18)] := RETPOLINE
+CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := RETPOLINE
 
 # Force change ARCH for kernel version <= 2.6.23
 # $(eval $(call _vsif,ARCH,$(XARCH),LINUX,<=,v2.6.23))

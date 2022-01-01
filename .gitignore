@@ -18,6 +18,7 @@ openeuler-*
 force-*
 .lock
 .tmp
+*.mod
 *.mbx
 *.cover
 !tools/build/

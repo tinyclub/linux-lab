@@ -172,11 +172,11 @@ line=$(echo $file_line | cut -d ':' -f2)
 file=$(echo $file_line | cut -d ':' -f1)
 file=$(echo $file | sed -e "s%${kernel_gitsrc}/%%g")
 
-pushd $kernel_gitsrc
+pushd $kernel_gitsrc >/dev/null
 blame_info=$(git blame -L $line,$line $file)
 blame_commit=$(echo $blame_info | cut -d' ' -f1)
 echo $blame_info
 echo
 git show $blame_commit
 echo
-popd
+popd >/dev/null

@@ -34,7 +34,7 @@ if [ -f "$HOME/.cargo/bin/rustc" -a -d "$HOME/.rustup/toolchains" ]; then
     fi
 fi
 
-pushd $CURDIR
+pushd $CURDIR >/dev/null
 if [ ! -f feature.downloaded ]; then
     sudo apt update -y && \
     sudo apt install -y python3-pip && \
@@ -50,4 +50,4 @@ if [ ! -f feature.downloaded ]; then
         exit 1
     fi
 fi
-popd
+popd >/dev/null

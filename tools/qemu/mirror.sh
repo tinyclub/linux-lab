@@ -26,11 +26,11 @@ do
 
   if [ ! -d $repo ]; then
     mkdir $repo
-    pushd $repo
+    pushd $repo >/dev/null
     git init
     git remote add origin $url
   else
-    pushd $repo
+    pushd $repo >/dev/null
   fi
 
   pwd
@@ -50,5 +50,5 @@ do
 
   git push --mirror gitee:tinylab/qemu-$x.git
 
-  popd
+  popd >/dev/null
 done

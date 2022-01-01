@@ -1952,13 +1952,15 @@ endef #genenvdeps
 
 # Build bsp targets
 # Always checkout the latest commit for bsp
-BSP ?= origin/master
+BSP ?= FETCH_HEAD
 _BSP ?= $(BSP)
 
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
 # Skip update of bsp repo for !vip user
 ifeq ($(vip),1)
-  __BSP := notexist
+  __BSP := latest
+else
+  __BSP := origin/master
 endif
 
 ifneq ($(_PLUGIN),)

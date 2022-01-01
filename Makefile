@@ -2689,12 +2689,19 @@ SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+	  echo Module path: $(M_ABS_PATH); \
 	  modules_order=$(M_ABS_PATH)/modules.order; \
 	  if [ -n "$(KM)" -a -f "$$modules_order" ]; then \
 	    $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
+	    KERNEL_RELEASE=$$(grep UTS_RELEASE -ur $(KERNEL_BUILD)/include |  cut -d ' ' -f3 | tr -d '"'); \
 	    [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \
 	      && cd $(KERNEL_BUILD) \
-	      && INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$(grep UTS_RELEASE -ur include |  cut -d ' ' -f3 | tr -d '"') || true; \
+	      && INSTALL_MOD_PATH=$(ROOTDIR) $(SCRIPTS_DEPMOD) /sbin/depmod $$KERNEL_RELEASE || true; \
+	    echo "\nChecking module:\n"; \
+	    MOD_INSTALL_PATH=$(ROOTDIR)/lib/modules/$$KERNEL_RELEASE; \
+	    for d in $(subst M=,,$(KM)) extra; do \
+	      [ -d $$MOD_INSTALL_PATH/$$d/ ] && ls $$MOD_INSTALL_PATH/$$d/; \
+	    done ; \
 	  fi ; \
 	fi
 
@@ -2985,10 +2992,12 @@ kernel-getconfig: FORCE
 	$(Q)$(if $(o), $(foreach _o, $(subst $(comma),$(space),$(o)), \
 		__o=$(call _uc,$(_o)) && \
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
+	$(Q)echo
 
 _kernel-getconfig:
 	$(Q)printf "option state: $(o)="&& $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)echo
 
 kernel-config: kernel-setconfig
 kernel-setconfig: FORCE
@@ -2996,6 +3005,7 @@ kernel-setconfig: FORCE
 		$(shell p=$(firstword $(subst =,$(space),$(setting))) && \
 		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
 		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $o;), echo '')
+	$(Q)echo
 
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
@@ -3011,6 +3021,7 @@ _kernel-setconfig:
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)echo
 
 PHONY += kernel-getconfig kernel-config kernel-setconfig _kernel-getconfig _kernel-setconfig
 

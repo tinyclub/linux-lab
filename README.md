@@ -439,6 +439,8 @@ If really want to use local vnc clients, please install a vnc client, for exampl
 
 If the above command not work normally, based on the information printed above, please configure the vnc client yourself.
 
+**Notes**: The directly connected ssh and vnc may not always work, please use the other three methods instead.
+
 ## 2.7 Update and rerun the lab
 
 Usually, only need to update Linux Lab itself, to get the new boards support or related fixups:

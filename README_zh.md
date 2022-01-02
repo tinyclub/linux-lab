@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.8 中文手册
+% Linux Lab v0.9 中文手册
 % [泰晓科技 | Tinylab.org](http://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -195,7 +195,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
   * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
       * Linux Lab 简介
       * 龙芯 Linux 内核开发
-      * Linux Lab Disk 演示
+      * Linux Lab Disk 使用演示
       * Linux Lab 发布会视频回放
       * Rust For Linux 简介
 
@@ -382,6 +382,27 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * [v0.8 rc1](http://tinylab.org/pocket-linux-disk-ubuntu/)
     * 发布了首支 Pocket Linux Disk
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Deepin
+
+### 1.6.9 v0.9
+
+v0.9 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
+
+* [v0.9 rc3](http://tinylab.org/linux-lab-v09-rc3/)
+    * 新增 FAST FETCH 功能，支持单独快速下载指定内核版本
+    * 新增 ONESHOT 内存编译功能，在原有内存编译的基础上增加代码内存缓存支持
+    * 大幅优化 Linux Lab 的启动速度和交互性能，提升 10 到 20 倍
+    * 完善 Linux Lab for Windows 支持，同时兼容 Docker Toolbox 和 Docker Desktop with wsl2
+
+* [v0.9 rc2](http://tinylab.org/linux-lab-v09-rc2/)
+    * 为 v2.6.29 及之前版本的内核导入 make 3.81
+    * 为 Rust for Linux 新增 riscv64/virt 和 aarch64/virt 支持
+    * 新增 lxterminal 和 qterminal 支持
+    * Linux Lab Disk 新增 Kail 和 Mint 支持，并首次支持免关机切换系统
+
+* [v0.9 rc1](http://tinylab.org/linux-lab-v09-rc1/)
+    * 升级 llvm 工具链到 13
+    * 升级内核版本到 v5.13
+    * 新增 cleanall，可同时清理 source 和 build
 
 # 2. Linux Lab 安装
 

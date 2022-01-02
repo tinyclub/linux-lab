@@ -416,14 +416,19 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 
 Linux Lab Disk 已经支持如下功能：
 
-* 集成最新的稳定版 Ubuntu，当前版本为 20.04
-* [支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用](http://tinylab.org/linux-lab-disk-raw-boot)
-* [支持在 Windows, Linux 和 macOS 系统下即插即用](http://tinylab.org/linux-lab-disk-windows-boot)
-    * [Windows 即插即用管理软件 vmboot 演示](https://www.cctalk.com/v/16218987372966?sid=1612665538389924)
-* [支持透明压缩：可用容量翻倍，128G 可以当 256G 使用](http://tinylab.org/linux-lab-disk-transparent-compress)
-* [支持内存编译：扩大可用容量，提升编译速度，节省擦写寿命](http://tinylab.org/linux-lab-disk-mem-compile)
-
-已经制作多个不同版本：有 32G 高速移动版，也有 64G、128G 超高速固态版，未来也可能制作更大容量版本。
+* 可选容量
+    * 覆盖 32G, 64G, 128G, 256G, 512G 等，可按需定制任意容量
+* 可选系统
+    * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
+    * Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
+* 主要特性
+    * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用
+    * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测并并行启动
+    * 智能切换：在 Windows, Linux 和 macOS 系统下自动检测并免关机切换系统
+    * 透明倍容：可用容量翻倍，128G 可以当 ~256G 左右使用
+    * 内存编译：扩大可用容量，提升编译速度，节省擦写寿命
+* 购买地址
+    * [泰晓科技自营店](https://shop155917374.taobao.com)，该地址为目前唯一官方在线销售地址
 
 [![Linux Lab 真盘 - Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 

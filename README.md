@@ -252,10 +252,19 @@ If really a Linux newbie or simply don't want to spend time on boring installati
 
 It supports:
 
-* Boot from powered off any 64bit X86 Machine
-* Boot from running Windows, Linux and MacOS
-* Support transparent compress, use 128G as 256G
-* Support memory compling, speedup compling and save disk erase life
+* Capacity
+    * From 32G to 512G and even 1T, 2T
+* Systems
+    * Top6 Linux Distributions and even more based on your requirement
+    * Include Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
+* Features
+    * Boot from any powered-off 64bit X86 Machine, include PC, Laptop and MacBook
+    * Boot from any running Windows, Linux and MacOS and run in parallel with them
+    * Switch from or to any running Windows, Linux without poweroff
+    * Support transparent compress, use 128G as ~256G capacity
+    * Support memory compiling, speedup compiling and save disk erase life
+* Where to buy
+    * [Taobao shop of TinyLab.org Community](https://shop155917374.taobao.com)
 
 ## 2.1 Hardware and Software Requirement
 

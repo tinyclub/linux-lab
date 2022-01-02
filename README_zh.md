@@ -165,6 +165,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * 主页
     * <http://tinylab.org/linux-lab/>
+    * <https://oschina.net/p/linux-lab>
 
 * 仓库
     * <https://gitee.com/tinylab/linux-lab>
@@ -174,45 +175,43 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 
 * Cloud Lab
-    * Linux Lab 运行环境管理工具
+    * Linux Lab 运行环境管理工具，自带图形和命令行界面，支持本地和远程登陆
     * <http://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
-    * 用于 Linux 0.11 学习
+    * 用于 Linux 0.11 学习，今后仅集成到 Linux Lab Disk
     * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
     * <http://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
-    * 用于 X86 Linux 汇编学习
+    * 用于 X86 Linux 汇编学习，今后仅集成到 Linux Lab Disk
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <http://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 演示视频
 
-### 1.3.1 基本操作
-
-  * [基本使用](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
-  * [学习 Uboot](http://showterm.io/11f5ae44b211b56a5d267)
-  * [学习汇编](http://showterm.io/0f0c2a6e754702a429269)
-  * [在 Vexpress-a9 开发板上引导启动 ARM Ubuntu 18.04](http://showterm.io/c351abb6b1967859b7061)
-  * [在 ARM64/Virt 开发板上引导启动 Linux v5.1](http://showterm.io/9275515b44d208d9559aa)
-  * [引导启动 Riscv32/virt 和 Riscv64/virt 开发板](http://showterm.io/37ce75e5f067be2cc017f)
-
-### 1.3.2 炫酷操作
-
-  * [一条命令测试某项内核功能](http://showterm.io/7edd2e51e291eeca59018)
-  * [一条命令测试多个内核模块](http://showterm.io/26b78172aa926a316668d)
-  * [批量测试引导启动所有开发板](http://showterm.io/8cd2babf19e0e4f90897e)
-  * [批量测试所有开发板的调试功能](http://showterm.io/0255c6a8b7d16dc116cbe)
-
-### 1.3.3 视频教程
+### 1.3.1 开放教程
 
   * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
       * Linux Lab 简介
       * 龙芯 Linux 内核开发
       * Linux Lab Disk 演示
+      * Linux Lab 发布会视频回放
+      * Rust For Linux 简介
+
+### 1.3.2 付费课程
+
   * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
       * 提供了上百个实验案例，全部通过 Linux Lab 验证
+
+  * [《Rust 语言快速上手》](https://cctalk.com/m/group/89507527)
+      * 初步了解 Rust 语言、历史、特性、适应领域以及与嵌入式、Linux、GCC、GPU、C/C++ 语言的关系并快速上手，所有实验全部通过 Linux Lab 验证
+
+  * [《软件逆向工程初探》](https://www.cctalk.com/m/group/89626746)
+      * 了解软件逆向工程的基本概念，掌握开展软件逆向相关技术、流程和方法，通过实验实操，最终独立完成简单 C 程序逆向分析，所有实验全部通过 Linux Lab 验证
+
+  * [《Linux内核热补丁技术介绍与实战》](https://www.cctalk.com/m/group/89715946)
+      * 学习 Linux 内核热补丁核心工作原理，跟随老师动手实现 AArch64 架构 Linux 内核热补丁核心功能，所有实验全部通过 Linux Lab 验证
 
 ## 1.4 项目功能
 
@@ -220,12 +219,12 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 |编号| 特性       |  描述                                                                                |
 |----|------------|--------------------------------------------------------------------------------------|
-|1   | 开发板     | 基于 QEMU，支持 7+ 主流体系架构，15+ 款流行开发板                                    |
-|2   | 组件       | 支持 Uboot，Linux, Buildroot，Qemu。支持 Linux v2.6.10 ~ v5.x                        |
+|1   | 开发板     | 基于 QEMU，支持 7+ 主流体系架构，20+ 款流行虚拟开发板；支持多款真实开发板            |
+|2   | 组件       | 支持 Uboot，Linux, Buildroot，Qemu。支持 Linux v0.11, v2.6.10 ~ v5.x                 |
 |3   | 预置组件   | 提供上述组件的预先编译版本，并按开发板分类存放，可即时下载使用                       |
 |4   | 根文件系统 | 支持 initrd，harddisk，mmc 和 nfs; ARM 架构提供 Debian 系统                          |
-|5   | Docker     | 交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链                               |
-|6   | 灵活访问   | 支持通过本地或网络访问，支持 bash, ssh, vnc, web ssh, web vnc                        |
+|5   | Docker     | 包括 gcc-4.3 在内的交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链            |
+|6   | 灵活访问   | 支持通过本地或网络访问，支持命令行和图形界面，支持 bash, ssh, vnc, web ssh, web vnc  |
 |7   | 网络       | 内置桥接网络支持，每个开发板都支持网络（Raspi3 是唯一例外）                          |
 |8   | 启动       | 支持串口、Curses（用于 `bash/ssh` 访问）和图形化方式启动                             |
 |9   | 测试       | 支持通过 `make test` 命令对目标板进行自动化测试                                      |
@@ -237,7 +236,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.5.1 项目起源
 
-大约九年前，我向 elinux.org 发起了一个 tinylinux 提案：[Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。该提案最终被采纳，因此我在这个项目上工作了几个月。
+大约十年前，我向 elinux.org 发起了一个 tinylinux 提案：[Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。该提案最终被采纳，因此我在这个项目上工作了几个月。
 
 ### 1.5.2 项目缘由
 
@@ -247,7 +246,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.5.3 项目诞生
 
-这些工作成果在我的硬盘里闲置了好多年，直到有一天我遇到了 noVNC 和 Docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab)，此后，为了将此前开发的那些零散的脚本、内核配置文件、根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
+这些工作成果在我的硬盘里闲置了好多年，直到我遇到了 noVNC 和 Docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab)，此后，为了将此前开发的那些零散的脚本、内核配置文件、根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
 
 ## 1.6 项目变更
 
@@ -262,14 +261,14 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 修复了几处基础体验 Bugs
 
 * [v0.1 rc1](http://tinylab.org/linux-lab-v0.1-rc1/)
-    * 历史上发布的第1个版本，在历史功能上进一步添加了 raspi3 和 risc-v 支持
+    * 历史上发布的第 1 个版本，在历史功能上进一步添加了 raspi3 和 risc-v 支持
 
 ### 1.6.2 v0.2 @ 2019.10.30
 
-[v0.2](http://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯全系支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
+[v0.2](http://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯早期全系 MIPS 架构处理器支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
 
 * [v0.2 rc3](http://tinylab.org/linux-lab-v0.2-rc3/)
-    * 新增原生 Windows 支持，仅需 Docker，无需安装 Virtualbox 或 Vmware
+    * 新增原生 Windows 支持，基于 Docker Toolbox，无需通过 Virtualbox 或 Vmware 额外安装系统
 
 * [v0.2 rc2](http://tinylab.org/linux-lab-v0.2-rc2/)
     * 龙芯插件新增龙芯教育开发板支持
@@ -331,12 +330,10 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 [v0.6](http://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
 
 * v0.6 rc3
-    * 新增遗漏的 showterm 命令行录制工具
     * 进一步完善真实硬件板的支持
 
 * [v0.6 rc2](http://tinylab.org/linux-lab-v06-rc2/)
     * 新增首块真实硬件开发板 `arm/ebf-imx6ull` 支持
-    * 新增 `packages-install` 目标，允许通过 `.labinit` 配置环境缺少的软件包
     * 新增命令行自动补全脚本，允许直接在命令行补全板子信息，提升使用效率
 
 * [v0.6 rc1](http://tinylab.org/linux-lab-v06-rc1/)
@@ -346,7 +343,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.7 v0.7 @ 2021.06.03
 
-[v0.7](http://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持透明压缩、内存编译与即插即用。
+[v0.7](http://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持智能启动、运行时切换、透明倍容和内存编译。
 
 * v0.7 rc3
     * 增加 v0.8 开发计划
@@ -363,7 +360,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 新增内存编译功能和使用文档
     * 新增桌面快捷方式对 Ubuntu 20.04 的支持
     * 修复 Windows 和 macOS 系统上的 webvnc 连接异常
-    * 容器内新增音、视频播放支持
+    * 容器内新增音视频播放支持
 
 ### 1.6.8 v0.8 @ 2021.10.13
 
@@ -749,7 +746,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
           ROOTDEV ?= /dev/nfs
 
 
-如果只想查看特定的架构，插件或者模糊匹配，可以使用 `ARCH`，`FILTER`:
+如果只想查看特定的架构，可以使用 `ARCH` 指定，也可以使用 `FILTER` 模糊匹配:
 
     $ make list ARCH=arm
     $ make list FILTER=virt

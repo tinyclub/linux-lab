@@ -146,7 +146,7 @@
 
 ## 1.1 Project Introduction
 
-This project aims to create a Qemu-based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
+This project aims to create a Docker and Qemu based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
 
 Linux Lab is open source with no warranty – use at your own risk.
 
@@ -156,6 +156,7 @@ Linux Lab is open source with no warranty – use at your own risk.
 
 * Homepage
     * <http://tinylab.org/linux-lab/>
+    * <https://oschina.net/p/linux-lab>
 
 * Repository
     * <https://gitee.com/tinylab/linux-lab>
@@ -164,43 +165,43 @@ Linux Lab is open source with no warranty – use at your own risk.
 Related Projects:
 
 * Cloud Lab
-    * Linux Lab Running Environment Manager
+    * Linux Lab Running Environment Manager, provide GUI and CLI, support local and remote login
     * <http://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
-    * Learning Linux 0.11
+    * Learning Linux 0.11, only available in Linux Lab Disk from now on
     * Download it to `labs/linux-0.11-lab` and use it in Linux Lab directly
     * <http://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
-    * Learning X86 Linux Assembly
+    * Learning X86 Linux Assembly, only available in Linux Lab Disk from now on
     * Download it to `labs/cs630-qemu-lab` and use it in Linux Lab directly
     * <http://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 Demonstration
 
-### 1.3.1 Basic Operations
-
-  * [Basic Usage](http://showdesk.io/7977891c1d24e38dffbea1b8550ffbb8)
-  * [Learning Uboot](http://showterm.io/11f5ae44b211b56a5d267)
-  * [Learning Assembly](http://showterm.io/0f0c2a6e754702a429269)
-  * [Boot ARM Ubuntu 18.04 on Vexpress-a9 board](http://showterm.io/c351abb6b1967859b7061)
-  * [Boot Linux v5.1 on ARM64/Virt board](http://showterm.io/9275515b44d208d9559aa)
-  * [Boot Riscv32/virt and Riscv64/virt boards](http://showterm.io/37ce75e5f067be2cc017f)
-
-### 1.3.2 Cool Operations
-
-  * [One command of testing a specified kernel feature](http://showterm.io/7edd2e51e291eeca59018)
-  * [One command of testing multiple specified kernel modules](http://showterm.io/26b78172aa926a316668d)
-  * [Batch boot testing of all boards](http://showterm.io/8cd2babf19e0e4f90897e)
-  * [Batch testing the debug function of all boards](http://showterm.io/0255c6a8b7d16dc116cbe)
-
-### 1.3.3 Video Courses In Chinese
+### 1.3.1 Free Video Courses In Chinese
 
   * [Linux Lab Open Videos](https://www.cctalk.com/m/group/88948325)
       * Linux Lab Introduction
       * Loongson Linux Development
-  * [The Perspective Linux ELF](https://www.cctalk.com/m/group/88089283)
+      * Linux Lab Disk Demonstration
+      * Linux Lab Release Meeting Replay Videos
+      * Rust For Linux Introduction
+
+### 1.3.2 Non-Free Video Courses In Chinese
+
+  * [The Perspective of Linux ELF](https://www.cctalk.com/m/group/88089283)
+      * Learn Linux ELF by practice, with hundreds of examples, all verified in Linux Lab
+
+  * [《Rust Language Quickstart》](https://cctalk.com/m/group/89507527)
+      * Rust course for C programmer, with examples verified in Linux Lab
+
+  * [《Software Reverse Engineering Quickstart》](https://www.cctalk.com/m/group/89626746)
+      * Learn reverse engineering by practice, with examples verified in Linux Lab
+
+  * [《Linux Kernel Livepatch Introduction》](https://www.cctalk.com/m/group/89715946)
+      * Learn Linux live patching in AArch64 by practice, with examples verified in Linux Lab
 
 
 ## 1.4 Project Functions
@@ -209,12 +210,12 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 | Items    | Description
 |----------|-----------------------------------------------------------------------
-|Boards    | Qemu based, 8+ main Architectures, 15+ popular boards
-|Components| Uboot, Linux / Modules, Buildroot, Qemu, Linux v2.6.10 ~ 5.x supported
-|Prebuilt  | All of above components has been prebuilt
+|Boards    | Qemu based, 7+ main Architectures, 20+ popular boards; Several real boards supported too
+|Components| Uboot, Linux / Modules, Buildroot, Qemu, Linux v0.11, v2.6.10 ~ 5.x supported
+|Prebuilt  | All of above components have been prebuilt
 |Rootfs    | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM
-|Docker    | Cross toolchains available in one command, external ones configurable
-|Access    | Access via web browsers, available everywhere via web vnc or web ssh
+|Docker    | Cross toolchains from gcc-4.3 available in one command, external ones configurable
+|Access    | Accessible from local or remote, include CLI and GUI, support bash, ssh, vnc, web vnc and web ssh
 |Network   | Builtin bridge networking, every board has network (except Raspi3)
 |Boot      | Support serial port, curses (bash/ssh friendly) and graphic booting
 |Testing   | Support automatic testing via `make test` target
@@ -226,8 +227,8 @@ Continue reading for more features and usage.
 
 ### 1.5.1 Project Origins
 
-About 9 years ago, a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by embedded
-linux foundation, therefore I have worked on this project for serveral months.
+About 10 years ago (2010), a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by Embedded
+Linux Foundation, therefore I have worked on this project for serveral months.
 
 ### 1.5.2 Problems Solved
 

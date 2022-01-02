@@ -420,7 +420,7 @@ Linux Lab Disk 已经支持如下功能：
     * 覆盖 32G, 64G, 128G, 256G, 512G 等，可按需定制任意容量
 * 可选系统
     * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
-    * Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
+    * Ubuntu 18.04-21.04, Deepin 20.02+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
 * 主要特性
     * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用
     * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测并并行启动
@@ -442,20 +442,9 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 | 磁盘         | >= 50G               | 系统(25G), Docker 镜像(~5G), Linux Lab(20G)   |
 | 内存         | >= 4G                | 过低的内存可能会导致各种卡顿以及异常缓慢      |
 
-如果平时用的几率比较高，建议把磁盘空间提高到 100G ~ 200G 以上，内存可以提升到 8G 以上。
+如果平时用的几率比较高，建议把磁盘空间提高到 100G ~ 200G 以上，内存可以提升到 8G 以上，处理器核数提升到 4 个以上。
 
-另外，为了避免走弯路，这里提供了一份验证过的操作系统列表，方便大家参考：
-
-| 操作系统   | 系统版本            | Docker 版本    | 内核版本
-|------------|---------------------|----------------|-----------------------------
-| Ubuntu     | 16.04, 18.04, 20.04 | 18.09.4        | Linux 4.15, 5.0, 5.3, 5.4
-| Debian     | bullseye            | 19.03.7        | Linux 5.4.42
-| Arch Linux | rolling-release     | 20.10.3        | Linux 5.4.94, 5.7.4
-| CentOS     | 7.6, 7.7            | 19.03.8        | Linux 3.10, 5.2.9
-| Deepin     | 15.11               | 18.09.6        | Linux 4.15
-| Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
-| Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
-| Manjaro    | rolling-release     | 20.10.3        | Linux 5.8.3
+当前市面上所有支持 Docker 的 X86_64 系统都应该可以正常运行 Linux Lab，包括 Windows, Linux 和 MacOS，市面上几乎所有的 Linux 发行版都有用户尝试过。
 
 请查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
 
@@ -504,7 +493,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 **Windows 用户须知**：
 
-  - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker
+  - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker 并根据情况选择安装 Docker Desktop 还是 Docker Toolbox
 
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
       - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”
@@ -516,22 +505,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
     $ mkdir ~/Develop
     $ cd ~/Develop
 
-对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请先使能或创建一个区分大小写的文件系统作为工作空间，同时请关闭换行符转换：
-
-**Windows**：
-
-    (git bash) $ cd /path/to/cloud-lab
-    (git bash) $ fsutil file SetCaseSensitiveInfo ./ enable
-
-    (git bash) $ git config --global core.autocrlf false
-
-**Mac OSX**：
-
-    $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Develop/labspace
-
-    $ git config --global core.autocrlf false
+对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请参考 5.7.1 节开启 Build Cache。
 
 对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
 
@@ -660,7 +634,9 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
     # poweroff
     #
 
-键入 `poweroff` 即可关闭板子。部分开发板的关机功能不完善，可通过 `CTRL+a x` （依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
+键入 `poweroff` 即可关闭板子。
+
+**注意**：部分开发板的关机功能不完善，可通过 `CTRL+a x` （依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
 
 # 3. Linux Lab 入门
 

@@ -276,20 +276,9 @@ Linux Lab is a full embedded Linux development system, it needs enough calculati
 | Disk         | >= 50G           | System (25G), Docker Images(~5G), Linux Lab (20G)    |
 | Memory       | >= 4G            | Lower than 4G may have many unpredictable exceptions |
 
-If often use, please increase disk storage to 100G~200G and memory storage to 8G.
+If often use, please increase disk storage to 100G~200G, memory storage to 8G, cpu cores to 4 and above.
 
-And here is a list for verified operating systems for references:
-
-| OS         | System Version      | Docker Version | Kernel Version
-|------------|---------------------|----------------|-----------------------------
-| Ubuntu     | 16.04, 18.04, 20.04 | 18.09.4        | Linux 4.15, 5.0, 5.3, 5.4
-| Debian     | bullseye            | 19.03.7        | Linux 5.4.42
-| Arch Linux | rolling-release     | 20.10.3        | Linux 5.4.94, 5.7.4
-| CentOS     | 7.6, 7.7            | 19.03.8        | Linux 3.10, 5.2.9
-| Deepin     | 15.11               | 18.09.6        | Linux 4.15
-| Mac OS X   | 10.15.5             | 19.03.8        | Darwin 19.5.0
-| Windows    | 10 PRO, WSL2        | 19.03.8        | MINGW64_NT-10.0-17134
-| Manjaro    | rolling-release     | 20.10.3        | Linux 5.8.3
+Currently, all of the X86_64 systems support Docker should be able to run Linux Lab, include Windows, Linux and MacOS, all of the popular Linux distributions may have been tried by different users.
 
 Welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
 
@@ -338,7 +327,7 @@ The other issues, please read the [official docker docs](https://docs.docker.com
 
 **Notes for Windows Users**:
 
-  - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com)
+  - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com) and determine Docker Desktop or Docker Toolbox should be used
 
   - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
       - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
@@ -350,24 +339,7 @@ Please simply choose one directory in `~/Downloads` or `~/Documents` or create a
     $ mkdir ~/Develop
     $ cd ~/Develop
 
-For Windows and Mac OSX, to compile Linux normally, please enable or create a case sensitive filesystem as the working space at first and please disable git autocrlf switch:
-
-**Windows**:
-
-    (git bash) $ cd /path/to/cloud-lab
-    (git bash) $ fsutil file SetCaseSensitiveInfo ./ enable
-
-    (git bash) $ git config --global core.autocrlf false
-
-**Mac OSX**:
-
-    $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
-    $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
-    $ cd ~/Develop/labspace
-
-    $ git config --global core.autocrlf false
-
-**Notes**: Docker Images, Linux and Buildroot source code require many storage space, please reserve at least 50G for them.
+For Windows and Mac OSX, to compile Linux normally, please refer to section 5.7.1 and enable building cache:
 
 ## 2.4 Switch to normal user
 
@@ -426,7 +398,7 @@ The other login methods:
     $ tools/docker/ssh
     $ tools/docker/webssh
 
-Choose one of the method:
+Choose one of the methods:
 
     $ tools/docker/login list  # List, choose and record
     $ tools/docker/login vnc   # Choose one directly and record for late login
@@ -449,7 +421,7 @@ If really want to use local vnc clients, please install a vnc client, for exampl
 
 If the above command not work normally, based on the information printed above, please configure the vnc client yourself.
 
-**Notes**: The directly connected ssh and vnc may not always work, please use the other three methods instead.
+**Notes**: The directly connected ssh and vnc may not always work, please use one of the other three methods instead.
 
 ## 2.7 Update and rerun the lab
 
@@ -496,7 +468,9 @@ Login as `root` user without password(password is empty), just input `root` and 
     # poweroff
     #
 
-Shutdown the board with the `poweroff` command. If some boards not support `poweroff`, please press `CTRL+a x`. Of course, open another terminal and issue kill or pkill command also can quit qemu.
+Shutdown the board with the `poweroff` command.
+
+**Notes*: If some boards not support `poweroff`, please press `CTRL+a x`. Of course, open another terminal and issue kill or pkill command also can quit qemu.
 
 # 3. Linux Lab Kickstart
 

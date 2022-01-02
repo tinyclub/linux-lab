@@ -299,7 +299,7 @@ Docker is required by Linux Lab, please install it at first:
 
   - older Windows (include some older Windows 10)
 
-     Install Ubuntu via Virtualbox or Vmware Virtual Machine
+     [Docker Toolbox](https://get.daocloud.io/toolbox/); Install Ubuntu via Virtualbox or Vmware Virtual Machine
 
 Before running Linux Lab, please refer to section 6.1.4 and make sure the following command works without sudo and without any issue:
 

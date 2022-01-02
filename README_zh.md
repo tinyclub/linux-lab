@@ -452,7 +452,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
   - 更早的 Windows 版本（含大部分老版本 Windows 10）
 
-      通过 Virtualbox 或 Vmware 安装 Ubuntu 后使用
+      使用 [Docker Toolbox](https://get.daocloud.io/toolbox/)；也可通过 Virtualbox 或 Vmware 安装 Ubuntu 等 Linux 发行版后使用
 
 在运行 Linux Lab 之前，请参考 6.1.4 节确保无需 `sudo` 权限也可以正常运行以下命令：
 

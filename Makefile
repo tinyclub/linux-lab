@@ -319,7 +319,7 @@ endef
 
 # name: $1, url: $2, default: $3
 define _latest
-$(or $(latest_$1),$(eval $(call _latest_init,$1,$2,$3))$(latest_$1))
+$(if $(LATEST_TAG),$(or $(latest_$1),$(eval $(call _latest_init,$1,$2,$3))$(latest_$1)),$3)
 endef
 
 # $(BOARD_DIR)/Makefile.linux_$(LINUX)

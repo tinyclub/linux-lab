@@ -904,18 +904,21 @@ Boot with serial port (nographic) by default, exit with `CTRL+a x`, `poweroff`, 
 
 Boot with graphic (Exit with `CTRL+ALT+2 quit`):
 
-    $ make b=pc boot G=1 LINUX=v5.1
-    $ make b=versatilepb boot G=1 LINUX=v5.1
-    $ make b=g3beige boot G=1 LINUX=v5.1
-    $ make b=malta boot G=1 LINUX=v2.6.36
-    $ make b=vexpress-a9 boot G=1 LINUX=v4.6.7 // LINUX=v3.18.39 works too
+    $ make b=pc boot G=1 LINUX=v5.1 BUILDROOT=2019.11
+    $ make b=versatilepb boot G=1 LINUX=v5.1 BUILDROOT=2016.05
+    $ make b=g3beige boot G=1 LINUX=v5.1 BUILDROOT=2016.05
+    $ make b=malta boot G=1 LINUX=v2.6.36 BUILDROOT=2016.05
+    $ make b=vexpress-a9 boot G=1 LINUX=v4.6.7 BUILDROOT=2016.05 // LINUX=v3.18.39 works too
 
-  **Note**: real graphic boot require LCD and keyboard drivers, the above boards work well, with linux v5.1,
-  `raspi3` and `malta` has tty0 console but without keyboard input.
+**Note**:
 
-  `vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
-  with G=1 and switch to serial console via the 'View' menu, this can not be used to test LCD and
-  keyboard drivers. `XOPTS` specify the eXtra qemu options.
+* real graphic boot require LCD and keyboard drivers, the above boards work well, with linux v5.1, `raspi3` and `malta` has tty0 console but without keyboard input.
+
+* new buildroot config files set tty console to serial with (`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`), to enable console with G=1, please change the `getty` line in `/etc/inittab`, for example, replace `ttyAMA0` with `console`, we can also simply switch to the serial console via the Qemu 'View' menu.
+
+`vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
+with G=1 and switch to serial console via the 'View' menu, this can not be used to test LCD and
+keyboard drivers. `XOPTS` specify the eXtra qemu options.
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1

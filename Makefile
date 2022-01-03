@@ -1446,10 +1446,9 @@ board-info:
 		| tr -s '/' | egrep "$(FILTER)" \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| egrep -v "/module" \
-		| sed -e "s%boards/\(.*\)/Makefile%\1%g" \
-		| sed -e "s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$" \
-		| egrep -v "^[[:space:]]*include |call |eval " | egrep --colour=auto "$(VAR_FILTER)"
+		| sed -e "s%boards/\(.*\)/Makefile%\1%g;s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
+		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval " \
+		| egrep --colour=auto "$(VAR_FILTER)"
 
 BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin full)
 

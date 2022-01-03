@@ -1787,7 +1787,7 @@ $1-help:
 
 $$(call _stamp,$1,patch): $$(ENV_FILES)
 	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
-	  $($(call _uc,$1)_PATCH_EXTRAACTION); \
+	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
 	  if [ -f tools/$1/patch.sh ]; then \
 	    tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD); \
 	    touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched; \
@@ -2539,7 +2539,7 @@ endif
 kernel-feature:
 	$(Q)[ $(FCS) -eq 1 ] && tools/board/config.sh FEATURE=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX) || true
 
-KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true
+KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true;
 
 ifneq ($(firstword $(MAKECMDGOALS)),list)
 feature: kernel-feature
@@ -3128,7 +3128,7 @@ endif
 export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
 
 UBOOT_CONFIG_TOOL := $(TOOL_DIR)/uboot/config.sh
-UBOOT_PATCH_EXTRAACTION := [ -n "$$(UCONFIG)" ] && $$(UBOOT_CONFIG_TOOL) $$(UBOOT_ABS_SRC) $$(UCONFIG) || true
+UBOOT_PATCH_EXTRAACTION := [ -n "$$(UCONFIG)" ] && $$(UBOOT_CONFIG_TOOL) $$(UBOOT_ABS_SRC) $$(UCONFIG) || true;
 UBOOT_CONFIG_DIR := $(UBOOT_ABS_SRC)/configs
 UBOOT_CLEAN_DEPS := $(UBOOT_IMGS_DISTCLEAN)
 

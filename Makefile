@@ -1495,7 +1495,7 @@ $1-modules-install: $1-modules
 $1-modules-install-km: $1-modules-km
 $1-help: $1-defconfig
 
-$1_defconfig_childs := $(addprefix $1-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig feature build buildroot modules modules-km do)
+$1_defconfig_childs := $(addprefix $1-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig build buildroot modules modules-km do)
 ifeq ($(firstword $(MAKECMDGOALS)),$1)
   $1_defconfig_childs := $1
 endif
@@ -1781,7 +1781,7 @@ $1-help:
 
 $$(call _stamp,$1,patch): $$(ENV_FILES)
 	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
-	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
+	  $($(call _uc,$1)_PATCH_EXTRAACTION); \
 	  if [ -f tools/$1/patch.sh ]; then \
 	    tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD); \
 	    touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched; \
@@ -2489,6 +2489,59 @@ KERNEL_CLEAN_DEPS       := kernel-modules-clean
 
 kernel-oldnoconfig: kernel-olddefconfig
 
+# kernel features support
+KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
+KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
+KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
+
+ifneq ($(FEATURE),)
+kernel-defconfig: kernel-feature-download
+kernel-feature-download:
+	@echo "Downloading kernel feature patchset: $(FEATURE)"
+	@[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+
+kernel-olddefconfig: kernel-feature-config
+kernel-feature-config:
+	@echo "Appling kernel feature configs: $(FEATURE)"
+	@[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+
+_kernel: kernel-olddefconfig
+endif
+
+FCS ?= 0
+ifneq ($(filter command line,$(foreach i,F FEATURE FEATURES,$(origin $i))),)
+  FCS := 1
+endif
+
+kernel-feature:
+	$(Q)[ $(FCS) -eq 1 ] && tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX) || true
+
+KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true
+
+ifneq ($(firstword $(MAKECMDGOALS)),list)
+feature: kernel-feature
+features: feature
+endif
+
+kernel-features: kernel-feature
+
+kernel-feature-list:
+	$(Q)echo [ $(FEATURE_DIR) ]:
+	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
+
+kernel-features-list: kernel-feature-list
+features-list: kernel-feature-list
+feature-list: kernel-feature-list
+
+PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
+
+kernel-feature-test: kernel-test
+kernel-features-test: kernel-feature-test
+features-test: kernel-feature-test
+feature-test: kernel-feature-test
+
+PHONY += kernel-feature-test kernel-features-test features-test feature-test
+
 #$(warning $(call gensource,kernel,LINUX))
 $(eval $(call gensource,kernel,LINUX))
 # Add basic kernel & modules deps
@@ -2534,6 +2587,16 @@ modules  ?= $(m)
 module   ?= $(modules)
 ifeq ($(module),all)
   module := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i dirname {} | xargs -i basename {} | tr '\n' ',')
+endif
+
+ifneq ($(module),)
+  ifneq ($(FEATURE),)
+    ifeq ($(findstring module,$(FEATURE)),)
+      FEATURE := $(FEATURE),module
+    endif
+  else
+    FEATURE := module
+  endif
 endif
 
 internal_module := 0
@@ -2782,72 +2845,6 @@ PHONY += modules modules-install modules-clean module module-install module-clea
 endif # module targets
 
 # Build Kernel
-
-KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
-KERNEL_FEATURE_TOOL := tools/kernel/feature.sh
-
-FPL ?= 1
-ifneq ($(filter $(FEATURE),debug module boot nfsroot initrd),)
-  FPL := 0
-endif
-ifeq ($(FEATURE),boot,module)
-  FPL := 0
-endif
-
-FEATURE_PATCHED_TAG := $(KERNEL_ABS_SRC)/.feature.patched
-
-kernel-defconfig: kernel-feature-download
-kernel-feature-download:
-	  @[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
-
-FCS ?= 0
-ifneq ($(filter command line,$(foreach i,F FEATURE FEATURES,$(origin $i))),)
-  FCS := 1
-endif
-
-kernel-feature:
-	@if [ $(FPL) -eq 0 -o ! -f $(FEATURE_PATCHED_TAG) ]; then \
-	  $(KERNEL_FEATURE_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"; \
-	  [ $(FCS) -eq 1 ] && tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX); \
-	  make -s kernel-olddefconfig; \
-	  if [ $(FPL) -eq 1 -a -n "$(FEATURE)" ]; then touch $(FEATURE_PATCHED_TAG); fi; \
-	  if [ -z "$(FEATURE)" ]; then rm -rf $(FEATURE_PATCHED_TAG); fi; \
-	else \
-	  echo "ERR: feature patchset has been applied, if want, please backup important changes and pass 'FPL=0' or 'make kernel-cleanup' at first." && exit 1; \
-	fi
-
-ifneq ($(firstword $(MAKECMDGOALS)),list)
-feature: kernel-feature
-features: feature
-endif
-
-kernel-features: kernel-feature
-
-kernel-feature-list:
-	$(Q)echo [ $(FEATURE_DIR) ]:
-	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g" | sed -e "s%[^/]*/.*/%      * %g" | sed -e "s%[^/]*/%    - %g"
-
-kernel-features-list: kernel-feature-list
-features-list: kernel-feature-list
-feature-list: kernel-feature-list
-
-ifneq ($(module),)
-  ifneq ($(FEATURE),)
-    FEATURE := $(FEATURE),module
-  else
-    FEATURE := module
-  endif
-endif
-
-PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
-
-kernel-feature-test: kernel-test
-kernel-features-test: kernel-feature-test
-features-test: kernel-feature-test
-feature-test: kernel-feature-test
-
-PHONY += kernel-feature-test kernel-features-test features-test feature-test
-
 IMAGE := $(notdir $(ORIIMG))
 
 # aarch64 not add uboot header for kernel image

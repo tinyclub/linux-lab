@@ -43,9 +43,6 @@ do
         [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
         [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
         [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
-        [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-        [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
-        [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
         # apply the patchset maintained by multiple xxx.patch
         patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
@@ -87,9 +84,6 @@ do
             [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
             [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
             [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
-            [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-            [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
-            [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
 
             # apply the patchset maintained by multiple xxx.patch
             MAXDEPTH=""

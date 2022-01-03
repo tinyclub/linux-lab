@@ -2495,15 +2495,22 @@ KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
 KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
-kernel-defconfig: kernel-feature-download
-kernel-feature-download:
-	@echo "Downloading kernel feature patchset: $(FEATURE)"
-	@[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+kernel-patch: $(call _stamp,kernel,source.feature)
+$(call _stamp,kernel,source.feature): $(ENV_FILES)
+	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
+	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
+	touch $@
 
-kernel-olddefconfig: kernel-feature-config
-kernel-feature-config:
-	@echo "Appling kernel feature configs: $(FEATURE)"
-	@[ -n "$(FEATURE)" ] && $(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+kernel-olddefconfig kernel-menuconfig: $(call _stamp,kernel,defconfig.feature)
+$(call _stamp,kernel,defconfig.feature): $(call _stamp,kernel,defconfig) $(ENV_FILES)
+	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
+	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+	touch $@
+
+kernel-feature-cleanstamp:
+	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature)
+
+kernel-cleanstamp: kernel-feature-cleanstamp
 
 _kernel: kernel-olddefconfig
 endif
@@ -2514,7 +2521,7 @@ ifneq ($(filter command line,$(foreach i,F FEATURE FEATURES,$(origin $i))),)
 endif
 
 kernel-feature:
-	$(Q)[ $(FCS) -eq 1 ] && tools/board/config.sh feature=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX) || true
+	$(Q)[ $(FCS) -eq 1 ] && tools/board/config.sh FEATURE=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX) || true
 
 KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true
 

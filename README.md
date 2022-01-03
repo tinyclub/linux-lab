@@ -614,7 +614,7 @@ Only list real boards:
 
 Because real hardware boards differs from each other, so, board specific document are recommended, for example: `boards/arm/ebf-imx6ull/README.md`.
 
-All supported real hardware boards will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
+All supported real hardware boards and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
 
 [![Linux Lab Board - IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
@@ -701,17 +701,17 @@ Every board has its own configuration, some can be changed on demand, for exampl
 
 The configure method is very simple, just edit it by referring to current values (`boards/<BOARD>/Makefile`), this command open local configuration (`boards/<BOARD>/.labconfig`) via vim:
 
-    $ make local-edit
+    $ make edit
 
 But please don't make a big change once, we often only need to tune linux version, this command is better for such case:
 
     $ make list-linux
     v4.12 v4.5.5 v5.0.10 [v5.1]
-    $ make local-config LINUX=v5.0.10
+    $ make config LINUX=v5.0.10
     $ make list-linux
     v4.12 v4.5.5 [v5.0.10] v5.1
 
-If want to upstream your local changes, please use `board-edit` and `board-config`, otherwise, `local-edit` and `local-config` are preferrable, for they will avoid conflicts while pulling remote updates.
+If want to upstream your local changes, please use `board-edit` and `board-config`, otherwise, `edit` and `config` are preferrable, for they will avoid conflicts while pulling remote updates.
 
 ## 3.2 Build in one command
 

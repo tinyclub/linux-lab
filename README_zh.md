@@ -783,7 +783,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 所有适配过的开发板会统一放置在 [社区自营店](https://shop155917374.taobao.com/) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的 Linux Lab 开发板群组。
 
-也可以直接在淘宝手机 APP 内搜索 “Linux Lab真板” 后购买。
+也可以直接在淘宝手机 APP 内搜索 “Linux Lab真板” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
 
 [![Linux Lab 真板 - 野火 IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
@@ -870,17 +870,17 @@ Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和
 
 配置方法很简单，参考现有的板级配置（`boards/<BOARD>/Makefile`）修改即可，以下命令会通过 vim 调出当前开发板的本地配置文件（`boards/<BOARD>/.labconfig`）：
 
-    $ make local-edit
+    $ make edit
 
 建议不要一次性做太大的调整，通常只建议修改内核版本，这样可直接用如下命令达到：
 
     $ make list-linux
     v4.12 v4.5.5 v5.0.10 [v5.1]
-    $ make local-config LINUX=v5.0.10
+    $ make config LINUX=v5.0.10
     $ make list-linux
     v4.12 v4.5.5 [v5.0.10] v5.1
 
-如果想把相关改动提交进上游代码仓库，请使用 `board-edit` 和 `board-config`，否则，建议使用 `local-edit` 和 `local-config`，这样可以方便同步上游的改动而不产生任何冲突。
+如果想把相关改动提交进上游代码仓库，请使用 `board-edit` 和 `board-config`，否则，建议使用 `edit` 和 `config`，这样可以方便同步上游的改动而不产生任何冲突。
 
 ## 3.2 一键自动编译
 

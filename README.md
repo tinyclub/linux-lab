@@ -368,10 +368,10 @@ If no normal user exists, create new:
 
 Use Ubuntu system as an example:
 
-Download cloud lab framework, pull images and checkout linux-lab repository:
+Download cloud lab framework with normal user, pull images and checkout linux-lab repository:
 
     $ git clone https://gitee.com/tinylab/cloud-lab.git
-    $ cd cloud-lab/ && tools/docker/choose linux-lab
+    $ cd cloud-lab/
 
 If cloned source code with `root` account, please **MUST** switch to normal user and change their owner:
 

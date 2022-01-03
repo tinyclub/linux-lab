@@ -534,10 +534,10 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 ## 2.5 下载实验环境
 
-下载 Cloud Lab，然后再选择 linux-lab 仓库：
+使用普通用户下载 Cloud Lab，然后再选择 linux-lab 仓库：
 
     $ git clone https://gitee.com/tinylab/cloud-lab.git
-    $ cd cloud-lab/ && tools/docker/choose linux-lab
+    $ cd cloud-lab/
 
 如果错误使用了 `root` 帐号来 clone 代码，下载后请**务必**切换到普通用户，并把属主改为普通用户：
 

@@ -3401,8 +3401,9 @@ kernel-saveconfig:
 
 root-saveconfig:
 	$(Q)$(call make_root,savedefconfig) || true
-	$(Q)if grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config; then \
-	  cp -v $$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2) $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	$(Q)defconfig=$$(grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2); \
+	if [ $$? -eq 0 -a -n "$$defconfig" -a -f "$$defconfig" ]; then \
+	  cp -v $$defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_BUILD)/defconfig ]; then \
 	  cp -v $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else \

@@ -2018,6 +2018,7 @@ ifneq ($(general_targets),)
       uboot_targets ?= $(general_targets)
     endif
   endif
+  qemu_targets ?= $(general_targets)
  endif
 endif
 
@@ -2044,7 +2045,9 @@ ifneq ($(findstring qemu,$(MAKECMDGOALS)),)
  ifeq ($(QEMU),)
   $(error ERR: No qemu version specified, please configure QEMU= in $(BOARD_MAKEFILE) or pass it manually)
  endif
+endif
 
+ifneq ($(QEMU),)
  ifneq ($(QCFG),)
    QEMU_CONF := $(QCFG)
  else
@@ -2052,6 +2055,7 @@ ifneq ($(findstring qemu,$(MAKECMDGOALS)),)
    QEMU_CONF ?= --disable-kvm
  endif
 endif
+
 
 #
 # qemu-user-static, only compile it for it works the same as qemu-user

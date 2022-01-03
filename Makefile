@@ -1850,11 +1850,17 @@ $$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FI
 $1-defconfig: $$(call _stamp,$1,defconfig)
 
 $1-oldefconfig: $1-olddefconfig
-$1-olddefconfig:
-	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+$1-olddefconfig: $$(call _stamp,$1,olddefconfig)
 
-$1-oldconfig:
+$$(call _stamp,$1,olddefconfig): $$($(call _uc,$1)_BUILD)/.config
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	touch $$@
+
+$1-oldconfig: $$(call _stamp,$1,oldconfig)
+
+$$(call _stamp,$1,oldconfig): $$($(call _uc,$1)_BUILD)/.config
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	touch $$@
 
 $1-menuconfig:
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))

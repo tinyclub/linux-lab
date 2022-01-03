@@ -578,6 +578,13 @@ else
  endif
 endif
 
+# add the same implementation of _stamp as __stamp for all !cleanstamp targets, used to let 'make cleanstamp kernel-build' work without rebuild
+ifneq ($(first_target),cleanstamp)
+define __stamp
+$(call _stamp,$1,$2)
+endef
+endif
+
 # common commands
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
   # use the rest as arguments for "do"
@@ -1552,7 +1559,7 @@ endif
 ifneq ($(filter $(first_target),$1 $1-build build),)
 $1-build: _$1
 else
-$1-build: $$(call _stamp,$1,build)
+$1-build: $$(call __stamp,$1,build)
 endif
 
 $1-do: _$1
@@ -1626,7 +1633,7 @@ endif
 # Build the full src directory
 $(call _uc,$1)_SRC_FULL := $$($(call _uc,$1)_SROOT)/$$($(call _uc,$1)_SPATH)
 
-$1-license: $$(call _stamp,$1,license)
+$1-license: $$(call __stamp,$1,license)
 
 $$(call _stamp,$1,license):
 	@if [ "$1" = "bsp" ]; then \
@@ -1663,7 +1670,7 @@ ifneq ($(_TOP_SRC),)
   endif
 endif
 
-$$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license $$(ENV_FILES)
+$$(call _stamp,$1,source): $$(call __stamp,$1,outdir) $1-license $$(ENV_FILES)
 	$$(Q)if [ -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
 	  if [ -d $$($(call _uc,$1)_SRC_FULL) ]; then \
 	    cd $$($(call _uc,$1)_SRC_FULL); \
@@ -1708,7 +1715,7 @@ $$(call _stamp,$1,source): $$(call _stamp,$1,outdir) $1-license $$(ENV_FILES)
 	    && touch $$@; \
 	fi
 
-$1-source: $$(call _stamp,$1,source)
+$1-source: $$(call __stamp,$1,source)
 
 $1-checkout: $1-source
 
@@ -1722,7 +1729,7 @@ $$(call _stamp,$1,checkout): $$(ENV_FILES)
 	     && echo "ERR: Please backup important changes on demand and run 'make $1-cleanup'." \
 	     && exit 1)
 
-$1-checkout: $$(call _stamp,$1,checkout)
+$1-checkout: $$(call __stamp,$1,checkout)
 
 $$(call _stamp,$1,outdir): $$($(call _uc,$1)_BUILD)
 	$$(Q)mkdir -p $$<
@@ -1730,7 +1737,7 @@ $$(call _stamp,$1,outdir): $$($(call _uc,$1)_BUILD)
 
 $$($(call _uc,$1)_BUILD): $$(CACHE_BUILD_TARGET)
 
-$1-outdir: $$(call _stamp,$1,outdir)
+$1-outdir: $$(call __stamp,$1,outdir)
 
 $1_source_childs := $1-download download-$1
 
@@ -1790,7 +1797,7 @@ $$(call _stamp,$1,patch): $$(ENV_FILES)
 	  echo "ERR: $1 patchset has been applied, if want, please backup important changes and do 'make $1-cleanup' at first." && exit 1; \
 	fi
 
-$1-patch: $$(call _stamp,$1,patch)
+$1-patch: $$(call __stamp,$1,patch)
 
 $1-savepatch:
 	$(Q)cd $$($(call _uc,$1)_SRC_FULL) && git format-patch $$(_$2)
@@ -1847,16 +1854,16 @@ $$(call _stamp,$1,defconfig): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FI
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
-$1-defconfig: $$(call _stamp,$1,defconfig)
+$1-defconfig: $$(call __stamp,$1,defconfig)
 
 $1-oldefconfig: $1-olddefconfig
-$1-olddefconfig: $$(call _stamp,$1,olddefconfig)
+$1-olddefconfig: $$(call __stamp,$1,olddefconfig)
 
 $$(call _stamp,$1,olddefconfig): $$($(call _uc,$1)_BUILD)/.config
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	touch $$@
 
-$1-oldconfig: $$(call _stamp,$1,oldconfig)
+$1-oldconfig: $$(call __stamp,$1,oldconfig)
 
 $$(call _stamp,$1,oldconfig): $$($(call _uc,$1)_BUILD)/.config
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
@@ -1949,7 +1956,7 @@ endif
 $$(call _stamp,$1,env): $1-deps $$($1_GCC) $$($1_HOSTGCC)
 	$$(Q)touch $$@
 
-$1-env: $$(call _stamp,$1,env)
+$1-env: $$(call __stamp,$1,env)
 
 PHONY += $1-env
 
@@ -2500,14 +2507,14 @@ KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
 KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
-kernel-patch: $(call _stamp,kernel,source.feature)
+kernel-patch: $(call __stamp,kernel,source.feature)
 $(call _stamp,kernel,source.feature): $(ENV_FILES)
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
 	touch $@
 
-kernel-olddefconfig kernel-menuconfig: $(call _stamp,kernel,defconfig.feature)
-$(call _stamp,kernel,defconfig.feature): $(call _stamp,kernel,defconfig) $(ENV_FILES)
+kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig.feature)
+$(call _stamp,kernel,defconfig.feature): $(call __stamp,kernel,defconfig) $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	touch $@
@@ -3311,13 +3318,13 @@ REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: getip $(call _stamp,kernel,build)
+dtb-upload: getip $(call __stamp,kernel,build)
 	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
 	$(Q)$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
 endif
 
-kernel-upload: getip $(call _stamp,kernel,build)
+kernel-upload: getip $(call __stamp,kernel,build)
 	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
 	$(Q)$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)

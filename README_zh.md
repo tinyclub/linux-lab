@@ -576,8 +576,8 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 |   bash         | docker bash        |  ubuntu          | 本地主机             |
 |   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
 |   vnc          | 普通 桌面          |  ubuntu          | 本地主机+VNC client  |
-|   webvnc       | web 桌面           |  ubuntu          | 互联网在线即可       |
-|   webssh       | web ssh            |  ubuntu          | 互联网在线即可       |
+|   webvnc       | web 桌面           |  ubuntu          | 本地主机或互联网     |
+|   webssh       | web ssh            |  ubuntu          | 本地主机或互联网     |
 
 由于普通的 vnc 客户端五花八门，所以当前建议采用 webvnc，确保可以在各个平台能自动登陆。
 

@@ -937,6 +937,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 从 v0.5 开始，所有源代码下载在 Linux Lab 的 `src/` 目录下，历史版本都直接放在 Linux Lab 根目录，请注意该区别。
 
+**注意**：如果开启了 `CACHE_SRC` 或 `ONESHOT` （设置为 1），新下载的源码将被放置在 `build/src/` 目录下，里面的内容必须要手动保存和备份，否则在关机后会丢失。
+
 ### 3.3.2 检出
 
 检出（checkout）您需要的 kernel 和 buildroot 版本：
@@ -996,8 +998,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 使用特定的 defconfig 配置：
 
     $ make B=raspi3
-    $ make kernel-defconfig KCFG=bcmrpi3_defconfig
-    $ make root-defconfig RCFG=raspberrypi3_64_defconfig
+    $ make kernel-defconfig bcmrpi3_defconfig
+    $ make root-defconfig raspberrypi3_64_defconfig
 
 如果仅提供 defconfig 的名字，则搜索所在目录的次序首先是 `boards/<BOARD>`，然后是 buildroot, u-boot 和 linux-stable 各自的缺省配置路径 `src/buildroot/configs`，`src/u-boot/configs` 和 `src/linux-stable/arch/<ARCH>/configs`。
 

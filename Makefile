@@ -1030,7 +1030,7 @@ ifeq ($(DTS),)
 endif
 
 ifneq ($(DTS),)
-  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(notdir $(DTS)))
+  DTB_TARGET ?= $(patsubst %.dts,%.dtb,$(lastword $(subst /dts/,$(space),$(DTS))))
   LINUX_DTB  := $(KERNEL_BUILD)/$(ORIDTB)
   ifneq ($(wildcard $(LINUX_DTB)),)
     ifneq ($(ORIDTB),)

@@ -1016,7 +1016,7 @@ More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 |`o`     | build the modules as pluginable modules, just like `m`.
 |`n`     | disable a kernel option.
 |`s`     | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
-|`v`     | `v=PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+|`v`     | `PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
 
 Operates many options in one command line:
 

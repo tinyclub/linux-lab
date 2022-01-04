@@ -1179,7 +1179,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 | `o`| 以插件方式编译内核模块，类似 `m` 选项                |
 | `n`| 关闭一个内核选项                                     |
 | `s`| `RTC_SYSTOHC_DEVICE="rtc0"`，设置 rtc 设备为 rtc0    |
-| `v`| `v=PANIC_TIMEOUT=5`, 设置内核 panic 超时为 5 秒      |
+| `v`| `PANIC_TIMEOUT=5`, 设置内核 panic 超时为 5 秒      |
 
 在一条命令中使用多个选项：
 

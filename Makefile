@@ -1791,8 +1791,8 @@ $$(call _stamp,$1,patch): $$(ENV_FILES)
 	    touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched; \
 	    touch $$@; \
 	  fi ; \
-	else		\
-	  echo "ERR: $1 patchset has been applied, if want, please backup important changes and do 'make $1-cleanup' at first." && exit 1; \
+	else \
+	  echo "ERR: $1 patchset has been applied, if want, please skip patchset check with 'make $1-patch -t' or backup important changes and do 'make $1-cleanup' at first." && exit 1; \
 	fi
 
 $1-patch: $$(call __stamp,$1,patch)

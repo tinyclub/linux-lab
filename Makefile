@@ -1762,7 +1762,7 @@ $1-clean: $1-rawclean
 $1-cleanall: $1-clean $1-cleansrc
 
 $1-rawclean: $$($(call _uc,$1)_CLEAN_DEPS)
-	$$(Q)[ -f $$($(call _uc,$1)_BUILD)/Makefile ] && $$(call make_$1,clean) || true
+	$$(Q)[ -f $$($(call _uc,$1)_BUILD)/Makefile ] && $$(or $$(call make_$1,clean),true) || true
 
 $1-distclean:
 	$$(Q)if [ -f $$($(call _uc,$1)_BUILD)/Makefile ]; then \

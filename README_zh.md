@@ -1312,15 +1312,8 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 为了在 malta 开发板上验证基于 2.6.36 版本的 `kft` 特性，可以执行如下操作：
 
-    $ make BOARD=malta
-    $ export LINUX=v2.6.36
-    $ make kernel-checkout
-    $ make kernel-patch
-    $ make kernel-defconfig
-    $ make feature f=kft
-    $ make kernel-olddefconfig
-    $ make kernel
-    $ make boot
+    $ make cleanall b=malta
+    $ make test b=malta f=kft LINUX=v2.6.36
 
 #### 4.1.3.5 持久化与清理 feature 设定
 

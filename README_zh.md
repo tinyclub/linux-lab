@@ -1302,7 +1302,11 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 编译内核，并使用 `rust_print` 模块进行测试：
 
-    $ make test f=rust m=rust_print FPL=0
+    // 清理干净，方便启动一个全新的测试
+    $ make kernel-cleanall
+
+    // 开展测试，这里的小写是为了节省时间，并且该 feature 设定不会保存，仅当次测试有效
+    $ make test f=rust m=rust_print
 
 #### 4.1.3.4 启用 kft feature
 

@@ -1142,7 +1142,11 @@ switch to v5.13 Linux, because the current latest rust patchset can only be appl
 
 Compile the kernel, and test it with one of the simplest module - `rust_print`:
 
-    $ make test f=rust m=rust_print FPL=0
+    // clean up everything for a whole new test
+    $ make kernel-cleanall
+
+    // this 'f' variable will not be saved for standalone make targets
+    $ make test f=rust m=rust_print
 
 #### 4.1.3.4 using kft feature
 

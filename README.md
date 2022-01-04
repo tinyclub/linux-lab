@@ -1125,7 +1125,8 @@ without any issue if the environment not changed.
 
 For example, to enable kernel modules support, simply do:
 
-    $ make feature f=module
+    // only upper case 'FEATURE' will be saved
+    $ make feature FEATURE=module
     $ make kernel-olddefconfig
     $ make kernel
 

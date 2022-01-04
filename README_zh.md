@@ -1285,7 +1285,8 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 为了使能内核模块支持，可以执行如下简单的操作：
 
-    $ make feature f=module
+    // 设置大写的 FEATURE 将自动保存到配置文件中
+    $ make feature FEATURE=module
     $ make kernel-olddefconfig
     $ make kernel
 

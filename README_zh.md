@@ -1315,7 +1315,14 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make cleanall b=malta
     $ make test b=malta f=kft LINUX=v2.6.36
 
-#### 4.1.3.5 持久化与清理 feature 设定
+#### 4.1.3.5 启用 rt feature
+
+Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有很多 patchset 游离在外，这里可以简单启用：
+
+    $ make feature-list f=rt
+    $ make test b=i386/pc f=rt LINUX=v5.2
+
+#### 4.1.3.6 持久化与清理 feature 设定
 
 清理 feature 设定（清理 .labconfig 中保存的设定）：
 

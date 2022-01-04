@@ -1155,7 +1155,14 @@ For `kft` feature in v2.6.36 for malta board:
     $ make cleanall b=malta
     $ make test b=malta f=kft LINUX=v2.6.36
 
-#### 4.1.3.5 persist or clear feature setting
+#### 4.1.3.5 using rt feature
+
+Linux officially provide RT Preemption support, but many patches are outside of mainline kernel, to use it:
+
+    $ make feature-list f=rt
+    $ make test b=i386/pc f=rt LINUX=v5.2
+
+#### 4.1.3.6 persist or clear feature setting
 
 Clear feature setting (reset feature saved in .labconfig):
 

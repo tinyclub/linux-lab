@@ -1329,6 +1329,8 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make feature FEATURE=rust
     $ make feature FEATURE=
 
+上述功能与 `make config` 完全一致。
+
 
 ### 4.1.4 新建开发分支
 

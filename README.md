@@ -1169,6 +1169,7 @@ Clear feature setting (reset feature saved in .labconfig):
     $ make feature FEATURE=rust
     $ make feature FEATURE=
 
+The above function is the same as 'make config'.
 
 ### 4.1.4 Create new development branch
 

@@ -1945,7 +1945,20 @@ endef #genenvdeps
 
 # Build bsp targets
 # Always checkout the latest commit for bsp
-BSP ?= FETCH_HEAD
+
+ifneq ($(_PLUGIN),)
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
+else
+  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
+endif
+
+ifeq ($(wildcard $(BSP_SRC)/.git),)
+  # First init
+  BSP ?= FETCH_HEAD
+else
+  # Already fetched
+  BSP ?= $(if $(wildcard $(BSP_SRC)/.git/refs/remotes/origin/master),origin/master,HEAD)
+endif
 _BSP ?= $(BSP)
 
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
@@ -1954,12 +1967,6 @@ ifeq ($(vip),1)
   __BSP := latest
 else
   __BSP := origin/master
-endif
-
-ifneq ($(_PLUGIN),)
-  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(PLUGIN_DIR))
-else
-  BSP_SRC  := $(subst x$(TOP_DIR)/,,x$(BSP_DIR))
 endif
 
 # Check and configure board type

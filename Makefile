@@ -2510,7 +2510,7 @@ KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
 kernel-patch: $(call __stamp,kernel,source.feature)
-$(call _stamp,kernel,source.feature): $(ENV_FILES)
+$(call _stamp,kernel,source.feature): $(call _stamp,kernel,outdir) $(ENV_FILES)
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
 	$(Q)touch $@

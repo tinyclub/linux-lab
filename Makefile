@@ -644,7 +644,6 @@ define genbuildenv
 GCC_$2   := $$(or $$(call __v,GCC,$2,$3),$(GCC))
 CCORI_$2 := $$(or $$(call __v,CCORI,$2,$3),$(CCORI))
 
-ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   ifneq ($$(CCORI_$2)$$(GCC_$2),)
     ifeq ($$(CCORI_$2)$$(CCORI),)
       CCORI_$2 := internal
@@ -653,21 +652,18 @@ ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
       $$(eval $$(call __vs,CCORI,$2,$3))
     endif
     GCC_$2_SWITCH := 1
-  endif
 endif
 
 ifeq ($$(filter $(XARCH),i386 x86_64),)
  HOST_GCC_$2   := $$(or $$(call __v,HOST_GCC,$2,$3),$(HOST_GCC))
  HOST_CCORI_$2 := $$(or $$(call __v,HOST_CCORI,$2,$3),$(HOST_CCORI))
 
- ifneq ($$(findstring $1,$$(_MAKECMDGOALS)),)
   ifneq ($$(HOST_CCORI_$2)$$(HOST_GCC_$2),)
     ifeq ($$(HOST_CCORI_$2)$$(HOST_CCORI),)
       HOST_CCORI_$2 := internal
     endif
     HOST_GCC_$2_SWITCH := 1
   endif
- endif
 endif
 endef # genbuildenv
 
@@ -675,13 +671,6 @@ endef # genbuildenv
 $(eval $(call __vs,CCORI,OS))
 $(eval $(call __vs,GCC,OS))
 $(eval $(call __vs,HOST_GCC,OS))
-
-# Hacking for gcc switch when building kernel modules with: make modules m=hello
-ifneq ($(findstring module,$(MAKECMDGOALS)),)
-  _MAKECMDGOALS := $(MAKECMDGOALS) kernel
-else
-  _MAKECMDGOALS := $(MAKECMDGOALS)
-endif
 
 #$(warning $(call genbuildenv,kernel,LINUX,OS))
 $(eval $(call genbuildenv,kernel,LINUX,OS))
@@ -1936,22 +1925,16 @@ $1-tools:
 $1-deps: $1-tools _env
 
 $1-gcc:
-	$(Q)make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
+	$(Q)[ "$$(GCC_$2_SWITCH)" = "1" ] && make $$(S) gcc-switch $$(if $$(CCORI_$2),CCORI=$$(CCORI_$2)) $$(if $$(GCC_$2),GCC=$$(GCC_$2)) \
 	     $$(if $(LDT)$(LDT[GCC_$(GCC_$2)]),LDT="$(or $(LDT[GCC_$(GCC_$2)]),$(LDT))") || true
+
 $1-hostgcc:
-	$$(Q)make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0
+	$$(Q)if [ -z "$(filter $(XARCH),x86_64 i386)" ]; then \
+	  [ "$$(GCC_$2_SWITCH)" = "1" ] && \
+	  make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0 || true; \
+	fi
 
-ifeq ($$(GCC_$2_SWITCH),1)
-  $1_GCC := $1-gcc
-endif
-
-ifeq ($(filter $(XARCH),x86_64 i386),)
-  ifeq ($$(GCC_$2_SWITCH),1)
-    $1_HOSTGCC := $1-hostgcc
-  endif
-endif
-
-$$(call _stamp,$1,env): $1-deps $$($1_GCC) $$($1_HOSTGCC)
+$$(call _stamp,$1,env): $1-deps $1-gcc $1-hostgcc
 	$$(Q)touch $$@
 
 $1-env: $$(call __stamp,$1,env)

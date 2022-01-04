@@ -2548,7 +2548,7 @@ kernel-features: kernel-feature
 
 kernel-feature-list:
 	$(Q)echo [ $(FEATURE_DIR) ]:
-	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | grep "$(FILTER)" | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g;s%[^/]*/.*/%      * %g;s%[^/]*/%    - %g"
+	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | egrep "$(FILTER)$(if $(FEATURE),$(subst $(comma),|,$(FEATURE)))" | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g;s%[^/]*/.*/%      * %g;s%[^/]*/%    - %g"
 
 kernel-features-list: kernel-feature-list
 features-list: kernel-feature-list

@@ -1731,11 +1731,9 @@ $$(call _stamp,$1,checkout): $$(ENV_FILES)
 
 $1-checkout: $$(call __stamp,$1,checkout)
 
-$$(call _stamp,$1,outdir): $$($(call _uc,$1)_BUILD)
-	$$(Q)mkdir -p $$<
+$$(call _stamp,$1,outdir): $$(CACHE_BUILD_TARGET)
+	$$(Q)mkdir -p $$($(call _uc,$1)_BUILD)
 	$$(Q)touch $$@
-
-$$($(call _uc,$1)_BUILD): $$(CACHE_BUILD_TARGET)
 
 $1-outdir: $$(call __stamp,$1,outdir)
 

@@ -2513,13 +2513,13 @@ kernel-patch: $(call __stamp,kernel,source.feature)
 $(call _stamp,kernel,source.feature): $(ENV_FILES)
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
-	touch $@
+	$(Q)touch $@
 
 kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig.feature)
 $(call _stamp,kernel,defconfig.feature): $(call __stamp,kernel,defconfig) $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
-	touch $@
+	$(Q)touch $@
 
 kernel-feature-cleanstamp:
 	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature)

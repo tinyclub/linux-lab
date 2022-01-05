@@ -1921,7 +1921,7 @@ Linux Lab 支持通过 `do` 访问 Makefile 中定义的目标，譬如：
 
 先注释掉所有的配置项，然后逐个打开获得一个最小的可工作配置集，最后再添加其他配置。
 
-具体参考 `doc/qemu/qemu-doc.html` 或在线说明 <http://qemu.weilnetz.de/qemu-doc.html>。
+具体参考 `doc/qemu/qemu-doc.html` 或在线说明 <https://www.qemu.org/docs/master/>。
 
 ## 5.5 同时准备 configs 文件
 
@@ -2089,7 +2089,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 ### 6.1.1 docker 下载速度慢
 
-为了优化 Docker 镜像的下载速度，请参考 `tools/docker/install` 脚本的内容编辑 `/etc/default/docker` 中的 `DOCKER_OPTS` 以及 6.1.6 节。
+为了优化 Docker 镜像的下载速度，请参考 6.1.6 节。
 
 ### 6.1.2 Docker 网络与 LAN 冲突
 
@@ -2112,7 +2112,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 Linux Lab 的完整功能依赖于 [Cloud Lab](http://tinylab.org/cloud-lab) 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab](http://tinylab.org/cloud-lab) 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
 
-Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用。
+Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用，也请不要提这样的需求。
 
 ### 6.1.4 非 root 无法运行 tools 命令
 
@@ -2120,6 +2120,8 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
     $ sudo usermod -aG docker <USER>
     $ newgrp docker
+
+**注意**: 当前不建议使用 root 而且默认是禁止通过 root 用户使用的，所以请务必把当前用户加入 docker 用户组。
 
 ### 6.1.5 网络不通
 
@@ -2187,7 +2189,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 如果是从休眠中的主机（或虚拟机）系统唤醒，那么 Linux Lab 也会自动恢复，可以直接使用，登陆方式请参考 2.4 节中提供的 4 种登陆方式。例如，直接开一个浏览器去使用：
 
-    $ tools/docker/vnc
+    $ tools/docker/webvnc
 
 ### 6.1.8 the following directives are specified both as a flag and in the configuration file
 
@@ -2252,7 +2254,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 ### 6.2.2 Guest 关机或重启后挂住
 
-当前对以下开发板，基于内核版本 5.1（LINUX=v5.1），`poweroff` 和 `reboot` 命令无法正常工作：
+当前对于以下开发板，基于内核版本 5.1（LINUX=v5.1），`poweroff` 和 `reboot` 命令无法正常工作：
 
   * mipsel/malta (exclude `LINUX=v2.6.36`)
   * mipsel/ls1b
@@ -2280,7 +2282,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 ### 6.2.4 Boot 时报缺少 sdl2 库
 
-这是由于 docker 的 image 没有更新导致，解决的方法是重新运行 lab：
+这是由于 docker 的 image 没有更新导致，解决的方法是进入 cloud-lab 目录重新运行 lab：
 
     $ tools/docker/rerun linux-lab
 
@@ -2392,7 +2394,7 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
 
 ### 6.3.8 Web 界面无响应
 
-Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的刷新按钮或断开连接后重新连接。
+Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的 “刷新” 按钮或断开连接后重新连接。
 
 ### 6.3.9 登录 WEB 界面时超时或报错
 
@@ -2424,7 +2426,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab
 
-如果上述命令依然无法启动，请尝试执行下述命令（**该命令会整理整个 Cloud Lab 环境，请务必做好必要数据备份**)：
+如果上述命令依然无法启动，请尝试执行下述命令（**该命令会清理整个 Cloud Lab 环境，请务必做好必要数据备份**)：
 
     $ tools/docker/clean-all
     $ tools/docker/rerun linux-lab
@@ -2472,7 +2474,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ sudo chown <USER>:<USER> -R ./{*,.git}
     $ tools/docker/rerun linux-lab
 
-为确保环境一致，目前 Linux Lab 仅支持通过普通用户使用，如果是用 `root` 用户下载的代码，请务必确保普通用户可以读写。
+**注意**：为确保环境一致，目前 Linux Lab 仅支持通过普通用户使用，如果是用 `root` 用户下载的代码，请务必确保普通用户可以读写。
 
 ### 6.4.4 scripts/Makefile.headersinst: Missing UAPI file
 
@@ -2481,6 +2483,8 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Develop/labspace
+
+**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk](https://shop155917374.taobao.com)。
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c
 
@@ -2493,11 +2497,15 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
     $ fsutil.exe file SetCaseSensitiveInfo <path/to/cloud-lab> enable
 
+**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk](https://shop155917374.taobao.com)。
+
 ### 6.4.6 如何切到 root 用户
 
 默认情况下，可以免密直接切到 root：
 
     $ sudo -s
+
+**注意**：请不要使用 su 命令。
 
 ### 6.4.7 提示指定的版本或者配置不存在
 

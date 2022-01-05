@@ -1762,7 +1762,7 @@ Use `versatilepb` as an example:
 
 Comment everything, add minimal ones and then others.
 
-Please refer to `doc/qemu/qemu-doc.html` or the online one <http://qemu.weilnetz.de/qemu-doc.html>.
+Please refer to `doc/qemu/qemu-doc.html` or the online one <https://www.qemu.org/docs/master/>.
 
 ## 5.5 At the same time, prepare the configs
 
@@ -1933,7 +1933,7 @@ Then, fork this repository from gitee.com, upload your changes, and send your pu
 
 ### 6.1.1 Speed up docker images downloading
 
-To optimize docker images download speed, please edit `DOCKER_OPTS` in `/etc/default/docker` via referring to `tools/docker/install`.
+To optimize docker images download speed, please refer to section 6.1.6.
 
 ### 6.1.2 Docker network conflicts with LAN
 
@@ -1965,6 +1965,8 @@ To use the tools under `tools` without sudo, please make sure add your account t
 
     $ sudo usermod -aG docker <USER>
     $ newgrp docker
+
+**Notes**: Currently, root user is not allowed to run Linux Lab。
 
 ### 6.1.5 Network not work
 
@@ -2030,7 +2032,7 @@ If the above methods still not restart the lab, please refer to the methods ment
 
 If resume from a suspended host system, the lab will restore automatically, no need to do anything to restart it, just use one of the 4 login methods mentioned in the 2.4 section, for example, start a web browser to connect it:
 
-    $ tools/docker/vnc
+    $ tools/docker/webvnc
 
 ### 6.1.8 the following directives are specified both as a flag and in the configuration file
 
@@ -2122,7 +2124,7 @@ Welcome to fix up them.
 
 ### 6.2.4 Boot with missing sdl2 libraries failure
 
-That's because the docker image is not updated, just rerun the lab (please must not use `tools/docker/restart` here for it not using the new docker image):
+That's because the docker image is not updated, just enter into cloud-lab and rerun the lab (please must not use `tools/docker/restart` here for it not using the new docker image):
 
     $ tools/docker/rerun linux-lab
 
@@ -2313,7 +2315,7 @@ This may happen at `make boot` while the repository is cloned with `root` user, 
     $ sudo chown <USER>:<USER> -R ./
     $ tools/docker/rerun linux-lab
 
-To make a consistent working environment, Linux Lab only support using as general user: 'ubuntu'.
+**Notes**: To make a consistent working environment, Linux Lab only support using as general user: 'ubuntu'.
 
 ### 6.4.4 scripts/Makefile.headersinst: Missing UAPI file
 
@@ -2322,7 +2324,6 @@ This means MAC OSX not use Case sensitive filesystem, create one using `hdiutil`
     $ hdiutil create -type SPARSE -size 60g -fs "Case-sensitive Journaled HFS+" -volname labspace labspace.dmg
     $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Develop/labspace
-
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c
 
@@ -2336,6 +2337,8 @@ This means Windows not enable filesystem's case sensitive feature, just enable i
 By default, no password required to run as root with:
 
     $ sudo -s
+
+**Notes**: Please don't use the 'su' command.
 
 ### 6.4.7 not in supported list
 

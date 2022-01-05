@@ -1361,7 +1361,7 @@ More rootfs from docker can be found:
 
 Compile the kernel with debugging options:
 
-    $ make feature f=debug
+    $ make feature FEATURE=debug
     $ make kernel-olddefconfig
     $ make kernel
 
@@ -1596,7 +1596,7 @@ Reconfigure the kernel with:
 
   To enable the above options, please simply type:
 
-    $ make feature f=9pnet
+    $ make feature FEATURE=9pnet
     $ make kernel-olddefconfig
 
 Docker host:

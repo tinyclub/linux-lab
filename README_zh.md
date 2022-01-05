@@ -1514,7 +1514,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 使用调试选项编译内核：
 
-    $ make feature f=debug
+    $ make feature FEATURE=debug
     $ make kernel-olddefconfig
     $ make kernel
 
@@ -1754,7 +1754,7 @@ Qemu 开发板：
 
   为了使能以上选项，请输入以下命令：
 
-    $ make feature f=9pnet
+    $ make feature FEATURE=9pnet
     $ make kernel-olddefconfig
 
 Docker 主机：

@@ -3854,8 +3854,7 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init:
-	$(Q)$(call make_kernel,$(IMAGE))
+kernel-init: kernel
 
 rootdir-init: rootdir-clean rootdir
 

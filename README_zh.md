@@ -1432,11 +1432,6 @@ Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有�
 首先，编译 qemu-system-ARCH：
 
     $ make B=vexpress-a9
-
-    $ make qemu-download
-    $ make qemu-checkout
-    $ make qemu-patch
-    $ make qemu-defconfig
     $ make qemu
     $ make qemu-save
 

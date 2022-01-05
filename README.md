@@ -1269,11 +1269,6 @@ add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
 At first, build qemu-system-ARCH:
 
     $ make B=vexpress-a9
-
-    $ make qemu-download
-    $ make qemu-checkout
-    $ make qemu-patch
-    $ make qemu-defconfig
     $ make qemu
     $ make qemu-save
 

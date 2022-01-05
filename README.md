@@ -1454,7 +1454,7 @@ Run guest test case:
 
 Run guest test cases (`COMMAND_LINE_SIZE` must be big enough, e.g. 4096, see `cmdline_size` feature below):
 
-    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /,echo hello world'
 
 Reboot the guest system for several times:
 

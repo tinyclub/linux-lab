@@ -1607,7 +1607,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 运行客户机的测试用例（`COMMAND_LINE_SIZE` 必须足够大，譬如，4096，查看下文的 `cmdline_size` 特性 ）
 
-    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /,echo hello world'
 
 进行重启压力测试：
 

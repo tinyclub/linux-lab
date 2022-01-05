@@ -1176,6 +1176,9 @@ ifeq ($(_PBR), 0)
     ifneq ($(wildcard $(PREBUILT_IROOTFS)),)
       PBR := 1
     endif
+    ifneq ($(wildcard $(ROOTFS)),)
+      PBR := 1
+    endif
   endif
 endif
 
@@ -2340,7 +2343,7 @@ PHONY += root-rd root-rd-rebuild root-rd-clean
 
 ROOT_GENDISK_TOOL       := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
-ROOTDIR_GOAL            := root-dir-simple
+ROOTDIR_GOAL            := root-dir-prebuilt
 ROOT_REBUILD_TARGET     := root-rebuild-prebuilt
 
 ifeq ($(PBR), 0)
@@ -2431,7 +2434,7 @@ root-dir-install-modules: $(KERNEL_BUILD)
 
 $(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
 
-root-dir-simple: $(BSP_BUILD) $(ROOTDIR_DEPS)
+root-dir-prebuilt: $(BSP_BUILD) $(ROOTDIR_DEPS)
 	$(Q)if [ ! -d $(ROOTDIR)/bin ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \

@@ -1827,8 +1827,13 @@ else
   endif
 endif
 
-ifneq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($3CFG_FILE)),)
+ifeq ($$($(call _uc,$1)_CONFIG_DIR),)
+  # For qemu, which use command line configuration
   $3CFG_BUILTIN := 1
+else
+  ifneq ($$(findstring $$($(call _uc,$1)_CONFIG_DIR),$$($3CFG_FILE)),)
+    $3CFG_BUILTIN := 1
+  endif
 endif
 
 _$3CFG := $$(notdir $$($3CFG_FILE))

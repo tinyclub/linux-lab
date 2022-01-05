@@ -953,15 +953,15 @@ Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
 
 Boot with different rootfs (depends on board, check `/dev/` after boot):
 
-    $ make boot ROOTDEV=/dev/ram      // support by all boards, basic boot method
-    $ make boot ROOTDEV=/dev/nfs      // depends on network driver, only raspi3 not work
-    $ make boot ROOTDEV=/dev/sda
-    $ make boot ROOTDEV=/dev/mmcblk0
-    $ make boot ROOTDEV=/dev/vda      // virtio based block device
+    $ make boot ROOTDEV=ram      // support by all boards, basic boot method
+    $ make boot ROOTDEV=nfs      // depends on network driver, only raspi3 not work
+    $ make boot ROOTDEV=sda
+    $ make boot ROOTDEV=mmcblk0
+    $ make boot ROOTDEV=vda      // virtio based block device
 
 Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
 
-    $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
+    $ make boot ROOTDEV=nfs XKCLI="init=/bin/bash"
 
 List supported options:
 
@@ -1249,7 +1249,7 @@ Use `tftp`, `sdcard` or `flash` explicitly:
 
 We can also change `ROOTDEV` during boot, for example:
 
-    $ make boot U=1 BOOTDEV=flash ROOTDEV=/dev/nfs
+    $ make boot U=1 BOOTDEV=flash ROOTDEV=nfs
 
 Clean images if want to update ramdisk, dtb and uImage:
 
@@ -1543,9 +1543,9 @@ Simply put the files with a relative path in `src/system/`, install and rebuild 
 
 ### 4.8.2 Share with NFS
 
-Boot the board with `ROOTDEV=/dev/nfs`:
+Boot the board with `ROOTDEV=nfs`:
 
-    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=nfs
 
 Host:
 
@@ -1615,7 +1615,7 @@ Host:
 
     $ touch hostshare/test     # Create a file in host
 
-    $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
+    $ make boot U=0 ROOTDEV=ram0 PBR=1 SHARE=1
 
     $ make boot SHARE=1 SHARE_DIR=src/modules   # for external modules development
 
@@ -2333,7 +2333,7 @@ By default, no password required to run as root with:
 
 Such information means the specified value is not supported currently:
 
-    $ make boot ROOTDEV=/dev/vda
+    $ make boot ROOTDEV=vda
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8

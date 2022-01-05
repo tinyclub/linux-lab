@@ -1120,15 +1120,15 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 使用不同的 rootfs 启动（依赖于开发板的支持，启动后检查 `/dev/`）
 
-    $ make boot ROOTDEV=/dev/ram      // support by all boards, basic boot method
-    $ make boot ROOTDEV=/dev/nfs      // depends on network driver, only raspi3 not work
-    $ make boot ROOTDEV=/dev/sda
-    $ make boot ROOTDEV=/dev/mmcblk0
-    $ make boot ROOTDEV=/dev/vda      // virtio based block device
+    $ make boot ROOTDEV=ram      // support by all boards, basic boot method
+    $ make boot ROOTDEV=nfs      // depends on network driver, only raspi3 not work
+    $ make boot ROOTDEV=sda
+    $ make boot ROOTDEV=mmcblk0
+    $ make boot ROOTDEV=vda      // virtio based block device
 
 使用额外的内核命令行参数启动（格式：`XKCLI = eXtra Kernel Command LIne`）：
 
-    $ make boot ROOTDEV=/dev/nfs XKCLI="init=/bin/bash"
+    $ make boot ROOTDEV=nfs XKCLI="init=/bin/bash"
 
 列出支持的选项：
 
@@ -1413,7 +1413,7 @@ Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有�
 
 我们也可以在启动引导阶段改变 `ROOTDEV` 选项，例如：
 
-    $ make boot U=1 BOOTDEV=flash ROOTDEV=/dev/nfs
+    $ make boot U=1 BOOTDEV=flash ROOTDEV=nfs
 
 执行清理，更新 ramdisk, dtb 和 uImage：
 
@@ -1701,9 +1701,9 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ### 4.8.2 采用 NFS 共享文件
 
-使用 `ROOTDEV=/dev/nfs` 选项启动开发板：
+使用 `ROOTDEV=nfs` 选项启动开发板：
 
-    $ make boot ROOTDEV=/dev/nfs
+    $ make boot ROOTDEV=nfs
 
 主机 NFS 目录如下：
 
@@ -1773,7 +1773,7 @@ Docker 主机：
 
     $ touch hostshare/test     # Create a file in host
 
-    $ make boot U=0 ROOTDEV=/dev/ram0 PBR=1 SHARE=1
+    $ make boot U=0 ROOTDEV=ram0 PBR=1 SHARE=1
 
     $ make boot SHARE=1 SHARE_DIR=src/modules   # for external modules development
 
@@ -2494,7 +2494,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 如果看到如下信息：
 
-    $ make boot ROOTDEV=/dev/vda
+    $ make boot ROOTDEV=vda
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8

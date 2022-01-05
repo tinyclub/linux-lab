@@ -36,10 +36,14 @@ do
     if [ "$depmod" = "1" ]; then
       echo "module: modprobe $m $m_args"
       modprobe $m $m_args &
+      [ $? -ne 0 ] && echo "ERR: Failed to insert module: $m." && exit 1
     else
-      m=$(find /lib/modules/`uname -r`/ -name "$m.ko")
+      _m=$(find /lib/modules/`uname -r`/ -name "$m.ko")
+      [ $? -ne 0 ] && echo "ERR: No module found for: $m." && exit 1
+      m=$_m
       echo "module: insmod $m $m_args"
       insmod $m $m_args &
+      [ $? -ne 0 ] && echo "ERR: Failed to insert module: $m." && exit 1
     fi
     echo
     sleep 1

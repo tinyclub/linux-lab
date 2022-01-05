@@ -1199,7 +1199,8 @@ In development, please commit asap, and also, please use such commands carefully
 
 * kernel-checkout, checkout a specified kernel version, may override your changes
 * kernel-cleanup, clean up git repository, may remove your changes
-* kernel-clean, clean building history, may run cleanup automatically
+* kernel-clean, clean building history
+* kernel-cleanall, clean both of the building history and the source code changes
 
 ## 4.2 Using Uboot Bootloader
 

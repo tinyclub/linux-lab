@@ -1363,7 +1363,8 @@ Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有�
 
 * kernel-checkout, 检出某个指定版本，可能会覆盖掉当前修改
 * kernel-cleanup, 清理 git 仓库，可能会清理掉当前修改
-* kernel-clean, 清除历史编译记录，可能会自动执行上述 cleanup 动作
+* kernel-clean, 清除历史编译记录
+* kernel-cleanall, 同时清理编译结果和源码修改
 
 ## 4.2 Uboot 引导程序
 

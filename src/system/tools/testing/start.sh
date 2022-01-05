@@ -15,7 +15,7 @@
 # Keep: test_case=ls\ /root    test_case="ls /root,echo hello world"
 #
 set -a
-eval "$(cat /proc/cmdline | tr ' ' '\n' | egrep -v '\..*=|^$' | tr '\n' ' ' | tr '=' '\n' | sed -e '/["\\]/!s/\(.*\) [a-zA-Z_]\{1,\} \(.*\)/\1 \2/g' | tr '\n' '=' | tr ' ' '\n' | egrep -v '\..*=|^$' | tr '\n' ' ' | tr '=' '\n' | sed -e '/["\\]/!s/\(.*\) [a-zA-Z_]\{1,\} \(.*\)/\1 \2/g' | tr '\n' '=' | tr ' ' '\n' | egrep -v '\..*=|^$' | tr '\n' ' ' | tr '=' '\n' | sed -e '/["\\]/!s/\(.*\) [a-zA-Z_]\{1,\} \(.*\)/\1 \2/g' | tr '\n' '=')"
+eval "$(cat /proc/cmdline | sed -e "s/^/ /g;s/$/ /g;s/\([^=' ]\{1,\}='[^']\{1,\}'\) /\n\1\n/g;s/ /  /g;s/ \([^=' ]\{1,\}=[^' ]\{1,\}\) /\n\1\n/g;s/  / /g" | grep '=')"
 set +a
 
 FEATURE="$feature"

@@ -15,7 +15,16 @@ do
     echo
     echo "module: rmmod $m"
     echo
-    modprobe -r $m &
+
+    depmod=0
+    [ -f $mdir/modules.dep ] && grep -q $m $mdir/modules.dep 2>/dev/null && depmod=1
+
+    if [ $depmod -eq 1 ]; then
+        modprobe -r $m
+    else
+        rmmod $m
+    fi
+
     sleep 1
 
     echo

@@ -32,8 +32,8 @@ do
     echo
 
     # recheck for modprobe available
-    grep -q $m $mdir/modules.dep >/dev/null
-    [ $? -ne 0 ] && which depmod && depmod -A && grep -q $m $mdir/modules.dep >/dev/null && depmod=1 || depmod=0
+    [ -f $mdir/modules.dep ] && grep -q $m $mdir/modules.dep 2>/dev/null
+    [ $? -ne 0 ] && which depmod && depmod -A && grep -q $m $mdir/modules.dep 2>/dev/null && depmod=1 || depmod=0
 
     m_args=$(eval echo \$${m}_args)
     echo

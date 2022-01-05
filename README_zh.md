@@ -1638,7 +1638,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 测试模块以及模块的依赖（使用 `make kernel-menuconfig` 进行检查）：
 
-    $ make test m=lkdtm y=runtime_testing_menu,debug_fs lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
+    $ make test m=lkdtm y=runtime_testing_menu,debug_fs lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' LINUX=v5.1 TEST_PREPARE=kernel-cleanup
 
 测试时不使用 feature-init，boot-init，boot-finish 以及不带 `TEST_PREPARE`：
 
@@ -1667,6 +1667,9 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 测试内核调试：
 
     $ make test DEBUG=1
+
+
+**注意**: 上述测试在某些板子或者某些内核版本上可能会失败，如果有需要，请升级相应的内核版本。
 
 ## 4.8 文件共享
 

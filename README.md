@@ -1485,7 +1485,7 @@ Run test without feature-init (save time if not necessary):
 
 Run test with module and the module's necessary dependencies (check with `make kernel-menuconfig`):
 
-    $ make test m=lkdtm y=runtime_testing_menu,debug_fs lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
+    $ make test m=lkdtm y=runtime_testing_menu,debug_fs lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' LINUX=v5.1 TEST_PREPARE=kernel-cleanup
 
 Run test without feature-init, boot-init, boot-finish and no `TEST_PREPARE`:
 
@@ -1510,6 +1510,8 @@ Test kernel hang during boot, allow to specify a timeout, timeout must happen wh
 Test kernel debug:
 
     $ make test DEBUG=1
+
+**Notes**: The above tests may fail on some boards with some Linux versions, please upgrade the kernel versions if necessary.
 
 ## 4.8 File Sharing
 

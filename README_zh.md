@@ -420,7 +420,7 @@ Linux Lab Disk 已经支持如下功能：
     * 覆盖 32G, 64G, 128G, 256G, 512G 等，可按需定制任意容量
 * 可选系统
     * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
-    * Ubuntu 18.04-21.04, Deepin 20.02+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
+    * Ubuntu 18.04-21.04, Deepin 20.02+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 * 主要特性
     * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用
     * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测并并行启动
@@ -1863,15 +1863,37 @@ Linux Lab 支持通过 `do` 访问 Makefile 中定义的目标，譬如：
 
 欢迎阅读下述文档学习更多用法：
 
-* [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
-* [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
-* [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
-* Linux Lab 视频公开课
+* 使用 Linux Lab 的好处
+    * [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
+    * [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
+
+* 中文用户手册
+    * [Linux Lab v0.8 中文手册](http://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf)
+    * [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+
+* Linux Lab 视频公开课：含用法介绍、使用案例分享、发布会视频回放、Linux Lab Disk功能演示等
     * [CCTALK](https://www.cctalk.com/m/group/88948325)
     * [B 站](https://space.bilibili.com/687228362/channel/detail?cid=152574)
     * [知乎](https://www.zhihu.com/people/wuzhangjin)
+
 * 采用 Linux Lab 作为实验环境的视频课程
     * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
+    * [《Rust 语言快速上手》](https://cctalk.com/m/group/89507527)
+    * [《软件逆向工程初探》](https://www.cctalk.com/m/group/89626746)
+    * [《Linux内核热补丁技术介绍与实战》](https://www.cctalk.com/m/group/89715946)
+
+* 采用 Linux Lab 或者 Linux Lab 正在支持的图书、课程等
+    * [成功适配过 Linux Lab 的国内外图书、线上课程列表](https://gitee.com/tinylab/linux-lab/issues/I49VV9)
+
+* 采用 Linux Lab 或者 Linux Lab 正在支持的真实硬件开发板
+    * [ARM IMX6ULL](https://shop155917374.taobao.com/)，野火电子
+    * RISCV-64 D1, 平头哥
+
+* Linux Lab 社区正在开发的周边硬件
+    * [Linux Lab Disk](https://shop155917374.taobao.com/)，免安装、即插即用 Linux Lab 开发环境
+        * 支持 Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
+    * [Pocket Linux Disk](https://shop155917374.taobao.com/)，免安装、即插即用 Linux 发行版
+        * 支持 Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 
 # 5. Linux Lab 开发
 

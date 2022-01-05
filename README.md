@@ -256,7 +256,7 @@ It supports:
     * From 32G to 512G and even 1T, 2T
 * Systems
     * Top6 Linux Distributions and even more based on your requirement
-    * Include Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Mint
+    * Include Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 * Features
     * Boot from any powered-off 64bit X86 Machine, include PC, Laptop and MacBook
     * Boot from any running Windows, Linux and MacOS and run in parallel with them
@@ -1704,15 +1704,37 @@ Linux Lab allows to access Makefile goals easily via the `do` target, for exampl
 
 Read more:
 
-* [Why Using Linux Lab V1.0 (In Chinese)](http://tinylab.org/why-linux-lab)
-* [Why Using Linux Lab V2.0 (In Chinese)](http://tinylab.org/why-linux-lab-v2)
-* [Linux Lab Loongson Manual V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+* Why
+    * [Why Using Linux Lab V1.0 (In Chinese)](http://tinylab.org/why-linux-lab)
+    * [Why Using Linux Lab V2.0 (In Chinese)](http://tinylab.org/why-linux-lab-v2)
+
+* User Manual
+    * [Linux Lab v0.8 User Manual](http://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf)
+    * [Linux Lab Loongson Manual V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+
 * Linux Lab Videos
     * [CCTALK](https://m.cctalk.com/inst/sh8qtdag)
     * [Bilibili](https://space.bilibili.com/687228362/channel/detail?cid=152574)
     * [Zhihu](https://www.zhihu.com/people/wuzhangjin)
+
 * Video Courses use Linux Lab as experiment environment
     * [The Perspective Linux ELF](https://www.cctalk.com/m/group/88089283)
+    * [《Rust Language Quickstart》](https://cctalk.com/m/group/89507527)
+    * [《Software Reverse Engineering Quickstart》](https://www.cctalk.com/m/group/89626746)
+    * [《Linux Kernel Livepatch Introduction》](https://www.cctalk.com/m/group/89715946)
+
+* The books or courses Linux Lab supported or plan to support
+    * [books or courses list](https://gitee.com/tinylab/linux-lab/issues/I49VV9)
+
+* The boards Linux Lab supported or plan to support
+    * [ARM IMX6ULL](https://shop155917374.taobao.com/)
+    * RISCV-64 D1
+
+* The hardwares developed by Linux Lab community
+    * [Linux Lab Disk](https://shop155917374.taobao.com/), pre-installed Linux Lab disk
+        * Support Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
+    * [Pocket Linux Disk](https://shop155917374.taobao.com/), pre-installed Linux distribution disk
+        * Support Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 
 # 5. Linux Lab Development
 

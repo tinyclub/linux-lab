@@ -164,7 +164,7 @@
 
 Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用过程中的任何风险。
 
-[![Linux Lab 项目启动示意图](doc/images/linux-lab.jpg)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+[![Linux Lab 项目启动示意图](doc/images/linux-lab.png)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
 
 ## 1.2 项目主页
 

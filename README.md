@@ -929,18 +929,10 @@ Boot with curses graphic (friendly to bash/ssh login, not work for all boards, e
 
 Boot with PreBuilt Kernel, Dtb and Rootfs:
 
-    $ make boot PBK=1 PBD=1 PBR=1
-    or
-    $ make boot k=old d=old r=old
-    or
     $ make boot kernel=old dtb=old root=old
 
 Boot with new kernel, dtb and rootfs if exists:
 
-    $ make boot PBK=0 PBD=0 PBR=0
-    or
-    $ make boot k=new d=new r=new
-    or
     $ make boot kernel=new dtb=new root=new
 
 Boot with new kernel and uboot, build them if not exists:
@@ -1386,14 +1378,10 @@ To customize kernel gdbinit script, simply copy one and edit it manually:
 It equals to:
 
     $ make debug linux
-    or
-    $ make boot DEBUG=linux
 
 to automate debug testing:
 
     $ make test-debug linux
-    or
-    $ make test DEBUG=linux
 
 find out the code line of a kernel panic address:
 
@@ -1410,8 +1398,6 @@ if the debug port has been used, please try to find out who used the port and ki
 To debug uboot with `.gdb/uboot.default`:
 
     $ make debug uboot
-    or
-    $ make boot DEBUG=uboot
 
 If login with `vnc` or `webvnc`, the above command will open a terminal and start debugging automatically.
 
@@ -1422,8 +1408,6 @@ But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this
 To automate uboot debug testing:
 
     $ make test-debug uboot
-    or
-    $ make test DEBUG=uboot
 
 The same to kernel gdbinit script, customize one for uboot:
 

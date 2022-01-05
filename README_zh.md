@@ -1096,18 +1096,10 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 使用预编译的内核、dtb 和 Rootfs 启动：
 
-    $ make boot PBK=1 PBD=1 PBR=1
-    or
-    $ make boot k=old d=old r=old
-    or
     $ make boot kernel=old dtb=old root=old
 
 使用新的内核、dtb 和 rootfs 启动：
 
-    $ make boot PBK=0 PBD=0 PBR=0
-    or
-    $ make boot k=new d=new r=new
-    or
     $ make boot kernel=new dtb=new root=new
 
 如果目标内核和 Uboot 不存在，重新编译一个之后再启动：
@@ -1541,14 +1533,10 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 以上命令等价于运行如下命令：
 
     $ make debug linux
-    或
-    $ make boot DEBUG=linux
 
 自动测试调试可以运行如下命令：
 
     $ make test-debug linux
-    或
-    $ make test DEBUG=linux
 
 找出内核崩溃出错地址所在的代码行:
 
@@ -1565,8 +1553,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 如果想调试 Uboot（采用 `.gdb/uboot.default` 调试脚本）：
 
     $ make debug uboot
-    或
-    $ make debug DEBUG=uboot
 
 如果是通过控制台登陆的 Linux Lab，不会自动拉起窗口，请按提示再次执行如下命令即可开启调试：
 
@@ -1575,8 +1561,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 同样可以自动测试调试：
 
     $ make test-debug uboot
-    或
-    $ make test DEBUG=uboot
 
 同样地，如果想修改调试脚本，可以拷贝一份到 `.gdb/uboot.user`，这样就可以无缝升级：
 

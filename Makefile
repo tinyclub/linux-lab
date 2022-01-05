@@ -3819,7 +3819,7 @@ endif
 endif
 
 TEST_XOPTS ?= $(XOPTS)
-TEST_RD    ?= $(or $(TEST_ROOTDEV),/dev/nfs)
+TEST_RD    ?= $(or $(TEST_ROOTDEV),nfs)
 # Override TEST_RD if ROOTDEV specified
 ifeq ($(origin ROOTDEV), command line)
   TEST_RD  := $(ROOTDEV)
@@ -3860,7 +3860,7 @@ ifneq ($(findstring module,$(FEATURE)),)
   MODULE_INIT  := module-init
 endif
 
-ifneq ($(TEST_RD),/dev/nfs)
+ifneq ($(TEST_RD),nfs)
   ROOT_REBUILD := root-rebuild
 endif
 

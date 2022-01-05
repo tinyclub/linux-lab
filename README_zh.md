@@ -1615,7 +1615,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 基于指定的 ROOTDEV 测试模块，缺省使用 nfs 引导方式，但注意有些开发板可能不支持网络：
 
-    $ make test m=hello,exception TEST_RD=/dev/ram0
+    $ make test m=hello,exception TEST_RD=ram0
 
 在测试内核模块时运行测试用例（在 insmod 和 rmmod 命令之间运行测试用例）：
 

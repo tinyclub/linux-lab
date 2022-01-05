@@ -1462,7 +1462,7 @@ Test multiple kernel modules:
 
 Test modules with specified ROOTDEV, nfs boot is used by default, but some boards may not support network:
 
-    $ make test m=hello,exception TEST_RD=/dev/ram0
+    $ make test m=hello,exception TEST_RD=ram0
 
 Run test cases while testing kernel modules (test cases run between insmod and rmmod):
 

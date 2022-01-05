@@ -1639,6 +1639,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 在测试内部内核模块时运行测试用例：
 
+    $ make kernel-setconfig y=debug_fs
     $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT'
 
 在测试内部内核模块时运行测试用例，传入内核参数：

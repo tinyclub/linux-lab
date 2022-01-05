@@ -1486,6 +1486,7 @@ Run test cases while testing kernel modules (test cases run between insmod and r
 
 Run test cases while testing internal kernel modules:
 
+    $ make kernel-setconfig y=debug_fs
     $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT'
 
 Run test cases while testing internal kernel modules, pass kernel arguments:

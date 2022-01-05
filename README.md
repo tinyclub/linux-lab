@@ -2373,12 +2373,71 @@ If using external filesystem, please make sure the filesystem architecture follo
 
 # 7. Contact and Sponsor
 
-Our contact wechat is **tinylab**, welcome to join our user & developer discussion group.
+## Contact Us
 
-## Buy Linux Lab related products
+Welcome to join our discuss group:
 
-Our community will put Linux Lab Disk, Linux Lab Boards in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com), welcome to buy them if required.
+* Wechat: **tinylab**
+* Email: contact /AT\ tinylab /dot/ org
 
-## Contact us and Sponsor via wechat
+## Give me a star
+
+Welcome to mark our web site, star our git repositories:
+
+* Wechat Group: Tinylab-Org
+
+* Web site: <http://tinylab.org>
+    * Created near 10+ years
+    * Focus on Linux kernel and embedded Linux system
+
+* Git Repositories
+    * Gitee: <https://gitee.com/tinylab>
+    * Github：<https://github.com/tinyclub>
+
+## Buy our products
+
+* Store: <https://shop155917374.taobao.com>
+    * The taobao store of TinyLab.org community, mainly sell products around our open source projects
+    * The products include Linux Lab Disk, Pocket Linux Disk and the Linux Lab boards
+    * Welcome to buy some based on your requirement, you can search 'Linux Lab' in taobao application to find us
+
+* Circle: <https://t.zsxq.com/uB2vJyF>
+    * The VIP knowledge channel of TinyLab.org community
+    * Create 3+ years, about 1000+ shares and 20+ Linux professionals
+
+* Courses: <https://m.cctalk.com/inst/sh8qtdag>
+    * TinyLab School -- The video channel of TinyLab.org community
+    * Video Live, Video Courses are shared by active Linux professionals from TinyLab.org community
+
+## Sponsor
+
+### Sponsor via wechat
 
 ![contact-sponsor](doc/images/contact-sponsor.png)
+
+### Sponsor list
+
+* 2021
+    * [Lazyparser](https://github.com/lazyparser)
+        * HelloGCC and HelloLLVM founder
+        * 5000RMB
+
+    * [Summer 2021](https://summer.iscas.ac.cn)
+        * Such projects are sponsored by Summer 2021: Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
+
+    * T-head
+        * 1 D1 board
+
+    * Allwinner
+        * 3 D1 boards
+
+* 2020
+    * [Loongson](http://loongson.cn/)
+        * The famous Chinese Loongson CPU designer and manufacturer
+        * Such boards are sponsored by Loongson: mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232
+
+    * [Summer 2020](https://summer.iscas.ac.cn)
+        * Such projects are sponsored by Summer 2020: Linux Lab docker image upgrade from Ubuntu 14.04 to Ubuntu 20.04
+
+    * Embedfire
+        * 6 imx6ull boards

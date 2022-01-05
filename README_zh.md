@@ -2542,12 +2542,69 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 # 7. 联系并赞助我们
 
-我们的联系微信是 **tinylab**，欢迎加入 Linux Lab 的用户和开发人员讨论组。
+## 联系方式
 
-## 选购商品支持
+欢迎联系我们加入 Linux Lab 的用户和开发人员讨论组。
 
-社区会把即插即用 Linux Lab Disk、适配过的开发板等上架到 [社区自营店](https://shop155917374.taobao.com)，欢迎大家选购，也可以在淘宝手机 APP 内搜索 “Linux Lab真盘” 找到我们。
+* 微信：**tinylab**
+* 邮箱：contact /AT\ tinylab /dot/ org
+
+## 关注并参与
+
+欢迎收藏 Linux Lab 所属社区网站，并在仓库首页右上角标上 Star。
+
+* 公众号：泰晓科技
+
+* 网站：<http://tinylab.org>
+    * 创立近十年，聚焦 Linux —— 追本溯源，见微知著
+    * 主要关注 Linux 内核、嵌入式 Linux 系统等技术的原创与分享
+
+* 仓库
+    * Gitee: <https://gitee.com/tinylab/linux-lab>
+    * Github：<https://github.com/tinyclub/linux-lab>
+
+## 付费支持我们
+
+* 网店：<https://shop155917374.taobao.com>
+    * 泰晓科技自营店，销售社区自研开源项目周边产品，用于补贴开源项目研发
+    * 已上架即插即用 Linux Lab Disk、Pocket Linux Disk 以及适配过的真实 Linux 开发板等
+    * 欢迎选购，也可以在淘宝手机 APP 内搜索 “Linux Lab” 找到我们
+
+* 星球：<https://t.zsxq.com/uB2vJyF>
+    * 泰晓科技 VIP 知识频道
+    * 上线 3+ 年，累计 1000+ 分享，20+ 位行业 Linux 专家级嘉宾老师
+
+* 课程：<https://m.cctalk.com/inst/sh8qtdag>
+    * 泰晓学院 —— 泰晓科技视频频道
+    * 不定期邀请社区长期活跃的 Linux 技术专家做视频直播与视频课程知识分享
 
 ## 扫码提供赞助
 
+### 赞助我们
+
 ![Linux Lab 需要更多的用户或者赞助~ 加入我们吧！](doc/images/contact-sponsor.png)
+
+### 赞助列表
+
+以下是截止到本文档最新一次更新时的赞助列表：
+
+* 2021
+    * [吴伟老师](https://github.com/lazyparser)
+        * 赞助 5000 元人民币现金并长期友好支持泰晓科技 Linux 技术社区
+        * HelloGCC 负责人，HelloLLVM 负责人，中科重德 CTO。长期致力于推动编译技术及开源工具在国内的推广。欢迎关注公众号：HelloGCC
+
+    * [开源之夏 2021](https://summer.iscas.ac.cn)
+        * 开源之夏 2021 赞助了如下项目：Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
+
+    * 平头哥，赞助 1 块 D1 开发板
+    * 全志，赞助 3 块 D1 开发板
+
+* 2020
+    * [龙芯](http://loongson.cn/)
+        * 国产龙芯系列处理器设计与制造商
+        * 龙芯公司赞助开发了 mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232 和相关文档及视频课程
+
+    * [开源之夏 2020](https://summer.iscas.ac.cn)
+        * 开源之夏 2020 赞助了 Linux Lab 的镜像升级：从 Ubuntu 14.04 升级到 Ubuntu 20.04
+
+    * 野火电子，赞助 6 块 IMX6ULL 开发板

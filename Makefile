@@ -2337,7 +2337,7 @@ root-rd: $(IROOTFS)
 root-rd-rebuild: root-dir root-rd-clean $(IROOTFS) FORCE
 
 root-rd-clean:
-	-$(Q)rm -vf $(IROOTFS)
+	$(Q)[ "$(IROOTFS)" != "$(PREBUILT_IROOTFS)" ] && rm -vf $(IROOTFS) || true
 
 PHONY += root-rd root-rd-rebuild root-rd-clean
 
@@ -2400,6 +2400,8 @@ else
 _root: $(ROOT)
 	$(Q)make $(S) root-rebuild
 endif
+
+root-clean: $(addsuffix -clean,$(addprefix root-,dir hd $(if $(UBOOT),ud) rd))
 
 # root directory
 ifneq ($(FS_TYPE),dir)

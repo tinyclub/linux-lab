@@ -2716,6 +2716,10 @@ kernel-modules-save:
 KM ?= M=$(M_PATH)
 KERNEL_MODULES_DEPS := modules-prompt kernel-modules-save
 
+ifeq ($(internal_module),1)
+  KERNEL_MODULES_DEPS := kernel-config kernel-olddefconfig
+endif
+
 export KM
 endif
 
@@ -2770,10 +2774,11 @@ PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-lis
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
 
 kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
-	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ]; then \
+	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" -a -n "$(KM)" ]; then \
 	  echo Module path: $(M_ABS_PATH); \
 	  modules_order=$(M_ABS_PATH)/modules.order; \
-	  if [ -n "$(KM)" -a -f "$$modules_order" ]; then \
+	  module_symvers=$(M_ABS_PATH)/Module.symvers; \
+	  if [ -f "$$modules_order" -o "$$module_symvers" ]; then \
 	    $(call make_kernel,modules_install $(KM) INSTALL_MOD_PATH=$(ROOTDIR)); \
 	    KERNEL_RELEASE=$$(grep UTS_RELEASE -ur $(KERNEL_BUILD)/include |  cut -d ' ' -f3 | tr -d '"'); \
 	    [ ! -f $(KERNEL_ABS_SRC)/scripts/depmod.sh ] \
@@ -3849,7 +3854,7 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init: kernel-config kernel-olddefconfig
+kernel-init:
 	$(Q)$(call make_kernel,$(IMAGE))
 
 rootdir-init: rootdir-clean rootdir

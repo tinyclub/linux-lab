@@ -31,20 +31,24 @@ do
     echo "module: Starting testing module: $m"
     echo
 
+    # recheck for modprobe available
+    grep -q $m $mdir/modules.dep >/dev/null
+    [ $? -ne 0 ] && which depmod && depmod -A && grep -q $m $mdir/modules.dep >/dev/null && depmod=1 || depmod=0
+
     m_args=$(eval echo \$${m}_args)
     echo
+
     if [ "$depmod" = "1" ]; then
       echo "module: modprobe $m $m_args"
-      modprobe $m $m_args &
-      [ $? -ne 0 ] && echo "ERR: Failed to insert module: $m." && exit 1
+      modprobe $m $m_args
     else
       _m=$(find /lib/modules/`uname -r`/ -name "$m.ko")
       [ $? -ne 0 ] && echo "ERR: No module found for: $m." && exit 1
       m=$_m
       echo "module: insmod $m $m_args"
-      insmod $m $m_args &
-      [ $? -ne 0 ] && echo "ERR: Failed to insert module: $m." && exit 1
+      insmod $m $m_args
     fi
+
     echo
     sleep 1
 

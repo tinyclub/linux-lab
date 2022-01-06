@@ -2596,7 +2596,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 * 2021
     * [吴伟老师](https://github.com/lazyparser)
         * 赞助 5000 元人民币现金并长期友好支持泰晓科技 Linux 技术社区
-        * HelloGCC 负责人，HelloLLVM 负责人，中科重德 CTO。长期致力于推动编译技术及开源工具在国内的推广。欢迎关注公众号：HelloGCC
+        * HelloGCC 负责人，HelloLLVM 负责人，PLCT 实验室项目总监。长期致力于推动编译技术及开源工具在国内的推广。欢迎关注公众号：HelloGCC
 
     * [开源之夏 2021](https://summer.iscas.ac.cn)
         * 开源之夏 2021 赞助了如下项目：Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc

@@ -2510,10 +2510,15 @@ KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
 kernel-patch: $(call __stamp,kernel,source.feature)
-$(call _stamp,kernel,source.feature): $(call _stamp,kernel,outdir) $(ENV_FILES)
+
+feature_downloaded_goals := $(foreach i,$(FEATURE),$(if $(wildcard $(FEATURE_DIR)/$i/$(LINUX)),$(FEATURE_DIR)/$i/$(LINUX)/feature.downloaded))
+
+$(call _stamp,kernel,source.feature): $(call _stamp,kernel,outdir) $(feature_downloaded_goals) $(ENV_FILES)
+	$(Q)touch $@
+
+$(feature_downloaded_goals):
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
-	$(Q)touch $@
 
 kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig.feature)
 $(call _stamp,kernel,defconfig.feature): $(call __stamp,kernel,defconfig) $(ENV_FILES)

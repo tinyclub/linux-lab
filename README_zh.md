@@ -398,6 +398,7 @@ v0.9 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅�
     * 新增 ONESHOT 内存编译功能，在原有内存编译的基础上增加代码内存缓存支持
     * 大幅优化 Linux Lab 的启动速度和交互性能，提升 10 到 20 倍
     * 完善 Linux Lab for Windows 支持，同时兼容 Docker Toolbox 和 Docker Desktop with wsl2
+    * 升级镜像，导入 mipsel, arm 和 powerpc 的 gcc 4.3 支持并修复相关的兼容性问题
 
 * [v0.9 rc2](http://tinylab.org/linux-lab-v09-rc2/)
     * 为 v2.6.29 及之前版本的内核导入 make 3.81

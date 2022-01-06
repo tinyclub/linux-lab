@@ -3856,9 +3856,8 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init: kernel
-
-rootdir-init: rootdir-clean rootdir
+kernel-init: kernel-config kernel-olddefconfig
+	$(Q)$(call make_kernel,$(IMAGE))
 
 module-init: modules
 
@@ -3872,7 +3871,7 @@ endif
 
 feature-init: $(if $(FEATURE),feature kernel-init $(MODULE_INIT)) FORCE
 
-PHONY += kernel-init rootdir-init module-init feature-init
+PHONY += kernel-init module-init feature-init
 
 ifeq ($(FI),1)
   override TEST_PREPARE += $(if $(FEATURE),feature-init)

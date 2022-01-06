@@ -2723,8 +2723,11 @@ kernel-modules-save:
 KM ?= M=$(M_PATH)
 KERNEL_MODULES_DEPS := modules-prompt kernel-modules-save
 
+# kernel-init trigger such targets during TEST, silence them here for TEST
 ifeq ($(internal_module),1)
-  KERNEL_MODULES_DEPS := kernel-config kernel-olddefconfig
+  ifeq ($(TEST),)
+    KERNEL_MODULES_DEPS := kernel-config kernel-olddefconfig
+  endif
 endif
 
 export KM

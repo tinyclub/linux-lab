@@ -77,6 +77,7 @@
           - [4.1.3.5 启用 rt feature](#4135-启用-rt-feature)
           - [4.1.3.6 持久化与清理 feature 设定](#4136-持久化与清理-feature-设定)
        - [4.1.4 新建开发分支](#414-新建开发分支)
+       - [4.1.5 启用独立内核仓库](#415-启用独立内核仓库)
     - [4.2 Uboot 引导程序](#42-uboot-引导程序)
     - [4.3 Qemu 模拟器](#43-qemu-模拟器)
     - [4.4 Toolchain 工具链](#44-toolchain-工具链)
@@ -1362,6 +1363,23 @@ Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有�
 * kernel-cleanup, 清理 git 仓库，可能会清理掉当前修改
 * kernel-clean, 清除历史编译记录
 * kernel-cleanall, 同时清理编译结果和源码修改
+
+### 4.1.5 启用独立内核仓库
+
+v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux 代码仓库，现在已适配 openEuler 和 wsl2，两个都支持 `x86_64/pc`，前者还支持 `aarch64/virt`。
+
+例如，如果要编译 wsl2 内核，切换 `KERNEL_FORK` 即可：
+
+    $ make BOARD=x86_64/pc
+    $ make config KERNEL_FORK=wsl2
+    $ make kernel
+
+如果要配置 wsl2 的版本，参考如下配置修改即可：
+
+    $ make edit
+    LINUX[KERNEL_FORK_wsl2]   := linux-msft-wsl-5.10.74.3
+
+后面的版本号为代码仓库中的任意 git tag。
 
 ## 4.2 Uboot 引导程序
 

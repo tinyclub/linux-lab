@@ -67,6 +67,7 @@
           - [4.1.3.5 using rt feature](#4135-using-rt-feature)
           - [4.1.3.6 persist or clear feature setting](#4136-persist-or-clear-feature-setting)
        - [4.1.4 Create new development branch](#414-create-new-development-branch)
+       - [4.1.5 Use standalone git repository](#415-use-standalone-git-repository)
     - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
     - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
     - [4.4 Using Toolchains](#44-using-toolchains)
@@ -1197,6 +1198,23 @@ In development, please commit asap, and also, please use such commands carefully
 * kernel-cleanup, clean up git repository, may remove your changes
 * kernel-clean, clean building history
 * kernel-cleanall, clean both of the building history and the source code changes
+
+### 4.1.5 Use standalone git repository
+
+v0.8 starts to add `KERNEL_FORK`, allows to configure the third party Linux source code repository, has added openEuler and wsl2, both of them support `x86_64/pc` and the former support `aarch64/virt` too.
+
+For example, to compile wsl2 kernel, switch `KERNEL_FORK` to wsl2 directly:
+
+    $ make BOARD=x86_64/pc
+    $ make config KERNEL_FORK=wsl2
+    $ make kernel
+
+To configure the wsl2 kernel version, configure it as following:
+
+    $ make edit
+    LINUX[KERNEL_FORK_wsl2]   := linux-msft-wsl-5.10.74.3
+
+The value should be one of the available tag in `git tag` list.
 
 ## 4.2 Using Uboot Bootloader
 

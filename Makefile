@@ -515,11 +515,11 @@ endif
 
 endef
 
-#$(warning $(foreach x,K R D Q U,$(call _pb,$x)))
-$(eval $(foreach x,K R D Q U,$(call _pb,$x)))
+#$(warning $(foreach i,K R D Q U,$(call _pb,$i)))
+$(eval $(foreach i,K R D Q U,$(call _pb,$i)))
 
-#$(warning $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
-$(eval $(foreach x,kernel root dtb qemu uboot,$(call _lpb,$x)))
+#$(warning $(foreach i,kernel root dtb qemu uboot,$(call _lpb,$i)))
+$(eval $(foreach i,kernel root dtb qemu uboot,$(call _lpb,$i)))
 
 # Init 9pnet share variables
 ifeq ($(origin SHARE_DIR),command line)
@@ -539,15 +539,15 @@ APP_MAP ?= bsp:BSP kernel:LINUX uboot:UBOOT root:BUILDROOT qemu:QEMU
 APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
 
 define gengoalslist
-$(foreach m,$(or $2,$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m))-$1))
+$(foreach i,$(or $2,$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$i))),$(firstword $(subst :,$(space),$i))-$1))
 endef
 
 define genaliastarget
-$(strip $(foreach m,$(APP_MAP),$(if $(subst $(call _lc,$(lastword $(subst :,$(space),$m))),,$(firstword $(subst :,$(space),$m))),$(call _lc,$(lastword $(subst :,$(space),$m))))))
+$(strip $(foreach i,$(APP_MAP),$(if $(subst $(call _lc,$(lastword $(subst :,$(space),$i))),,$(firstword $(subst :,$(space),$i))),$(call _lc,$(lastword $(subst :,$(space),$i))))))
 endef
 
 define genaliassource
-$(or $(strip $(subst $1,,$(foreach m,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$m))),$(firstword $(subst :,$(space),$m)),$1)))),$1)
+$(or $(strip $(subst $1,,$(foreach i,$(APP_MAP),$(subst $(call _lc,$(lastword $(subst :,$(space),$i))),$(firstword $(subst :,$(space),$i)),$1)))),$1)
 endef
 
 # Support alias, root -> buildroot, kernel -> linux
@@ -557,7 +557,7 @@ endif
 
 ifeq ($(BUILD),all)
   override BUILD :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+  $(foreach i,$(APP_MAP),$(eval $(call default_detectbuild,$(firstword $(subst :,$(space),$i)),$(lastword $(subst :,$(space),$i)))))
 endif
 
 first_target := $(firstword $(MAKECMDGOALS))
@@ -611,7 +611,7 @@ ifneq ($(APP_ARGS),)
   APP := $(firstword $(APP_ARGS))
 else
   APP :=
-  $(foreach m,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+  $(foreach i,$(APP_MAP),$(eval $(call cli_detectapp,$(firstword $(subst :,$(space),$i)),$(lastword $(subst :,$(space),$i)))))
 endif
 
 ifneq ($(APP),)
@@ -621,7 +621,7 @@ endif
 
 ifeq ($(app),all)
   override app :=
-  $(foreach m,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$m)),$(lastword $(subst :,$(space),$m)))))
+  $(foreach i,$(APP_MAP),$(eval $(call default_detectapp,$(firstword $(subst :,$(space),$i)),$(lastword $(subst :,$(space),$i)))))
   ifeq ($(first_target), upload)
     override app+= dtb modules
   endif
@@ -783,8 +783,8 @@ F        ?= $(f)
 FEATURES ?= $(F)
 FEATURE  ?= $(FEATURES)
 ifneq ($(FEATURE),)
-  FEATURE_ENVS := $(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
-    $(shell f_env=$(FEATURE_DIR)/$(f)/$(LINUX); \
+  FEATURE_ENVS := $(foreach i, $(subst $(comma),$(space),$(FEATURE)), \
+    $(shell f_env=$(FEATURE_DIR)/$(i)/$(LINUX); \
     if [ -f $$f_env/env.$(XARCH).$(MACH) ]; then \
       echo $$f_env/env.$(XARCH).$(MACH); \
     elif [ -f $$f_env/env.$(MACH) ]; then \
@@ -1822,7 +1822,7 @@ ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
   $3CFG_FILE  := $$(_BSP_CONFIG)/$$($3CFG)
 else
   $3CFG_FILES := $$($3CFG) $(_BSP_CONFIG)/$$($3CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($3CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($3CFG)
-  _$3CFG_FILE := $$(firstword $$(strip $$(foreach f,$$($3CFG_FILES),$$(wildcard $$f) )))
+  _$3CFG_FILE := $$(firstword $$(strip $$(foreach i,$$($3CFG_FILES),$$(wildcard $$i) )))
   ifneq ($$(_$3CFG_FILE),)
     $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
   else
@@ -2838,22 +2838,22 @@ PHONY += _module module-list module-list-full _module-install _module-clean modu
 
 kernel-module: module
 module: FORCE
-	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
-		echo "\nBuilding module: $(m) ...\n" && make $(NPD) _module m=$(m);) echo '')
+	$(Q)$(if $(module), $(foreach _m, $(subst $(comma),$(space),$(module)), \
+		echo "\nBuilding module: $(_m) ...\n" && make $(NPD) _module m=$(_m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nBuilding module: $(_M) ...\n" && make $(NPD) _module M=$(_M);) echo '')
 
 kernel-module-install: module-install
 module-install: FORCE
-	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
-		echo "\nInstalling module: $(m) ...\n" && make $(NPD) _module-install m=$(m);) echo '')
+	$(Q)$(if $(module), $(foreach _m, $(subst $(comma),$(space),$(module)), \
+		echo "\nInstalling module: $(_m) ...\n" && make $(NPD) _module-install m=$(_m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nInstalling module: $(_M) ...\n" && make $(NPD) _module-install M=$(_M);) echo '')
 
 kernel-module-clean: module-clean
 module-clean: FORCE
-	$(Q)$(if $(module), $(foreach m, $(subst $(comma),$(space),$(module)), \
-		echo "\nCleaning module: $(m) ...\n" && make $(NPD) _module-clean m=$(m);) echo '')
+	$(Q)$(if $(module), $(foreach _m, $(subst $(comma),$(space),$(module)), \
+		echo "\nCleaning module: $(_m) ...\n" && make $(NPD) _module-clean m=$(_m);) echo '')
 	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
 
@@ -3032,10 +3032,10 @@ _kernel-getconfig:
 
 kernel-config: kernel-setconfig
 kernel-setconfig: FORCE
-	$(Q)$(if $(makeclivar), $(foreach o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
+	$(Q)$(if $(makeclivar), $(foreach _o, $(foreach setting,$(foreach p,y n m c o s v,$(filter $(p)=%,$(makeclivar))), \
 		$(shell p=$(firstword $(subst =,$(space),$(setting))) && \
 		echo $(setting) | cut -d'=' -f2- | tr ',' '\n' | xargs -i echo $$p={} | tr '\n' ' ')), \
-		echo "\nSetting kernel config: $o ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $o;), echo '')
+		echo "\nSetting kernel config: $(_o) ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $(_o);), echo '')
 	$(Q)echo
 
 _kernel-setconfig:
@@ -3729,15 +3729,15 @@ SYSTEM_TOOL_DIR := $(TOP_SRC)/system/tools
 
 boot-init: FORCE
 	$(Q)echo "Running $@"
-	$(Q)$(if $(FEATURE),$(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
-		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_before.sh ] && \
-		$(SYSTEM_TOOL_DIR)/$f/test_host_before.sh $(ROOTDIR);) echo '')
+	$(Q)$(if $(FEATURE),$(foreach i, $(subst $(comma),$(space),$(FEATURE)), \
+		[ -x $(SYSTEM_TOOL_DIR)/$i/test_host_before.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$i/test_host_before.sh $(ROOTDIR);) echo '')
 
 boot-finish: FORCE
 	$(Q)echo "Running $@"
-	$(Q)$(if $(FEATURE),$(foreach f, $(subst $(comma),$(space),$(FEATURE)), \
-		[ -x $(SYSTEM_TOOL_DIR)/$f/test_host_after.sh ] && \
-		$(SYSTEM_TOOL_DIR)/$f/test_host_after.sh $(ROOTDIR);) echo '')
+	$(Q)$(if $(FEATURE),$(foreach i, $(subst $(comma),$(space),$(FEATURE)), \
+		[ -x $(SYSTEM_TOOL_DIR)/$i/test_host_after.sh ] && \
+		$(SYSTEM_TOOL_DIR)/$i/test_host_after.sh $(ROOTDIR);) echo '')
 
 PHONY += boot-init boot-finish
 

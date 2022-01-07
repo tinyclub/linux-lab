@@ -3864,10 +3864,6 @@ ifneq ($(findstring module,$(FEATURE)),)
   MODULE_INIT  := module-init
 endif
 
-ifneq ($(TEST_RD),nfs)
-  ROOT_REBUILD := root-rebuild
-endif
-
 feature-init: $(if $(FEATURE),feature kernel-init $(MODULE_INIT)) FORCE
 
 PHONY += kernel-init module-init feature-init

@@ -2509,7 +2509,7 @@ KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
 KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
-kernel-patch: $(call __stamp,kernel,source.feature)
+kernel-source: $(call __stamp,kernel,source.feature)
 
 feature_downloaded_goals := $(foreach i,$(FEATURE),$(if $(wildcard $(FEATURE_DIR)/$i/$(LINUX)),$(FEATURE_DIR)/$i/$(LINUX)/feature.downloaded))
 
@@ -2729,12 +2729,16 @@ PHONY += modules-prompt kernel-modules-save
 # Both internal and external modules require modules_prepare (prepare and scripts, such as scripts/mod/modpost)
 MODULE_PREPARE := modules_prepare
 
-kernel-modules-km: $(KERNEL_MODULES_DEPS)
+kernel-modules-config:
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
-	  make -s $(NPD) feature feature=module; \
-	  make -s $(NPD) kernel-olddefconfig; \
-	  $(call make_kernel); \
+	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES; \
+	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD; \
 	fi
+
+kernel-modules-defconfig: $(KERNEL_BUILD)/.config
+	$(Q)make -s $(NPD) kernel-olddefconfig
+
+kernel-modules-km: kernel-modules-config $(if $(m),kernel-config) kernel-modules-defconfig $(KERNEL_MODULES_DEPS)
 	@# M variable can not be set for modules_prepare target
 	$(call make_kernel,$(MODULE_PREPARE) M=)
 	$(Q)if [ -f $(KERNEL_ABS_SRC)/scripts/Makefile.modbuiltin ]; then \
@@ -3032,14 +3036,6 @@ kernel-setconfig: FORCE
 _kernel-setconfig:
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)echo "Configuring new kernel config: $(KCONFIG_OPT) ..."
-	$(Q)if [ "$(KCONFIG_OPR)" = "m" ]; then \
-	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES; \
-	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD; \
-	  make -s kernel-olddefconfig; \
-	  $(call make_kernel,$(MODULE_PREPARE) M=); \
-	else \
-	  make -s kernel-olddefconfig; \
-	fi
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
@@ -3855,7 +3851,7 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init: kernel-config kernel-olddefconfig
+kernel-init: kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 module-init: modules

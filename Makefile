@@ -2324,7 +2324,7 @@ else
   endif
 endif
 
-$(IROOTFS): $(BSP_BUILD) $(IROOTFS_DEPS)
+$(IROOTFS): bsp-outdir $(IROOTFS_DEPS)
 ifneq ($(IROOTFS_DEPS),)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
@@ -2436,7 +2436,7 @@ root-dir-install-modules: $(KERNEL_BUILD)
 
 $(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
 
-root-dir-prebuilt: $(BSP_BUILD) $(ROOTDIR_DEPS)
+root-dir-prebuilt: bsp-outdir $(ROOTDIR_DEPS)
 	$(Q)if [ ! -d $(ROOTDIR)/bin ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \
@@ -2466,7 +2466,7 @@ endif
 
 ROOT_GENHD_TOOL := $(TOOL_DIR)/root/$(FS_TYPE)2hd.sh
 
-$(HROOTFS): $(BSP_BUILD) $(HROOTFS_DEPS)
+$(HROOTFS): bsp-outdir $(HROOTFS_DEPS)
 	$(Q)if [ -n "$(HROOTFS_DEPS)" ]; then \
 	  echo "LOG: Generating harddisk image with $(ROOT_GENHD_TOOL) ..."; \
 	  rm -rf $(HROOTFS).tmp; \
@@ -3168,7 +3168,7 @@ _uboot:
 UBOOT_MKIMAGE := tools/uboot/mkimage
 
 # root uboot image
-$(UROOTFS): $(BSP_BUILD) $(IROOTFS)
+$(UROOTFS): bsp-outdir $(IROOTFS)
 	@echo "LOG: Generating rootfs image for uboot ..."
 	$(Q)mkdir -p $(dir $(UROOTFS))
 	$(Q)$(UBOOT_MKIMAGE) -A $(ARCH) -O linux -T ramdisk -C none -d $(IROOTFS) $(UROOTFS) || (rm $(UROOTFS) && exit 1)

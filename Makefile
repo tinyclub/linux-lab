@@ -3403,7 +3403,7 @@ kernel-saveconfig:
 
 root-saveconfig:
 	$(Q)$(call make_root,savedefconfig) || true
-	$(Q)defconfig=$$(grep -q BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2); \
+	$(Q)defconfig=$$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2 | tr -d '"'); \
 	if [ $$? -eq 0 -a -n "$$defconfig" -a -f "$$defconfig" ]; then \
 	  cp -v $$defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_BUILD)/defconfig ]; then \

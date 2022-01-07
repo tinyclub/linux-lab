@@ -3252,7 +3252,7 @@ root-save:
 	$(Q)mkdir -p $(PREBUILT_ROOT_DIR)
 	$(Q)mkdir -p $(PREBUILT_KERNEL_DIR)
 	$(Q)[ "$(IROOTFS)" != "$(PREBUILT_IROOTFS)" ] && cp -v $(IROOTFS) $(PREBUILT_ROOT_DIR) || true
-	$(Q)if [ -n "($(PORIIMG)" ]; then \
+	$(Q)if [ -n "$(PORIIMG)" ]; then \
 	  cp -v $(LINUX_PKIMAGE) $(PREBUILT_KERNEL_DIR); \
 	  $(STRIP_CMD) $(PREBUILT_KERNEL_DIR)/$(notdir $(PORIIMG)) 2>/dev/null; \
 	fi

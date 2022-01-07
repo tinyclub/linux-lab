@@ -2530,8 +2530,6 @@ kernel-feature-cleanstamp:
 	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature)
 
 kernel-cleanstamp: kernel-feature-cleanstamp
-
-_kernel: kernel-olddefconfig
 endif
 
 FCS ?= 0

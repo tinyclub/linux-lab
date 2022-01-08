@@ -2520,19 +2520,19 @@ KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
 KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 
 ifneq ($(FEATURE),)
-kernel-source: $(call __stamp,kernel,source.feature)
+kernel-source: $(call __stamp,kernel,outdir) $(call __stamp,kernel,source.feature)
 
 feature_downloaded_goals := $(foreach i,$(FEATURE),$(if $(wildcard $(FEATURE_DIR)/$i/$(LINUX)),$(FEATURE_DIR)/$i/$(LINUX)/feature.downloaded))
 
-$(call _stamp,kernel,source.feature): $(call __stamp,kernel,outdir) $(feature_downloaded_goals) $(ENV_FILES)
+$(call _stamp,kernel,source.feature): $(feature_downloaded_goals) $(ENV_FILES)
 	$(Q)touch $@
 
 $(feature_downloaded_goals):
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
 
-kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig.feature)
-$(call _stamp,kernel,defconfig.feature): $(call __stamp,kernel,defconfig) $(ENV_FILES)
+kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call __stamp,kernel,defconfig.feature)
+$(call _stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	$(Q)touch $@

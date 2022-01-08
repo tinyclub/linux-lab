@@ -4091,7 +4091,7 @@ cache-build: $(BUILD_CACHE_TAG)
 $(BUILD_CACHE_TAG):
 	@echo "Cache building ..."; echo; \
 	sudo service nfs-kernel-server stop;   \
-	sudo $(BUILD_CACHE_TOOL) || true; \
+	sudo $(BUILD_CACHE_TOOL) && touch $(BUILD_CACHE_TAG) || true; \
 	sudo service nfs-kernel-server start
 
 status-build:

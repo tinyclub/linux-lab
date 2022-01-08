@@ -1711,15 +1711,7 @@ $1-source: $$(call __stamp,$1,source)
 
 $1-checkout: $1-source
 
-$1_feature_patch_require := $$(filter-out boot debug initrd module nfsroot,$$(subst $$(comma), ,$$(FEATURE)))
-$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(subst $$(comma),_,$$($1_feature_patch_require)).patched
-
-$1-verify: $1-source
-	$$(Q)[ -n "$$($1_feature_patch_require)" -a "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
-	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -qv "$$(notdir $$($1_feature_patched_goals))" \
-	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error." && exit 1 || true
-
-$$(call _stamp,$1,checkout): $1-verify $$(ENV_FILES)
+$$(call _stamp,$1,checkout): $$(ENV_FILES)
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \
 	  && echo "Checking out $$(_$2) ..." \
@@ -1783,12 +1775,21 @@ $1-list:
 $1-help:
 	$$(Q)$$(or $$(call $1_make_help),$$(call make_$1,help))
 
+$1_feature_patch_require := $$(subst $$(comma),_,$$(filter-out boot debug initrd module nfsroot,$$(subst $$(comma), ,$$(FEATURE))))
+$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(if $$($1_feature_patch_require),$$($1_feature_patch_require).)patched
+
+$1-verify:
+	$$(Q)[ -n "$$($1_feature_patch_require)" -a "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | egrep -qv "$$(notdir $$($1_feature_patched_goals))|$1.patched" \
+	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error." && exit 1 || true
+
+
 $$($1_feature_patched_goals):
 	$$(Q)$($(call _uc,$1)_PATCH_EXTRAACTION)
 	$$(Q)if [ -f tools/$1/patch.sh ]; then tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD); fi
 	$$(Q)touch $$@
 
-$$(call _stamp,$1,patch): $$($1_feature_patched_goals) $$(ENV_FILES)
+$$(call _stamp,$1,patch): $1-verify $$($1_feature_patched_goals) $$(ENV_FILES)
 	$$(Q)touch $$@
 
 $1-patch: $$(call __stamp,$1,patch)

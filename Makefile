@@ -3866,15 +3866,9 @@ endif
 kernel-init: $(KERNEL_INIT_DEPS)
 	$(Q)$(call make_kernel,$(IMAGE))
 
-module-init: modules
+feature-init: $(if $(FEATURE),feature kernel-init) FORCE
 
-ifneq ($(findstring module,$(FEATURE)),)
-  MODULE_INIT  := module-init
-endif
-
-feature-init: $(if $(FEATURE),feature kernel-init $(MODULE_INIT)) FORCE
-
-PHONY += kernel-init module-init feature-init
+PHONY += kernel-init feature-init
 
 ifeq ($(FI),1)
   override TEST_PREPARE += $(if $(FEATURE),feature-init)

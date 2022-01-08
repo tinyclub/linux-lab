@@ -2513,7 +2513,7 @@ kernel-source: $(call __stamp,kernel,source.feature)
 
 feature_downloaded_goals := $(foreach i,$(FEATURE),$(if $(wildcard $(FEATURE_DIR)/$i/$(LINUX)),$(FEATURE_DIR)/$i/$(LINUX)/feature.downloaded))
 
-$(call _stamp,kernel,source.feature): $(call _stamp,kernel,outdir) $(feature_downloaded_goals) $(ENV_FILES)
+$(call _stamp,kernel,source.feature): $(call __stamp,kernel,outdir) $(feature_downloaded_goals) $(ENV_FILES)
 	$(Q)touch $@
 
 $(feature_downloaded_goals):

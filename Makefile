@@ -1714,9 +1714,9 @@ $1-checkout: $1-source
 $1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(subst $$(comma),_,$$(FEATURE)).patched
 
 $1-verify: $1-source
-	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	$$(Q)[ "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -qv ".$1.$$(subst $$(comma),_,$$(FEATURE)).patched" \
-	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first." && exit 1 || true
+	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error." && exit 1 || true
 
 $$(call _stamp,$1,checkout): $1-verify $$(ENV_FILES)
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \

@@ -2735,13 +2735,13 @@ PHONY += modules-prompt kernel-modules-save
 # Both internal and external modules require modules_prepare (prepare and scripts, such as scripts/mod/modpost)
 MODULE_PREPARE := modules_prepare
 
-kernel-modules-config:
+kernel-modules-config: $(DEFAULT_KCONFIG)
 	$(Q)if [ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" != "y" ]; then  \
 	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES; \
 	  $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -e MODULES_UNLOAD; \
 	fi
 
-kernel-modules-defconfig: $(KERNEL_BUILD)/.config
+kernel-modules-defconfig: $(DEFAULT_KCONFIG)
 	$(Q)make -s $(NPD) kernel-olddefconfig
 
 kernel-modules-km: kernel-modules-config $(if $(m),kernel-config) kernel-modules-defconfig $(KERNEL_MODULES_DEPS)
@@ -3020,13 +3020,15 @@ ifneq ($(filter kernel-getconfig,$(MAKECMDGOALS)),)
   o ?= $m
 endif
 
+$(DEFAULT_KCONFIG): kernel-defconfig
+
 kernel-getconfig: FORCE
 	$(Q)$(if $(o), $(foreach _o, $(subst $(comma),$(space),$(o)), \
 		__o=$(call _uc,$(_o)) && \
 		echo "\nGetting kernel config: $$__o ...\n" && make $(S) _kernel-getconfig o=$$__o;) echo '')
 	$(Q)echo
 
-_kernel-getconfig:
+_kernel-getconfig: $(DEFAULT_KCONFIG)
 	$(Q)printf "option state: $(o)="&& $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
 	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 	$(Q)echo
@@ -3039,7 +3041,7 @@ kernel-setconfig: FORCE
 		echo "\nSetting kernel config: $(_o) ...\n" && make $(S) _kernel-setconfig y= n= m= s= v= c= o= $(_o);), echo '')
 	$(Q)echo
 
-_kernel-setconfig:
+_kernel-setconfig: $(DEFAULT_KCONFIG)
 	$(Q)$(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_SET_OPT)
 	$(Q)echo "Configuring new kernel config: $(KCONFIG_OPT) ..."
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"

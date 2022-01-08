@@ -3851,7 +3851,7 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init: kernel-olddefconfig
+kernel-init: kernel-defconfig kernel-olddefconfig
 	$(Q)$(call make_kernel,$(IMAGE))
 
 module-init: modules

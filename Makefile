@@ -3857,7 +3857,13 @@ TI           ?= $(TEST_INIT)
 FEATURE_INIT ?= $(TI)
 FI           ?= $(FEATURE_INIT)
 
-kernel-init: $(if $(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG)),,kernel-defconfig) kernel-olddefconfig
+KERNEL_INIT_DEPS := kernel-olddefconfig
+# without obvious defconfig trigger, olddefconfig may not work when the source is not downloaded.
+ifeq ($(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG)),)
+  KERNEL_INIT_DEPS := kernel-defconfig kernel-olddefconfig
+endif
+
+kernel-init: $(KERNEL_INIT_DEPS)
 	$(Q)$(call make_kernel,$(IMAGE))
 
 module-init: modules

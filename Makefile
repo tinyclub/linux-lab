@@ -1711,11 +1711,11 @@ $1-source: $$(call __stamp,$1,source)
 
 $1-checkout: $1-source
 
-$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(subst $$(comma),_,$$(FEATURE)).patched
+$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(subst $$(comma),_,$$(filter-out boot debug initrd module nfsroot,$$(subst $$(comma), ,$$(FEATURE)))).patched
 
 $1-verify: $1-source
 	$$(Q)[ "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
-	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -qv ".$1.$$(subst $$(comma),_,$$(FEATURE)).patched" \
+	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -qv "$$(notdir $$($1_feature_patched_goals))" \
 	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error." && exit 1 || true
 
 $$(call _stamp,$1,checkout): $1-verify $$(ENV_FILES)
@@ -1788,7 +1788,7 @@ $$($1_feature_patched_goals):
 	$$(Q)touch $$@
 
 $$(call _stamp,$1,patch): $$($1_feature_patched_goals) $$(ENV_FILES)
-	touch $$@
+	$$(Q)touch $$@
 
 $1-patch: $$(call __stamp,$1,patch)
 

@@ -1711,7 +1711,14 @@ $1-source: $$(call __stamp,$1,source)
 
 $1-checkout: $1-source
 
-$$(call _stamp,$1,checkout): $$(ENV_FILES)
+$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(subst $$(comma),_,$$(FEATURE)).patched
+
+$1-verify: $1-source
+	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -qv ".$1.$$(subst $$(comma),_,$$(FEATURE)).patched" \
+	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first." && exit 1 || true
+
+$$(call _stamp,$1,checkout): $1-verify $$(ENV_FILES)
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \
 	  && echo "Checking out $$(_$2) ..." \
@@ -1775,17 +1782,13 @@ $1-list:
 $1-help:
 	$$(Q)$$(or $$(call $1_make_help),$$(call make_$1,help))
 
-$$(call _stamp,$1,patch): $$(ENV_FILES)
-	@if [ ! -f $$($(call _uc,$1)_SRC_FULL)/.$1.patched ]; then \
-	  $($(call _uc,$1)_PATCH_EXTRAACTION) \
-	  if [ -f tools/$1/patch.sh ]; then \
-	    tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD); \
-	    touch $$($(call _uc,$1)_SRC_FULL)/.$1.patched; \
-	    touch $$@; \
-	  fi ; \
-	elif [ "$$(SKIP_PATCH)" != "1" ]; then \
-	  echo "ERR: $1 patchset has been applied, if want, please skip patchset check with 'SKIP_PATCH=1' or 'make $1-patch -t' or backup important changes and do 'make $1-cleanup' at first." && exit 1; \
-	fi
+$$($1_feature_patched_goals):
+	$$(Q)$($(call _uc,$1)_PATCH_EXTRAACTION)
+	$$(Q)if [ -f tools/$1/patch.sh ]; then tools/$1/patch.sh $$(BOARD) $$($2) $$($(call _uc,$1)_SRC_FULL) $$($(call _uc,$1)_BUILD); fi
+	$$(Q)touch $$@
+
+$$(call _stamp,$1,patch): $$($1_feature_patched_goals) $$(ENV_FILES)
+	touch $$@
 
 $1-patch: $$(call __stamp,$1,patch)
 

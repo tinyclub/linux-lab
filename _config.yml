@@ -81,11 +81,8 @@ JB :
   analytics :
     providers :
       - baidu
-      - cnzz
     baidu :
       tracking_id : '15260089f8e103dc1cca30bcc1957b7c'
-    cnzz :
-      tracking_id : '5542089'
 
   sharing :
     provider : false

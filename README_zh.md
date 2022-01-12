@@ -389,9 +389,9 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 发布了首支 Pocket Linux Disk
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Deepin
 
-### 1.6.9 v0.9
+### 1.6.9 v0.9 @ 2022.01.13
 
-v0.9 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
+[v0.9](http://tinylab.org/linux-lab-v0.9/) 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
 
 * [v0.9 rc3](http://tinylab.org/linux-lab-v09-rc3/)
     * 新增 FAST FETCH 功能，支持单独快速下载指定内核版本

@@ -45,7 +45,7 @@ Free Software 一度被人误解，被等同于廉价（Free of Charge）、低�
 
 个人也深受自由软件和开放源码的思想影响，从大学至今，一直参与 FLOSS 运动，是一个重度开源践行者。
 
-从 2006 年参与创建[兰大开源社区](http://oss.lzu.edu.cn)，并在 2007 年主导建立正式的社团，上研后，一直协助社区的发展，直到研究生毕业。毕业后，又紧接着成立了一个面向企业一线工程师的在线技术交流平台：[泰晓科技](http://tinylab.org)，从 2010 年成立至今，一直是公益性质的。
+从 2006 年参与创建[兰大开源社区](http://oss.lzu.edu.cn)，并在 2007 年主导建立正式的社团，上研后，一直协助社区的发展，直到研究生毕业。毕业后，又紧接着成立了一个面向企业一线工程师的在线技术交流平台：[泰晓科技](https://tinylab.org)，从 2010 年成立至今，一直是公益性质的。
 
 ![笔者在高校 Linux 社团](/wp-content/uploads/2019/08/floss/falcon.jpg)
 
@@ -74,4 +74,4 @@ Free Software 一度被人误解，被等同于廉价（Free of Charge）、低�
 
 ![The Code](/wp-content/uploads/2019/08/floss/thecode.jpg)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -124,7 +124,7 @@ session required pam_systemd.so
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: https://wiki.ubuntu.com/LTS
  [4]: http://releases.ubuntu.com/
  [5]: http://repogen.simplylinux.ch/

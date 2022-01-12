@@ -141,7 +141,7 @@ examples/source/ 下有几份样稿可参照，其中 zhsample.md 为中文样�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /docker-quick-start-docker-gitbook-writing-a-book/
  [3]: /use-markdown-to-write-slides/
  [4]: https://github.com/mwhite/resume

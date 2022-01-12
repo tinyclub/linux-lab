@@ -149,4 +149,4 @@ tags:
 - 从 Runtime 内核中抓取：`zcat /proc/config.gz`，如果找不到了 vmlinux，这个不失为一个好方法。
 - 从静态内核 vmlinux 中抓取：`scripts/extract-ikconfig /path/to/vmlinux`。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

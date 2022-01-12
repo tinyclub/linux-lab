@@ -149,7 +149,7 @@ regmap_read(regmap, XXX_REG, &#038;value);
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/03/regmap-1.jpg
  [3]: http://lwn.net/Articles/451789/
  [4]: http://lxr.free-electrons.com/source/include/linux/regmap.h

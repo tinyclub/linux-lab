@@ -26,7 +26,7 @@ tags:
 
 这个合集**共 106 篇，合计 529 页，5.8M**。内容横跨项目实录、内核开发、效率工具、程序开发、泰晓资讯、LWN 翻译，社区与文化、思维碰撞等几个大的类别。
 
-![Linux 知识星球海报](http://tinylab.org/images/xingqiu/planet-collection.jpg)
+![Linux 知识星球海报](https://tinylab.org/images/xingqiu/planet-collection.jpg)
 
 **扫描上述二维码订阅，即可获得该合集**，也能持续获得后续全年所有星球原创内容，还能受邀加入专属微信群，与数十位 Linux 一线工程师和技术专家们面对面交流。
 
@@ -44,11 +44,11 @@ tags:
 
 - 撰写了*数百篇技术文章*，主要聚焦 Linux，涉及程序开发、源码分析、内核开发、系统优化、调试跟踪、嵌入式 Linux、行业资讯等。
 
-- 组织了 *3 个翻译计划*，包括 [嵌入式 Linux 知识库翻译计划](http://tinylab.org/elinux)，[Linux 内核文档翻译计划](http://tinylab/linux-doc)，[LWN 翻译计划](http://tinylab.lwn)，第 3 个翻译计划目前最活跃。
+- 组织了 *3 个翻译计划*，包括 [嵌入式 Linux 知识库翻译计划](https://tinylab.org/elinux)，[Linux 内核文档翻译计划](http://tinylab/linux-doc)，[LWN 翻译计划](http://tinylab.lwn)，第 3 个翻译计划目前最活跃。
 
-- 发起了*数个开源项目*，包括 [Linux Lab: 内核实验室](http://tinylab.org/linux-lab)，[Linux 0.11 Lab: 0.11 内核实验室](http://tinylab.org/linux-0.11-lab)，[X86 Linux AT&T 汇编语言实验室](http://tinylab.org/cs630-qemu-lab), [轻量级流量检测前端 vnstatSVG](http://tinylab.org/vnstatsvg) 等。部分项目已经收获数百 Stars 和 Forks，Linux Lab 已经发布 [v0.2 rc1](https://www.cnbeta.com/articles/soft/870475.htm)。
+- 发起了*数个开源项目*，包括 [Linux Lab: 内核实验室](https://tinylab.org/linux-lab)，[Linux 0.11 Lab: 0.11 内核实验室](https://tinylab.org/linux-0.11-lab)，[X86 Linux AT&T 汇编语言实验室](https://tinylab.org/cs630-qemu-lab), [轻量级流量检测前端 vnstatSVG](https://tinylab.org/vnstatsvg) 等。部分项目已经收获数百 Stars 和 Forks，Linux Lab 已经发布 [v0.2 rc1](https://www.cnbeta.com/articles/soft/870475.htm)。
 
-- 编撰了*多本开源书籍*，包括 [C 语言编程透视](http://tinylab.org/open-c-book)，[Shell 编程范例](http://tinylab.org/open-shell-book)，已经被各大在线课堂、免费编程书目录等收录。笔者还以第一作者撰写了一本英文版书籍《Instant optimizing embedded systems using BusyBox》。
+- 编撰了*多本开源书籍*，包括 [C 语言编程透视](https://tinylab.org/open-c-book)，[Shell 编程范例](https://tinylab.org/open-shell-book)，已经被各大在线课堂、免费编程书目录等收录。笔者还以第一作者撰写了一本英文版书籍《Instant optimizing embedded systems using BusyBox》。
 
 - 建立了 *4 个技术讨论群*，一个是『泰晓原创团队』，一个是『校企 Linux 团队直通车』，前者面向所有一线 Linux 工程师、学生、老师开放，后者面向高校 Linux 社团和企业 Linux 团队负责人开放。还有一个 『LWN 翻译团队』，主要面向所有译者们。最后还有一个只面向会员的 [『Linux 知识星球』][2]讨论组。
 
@@ -56,14 +56,14 @@ tags:
 
 ### 重启公众号
 
-泰晓科技早先只有 2 个发布渠道，一个是 Web 网站：<http://tinylab.org>，一个是公众号：泰晓科技 / TinyLab-Org。公众号在今年重启，*坚持在工作日每天推送一篇文章*，从周一到周五分别推送读者原创、LWN 翻译、专辑连载、产品实践、业界资讯。
+泰晓科技早先只有 2 个发布渠道，一个是 Web 网站：<https://tinylab.org>，一个是公众号：泰晓科技 / TinyLab-Org。公众号在今年重启，*坚持在工作日每天推送一篇文章*，从周一到周五分别推送读者原创、LWN 翻译、专辑连载、产品实践、业界资讯。
 
-![泰晓科技 微信公众号：TinyLab-Org](http://tinylab.org/images/wechat/tinylab-org.jpg)
+![泰晓科技 微信公众号：TinyLab-Org](https://tinylab.org/images/wechat/tinylab-org.jpg)
 <p style="text-align: center;">（扫码关注『泰晓科技』公众号）</p>
 
 上述工作得到了读者们广泛的支持和好评。今年 4 月份，笔者经过审慎地考虑，为了让这些工作能够更持久高质量地做下去，在坚持公益的同时，我们做了两件事。
 
-### 开通 [『付费征稿』](http://tinylab.org/post)，扩大技术原创来源
+### 开通 [『付费征稿』](https://tinylab.org/post)，扩大技术原创来源
 
 一方面，开通了『付费征稿』，以便更多的一线工程师们能够踊跃投稿，不仅给予大家展示才华的机会，也给予大家必要的小激励，算是给熬夜写稿的作者们一点贴心的犒劳，或加几个鸡腿，或买几罐可乐。
 
@@ -221,7 +221,7 @@ tags:
 
 所以，接下来有几个工作正在做或者计划去做：
 
-- 继续强化 [LWN 翻译计划](http://tinylab.org/lwn)，加强新发布内容的跟踪与翻译，目前已经实质上是 [LWN](http://lwn.net) 的独家中文翻译平台
+- 继续强化 [LWN 翻译计划](https://tinylab.org/lwn)，加强新发布内容的跟踪与翻译，目前已经实质上是 [LWN](http://lwn.net) 的独家中文翻译平台
 
 - 加强 Linux Lab 项目的实际使用案例，确保大家能够真正把 Linux Lab 用到实际学习和开发中，大大提升学习效率
 
@@ -260,7 +260,7 @@ tags:
 
 上面的部分主题已经发表在泰晓科技、知乎等平台上，未来计划比较系统地整理和归纳，持续发表在『Linux 知识星球』。比如：
 
-- [为什么计算机专业的学生要学习 Linux 开源技术？](http://tinylab.org/why-computer-students-learn-linux-open-source-technologies/)
+- [为什么计算机专业的学生要学习 Linux 开源技术？](https://tinylab.org/why-computer-students-learn-linux-open-source-technologies/)
   - [知乎](https://www.zhihu.com/question/19934684/answer/43155800)，347 赞
 
 - [从事嵌入式行业的你，现在年薪多少，有什么经历想和大家分享？](https://www.zhihu.com/question/55453399/answer/144885919)，432 赞
@@ -269,11 +269,11 @@ tags:
 
 - [Android 手机是否会越用越卡？](https://www.zhihu.com/question/31212416/answer/51024984)，799 赞
 
-- [智能手机系统优化的演进与实践](http://tinylab.org/smartphone-sys-opt-evolution-and-practice/)，2015
+- [智能手机系统优化的演进与实践](https://tinylab.org/smartphone-sys-opt-evolution-and-practice/)，2015
 
-- [嵌入式系统优化](http://tinylab.org/embedded-linux-optimization/), 2011
+- [嵌入式系统优化](https://tinylab.org/embedded-linux-optimization/), 2011
 
-- [Android Linux 可靠性（RAS）研究与实践](http://tinylab.org/android-linux-ras-research-and-practice/), 2013
+- [Android Linux 可靠性（RAS）研究与实践](https://tinylab.org/android-linux-ras-research-and-practice/), 2013
 
 也欢迎各位读者提出自己感兴趣的问题和主题，我们整理后，一方面基于自己经验解答，另外一方面邀请更多专业嘉宾加入。可以通过扫描文末二维码添加笔者微信号。
 
@@ -283,24 +283,24 @@ tags:
 
 ### 撰写原创稿件
 
-好记性不如烂笔头，通过撰写原创稿件，不断记录工作日志，分享产品研发经验，获得其他同学反馈，不断探讨，完善思路，加深理解，提升技能。请参考[付费征稿流程](http://tinylab.org/post)。
+好记性不如烂笔头，通过撰写原创稿件，不断记录工作日志，分享产品研发经验，获得其他同学反馈，不断探讨，完善思路，加深理解，提升技能。请参考[付费征稿流程](https://tinylab.org/post)。
 
 ### 参与翻译项目
 
-通过参与 [LWN 翻译计划](http://tinylab.org/lwn) 等翻译项目，一方面跟踪 Linux 技术演进轨迹和前沿动态，另一方面，提升英文的读写能力。
+通过参与 [LWN 翻译计划](https://tinylab.org/lwn) 等翻译项目，一方面跟踪 Linux 技术演进轨迹和前沿动态，另一方面，提升英文的读写能力。
 
 ### 关注 泰晓科技: Tinylab-Org 微信公众号
 
 扫描下方二维码，设为星标，更及时获得原创文章推送，通过留言发表自己的看法，对好看的文章点击 “在看” 并通过朋友圈分享给周边的同学。
 
-![泰晓科技 微信公众号：TinyLab-Org](http://tinylab.org/images/wechat/tinylab-org.jpg)
+![泰晓科技 微信公众号：TinyLab-Org](https://tinylab.org/images/wechat/tinylab-org.jpg)
 <p style="text-align:center">（扫码关注『泰晓科技』公众号）</p>
 
 ### 订阅『Linux 知识星球』
 
 以实际行动支持作者们的原创工作，因此收获大家分享的技术干货和各类思考，结识来自各个企业的一线工程师与技术专家，让整个圈子能够更良性的运转起来。
 
-![Linux 知识星球](http://tinylab.org/images/xingqiu/tinylaborg.jpg)
+![Linux 知识星球](https://tinylab.org/images/xingqiu/tinylaborg.jpg)
 <p style="text-align:center">（扫码关注『Linux 知识星球』）</p>
 
 
@@ -310,13 +310,13 @@ tags:
 
 所以，下面简单回顾一下 “我的大学” 以及 “我的工作”，这些基本都围绕 Linux，希望可以打发一下大家的碎片时间。
 
-由于内容篇幅过长，这部分请阅读 [细数我与 Linux 这十三年](http://tinylab.org/falcon-and-linux)。
+由于内容篇幅过长，这部分请阅读 [细数我与 Linux 这十三年](https://tinylab.org/falcon-and-linux)。
 
 ## 送您一张免费体验卡
 
 非常感谢您能耐心读到这里，下面奉上一张免费体验卡，可以多人使用，也欢迎转赠给周边的朋友。
 
-![『Linux 知识星球』免费体验卡](http://tinylab.org/images/xingqiu/planet-free-card.jpg)
+![『Linux 知识星球』免费体验卡](https://tinylab.org/images/xingqiu/planet-free-card.jpg)
 
 ## 寄语
 
@@ -333,5 +333,5 @@ tags:
 然后一起学习和研究 Linux，一起成长。Let's go together, no longer alone。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://wx.zsxq.com/dweb/#/index/455128114458

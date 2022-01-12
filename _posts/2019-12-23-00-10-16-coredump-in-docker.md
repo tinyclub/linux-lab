@@ -19,7 +19,7 @@ tags:
 
 ## 背景简介
 
-[《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283) 课程使用 [Linux Lab](http://tinylab.org/linux-lab) 来做实验环境，刚开始有学员报告说，当程序出现段错误时，即使用 ulimit 做了配置，也无法正常生成 core 文件。
+[《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283) 课程使用 [Linux Lab](https://tinylab.org/linux-lab) 来做实验环境，刚开始有学员报告说，当程序出现段错误时，即使用 ulimit 做了配置，也无法正常生成 core 文件。
 
 后面分析并解决了这一问题，本文记录一下解决方法。
 
@@ -58,4 +58,4 @@ tags:
 
 core 文件是很重要的调试手段，所以确保 Docker 容器也能正常生成 core 文件是非常重要。解决完该问题以后，让 Linux Lab 工作得更完美了。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -97,4 +97,4 @@ tags:
 > 9. 输出格式化
 > 10. 输入输出到文件
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -161,7 +161,7 @@ bin  conf  etc  init  initrd.img-2.6.24-12-generic  lib  modules  sbin  scripts 
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /optimizing-embedded-systems-using-busybox/
  [4]: http://en.wikipedia.org/wiki/Initrd
  [5]: http://en.wikipedia.org/wiki/Loop_device

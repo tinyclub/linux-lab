@@ -106,4 +106,4 @@ tmux 是另外一款分屏工具，有很多粉丝。
 * `Ctrl + b, o`
 * `Ctrl + b, 空格`：上下分屏与左右分屏切换
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

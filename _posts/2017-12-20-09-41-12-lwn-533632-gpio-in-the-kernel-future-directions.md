@@ -150,7 +150,7 @@ void gpio_block_unregister(struct gpio_block *block);
 
 和前述的基于描述符的 API 修改补丁相比，这个补丁并没有引起大家的太多关注（它显然也还没有和前一个补丁集成）。最可能的原因是，需要该功能的开发人员并不多。当然，对于一个补丁来说，如果有其存在的必要性，同时又没有人反对的话，那么最终也可能被合并到主线中去。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lkml.org/lkml/2009/10/10/162
 [3]: https://lwn.net/Articles/531848/
 [4]: https://en.wikipedia.org/wiki/Bit_banging

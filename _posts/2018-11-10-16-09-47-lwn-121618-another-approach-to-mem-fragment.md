@@ -64,7 +64,7 @@ Mel 的 [方法][5] 是将待分配的内存分为三种类型（译者注：根
 
 即使还未支持主动释放，这个补丁也已经能够帮助我们极大地改善内核 higher-order 内存分配的性能了。Mel 给出了压力测试的对比结果；基于主线内核（代号 vanilla），反复尝试申请 order 为 10 的大内存，160 次中只有 3 次成功。添加补丁后，同样次数申请可以成功 81 次。看起来，新的设计确实有助于改进这个问题。但这个补丁能否最终被内核主线所接受，还有很长的路要走，有待继续观察。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: /lwn-105021
 [3]: /lwn-101230
 [4]: https://en.wikipedia.org/wiki/Industry_Standard_Architecture

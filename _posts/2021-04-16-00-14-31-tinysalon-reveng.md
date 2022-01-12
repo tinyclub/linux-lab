@@ -43,7 +43,7 @@ Loyou 是大学校友和好友，也是一位技术控，从事过逆向分析�
 
 **内容简介**：
 
-最近几期社区直播课程都围绕程序装载与运行原理及其应用案例，前面我们已经邀请两位老师介绍了 [Windows Mini PE Loader](http://tinylab.org/tinysalon-pe/) 和 [Linux Mini ELF Loader](http://tinylab.org/tinysalon-elf/)，这一期和接下来一期主要介绍两个重要的应用案例：逆向和 Livepatch，欢迎大家关注。
+最近几期社区直播课程都围绕程序装载与运行原理及其应用案例，前面我们已经邀请两位老师介绍了 [Windows Mini PE Loader](https://tinylab.org/tinysalon-pe/) 和 [Linux Mini ELF Loader](https://tinylab.org/tinysalon-elf/)，这一期和接下来一期主要介绍两个重要的应用案例：逆向和 Livepatch，欢迎大家关注。
 
 **内容大纲**：
 
@@ -61,4 +61,4 @@ Loyou 是大学校友和好友，也是一位技术控，从事过逆向分析�
 
 直播完成以后会剪辑发布到泰晓学院，欢迎关注 [泰晓学院](https://m.cctalk.com/inst/sh8qtdag) 了解更多已经上传的视频课程。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

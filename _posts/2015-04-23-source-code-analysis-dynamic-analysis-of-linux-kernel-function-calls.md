@@ -305,7 +305,7 @@ Linux 领域聚拢了太多的天才，创意如泉涌般不断滋润 IT 世界�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.linux-mips.org/archives/linux-mips/2009-04/msg00244.html
  [3]: http://lwn.net
  [4]: https://lwn.net/Articles/365835/

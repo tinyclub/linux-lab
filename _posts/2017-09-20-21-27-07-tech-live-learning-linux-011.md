@@ -24,8 +24,8 @@ tags:
 
 最近一个月，我们陆续组织了两场技术直播，这两场都是介绍 Linux Lab —— 一个高效的 Linux 内核和嵌入式 Linux 实验环境：
 
-* [用 Linux Lab 做《奔跑吧 Linux 内核》实验](http://tinylab.org/tech-live-with-obs-huya-openshot/)
-* [用 Linux Lab 做 Uboot 实验](http://tinylab.org/tech-live-learning-uboot-in-linux-lab/)
+* [用 Linux Lab 做《奔跑吧 Linux 内核》实验](https://tinylab.org/tech-live-with-obs-huya-openshot/)
+* [用 Linux Lab 做 Uboot 实验](https://tinylab.org/tech-live-learning-uboot-in-linux-lab/)
 
 本期我们继续介绍实验环境，不过这次是 Linux 0.11 Lab：一个高效的 Linux 0.11 内核实验环境，专门为赵博士的《Linux内核完全注释》打造，可用来配合做书中的实验，也可以用来学习大学的操作系统课程。
 
@@ -85,7 +85,7 @@ Linux 0.11 Lab 的主要特性如下：
 本次直播在原 [泰晓科技 Linux 直播频道](https://3qk.easyvaas.com/show/homepage/index?id=423) 的基础上，增加另外一种直播方式，那就是直接采用 [泰晓实验云台/Cloud Lab](/cloud-lab) + 微信语音。
 
 
-[1]: http://tinylab.org
-[2]: http://tinylab.org/linux-0.11-lab
+[1]: https://tinylab.org
+[2]: https://tinylab.org/linux-0.11-lab
 [3]: https://weidian.com/i/1487448443
 [5]: https://www.qingcloud.com/

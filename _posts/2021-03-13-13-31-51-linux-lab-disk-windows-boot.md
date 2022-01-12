@@ -167,4 +167,4 @@ vmboot 是我们研发的一款智能启动软件，安装以后，插入 Linux 
 1. [Linux Lab 正在新增对 Linux Lab Disk 的支持](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)
 2. [How to boot from USB in VirtualBox - AIO Boot](https://www.aioboot.com/en/boot-from-usb-in-virtualbox/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

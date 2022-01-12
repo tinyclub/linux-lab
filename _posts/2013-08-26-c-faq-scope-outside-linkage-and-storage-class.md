@@ -13,7 +13,7 @@ categories:
   - C 语言
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/24
 
 在看 c-faq ，和 c 或者 c++ 的 RFC 的时候，经常见到一些 scope, linkage 和 storage class 的字眼，让人摸不着头脑！下面就这些概念做一些说明：

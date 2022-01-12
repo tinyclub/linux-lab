@@ -19,7 +19,7 @@ tags:
 
 有一个具体的需求：
 
-> 那就是 docker for mac 的内核没有编译进 minix 内核模块，导致 [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab) 在这种情况下无法挂载 minix 的文件系统。所以，得根据用户内核的情况，单独去编译这个内核模块。
+> 那就是 docker for mac 的内核没有编译进 minix 内核模块，导致 [Linux 0.11 Lab](https://tinylab.org/linux-0.11-lab) 在这种情况下无法挂载 minix 的文件系统。所以，得根据用户内核的情况，单独去编译这个内核模块。
 
 这里简单介绍一下，如何快速下载相应的模块源码，并在 host 下编译。
 
@@ -96,4 +96,4 @@ tags:
 如果内核源码目录有内容没有被提交，或者不干净，那么会在内核版本后面加上 + 和 dirty，如果不想关注它们，直接把 LOCALVERSION 设置为空。也可以用 `git clean -fdX` 和 `git reset --hard` 清理一下。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

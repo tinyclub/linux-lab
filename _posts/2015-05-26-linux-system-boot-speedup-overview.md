@@ -90,7 +90,7 @@ Linux 世界精彩纷呈，因为它自由、开放，是众多牛人智慧碰�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.linux-mips.org/wiki/PMON_2000
  [3]: http://elinux.org/Kernel_Function_Trace
  [4]: http://ltp.sourceforge.net/coverage/gcov.php

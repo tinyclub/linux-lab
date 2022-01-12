@@ -264,6 +264,6 @@ categories:
   * 缓冲区溢出与注入分析
   * APUE 第 14 章，程序 14-11
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg

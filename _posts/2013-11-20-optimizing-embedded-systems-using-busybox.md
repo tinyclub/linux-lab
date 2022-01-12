@@ -28,11 +28,11 @@ categories:
 
 This book will teach you how to build an embedded (Android Linux) system withBusybox, enhance its functionality to meet diverse system requirements, andoptimize it to provide a better user experience for embedded products (E.g.Android/Linux Smartphones or tablets).
 
-[TinyLab.org](http://tinylab.org) will work as a direct communication channel between the authors and thereaders, welcome your feedbacks; the related topics of this book will be deeplydiscussed here, welcome your participation.
+[TinyLab.org](https://tinylab.org) will work as a direct communication channel between the authors and thereaders, welcome your feedbacks; the related topics of this book will be deeplydiscussed here, welcome your participation.
 
 ## Cover of this book 
 
-![The cover of the book: Instant Optimizing Embedded Systems using Busybox [Instant]](http://tinylab.org/wp-content/uploads/2019/08/busybox-cover.gif)
+![The cover of the book: Instant Optimizing Embedded Systems using Busybox [Instant]](https://tinylab.org/wp-content/uploads/2019/08/busybox-cover.gif)
 
 ## Overview 
 

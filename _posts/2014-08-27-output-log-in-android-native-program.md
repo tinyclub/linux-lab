@@ -107,4 +107,4 @@ Android 给 Native 层的程序提供一个 liblog 库，用来输出日志。�
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org

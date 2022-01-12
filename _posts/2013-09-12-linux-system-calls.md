@@ -306,4 +306,4 @@ vdso 的具体实现在 arch/x86/vdso 中，其中的 vdso.lds.S 就定义了具
 
 [6]: http://www.linuxjournal.com/content/creating-vdso-colonels-other-chicken
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

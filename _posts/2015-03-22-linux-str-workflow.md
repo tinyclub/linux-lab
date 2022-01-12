@@ -80,7 +80,7 @@ Loongson-3A 相关实现请参考：[arch/mips/loongson/common/pm.c][3]
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/03/linux_str.jpg
  [3]: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/loongson/common/pm.c
  [4]: http://www.loongson.cn/

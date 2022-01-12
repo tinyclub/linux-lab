@@ -37,7 +37,7 @@ CMA 用来分配连续物理内存，因此还有较大的限制。如果硬件�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://events.linuxfoundation.org/images/stories/slides/lfcs2013_ham.pdf
  [3]: /wp-content/uploads/2015/07/tizen-kern-mm.jpg
  [4]: https://lwn.net/Articles/416649/

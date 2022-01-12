@@ -60,7 +60,7 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 
 * [The RISC-V Analysis (in Chinese)](https://medium.com/@yuxing.tang/the-risc-v-analysis-in-chinese-a26abaac03f3)
 * [Risc-V 开放源码首页](https://github.com/riscv)
-* [Risc-V 发展迅猛，正是关注好时机](http://tinylab.org/riscv-overview/)
+* [Risc-V 发展迅猛，正是关注好时机](https://tinylab.org/riscv-overview/)
 
 ### 引导程序
 
@@ -71,12 +71,12 @@ Linux 相关的开源技术对于学生来说，特别是计算机专业的学�
 * [Using QEMU for Embedded Systems Development, Part 3][3]
 * [利用 Qemu 模拟嵌入式系统制作全过程][4]
 
-而最近，更是可以通过 [Linux Lab](http://tinylab.org/linux-lab) 更便捷地做 Uboot 实验：
+而最近，更是可以通过 [Linux Lab](https://tinylab.org/linux-lab) 更便捷地做 Uboot 实验：
 
 * [命令行演示](http://showterm.io/11f5ae44b211b56a5d267)
 * [视频演示](https://v.qq.com/x/page/l0549rgi54e.html)
 
-也可以通过 [固件和引导程序介绍](http://tinylab.org/firmware-and-bootloaders/) 获取更多引导程序相关的信息。
+也可以通过 [固件和引导程序介绍](https://tinylab.org/firmware-and-bootloaders/) 获取更多引导程序相关的信息。
 
 ### 操作系统
 
@@ -99,10 +99,10 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 * [Linux 0.11 实验环境和源代码](https://gitee.com/tinylab/linux-0.11-lab.git)
 * [五分钟 Linux 0.11 实验环境使用指南][11] 。
 
-如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](http://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建 Linux 内核实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot、Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试和测试，也可通过 Web 远程访问。
+如果想研究最新的 Linux 内核，则可以使用 [Linux Lab](https://tinylab.org/linux-lab)。利用它可以通过 Docker 一键搭建 Linux 内核实验环境，通过 Qemu 支持上百款免费的开发板，集成了交叉编译环境、Buildroot、Uboot 等嵌入式 Linux 开发的必备工具，支持串口和图形启动，支持在线调试和测试，也可通过 Web 远程访问。
 
 * [Linux Lab 源代码](https://gitee.com/tinylab/linux-lab)
-* [利用 Linux Lab 完成嵌入式系统软件开发全过程](http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/)
+* [利用 Linux Lab 完成嵌入式系统软件开发全过程](https://tinylab.org/using-linux-lab-to-do-embedded-linux-development/)
 
 关于 Linux 0.11 Lab 和 Linux Lab 的用法详见：
 
@@ -125,7 +125,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 结合上面的操作系统课程，特别推荐一门旧金山大学的课程：[CS630][13]，本来这个老师 (Allan B. Cruse) 是在 I386 真机上做实验的，笔者完善了 Makefile，然后就可以在 Qemu 上做实验：
 
 * [CS630 汇编语言课程实验环境][14]。
-* [Linux 下通过 Qemu 学习 X86 AT&T 汇编语言](http://tinylab.org/learn-x86-language-courses-on-the-ubuntu-qemu-cs630/)
+* [Linux 下通过 Qemu 学习 X86 AT&T 汇编语言](https://tinylab.org/learn-x86-language-courses-on-the-ubuntu-qemu-cs630/)
 
 分享一个趣事：笔者给 Cruse 老师分享了通过 Qemu 做实验的方法，他说这个 Online 学生不错，可以直接拿个 A ^-^。
 
@@ -143,8 +143,8 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 而 X86 汇编，则不要错过刚介绍的 [CS630 课程][13] 以及 Allan B. Cruse 的 [个人主页][15]。再来两则资料：
 
-* [Linux 汇编语言快速上手：4大架构一块学，包括32位和64位](http://tinylab.org/linux-assembly-language-quick-start/)
-* [MIPS / Linux 汇编语言编程实例](http://tinylab.org/practical-mips-assembly-language-programming-in-linux/)
+* [Linux 汇编语言快速上手：4大架构一块学，包括32位和64位](https://tinylab.org/linux-assembly-language-quick-start/)
+* [MIPS / Linux 汇编语言编程实例](https://tinylab.org/practical-mips-assembly-language-programming-in-linux/)
 
 关于 CS630 Qemu Lab 以及 Linux Lab 中汇编语言例子的用法请参考：
 
@@ -190,7 +190,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 上面忘记提 Gcc，Gdb 之类了。在 Linux 下面学习 C，离不开他们，当然还有编辑器 Vim + Cscope + Ctags，还有 Gprof, Gcov 等。
 
-由于 [Linux Lab](http://tinylab.org/linux-lab) 提供了非常丰富的开发工具，因此也可以用 Linux Lab 来做 C 语言实验。
+由于 [Linux Lab](https://tinylab.org/linux-lab) 提供了非常丰富的开发工具，因此也可以用 Linux Lab 来做 C 语言实验。
 
 * [Linux 下 C 语言演示](http://showterm.io/a98435fb1b79b83954775)
 
@@ -220,7 +220,7 @@ Linux 本身绝大部分都是 Open 的，在学习操作系统课程的同时�
 
 另外，还可以去看这些 Gnu Toolchains 的源代码。如果觉得这个东西太庞大。也可以去阅读刚才提到的那个天才：法布里斯·贝拉，他写的 [TCC：Tiny C Compiler][22]，可以看到一个完整又小巧的 C 编译器是如何实现的。
 
-对了，笔者同样有写一个相关的博客系列，即 [Linux 下 C 语言程序开发过程的视图](http://tinylab.org/the-c-programming-language-insight-publishing-version-0-01/)，后面有整理成开源书籍，即上面提到的[《C 语言编程透视》 ][19] 。
+对了，笔者同样有写一个相关的博客系列，即 [Linux 下 C 语言程序开发过程的视图](https://tinylab.org/the-c-programming-language-insight-publishing-version-0-01/)，后面有整理成开源书籍，即上面提到的[《C 语言编程透视》 ][19] 。
 
 * [Linux 下 C 语言编译过程演示](http://showterm.io/887b5ee77e3f377035d01)
 
@@ -256,7 +256,7 @@ Mysql, PostgreSQL, SQLite? 在上学时，这些东西就很火，这么多年�
 
 这套平台已逐步添加了包括汇编、C、Linux 0.11、Linux 等在内的实验环境，更多环境正在陆续开发中。欢迎提出更多想法、需求和建议。
 
-* 项目首页：<http://tinylab.org/cloud-lab>
+* 项目首页：<https://tinylab.org/cloud-lab>
 * 代码仓库：<https://gitee.com/tinylab/cloud-lab>
 
 有了 Cloud Lab，以往要花几周才能搭建的实验环境，现在几分钟就可以获得，实验环境从此不再成为我们学习计算机这类实操课程的阻力。
@@ -290,14 +290,14 @@ Linux Lab Disk 使用示例图：
 
 另外，也录制了几份课程的实验演示视频，欢迎自由观看（部分 showterm.io 链接可能已经失效）：
 
-* [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
+* [CS630 Qemu Lab](https://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
     * [CS630 Qemu Lab 基本用法](http://showdesk.io/2017-03-18-15-21-20-cs630-qemu-lab-usage-00-03-33/)
 
-* [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
+* [Linux 0.11 Lab](https://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
     * [Linux 0.11 Lab 基本用法](http://showdesk.io/2017-03-18-17-54-23-linux-0.11-lab-usage-00-06-42/)
     * [为 Linux 0.11 添加系统调用](http://showterm.io/4b628301d2d45936a7f8a)
 
-* [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
+* [Linux Lab](https://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
     * [Linux Lab 基本用法](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
     * [通过 Linux Lab 做《奔跑吧 Linux 内核》实验](https://v.qq.com/x/page/y0543o6zlh5.html)
     * [通过 Linux Lab 做 Uboot 实验](https://v.qq.com/x/page/l0549rgi54e.html)
@@ -318,7 +318,7 @@ Linux Lab Disk 使用示例图：
 
 如果觉得文章有帮助，也欢迎扫描如下二维码鼓励和支持我们。
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.linkedin.com/
  [3]: http://www.linuxforu.com/2011/08/qemu-for-embedded-systems-development-part-3/
  [4]: /using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
@@ -329,7 +329,7 @@ Linux Lab Disk 使用示例图：
  [9]: http://www.linuxforu.com/2011/07/qemu-for-embedded-systems-development-part-2/
  [10]: https://gitee.com/tinylab/linux-0.11-lab
  [11]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
- [12]: http://tinylab.org/assembly/
+ [12]: https://tinylab.org/assembly/
  [13]: http://www.cs.usfca.edu/~cruse/cs630f06/
  [14]: /cs630-qemu-lab/
  [15]: http://www.cs.usfca.edu/~cruse/
@@ -339,7 +339,7 @@ Linux Lab Disk 使用示例图：
  [20]: https://tinylab.gitbooks.io/shellbook
  [22]: http://bellard.org/tcc/
  [23]: https://en.wikipedia.org/wiki/Comparison_of_source_code_hosting_facilities
- [24]: http://tinylab.org/markdown-lab
+ [24]: https://tinylab.org/markdown-lab
  [26]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartI-2007-03-25.pdf
  [27]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartII-2007-03-25.pdf
  [28]: /wp-content/uploads/hacking-helloworld/HackingHelloWorld-PartIII-2007-03-25.pdf

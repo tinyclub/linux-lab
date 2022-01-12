@@ -126,5 +126,5 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /kgdb-debugging-kernel/

@@ -19,7 +19,7 @@
 	<pre><xsl:value-of select="index/intro"/></pre>
   </div>
   <div id="footer">
-    <a href="http://www.tinylab.org/vnstatsvg/">vnStat SVG frontend</a> 2.0-rc1 - ©2008-2013 Wu Zhangjin (wuzhangjin _at_ gmail _dot_ com) of <a href="http://tinylab.org">TinyLab.org</a>
+    <a href="http://www.tinylab.org/vnstatsvg/">vnStat SVG frontend</a> 2.0-rc1 - ©2008-2013 Wu Zhangjin (wuzhangjin _at_ gmail _dot_ com) of <a href="https://tinylab.org">TinyLab.org</a>
   </div>
 </div>
 

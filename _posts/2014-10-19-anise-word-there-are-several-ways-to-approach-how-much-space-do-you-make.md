@@ -214,5 +214,5 @@ N 可以取 1, 2, 4, 8, &#8230;。当 N 指定时，结构体成员实际对齐�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://developer.gnome.org/glib/stable/glib-GVariant.html

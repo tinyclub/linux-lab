@@ -25,7 +25,7 @@ tags:
 
 刚开始有几个同学在问实时抢占补丁（RT Preempt）的维护状态、移植、验证和优化等内容，也提到了 RTAI、Xenomai 等其他实时化方案。后面，来自清华大学的陶老师针对实时抢占补丁提了三个问题，笔者结合自己早期的相关研究和社区工作进行了回答。内容整理如下。
 
-**注**：如果想事先了解更多 Linux 实时抢占项目的背景，可以阅读笔者早前的文章：《[嵌入式 Linux 系统怎样保证实时性](http://tinylab.org/how-to-make-a-linux-system-real-time/)》。
+**注**：如果想事先了解更多 Linux 实时抢占项目的背景，可以阅读笔者早前的文章：《[嵌入式 Linux 系统怎样保证实时性](https://tinylab.org/how-to-make-a-linux-system-real-time/)》。
 
 ## 三问三答
 
@@ -63,4 +63,4 @@ RT 从 2006 年左右启动至今，Linux 内核本身已经达到了一定的�
 
 笔者从 2008 年左右从事 RT Preempt 相关的研究，完成了[龙芯 2F 系列的 RT Preempt](https://github.com/tinyclub/preempt-rt-linux) 支持，[移植 FTrace 到了 MIPS/龙芯 平台](http://lwn.net/Articles/361128/)，也维护了一段时间的 MIPS 平台的 RT Preempt，另外，也算是在国内较早系统地研究 RT Preempt，相应的研究论文报告为：《[Research and Practice on Preempt-RT Patch of Linux](/wp-content/uploads/2015/11/linux-preempt-rt-research-and-practice.pdf)》。未来希望跟企业合作，在实际工业应用方面做一些尝试，与此同时，会优先在泰晓这个平台分享更多的相关技术分析文章。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

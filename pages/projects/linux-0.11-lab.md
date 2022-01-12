@@ -20,7 +20,7 @@ tags:
   * 使用文档：[README.md][2]
 
   * 考古计划
-      * [Linux 考古笔记](http://tinylab.org/lad-book)
+      * [Linux 考古笔记](https://tinylab.org/lad-book)
 
   * 在线演示
       * 命令行

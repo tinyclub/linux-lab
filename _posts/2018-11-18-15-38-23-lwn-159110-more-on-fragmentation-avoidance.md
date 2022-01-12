@@ -53,7 +53,7 @@ Linus 认为，正确的解决方案是针对那些（少数）需要清理出�
 其他人还指出，针对一台设备的所有工作负载情况进行调优是非常困难的，特别是那些有大量用户的系统。因此，尽管 Linus 的提议遭到了不少反对（译者注，这些反对的声音实际上起到了支持 Mel 先生的作用），但是 Mel 的主动避免内存碎片（active fragmentation avoidance）补丁看上去还是不会很快被 2.6 版本的内核所接纳。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lwn.net/Articles/159111/
 [3]: /lwn-158211/
 [4]: https://lwn.net/Articles/159112/

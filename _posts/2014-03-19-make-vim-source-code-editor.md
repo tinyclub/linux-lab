@@ -321,7 +321,7 @@ Linux 下有很多优秀的程序编辑工具，包括专业的文本编辑器�
   * C Traps & Pitfalls
   * C FAQ
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
  [5]: http://www.ibm.com/developerworks/cn/linux/l-tip-vim1/

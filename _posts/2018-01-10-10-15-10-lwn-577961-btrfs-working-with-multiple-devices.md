@@ -297,4 +297,4 @@ btrfs device delete missing /mnt
 
 内置的对于 RAID 阵列的支持是 Btrfs 的关键功能之一，但高级功能列表并不止于此。Btrfs 的另一个重要方面是支持子卷和快照; 这些将在本系列的下一部分中讨论。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

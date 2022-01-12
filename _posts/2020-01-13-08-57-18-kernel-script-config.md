@@ -77,4 +77,4 @@ tags:
 
 另外需要注意的是，`scripts/config` 并不做依赖检查，如果目标选项依赖的其他选项是禁用的，那么将无法成功开启目标选项。这个时候，需要通过 `make menuconfig` 查找该选项的 depends 项，然后按照依赖顺序依次通过 `scripts/config` 开启才行。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

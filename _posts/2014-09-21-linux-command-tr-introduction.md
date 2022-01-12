@@ -45,4 +45,4 @@ echo "thIs iSS aa Test" | tr -cd "a-z\n\40"   # out: ths i aa est               
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

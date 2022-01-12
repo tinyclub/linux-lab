@@ -33,7 +33,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /tinysalon/
  [3]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5zaq5j30c80gjq42.jpg
  [4]: /wp-content/uploads/2015/06/salon/005wLCQdjw1eqjks5pj1jj30c80gjq4e.jpg

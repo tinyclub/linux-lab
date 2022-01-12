@@ -554,7 +554,7 @@ respawn：这个指定的进程将被重启，任何时候当它退出时。这�
   * 《UNIX 环境高级编程》进程关系 一章
   * Summer School of DSLab, [2007][6], [2006][7]
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
  [5]: /shell-programming-paradigm-of-process-operations/

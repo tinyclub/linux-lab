@@ -103,7 +103,7 @@ done
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://en.wikipedia.org/wiki/Newline
  [3]: http://en.wikipedia.org/wiki/ANSI_escape_code
  [4]: http://misc.flogisoft.com/bash/tip_colors_and_formatting

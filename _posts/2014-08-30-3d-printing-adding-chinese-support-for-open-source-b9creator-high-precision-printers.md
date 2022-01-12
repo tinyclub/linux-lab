@@ -133,7 +133,7 @@ $ ./B9Creator
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://b9creator.com/
  [4]: http://b9creator.com/getstarted/
  [5]: http://my.tv.sohu.com/us/63290008/54522012.shtml

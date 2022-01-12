@@ -136,7 +136,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://www.kernel.org/doc/Documentation/zh_CN/CodingStyle
  [3]: http://www.gnu.org/prep/standards/standards.html
  [4]: http://www.denx.de/wiki/U-Boot/CodingStyle

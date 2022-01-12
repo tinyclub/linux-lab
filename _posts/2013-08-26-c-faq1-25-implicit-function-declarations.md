@@ -11,7 +11,7 @@ categories:
   - C 语言
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/24
 
 在 C 语言中，隐式函数声明是指函数在调用之前没有明确的声明或定义。   不同的编译器对待隐式函数声明的方式不同。在 GCC 中，编译器只会给出一个警告，但是只要不和默认函数原型冲突，编译器是不会报错的。   下面来看一个实验：

@@ -29,7 +29,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 不过基于 Buildroot 的方式还是有一些不足，例如：需要临时下载 1.2G 左右的软件包，临时编译 Qemu、交叉工具链、内核和文件系统，这一路下来需要等待和耗费非常多的时间。
 
-[Linux Lab](http://tinylab.org/linux-lab) 正好能够很好地解决这些问题，它允许提前编译好上述工具因此只需要下载最关键的软件包，对于在线版的 Linux Lab，还会预先下载部分软件包。这些功能允许开发者极速体验一款新的处理器或者开发板，并根据需要仅仅重新编译需要开发的那部分软件，因此会节约大量的时间，也会相应地降低开发门槛。
+[Linux Lab](https://tinylab.org/linux-lab) 正好能够很好地解决这些问题，它允许提前编译好上述工具因此只需要下载最关键的软件包，对于在线版的 Linux Lab，还会预先下载部分软件包。这些功能允许开发者极速体验一款新的处理器或者开发板，并根据需要仅仅重新编译需要开发的那部分软件，因此会节约大量的时间，也会相应地降低开发门槛。
 
 日前，基于 [C-SKY Linux](https://github.com/c-sky) 的开源成果，与 Guo Ren 同学通过 [Cloud Lab](/cloud-lab) 在线协作，经过大约一周多的努力，终于以插件的方式在 Linux Lab 中添加了对 C-SKY ck810 处理器 Linux 开发环境的支持：
 
@@ -39,7 +39,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 该插件使用起来非常简单，先介绍在线使用。
 
-如果想在本地使用，也很方便，参考 [Linux Lab](http://tinylab.org/linux-lab) 先下载和安装好 [Cloud Lab](http://tinylab.org/cloud-lab) 和 Linux Lab，然后参考 [csky 插件](https://gitee.com/tinylab/csky) 的文档完成下述过程。
+如果想在本地使用，也很方便，参考 [Linux Lab](https://tinylab.org/linux-lab) 先下载和安装好 [Cloud Lab](https://tinylab.org/cloud-lab) 和 Linux Lab，然后参考 [csky 插件](https://gitee.com/tinylab/csky) 的文档完成下述过程。
 
     $ git clone https://gitee.com/tinylab/cloud-lab.git
     $ cd cloud-lab
@@ -74,7 +74,7 @@ C-SKY CPU 体系结构由 [杭州中天微系统有限公司](http://www.c-sky.c
 
 由于该插件新增的 `csky/virt` 虚拟开发板完美支持 Linux Lab 的绝大部分功能（目前暂时不支持Uboot），所以用法跟其他已有的虚拟开发板类似。
 
-更多具体的用法请直接参考 [Linux Lab](http://tinylab.org/linux-lab) 以及 Linux Lab 源码中的 [README.md](https://gitee.com/tinylab/linux-lab/blob/master/README.md)。
+更多具体的用法请直接参考 [Linux Lab](https://tinylab.org/linux-lab) 以及 Linux Lab 源码中的 [README.md](https://gitee.com/tinylab/linux-lab/blob/master/README.md)。
 
 ## 后记
 
@@ -90,4 +90,4 @@ Linux Lab 一开始就加入了 4 大处理器架构和 6 款虚拟开发板，�
 
 目前正计划为 Linux Lab 添加龙芯处理器的 Linux 开发插件，敬请期待。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

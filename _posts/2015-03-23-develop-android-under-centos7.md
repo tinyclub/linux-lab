@@ -236,7 +236,7 @@ PyCharm 为爱好者们提供了一个免费的[Community版本][12]，尽情想
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://wiki.centos.org/HowTos/InstallFromUSBkey
  [3]: http://fedoraproject.org/wiki/EPEL
  [4]: http://source.android.com/source/initializing.html

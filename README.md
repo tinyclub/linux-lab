@@ -1,7 +1,7 @@
 
 ## 简介
 
-该仓库为[泰晓科技](http://tinylab.org)主站源码。
+该仓库为[泰晓科技](https://tinylab.org)主站源码。
 
 泰晓科技主站采用 Jekyll 搭建，所有内容采用 Markdown 格式撰写。
 
@@ -11,7 +11,7 @@
 
 ## 投递稿件
 
-投递原创稿件请参考[投稿指南](http://tinylab.org/post/)。
+投递原创稿件请参考[投稿指南](https://tinylab.org/post/)。
 
 ## 版权声明
 

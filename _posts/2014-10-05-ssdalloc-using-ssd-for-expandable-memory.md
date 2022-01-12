@@ -144,7 +144,7 @@ App 被切换移出时，需保存会话及相关的数据，例如操作路径�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.cs.princeton.edu/~abadam/papers/ssdalloc_slides.pdf
  [3]: /wp-content/uploads/2014/10/SSDAlloc-result.jpg
  [4]: /wp-content/uploads/2014/10/SSDAlloc-thtoughtput-bench.jpg

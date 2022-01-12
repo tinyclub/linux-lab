@@ -50,7 +50,7 @@ categories:
 
 ## 准备工作
 
-注：不再推荐通过如下方法使用，请参考[最新的文档](http://tinylab.org/cs630-qemu-lab)，基于 Docker，已经可以在 Windows，Linux 和 Mac OSX 下使用 CS630 Qemu Lab。
+注：不再推荐通过如下方法使用，请参考[最新的文档](https://tinylab.org/cs630-qemu-lab)，基于 Docker，已经可以在 Windows，Linux 和 Mac OSX 下使用 CS630 Qemu Lab。
 
 先 clone 项目源码：
 
@@ -107,7 +107,7 @@ $ make update
 
 ![image][8]
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://www.cs.usfca.edu/~cruse/cs630f06/
  [4]: http://www.cs.usfca.edu/~cruse/
  [5]: http://oss.lzu.edu.cn

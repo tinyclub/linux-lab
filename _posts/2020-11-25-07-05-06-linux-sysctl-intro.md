@@ -19,7 +19,7 @@ tags:
   - 内存管理
 ---
 
-> By Wu Daemon of [TinyLab.org](http://tinylab.org)
+> By Wu Daemon of [TinyLab.org](https://tinylab.org)
 > 2020/11/16
 
 ## Linux 内核运行时配置简介

@@ -26,7 +26,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > Aug 01, 2019
 
-过去数月，笔者一直在重构开发了数年的开源项目：[Linux Lab](http://tinylab.org)（Linux 内核实验室）。
+过去数月，笔者一直在重构开发了数年的开源项目：[Linux Lab](https://tinylab.org)（Linux 内核实验室）。
 
 在开发过程中，需要跟 Makefile 打交道，完善功能，优化速度，提升体验。
 
@@ -540,7 +540,7 @@ Makefile 通常需要根据软件版本传递不同的参数，所以经常需�
 
 更多 Linux 精彩欢迎透过下方免费体验卡访问『Linux 知识星球』：
 
-![『Linux 知识星球』免费体验卡](http://tinylab.org/images/xingqiu/planet-free-card.jpg)
+![『Linux 知识星球』免费体验卡](https://tinylab.org/images/xingqiu/planet-free-card.jpg)
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -57,7 +57,7 @@ categories:
 
 如果有兴趣参与，可以 [联系我们][16]，也可以直接在 [TinyLab.org][2] 的相关页面进行评论回复。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [4]: http://wenku.baidu.com/link?url=WChC-PdR7rqPiwkuo70l2zGo3YVCFrG2cRRwMXsRh4niknUlAWd2eI-AMAiP2GbxhL-BFfV_CL65zUXjEXKYf0zVhF2AHZych7X1_b4pg47
  [5]: /start-posting-with-markdown/
  [6]: /shell-programming-paradigm-series-index-review/

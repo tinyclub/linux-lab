@@ -94,7 +94,7 @@ iPad Air2 A8X CPU 的性能渐近新 Macbook 搭载的低功耗版 Core M。这�
 
 进一步扩大脑洞，除了丹佛这样特殊的微架构，矢量调度还可用于通常的 CPU - 即将数个 CPU 核 “并成一体”。例如场景“将一帧数据分块多线程处理，等全部处理完后输出下一阶段”。此时将分块处理的线程们作一次矢量调度，同时在（预留的？）数个CPU 核上执行。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://cdn.macrumors.com/article-new/2015/04/geekbenchmacworld.jpg
 [3]: /nvidia-black-tech-the-denver-core/
 [4]: /wp-content/uploads/2015/04/yy-denver-smt-VLIW.jpg

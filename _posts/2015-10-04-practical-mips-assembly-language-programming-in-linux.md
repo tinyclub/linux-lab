@@ -719,7 +719,7 @@ Here is a complete demo for showing how to use system call in Linux / i386.
 * [MIPS Assembly Language][2]
 * [MIPS Assembly Language Programmer's Guide.pdf][3]
 
-[1]: http://tinylab.org/linux-assembly-language-quick-start
+[1]: https://tinylab.org/linux-assembly-language-quick-start
 [2]: http://www.inf.uni-konstanz.de/dbis/teaching/ws0304/computing-systems/download/rs-05.pdf
 [3]: http://www.cs.unibo.it/~solmi/teaching/arch_2002-2003/AssemblyLanguageProgDoc.pdf
 [4]: http://www.aurel32.net/info/debian_mips_qemu.php

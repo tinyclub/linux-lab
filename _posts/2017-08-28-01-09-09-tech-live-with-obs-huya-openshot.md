@@ -102,7 +102,7 @@ OBS 录制的视频可以通过 Linux 上的知名视频编辑工具 Openshot �
 
 如果喜欢该内容，也欢迎扫描如下二维码赞助和鼓励我们继续制作更精彩的 IT 技术直播和视频。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://v.qq.com/x/page/y0543o6zlh5.html
 [3]: https://obsproject.com
 [4]: https://github.com/jp9000/obs-studio

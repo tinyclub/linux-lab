@@ -47,4 +47,4 @@ ADB(Android Debug Bridge) 是 Google 为了调试 Android 设备和 Android 模�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

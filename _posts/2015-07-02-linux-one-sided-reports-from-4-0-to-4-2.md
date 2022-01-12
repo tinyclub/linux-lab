@@ -127,7 +127,7 @@ KDBus 是用户态 DBus 服务（高级别的 IPC 服务）在内核中的实现
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /linux-technical-report-from-3-10-to-4-0
  [3]: /clear-containers-introduction
  [4]: /assembly-practice-loongson-processor-memcpy-optimization

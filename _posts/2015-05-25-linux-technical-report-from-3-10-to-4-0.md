@@ -241,7 +241,7 @@ Also, a new module parameter (radeon.bapm=1) has been added to enable bidirectio
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/plain/Documentation/power/powercap/powercap.txt
  [3]: http://kernelnewbies.org/Linux_3.10#head-62fadba76893e85ee7fb75d548536c5635baca54
  [4]: https://lwn.net/Articles/558284/

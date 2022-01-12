@@ -15,7 +15,7 @@ categories:
   - Qemu
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/31
 
 这篇文章，将介绍如何用qemu来搭建一个基于ARM的嵌入式linux系统。通过该文章，你可以学习到如何配置kernel，如何交叉编译kernel，如何配置busybox并编译，如何制作initramfs，如何制作根文件系统，如何定制自己的uboot，如何通过uboot向kernel传递参数等。开始干活！

@@ -70,4 +70,4 @@ builtin 命令和普通的命令还有一个明显的区别在于，builtin 命�
 
 ![tinylab wechat](/images/wechat/tinylab.jpg)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

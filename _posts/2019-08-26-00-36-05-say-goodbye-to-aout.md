@@ -19,7 +19,7 @@ tags:
 
 ## v5.1 开始剔除 a.out 格式
 
-在 [Linux 发布 5.1, Linux Lab 同步支持](http://tinylab.org//linux-5.1/) 一文中，首次得知了 Linux 移除 a.out 格式的消息，这个消息着实令人感叹，因为 a.out 伴随 Linux 的诞生至今在 Linux 中有将近 ~28 年的历史，而 a.out 本身则要追溯到更早的 Unix 时代。
+在 [Linux 发布 5.1, Linux Lab 同步支持](https://tinylab.org//linux-5.1/) 一文中，首次得知了 Linux 移除 a.out 格式的消息，这个消息着实令人感叹，因为 a.out 伴随 Linux 的诞生至今在 Linux 中有将近 ~28 年的历史，而 a.out 本身则要追溯到更早的 Unix 时代。
 
 下面是 v5.1 中两笔剔除 a.out 的动作：
 
@@ -248,4 +248,4 @@ Linux 0.11 Lab 可以直接在 Linux Lab 下跑，可以在 Linux Lab 中把它�
 
 在这个基础上，未来，就有机会更深度地分析 a.out，COFF 到 ELF 三种格式以及它们的演进历程。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

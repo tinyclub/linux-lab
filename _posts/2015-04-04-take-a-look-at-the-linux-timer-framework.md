@@ -293,7 +293,7 @@ int r4k_clockevent_init(void)
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/03/Linux-timer-framework_pic1.jpg
  [3]: /wp-content/uploads/2015/03/Linux-timer-framework_pic2.jpg
  [4]: /wp-content/uploads/2015/03/Linux-timer-framework_pic3.jpg

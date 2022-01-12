@@ -72,7 +72,7 @@ lumpy reclaim 补丁尝试通过对 LRU 算法进行轻微的调整来解决这�
 
 这些补丁是否会被合入内核以及何时会被合入还有待观察。针对内存管理核心子系统的修改往往会受到社区的严格审查；特别地真实环境下的压力测试才是对它们真正的考验。总而言之，这个话题还远未结束，让我们看看最终会是什么样的结果吧。（译者注，最终的结果是，lumpy reclaim 补丁随 2.6.23 版本合入主线，而 Mel 的补丁经过修改后随 2.6.24 版本合入主线）
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://en.wikipedia.org/wiki/Vectored_I/O
 [3]: http://lwn.net/Articles/211194/
 [4]: /lwn-121618

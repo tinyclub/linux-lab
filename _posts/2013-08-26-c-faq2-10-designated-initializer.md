@@ -11,7 +11,7 @@ categories:
   - C 语言
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/24
 
 在阅读 kernel 源码的时候，经常会碰到类似的代码：

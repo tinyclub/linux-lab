@@ -144,4 +144,4 @@ Android 源码中有很多这样的小设计之类的，很有意思，欢迎一
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

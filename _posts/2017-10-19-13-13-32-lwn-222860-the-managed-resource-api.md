@@ -181,6 +181,6 @@ int devres_release_group(struct device *dev, void *id);
 
 现在内核中使用该新接口的用户还不多。但是随着驱动程序开发人员对这些函数的了解，以及随着资源管理类型的增加，这种状况可能会发生改变。使用该新接口的好处在于可以使我们的代码更健壮，伴随那些冗余的错误处理和清理代码被逐渐剔除，驱动的代码也会变得更简洁。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: /lwn-215996
 [3]: http://samba.org/ftp/unpacked/samba4/source/lib/talloc/talloc_guide.txt

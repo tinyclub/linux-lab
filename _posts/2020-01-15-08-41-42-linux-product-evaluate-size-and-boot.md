@@ -62,7 +62,7 @@ tags:
 
 3. 根据需求细致地配置文件系统
 
-    比如可以用 busybox，也可以直接用 buildroot 选配，可以选用比较小得文件系统，比如 musl。这里有一份不同库得比较：[Comparison of C/POSIX standard library implementat...](http://www.etalabs.net/compare_libcs.html) ，另外，这里还有一份更详细的比较：<http://tinylab.org/linux-lab-full-rootfs>。
+    比如可以用 busybox，也可以直接用 buildroot 选配，可以选用比较小得文件系统，比如 musl。这里有一份不同库得比较：[Comparison of C/POSIX standard library implementat...](http://www.etalabs.net/compare_libcs.html) ，另外，这里还有一份更详细的比较：<https://tinylab.org/linux-lab-full-rootfs>。
 
     编译的时候尽量用静态编译取代动态编译。记得开启必要的 strip 选项，如果没有配置，编译完可以手动 strip。
 
@@ -91,15 +91,15 @@ tags:
 
 1. 系统裁剪优化
 
-    [TinyLinux](http://tinylab.org/tinylinux) 是笔者早期维护过的一段嵌入式 Linux 基金会赞助的项目，里头有收集大量相关成果和资料。
+    [TinyLinux](https://tinylab.org/tinylinux) 是笔者早期维护过的一段嵌入式 Linux 基金会赞助的项目，里头有收集大量相关成果和资料。
 
 2. 系统启动优化
 
     下述内容涵盖测量、分析和优化方法与工具。
 
-    * [嵌入式 Linux 启动时间优化](http://tinylab.org/elinux-org-boot-time-optimization/)
-    * [Linux 系统启动速度优化概述](http://tinylab.org/linux-system-boot-speedup-overview/)
-    * [用 Kexec 快速切换当前 Linux 内核](http://tinylab.org/directly-switch-to-another-kernel-with-kexec/)
-    * [测量和分析 Linux 内核启动时间](http://tinylab.org/measure-and-draw-the-boot-up-time-of-linux-kernel/)
+    * [嵌入式 Linux 启动时间优化](https://tinylab.org/elinux-org-boot-time-optimization/)
+    * [Linux 系统启动速度优化概述](https://tinylab.org/linux-system-boot-speedup-overview/)
+    * [用 Kexec 快速切换当前 Linux 内核](https://tinylab.org/directly-switch-to-another-kernel-with-kexec/)
+    * [测量和分析 Linux 内核启动时间](https://tinylab.org/measure-and-draw-the-boot-up-time-of-linux-kernel/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

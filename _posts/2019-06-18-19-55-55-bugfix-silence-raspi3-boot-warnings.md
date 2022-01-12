@@ -25,7 +25,7 @@ tags:
 
 前段时间为 [Linux Lab](/linux-lab) 添加了 aarch64/raspi3 开发板支持，不过有非常多的关于 clock 和 uart 相关的 warnings，影响使用，所以需要想办法消除。
 
-每条 warning 都有 backtrace，所以正好可以用 [如何快速定位 Linux Panic 出错的代码行](http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/) 中的方法定位到出问题的代码，然后关闭掉这些 warning。
+每条 warning 都有 backtrace，所以正好可以用 [如何快速定位 Linux Panic 出错的代码行](https://tinylab.org/find-out-the-code-line-of-kernel-panic-address/) 中的方法定位到出问题的代码，然后关闭掉这些 warning。
 
 恰好前段时间，我们把定位问题的方法进行了脚本化，避免每次都要一步一步去执行，很浪费时间。
 
@@ -222,4 +222,4 @@ tags:
 
 当然，对于代码本身没法获取类似信息或者没法预测类似情况的异常，这里的 `calltrace-helper.sh` 就非常有帮助。除了在 Linux Lab 中学习如何使用，也可以直接把 `calltrace-helper.sh` 用到日常开发调试中。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

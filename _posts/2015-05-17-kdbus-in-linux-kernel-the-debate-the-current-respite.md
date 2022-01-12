@@ -46,7 +46,7 @@ KDBUS 是 Freedesktop DBus IPC 在内核的实现，一些有趣的信息摘录�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.phoronix.com/scan.php?page=news_item&px=KDBUS-Fizzled-May
  [3]: http://lkml.iu.edu/hypermail/linux/kernel/1504.3/index.html#03336
  [4]: https://lwn.net/Articles/551969/

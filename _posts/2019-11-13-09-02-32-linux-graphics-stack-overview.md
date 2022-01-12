@@ -217,4 +217,4 @@ Server 通过同一 API 将合成好的一帧，写入 Frame Buffer。其中，C
 
 ![image](/wp-content/uploads/2019/10/linux-graphics-stack-overview/egl-context-init-weston-vs-its-clients-part2.png)
 
-[1]: http://tinylab.org/
+[1]: https://tinylab.org/

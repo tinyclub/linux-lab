@@ -272,4 +272,4 @@ Shell 的解释器有很多种，常用的就有 bash，dash，zsh 等，每个�
 
 欢迎大家联系作者微信 lzufalcon，做一进步补充。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

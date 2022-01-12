@@ -81,4 +81,4 @@ B 站、腾讯视频、抖音等
 
 虎牙、快手、斗鱼等
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

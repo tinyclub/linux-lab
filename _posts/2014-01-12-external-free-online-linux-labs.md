@@ -34,7 +34,7 @@ categories:
   * [Linuxzoo: Learn Linux from the safety of your chair using a remote private linux machine with root access][4]
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://bellard.org/jslinux/
  [4]: http://linuxzoo.net/
  [7]: https://www.shiyanlou.com/

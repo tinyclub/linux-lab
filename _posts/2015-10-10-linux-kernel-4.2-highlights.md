@@ -25,7 +25,7 @@ Linux 内核 4.2 是在 8.30 号发布的，这次版本的变更总共包含 14
 
     $ git log v4.1..v4.2 --oneline
 
-想要了解 4.0，4.1 版本的变更，请看[< Linux 片面报告：从 4.0 到 4.2 >](http://tinylab.org/linux-one-sided-reports-from-4-0-to-4-2/)。
+想要了解 4.0，4.1 版本的变更，请看[< Linux 片面报告：从 4.0 到 4.2 >](https://tinylab.org/linux-one-sided-reports-from-4-0-to-4-2/)。
 
 ## 全新的 LSM Stack
 

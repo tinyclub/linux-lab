@@ -217,7 +217,7 @@ Gerrit是一个合集，集成了很多用户需要的功能，把评审做到�
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: https://github.com/sitaramc/gitolite
  [4]: http://blog.csdn.net/seker_xinjian/article/details/6232475
  [5]: http://git.kernel.org/cgit/git/git.git/tree/gitweb

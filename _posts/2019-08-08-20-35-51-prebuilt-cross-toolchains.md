@@ -104,4 +104,4 @@ Bootlin 通过 Buildroot 为 36 个处理器系列，基于 glibc, uclibc, musl 
     toolchain-external-linaro-armeb
     toolchain-external-synopsys-arc
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

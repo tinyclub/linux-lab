@@ -57,7 +57,7 @@ categories:
 有时间参考 [Perl Cookbook][17] 和 [PLEAC-Python][18] 重写这个序列，使得该序列更丰富一些，可读性更强一些。要增加的内容包括数据库操作（最好是实现   一个基本的 shsql ）、正则表达式、 CGI 编程、图形编程（比如说用 Shell 写一个播放器，比如说用 Shell 调用一下外部的图形化工具来实现图形化，例如 [vnstatgui][19] ），需要完善的内容包括网络操作那一章（细化每一部分，让人们通过它理解网络的真正含义），以及文件操作那一章，引入二进制文件的操作细节，让人们了解二进制的本质。
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /shell-programming-paradigm-begins-with/
  [4]: /shell-numeric-calculation/
  [5]: /shell-programming-paradigm-of-boolean-operations/

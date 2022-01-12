@@ -71,7 +71,7 @@ Srivatsa 所做工作的第一部分已经合并入 CFS 补丁的 v17 版本。�
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lwn.net/Articles/230574/
 [3]: https://lwn.net/Articles/239553/
 [4]: https://lwn.net/Articles/239619/

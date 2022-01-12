@@ -22,12 +22,12 @@ tags:
   - macOS
 ---
 
-> By alitrack of [TinyLab.org](http://tinylab.org)
+> By alitrack of [TinyLab.org](https://tinylab.org)
 > Jan 21, 2021
 
 ## 关于 i.MX6ULL Pro 开发板
 
-首先非常感谢泰晓科技提供的 “i.MX6ULL Pro” Linux 开发板，这块开发板由 [泰晓科技技术社区](http://tinylab.org) 与 [野火电子](https://embedfire.com/) 合作适配，是首款 Linux Lab 真板，可以直接用 Linux Lab 开展相关实验，大大降低开发板使用门槛，提升 Linux 内核和嵌入式 Linux 技术的学习效率。
+首先非常感谢泰晓科技提供的 “i.MX6ULL Pro” Linux 开发板，这块开发板由 [泰晓科技技术社区](https://tinylab.org) 与 [野火电子](https://embedfire.com/) 合作适配，是首款 Linux Lab 真板，可以直接用 Linux Lab 开展相关实验，大大降低开发板使用门槛，提升 Linux 内核和嵌入式 Linux 技术的学习效率。
 
 **主要配置**：
 
@@ -304,7 +304,7 @@ i.MX6ULL Pro 带一个 USB 转串口（mini USB）和一个 micro USB（USB OTG�
 
 前面我们提到通过 IP 来访问开发板，如果非常不凑巧，你既没有无线也无网线可以用，怎么办？
 
-很不凑巧，macOS 下，Docker 内目前无法直接访问串口，需要通过泰晓科技撰写的 [串口虚拟化](http://tinylab.org/serial-port-over-internet/) 来解决这个问题。
+很不凑巧，macOS 下，Docker 内目前无法直接访问串口，需要通过泰晓科技撰写的 [串口虚拟化](https://tinylab.org/serial-port-over-internet/) 来解决这个问题。
 
 1. macOS 安装 socat
 

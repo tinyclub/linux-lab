@@ -168,8 +168,8 @@ test.c
 
 接着是安装一个SiteMap自动生成的插件，例如：[Baidu Sitemap Generator][22]。生成后，在robots.txt的最后加入如下两行，例如，本站：
 
-<pre>Sitemap: http://tinylab.org/sitemap_baidu.xml
-Sitemap: http://tinylab.org/sitemap.html
+<pre>Sitemap: https://tinylab.org/sitemap_baidu.xml
+Sitemap: https://tinylab.org/sitemap.html
 </pre>
 
 在最后，咱们可以主动给各大搜索引擎提交收录，各大收录的入口地址[这里][23]有一份清单。
@@ -238,7 +238,7 @@ Sitemap: http://tinylab.org/sitemap.html
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /add-cgi-support-for-nginx/
  [4]: http://stackoverflow.com/questions/10775005/why-firefox-highlights-html-transitional-doctype-in-red
  [5]: http://huoding.com/2011/05/14/78

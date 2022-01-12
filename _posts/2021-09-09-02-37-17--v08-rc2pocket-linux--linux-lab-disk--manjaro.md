@@ -76,4 +76,4 @@ Linux Lab Disk 实物图：
 
 在某宝检索 “Linux Lab真盘” 或 “Pocket Linux系统” 即可选购。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

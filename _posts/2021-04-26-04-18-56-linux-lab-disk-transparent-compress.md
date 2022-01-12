@@ -46,10 +46,10 @@ Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等�
 
 前面 4 篇介绍了 Linux Lab Disk 在裸机上直接上电启动以及在现有系统下当双系统启动，本篇进一步介绍其透明压缩功能。
 
-* [在 Windows 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-windows-boot/)
-* [在 macOS 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-macos-boot/)
-* [在 Linux 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-linux-boot/)
-* [在台式机、笔记本和 macBook 上即插即用](http://tinylab.org/linux-lab-disk-raw-boot/)
+* [在 Windows 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-windows-boot/)
+* [在 macOS 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-macos-boot/)
+* [在 Linux 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-linux-boot/)
+* [在台式机、笔记本和 macBook 上即插即用](https://tinylab.org/linux-lab-disk-raw-boot/)
 
 更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)。
 
@@ -173,4 +173,4 @@ $ sudo du -sh /media/ubuntu/writable1/
 
 * [Linux Lab 正在新增对 Linux Lab Disk 的支持](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

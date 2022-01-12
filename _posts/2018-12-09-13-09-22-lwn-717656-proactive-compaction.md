@@ -58,7 +58,7 @@ Babka 说，主动规整（proactive compaction）功能正在开发中。最近
 
 在会议即将结束前，Arcangeli 建议，如果一个子系统需要分配大内存，可以向规整模块注册自己所需要的页框数（供规整算法参考）。但 Babka 表示，他还是希望尽可能地避免增加类似的调节措施。Johannes Weiner 说，为后台任务增加一个开关还是有必要的，因为只要是主动的操作，都有可能会在某些条件下过度运行导致资源的浪费。但他同时也表示，除了开关，其他的调节参数都应该被避免。与会代表们普遍看好这个功能（Proactive compaction），但都认为在实现上，初期应该尽可能保持简单，如果有必要可以在以后添加更多的复杂功能。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://elixir.bootlin.com/linux/v4.10/source/mm/page_alloc.c#L3519
 [3]: https://elixir.bootlin.com/linux/v4.10/source/mm/vmscan.c#L3353
 [4]: https://lwn.net/Articles/717756/

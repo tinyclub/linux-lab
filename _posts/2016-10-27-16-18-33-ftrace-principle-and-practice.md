@@ -286,7 +286,7 @@ tags:
 ### Linux Lab 介绍
 
 * 基于 Docker/Qemu 的嵌入式 Linux 开发环境
-* 首页：<http://tinylab.org/linux-lab>
+* 首页：<https://tinylab.org/linux-lab>
 * 仓库：<https://github.com/tinyclub/linux-lab>
 * 特性
     * Docker 容器化
@@ -384,6 +384,6 @@ tags:
 * [Perf](http://www.brendangregg.com/perf.html)
 * [Oprofile](http://oprofile.sourceforge.net/doc/internals/index.html)
 * [LTTng](http://lttng.org/docs/) 
-* [Oscilloscope](http://tinylab.org/oscilloscope-realtime-rendering-software-oscilloscope-data-streams/)
+* [Oscilloscope](https://tinylab.org/oscilloscope-realtime-rendering-software-oscilloscope-data-streams/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

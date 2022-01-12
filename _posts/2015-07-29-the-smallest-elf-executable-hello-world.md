@@ -70,13 +70,13 @@ _start:                 # stack: argc, argv[0], argv[1], argv[2]
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /as-an-executable-file-to-slim-down/
  [3]: http://www.zhihu.com/question/21715980
  [4]: http://www.muppetlabs.com/~breadbox/software/tiny/teensy.html
  [5]: http://www.muppetlabs.com/~breadbox/software/elfkickers.html
  [6]: https://github.com/BR903/ELFkickers
- [7]: http://tinylab.org/open-c-book
+ [7]: https://tinylab.org/open-c-book
  [8]: http://tinylab.gitbooks.io/cbook
  [9]: http://weibo.com/tinylaborg
  [10]: https://github.com/tinyclub/open-c-book

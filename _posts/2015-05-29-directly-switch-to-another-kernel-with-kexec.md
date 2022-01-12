@@ -68,7 +68,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://soft.chinabyte.com/30/7818030.shtml
  [3]: http://blog.chinaunix.net/uid-20228521-id-1971053.html
  [4]: /how-to-update-the-linux-kernel-of-a-remote-machine

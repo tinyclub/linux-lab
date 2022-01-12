@@ -178,7 +178,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://johnmacfarlane.net/pandoc/installing.html
  [3]: https://www.markdownguide.org/basic-syntax
  [4]: http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html

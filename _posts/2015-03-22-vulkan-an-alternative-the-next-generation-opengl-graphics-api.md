@@ -73,7 +73,7 @@ Khronos 作为硬件厂商的联合组织，大概能标准化合适的 IR，期
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://imgtec.com/
  [3]: http://blog.imgtec.com/powervr/trying-out-the-new-vulkan-graphics-api-on-powervr-gpus
  [4]: /wp-content/uploads/2015/03/vulkan-overview.jpg

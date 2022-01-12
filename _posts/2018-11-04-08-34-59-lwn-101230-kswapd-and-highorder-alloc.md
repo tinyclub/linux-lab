@@ -60,7 +60,7 @@ Nick 的补丁相当有针对性；它修改了 `kswapd` 的行为，即只有�
 
 实际上，higher-order 内存分配的问题仅当驱动程序（包括其驱动的设备）无法处理物理地址不连续的 “非线性”（"nonlinear"）数据包时才需要。大多数现代硬件支持 [scatter/gather 方式的 DMA 操作][4]，因此并不会太在意数据包是否存放在一个单一且物理地址连续的内存区域上。利用硬件的这一特性在编写驱动程序时需要额外的工作，所以目前一些驱动程序还不支持该特性。看起来，相比给回收算法增加新的处理逻辑（指 Nick 的补丁），直接从控制申请的内存大小入手来解决 high-order 内存分配问题或许更有效些。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lwn.net/Articles/100877/
 [3]: https://lwn.net/Articles/101238/
 [4]: https://en.wikipedia.org/wiki/Vectored_I/O

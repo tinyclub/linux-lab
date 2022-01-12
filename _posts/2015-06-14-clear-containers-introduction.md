@@ -77,5 +77,5 @@ DAX 提供了一个 0-copy, 0-memory-cost 的解决方案用来把所有操作�
 
 
  [1]: http://lwn.net/Articles/644675/
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://lwn.net/Articles/644089/#appc

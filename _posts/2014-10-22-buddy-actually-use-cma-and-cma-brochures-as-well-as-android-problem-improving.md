@@ -22,5 +22,5 @@ categories:
 
 下载请点击 [2014clk_cma.pdf](/wp-content/uploads/2014/10/2014clk_cma.pdf)。  
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.ckernel.org/

@@ -46,6 +46,6 @@ Busybox is a very useful toolset, it includes lots of tiny Unix utilities and it
 
 The above sed command disable the udhcpc support to workaround the compiling failure. The above Busybox binary is able to be used on Android system directly, to learn more about Busybox using on Android system, the book: [Optimizing Embedded Systems using BusyBox][3] is recommended.
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://developer.android.com/tools/sdk/ndk/index.html
  [3]: http://www.packtpub.com/optimizing-embedded-systems-using-busybox/book

@@ -43,7 +43,7 @@ In the past 2 weeks, I started to reactivate this project and continue its maint
 
   * Git homepage: <https://github.com/tinyclub/vnstatsvg> 
   * Git repository: https://github.com/tinyclub/vnstatsvg.git 
-  * Demo site: <http://tinylab.org/vnstatsvg-demo/>
+  * Demo site: <https://tinylab.org/vnstatsvg-demo/>
   * Paper: [A CGI+AJAX+SVG based monitoring method for distributed and embedded system][3] 
 
 The 1st release candidate of version 2.0 is ready, it has fixed up some issues found in the early 1.0.7 and has added some new features. In the coming 2.0 release, no more new functions will be added, but new fixups will be added to make those new features become stable enough.
@@ -394,7 +394,7 @@ Besides, vnStatSVG is configurable, scalable and easy to use.
 
 
  [1]: /vnstatsvg-demo/
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=4562771
  [4]: http://wiki.nginx.org/Fcgiwrap
  [5]: /add-cgi-support-for-nginx/

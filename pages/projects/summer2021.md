@@ -35,9 +35,9 @@ tags:
 
 有意向报名的同学可以提前了解一下去年的情况，相关文章链接如下：
 
-* [Summer2021预告：暑期来做开源项目吧，有社区老师指导，还有Bonus领取](http://tinylab.org/summer2021-intro/)
-* [“开源软件供应链点亮计划——暑期2020”项目提案](http://tinylab.org/summer2020)
-* [暑期2020：泰晓科技项目简介](http://tinylab.org/tinylab-summer2020)
+* [Summer2021预告：暑期来做开源项目吧，有社区老师指导，还有Bonus领取](https://tinylab.org/summer2021-intro/)
+* [“开源软件供应链点亮计划——暑期2020”项目提案](https://tinylab.org/summer2020)
+* [暑期2020：泰晓科技项目简介](https://tinylab.org/tinylab-summer2020)
 
 ## 活动概览
 
@@ -76,12 +76,12 @@ Summer2021 项目开发周期为 3 个月，从 7 月 1 日到 10 月 22 日，�
 
 本次提报的项目均围绕 Linux Lab 开源项目展开，这里对 Linux Lab 做一个简单介绍：
 
-[Linux Lab](http://tinylab.org) 是一款知名国产开源项目，由 [泰晓科技技术社区](http://tinylab.org) 创建于 2016 年，旨在提供一套开箱即用的 Linux 内核与嵌入式 Linux 系统开发环境，安装以后，可以在数分钟内开展 Linux 内核与嵌入式 Linux 系统开发。
+[Linux Lab](https://tinylab.org) 是一款知名国产开源项目，由 [泰晓科技技术社区](https://tinylab.org) 创建于 2016 年，旨在提供一套开箱即用的 Linux 内核与嵌入式 Linux 系统开发环境，安装以后，可以在数分钟内开展 Linux 内核与嵌入式 Linux 系统开发。
 
 当前 Linux Lab 已经支持包括 X86、ARM、RISC-V、Loongson 在内的 7 大国内外主流处理器架构，增加了 18 款流行虚拟或真实嵌入式开发板，支持从 v0.11, v2.6.x 到 v5.x 的各种新老 Linux 内核版本，可以同时在 Linux、Windows 和 macOS 三大主流操作系统上安装与使用，另外也制作了免安装、即插即用的 Linux Lab Disk。
 
-* 项目首页：<http://tinylab.org>
-* 当前文档：<http://tinylab.org/pdfs/linux-lab-v0.6-manual-zh.pdf>
+* 项目首页：<https://tinylab.org>
+* 当前文档：<https://tinylab.org/pdfs/linux-lab-v0.6-manual-zh.pdf>
 * 代码仓库：<https://gitee.com/tinylab/linux-lab>
 * 视频课程：<https://www.cctalk.com/m/group/88948325>
 
@@ -89,8 +89,8 @@ Summer2021 项目开发周期为 3 个月，从 7 月 1 日到 10 月 22 日，�
 
 为了最大程度地确保活动效果，社区需要遴选出准备最充分、能力最合适的学生参与相应项目，报名前请事先做好如下准备：
 
-* 访问 [项目首页](http://tinylab.org/linux-lab) 了解项目详情
-* 下载 [项目文档](http://tinylab.org/pdfs/linux-lab-v0.6-manual-zh.pdf) 并浏览主要章节
+* 访问 [项目首页](https://tinylab.org/linux-lab) 了解项目详情
+* 下载 [项目文档](https://tinylab.org/pdfs/linux-lab-v0.6-manual-zh.pdf) 并浏览主要章节
 * 参考文档安装好 Linux Lab，并在如下页面登记安装信息，证明确实安装成功
     * [成功运行过的操作系统和Docker版本列表](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)
 * 参考文档学习并使用 Linux Lab，撰写使用文档
@@ -98,7 +98,7 @@ Summer2021 项目开发周期为 3 个月，从 7 月 1 日到 10 月 22 日，�
 * 浏览后文的 “项目列表”，选中自己感兴趣的项目
 * 提前对相关技术做充分的调研并撰写一份技术调研报告
     * 为确保调研的质量，调研报告需正式发表到社区网站或公众号
-    * 社区稿件投递地址为：<http://tinylab.org/post>
+    * 社区稿件投递地址为：<https://tinylab.org/post>
 
 ## 报名方式
 

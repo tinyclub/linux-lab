@@ -142,7 +142,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.meizu.com
  [3]: http://flyme.meizu.com
  [4]: http://v.youku.com/v_show/id_XNzcwODQ1MjY4.html?f=22800263&qq-pf-to=pcqq.discussion

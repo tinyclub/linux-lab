@@ -97,6 +97,6 @@ tags:
 
 [返回 “LWN 中文翻译计划” 主页][3]
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lwn.net/Kernel/Index/
 [3]: /lwn

@@ -421,5 +421,5 @@ kill 命令默认会发送终止信号 (SIGTERM) 给程序，让程序退出，�
 
   * 《UNIX环境高级编程》
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: tinylab.org

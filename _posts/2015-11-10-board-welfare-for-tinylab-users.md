@@ -19,7 +19,7 @@ tags:
 
 泰晓成立之初，就是希望和广大的一线 Android/Linux 工程师们一起创建一个原创与分享平台。
 
-为了感谢大家的热情参与，我们之前跟出版社合作，准备了一批[《Linux 设备驱动开发详解：基于最新的 Linux 4.0 内核》](http://tinylab.org/book-welfare-for-tinylab-contributors/)送给了大家。
+为了感谢大家的热情参与，我们之前跟出版社合作，准备了一批[《Linux 设备驱动开发详解：基于最新的 Linux 4.0 内核》](https://tinylab.org/book-welfare-for-tinylab-contributors/)送给了大家。
 
 这次双十一，又跟业界领先的 [LinkSprite](http://www.linksprite.com) 和 [深圳安信可科技](http://www.nodemcu.com) 公司合作，为大家带来了两款时下最火热的开源硬件：
 
@@ -32,11 +32,11 @@ tags:
 
 ## 参与原创
 
-欢迎踊跃 [投稿](http://tinylab.org/post/)，参与泰晓原创与分享。
+欢迎踊跃 [投稿](https://tinylab.org/post/)，参与泰晓原创与分享。
 
 ## 福利清单
 
-### [pcDuino8 Uno](http://tinylab.org/introduction-of-pcduino8-Uno/)
+### [pcDuino8 Uno](https://tinylab.org/introduction-of-pcduino8-Uno/)
   * 简介：“pcDuino8 Uno 开启了 8 核开源硬件的新时代，它采用全志的 H8 SoC，CPU 基于台积电最新领先的 28 纳米制造工艺，采用 8 个 ARM Cortex-A7 内核，支持 8 核心同时 2.0GHz 高速运行。”
   * 商品原价：299￥
   * 泰晓福利价：**150￥**（2015 年双十一当天有效，仅适用如下购买地址）
@@ -83,7 +83,7 @@ tags:
     <img src="/images/boards/nodemcu/nodemcu-weixin-group.jpg" title="NodeMCU Developer Group" width="300">
 
 
- [1]: http://tinylab.org/introduction-of-pcduino8-Uno/
+ [1]: https://tinylab.org/introduction-of-pcduino8-Uno/
  [2]: http://www.linksprite.com/image-for-pcduino8-uno/
  [3]: http://cnlearn.linksprite.com
  [4]: http://www.pcduino.org

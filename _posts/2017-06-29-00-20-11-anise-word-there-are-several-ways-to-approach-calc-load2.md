@@ -446,7 +446,7 @@ task 入列和出列时 —— enqueue_task_fair() / dequeue_task_fair() —— 
 “CPU 虚拟算力”，是在 CPU 实际算力基础上（arch_scale_cpu_capacity()），剔除预留给 RT 的算力。预留给 RT 算力，实际上就是 非“RT 时间” 占比。而 “RT 时间”，除了当前值 —— “频率折扣后的 RT runtime”，还包含历史值的衰减（此处衰减，相比上条要剧烈很多）。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://www.sohu.com/a/119732356_505819
 [3]: http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html
 [4]: http://elixir.free-electrons.com/linux/v4.11/source/kernel/sched/fair.c#L5952

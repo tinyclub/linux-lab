@@ -145,7 +145,7 @@ $ route add deafult gw gw_ip_address
   * [RFC][9]
   * [HTTP 协议的 C 语言编程实现实例][10]
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /wp-content/uploads/2013/12/Network_Architecture.jpg
  [4]: /wp-content/uploads/2013/12/Network_Layer_Compare.jpg
  [5]: /wp-content/uploads/2013/12/Network_Layer_OSI.jpg

@@ -178,7 +178,7 @@ OpenAmeos 安装时的注意事项：
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/04/callgraph/fib-gcc-dump-graph.svg
  [3]: /wp-content/uploads/2015/04/callgraph/linux-0.11-fdp.svg
  [4]: /wp-content/uploads/2015/04/callgraph/linux-0.11-graph-easy.svg

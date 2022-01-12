@@ -64,4 +64,4 @@ VM scalability 补丁集采取的处理方式很简单，考虑到回收处理�
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -111,4 +111,4 @@ git 版本管理系统本身提供了二分法的工具：`git bisect`。这个�
 
 如果想在实际产品中部署类似自动化体系，欢迎加笔者微信沟通交流，wechat: lzufalcon。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

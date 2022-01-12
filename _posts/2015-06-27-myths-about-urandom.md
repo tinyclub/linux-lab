@@ -280,7 +280,7 @@ Linux 不像 FreeBSD，它的 /dev/urandom 总是非阻塞的。其整个安全�
 
 
  [1]: http://www.2uo.de/myths-about-urandom/
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /wp-content/uploads/2015/06/myths-about-urandom-structure-no.jpg
  [4]: /wp-content/uploads/2015/06/myths-about-urandom-structure-yes.jpg
  [5]: http://blog.cr.yp.to/20140205-entropy.html

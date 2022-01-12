@@ -56,4 +56,4 @@ clockevents 补丁就是为解决这个问题而开发的。它为某类设备�
 
 因此，让我们期待未来更有趣的工作吧，就移除 jiffies 这一点来说就颇具挑战。目前 dyntick 已经可以支持 x86_64 和 ARM 这两个体系架构，但尚未合并入 2.6.21；对 MIPS 和 PowerPC 的支持也正在开发中。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

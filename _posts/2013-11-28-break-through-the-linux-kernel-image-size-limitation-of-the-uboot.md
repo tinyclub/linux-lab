@@ -12,7 +12,7 @@ categories:
   - 系统裁剪
 ---
 
-> by falcon <wuzhangjin@gmail.com> of [TinyLab.org](http://tinylab.org)
+> by falcon <wuzhangjin@gmail.com> of [TinyLab.org](https://tinylab.org)
 > 2013/11/28
 
 ## Background

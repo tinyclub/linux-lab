@@ -88,7 +88,7 @@ tags:
 
 [返回 “LWN 中文翻译计划” 主页][6]
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://github.com/unicornx
 [3]: https://github.com
 [4]: https://github.com/tinyclub/tinylab.org/pulls

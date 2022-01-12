@@ -150,6 +150,6 @@ Systrace 抓取结束后，会生成一个文件，这个文件必须使用 Chro
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://developer.android.com/tools/help/systrace.html "SysTrace 官方介绍"
  [3]: https://wt-prj.oss.aliyuncs.com/d1b5415c872549dcb9f47d0af7295722/9ddcff92-b98e-4a51-a2bf-844dd9bbc05a.png

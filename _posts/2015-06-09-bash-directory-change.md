@@ -98,7 +98,7 @@ bind '"\e[1;5C":"l\n"'
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/06/bash_cdpath.gif
  [3]: /wp-content/uploads/2015/06/bash_cdspell.gif
  [4]: /wp-content/uploads/2015/06/bash_icd.gif

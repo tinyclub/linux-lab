@@ -31,7 +31,7 @@ tags:
 
 回答这个问题，首先要了解 Linux 的开发模型，从开发模型中找出代码流向，包括代码来自哪里，走向哪里，用什么东西存储的，用什么方式 Review，以及哪里可以找到对代码的解释和描述。
 
-在 [如何往官方 Linux 社区贡献代码](http://tinylab.org/contribute-source-code-to-linux-mainline/) 一文中，我们介绍了 Linux 的开发模型和 Upstream 流程。
+在 [如何往官方 Linux 社区贡献代码](https://tinylab.org/contribute-source-code-to-linux-mainline/) 一文中，我们介绍了 Linux 的开发模型和 Upstream 流程。
 
 ![官方 Linux 开发模型](/wp-content/uploads/2019/12/latest-linux-code/linux-dev-model.jpg)
 
@@ -93,6 +93,6 @@ tags:
 
   可以去各个子系统的代码仓库查看，通常正在准备 upstream 的代码，会有类似 upstream 和 next 这样的分支。例如 MIPS Linux 的 patchwork 在这里：[Linux mips](https://patchwork.linux-mips.org/project/linux-mips/list/)。
 
-最后，Patchwork 官方地址在这里：[patchwork](http://jk.ozlabs.org/projects/patchwork/)，得空也可以[给 Linus 发个 Patch 吧](http://tinylab.org/upstream-patches-to-linux-mainline/)。
+最后，Patchwork 官方地址在这里：[patchwork](http://jk.ozlabs.org/projects/patchwork/)，得空也可以[给 Linus 发个 Patch 吧](https://tinylab.org/upstream-patches-to-linux-mainline/)。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

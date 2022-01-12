@@ -43,7 +43,7 @@ categories:
 
 如果有时间和兴趣，欢迎参与，可以 [联系我们][5]，也可以直接进行评论回复。
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://github.com/tinyclub/open-c-book/
  [3]: /open-c-book/
  [4]: https://www.gitbook.com/download/pdf/book/tinylab/cbook

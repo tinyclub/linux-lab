@@ -122,4 +122,4 @@ location /cgi-bin/ {
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org

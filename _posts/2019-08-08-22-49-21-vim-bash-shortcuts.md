@@ -40,4 +40,4 @@ tags:
 * [A Great Vim Cheat Sheet](http://vimsheet.com/)
 * [http://cenalulu.github.io/linux/all-vim-cheatsheat/](http://cenalulu.github.io/linux/all-vim-cheatsheat/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

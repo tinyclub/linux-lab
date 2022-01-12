@@ -93,7 +93,7 @@ MVC 概念似乎有诸多解释。此处解释参见幻灯“[Adobe Source Libra
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.solidot.org/story?sid=7958
  [3]: http://www.w3schools.com/html/tryit.asp?filename=tryhtml_radio
  [4]: /wp-content/uploads/2014/09/CMV-diagram.jpg

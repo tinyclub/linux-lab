@@ -446,7 +446,7 @@ Trap 为 0xe，即 14，也就是 Page Fault。
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://rgeissert.blogspot.hk/p/segmentation-fault-error.html
  [3]: http://www.cnblogs.com/no7dw/archive/2013/02/20/2918372.html
  [4]: http://www.cnblogs.com/panfeng412/archive/2011/11/06/2237857.html

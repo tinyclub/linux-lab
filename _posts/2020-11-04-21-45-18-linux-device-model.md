@@ -147,7 +147,7 @@ kset 实现聚合同类 kobject 功能。
 
 sysfs 文件操作进阶阅读：
 
-* [sysfs 读写流程简析](http://tinylab.org/sysfs-read-write/)
+* [sysfs 读写流程简析](https://tinylab.org/sysfs-read-write/)
 
 #### kset 集合
 
@@ -298,4 +298,4 @@ driver 的注册都在具体的驱动模块中实现。只需要一个 platform_
 
 设备管理细节很多，不是几篇文章可以涵盖住的，因为解析代码太没意思了，本篇文章主要目的是把设备管理背后的 kobj/kset/ktype 引出来，再稍微说一下设备/驱动 API 背后的原理。希望能对初学者做出方向指导。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

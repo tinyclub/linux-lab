@@ -115,13 +115,13 @@ Docker 安装/启动：
 字体配置可通过 `book.json` 的 `fontFamily` 实现。
 
 
-[1]: http://tinylab.org/markdown-lab
+[1]: https://tinylab.org/markdown-lab
 [2]: https://gitee.com/tinylab/markdown-lab/blob/master/README.md
 [3]: https://gitee.com/tinylab/markdown-lab
-[4]: http://tinylab.org/use-markdown-to-write-document/
-[5]: http://tinylab.org/write-resume-with-markdown/
-[6]: http://tinylab.org/use-markdown-to-write-slides/
-[7]: http://tinylab.org/docker-quick-start-docker-gitbook-writing-a-book/
+[4]: https://tinylab.org/use-markdown-to-write-document/
+[5]: https://tinylab.org/write-resume-with-markdown/
+[6]: https://tinylab.org/use-markdown-to-write-slides/
+[7]: https://tinylab.org/docker-quick-start-docker-gitbook-writing-a-book/
 [8]: http://pandoc.org/demo/example19/Pandoc_0027s-Markdown.html
 [9]: https://github.com/jgm/pandoc-templates
 [10]: https://www.markdownguide.org/basic-syntax

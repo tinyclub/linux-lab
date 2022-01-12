@@ -176,7 +176,7 @@ chunk_alloc 有几个有名的客户：
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2014/11/jemalloc-head-pic.jpg
  [3]: http://stackoverflow.com/questions/2266762/android-libc-version-and-malloc-implementation
  [4]: http://www.cocoawithlove.com/2010/05/look-at-how-malloc-works-on-mac.html

@@ -168,7 +168,7 @@ Or we can simply launch it with the command line:
 
 In this article, we have learned the basic procedure of Android Java Programming, to learn more, please learn more samples, read the [Build Your First App][6] tutorial and get more from <http://developer.android.com>.
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: https://developer.android.com/sdk/index.html
  [4]: https://developer.android.com/tools/sdk/eclipse-adt.html
  [5]: http://code.google.com/p/android/issues/detail?id=21359

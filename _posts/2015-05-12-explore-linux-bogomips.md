@@ -158,5 +158,5 @@ HZ 是什么，HZ 就是每秒的滴答数，即每秒的 jiffy 数。那么，l
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/04/Linux-BogoMips-1.jpg

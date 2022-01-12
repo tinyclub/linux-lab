@@ -17,7 +17,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > Dec 09, 2019
 
-前面讨论[系统裁剪](http://tinylab.org//linux-product-evaluate-size-and-boot/)的时候，提到了内核和文件系统的压缩支持，实际上单个可执行文件也可以这样做。
+前面讨论[系统裁剪](https://tinylab.org//linux-product-evaluate-size-and-boot/)的时候，提到了内核和文件系统的压缩支持，实际上单个可执行文件也可以这样做。
 
 基本原理跟内核压缩一样，就是先把 vmlinux 压缩一遍，然后把压缩完的内核作为新程序的一部分，在新程序的开头加上解压和执行代码。
 
@@ -51,6 +51,6 @@ tags:
 
 在内核中类似这样用时间换空间的做法很多，还有 @甜质粥  之前分享的 zram：
 
-* [Linux Swap 与 Zram 详解](http://tinylab.org/linux-swap-and-zram/)
+* [Linux Swap 与 Zram 详解](https://tinylab.org/linux-swap-and-zram/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

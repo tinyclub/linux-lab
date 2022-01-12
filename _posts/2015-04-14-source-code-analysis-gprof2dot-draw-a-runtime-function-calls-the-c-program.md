@@ -186,7 +186,7 @@ Valgrind 不依赖 `-pg` 编译选项，可以直接编译运行：
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /callgraph-draw-the-calltree-of-c-functions/
  [3]: https://github.com/jrfonseca/gprof2dot
  [4]: /wp-content/uploads/2015/04/callgraph/fib-gprof.svg

@@ -25,7 +25,7 @@ tags:
 
 ## 背景
 
-陆陆续续有很多同学对 Linux Lab 本身的实现原理很感兴趣，目前有十多位同学希望成为 Linux Lab Developer，但是之前这块的资料比较匮乏，也没来得及整理。在 [Linux Lab v0.1 rc1](http://tinylab.org/linux-lab-v0.1-rc1/) 发布之后，我们终于有时间开始撰写这些材料。
+陆陆续续有很多同学对 Linux Lab 本身的实现原理很感兴趣，目前有十多位同学希望成为 Linux Lab Developer，但是之前这块的资料比较匮乏，也没来得及整理。在 [Linux Lab v0.1 rc1](https://tinylab.org/linux-lab-v0.1-rc1/) 发布之后，我们终于有时间开始撰写这些材料。
 
 ## 简介
 
@@ -381,4 +381,4 @@ TODO
 至此，一款新的板子开发完成。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

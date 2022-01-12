@@ -29,7 +29,7 @@ order: 500
 <script type="text/javascript">
 $(document).ready(function() {
   /*
-    $('#qrcode-picture').qrcode({ text: 'http://tinylab.org', width: 200, height: 200 });
+    $('#qrcode-picture').qrcode({ text: 'https://tinylab.org', width: 200, height: 200 });
    */
   $('#qrcode-form').submit(function() {
     var qrcode_text = $('#qrcode-text').val();

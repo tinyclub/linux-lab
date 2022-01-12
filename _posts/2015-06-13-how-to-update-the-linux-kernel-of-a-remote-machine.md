@@ -102,7 +102,7 @@ default 和 fallback 后面跟上内核入口“编号”，即它们的配置�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.linuxsir.org/bbs/thread335331.html
  [3]: http://www.ibm.com/developerworks/cn/linux/l-kexec/
  [4]: http://en.wikipedia.org/wiki/Virtual_machine

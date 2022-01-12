@@ -66,6 +66,6 @@ var =test #运行命令var，其参数为=test
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.gnu.org/software/bash/manual/bashref.html#Definitions
  [3]: http://code.metager.de/source/xref/gnu/bash/parse.y#348

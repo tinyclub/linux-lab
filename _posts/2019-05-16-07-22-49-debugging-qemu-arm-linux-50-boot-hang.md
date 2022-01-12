@@ -21,7 +21,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > May 14, 2019
 
-注：泰晓科技新增 [Debugging+Tracing](http://tinylab.org/albums/#debugging+tracing-ref) 专辑，全面连载各类 debug 实战技能。本文是该专辑的第一篇，欢迎持续关注。通过该专辑，您可以学习到分析和解决实际问题的方式、方法、工具和技巧。
+注：泰晓科技新增 [Debugging+Tracing](https://tinylab.org/albums/#debugging+tracing-ref) 专辑，全面连载各类 debug 实战技能。本文是该专辑的第一篇，欢迎持续关注。通过该专辑，您可以学习到分析和解决实际问题的方式、方法、工具和技巧。
 
 ## 背景介绍
 
@@ -151,7 +151,7 @@ ok，先保持内核版本不变、环境不变，正面分析到底 Linux 内�
 
 接下来需要通过 Backtrace 中的 `__cpuinfo_store_cpu+0x80` 找到准确的出错位置，也就是代码行。
 
-这个寻找过程我们很早有专门的文章介绍，可以查阅：[如何快速定位 Linux Panic 出错的代码行](http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)。
+这个寻找过程我们很早有专门的文章介绍，可以查阅：[如何快速定位 Linux Panic 出错的代码行](https://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)。
 
 方法有几种，但是实际发现用 objdump 最为准确，gdb 在这个例子里有一行的偏差。
 
@@ -272,4 +272,4 @@ ok，先保持内核版本不变、环境不变，正面分析到底 Linux 内�
 
 欢迎添加作者微信 lzufalcon，进一步交流探讨！
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -253,7 +253,7 @@ Data 的内容和结构依据不同的 command 和 reply 都有所不同。比�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/04/jdb-image001.jpg
  [3]: /wp-content/uploads/2015/04/jdb-debugging.png
  [4]: /wp-content/uploads/2015/04/jdb-image003.jpg

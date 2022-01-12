@@ -46,9 +46,9 @@ Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等�
 
 前面三篇介绍了如何在 Windows、macOS 和 Linux 系统下利用 VirtualBox 或 Qemu 来直接启动 Linux Lab Disk，当双系统使用。本文介绍如何在 “裸机” 上直接引导启动 Linux Lab Disk。
 
-* [在 Windows 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-windows-boot/)
-* [在 macOS 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-macos-boot/)
-* [在 Linux 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-linux-boot/)
+* [在 Windows 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-windows-boot/)
+* [在 macOS 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-macos-boot/)
+* [在 Linux 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-linux-boot/)
 
 更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)。
 
@@ -152,4 +152,4 @@ Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接�
 1. [Linux Lab 正在新增对 Linux Lab Disk 的支持](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)
 2. [How to boot from USB in VirtualBox - AIO Boot](https://www.aioboot.com/en/boot-from-usb-in-virtualbox/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

@@ -275,7 +275,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2014/09/csum-opti-compare-result.jpg
  [3]: http://lxr.free-electrons.com/source/arch/mips/lib/csum_partial.S?v=3.16#L105
  [4]: http://lxr.free-electrons.com/source/arch/mips/lib/csum_partial.S?v=3.16

@@ -515,7 +515,7 @@ Linux 的文件系统下有一些最基本的目录，不同的目录下存放�
   * 2007 年 12 月 28 日晚，修改部分资料，并正式公开该篇文档。
   * 29 号，添加设备驱动和硬件设备一小节。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /wp-content/uploads/2013/12/Linux_FileSystem_Architecture.jpg
  [4]: http://www.ibm.com/developerworks/cn/linux/l-cn-vfs/
  [5]: http://www.ibm.com/developerworks/cn/linux/l-linux-filesystem/index.html?ca=drs-cn

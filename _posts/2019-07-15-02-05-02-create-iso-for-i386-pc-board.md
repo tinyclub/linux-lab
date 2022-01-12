@@ -95,4 +95,4 @@ tags:
 
 相关成果，包括制作好的 iso 文件，都已经上传到了 [I386 PC ISO](https://gitee.com/tinylab/i386-pc-iso.git)。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

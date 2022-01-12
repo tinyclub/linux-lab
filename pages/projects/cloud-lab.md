@@ -206,10 +206,10 @@ Cloud Lab 提供了多种登陆方式：
 
 已添加 Lab 的详细用法，请参考：
 
-* [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
-* [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
-* [Linux Lab](http://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
-* [Markdown Lab](http://tinylab.org/markdown-lab)：Markdown 文档编辑环境，包括文档、书籍、幻灯和简历模版
+* [CS630 Qemu Lab](https://tinylab.org/cs630-qemu-lab)：X86 Linux 汇编语言实验环境
+* [Linux 0.11 Lab](https://tinylab.org/linux-0.11-lab)： Linux 0.11 内核实验环境
+* [Linux Lab](https://tinylab.org/linux-lab)：Linux 内核和嵌入式 Linux 实验环境
+* [Markdown Lab](https://tinylab.org/markdown-lab)：Markdown 文档编辑环境，包括文档、书籍、幻灯和简历模版
 
 ## 实验效果
 
@@ -280,7 +280,7 @@ Cloud Lab 支持自动录制实验过程。登陆进去之前，进行如下设�
  [8]: https://gitee.com/tinylab/cloud-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
- [6]: http://tinylab.org/docker-qemu-linux-lab/
- [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
+ [6]: https://tinylab.org/docker-qemu-linux-lab/
+ [7]: https://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
 [11]: http://weidian.com/?userid=335178200
-[13]: http://tinylab.org/showdesk-record-and-share-your-desktop/
+[13]: https://tinylab.org/showdesk-record-and-share-your-desktop/

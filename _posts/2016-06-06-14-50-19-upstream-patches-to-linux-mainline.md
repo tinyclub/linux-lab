@@ -39,9 +39,9 @@ tags:
 
 是不是准备跃跃欲试了？看看上面的 4 份资料，开始行动吧。
 
-[1]: http://tinylab.org/wp-content/uploads/2016/01/linux-community-and-upstream-linux-codes.pdf
-[2]: http://tinylab.org/the-4th-tiny-salon-forcenotice/
-[3]: http://tinylab.org/contribute-source-code-to-linux-mainline/
-[4]: http://tinylab.org/embedded-linux-kernel-mailining/
-[5]: http://tinylab.org/elinux/
+[1]: https://tinylab.org/wp-content/uploads/2016/01/linux-community-and-upstream-linux-codes.pdf
+[2]: https://tinylab.org/the-4th-tiny-salon-forcenotice/
+[3]: https://tinylab.org/contribute-source-code-to-linux-mainline/
+[4]: https://tinylab.org/embedded-linux-kernel-mailining/
+[5]: https://tinylab.org/elinux/
 [6]: http://www.remword.com/kps_result/ 

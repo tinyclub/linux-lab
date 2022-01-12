@@ -202,7 +202,7 @@ tags:
 
 留意循环中，`x^n == x^(n0 * 2^0 + n1 * 2^1 + ... nk * 2^k)`，其中 nk 取值 0 或 1 —— 即把 n 做二进制展开 —— 对于 “nk == 0” 项目，求和中跳过不累加，这就是“if (n & 1)”处的分支。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://www.sohu.com/a/119732356_505819
 [3]: http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html
 [4]: http://elixir.free-electrons.com/linux/v4.11/source/fs/proc/loadavg.c

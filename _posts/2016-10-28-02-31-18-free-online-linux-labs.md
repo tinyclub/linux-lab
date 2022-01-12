@@ -37,10 +37,10 @@ tags:
 
   实验环境                          | 简介
   ----------------------------------|----------------------------------------------------------
-  [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab) | 为旧金山大学的一门在线 X86 Linux [汇编课程][12]开发的实验环境。适合学习 Linux 汇编语言。
-  [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab) | 为赵老师[Linux 0.11 内核完全注释][2]一书开发的实验环境。适合学习操作系统课程。
-  [Linux Lab](http://tinylab.org/linux-lab)           | 为 Linux 内核以及嵌入式 Linux 准备的一款实验/开发环境。适合学习 C 语言、汇编、嵌入式 Linux、Shell、并深入研究 Linux 内核。内置十几个处理器架构和几十款免费开发板。
-  [Markdown Lab ](http://tinylab.org/markdown-lab)    | 为 Markdown 开发的一款编辑环境，支持幻灯、书籍、文章和简历，可导出 pdf 和 html。
+  [CS630 Qemu Lab](https://tinylab.org/cs630-qemu-lab) | 为旧金山大学的一门在线 X86 Linux [汇编课程][12]开发的实验环境。适合学习 Linux 汇编语言。
+  [Linux 0.11 Lab](https://tinylab.org/linux-0.11-lab) | 为赵老师[Linux 0.11 内核完全注释][2]一书开发的实验环境。适合学习操作系统课程。
+  [Linux Lab](https://tinylab.org/linux-lab)           | 为 Linux 内核以及嵌入式 Linux 准备的一款实验/开发环境。适合学习 C 语言、汇编、嵌入式 Linux、Shell、并深入研究 Linux 内核。内置十几个处理器架构和几十款免费开发板。
+  [Markdown Lab ](https://tinylab.org/markdown-lab)    | 为 Markdown 开发的一款编辑环境，支持幻灯、书籍、文章和简历，可导出 pdf 和 html。
 
 更多实验环境正在开发和集成中，后续计划尽快导入 Android、IoT 等开发环境。
 
@@ -48,10 +48,10 @@ tags:
 
   实验环境                          | Docker 镜像名          | 在线演示效果
   ----------------------------------|------------------------|----------------------------------
-  [CS630 Qemu Lab](http://tinylab.org/cs630-qemu-lab) | tinylab/cs630-qemu-lab | [showterm.io][3]
-  [Linux 0.11 Lab](http://tinylab.org/linux-0.11-lab) | tinylab/linux-0.11-lab | [showterm.io][4]
-  [Linux Lab](http://tinylab.org/linux-lab)           | tinylab/linux-lab      | [showterm.io][5]
-  [Markdown Lab ](http://tinylab.org/markdown-lab)    | tinylab/markdown-lab   | [showterm.io][6]
+  [CS630 Qemu Lab](https://tinylab.org/cs630-qemu-lab) | tinylab/cs630-qemu-lab | [showterm.io][3]
+  [Linux 0.11 Lab](https://tinylab.org/linux-0.11-lab) | tinylab/linux-0.11-lab | [showterm.io][4]
+  [Linux Lab](https://tinylab.org/linux-lab)           | tinylab/linux-lab      | [showterm.io][5]
+  [Markdown Lab ](https://tinylab.org/markdown-lab)    | tinylab/markdown-lab   | [showterm.io][6]
 
 所有实验环境可以通过 [Cloud-Lab][7] 管理，下面以 Ubuntu 为例。其他 Linux, Mac OSX 和 Windows 10 系统请先安装 [Docker CE](https://store.docker.com/search?type=edition&offering=community)。老版本的 Windows 系统，请先下载并安装 [Docker Toolbox](https://www.docker.com/docker-toolbox)。使用之前，请阅读下 [Cloud-lab][7] 列出的注意事项。
 
@@ -99,7 +99,7 @@ tags:
 其他个人或者企业如果需要短时间体验上述环境，也可以到 [泰晓开源小店][9] 选择对应的实验环境进行赞助。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://oldlinux.org/download/clk011c-1.9.5.pdf
 [3]: http://showterm.io/547ccaae139df14c3deec
 [4]: http://showterm.io/ffb67385a07fd3fcec182

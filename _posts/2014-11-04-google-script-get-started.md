@@ -45,4 +45,4 @@ Google Script 是 Google 最近推出来的轻应用开发平台. 和 Google App
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

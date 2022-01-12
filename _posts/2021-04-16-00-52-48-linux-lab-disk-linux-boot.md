@@ -46,8 +46,8 @@ Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等�
 
 前面两篇介绍了如何在 Windows 和 macOS 系统下利用 VirtualBox 来直接启动 Linux Lab Disk，本文介绍如何在 Linux 下完成相关功能。
 
-* [在 Windows 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-windows-boot/)
-* [在 macOS 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-macos-boot/)
+* [在 Windows 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-windows-boot/)
+* [在 macOS 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-macos-boot/)
 
 更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)。
 
@@ -86,8 +86,8 @@ $ VBoxManage internalcommands createrawvmdk -filename "/path/to/LinuxLab.vmdk" -
 
 创建过程比较简单，这里不再重复，请大家参考前述两篇文章之一：
 
-* [在 Windows 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-windows-boot/)
-* [在 macOS 系统中直接引导 Linux Lab Disk](http://tinylab.org/linux-lab-disk-macos-boot/)
+* [在 Windows 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-windows-boot/)
+* [在 macOS 系统中直接引导 Linux Lab Disk](https://tinylab.org/linux-lab-disk-macos-boot/)
 
 创建完以后可以直接通过命令行引导：
 
@@ -201,4 +201,4 @@ Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接�
 1. [Linux Lab 正在新增对 Linux Lab Disk 的支持](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)
 2. [How to boot from USB in VirtualBox - AIO Boot](https://www.aioboot.com/en/boot-from-usb-in-virtualbox/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

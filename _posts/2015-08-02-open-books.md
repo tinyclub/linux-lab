@@ -21,36 +21,36 @@ categories:
 
 相关原创分享会逐步整理成开放书籍并统一发布到：<http://tinylab.gitbooks.io/>，目前已涵盖 Shell、C 和 嵌入式 Linux，未来会逐步加入 汇编、操作系统、编译原理、系统优化 等其他基础课程。
 
-早在 2013 年，我们就系统地分析了 [为什么计算机的学生要学习 Linux 开源技术](http://tinylab.org/why-computer-students-learn-linux-open-source-technologies/)，希望这些开放书籍可以提供更多的助力。
+早在 2013 年，我们就系统地分析了 [为什么计算机的学生要学习 Linux 开源技术](https://tinylab.org/why-computer-students-learn-linux-open-source-technologies/)，希望这些开放书籍可以提供更多的助力。
 
 也欢迎更多来自高校和企业的同学参与进来，联合开发公开课程，把企业需求和前沿技术带进传统大学课堂，提升教学水平，优化教学质量，缩小高校教学和企业需求之间的差距。
 
 ## 已经发布
 
 1. C 语言编程透视
-  * 首页：<http://tinylab.org/open-c-book>
+  * 首页：<https://tinylab.org/open-c-book>
   * 阅读：<https://tinylab.gitbooks.io/cbook>
   * 简介：以实验的方式去探究类似 `Hello World` 这样的小程序在开发与执行过程中的微妙变化，一层层揭开 C 语言开发过程的神秘面纱，透视背后的秘密，不断享受醍醐灌顶的美妙。
 
 2. Shell 编程范例
-  * 首页：<http://tinylab.org/open-shell-book>
+  * 首页：<https://tinylab.org/open-shell-book>
   * 阅读：<https://tinylab.gitbooks.io/shellbook>
   * 简介：不同于传统 Shell 书，本书未花大篇幅介绍 Shell 语法，而以面向“对象”的方式引入大量实例介绍 Shell 日常操作，“对象” 涵盖数值、逻辑值、字符串、文件、进程、文件系统等。这样有助于学以致用中加强兴趣。也可作为 Shell 编程索引，随时检索。
 
 3. 嵌入式 Linux 知识库（eLinux.org 中文版）
-  * 首页：<http://tinylab.org/elinux>
+  * 首页：<https://tinylab.org/elinux>
   * 阅读：<https://tinylab.gitbooks.io/elinux>
   * 简介：Embedded Linux Wiki (elinux.org) 的 GitBook 版本，目前[中文翻译][2]工作正在持续进行中。
 
 ## 正在撰写
 
 1. Linux 0.11 考古笔记
-  * 首页：<http://tinylab.org/lad-book>
+  * 首页：<https://tinylab.org/lad-book>
   * 阅读：<https://tinylab.gitbooks.io/lad-book>
   * 简介：基于现有的 [5 分钟 Linux 0.11 实验环境][6]，再读 Linux 0.11 并写读书笔记，阅读过程中，争取逐步把 Linux 0.11 移植到 MIPS, ARM 和 PowerPC 平台。
 
 2. 嵌入式 Linux 系统开发公开课（基于 Linux Lab）
-  * 首页：<http://tinylab.org/elinux-course>
+  * 首页：<https://tinylab.org/elinux-course>
   * 简介：Linux Lab 基于 Docker 和 Qemu，为学生和老师提供了一个即时的嵌入式 Linux 开发环境，本课程将介绍如何[利用 Linux Lab 完成嵌入式系统软件开发全过程][8]。
 
 
@@ -82,7 +82,7 @@ categories:
   3. 通过 [泰晓原创服务中心](http://weidian.com/?userid=335178200) 赞助我们，可以获得更多免费技术咨询和培训服务。
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /elinux/
  [3]: /cs630-qemu-lab/
  [4]: /linux-assembly-language-quick-start/

@@ -89,7 +89,7 @@ The stated goal of this patch set is to make readahead more aggressive by increa
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://lwn.net/Articles/372281/
 [3]: https://lwn.net/Articles/372388/
 [4]: https://static.lwn.net/images/ns/kernel/context_readahead.png

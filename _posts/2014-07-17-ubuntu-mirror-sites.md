@@ -170,5 +170,5 @@ categories:
       ubuntu.mirrors.tds.net    /pub/linux/ftp.ubuntu.com/ubuntu//pub/linux/ftp.ubuntu.com/ubuntu/all
       www.opensourcemirrors.org                                  /ubuntu/                         all
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://people.canonical.com/~cjwatson/mirror/list.html

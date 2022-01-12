@@ -73,6 +73,6 @@ Linus 一般会在某个正式版本（譬如 v5.4）发布的同时就会为下
 - [Working with linux-next](https://www.kernel.org/doc/man-pages/linux-next.html)
 - [The linux-next and -stable trees](https://lwn.net/Articles/571980/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 
 

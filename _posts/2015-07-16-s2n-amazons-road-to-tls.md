@@ -60,7 +60,7 @@ s2n 现已经发布在 github：[awslabs/s2n][3]
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://openssl.org/news/secadv_20150709.txt
  [3]: https://github.com/awslabs/s2n
  [4]: /brain-wide-open-hole-doing-a-ratio-table-screen-big-than-phone-portable-mobile-devices

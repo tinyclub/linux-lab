@@ -35,7 +35,7 @@ vnStat 本身基于控制台，它支持 Linux 和 BSD ，基于内核提供的�
 
 由于 vnStat 的轻量级特性，它本身并不支持 Web 的访问方式（有比较简单的 CGI demo ），所以在其官方网站上有列出第三方的 vpsinfo, jsvnstat, vnStat PHP frontend 以及我们这里的 vnSat SVG frontend 。除了 vnStatSVG ，其他所有前端都依赖比较复杂的 web 服务器支持，都需要 PHP 模块，只有 vnStatSVG 的需求最小，它只要一个简单的支持 CGI 的 Web 服务器即可，所以特别适合嵌入式平台，能够完美运行于 Busybox 构建的嵌入式系统；另外，由于 vnStatSVG 基于 AJAX 、 SVG 、 CGI 实现了 MVC 结构，所以，可配制性和可扩展性都特别好，适合分布式平台，能够通过一个浏览器窗口同时透明地监控大量不同主机的不同网络接口。
 
-vnStatSVG 最早发布于 2008 年，那时候作者还在上学，所以时间比较充裕，项目托管于 <http://sourceforge.net/projects/vnstatsvg/> ，于 2009 年发布最后一个 1.0.7 版本后，由于实习工作繁重，逐步停止了该项目的维护。作者从上大学开始到现在，一直在学习和研究嵌入式 Linux 方向，目前主要专注于 Linux kernel features 方面的研究与工作。目前正在建立一个平台： http://tinylab.org ，用于深入分享和交流嵌入式 Linux 系统相关的技术。所以重新梳理了早期发起或者参与的项目，发现 vnStatSVG 有其现实的应用场景和需求，但是需要很好的改进和完善，所以最近重启了 vnStatSVG 项目，完成了 2.0 的 rc1 版本，并把项目仓库管理工具转成了 git ，放到了 Tinylab.org 的代码仓库中： [vnstatsvg.git][3] ，并编写了基本的使用文档： [vnstatsvg][2] 。希望该项目能够使更多用户受益。
+vnStatSVG 最早发布于 2008 年，那时候作者还在上学，所以时间比较充裕，项目托管于 <http://sourceforge.net/projects/vnstatsvg/> ，于 2009 年发布最后一个 1.0.7 版本后，由于实习工作繁重，逐步停止了该项目的维护。作者从上大学开始到现在，一直在学习和研究嵌入式 Linux 方向，目前主要专注于 Linux kernel features 方面的研究与工作。目前正在建立一个平台： https://tinylab.org ，用于深入分享和交流嵌入式 Linux 系统相关的技术。所以重新梳理了早期发起或者参与的项目，发现 vnStatSVG 有其现实的应用场景和需求，但是需要很好的改进和完善，所以最近重启了 vnStatSVG 项目，完成了 2.0 的 rc1 版本，并把项目仓库管理工具转成了 git ，放到了 Tinylab.org 的代码仓库中： [vnstatsvg.git][3] ，并编写了基本的使用文档： [vnstatsvg][2] 。希望该项目能够使更多用户受益。
 
 目前只在 Ubuntu 和添加有 Busybox 工具的 Android emulator 中测试过，希望正式的 2.0 版本能够很好地支持更多的 Linux 和 BSD 发行版，所以如果其他朋友正好有环境并且有监控网络流量监控的需求，欢迎帮忙一起测试并提交 Bug Fixup 。当然，有兴趣的同学也欢迎参与一起维护和改进。
 

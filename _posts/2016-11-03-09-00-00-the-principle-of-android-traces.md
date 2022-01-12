@@ -572,5 +572,5 @@ size_t ThreadList::RunCheckpoint(Closure* checkpoint_function) {
 
 对于这些不是 Runnable 状态的线程，他们可能不会主动去调用 `Run` 函数，所以只能由 `Signal Catcher` 线程去帮他们 Dump，至于 `DumpCheckpoint` 的 `Run` 函数的功能还是和 Runnable 状态的线程一样的，都是打印线程堆栈。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: http://www.cnblogs.com/hoys/archive/2012/08/19/2646377.html#/notebooks/6130015/notes/5653062/_blank

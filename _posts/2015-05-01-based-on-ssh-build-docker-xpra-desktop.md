@@ -120,7 +120,7 @@ $ docker build -t tinylab/docker-desktop .
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://github.com/fcwu/docker-ubuntu-vnc-desktop
  [3]: https://kanaka.github.io/noVNC/
  [4]: https://github.com/rogaha/docker-desktop

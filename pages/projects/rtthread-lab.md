@@ -22,7 +22,7 @@ RT-Thread 是一套国产 IoT 操作系统。
 * [RT-Thread 首页](http://www.rt-thread.org/)
 * [RT-Thread Git 仓库](https://github.com/rt-thread/)
 
-为了降低 RT-Thread 的学习和开发门槛，我们为它开发了这套 RT-Thread Lab，它可以作为 [Cloud Lab](http://tinylab.org/cloud-lab) 的插件使用。
+为了降低 RT-Thread 的学习和开发门槛，我们为它开发了这套 RT-Thread Lab，它可以作为 [Cloud Lab](https://tinylab.org/cloud-lab) 的插件使用。
 
 下面简单介绍一下如何通过 Cloud Lab 使用 RT-Thread Lab。
 

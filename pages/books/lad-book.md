@@ -16,7 +16,7 @@ tags:
   - 操作系统
 ---
 
-2017 年 10 月，[泰晓科技](http://tinylab.org) 发起并成立了“Linux 考古队”，志在共同学习和研究历史版本的 Linux 内核，输出学习笔记并汇总成册。
+2017 年 10 月，[泰晓科技](https://tinylab.org) 发起并成立了“Linux 考古队”，志在共同学习和研究历史版本的 Linux 内核，输出学习笔记并汇总成册。
 
 这个小册子就是用来记录“考古队”的各项考古发现并及时分享给社区。
 
@@ -24,7 +24,7 @@ tags:
 
 -   [代码仓库](https://github.com/tinyclub/lad-book)
 -   [在线阅读](http://tinylab.gitbooks.io/lad-book)
--   [项目首页](http://tinylab.org/lad-book)
+-   [项目首页](https://tinylab.org/lad-book)
 
 ## 报名
 
@@ -34,7 +34,7 @@ tags:
 
 ## 编译
 
-要编译本书，请使用 [Markdown Lab](http://tinylab.org/markdown-lab)。
+要编译本书，请使用 [Markdown Lab](https://tinylab.org/markdown-lab)。
 
 ## 纠错
 

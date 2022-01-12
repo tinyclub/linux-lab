@@ -75,7 +75,7 @@ tags:
 
 异常位置在 Driver 中的第 191 行，这里该模块在等待另一个 CPU 核的中断唤醒它，即 `wake_up_interruptible`，唤醒以后进行下一步处理；所以此时该进程是陷入了内核态，并一直处于内核态，没有机会退出。
 
-更多定位代码行位置的方法请阅读历史文章：[如何快速定位 Linux Panic 出错的代码行](http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)。
+更多定位代码行位置的方法请阅读历史文章：[如何快速定位 Linux Panic 出错的代码行](https://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)。
 
 ### 分析跟用户态进程唤醒相关的内核代码
 
@@ -239,7 +239,7 @@ index d3415b0..dfc3ff1 100755
 
 ## 参考资料
 
-* [如何快速定位 Linux Panic 出错的代码行](http://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)
+* [如何快速定位 Linux Panic 出错的代码行](https://tinylab.org/find-out-the-code-line-of-kernel-panic-address/)
 * [wait_event_interruptible() 与 wake_up_start() 学习笔记](http://blog.chinaunix.net/uid-29054367-id-3809059.html)
 * [wait_event_interruptible() v.s. wake_up_interruptible()](https://stackoverflow.com/questions/19064177/wait-event-interruptible-vs-wake-up-interruptible)
 * [进程冻结（freezing of task）](https://blog.csdn.net/rikeyone/article/details/103182748)

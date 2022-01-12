@@ -180,7 +180,7 @@ MIUI6相比米4自带的MIUI V5，其实并没有太大的突破，特别是在�
 
 
  [1]: &#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#119;&#117;&#x7a;&#x68;&#97;&#110;g&#x6a;&#x69;&#110;&#64;g&#x6d;&#x61;&#105;&#46;&#x63;&#x6f;&#109;
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://baike.baidu.com/view/14581013.htm?fr=aladdin
  [4]: http://www.miui.com/summarize.php
  [5]: http://v.youku.com/v_show/id_XNzU3MzU2NjQ4.html?from=y1.7-1-105.4.2-1.8-1-2-1

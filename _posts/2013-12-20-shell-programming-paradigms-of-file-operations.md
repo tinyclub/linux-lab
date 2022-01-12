@@ -544,7 +544,7 @@ find: /usr/bin/find /usr/X11R6/bin/find /usr/bin/X11/find /usr/X11/bin/find /usr
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /shell-programming-paradigm-of-string-manipulation/
  [4]: http://www.ibm.com/developerworks/cn/linux/l-cn-vfs/
  [5]: http://www.ibm.com/developerworks/cn/linux/l-linux-filesystem/index.html?ca=drs-cn

@@ -67,4 +67,4 @@ Synergy 支持多个平台：Windows, Mac 和 Linux。可以通过其 [官方网
 
 由于支持共享剪切板，也可以在一个屏幕上拷贝内容，移动到另外一个屏幕上，再粘贴出来，从而实现跨屏幕之间的快速文本共享。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

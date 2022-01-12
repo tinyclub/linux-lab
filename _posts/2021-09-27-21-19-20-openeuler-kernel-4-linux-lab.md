@@ -21,7 +21,7 @@ tags:
 
 今年的开源之夏活动马上接近尾声，开源之夏是由中科院软件所组织的暑期开源活动，主要面向高校学生和开源社区，由开源社区出项目和 Mentor，面向高校召集学生报名开展 3 个月的开源项目开发活动。
 
-泰晓科技技术社区每年都参与了该项活动，今年更是提报了 5 个左右的项目，相关信息见：<http://tinylab.org/summer2021>
+泰晓科技技术社区每年都参与了该项活动，今年更是提报了 5 个左右的项目，相关信息见：<https://tinylab.org/summer2021>
 
 目前活动即将结束，提报的几个项目也陆续进入到紧张的代码集成和总结阶段，相关项目的开发过程见：<https://gitee.com/tinylab/cloud-lab/issues>
 
@@ -90,4 +90,4 @@ $ git checkout -b openeuler origin/openeuler
 
 预计在 2 周左右，会把该功能合并到 Linux Lab 的 next 分支，随后再发布到 v0.8-rc3，敬请期待，v0.8 正式版预计也会在一个月左右发布。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

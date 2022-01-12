@@ -212,7 +212,7 @@ src 和 dst 两者**任一**升到所需最高对齐。一方升到最高对齐�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://weibo.com/wuzhangjin
  [3]: /linux-assembly-language-quick-start/
  [4]: /wp-content/uploads/2015/06/memcpy-opti-benchmark-result.jpg

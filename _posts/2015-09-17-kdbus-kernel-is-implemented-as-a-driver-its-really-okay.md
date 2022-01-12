@@ -13,7 +13,7 @@ tags:
   - Linux
 ---
 
-> by Chen Jie of [TinyLab.org](http://tinylab.org)
+> by Chen Jie of [TinyLab.org](https://tinylab.org)
 > 2015/8/9
 
 ## 背景

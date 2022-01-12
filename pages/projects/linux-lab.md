@@ -109,9 +109,9 @@ tags:
 
 ## 更多用法
 
-* [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
-* [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
-* [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+* [Linux Lab：难以抗拒的十大理由 V1.0](https://tinylab.org/why-linux-lab)
+* [Linux Lab：难以抗拒的十大理由 V2.0](https://tinylab.org/why-linux-lab-v2)
+* [Linux Lab 龙芯实验手册 V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
 * Linux Lab 视频公开课
     * [CCTALK](https://www.cctalk.com/m/group/88948325)
     * [B 站](https://space.bilibili.com/687228362/channel/detail?cid=152574)
@@ -225,5 +225,5 @@ tags:
 [10]: https://gitee.com/tinylab/linux-lab
  [4]: /take-5-minutes-to-build-linux-0-11-experiment-envrionment/
  [5]: /build-linux-0-11-lab-with-docker/
- [6]: http://tinylab.org/docker-qemu-linux-lab/
- [7]: http://tinylab.org/using-linux-lab-to-do-embedded-linux-development/
+ [6]: https://tinylab.org/docker-qemu-linux-lab/
+ [7]: https://tinylab.org/using-linux-lab-to-do-embedded-linux-development/

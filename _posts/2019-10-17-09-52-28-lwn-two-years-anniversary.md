@@ -17,14 +17,14 @@ tags:
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-> 原文：[“LWN 中文翻译计划” 二周年工作小结](http://tinylab.org/lwn-two-years-anniversary)
+> 原文：[“LWN 中文翻译计划” 二周年工作小结](https://tinylab.org/lwn-two-years-anniversary)
 > 原创：By [unicornx](https://github.com/unicornx)
 
 ## 前言
 
 先占用点篇幅啰嗦一下，简单自我推销一下这个小项目（[**“LWN 中文翻译计划”**][1]）。
 
-搞 Linux 内核的人或多或少应该都听说过 [LWN.net][2])（下文简称 LWN），这是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。本活动目前主要针对 LWN 的内核相关文章进行中文翻译，属于 [**“泰晓科技”**][3] 旗下的一个子项目，项目地址在 `http://tinylab.org/lwn/`。 
+搞 Linux 内核的人或多或少应该都听说过 [LWN.net][2])（下文简称 LWN），这是一份著名的计算机在线刊物，专注于报道有关自由软件，特别是有关 Linux 和其他 Unix-like 相关操作系统的新闻和技术动态。本活动目前主要针对 LWN 的内核相关文章进行中文翻译，属于 [**“泰晓科技”**][3] 旗下的一个子项目，项目地址在 `https://tinylab.org/lwn/`。 
 
 时间过得好快，到今年 10 月份这个项目就是 **“整整”** 两年了，感觉似乎应该写点什么纪念一下，于是就有了下面这些文字。
 
@@ -72,6 +72,6 @@ LWN 文章读得多了，不免产生点小心思，为何不把它们整理翻�
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org/lwn/
+[1]: https://tinylab.org/lwn/
 [2]: https://lwn.net/
-[3]: http://tinylab.org/
+[3]: https://tinylab.org/

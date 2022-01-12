@@ -112,8 +112,8 @@ Btrfs 还提供了一大堆其他 Linux 文件系统不支持的功能。它可�
 
 在系列的最后，我们计划对 Btrfs 进行合理全面的介绍，敬请关注。
 
-[1]: http://tinylab.org
-[2]: http://tinylab.org/lwn
+[1]: https://tinylab.org
+[2]: https://tinylab.org/lwn
 [3]: /lwn-577218/
 [4]: /lwn-577961/
 [5]: https://lwn.net/Articles/579009/

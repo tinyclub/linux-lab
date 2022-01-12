@@ -11,7 +11,7 @@ categories:
   - C 语言
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/24
 
 先来看一段代码：

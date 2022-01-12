@@ -84,4 +84,4 @@ ELF和PE二进制文件格式作为本课程的预备知识 ，建议按需同�
 欢迎免费订阅“泰晓沙龙-直播课堂”，更多直播课程在等你：<https://www.cctalk.com/m/group/89433087>
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

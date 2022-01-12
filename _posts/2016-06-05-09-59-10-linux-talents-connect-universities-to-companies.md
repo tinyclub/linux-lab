@@ -35,8 +35,8 @@ tags:
 
 昨晚抽空创建了这么一个页面。
 
-* 网站地址：<http://tinylab.org/talents>
-* 投稿指南：<http://tinylab.org/post>
+* 网站地址：<https://tinylab.org/talents>
+* 投稿指南：<https://tinylab.org/post>
 
 目前已经提交了一些高校 Linux 团队信息，其他团队和个人可以参考提交稿件，投稿方法请参考[投稿指南](/post)。
 

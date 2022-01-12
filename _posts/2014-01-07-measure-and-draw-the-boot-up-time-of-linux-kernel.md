@@ -219,7 +219,7 @@ If the string have spaces, please use the [value, string] format.
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://elinux.org/Boot_Time
  [4]: http://stuff.mit.edu/afs/sipb/contrib/linux/scripts/bootgraph.pl
  [5]: /wp-content/uploads/2014/01/bootgraph.svg

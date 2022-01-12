@@ -472,7 +472,7 @@ WLAN自动休眠其实是wifi在无数据通信时（没有wifi wakelock）自�
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /smart-phone-power-opt-part1/
  [4]: http://www.huxiu.com/article/6625/1.html
  [5]: http://www.edaboard.com/thread133575.html

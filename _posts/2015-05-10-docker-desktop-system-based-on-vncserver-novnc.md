@@ -88,7 +88,7 @@ $ docker build -t tinylab/ubuntu-desktop-lxde-vnc .
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /based-on-ssh-build-docker-xpra-desktop/
  [3]: http://xpra.org/
  [4]: http://kanaka.github.io/noVNC/

@@ -582,7 +582,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.xfocus.net/articles/200105/174.html
  [3]: http://blog.chinaunix.net/uid-16875687-id-2155704.html
  [4]: https://stuff.mit.edu/afs/athena/project/rhel-doc/3/rhel-as-en-3/index.html
@@ -618,5 +618,5 @@ categories:
 
  [34]: http://logos.cs.uic.edu/366/notes/MIPS%20Quick%20Tutorial.htm
  [50]: http://cs.lmu.edu/~ray/notes/gasexamples/
- [51]: http://tinylab.org/linux-lab
+ [51]: https://tinylab.org/linux-lab
  [52]: https://github.com/tinyclub/linux-lab/tree/master/examples/assembly

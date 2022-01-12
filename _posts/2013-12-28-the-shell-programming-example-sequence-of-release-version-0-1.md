@@ -42,7 +42,7 @@ categories:
 
 这里可以下载 pdf 版本： [Shell 编程范例 ][7] 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /shell-programming-paradigm-series-index-review/
  [5]: https://github.com/tinyclub/open-shell-book/
  [6]: /open-shell-book/

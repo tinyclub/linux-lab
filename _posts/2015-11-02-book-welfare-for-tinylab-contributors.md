@@ -15,11 +15,11 @@ tags:
 
 泰晓成立之初，就是希望能够和广大的一线 Android/Linux 工程师们一起创建一个原创与分享平台。随着大家的不断参与，我们逐渐取得了一些成绩，包括：
 
-1. 网站成功从 WordPress 迁移到 [Jekyll+Github](https://github.com/tinyclub/tinylab.org.git)，更方便大伙的参与，一条 Github Pull Request 就可以[投稿](http://tinylab.org/post/)。
+1. 网站成功从 WordPress 迁移到 [Jekyll+Github](https://github.com/tinyclub/tinylab.org.git)，更方便大伙的参与，一条 Github Pull Request 就可以[投稿](https://tinylab.org/post/)。
 
-2. 多个[开源项目](http://tinylab.org/projects/)、[开源书籍](http://tinylab.org/books/)、翻译项目在持续顺利的开展，尤其是 [eLinux.org](http://tinylab.org/elinux/) 和 [Linux-doc](http://tinylab.org/linux-doc/) 这两个翻译项目进展顺利，而 [C 语言编程透视](http://tinylab.org/open-c-book/) 这一开源书籍正在准备纸版的出版。
+2. 多个[开源项目](https://tinylab.org/projects/)、[开源书籍](https://tinylab.org/books/)、翻译项目在持续顺利的开展，尤其是 [eLinux.org](https://tinylab.org/elinux/) 和 [Linux-doc](https://tinylab.org/linux-doc/) 这两个翻译项目进展顺利，而 [C 语言编程透视](https://tinylab.org/open-c-book/) 这一开源书籍正在准备纸版的出版。
 
-3. 包括微博、微信群等线上交流积极踊跃，有来自整个手机生态的各个企业、高校、出版社的编辑、一线工程师、高管和投资人参与，也在珠海地区举办了 3 次线下[泰晓沙龙](http://tinylab.org/tinysalon/)活动，有多家公司和高校的同学做报告或者参与交流。
+3. 包括微博、微信群等线上交流积极踊跃，有来自整个手机生态的各个企业、高校、出版社的编辑、一线工程师、高管和投资人参与，也在珠海地区举办了 3 次线下[泰晓沙龙](https://tinylab.org/tinysalon/)活动，有多家公司和高校的同学做报告或者参与交流。
 
 为了感谢大家的热情参与，也为了吸引更多的工程师们、学生们加入和交流，进而促进大家通过这个平台一起成长，我们特别跟出版社合作，准备了一批书籍送给大家。
 
@@ -38,14 +38,14 @@ tags:
 
 对于站内的所有原创贡献、以及两个翻译项目的贡献做了如下统计，汇总脚本见各项目下的 `tools/build-contributors.sh`，汇总结果如下：
 
-*    131 [Wu Zhangjin](http://tinylab.org/authors.html#wu-zhangjin-ref)
-*     34 [Wen Pingbo](http://tinylab.org/authors.html#wen-pingbo-ref)
-*     21 [Chen Jie](http://tinylab.org/authors.html#chen-jie-ref)
-*      8 [Li Zhaozhong](http://tinylab.org/authors.html#li-zhaozhong-ref)
-*      5 [Zhou Yuanbin](http://tinylab.org/authors.html#zhou-yuanbin-ref)
-*      5 [Tao HongLiang](http://tinylab.org/authors.html#tao-hongliang-ref)
-*      2 [Yao Qi](http://tinylab.org/authors.html#yao-qi-ref)
-*      2 [Li Jiawu](http://tinylab.org/authors.html#li-jiawu-ref)
+*    131 [Wu Zhangjin](https://tinylab.org/authors.html#wu-zhangjin-ref)
+*     34 [Wen Pingbo](https://tinylab.org/authors.html#wen-pingbo-ref)
+*     21 [Chen Jie](https://tinylab.org/authors.html#chen-jie-ref)
+*      8 [Li Zhaozhong](https://tinylab.org/authors.html#li-zhaozhong-ref)
+*      5 [Zhou Yuanbin](https://tinylab.org/authors.html#zhou-yuanbin-ref)
+*      5 [Tao HongLiang](https://tinylab.org/authors.html#tao-hongliang-ref)
+*      2 [Yao Qi](https://tinylab.org/authors.html#yao-qi-ref)
+*      2 [Li Jiawu](https://tinylab.org/authors.html#li-jiawu-ref)
 *      2 [@willis](https://github.com/lovelers)
 *      2 [@Lotte-Bai](https://github.com/Lotte-Bai)
 *      1 [@zxqhbd](https://github.com/zxqhbd)

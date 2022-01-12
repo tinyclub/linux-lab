@@ -66,4 +66,4 @@ Rik van Riel 发布了 [一个补丁](http://lwn.net/Articles/226658/) 试图改
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

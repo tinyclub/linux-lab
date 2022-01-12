@@ -136,7 +136,7 @@ It is really awesome to run Python on Android, thanks to both SL4A and Py4A proj
 
 To learn more about Python programming on Android, please read the resources from [the wiki page of SL4A][8].
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://code.google.com/p/android-scripting/
  [4]: http://code.google.com/p/python-for-android/
  [5]: http://android-scripting.googlecode.com/files/sl4a_r6.apk

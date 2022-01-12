@@ -139,4 +139,4 @@ tags:
 
 本文的例子汇整在 [Linux Lab: examples/c/hello](https://gitee.com/tinylab/linux-lab/tree/master/examples/c/hello)。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

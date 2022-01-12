@@ -74,7 +74,7 @@ Linux Engineer 一枚，重度开源践行者，[兰州大学开源社区][3]初
 
 Gnite! Falcon
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://oss.lzu.edu.cn
  [4]: http://www.kernel.org
  [5]: http://www.remword.com/kps_result/all_whole_country.html

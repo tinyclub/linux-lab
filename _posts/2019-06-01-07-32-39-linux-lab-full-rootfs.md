@@ -381,4 +381,4 @@ Ubuntu-core 提供了一个预先制作好的基础包，内置了包管理工�
 [4]: http://www.cross-lfs.org/
 [3]: http://www.linuxfromscratch.org/
 [2]: https://www.busybox.net/
-[1]: http://tinylab.org
+[1]: https://tinylab.org

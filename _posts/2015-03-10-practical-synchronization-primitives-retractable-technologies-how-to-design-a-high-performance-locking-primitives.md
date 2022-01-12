@@ -246,7 +246,7 @@ Linux 内核中的伸缩方面的工作，是整个团队共同努力的成果�
 
 
  [1]: http://queue.acm.org/detail.cfm?id=2698990
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /wp-content/uploads/2015/02/stpsp-bueso_table1.jpg
  [4]: /wp-content/uploads/2015/02/stpsp-bueso1.jpg
  [5]: /wp-content/uploads/2015/02/stpsp-bueso_table2.jpg

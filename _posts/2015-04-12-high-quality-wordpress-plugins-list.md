@@ -204,5 +204,5 @@ OK，如果确实打算选用 WordPress，那让我们来过以下 [泰晓科技
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wordpress-site-seo-optimization/

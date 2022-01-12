@@ -66,4 +66,4 @@ Linux 为了减少不必要的内存消耗，对于一些仅仅在内核初始�
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org

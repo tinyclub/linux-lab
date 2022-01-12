@@ -133,7 +133,7 @@ Linux时钟管理相关API类型繁多，使用时难免会有很多困惑，比
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: https://www.osadl.org/Latency-plot-of-system-in-rack-2-slot.qa-latencyplot-r2s4.0.html
  [4]: http://www.linuxtoday.com/infrastructure/2009072900535MMSW
  [5]: https://www.kernel.org/doc/Documentation/timers/timers-howto.txt

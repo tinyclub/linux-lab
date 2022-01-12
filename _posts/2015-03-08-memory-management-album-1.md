@@ -53,7 +53,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /anise-word-there-are-several-ways-to-approach-how-much-space-do-you-make/
  [3]: /ssdalloc-using-ssd-for-expandable-memory/
  [4]: /buddy-actually-use-cma-and-cma-brochures-as-well-as-android-problem-improving/

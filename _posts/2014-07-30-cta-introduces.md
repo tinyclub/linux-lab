@@ -27,7 +27,7 @@ CTA 是 "China Type Approval" 的缩写，即中国产品质量检测。质量�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://en.wikipedia.org/wiki/Type_approval
  [3]: http://www.srtc.org.cn/
  [4]: http://www.chinattl.com/ttlweb/default.aspx

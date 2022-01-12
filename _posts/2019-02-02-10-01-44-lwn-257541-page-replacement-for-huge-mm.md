@@ -68,4 +68,4 @@ van Riel 所列出的另一个功能是增加对最近被换出的页框的跟�
 
 **请点击 [LWN 中文翻译计划](/lwn)，了解更多详情。**
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

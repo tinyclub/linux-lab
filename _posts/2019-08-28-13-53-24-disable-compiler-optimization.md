@@ -97,4 +97,4 @@ tags:
 
 这种情况怎么确认呢？`make /path/to/xxx.s`，看看代码还在不在。在 Linux Lab 里头可以用 `make k-x /path/to/xxx.s`。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

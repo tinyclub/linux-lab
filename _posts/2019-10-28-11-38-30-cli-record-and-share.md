@@ -29,7 +29,7 @@ tags:
 
 您怎么记录工作日志呢？用传统的纸和笔，还是写在博客上，写在博客上是静态的纯文字，还是结合一些 Repeatable 的辅助工具呢？用工具记录操作过程的好处是可以避免手动敲错。
 
-笔者认为现代的工作日志记录方法有 n 重境界，我把它们都藏在 [Linux Lab](http://tinylab.org/linux-lab) 了，让我们一一揭秘。
+笔者认为现代的工作日志记录方法有 n 重境界，我把它们都藏在 [Linux Lab](https://tinylab.org/linux-lab) 了，让我们一一揭秘。
 
 ## 第 1 重：静态记录和分享
 
@@ -96,4 +96,4 @@ Linux Lab 有提供一个 `showterm` 工具，用法类似 `script`，但是录�
 
 补充一下，有一个 [ttyplayer.js](https://github.com/meowtec/ttyplayer.js) 可以类似 `showterm` 那样把录制好的命令行视频发布到网络上。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

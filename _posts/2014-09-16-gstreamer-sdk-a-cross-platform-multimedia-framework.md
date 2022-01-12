@@ -84,7 +84,7 @@ Android 端的问题分为几类。一是和设备搭载的 Android 系统本身
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://lwn.net/Articles/475733/
  [3]: www.gstreamer.com
  [4]: http://docs.gstreamer.com/display/GstSDK/Multiplatform+deployment+using+Cerbero

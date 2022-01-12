@@ -102,7 +102,7 @@ Linux内核源代码遵循 [GPL v2版权协议][3]，既然Android手机厂商�
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/plain/COPYING
  [4]: http://www.meizu.com
  [5]: http://www.mi.com

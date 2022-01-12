@@ -496,7 +496,7 @@ MMIO 空间，通常由物理地址窗口来定义，比如 MIPS 32bits 下的 k
 MMIO 内存序呈现更加的硬件多变性，进一步信息参见「[LWN: Semantics of MMIO mapping attributes across architectures][24]」。
 
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: /memory-ordering/
 [3]: http://lxr.free-electrons.com/source/Documentation/memory-barriers.txt
 [4]: http://en.cppreference.com/w/cpp/language/bit_field

@@ -63,5 +63,5 @@ So, to make a table work with pandoc, we must use something like:
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://johnmacfarlane.net/pandoc/README.html

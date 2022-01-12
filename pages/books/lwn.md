@@ -102,7 +102,7 @@ tags:
 
 更多高质量的 LWN 翻译文章需要您的支持！谢谢。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://lwn.net/Kernel/Index/
 [3]: https://lwn.net/
 [4]: https://en.wikipedia.org/wiki/LWN.net

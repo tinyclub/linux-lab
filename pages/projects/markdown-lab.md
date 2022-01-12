@@ -136,7 +136,7 @@ Docker 安装：
  [2]: https://gitee.com/tinylab/markdown-lab/blob/master/README.md
  [3]: https://github.com/tinyclub/markdown-lab
 [10]: https://gitee.com/tinylab/markdown-lab
- [4]: http://tinylab.org/use-markdown-to-write-document/
- [5]: http://tinylab.org/write-resume-with-markdown/
- [6]: http://tinylab.org/use-markdown-to-write-slides/
- [7]: http://tinylab.org/docker-quick-start-docker-gitbook-writing-a-book/
+ [4]: https://tinylab.org/use-markdown-to-write-document/
+ [5]: https://tinylab.org/write-resume-with-markdown/
+ [6]: https://tinylab.org/use-markdown-to-write-slides/
+ [7]: https://tinylab.org/docker-quick-start-docker-gitbook-writing-a-book/

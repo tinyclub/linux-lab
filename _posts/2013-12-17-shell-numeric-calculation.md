@@ -449,12 +449,12 @@ let 和 expr 都无法进行浮点运算，但是 bc 和 awk 可以。
 
 统计每个单词出现的次数：
 
-    $ wget -c http://tinylab.org
+    $ wget -c https://tinylab.org
     $ cat index.html | sed -e "s/[^a-zA-Z]/\n/g" | grep -v ^$ | sort | uniq -c
 
 统计出现频率最高的前 10 个单词：
 
-    $ wget -c http://tinylab.org
+    $ wget -c https://tinylab.org
     $ cat index.html | sed -e "s/[^a-zA-Z]/\n/g" | grep -v ^$ | sort | uniq -c | sort -n -k 1 -r | head -10
         524 a
         238 tag
@@ -603,7 +603,7 @@ let 和 expr 都无法进行浮点运算，但是 bc 和 awk 可以。
 
 SHELL 编程是一件非常有趣的事情，如果您想一想：上面计算家庭月均收入的例子，然后和用 M$ Excel 来做这个工作比较，你会发现前者是那么简单和省事，而且给您以运用自如的感觉。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://www.tldp.org/LDP/abs/html/
  [4]: http://bbs.chinaunix.net/forum.php?mod=viewthread&tid=2198159
  [5]: http://bbs.chinaunix.net/thread-218853-1-1.html

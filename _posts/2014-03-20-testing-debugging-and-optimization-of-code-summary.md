@@ -608,7 +608,7 @@ ald的命令很少，而且跟gdb很类似，比如这个几个命令用法和�
   * High-level code optimization
   * Code Optimization
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
  [5]: http://satc.gsfc.nasa.gov/assure/agbsec5.txt

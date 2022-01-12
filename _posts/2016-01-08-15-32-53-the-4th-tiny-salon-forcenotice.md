@@ -83,7 +83,7 @@ __报名方式__：加微信 lzufalcon 并注明：参加泰晓沙龙第四期�
 [1]: /book-welfare-for-tinylab-contributors/
 [2]: /introduction-of-pcduino8-Uno/
 [3]: http://www.mcpeonline.com/
-[4]: http://tinylab.org
+[4]: https://tinylab.org
 [5]: /nodemcu-kickstart/
 [6]: http://oss.lzu.edu.cn
 [7]: http://www.remword.com/kps_result/all_whole_country.html

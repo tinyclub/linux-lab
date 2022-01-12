@@ -553,4 +553,4 @@ LOG：
 
 ok，已经理清了前因后果。再退一步，试想下，假如上游没有修复这个 patch。我们能不能想出来？我觉得很难，因为我们缺乏 madvise 的相关认识，并且它经过了 dirty, SwapBacked 标志的变化（好像几乎没办法做这么微观的页面标志追踪？），才导致 NR_ISOLATED_ANON/FLIE 的变化。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

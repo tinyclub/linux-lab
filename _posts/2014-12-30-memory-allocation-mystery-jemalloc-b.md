@@ -324,7 +324,7 @@ OK，除了第 2 和 第 4 点需要改进下以外，其他看起来都有应�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: "/memory-allocation-mystery-jemalloc-a"
  [3]: /wp-content/uploads/2014/12/jemalloc-free-route.jpg
  [4]: /wp-content/uploads/2014/12/jemalloc-free-to-tcache.jpg

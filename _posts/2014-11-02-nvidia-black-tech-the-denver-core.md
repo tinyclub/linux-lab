@@ -152,7 +152,7 @@ IMHO，还是选孔明好。多核 CPU 需要配套多线程编程，介个需�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2014/11/NV-TegraK1-Black-Tech-OoOE-Desc.jpg
  [3]: /wp-content/uploads/2014/11/NV-TegraK1-Black-Tech-OoOE-Scene1.jpg
  [4]: /wp-content/uploads/2014/11/NV-TegraK1-Black-Tech-OoOE-Scene2.jpg

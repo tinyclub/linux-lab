@@ -12,7 +12,7 @@ categories:
   - C 语言
 ---
 
-> by PingboWen of [TinyLab.org](http://tinylab.org)
+> by PingboWen of [TinyLab.org](https://tinylab.org)
 > 2013/08/24
 
 今天在看 c-faq 的时候，碰到一个很奇怪的写法：

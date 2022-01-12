@@ -422,7 +422,7 @@ NanoZone 有点像 jemalloc 的 tcache，目的是为了提供分配/释放的�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /ssdalloc-using-ssd-for-expandable-memory/
  [3]: http://opensource.apple.com/tarballs/libmalloc/
  [4]: /memory-allocation-mystery-·-jemalloc-a

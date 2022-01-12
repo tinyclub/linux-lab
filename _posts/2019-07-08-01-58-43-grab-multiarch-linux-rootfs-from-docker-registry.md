@@ -19,7 +19,7 @@ tags:
 > By Falcon of [TinyLab.org][1]
 > Jul 04, 2019
 
-[Linux Lab 新增全功能 Rootfs 支持](http://tinylab.org/linux-lab-full-rootfs/) 一文不仅介绍了 7 种 Linux 文件系统的制作方法，也介绍了如何把文件系统制作成 Docker 镜像并发布到 Docker 官方镜像库中。
+[Linux Lab 新增全功能 Rootfs 支持](https://tinylab.org/linux-lab-full-rootfs/) 一文不仅介绍了 7 种 Linux 文件系统的制作方法，也介绍了如何把文件系统制作成 Docker 镜像并发布到 Docker 官方镜像库中。
 
 实际上，也有其他人在 Docker 镜像库中发布了很多的文件系统，而其中比较正式的当属 Ubuntu 和 Debian 的 Rootfs，以 arm64v8 举个例子：
 
@@ -76,7 +76,7 @@ tags:
     [sudo] password for falcon:
     root@ubuntu:/#
 
-由于文件系统比较简陋，不带编辑器，建议在本地修改好文件系统中的 apt 源，改成国内比较快的[镜像站](http://tinylab.org/mirror-sites-in-great-china/)：
+由于文件系统比较简陋，不带编辑器，建议在本地修改好文件系统中的 apt 源，改成国内比较快的[镜像站](https://tinylab.org/mirror-sites-in-great-china/)：
 
     $ cd $rootdir
     $ vim etc/apt/sources.list
@@ -93,4 +93,4 @@ tags:
 
 所以，如果没有安装 docker，也可以从上述路径直接下载目标架构最新的 rootfs。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

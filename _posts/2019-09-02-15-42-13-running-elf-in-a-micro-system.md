@@ -25,9 +25,9 @@ ELF 在 Linux 系统中作为标准可执行文件格式已经存在了 ~25 年�
 
 为了降低学习 ELF 的门槛，今天特地引荐一个极小的系统，这个小系统不仅有 “Bootloader”，有 “OS”，还能加载和运行标准的可以打印 Hello 的 ELF 程序。
 
-所有这些都由 [CS630-Qemu-Lab](http://tinylab.org/cs630-qemu-lab) 提供。它是一套用于学习旧金山大学课程 [CS 630: Advanced Microcomputer Programming](https://www.cs.usfca.edu/~cruse/cs630f06/) 的极简实验环境，是一个由[泰晓科技](http://tinylab.org)主导的开源项目。
+所有这些都由 [CS630-Qemu-Lab](https://tinylab.org/cs630-qemu-lab) 提供。它是一套用于学习旧金山大学课程 [CS 630: Advanced Microcomputer Programming](https://www.cs.usfca.edu/~cruse/cs630f06/) 的极简实验环境，是一个由[泰晓科技](https://tinylab.org)主导的开源项目。
 
-它可以独立使用，也可以在 [Linux Lab](http://tinylab.org/linux-lab) 下使用。下面介绍如何在 Linux Lab 下使用它。
+它可以独立使用，也可以在 [Linux Lab](https://tinylab.org/linux-lab) 下使用。下面介绍如何在 Linux Lab 下使用它。
 
 ## 准备环境
 
@@ -51,7 +51,7 @@ ELF 在 Linux 系统中作为标准可执行文件格式已经存在了 ~25 年�
 
 运行完以后，会弹出一个 Qemu 界面，并在屏幕打印一个 Hello 字符串。
 
-![CS630 ELF 汇编案例](http://tinylab.org/wp-content/uploads/2019/08/cs630-elf.png)
+![CS630 ELF 汇编案例](https://tinylab.org/wp-content/uploads/2019/08/cs630-elf.png)
 
 默认是从软盘加载程序，如果要改为硬盘，可以用：
 
@@ -81,7 +81,7 @@ CS630 Qemu Lab 的汇编语言实验案例非常丰富，全部以 X86 为平台
 
 下面是演示视频：
 
-![CS630 RTC 汇编案例](http://tinylab.org/wp-content/uploads/2019/08/cs630-rtc.gif)
+![CS630 RTC 汇编案例](https://tinylab.org/wp-content/uploads/2019/08/cs630-rtc.gif)
 
 ## 小结
 
@@ -95,4 +95,4 @@ Linux 有点类似这样，它正在变得越来越复杂，我们学习一个�
 
 后续将进一步深度解读这个 498 行的极小系统。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

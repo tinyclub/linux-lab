@@ -46,4 +46,4 @@ categories:
 这样，对于指针 `**p` 来说， f 函数是传值，但是对于指针 `*p` 来说，其实是传地址，跟上面是一个道理。
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

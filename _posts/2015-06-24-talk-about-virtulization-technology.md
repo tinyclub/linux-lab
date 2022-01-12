@@ -73,7 +73,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://www.ibm.com/developerworks/cn/linux/l-linux-kvm/
  [3]: http://www.cnw.com.cn/cnw07/ServerStorage/virtualization/htm2007/20070718_23681.shtml
  [4]: http://vmware.banma.com/news/20070808/4440.shtml

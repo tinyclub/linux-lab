@@ -45,6 +45,6 @@ tags:
 
 [返回 “LWN 中文翻译计划” 翻译文章列表汇总][2]
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: /lwn#翻译成果
 

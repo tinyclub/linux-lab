@@ -86,7 +86,7 @@ Linaro Connect 通常是每半年举办一次，每次在亚洲和美洲轮流�
 
 * IoTL
 
-    the methods to make Linux binary suitable for small IoT applications? Similar to our [TinyLinux](http://tinylab.org/tinylinux) project.
+    the methods to make Linux binary suitable for small IoT applications? Similar to our [TinyLinux](https://tinylab.org/tinylinux) project.
 
 * kernelci.org
 

@@ -889,6 +889,6 @@ Arch 用户或其他 Linux 发行版用户想使用怎么办？
 
 发布后，就得到了 [lpcscrypt-bin AUR][3] 包。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://www.nxp.com/design/microcontrollers-developer-resources/lpcscrypt-v2-1-2:LPCSCRYPT
 [3]: https://aur.archlinux.org/packages/lpcscrypt-bin/

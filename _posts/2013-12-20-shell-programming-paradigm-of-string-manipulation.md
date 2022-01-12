@@ -751,7 +751,7 @@ URL地址(URL（Uniform Resoure Locator：统一资源定位器）是WWW页的�
   * 写完上面的部分貌似是1点多，刚check了一下错别字和语法什么的，再添加了一节，即“字符串的存储结构”，到现在已经快half past 2啦，晚安，朋友们。
   * 26 号，添加“子串进制转换”和“子串编码转换”两小节以及一个处理 URL 地址的范例。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /shell-numeric-calculation/
  [4]: /shell-programming-paradigm-of-boolean-operations/
  [6]: http://bbs.chinaunix.net/forum.php?mod=viewthread&tid=218853&page=7#pid1617953

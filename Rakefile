@@ -238,7 +238,7 @@ task :post do
     post.puts "      echo 'Hello, World.'"
     post.puts ""
     post.puts ""
-    post.puts "* [另外一种链接用法](http://tinylab.org)"
+    post.puts "* [另外一种链接用法](https://tinylab.org)"
     post.puts ""
     post.puts "  在列表后面再嵌入子列表，包括数字列表和非数字列表："
     post.puts ""
@@ -248,7 +248,7 @@ task :post do
     post.puts "      2. Third list"
     post.puts ""
     post.puts ""
-    post.puts "* 第三种链接用法：<http://tinylab.org>"
+    post.puts "* 第三种链接用法：<https://tinylab.org>"
     post.puts ""
     post.puts "### 更复杂的列表用法"
     post.puts ""
@@ -286,7 +286,7 @@ task :post do
     post.puts ""
     post.puts "> 这里是来自第三方的信息，信息内容可以用普通的 Markdown 语法来标记[链接][1]、**加粗**、`命令`等等，很灵活。。。"
     post.puts ""
-    post.puts "[1]: http://tinylab.org"
+    post.puts "[1]: https://tinylab.org"
 
   end
 end # task :post

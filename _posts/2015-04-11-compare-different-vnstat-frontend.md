@@ -205,7 +205,7 @@ vnStatSVG 的确是一款非常小巧但是功能强大的 vnStat web 前端，�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://humdi.net/vnstat/
  [3]: /vnstatsvg/
  [4]: /wp-content/uploads/file/vnstatsvg-network-traffic-per-hour.png

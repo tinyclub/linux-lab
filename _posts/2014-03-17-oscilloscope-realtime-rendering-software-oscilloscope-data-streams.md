@@ -110,7 +110,7 @@ oscilloscope 给我们提供了一种自由渲染数据的方式，它可以很�
 
 这个具体到嵌入式系统里头，则可以很好地用于辅助系统功耗、温度、性能等的优化。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /measure-and-draw-the-boot-up-time-of-linux-kernel/
  [4]: https://github.com/tinyclub/tinydraw/raw/master/histogram/histogram.sh
  [5]: https://rt.wiki.kernel.org/

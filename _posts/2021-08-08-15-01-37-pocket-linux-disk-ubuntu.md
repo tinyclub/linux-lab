@@ -72,4 +72,4 @@ tags:
 
 收藏或选购以后联系微信 tinylab，可以申请加入相应讨论群组。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

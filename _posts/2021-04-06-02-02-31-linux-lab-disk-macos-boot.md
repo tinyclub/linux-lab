@@ -43,7 +43,7 @@ tags:
 
 Linux Lab Disk 插入到主机（支持 X86_64 的 PC、笔记本、MacBook 等）上以后，可以在关机状态下上电直接启动，也可以在 Windows、Linux 和 MacOS 系统中直接启动当双系统使用，这两种方式都免安装，启动就能用。
 
-[上一篇](http://tinylab.org/linux-lab-disk-windows-boot/) 介绍了如何在 Windows 系统下利用 VirtualBox 来直接启动 Linux Lab Disk，本文介绍如何在 macOS 下完成相关功能。
+[上一篇](https://tinylab.org/linux-lab-disk-windows-boot/) 介绍了如何在 Windows 系统下利用 VirtualBox 来直接启动 Linux Lab Disk，本文介绍如何在 macOS 下完成相关功能。
 
 更多用法可以查看 [Linux Lab Disk 的项目开发记录](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)。
 
@@ -171,4 +171,4 @@ Linux Lab 真盘内已经安装好了 Linux Lab 以及所需的一切，直接�
 1. [Linux Lab 正在新增对 Linux Lab Disk 的支持](https://gitee.com/tinylab/linux-lab/issues/I31ZTK)
 2. [How to boot from USB in VirtualBox - AIO Boot](https://www.aioboot.com/en/boot-from-usb-in-virtualbox/)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

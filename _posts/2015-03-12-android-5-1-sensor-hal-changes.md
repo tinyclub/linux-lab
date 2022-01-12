@@ -97,4 +97,4 @@ Android 规定，若 Sensor 的 Type 不是 Android 所支持的类型，则 str
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org

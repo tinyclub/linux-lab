@@ -121,7 +121,7 @@ categories:
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: /wp-content/uploads/2015/03/sp-head-pic.jpg
  [3]: http://www.microsoft.com/en/mobile/phone/lumia525/specifications/
  [4]: http://www.blogcdn.com/www.engadget.com/media/2010/09/ipodtouch2010hands3.jpg

@@ -624,4 +624,4 @@ pte通过`交换分区+页槽值`可以找到当前这个pte被存储到了哪�
     - 将几个page连起来
 3. 从zspage中获得第一个没有被使用的`zs_object`并返回
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

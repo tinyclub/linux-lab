@@ -18,7 +18,7 @@ tags:
   - 根文件系统
 ---
 
-> By Falcon of [TinyLab.org](http://tinylab.org)
+> By Falcon of [TinyLab.org](https://tinylab.org)
 > 2016-10-03 20:37:27
 
 **注意：该文档已经过期，请直接参考 Linux Lab 提供的[中文用户手册](https://gitee.com/tinylab/linux-lab/blob/master/README_zh.md)**
@@ -90,7 +90,7 @@ tags:
 登进 Linux Lab 后，可在桌面看到三个快捷图标：
 
 * Demo Page：基于 showterm.io 录制的命令行操作：<http://showterm.io/6fb264246580281d372c6>
-* Help Page：直接链接到 Linux Lab 项目首页：<http://tinylab.org/linux-lab>
+* Help Page：直接链接到 Linux Lab 项目首页：<https://tinylab.org/linux-lab>
 * Linux Lab：点击后可快速启动控制台并进入到开发环境所在的目录。
 
 在进行下述完整过程之前，可以利用预编译的镜像快速上手体验：
@@ -333,5 +333,5 @@ Linux Lab 也提供了一个脚本：`tools/rootfs/mkfs.sh` 用于自动从 Ramd
 
 在实际的嵌入式系统开发过程中，离不开一个很重要的环节，那就是ID、结构与硬件，涉及到 ID 设计、结构设计、原理图、PCB、电路板电源与信号完整性（PI/SI）、EMC（EMI/EMS）、ESD、散热等。而 Linux Lab 通过 Qemu 把硬件部分虚拟化了，开发者可以聚焦于软件部分。如果确实想研究硬件部分，那就需要购买或者自己设计一块真实的嵌入式开发板。
 
-[1]: http://tinylab.org/using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
-[2]: http://tinylab.org/linux-lab/
+[1]: https://tinylab.org/using-qemu-simulation-inserts-the-type-system-to-produce-the-whole-process/
+[2]: https://tinylab.org/linux-lab/

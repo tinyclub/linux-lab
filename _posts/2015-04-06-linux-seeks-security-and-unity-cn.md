@@ -65,6 +65,6 @@ Saxena 又说，此外，相比软件栈的较高层，内核更新缓慢。故�
 
 
  [1]: http://www.eetimes.com/document.asp?doc_id=1326150&
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: http://tr1.cbsistatic.com/hub/i/r/2014/01/16/839a17b3-87bc-4721-b07a-3cccf4a510fa/resize/620x485/70bd77328725f02c47303d607cbaa0d3/linux.security.11614.jpg
  [4]: http://events.linuxfoundation.org/events/embedded-linux-conference

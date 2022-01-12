@@ -347,6 +347,6 @@ case 命令是一个基于模式匹配的多路分支命令，下面将根据用
 
 感兴趣的话继续学习吧！还有好多强大的东西等着呢，比如 cut, expr, sed, awk 等等。
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /shell-programming-paradigm-series-index-review/
  [4]: http://www.chinaunix.net/jh/24/628472.html

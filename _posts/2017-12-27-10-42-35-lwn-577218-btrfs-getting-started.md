@@ -135,7 +135,7 @@ btrfs-progs 存储库包含许多除了 `mkfs.btrfs` 以外的程序。最近增
 
 到目前为止所描述的基本知识已经足够开始使用 Btrfs。我们将它视为另一种 Unix 风格的文件系统就好，还顺带地增加了压缩功能和数据校验功能。但正是这些 Btrfs 文件系统的高级功能，使其在 Linux 世界中成为真正独特的存在。例如，”内置的多设备和 RAID 功能“特性，而这个特性将成为本系列下一篇文章的主题。
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org
 [2]: https://btrfs.wiki.kernel.org/index.php/Btrfs_source_repositories
 [3]: https://lwn.net/Articles/577222/
 [4]: http://man7.org/linux/man-pages/man8/mkfs.btrfs.8.html

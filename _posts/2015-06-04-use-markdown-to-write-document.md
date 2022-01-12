@@ -52,6 +52,6 @@ Markdown 让人回归内容创作本身，本站第四篇关于 Markdown 的文�
 
 
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: https://www.markdownguide.org/basic-syntax
  [3]: http://pandoc.org/demo/example19/Pandoc_0027s-Markdown.html

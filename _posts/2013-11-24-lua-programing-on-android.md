@@ -195,7 +195,7 @@ As we can see, both of them are simple and only for newcomers:
 
 For example, the book: [Optimizing Embedded Systems using Busybox][15] shows how to build native Bash and C programming environments for Android system.
 
- [1]: http://tinylab.org
+ [1]: https://tinylab.org
  [2]: http://developer.android.com/sdk/index.html
  [3]: http://developer.android.com/tools/sdk/ndk/index.html
  [4]: http://developer.android.com/develop/index.html

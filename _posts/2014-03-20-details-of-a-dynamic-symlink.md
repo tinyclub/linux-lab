@@ -751,7 +751,7 @@ Linux下elf文件的动态链接器是`ld-linux.so`，即`/lib/ld-linux.so.2`。
 
 
 
- [2]: http://tinylab.org
+ [2]: https://tinylab.org
  [3]: /open-c-book/
  [4]: http://weibo.com/tinylaborg
  [5]: http://www.ccw.com.cn/htm/app/linux/develop/01_8_6_2.asp

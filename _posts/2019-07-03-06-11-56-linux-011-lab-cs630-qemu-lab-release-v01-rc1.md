@@ -90,4 +90,4 @@ Linux 0.11 Lab v0.1 rc1 已经具备如下功能：
 
 ![tinylab wechat](/images/wechat/tinylab.jpg)
 
-[1]: http://tinylab.org
+[1]: https://tinylab.org

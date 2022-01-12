@@ -11,11 +11,11 @@ CACHED_DIR=$(cd $(dirname $0) && pwd)/cached
 
 [ ! -d $CACHED_DIR ] && mkdir -p $CACHED_DIR
 
-for pkg in $pkgs
+for p in $pkgs
 do
-  cmd=$(echo $pkg | cut -d ';' -f1)
-  pkg=$(echo $pkg | cut -d ';' -f2)
-  version=$(echo $pkg | cut -d ';' -f3)
+  cmd=$(echo "$p" | cut -d ';' -f1)
+  pkg=$(echo "$p" | cut -d ';' -f2)
+  version=$(echo "$p" | cut -d ';' -f3)
 
   # ignore cmd already installed
   if [ -z "$version" ]; then

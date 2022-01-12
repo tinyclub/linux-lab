@@ -1,6 +1,6 @@
 <!-- metadata start --><!--
 % Linux Lab v0.9 中文手册
-% [泰晓科技 | Tinylab.org](http://tinylab.org)
+% [泰晓科技 | Tinylab.org](https://tinylab.org)
 % \today
 --><!-- metadata end -->
 
@@ -170,7 +170,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 ## 1.2 项目主页
 
 * 主页
-    * <http://tinylab.org/linux-lab/>
+    * <https://tinylab.org/linux-lab/>
     * <https://oschina.net/p/linux-lab>
 
 * 仓库
@@ -182,17 +182,17 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * Cloud Lab
     * Linux Lab 运行环境管理工具，自带图形和命令行界面，支持本地和远程登陆
-    * <http://tinylab.org/cloud-lab>
+    * <https://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
     * 用于 Linux 0.11 学习，今后仅集成到 Linux Lab Disk
     * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
-    * <http://tinylab.org/linux-0.11-lab>
+    * <https://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
     * 用于 X86 Linux 汇编学习，今后仅集成到 Linux Lab Disk
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
-    * <http://tinylab.org/cs630-qemu-lab>
+    * <https://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 演示视频
 
@@ -258,98 +258,98 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.1 v0.1 @ 2019.06.28
 
-从 2016 年发起，经过数年的开发与迭代，Linux Lab 于 2019 年 6 月 28 日迎来了第 1 个正式版本 [v0.1](http://tinylab.org/linux-lab-v0.1/)。
+从 2016 年发起，经过数年的开发与迭代，Linux Lab 于 2019 年 6 月 28 日迎来了第 1 个正式版本 [v0.1](https://tinylab.org/linux-lab-v0.1/)。
 
-* [v0.1 rc3](http://tinylab.org/linux-lab-v0.1-rc3/)
+* [v0.1 rc3](https://tinylab.org/linux-lab-v0.1-rc3/)
     * 按需加载 prebuilt 并迁移代码仓库到国内，大幅优化了下载体验
 
-* [v0.1 rc2](http://tinylab.org/linux-lab-v0.1-rc2/)
+* [v0.1 rc2](https://tinylab.org/linux-lab-v0.1-rc2/)
     * 修复了几处基础体验 Bugs
 
-* [v0.1 rc1](http://tinylab.org/linux-lab-v0.1-rc1/)
+* [v0.1 rc1](https://tinylab.org/linux-lab-v0.1-rc1/)
     * 历史上发布的第 1 个版本，在历史功能上进一步添加了 raspi3 和 risc-v 支持
 
 ### 1.6.2 v0.2 @ 2019.10.30
 
-[v0.2](http://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯早期全系 MIPS 架构处理器支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
+[v0.2](https://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯早期全系 MIPS 架构处理器支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
 
-* [v0.2 rc3](http://tinylab.org/linux-lab-v0.2-rc3/)
+* [v0.2 rc3](https://tinylab.org/linux-lab-v0.2-rc3/)
     * 新增原生 Windows 支持，基于 Docker Toolbox，无需通过 Virtualbox 或 Vmware 额外安装系统
 
-* [v0.2 rc2](http://tinylab.org/linux-lab-v0.2-rc2/)
+* [v0.2 rc2](https://tinylab.org/linux-lab-v0.2-rc2/)
     * 龙芯插件新增龙芯教育开发板支持
     * 在 docker 镜像中新增 gdb-multiarch 调试支持，避免为每个平台安装一个 gdb
 
-* [v0.2 rc1](http://tinylab.org/linux-lab-v0.2-rc1/)
+* [v0.2 rc1](https://tinylab.org/linux-lab-v0.2-rc1/)
     * 携手龙芯实验室，以[独立插件](https://gitee.com/loongsonlab/loongson)的方式新增龙芯全面支持
     * 携手码云，在国内新增 Qemu、U-boot 和 Buildroot 的每日镜像
 
 ### 1.6.3 v0.3 @ 2020.03.12
 
-[v0.3](http://tinylab.org/linux-lab-v0.3/) 统一了所有组件的公共操作接口更方便记忆，进一步优化了大型仓库的下载体验，通过添加自动依赖关系简化了命令执行并大幅度提升实验效率，为多本知名 Linux 图书新增了 v2.6.10, v2.6.11, v2.6.12, v2.6.14, v2.6.21, v2.6.24 等多个历史版本内核，并发布了首份中文版用户手册。
+[v0.3](https://tinylab.org/linux-lab-v0.3/) 统一了所有组件的公共操作接口更方便记忆，进一步优化了大型仓库的下载体验，通过添加自动依赖关系简化了命令执行并大幅度提升实验效率，为多本知名 Linux 图书新增了 v2.6.10, v2.6.11, v2.6.12, v2.6.14, v2.6.21, v2.6.24 等多个历史版本内核，并发布了首份中文版用户手册。
 
-* [v0.3 rc3](http://tinylab.org/linux-lab-v03-rc3/)
+* [v0.3 rc3](https://tinylab.org/linux-lab-v03-rc3/)
     * 首次新增中文文档
 
-* [v0.3 rc2](http://tinylab.org/linux-lab-v03-rc2/)
+* [v0.3 rc2](https://tinylab.org/linux-lab-v03-rc2/)
     * 提升 git 仓库下载体验：所有仓库下载切换为 git init+fetch，更为健壮
     * 提升自动化：常规动作都新增了依赖关系，一键自动下载、检出、打补丁、配置、编译、启动
 
-* [v0.3 rc1](http://tinylab.org/linux-lab-v03-rc1/)
+* [v0.3 rc1](https://tinylab.org/linux-lab-v03-rc1/)
     * 添加多本知名 Linux 图书所用内核支持
 
 ### 1.6.4 v0.4 @ 2020.06.01
 
-[v0.4](http://tinylab.org/linux-lab-v0.4/) 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
+[v0.4](https://tinylab.org/linux-lab-v0.4/) 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
 
-* [v0.4 rc3](http://tinylab.org/linux-lab-v04-rc3/)
+* [v0.4 rc3](https://tinylab.org/linux-lab-v04-rc3/)
     * 新增 aarch64/virt Uboot 支持
     * 临时修复新版本内核上容器内插入 NFSD 模块引起的 Sync 卡死问题
 
-* [v0.4 rc2](http://tinylab.org/linux-lab-v04-rc2/)
+* [v0.4 rc2](https://tinylab.org/linux-lab-v04-rc2/)
     * 新增第 16 块开发板
     * 新增 vnc 客户端登陆方法
 
-* [v0.4 rc1](http://tinylab.org/linux-lab-v04-rc1/)
+* [v0.4 rc1](https://tinylab.org/linux-lab-v04-rc1/)
     * 切换内核镜像到更快的 codeaurora
     * 添加本地开发板配置和编辑接口
 
 ### 1.6.5 v0.5 @ 2020.09.12
 
-[v0.5](http://tinylab.org/linux-lab-v0.5/) 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
+[v0.5](https://tinylab.org/linux-lab-v0.5/) 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
 
-* [v0.5 rc3](http://tinylab.org/linux-lab-v05-rc3/)
+* [v0.5 rc3](https://tinylab.org/linux-lab-v05-rc3/)
     * 修复 arm/vexpress-a9 因编译器配置问题引起的 Uboot 编译失败
     * 进一步完善文档中对普通用户的使用要求，避免使用 root 带来的诸多问题
 
-* [v0.5 rc2](http://tinylab.org/linux-lab-v05-rc2/)
+* [v0.5 rc2](https://tinylab.org/linux-lab-v05-rc2/)
     * 进一步改善 Qemu 编译体验，在 Gitee 新增 submodules 镜像，不再有挫折感
     * 新增 Arch/Manjaro docker 安装文档
     * 修复 MacOS 大小写敏感的文件系统镜像制作步骤
 
-* [v0.5 rc1](http://tinylab.org/linux-lab-v05-rc1/)
+* [v0.5 rc1](https://tinylab.org/linux-lab-v05-rc1/)
     * 全面完善并合并早期对龙芯全系处理器的支持
     * 全面升级开发环境基础镜像到 Ubuntu 20.04
 
 ### 1.6.6 v0.6 @ 2021.02.06
 
-[v0.6](http://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
+[v0.6](https://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
 
 * v0.6 rc3
     * 进一步完善真实硬件板的支持
 
-* [v0.6 rc2](http://tinylab.org/linux-lab-v06-rc2/)
+* [v0.6 rc2](https://tinylab.org/linux-lab-v06-rc2/)
     * 新增首块真实硬件开发板 `arm/ebf-imx6ull` 支持
     * 新增命令行自动补全脚本，允许直接在命令行补全板子信息，提升使用效率
 
-* [v0.6 rc1](http://tinylab.org/linux-lab-v06-rc1/)
+* [v0.6 rc1](https://tinylab.org/linux-lab-v06-rc1/)
     * 修复插件中的 BSP 包下载功能
     * 修复 x86 架构的内核编译问题
     * 修复 aarch64/virt 开发板 Uboot 引导问题
 
 ### 1.6.7 v0.7 @ 2021.06.03
 
-[v0.7](http://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持智能启动、运行时切换、透明倍容和内存编译。
+[v0.7](https://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持智能启动、运行时切换、透明倍容和内存编译。
 
 * v0.7 rc3
     * 增加 v0.8 开发计划
@@ -361,7 +361,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 使用 truncate 取代 dd 创建磁盘镜像文件，提升创建速度
     * 为 source, checkout, patch 等目标新增 make 错误处理
 
-* [v0.7 rc1](http://tinylab.org/linux-lab-v07-rc1/)
+* [v0.7 rc1](https://tinylab.org/linux-lab-v07-rc1/)
     * 启动 Linux Lab Disk 开发
     * 新增内存编译功能和使用文档
     * 新增桌面快捷方式对 Ubuntu 20.04 的支持
@@ -370,43 +370,43 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.8 v0.8 @ 2021.10.13
 
-[v0.8](http://tinylab.org/linux-lab-v0.8/) 新增 LLVM/Clang, Rust 和 openEuler 支持。
+[v0.8](https://tinylab.org/linux-lab-v0.8/) 新增 LLVM/Clang, Rust 和 openEuler 支持。
 
-* [v0.8 rc3](http://tinylab.org/linux-lab-v08-rc3/)
+* [v0.8 rc3](https://tinylab.org/linux-lab-v08-rc3/)
     * 新增 Rust for Kernel 开发支持
     * 新增 openEuler Kernel 开发支持
     * 新增 LLVM/Clang 编译支持，make kernel LLVM=1
     * 新增 rust 环境安装脚本
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Fedora
-* [v0.8 rc2](http://tinylab.org/manjaro2go/)
+* [v0.8 rc2](https://tinylab.org/manjaro2go/)
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Manjaro
     * 早期文档中描述的更新步骤较重，替换为更为轻量级的更新步骤
     * 修复 MacOS 上的 i386/pc 支持
     * 进一步清理 rootfs 各种格式的依赖关系
     * 进一步优化 make debug，确保 debug 基于最新的改动
     * 清理不必要的 1234 端口映射，该部分可以让用户按需开启
-* [v0.8 rc1](http://tinylab.org/pocket-linux-disk-ubuntu/)
+* [v0.8 rc1](https://tinylab.org/pocket-linux-disk-ubuntu/)
     * 发布了首支 Pocket Linux Disk
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Deepin
 
 ### 1.6.9 v0.9 @ 2022.01.13
 
-[v0.9](http://tinylab.org/linux-lab-v0.9/) 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
+[v0.9](https://tinylab.org/linux-lab-v0.9/) 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
 
-* [v0.9 rc3](http://tinylab.org/linux-lab-v09-rc3/)
+* [v0.9 rc3](https://tinylab.org/linux-lab-v09-rc3/)
     * 新增 FAST FETCH 功能，支持单独快速下载指定内核版本
     * 新增 ONESHOT 内存编译功能，在原有内存编译的基础上增加代码内存缓存支持
     * 大幅优化 Linux Lab 的启动速度和交互性能，提升 10 到 20 倍
     * 完善 Linux Lab for Windows 支持，同时兼容 Docker Toolbox 和 Docker Desktop with wsl2
     * 升级镜像，导入 mipsel, arm 和 powerpc 的 gcc 4.3 支持并修复相关的兼容性问题
 
-* [v0.9 rc2](http://tinylab.org/linux-lab-v09-rc2/)
+* [v0.9 rc2](https://tinylab.org/linux-lab-v09-rc2/)
     * 为 v2.6.29 及之前版本的内核导入 make 3.81
     * 为 Rust for Linux 新增 riscv64/virt 和 aarch64/virt 支持
     * 新增 lxterminal 和 qterminal 支持
     * Linux Lab Disk 新增 Kail 和 Mint 支持，并首次支持免关机切换系统
 
-* [v0.9 rc1](http://tinylab.org/linux-lab-v09-rc1/)
+* [v0.9 rc1](https://tinylab.org/linux-lab-v09-rc1/)
     * 升级 llvm 工具链到 13
     * 升级内核版本到 v5.13
     * 新增 cleanall，可同时清理 source 和 build
@@ -1888,13 +1888,13 @@ Linux Lab 支持通过 `do` 访问 Makefile 中定义的目标，譬如：
 欢迎阅读下述文档学习更多用法：
 
 * 使用 Linux Lab 的好处
-    * [Linux Lab：难以抗拒的十大理由 V1.0](http://tinylab.org/why-linux-lab)
-    * [Linux Lab：难以抗拒的十大理由 V2.0](http://tinylab.org/why-linux-lab-v2)
+    * [Linux Lab：难以抗拒的十大理由 V1.0](https://tinylab.org/why-linux-lab)
+    * [Linux Lab：难以抗拒的十大理由 V2.0](https://tinylab.org/why-linux-lab-v2)
 
 * 中文用户手册
-    * [Linux Lab v0.9 中文手册](http://tinylab.org/pdfs/linux-lab-v0.9-manual-zh.pdf)
-    * [Linux Lab v0.8 中文手册](http://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf)
-    * [Linux Lab 龙芯实验手册 V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+    * [Linux Lab v0.9 中文手册](https://tinylab.org/pdfs/linux-lab-v0.9-manual-zh.pdf)
+    * [Linux Lab v0.8 中文手册](https://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf)
+    * [Linux Lab 龙芯实验手册 V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
 
 * Linux Lab 视频公开课：含用法介绍、使用案例分享、发布会视频回放、Linux Lab Disk功能演示等
     * [CCTALK](https://www.cctalk.com/m/group/88948325)
@@ -2135,7 +2135,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 ### 6.1.3 本地主机不能运行 Linux Lab
 
-Linux Lab 的完整功能依赖于 [Cloud Lab](http://tinylab.org/cloud-lab) 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab](http://tinylab.org/cloud-lab) 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
+Linux Lab 的完整功能依赖于 [Cloud Lab](https://tinylab.org/cloud-lab) 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab](https://tinylab.org/cloud-lab) 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
 
 Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用，也请不要提这样的需求。
 
@@ -2580,7 +2580,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 * 公众号：泰晓科技
 
-* 网站：<http://tinylab.org>
+* 网站：<https://tinylab.org>
     * 创立近十年，聚焦 Linux —— 追本溯源，见微知著
     * 主要关注 Linux 内核、嵌入式 Linux 系统等技术的原创与分享
 

@@ -1,6 +1,6 @@
 <!-- metadata start --><!--
 % Linux Lab v0.9 Manual
-% [TinyLab Community | Tinylab.org](http://tinylab.org)
+% [TinyLab Community | Tinylab.org](https://tinylab.org)
 % \today
 --><!-- metadata end -->
 
@@ -160,7 +160,7 @@ Linux Lab is open source with no warranty – use at your own risk.
 ## 1.2 Project Homepage
 
 * Homepage
-    * <http://tinylab.org/linux-lab/>
+    * <https://tinylab.org/linux-lab/>
     * <https://oschina.net/p/linux-lab>
 
 * Repository
@@ -171,17 +171,17 @@ Related Projects:
 
 * Cloud Lab
     * Linux Lab Running Environment Manager, provide GUI and CLI, support local and remote login
-    * <http://tinylab.org/cloud-lab>
+    * <https://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
     * Learning Linux 0.11, only available in Linux Lab Disk from now on
     * Download it to `labs/linux-0.11-lab` and use it in Linux Lab directly
-    * <http://tinylab.org/linux-0.11-lab>
+    * <https://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
     * Learning X86 Linux Assembly, only available in Linux Lab Disk from now on
     * Download it to `labs/cs630-qemu-lab` and use it in Linux Lab directly
-    * <http://tinylab.org/cs630-qemu-lab>
+    * <https://tinylab.org/cs630-qemu-lab>
 
 ## 1.3 Demonstration
 
@@ -1727,13 +1727,13 @@ Linux Lab allows to access Makefile goals easily via the `do` target, for exampl
 Read more:
 
 * Why
-    * [Why Using Linux Lab V1.0 (In Chinese)](http://tinylab.org/why-linux-lab)
-    * [Why Using Linux Lab V2.0 (In Chinese)](http://tinylab.org/why-linux-lab-v2)
+    * [Why Using Linux Lab V1.0 (In Chinese)](https://tinylab.org/why-linux-lab)
+    * [Why Using Linux Lab V2.0 (In Chinese)](https://tinylab.org/why-linux-lab-v2)
 
 * User Manual
-    * [Linux Lab v0.9 User Manual](http://tinylab.org/pdfs/linux-lab-v0.9-manual-en.pdf)
-    * [Linux Lab v0.8 User Manual](http://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf)
-    * [Linux Lab Loongson Manual V0.2](http://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+    * [Linux Lab v0.9 User Manual](https://tinylab.org/pdfs/linux-lab-v0.9-manual-en.pdf)
+    * [Linux Lab v0.8 User Manual](https://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf)
+    * [Linux Lab Loongson Manual V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
 
 * Linux Lab Videos
     * [CCTALK](https://m.cctalk.com/inst/sh8qtdag)
@@ -1977,7 +1977,7 @@ If lab network still not work, please try another private network address and ev
 
 ### 6.1.3 Why not allow running Linux Lab in local host
 
-The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab](http://tinylab.org/cloud-lab), so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
+The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab](https://tinylab.org/cloud-lab), so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
 
 Linux Lab is designed to use pre-installed environment with the docker technology and save our life by avoiding the packages installation issues in different systems, so, Linux Lab would never support local host using even in the future.
 
@@ -2409,7 +2409,7 @@ Welcome to mark our web site, star our git repositories:
 
 * Wechat Group: Tinylab-Org
 
-* Web site: <http://tinylab.org>
+* Web site: <https://tinylab.org>
     * Created near 10+ years
     * Focus on Linux kernel and embedded Linux system
 

@@ -404,7 +404,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 为 v2.6.29 及之前版本的内核导入 make 3.81
     * 为 Rust for Linux 新增 riscv64/virt 和 aarch64/virt 支持
     * 新增 lxterminal 和 qterminal 支持
-    * Linux Lab Disk 新增 Kail 和 Mint 支持，并首次支持免关机切换系统
+    * Linux Lab Disk 新增 Kali 和 Mint 支持，并首次支持免关机切换系统
 
 * [v0.9 rc1](https://tinylab.org/linux-lab-v09-rc1/)
     * 升级 llvm 工具链到 13

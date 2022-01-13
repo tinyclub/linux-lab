@@ -2918,20 +2918,23 @@ DTC := tools/kernel/dtc
 # Update bootargs in dts if exists, some boards not support -append
 ifneq ($(DTS),)
 
-  ifneq ($(wildcard $(DTS)),)
-
 # FIXME: must introduce gcc -E to translate #define, #include commands for customized dts at first
+# only internal dts requires kernel-defconfig dependency
+$(DTS): $(if $(_DTS),,kernel-defconfig)
+
 dtb: $(DTS)
-	@echo "Building dtb ..."
-	@echo "  DTS: $(DTS)"
-	@echo "  DTB: $(DTB)"
-	$(Q)sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$$(eval echo "$(CMDLINE)")\";%g" $(DTS)
-	$(Q)if [ -z "$(_DTS)" ]; then \
-	  $(call make_kernel,$(DTB_TARGET)); \
-	else \
-	  sed -i -e "s%^#include%/include/%g" $(DTS); \
-	  mkdir -p $(dir $(DTB)); \
-	  $(DTC) -I dts -O dtb -o $(DTB) $(DTS); \
+	$(Q)if [ -f "$(DTS)" ]; then \
+	  echo "Building dtb ..."; \
+	  echo "  DTS: $(DTS)"; \
+	  echo "  DTB: $(DTB)"; \
+	  sed -i -e "s%.*bootargs.*=.*;%\t\tbootargs = \"$$(eval echo "$(CMDLINE)")\";%g" $(DTS); \
+	  if [ -z "$(_DTS)" ]; then \
+	    $(call make_kernel,$(DTB_TARGET)); \
+	  else \
+	    sed -i -e "s%^#include%/include/%g" $(DTS); \
+	    mkdir -p $(dir $(DTB)); \
+	    $(DTC) -I dts -O dtb -o $(DTB) $(DTS); \
+	  fi; \
 	fi
 
 # Pass kernel command line in dts, require to build dts for every boot
@@ -2942,8 +2945,6 @@ endif
 KERNEL_DTB := dtb
 
 PHONY += dtb
-
-  endif
 endif
 
 # Ignore DTB and RD dependency if KT is not kernel image

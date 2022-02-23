@@ -1672,7 +1672,7 @@ $$(call _stamp,$1,source): $$(call __stamp,$1,outdir) $1-license $$(ENV_FILES)
 	       REMOTE_REPO="$$(_$(call _uc,$1)_ABS_SRC)"; \
 	       cd $$($(call _uc,$1)_SRC_FULL); \
 	       if [ -z "$$$$REMOTE_REPO" ]; then \
-		 REMOTE_REPO=$$($(call _uc,$1)_GITREPO); \
+		 REMOTE_REPO="$$($(call _uc,$1)_GITREPO)"; \
 		 if [ -n "$$$$REMOTE_REPO" ]; then \
 	           $$($(call _uc,$1)_GITADD); \
 		 else \
@@ -1695,7 +1695,8 @@ $$(call _stamp,$1,source): $$(call __stamp,$1,outdir) $1-license $$(ENV_FILES)
 	    && mkdir -p $$($(call _uc,$1)_SPATH) \
 	    && cd $$($(call _uc,$1)_SPATH) \
 	    && git init 		\
-	    && REMOTE_REPO="$$(or $$(_$(call _uc,$1)_ABS_SRC),$$(_$(call _uc,$1)_GIT))" \
+	    && REMOTE_REPO="$$(_$(call _uc,$1)_ABS_SRC)" \
+	    && if [ -z "$$$$REMOTE_REPO" ]; then REMOTE_REPO="$$(_$(call _uc,$1)_GIT)"; fi \
 	    && cd $$($(call _uc,$1)_SRC_FULL) \
 	    && echo "From: $$$$REMOTE_REPO" \
 	    && echo "To: $$$$PWD" \

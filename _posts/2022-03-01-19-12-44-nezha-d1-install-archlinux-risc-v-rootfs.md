@@ -367,7 +367,7 @@ sudo umount -R /mnt
 
 请注意，ArchLinux RISC-V 的默认` root` 密码为 `sifive`。
 
-## 参考连接
+## 参考资料
 
 - [在 RISC-V 板子（哪吒 D1）上安装 Arch Linux    ](https://blog.zenithal.me/2021/08/28/%E5%9C%A8-RISC-V-%E6%9D%BF%E5%AD%90%EF%BC%88%E5%93%AA%E5%90%92-D1%EF%BC%89%E4%B8%8A%E5%AE%89%E8%A3%85-Arch-Linux/)
 - [Allwinner Nezha](https://linux-sunxi.org/Allwinner_Nezha)

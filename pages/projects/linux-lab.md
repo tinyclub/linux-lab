@@ -88,7 +88,7 @@ tags:
 
   购买地址：
 
-  * [在某宝搜索 “Linux Lab 真板” 即可选购](https://shop155917374.taobao.com/)
+  * [在某宝搜索 “泰晓 Linux” 即可选购](https://shop155917374.taobao.com/)
 
 ## Linux Lab 真板
 

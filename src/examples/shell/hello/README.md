@@ -1,8 +1,6 @@
 
 ## Hello Shell
 
-* Basic Usage: <http://showterm.io/445cbf5541c926b19d4af>
-
 ## Usage
 
     $ ls

@@ -1,9 +1,6 @@
 
 # Hello C
 
-* Basic Usage: <http://showterm.io/a98435fb1b79b83954775>
-* Advanced Usage: <http://showterm.io/887b5ee77e3f377035d01>
-
 ## Usage
 
     $ ls

@@ -4141,6 +4141,11 @@ endif
 $(addsuffix -%,$(call genaliastarget)): FORCE
 	$(Q)$(if $(findstring /,$@),,make $(NPD) $(call genaliassource,$@))
 
+ifneq ($(first_target),do)
+$(addsuffix -%,$(APPS)):
+	$(Q)$(if $(word 3,$(subst -,$(space),$@)),make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@))
+endif
+
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(APP_ARGS):FORCE;@:)

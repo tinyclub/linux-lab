@@ -1614,7 +1614,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 运行客户机的测试用例（`COMMAND_LINE_SIZE` 必须足够大，譬如，4096，查看下文的 `cmdline_size` 特性 ）
 
-    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /,echo hello world'
+    $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /;echo hello world'
 
 进行重启压力测试：
 
@@ -1642,12 +1642,12 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 在测试内核模块时运行测试用例（在 insmod 和 rmmod 命令之间运行测试用例）：
 
-    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root,echo hello world' TEST_PREPARE=board-init,kernel-cleanup f=cmdline_size
+    $ make test m=exception TEST_BEGIN=date TEST_END=date TEST_CASE='ls /root;echo hello world' TEST_PREPARE=board-init,kernel-cleanup f=cmdline_size
 
 在测试内部内核模块时运行测试用例：
 
     $ make kernel-setconfig y=debug_fs
-    $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION ">" /mnt/provoke-crash/DIRECT'
+    $ make test m=lkdtm TEST_BEGIN='mount -t debugfs debugfs /mnt' TEST_CASE='echo EXCEPTION > /mnt/provoke-crash/DIRECT'
 
 在测试内部内核模块时运行测试用例，传入内核参数：
 

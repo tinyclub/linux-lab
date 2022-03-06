@@ -1069,9 +1069,8 @@ Install and clean the module:
 More flexible usage:
 
     $ make kernel-setconfig m=tun
-    $ make kernel x=tun.ko M=drivers/net
-    $ make kernel x=drivers/net/tun.ko
-    $ make do kernel drivers/net/tun.ko
+    $ make kernel tun.ko M=drivers/net
+    $ make kernel drivers/net/tun.ko
 
 Build external kernel modules (the same as internel modules):
 

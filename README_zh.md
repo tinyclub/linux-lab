@@ -1234,15 +1234,14 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 其他用法：
 
     $ make kernel-setconfig m=tun
-    $ make kernel x=tun.ko M=drivers/net
-    $ make kernel x=drivers/net/tun.ko
-    $ make do kernel drivers/net/tun.ko
+    $ make kernel tun.ko M=drivers/net
+    $ make kernel drivers/net/tun.ko
 
 编译外部内核模块（类似编译内部模块）：
 
     $ make modules m=hello
     或
-    $ make kernel x=$PWD/src/modules/hello/hello.ko
+    $ make kernel $PWD/src/modules/hello/hello.ko
 
 
 ### 4.1.3 使用内核特性
@@ -1870,18 +1869,18 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 ## 4.11 运行任意的 make 目标
 
-Linux Lab 支持通过 `do` 访问 Makefile 中定义的目标，譬如：
+Linux Lab 支持访问 Makefile 中定义的目标，譬如：
 
-    $ make do kernel help
-    $ make do kernel menuconfig
+    $ make kernel help
+    $ make kernel menuconfig
 
-    $ make do root help
-    $ make do root busybox-menuconfig
+    $ make root help
+    $ make root busybox-menuconfig
 
-    $ make do uboot help
-    $ make do uboot menuconfig
+    $ make uboot help
+    $ make uboot menuconfig
 
-  执行 `do` 目标允许我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
+我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
 
 ## 4.12 更多用法
 

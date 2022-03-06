@@ -1708,18 +1708,29 @@ The main packages are `libc6-dev`, `libc6` or `libgcc`, but x32 is an expection,
 
 ## 4.11 Running any make goals
 
-Linux Lab allows to access Makefile goals easily via the `do` target, for example:
+Linux Lab allows to access Makefile goals of the APPS easily, for example:
 
-    $ make do kernel help
-    $ make do kernel menuconfig
+    $ make kernel help
+    $ make kernel menuconfig
 
-    $ make do root help
-    $ make do root busybox-menuconfig
+    $ make root help
+    $ make root busybox-menuconfig
 
-    $ make do uboot help
-    $ make do uboot menuconfig
+    $ make uboot help
+    $ make uboot menuconfig
 
-  The `do` goal allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+    Or
+
+    $ make kernel-help
+    $ make kernel-menuconfig
+
+    $ make root-help
+    $ make root-busybox-menuconfig
+
+    $ make uboot-help
+    $ make uboot-menuconfig
+
+Allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
 
 ## 4.12 More Usage
 

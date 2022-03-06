@@ -1869,7 +1869,7 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 ## 4.11 运行任意的 make 目标
 
-Linux Lab 支持访问 Makefile 中定义的目标，譬如：
+Linux Lab 支持访问所有 APP 自身 Makefile 中定义的目标，譬如：
 
     $ make kernel help
     $ make kernel menuconfig
@@ -1879,6 +1879,17 @@ Linux Lab 支持访问 Makefile 中定义的目标，譬如：
 
     $ make uboot help
     $ make uboot menuconfig
+
+    Or
+
+    $ make kernel-help
+    $ make kernel-menuconfig
+
+    $ make root-help
+    $ make root-busybox-menuconfig
+
+    $ make uboot-help
+    $ make uboot-menuconfig
 
 我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
 

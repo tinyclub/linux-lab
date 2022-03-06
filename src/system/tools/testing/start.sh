@@ -60,14 +60,16 @@ done
 
 for c in $CASE
 do
+  for t in $(echo $c | tr ';' ',')
+  do
     echo
-    echo "Testing case: \"$c\""
-    echo
-
-    sh -c "eval $c"
-
+    echo "Testing case: \"$t\""
     echo
 
+    sh -c "eval $t"
+
+    echo
+  done
 done
 
 for f in $FEATURE

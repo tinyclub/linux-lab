@@ -4142,8 +4142,10 @@ $(addsuffix -%,$(call genaliastarget)): FORCE
 	$(Q)$(if $(findstring /,$@),,make $(NPD) $(call genaliassource,$@))
 
 ifneq ($(first_target),do)
+ifeq ($(findstring n,$(MFLAGS)),)
 $(addsuffix -%,$(APPS)):
-	$(Q)$(if $(word 3,$(subst -,$(space),$@)),make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@))
+	$(Q)$(if $(word 3,$(subst -,$(space),$@)),make $(S) -n $@ >/dev/null 2>&1 || make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@) || true)
+endif
 endif
 
 ifneq ($(APP_ARGS),)

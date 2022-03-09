@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "RISC-V Linux 内核兴趣小组招募爱好者ing"
+title: "RISC-V Linux 内核兴趣小组招募爱好者-ing"
 draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /riscv-linux-analyse/

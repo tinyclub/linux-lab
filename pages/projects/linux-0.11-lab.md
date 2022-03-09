@@ -5,13 +5,15 @@ author: Wu Zhangjin
 layout: page
 permalink: /linux-0.11-lab/
 description: 可快速搭建的 Linux 0.11 实验环境，支持 Docker, 支持 Ubuntu / Windows / Mac OS X，也内置支持 Qemu / Bochs。
-update: 2015-10-1
+update: 2022-03-10
 categories:
   - 开源项目
   - Linux 0.11
 tags:
   - 实验环境
 ---
+
+**注意**：由于没有足够的资源进行长期维护，该项目当前仅面向 [Linux Lab Disk 智能随身 Linux 系统盘](/linux-lab-disk) 用户开放，可在淘宝内检索 “泰晓 Linux” 关键字选购。
 
 ## 项目描述
 

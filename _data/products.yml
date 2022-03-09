@@ -15,8 +15,8 @@
   group: products
 
 - title: Linux Lab 真盘 —— 免安装、即插即用 Linux 内核与系统实验盘，已支持 Ubuntu,Deepin,Manjaro,Kali,Mint,Fedora
-  permalink: https://shop155917374.taobao.com/
-  description: 可以在 64 位 X86 台式机、笔记本、macBook 上即插即用，可以作为独立系统使用，也可以作为双系统使用，可用于学习汇编、C语言、Shell、Uboot、Linux内核与嵌入式 Linux 系统等。某宝检索 “泰晓 Linux” 即可。
+  permalink: https://tinylab.org/linux-lab-disk
+  description: 可以在 64 位 X86 台式机、笔记本、macBook 上即插即用，可以作为独立系统使用，也可以作为双系统使用，可用于学习汇编、C语言、Shell、Uboot、Linx 0.11、RVOS、Linux内核与嵌入式 Linux 系统等。某宝检索 “泰晓 Linux” 即可。
   group: products
 
 - title: Linux Lab 真板 —— 适配过 Linux Lab 的嵌入式硬件开发板

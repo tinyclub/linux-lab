@@ -73,18 +73,29 @@ tags:
 
 ## Linux Lab 真盘
 
-  Linux Lab v0.7 版支持 “Linux Lab 真盘”，实现 Linux Lab 的即插即用，完全免安装，进一步提升 Linux Lab 使用体验，快速高效地开展 Linux 相关实验与开发。
+  Linux Lab v0.7 版开始支持 “Linux Lab 真盘”（又名 [Linux Lab Disk](/linux-lab-disk)），实现 Linux Lab 的即插即用，完全免安装，进一步提升 Linux Lab 使用体验，快速高效地开展 Linux 相关实验与开发。
 
-![Linux Lab 真盘](/wp-content/uploads/2021/03/linux-lab-disk.png)
+[![Linux Lab 真盘](/wp-content/uploads/2021/03/linux-lab-disk.png)](/linux-lab-disk)
 
-  使用文档：
+  产品特性：
 
-  * [Linux Lab 真盘开发日志（1）：在 Windows 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-windows-boot)
-  * [Linux Lab 真盘开发日志（2）：在 macOS 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-macos-boot)
-  * [Linux Lab 真盘开发日志（3）：在 Linux 下直接启动 Linux Lab Disk，当双系统使用](/linux-lab-disk-linux-boot)
-  * [Linux Lab 真盘开发日志（4）：在台式机、笔记本和 macBook 上即插即用](/linux-lab-disk-raw-boot)
-  * [Linux Lab 真盘开发日志（5）：体验透明压缩带来的容量翻倍效果](/linux-lab-disk-transparent-compress)
-  * [Linux Lab 真盘开发日志（6）：体验内存编译的用法和好处](/linux-lab-disk-mem-compile)
+    * [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了三种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
+    * [相互套娃](https://zhuanlan.zhihu.com/p/470708832)，多支 Linux Lab Disk 可相互启动或来回切换，因此，可根据喜好同时使用多个不同的 Linux 系统发行版。
+    * [透明倍容](https://zhuanlan.zhihu.com/p/475302436)，透明提供接近翻倍的可用容量空间，“零成本”获得接近一倍的额外存储空间。
+    * [时区兼容](https://zhuanlan.zhihu.com/p/474956863)，自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致。
+    * [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
+    * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
+
+
+  功能连载（见 “[Linux知识星球](https://www.zhihu.com/column/tinylab)” 专栏）：
+
+    * [内核开发](https://zhuanlan.zhihu.com/p/471583241)，数分钟内开展最新 Linux 内核开发与测试
+    * [Uboot开发](https://zhuanlan.zhihu.com/p/475916603)，快速开展 Uboot 开发与测试
+    * [文件系统制作](https://zhuanlan.zhihu.com/p/476541502)，演示如何通过 Buildroot 极速构建嵌入式小型文件系统
+    * [RVOS 实验](https://zhuanlan.zhihu.com/p/476219392)，演示如何开展 RISC-V OS 课程实验，主要是 RISC-V 汇编与 OS 核心功能
+    * [GUI 实验](https://zhuanlan.zhihu.com/p/477621099)，演示如何开展嵌入式图形应用开发实验，本次实验用的是 GuiLite
+    * [C 语言入门实验](https://zhuanlan.zhihu.com/p/478136033)，演示如何在 Linux 下用 vim, gcc, make 做一个简单的 C 语言 Hello World 程序实验
+
 
   购买地址：
 
@@ -105,7 +116,7 @@ tags:
 
   购买地址：
 
-  * [在某宝搜索 “Linux Lab 真板” 即可选购](https://shop155917374.taobao.com/)
+  * [在某宝搜索 “泰晓 Linux” 即可选购](https://shop155917374.taobao.com/)
 
 ## 更多用法
 

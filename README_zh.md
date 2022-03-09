@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v0.9 中文手册
+% Linux Lab v1.0-rc1 中文手册
 % [泰晓科技 | Tinylab.org](https://tinylab.org)
 % \today
 --><!-- metadata end -->

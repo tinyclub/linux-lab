@@ -32,6 +32,10 @@ Linux Lab Disk 是由泰晓科技 Linux Lab 开源项目组研发的一种智能
 
 Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成了自研的 [Linux Lab](/linux-lab), [Linux 0.11 Lab](/linux-0.11-lab) 等实验环境。
 
+其中某个型号如下图：
+
+![某型 Linux Lab Disk 照片](/wp-content/uploads/2021/11/linux-lab-distros/linux-lab-disk.jpg)
+
 ## 产品特性
 
 * [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了三种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
@@ -43,7 +47,7 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 ## 可选容量
 
-当前支持 32G-2T，由于 Linux Lab Disk 支持透明倍容，实际可写入容量 2 倍左右的数据，实际写入量跟数据类型有关。
+当前支持 32G-2T，由于 Linux Lab Disk 支持透明倍容，预期可写入容量 2 倍左右的数据，实际写入量跟数据类型有关。
 
 如果想长期使用，建议至少选择 64G-128G 或以上的极速固态 U 盘或者移动硬盘版本。
 
@@ -51,7 +55,7 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 ## 可选系统
 
-当前已经支持适配全球 Top6 的 Linux 系统发行版，比如 Mint, Manjaro, Ubuntu, Deepin, Kali, Fedora 等。
+当前已经适配全球 Top6 的 Linux 系统发行版，比如 Mint, Manjaro, Ubuntu, Deepin, Kali, Fedora 等。
 
 客户可根据自己的需要申请预装特定的开源软件或适配当前未支持的 Linux 系统发行版，我们将根据客户需求评估工作量与费用。
 
@@ -68,7 +72,7 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 ## 功能连载
 
-为了让客户能更好地发挥 Linux Lab Disk 的价值，我们正在连载 Linux Lab Disk 的各种用法，欢迎查阅 [Linux 知识星球] 知乎专栏。
+为了让客户能更好地发挥 Linux Lab Disk 的价值，我们正在连载 Linux Lab Disk 的各种用法，欢迎查阅 [Linux 知识星球](https://www.zhihu.com/column/tinylab) 知乎专栏。
 
 除了上述 “产品特性” 外，目前已经连载的部分内容如下：
 
@@ -79,7 +83,7 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 * [GUI 实验](https://zhuanlan.zhihu.com/p/477621099)，演示如何开展嵌入式图形应用开发实验，本次实验用的是 GuiLite
 * [C 语言入门实验](https://zhuanlan.zhihu.com/p/478136033)，演示如何在 Linux 下用 vim, gcc, make 做一个简单的 C 语言 Hello World 程序实验
 
-更多内容正在陆续连载中……
+更多内容正在陆续连载中，订阅 [Linux 知识星球](https://www.zhihu.com/column/tinylab) 知乎专栏可跟进后续更新。
 
 ## 购买方式
 

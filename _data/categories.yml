@@ -408,6 +408,8 @@
         - name: Cloud Lab
         - name: TinyDraw
         - name: B9Creator
+        - name: RVOS Lab
+        - name: GUI Lab
     - name: 开源书籍
 
 - name: 招聘求职

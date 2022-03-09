@@ -1,14 +1,11 @@
 ---
 layout: post
 author: 'taotieren'
-title: "sipeed longan nano 2 rv link for linux"
-draft: true
-# tagline: " 子标题，如果存在的话 "
-# album: " 所属文章系列/专辑，如果有的话"
-# group: " 默认为 original，也可选 translation, news, resume or jobs, 详见 _data/groups.yml"
+title: "在 Linux 下制作 rv-link 调试器"
+draft: false
 license: "cc-by-nc-nd-4.0"
-permalink: /sipeed longan-nano 2 rv-link for linux/
-description: " 文章摘要 "
+permalink: /rv-link-debugger/
+description: "本文介绍了如何在 Linux 下，基于 Sipeed RV debugger plus JTAG+UART BL702 调试器，制作 rv-link 调试器"
 category:
   - risc-v
   - sipeed
@@ -23,33 +20,28 @@ tags:
 > By taotieren of [TinyLab.org][1]
 > Mar 07, 2022
 
-
-
 ## 序 -- 起因
 
 某天在群里看到有人发 [sipeed2022_spring_competition](https://github.com/sipeed/sipeed2022_spring_competition) 的活动宣传图，如下：
 
 >
+> ~~矽速2022春季AIoT挑战赛~~
 >
-># ~~矽速2022春季AIoT挑战赛~~
+> ~~矽速(Sipeed)2022春季**AIoT挑战赛**，**万元大奖**等你来拿 ～~
+> ~~赛题信息：https://github.com/sipeed/sipeed2022_spring_competition~~
+> ~~转发比赛信息到1000人以上相关技术QQ群,500人专业微信群，或专业论坛，~~
+> 即可到矽速官方店领取 BL702 JTAG+UART 调试小板一块～
+> ~~（截图给客服，仅限第一次转发到该群有效, sipeed.taobao.com）~~
 >
->~~矽速(Sipeed)2022春季**AIoT挑战赛**，**万元大奖**等你来拿 ～~
->~~赛题信息：https://github.com/sipeed/sipeed2022_spring_competition~~
->~~转发比赛信息到1000人以上相关技术QQ群,500人专业微信群，或专业论坛，~~
->即可到矽速官方店领取 BL702 JTAG+UART 调试小板一块～
->~~（截图给客服，仅限第一次转发到该群有效, sipeed.taobao.com）~~
-
-
 
 重点是可以白嫖一块 **BL702 JTAG+UART 调试小板** ，对于电子行业的用户来说这是无法拒绝的诱惑；而且还是调试工具。
 
-于是白嫖了这块 [Sipeed RV debugger plus JTAG+UART BL702 调试器](https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-21410578033.17.30f959d6FDBot5&id=648095486021)(有需要的朋友，也可以去白嫖)，在他们官方的店铺看到了 [Sipeed Longan Nano RISC-V GD32VF103CBT6 单片机 带壳开发板](https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w4004-24053782153.40.5f7652b1O61KAJ&id=601743142093)，没忍住，于是就有这篇 linux 下制作 [rv-link](https://gitee.com/zoomdy/RV-LINK) 的调试器的文章。
+于是白嫖了这块 [Sipeed RV debugger plus JTAG+UART BL702 调试器](https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-21410578033.17.30f959d6FDBot5&id=648095486021)(有需要的朋友，也可以去白嫖)，在他们官方的店铺看到了 [Sipeed Longan Nano RISC-V GD32VF103CBT6 单片机 带壳开发板](https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w4004-24053782153.40.5f7652b1O61KAJ&id=601743142093)，没忍住，于是就有这篇 Linux 下制作 [rv-link](https://gitee.com/zoomdy/RV-LINK) 的调试器的文章。
 
 
+## 准备 -- 初步了解
 
-## 准备--初步了解
-
-sipeed 官网关于**Longan nano**开发板的相关信息、 RV-LINK 介绍信息和 PIO 插件信息。如下：
+sipeed 官网关于**Longan nano**开发板的相关信息、RV-LINK 介绍信息和 PIO 插件信息。如下：
 
 | 资源                                                         | 连接                                                         | 详情                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -74,12 +66,11 @@ sipeed 官网关于**Longan nano**开发板的相关信息、 RV-LINK 介绍信�
 | bflb-mcu-tool                                                | https://pypi.org/project/bflb-mcu-tool                       | BOUFFALOLAB MCU TOOL                                         |
 
 
-
 根据上面相关信息，大致有点了解后，应该知道如何安装 `git` 、 `vscode` 和 `pio` 插件 。以下默认已经安装。
 
 ## 编译 RV-LINK -- 踩踩坑
 
-1.   RV-LINK 原始仓库进行编译
+### RV-LINK 原始仓库进行编译
 
 -   克隆 `RV-LINK` 源码
 
@@ -125,7 +116,7 @@ monitor_speed = 115200
 upload_protocol = dfu
 debug_tool = sipeed-rv-debugger
 board_build.ldscript = GD32VF103xB.lds
-build_flags = 
+build_flags =
     -DGD32VF103C_START
     -DUSE_STDPERIPH_DRIVER
     -DUSE_USB_FS
@@ -135,16 +126,16 @@ build_flags =
     -DRVL_ASSERT_EN
     -MMD
 
-extra_scripts = 
+extra_scripts =
     pre:build.py
-src_filter = 
+src_filter =
     +<*>-<.git/>-<.svn/>-<example/>-<examples/>-<test/>-<tests/>
     -<app/riscv-prober>
     -<app/test-usb-serial/>
     -<link/gd32vf103c-start/rvl-link.c>
     -<link/gd32vf103c-start/rvl-button.c>
-    -<link/gd32vf103c-start/rvl-led.c> 
-    -<link/gd32vf103c-start/rvl-jtag.c> 
+    -<link/gd32vf103c-start/rvl-led.c>
+    -<link/gd32vf103c-start/rvl-jtag.c>
     -<link/gd32vf103c-start/gd32vf103c_start.c>
     -<link/gd32vf103c-start/rvl-jtag-inline.h>
     -<link/rvl-link-stub.c>
@@ -168,10 +159,10 @@ src_filter =
 
 
 
--   再此编译即可生成固件。
+-   再次编译即可生成固件。
 -   由于此 `RV-LINK` 停更两年以上，可以选择自己二次开发或使用第三方开发的其他 `RV-LINK`
 
-2.   `rv-link` 第三方仓库编译
+### `rv-link` 第三方仓库编译
 
 -   克隆 `rv-link` 源码
 
@@ -184,7 +175,9 @@ git clone https://github.com/michahoiting/rv-link.git
 
 ## 烧录固件 -- gd32-dfu-utils
 
-1.   发现 linux 没有 gd32 的 dfu 刷固件工具，于是打包了 gd32-dfu-utils 来给 arch 系用户使用，打包的 `PKGBUILD` 文件内容如下
+### 打包 gd32-dfu-utils
+
+发现 linux 没有 gd32 的 dfu 刷固件工具，于是打包了 gd32-dfu-utils 来给 arch 系用户使用，打包的 `PKGBUILD` 文件内容如下
 
 ```bash
 # Maintainer: taotieren <admin@taotieren.com>
@@ -240,18 +233,22 @@ package() {
 
 -   已经上传到 AUR 仓库 [gd32-dfu-utils](https://aur.archlinux.org/packages/gd32-dfu-utils)
 
-2.   命令行刷机操作
+### 命令行刷机操作
 
 - 准备操作
 - 按住 BOOT0 按钮，然后按下 RESET 按钮，释放 RESET 按钮，最后释放 BOOT0 按钮，进入 DFU 模式
 
-```bash
-# 通过 lsusb 或者 GD32 的 PID:VID 信息
-❯ lsusb |grep GD
-Bus 003 Device 052: ID 28e9:0189 GDMicroelectronics GD32 DFU Bootloader (Longan Nano)
+通过 lsusb 或者 GD32 的 PID:VID 信息：
 
-# 命令行刷写固件，用法和 dfu 一致，其他 dfu 用户可以看 dfu 的帮助文档或其他用户的分享
-❯ gd32-dfu-util -d 28e9:0189 -a 0 --dfuse-address 0x08000000:leave -D rvlink_fw_sipeed-longan-nano.hex
+```bash
+$ lsusb |grep GD
+Bus 003 Device 052: ID 28e9:0189 GDMicroelectronics GD32 DFU Bootloader (Longan Nano)
+```
+
+命令行刷写固件，用法和 dfu 一致，其他 dfu 用户可以看 dfu 的帮助文档或其他用户的分享：
+
+```bash
+$ gd32-dfu-util -d 28e9:0189 -a 0 --dfuse-address 0x08000000:leave -D rvlink_fw_sipeed-longan-nano.hex
 dfu-util 0.9
 
 Copyright 2005-2009 Weston Schmidt, Harald Welte and OpenMoko Inc.
@@ -276,35 +273,53 @@ Memory segment (0x08000000 - 0801ffff)(rew)
 Erase size 1024, page count 128
 Downloading to address = 0x08000000, size = 141046
 gd32-dfu-util: Last page at 0x080226f5 is not writeable
-
-# 通过 lsusb 确认刷入的固件是否别识别
-❯ lsusb |grep GD
-Bus 003 Device 053: ID 28e9:018a GDMicroelectronics Longan Nano
-
 ```
 
-3.   其他的可能的坑
+通过 lsusb 确认刷入的固件是否别识别：
 
-- 可能会踩的坑 Ubuntu 等需要将 `$USER` 加到 串口组(`uucp`) 里面（新版本一般是 `uucp` ，旧版本可能是其他的，使用 `ls -lsh /dev/ttyUSB*` 查看设备所在组。如果在 Linux 下调试时遇到串口不通或者提示没权限，把用户加入串口设备组里面，后重启电脑试试。示例：
 ```bash
-# 查看 串口设备组
-❯ ls -lash /dev/ttyS0 0 crwxrwxrwx 1 root uucp 4, 64 Feb 15 19:09 /dev/ttyS0
-❯ sudo gpasswd -a `whoami` uucp
+$ lsusb |grep GD
+Bus 003 Device 053: ID 28e9:018a GDMicroelectronics Longan Nano
+```
+
+### 其他的可能的坑
+
+Ubuntu 等系统需要将 `$USER` 加到 串口组(`uucp`) 里面（新版本一般是 `uucp` ，旧版本可能是其他的，使用 `ls -lsh /dev/ttyUSB*` 查看设备所在组。如果在 Linux 下调试时遇到串口不通或者提示没权限，把用户加入串口设备组里面，后重启电脑试试。示例：
+
+查看 串口设备组：
+
+```bash
+$ ls -lash /dev/ttyS0
+  0 crwxrwxrwx 1 root uucp 4, 64 Feb 15 19:09 /dev/ttyS0
+```
+
+将用户“taotieren”加入到“uucp”组中：
+
+```bash
+$ sudo gpasswd -a `whoami` uucp
 [sudo] taotieren 的密码：
-正在将用户“taotieren”加入到“uucp”组中
-❯ groups `whoami` 
+$ groups `whoami`
 wheel uucp vboxusers taotieren
-❯ reboot
-# 如果添加 uucp 后还是不能使用，尝试安装 uucp 软件包，以 Arch 为例，其他 Linux 根据设备组确认
-❯ yay -Syu uucp
+$ reboot
+```
+
+如果添加 uucp 后还是不能使用，尝试安装 uucp 软件包，以 Arch 为例，其他 Linux 根据设备组确认：
+
+```bash
+$ yay -Syu uucp
 ```
 
 
 
 ## 固件烧录 -- RV-Debugger-BL702
 
-1.   `Bouffalo Lab Dev Cube` 我这边在 Arch 下运行有一些坑（内置的软件版本过低，和 Arch 最新的包不兼容），无法运行。
-2.   在 Bouffalo 官网找到 bflb-mcu-tool 的 python 源码包，编写 `PKGBUILD` 进行打包操作
+### `Bouffalo Lab Dev Cube`
+
+我这边在 Arch 下运行有一些坑（内置的软件版本过低，和 Arch 最新的包不兼容），无法运行。
+
+### 打包 bflb-mcu-tool
+
+在 Bouffalo 官网找到 bflb-mcu-tool 的 python 源码包，编写 `PKGBUILD` 进行打包操作
 
 ```bash
 # Maintainer: taotieren <admin@taotieren.com>
@@ -363,36 +378,41 @@ package() {
     yay -S python-bflb-crypto-plus
     ```
 
-    
+### bflb-mcu-tool  固件烧录操作
 
-3.   bflb-mcu-tool  固件烧录操作
+- Windows
+
+设备管理器确认 bl702 实际串口号：
 
 ```bash
-# Windows:
-# 设备管理器确认 bl702 实际串口号
 .\bflb_mcu_tool.exe --chipname=bl702 --port=COM9 --xtal=32M --firmware="main.bin"
-
-# Linux:
-# lsusb 获取 bl702 的 usb 信息，确认 bl702 实际串口号
-# 通过软件包安装后可以直接使用 bflb_mcu_tool ，如果是手动编译或者其他方式，自己设置运行路径即可。
-# 建议参考前面的 AUR 中 python 编译和打包的操作，先将其打包成 whl 包，再用 python 安装 whl 包
-bflb_mcu_tool --chipname=bl702 --port=ttyUSB1 --xtal=32M --firmware="main.bin"
 ```
 
+- Linux
 
+通过 `lsusb` 获取 bl702 的 usb 信息，确认 bl702 实际串口号。
+
+通过软件包安装后可以直接使用 `bflb_mcu_tool` ，如果是手动编译或者其他方式，自己设置运行路径即可。
+
+建议参考前面的 AUR 中 python 编译和打包的操作，先将其打包成 whl 包，再用 python 安装 whl 包。
+
+```bash
+$ bflb_mcu_tool --chipname=bl702 --port=ttyUSB1 --xtal=32M --firmware="main.bin"
+```
 
 ## 安装驱动 -- rv-link-udev
 
-1.   安装 `rv-link` 里面的 `99-rvlink-jtag.rules`
+### 安装 `rv-link` 里面的 `99-rvlink-jtag.rules`
+
+手动安装 99-rvlink-jtag.rules 到系统的 `/etc/udev/rules.d/99-rvlink-jtag.rules`，如果打包的话安装至 `/usr/lib/udev/rules.d/99-rvlink-jtag.rules`。
 
 ```bash
-# 手动安装 99-rvlink-jtag.rules 到系统的 /etc/udev/rules.d/99-rvlink-jtag.rules 
-# 如果打包的话安装至 /usr/lib/udev/rules.d/99-rvlink-jtag.rules
-sudo install -Dm0644 "rv-link/drivers/udev/rules.d/99-rvlink-jtag.rules" "/usr/lib/udev/rules.d/99-rvlink-jtag.rules"
-sudo install -Dm0644 "rv-link/drivers/udev/rules.d/99-rvlink-jtag.rules" "/etc/udev/rules.d/99-rvlink-jtag.rules"
+$ sudo install -Dm0644 "rv-link/drivers/udev/rules.d/99-rvlink-jtag.rules" "/usr/lib/udev/rules.d/99-rvlink-jtag.rules"
+$ sudo install -Dm0644 "rv-link/drivers/udev/rules.d/99-rvlink-jtag.rules" "/etc/udev/rules.d/99-rvlink-jtag.rules"
 ```
+### 打包 `99-rvlink-jtag.rules`
 
-2.   将 `99-rvlink-jtag.rules` 打包到 AUR 仓库，编写相应的 `PKGBUILD`
+将 `99-rvlink-jtag.rules` 打包到 AUR 仓库，编写相应的 `PKGBUILD`
 
 ```bash
 # Maintainer: taotieren <admin@taotieren.com>
@@ -435,7 +455,6 @@ package() {
     ```
 
 
-
 ## 总结 -- 填坑至始
 
 1.   完成 Sipeed `Longan Nano` RISC-V GD32VF103CBT6
@@ -447,4 +466,3 @@ package() {
      -   `bflb-mcu-tool` 烧录固件
 
 3.   剩下的就是填坑之路。
-

@@ -1,8 +1,5 @@
-    .data                       # section declaration - variables only
-msg:
-    .string "Hello, Powerpc64!\n"
-    len = . - msg       # length of our dear string
-.text                       # section declaration - begin code
+
+    .text               # section declaration - begin code
     .global _start
     .section        ".opd","aw"
     .align 3
@@ -11,8 +8,7 @@ _start:
     .previous
     .global  ._start
 ._start:
-# write our string to stdout
-    li      0,4         # syscall number (sys_write)
+                        # write(1, msg, len)
     li      3,1         # first argument: file descriptor (stdout)
                         # second argument: pointer to message to write
     # load the address of 'msg':
@@ -25,8 +21,17 @@ _start:
     ori     4,4,msg@l   # load msg bits  0-15 into r4 bits  0-15
     # done loading the address of 'msg'
     li      5,len       # third argument: message length
+
+    li      0,4         # syscall number (sys_write)
     sc                  # call kernel
-# and exit
+
+
+                        # exit(0)
     li      0,1         # syscall number (sys_exit)
     li      3,0         # first argument: exit code
     sc                  # call kernel
+
+    .rdata              # section declaration - variables only
+msg:
+    .string "Hello, POWERPC64!\n"
+    len = . - msg       # length of our dear string

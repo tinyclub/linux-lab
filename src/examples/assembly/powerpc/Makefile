@@ -17,5 +17,5 @@ all: $(OBJS)
 	$(AS) -o $@ $<
 	$(LD) -o $(basename $@) $@
 
-clean: $(OBJS)
+clean:
 	rm -rf *.o $(basename $^)

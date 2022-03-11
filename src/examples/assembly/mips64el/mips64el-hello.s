@@ -11,7 +11,7 @@
 
 # data section
 .rdata
-hello: .asciiz "hello, world!\n"
+hello: .asciiz "hello, Mips64el!\n"
 length: .word . - hello            # length = current address - the string address
 
 # text section

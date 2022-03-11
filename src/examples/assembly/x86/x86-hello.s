@@ -1,6 +1,6 @@
 .data                   # section declaration
 msg:
-    .string "Hello, world!\n"
+    .string "Hello, X86!\n"
     len = . - msg   # length of our dear string
 .text                   # section declaration
                         # we must export the entry point to the ELF linker or

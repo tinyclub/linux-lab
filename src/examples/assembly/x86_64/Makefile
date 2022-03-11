@@ -9,11 +9,11 @@ AS = $(CROSS_COMPILE)as
 LD = $(CROSS_COMPILE)ld
 
 all: $(OBJS)
-	$(TOP_DIR)/$(basename $^)
+	@$(TOP_DIR)/$(basename $^)
 
 %.o: %.s
 	$(AS) -o $@ $<
 	$(LD) -o $(basename $@) $@
 
-clean: $(OBJS)
+clean:
 	rm -rf *.o $(basename $^)

@@ -20,5 +20,5 @@ all: $(OBJS)
 	$(AS) $(AFLAGS) -o $@ $<
 	$(LD) $(LDFLAGS) -o $(basename $@) $@
 
-clean: $(OBJS)
+clean:
 	rm -rf *.o $(basename $^)

@@ -20,6 +20,6 @@ _start:
 
 .section .rodata
 msg:
-	    .string "Hello Risc-V64\n"
+	    .string "Hello Risc-V64!\n"
 length:
 	    .word . - msg

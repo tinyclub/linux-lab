@@ -20,5 +20,5 @@ all: $(OBJS)
 	$(AS) -mabi=32 -EL -o $@ $<
 	$(LD) -m elf32ltsmip -o $(basename $@) $@
 
-clean: $(OBJS)
+clean:
 	rm -rf *.o $(basename $^)

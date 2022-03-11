@@ -1,6 +1,6 @@
     .data                       # section declaration - variables only
 msg:
-    .string "Hello, world!\n"
+    .string "Hello, Powerpc!\n"
     len = . - msg       # length of our dear string
 .text                       # section declaration - begin code
     .global _start

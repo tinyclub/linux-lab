@@ -30,5 +30,5 @@ _start:
 
 	.data
 msg:
-        .ascii  "Hello, world\n"
+        .ascii  "Hello, X86_64!\n"
         len = . - msg   # length of our dear string

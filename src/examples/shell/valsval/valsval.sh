@@ -19,7 +19,7 @@ echo -e "\nREAD: list initialized values\n"
 for x in a b c d
 do
 	# Note: can not use something like: v=`eval "echo \$${x}_val"`
-	v=$(eval "echo \$${x}_val")
+	eval v=\$${x}_val
 	echo -e "x=$x	${x}_val=$v"
 done
 
@@ -30,6 +30,6 @@ do
 	# Note: can not use something like: v=`eval "echo \$${x}_val"`
 	eval "${x}_val=$RANDOM"
 
-	v=$(eval "echo \$${x}_val")
+	eval v=\$${x}_val
 	echo -e "x=$x	${x}_val=$v"
 done

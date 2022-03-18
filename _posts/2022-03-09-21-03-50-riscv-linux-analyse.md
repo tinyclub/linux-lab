@@ -4,6 +4,7 @@ author: 'Wu Zhangjin'
 title: "RISC-V Linux 内核兴趣小组招募爱好者-ing"
 draft: false
 license: "cc-by-nc-nd-4.0"
+album: 'RISC-V Linux'
 permalink: /riscv-linux-analyse/
 description: "社区近日成立了 RISC-V Linux 内核兴趣小组，短期目标是剖析 Linux 内核的 RISC-V 架构支持。"
 category:

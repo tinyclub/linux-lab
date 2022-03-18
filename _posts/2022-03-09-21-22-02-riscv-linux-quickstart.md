@@ -3,6 +3,7 @@ layout: post
 author: 'Wu Zhangjin'
 title: "如何分析 Linux 内核 RISC-V 架构相关代码"
 draft: false
+album: 'RISC-V Linux'
 license: "cc-by-nc-nd-4.0"
 permalink: /riscv-linux-quickstart/
 description: "RISC-V Linux 内核兴趣小组于近日建立，将首要聚焦 Linux 内核 RISC-V 架构部分的剖析，本文介绍如何分析 Linux 内核 RISC-V 架构相关源码，并介绍了相关工具，是参与人员必读篇。"

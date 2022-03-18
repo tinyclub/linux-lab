@@ -4,6 +4,7 @@ author: 'taotieren'
 title: "在 Linux 下制作 rv-link 调试器"
 draft: false
 license: "cc-by-nc-nd-4.0"
+album: 'RISC-V Linux'
 permalink: /rv-link-debugger/
 description: "本文介绍了如何在 Linux 下，基于 Sipeed RV debugger plus JTAG+UART BL702 调试器，制作 rv-link 调试器"
 category:

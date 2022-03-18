@@ -62,7 +62,7 @@ Linux Lab 默认把 Linux 内核源码放置在 `src/linux-stable` 目录：
 
     $ tree arch/riscv/
     ├── boot
-    │   ├── dts                      # device trace support
+    │   ├── dts                      # device tree support
     │   │   ├── canaan
     │   │   │   ├── canaan_kd233.dts
     │   │   │   ├── k210.dtsi
@@ -211,8 +211,8 @@ Linux Lab 默认把 Linux 内核源码放置在 `src/linux-stable` 目录：
     │           ├── sigcontext.h
     │           ├── ucontext.h
     │           └── unistd.h
-    ├── Kbuild
-    ├── Kconfig
+    ├── Kbuild                       # Build support with configurations enabled in Kconfig
+    ├── Kconfig                      # Configuration support for defconfig, menuconfig ...
     ├── Kconfig.debug
     ├── Kconfig.erratas
     ├── Kconfig.socs
@@ -331,11 +331,19 @@ Linux Lab 默认把 Linux 内核源码放置在 `src/linux-stable` 目录：
 
 可以直接通过 `git log arch/riscv` 查看 `arch/riscv` 目录的所有改动。
 
-因为内容比较多，下面的指令只列出每个 Commit 的标题（--oneline），并按照逆序的方式排列（--reverse），也过滤掉了部分非核心的代码（egrep），从而方便从头开始一笔一笔分析。
+首先找出来 `arch/riscv` 的第一笔改动：
 
-    $ git rev-list --oneline 76d2a0493a17d4c8ecc781366850c3c4f8e1a446..v5.16 --reverse arch/riscv \
+    $ git log --oneline arch/riscv
+    ...
+    fab957c11efe RISC-V: Atomic and Locking Code
+    76d2a0493a17 RISC-V: Init and Halt Code
+
+因为内容比较多，下面的指令只列出每个 Commit 的标题（`--oneline`），并按照逆序的方式排列（`--reverse`），也过滤掉了部分非核心的代码（`egrep`），从而方便从头开始一笔一笔分析。
+
+    $ git rev-list --oneline 76d2a0493a17^..v5.16 --reverse arch/riscv \
         | egrep -v " Merge | Backmerge | dts| kbuild| asm-generic| firmware| include| Documentation| Revert| drivers | config | Rename"
 
+    76d2a0493a17 RISC-V: Init and Halt Code
     fab957c11efe RISC-V: Atomic and Locking Code
     5d8544e2d007 RISC-V: Generic library routines and assembly
     2129a235c098 RISC-V: ELF and module implementation
@@ -1401,7 +1409,7 @@ Linux Lab 默认把 Linux 内核源码放置在 `src/linux-stable` 目录：
 
 大家可结合自己的兴趣认领感兴趣的模块，比如说 Ftrace，认领后可以重点分析相关代码，这样的话，可以用关键字 ftrace 过滤出这部分的 commits：
 
-    $ git rev-list --oneline 76d2a0493a17d4c8ecc781366850c3c4f8e1a446..v5.16 --reverse arch/riscv | grep -i ftrace
+    $ git rev-list --oneline 76d2a0493a17^..v5.16 --reverse arch/riscv | grep -i ftrace
     10626c32e382 riscv/ftrace: Add basic support
     a1d2a6b4cee8 riscv/ftrace: Add RECORD_MCOUNT support
     c15ac4fd60d5 riscv/ftrace: Add dynamic function tracer support

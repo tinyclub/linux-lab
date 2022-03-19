@@ -1,12 +1,12 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "RISC-V tracepoint jump_label 架构支持详解，第一部分：技术背景"
+title: "RISC-V tracepoint jump_label 架构支持详解，第 1 部分：技术背景"
 draft: false
 album: 'RISC-V Linux'
 license: "cc-by-nc-nd-4.0"
 permalink: /riscv-jump-label/
-description: "本文是对 RISC-V jump_label 架构支持分析成果的第一部分，主要介绍 Jump Label 的相关技术背景，接下来会陆续有几篇详细展开介绍。"
+description: "本文是对 RISC-V jump_label 架构支持分析成果的第 1 部分，主要介绍 Jump Label 的相关技术背景，接下来会陆续展开介绍其实现细节。"
 category:
   - 开源项目
   - Risc-V

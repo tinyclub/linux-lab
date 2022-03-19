@@ -817,12 +817,12 @@ _ROOTFS := $(ROOTFS)
 _QTOOL  := $(QTOOL)
 
 # Core build: for building in standalone directories
-TOP_BUILD_ARCH := $(TOP_BUILD)/$(XARCH)
-QEMU_BUILD     := $(TOP_BUILD_ARCH)/$(QEMU_FORK_)qemu-$(QEMU)-$(MACH)
-UBOOT_BUILD    := $(TOP_BUILD_ARCH)/$(UBOOT_FORK_)uboot-$(UBOOT)-$(MACH)
-KERNEL_BUILD   := $(TOP_BUILD_ARCH)/$(KERNEL_FORK_)linux-$(LINUX)-$(MACH)
-ROOT_BUILD     := $(TOP_BUILD_ARCH)/$(ROOT_FORK_)buildroot-$(BUILDROOT)-$(MACH)
-BSP_BUILD      := $(TOP_BUILD_ARCH)/bsp-$(MACH)
+TOP_BUILD_MACH := $(TOP_BUILD)/$(XARCH)/$(MACH)
+QEMU_BUILD     := $(TOP_BUILD_MACH)/$(QEMU_FORK_)qemu/$(QEMU)
+UBOOT_BUILD    := $(TOP_BUILD_MACH)/$(UBOOT_FORK_)uboot/$(UBOOT)
+KERNEL_BUILD   := $(TOP_BUILD_MACH)/$(KERNEL_FORK_)linux/$(LINUX)
+ROOT_BUILD     := $(TOP_BUILD_MACH)/$(ROOT_FORK_)buildroot/$(BUILDROOT)
+BSP_BUILD      := $(TOP_BUILD_MACH)/bsp
 
 # Cross Compiler toolchains
 ifneq ($(XARCH), i386)

@@ -6,7 +6,7 @@ XARCH   := riscv32
 CPU     ?=
 SMP     ?= 4
 MEM     ?= 128M
-QEMU    ?= v4.0.0
+QEMU    ?= v6.0.0
 HOST_GCC[QEMU_v4.0.0] := 4.8
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
@@ -47,6 +47,7 @@ HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
 #XKCLI   ?= earlycon=sbi
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
+QTOOL[OS_focal]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 
 # external toolchain, please download it while: make toolchain
 # Available CCORI: bootlin, gnu-mcu-eclipse

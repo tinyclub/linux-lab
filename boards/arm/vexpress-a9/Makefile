@@ -10,7 +10,7 @@ QEMU    ?= v4.1.1
 QEMU_US ?= 0
 UBOOT   ?= v2020.04
 
-LINUX   ?= v5.13
+LINUX   ?= v5.17
 
 # Uboot breaks 9pnet sharing, disable uboot if 9pnet share used
 UBOOT[SHARE_1] := disabled

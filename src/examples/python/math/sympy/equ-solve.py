@@ -14,7 +14,7 @@ from sympy import Eq, solve
 result = solve([Eq(x**2 + (y-5)**2, 5**2), Eq(y, x)])
 print("result: ", result)
 
-# solve it with ploting
+# solve it with plotting
 p1 = plot_implicit(Eq(x**2 + (y-5)**2, 5**2), (x, -15, 15), (y, -15, 15), line_color='red', depth = 1, show = False, margin = 10)
 p2 = plot_implicit(Eq(y, x), (x, -10, 10), (y, -10, 10), depth = 1, line_color='blue', show = False)
 p1.extend(p2)

@@ -6,9 +6,9 @@
 # 2. y = x
 #
 
-from sympy.plotting import *
-from sympy.abc import *
-from sympy import *
+from sympy.plotting import plot_implicit
+from sympy.abc import x, y
+from sympy import Eq, solve
 
 # solve it directly
 result = solve([Eq(x**2 + (y-5)**2, 5**2), Eq(y, x)])

@@ -47,9 +47,9 @@ tags:
         /* Actually do tracing stuff */
     }
 
-在用户态可以通过接口设定 `trace_foo_enabled`，从而方便启停某个 Tracepoint，但是即使是停止以后，还是会有访存+条件跳转指令。
+在用户态可以通过接口设定 `trace_foo_enabled`，从而方便启停某个 Tracepoint，但是即使是停止以后，还是会有访存+条件跳转指令，这部分是我们最关心的，也就是禁用 Tracepoints 的情况下开销要尽可能地小。
 
-虽然 Gcc 会对 `unlikely` 做一定的优化，但是随着 Tracepoints 越加越多，这个条件跳转带来的性能影响会越来越突出。
+虽然 Gcc 会对 `unlikely` 做一定的代码执行顺序的优化，但是随着 Tracepoints 越加越多，这个 **访存+条件跳转** 带来的性能影响会越来越突出。
 
 ## Jump Label 如何优化
 
@@ -84,36 +84,78 @@ Jump Label 把上述函数替换为类似下面的机制：
 
 这样就不需要运行时访存+条件分支了，而只需要一条 `nop` 或者一条无条件跳转。
 
-## 三种指令的性能比较
+要达到这种效果，当然还是需要编译器配合把代码顺序优化好，尽量把 `original code` 顺序执行，而 `tracing code` 用无条件跳转来做，这样在禁用 tracing 的情况下，就只多出来一条 `nop` 指令。
+
+原始代码示意：
+
+    kernel_func() {
+        original_code_part1()
+
+        trace_foo(args)
+
+        original_code_part2()
+
+        return
+    }
+
+编译后效果示意：
+
+    kernel_func() {
+        original_code_part1()
+
+    addr(foo): nop             // disabled: nop; enabled: goto label(foo)
+    2:
+        original_code_part2()
+        return
+
+    label(foo):
+        trace_foo_code(args)   // 实际上可能没这么简单，args 可能跟代码执行顺序相关
+        goto 2
+    }
+
+考虑到必须保留 Gcc 的 `unlikely` 实现，这里改造为：
+
+    #define static_branch(foo) { \
+    addr(foo): asm("nop")        \
+        return false;            \
+    label(foo):                  \
+        return true;             \
+    }
+
+    static inline trace_foo(args) {             \
+        if (unlikely(static_branch(*foo))) {    \
+            /* Actually do tracing stuff */     \
+        }                                       \
+    }
+
+## 不同指令的性能比较
 
 兴趣小组的 @hev 实测下来，无条件跳转（`goto label(foo)`）在两款国产非 RISC-V 处理器上的开销大概是 `nop` 的 2 倍左右，开销很小：
 
- Time Cost   | MIPS64 | AARCH64 ARMv8   | RISC-V
--------------|--------|-----------------|---------------
- nop         | 4.35s  | 5.40s           | TBD
- ubranch     | 8.71s  | 7.72s           | TBD
- branch      | TBD    | TBD             | TBD
+ Time Cost             | MIPS64 | AARCH64 ARMv8   | RISC-V
+-----------------------|--------|-----------------|---------------
+ nop                   | 4.35s  | 5.30s           | TBD
+ ubranch               | 8.71s  | 7.6s            | TBD
+ branch in bnez        | 8.71s  | 7.6s            | TBD
+ branch in beqz        | 12.3s  | 4.6s            | TBD
+ load+branch           | 8.7s   | 7.6s            | TBD
+ load+branch+cache miss| 25.2s  | TBD             | TBD
 
 说明：
 
-* 表格中：ubranch = unconditional branch, branch = conditional branch
-* 测试程序为：在一个大循环中，nop 所在行用 `nop` 指令，ubranch 所在行用 `goto label(foo)` 这种方式
+* ubranch = unconditional branch, branch = conditional branch
+* load 测试引入了全局变量控制
+* cache miss 测试引入了多核交互 + false sharing
 
-例如：
+而 **访存+条件分支** 的 Worse Case 情况涉及 Cache Miss 和 Branch Miss，从初步的测试数据来看，最坏情况影响比较大了。
 
-    // ubranch
-    1:
-        b 2f
-    2:
+而优化后，变成了更为确定的 `nop` 和 `goto label(foo)`，虽然在个别平台上，`branch in beqz` 这种 Case 比 `ubranch` 表现要好，但是跟 `nop` 也是相当的。
 
-    // nop
-    1:
-        nop
-    2:
+也就是说，在优化过后，禁用 Tracepoint 之后的开销只增加了一个 `nop`，而之前如果存在 Cache Miss，可能要 5-6 倍开销，不存在 Cache Miss 时，要 1-3 倍开销，所以优化效果还是很明显的。
 
-而 **访存+条件分支** 涉及 Cache Miss 和 Branch Miss，最坏情况就影响比较大了。
+并且当前测试的 ubranch 和 branch 都是极短跳转，比实际情况短得多，不排除会被处理器做特殊优化，所以测试结果跟实际情况可能会有一定差异，也就是说即使不存在 Cache Miss 时，原来可能也不止 1-3 倍开销。
 
-**TODO**：欢迎大家实测一下 RISC-V 处理器上的情况。
+**TODO**: 欢迎从事处理器设计的同学对这部分进行补充。
 
 ## Jump Label 实现思路
 
@@ -127,7 +169,7 @@ Jump Label 把上述函数替换为类似下面的机制：
 
 那后面就牵涉到这么几个部分：
 
-1. 如何实现 `unlikely(foo)`
+1. 如何实现 `static_branch(foo)`
 2. 如何编码 `nop` 和 `goto label(foo)` 指令
 3. 如何在运行时交换 `nop` 和 `goto label(foo)` 指令
 

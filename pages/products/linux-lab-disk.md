@@ -39,10 +39,17 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 ## 产品特性
 
 * [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了三种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
+    * [Windows 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120647445684225)
+    * [Linux 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120654638899200)
+
 * [相互套娃](https://zhuanlan.zhihu.com/p/470708832)，多支 Linux Lab Disk 可相互启动或来回切换，因此，可根据喜好同时使用多个不同的 Linux 系统发行版。
+
 * [透明倍容](https://zhuanlan.zhihu.com/p/475302436)，透明提供接近翻倍的可用容量空间，“零成本”获得接近一倍的额外存储空间。
+
 * [时区兼容](https://zhuanlan.zhihu.com/p/474956863)，自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致。
+
 * [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
+
 * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
 
 ## 可选容量
@@ -63,12 +70,15 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 客户可用于：
 
+* 当普通桌面操作系统使用
 * 学习和操作 Linux 系统
 * 做各种编程语言的程序开发
-* 做高校或开放课程实验
-* 用于 CTF 等比赛
+* 做大学课程实验
+* 学习各种开放课程
+* 用于 CTF 等各种 IT 比赛
 * 学习 Linux 内核与嵌入式 Linux 系统
 * 学习 Linux 0.11 等
+* 学习中小学信息学课程
 
 ## 功能连载
 
@@ -82,8 +92,18 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 * [RVOS 实验](https://zhuanlan.zhihu.com/p/476219392)，演示如何开展 RISC-V OS 课程实验，主要是 RISC-V 汇编与 OS 核心功能
 * [GUI 实验](https://zhuanlan.zhihu.com/p/477621099)，演示如何开展嵌入式图形应用开发实验，本次实验用的是 GuiLite
 * [C 语言入门实验](https://zhuanlan.zhihu.com/p/478136033)，演示如何在 Linux 下用 vim, gcc, make 做一个简单的 C 语言 Hello World 程序实验
+* [汇编语言入门实验](https://zhuanlan.zhihu.com/p/479295461)，演示了如何开展32/64位 RISC-V、ARM、MIPS、X86 和 PowerPC 汇编语言实验
+* [Shell 语言入门实验](https://zhuanlan.zhihu.com/p/480394038)，演示经典的 Hello World，包括执行方式、打印命令、退出码设置和简单参数传递。
+* [数据库 SQL 入门实验](https://zhuanlan.zhihu.com/p/481035762)，演示了 sqlite3 的表创建、数据插入、select 与 update 语句及通过C语言访问数据库。
+* [网络入门实验](https://zhuanlan.zhihu.com/p/481055861)，演示了 ip 和网关地址查看、静态&动态配置，NAT 与 网桥，ping, tcpdump 及 nmap。
+* [用 Python 解个方程](https://zhuanlan.zhihu.com/p/481629409)，演示了如何安装 python 新模块并通过 SymPy 模块来演示如何解方程。
+* [RISC-V Linux v5.17 内核实验](https://zhuanlan.zhihu.com/p/486268711)，演示了如何通过 Linux Lab Disk 开展 RISC-V 芯片 Linux v5.17 内核实验。
 
-更多内容正在陆续连载中，订阅 [Linux 知识星球](https://www.zhihu.com/column/tinylab) 知乎专栏可跟进后续更新。
+更多内容正在陆续连载中：
+
+* 订阅 [泰晓科技 - Linux 知识星球 知乎专栏](https://www.zhihu.com/column/tinylab)
+* 订阅 [泰晓科技 - B 站视频](https://space.bilibili.com/687228362/channel/seriesdetail?sid=2095977)
+* 订阅 [泰晓学院 - Linux Lab 公开课](https://www.cctalk.com/m/program/1612665538389924)
 
 ## 购买方式
 

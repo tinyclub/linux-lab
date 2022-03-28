@@ -76,7 +76,7 @@ tags:
 | x18-x27 | s2-s11   | 保存寄存器                                                   | Callee |
 | x28-x31 | t3-t6    | 临时寄存器                                                   | Caller |
 
-![image-20220320173144141.png](http://tva1.sinaimg.cn/large/67e79979gy1h0gkc9410aj20t41cyqf8.jpg)
+![RISC-V Instructions](/wp-content/uploads/2022/03/riscv-linux/images/riscv_stacktrace/riscv_instructions.jpg)
 
 ### 函数调用时保留的寄存器
 

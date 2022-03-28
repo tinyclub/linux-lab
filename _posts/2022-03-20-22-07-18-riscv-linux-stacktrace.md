@@ -21,7 +21,7 @@ tags:
 
 > Author:  jeff.zhao <305149519@qq.com>
 > Date:    2022/03/20
-> Project: https://gitee.com/tinylab/riscv-linux
+> Project: <https://gitee.com/tinylab/riscv-linux>
 
 ## 简介
 

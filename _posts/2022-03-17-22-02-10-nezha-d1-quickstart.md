@@ -21,7 +21,7 @@ tags:
 
 > Author:  iosdevlog
 > Date:    2022/03/17
-> Project: https://gitee.com/tinylab/riscv-linux
+> Project: <https://gitee.com/tinylab/riscv-linux>
 
 ## 背景简介
 

@@ -15,6 +15,9 @@ PREBUILT_FULLROOT=$TOP_DIR/prebuilt/fullroot
 
 image=$1
 arch=$2
+
+[ -z "$arch" ] && arch=`dirname $image | tr -d '.'`
+
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
 qemu_user_static=/usr/bin/qemu-${arch}-static

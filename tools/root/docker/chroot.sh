@@ -28,5 +28,27 @@ fi
 
 [ -z "$image" ] && echo "Usage: $0 image|rootdir [entrypoint]" && exit 1
 
+# Build the entry running environment
+entry_tmp=`mktemp`
+entry_file=/usr/bin/`basename $entry_tmp`.entry.sh
+mv $entry_tmp $rootdir/$entry_file
+
+cat <<EOF > $rootdir/$entry_file
+#!/bin/bash
+mount -t proc proc /proc
+mount -t devtmpfs none /dev
+mount -t tmpfs none /tmp
+
+$entry
+
+umount /tmp
+umount /dev
+umount /proc
+rm $entry_file
+EOF
+
+chmod a+x $rootdir/$entry_file
+entry=$entry_file
+
 echo "LOG: Chroot into $rootdir"
 sudo chroot $rootdir $entry

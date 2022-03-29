@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Wu Zhangjin'
-title: "RISC-V tracepoint jump_label 架构支持详解，第 1 部分：技术背景"
+title: "RISC-V Linux jump_label 详解，第 1 部分：技术背景"
 draft: false
 album: 'RISC-V Linux'
 license: "cc-by-nc-nd-4.0"
@@ -130,16 +130,16 @@ Jump Label 把上述函数替换为类似下面的机制：
 
 ## 不同指令的性能比较
 
-兴趣小组的 @hev 实测下来，无条件跳转（`goto label(foo)`）在两款国产非 RISC-V 处理器上的开销大概是 `nop` 的 2 倍左右，开销很小：
+兴趣小组的 @hev 和 @dlan17 实测下来，无条件跳转（`goto label(foo)`）在两款国产非 RISC-V 处理器上的开销大概是 `nop` 的 2 倍左右，开销很小：
 
  Time Cost             | MIPS64 | AARCH64 ARMv8   | RISC-V
 -----------------------|--------|-----------------|---------------
- nop                   | 4.35s  | 5.30s           | TBD
- ubranch               | 8.71s  | 7.6s            | TBD
- branch in bnez        | 8.71s  | 7.6s            | TBD
- branch in beqz        | 12.3s  | 4.6s            | TBD
- load+branch           | 8.7s   | 7.6s            | TBD
- load+branch+cache miss| 25.2s  | TBD             | TBD
+ nop                   | 4.35s  | 5.30s           | 5.03s
+ ubranch               | 8.71s  | 7.6s            | 5.05s
+ branch in bnez        | 8.71s  | 7.6s            | 7.54s
+ branch in beqz        | 12.3s  | 4.6s            | 7.54s
+ load+branch           | 8.7s   | 7.6s            | 5.87s
+ load+branch+cache miss| 25.2s  | TBD             | 28.3s
 
 说明：
 

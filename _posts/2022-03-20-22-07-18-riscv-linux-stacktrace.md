@@ -1,7 +1,7 @@
 ---
 layout: post
 author: 'Jeff Zhao'
-title: "RISC-V Stacktrace 原理介绍与代码分析"
+title: "RISC-V Linux Stacktrace 详解"
 draft: false
 album: 'RISC-V Linux'
 license: "cc-by-nc-nd-4.0"
@@ -273,4 +273,4 @@ static inline void print_ip_sym(unsigned long ip)
 * [函数调用保留的寄存器](https://suda-morris.github.io/blog/cs/risc-v.html#函数调用时保留的寄存器)
 * [维基百科](https://en.wikichip.org/wiki/risc-v/registers)
 * [L03.ws_solutions.pdf](https://6004.mit.edu/web/_static/silvina-test/resources/lectures/L03.ws_solutions.pdf)
-* [实现分析](/http://kernel.meizu.com/2017/03/18-40-19-dump_stack.html)
+* [dump_stack 实现分析](http://kernel.meizu.com/2017/03/18-40-19-dump_stack.html)

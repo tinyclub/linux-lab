@@ -120,7 +120,7 @@ tags:
 
 ## 协作仓库
 
-已创建本次活动的协作专用仓库：<https://gitee.com/tinylab/riscv-linux>
+已创建本次活动的协作专用仓库：[RISC-V Linux 内核剖析](https://gitee.com/tinylab/riscv-linux)
 
 建议先参考 refs/README.md 了解一下相关背景资料，之后结合 articles 下的第 1 篇和 plan/README.md 开始认领任务。认领前请先通过后面的联系方式加入协作群组。
 

@@ -24,7 +24,7 @@ tags:
 
 > Author:  Wu Zhangjin <falcon@tinylab.org>
 > Date:    2022/03/19
-> Project: <https://gitee.com/tinylab/riscv-linux>
+> Project: [RISC-V Linux 内核剖析](https://gitee.com/tinylab/riscv-linux)
 
 ## Tracepoint 简介
 

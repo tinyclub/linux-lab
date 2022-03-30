@@ -21,7 +21,7 @@ tags:
 > Author:     Joël Porquet@**August 26, 2015**
 > Translator: 通天塔 <985400330@qq.com>
 > Revisor:    lzufalcon <falcon@tinylab.org>
-> Project:    <https://gitee.com/tinylab/riscv-linux>
+> Project:    [RISC-V Linux 内核剖析](https://gitee.com/tinylab/riscv-linux)
  
 ## 前言
 

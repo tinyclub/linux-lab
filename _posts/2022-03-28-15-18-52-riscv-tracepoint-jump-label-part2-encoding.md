@@ -25,7 +25,7 @@ tags:
 
 > Author:  Wu Zhangjin <falcon@tinylab.org>
 > Date:    2022/03/28
-> Project: <https://gitee.com/tinylab/riscv-linux>
+> Project: [RISC-V Linux 内核剖析](https://gitee.com/tinylab/riscv-linux)
 
 ## 背景简介
 

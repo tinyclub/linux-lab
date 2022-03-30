@@ -35,6 +35,7 @@ mv $entry_tmp $rootdir/$entry_file
 
 cat <<EOF > $rootdir/$entry_file
 #!/bin/bash
+mount -t sysfs none /sys
 mount -t proc proc /proc
 mount -t devtmpfs none /dev
 mount -t tmpfs none /tmp
@@ -44,6 +45,7 @@ $entry
 umount /tmp
 umount /dev
 umount /proc
+umount /sys
 rm $entry_file
 EOF
 

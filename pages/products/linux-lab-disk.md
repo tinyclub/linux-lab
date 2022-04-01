@@ -110,3 +110,20 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao.com/) 选购。
 
 **手机端可以直接在淘宝检索 “泰晓 Linux” 关键字选购。**
+
+## 常见问答
+
+下面会不断更新汇总用户可能会提出的问题：
+
+- 引导过程中出现：`security verification failed`
+    * 部分 Linux 发行版不支持 Security Boot，需要进入 BIOS 中的 Security 设置中，确保 `Security Boot` 处于 `Disabled` 状态。
+
+- 在 Linux 下通过 Virtualbox 并行启动时出现黑屏或者很慢
+    * 这种情况可能需要进入 BIOS 使能虚拟化技术相关选项，相关选项跟处理器型号有关；如果开启后还存在问题，可能是处理器并不支持虚拟化技术。
+
+- 在 Windows 下通过 Virtualbox 并行启动时出现黑屏或者很慢
+    * 第一种情况同上，可能也需要进入 BIOS 使能虚拟化技术相关选项。
+    * 另外一种情况可能是您正在使用 wsl2，由于 wsl2 导致 Virtualbox 无法正常使用虚拟化技术，所以此时需 [彻底关闭 wsl2](https://zhuanlan.zhihu.com/p/468333378)。
+
+- 在 Windows 下无法通过 vmboot 切换到 Linux Lab Disk
+    * 可能是您的主机不兼容 vmboot 或者 vmboot 还未能支持您的主机，需要联系我们协助确认，请在某宝直接私信联系。

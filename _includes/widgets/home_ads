@@ -1,8 +1,8 @@
 <div>
 
 {% if true %}
-<a style="line-height: 150%" title="某宝检索 “泰晓 Linux”，免安装使用随身 Linux Lab，已支持 Ubuntu 18.04/20.04/21.04, Mint 20.2, Manjaro, Fedora34, Kali Linux, Deepin 20.2.3 和 Ezgo 14，即插即用，高效率做 Linux 内核实验与开发，也可以当普通 Linux 系统使用" href="https://shop155917374.taobao.com/" target="_blank"><img src="/wp-content/uploads/2021/12/linux-lab/linux-lab-disk-with-kali.jpg" style="max-height:600px; max-width:90%" />
-<br/>插上 Linux Lab 实验盘，“秒变” Linux 本本，可即刻开展 Linux 内核开发</a>
+<a style="line-height: 150%" title="某宝检索 “泰晓 Linux”，免安装使用随身 Linux Lab，已支持 Ubuntu 18.04/20.04/21.04, Mint 20.2, Manjaro, Fedora34, Kali Linux, Deepin 20.2.3 和 Ezgo 14，即插即用，高效率做 Linux 内核实验与开发，也可以当普通 Linux 系统使用" href="https://tinylab.org/linux-lab-disk/" target="_blank"><img src="/wp-content/uploads/2021/12/linux-lab/linux-lab-disk-with-kali.jpg" style="max-height:600px; max-width:90%" />
+<br/>即插即跑：Linux Lab Disk开创了3种智能启动方式</a>
 {% endif %}
 
 {% if false %}

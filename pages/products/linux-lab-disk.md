@@ -36,9 +36,13 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 ![某型 Linux Lab Disk 照片](/wp-content/uploads/2021/11/linux-lab-distros/linux-lab-disk.jpg)
 
+Linux Lab Disk 即插即跑动图：
+
+![Linux Lab Disk 在 Windows 下即插即跑](/images/disks/linux-lab-disk-mint-win-boot.gif)
+
 ## 产品特性
 
-* [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了三种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
+* [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了 3 种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
     * [Windows 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120647445684225)
     * [Linux 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120654638899200)
 

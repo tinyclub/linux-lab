@@ -36,9 +36,17 @@ Linux Lab Disk 又名 Linux Lab 真盘，除了独创的多项特性，还集成
 
 ![某型 Linux Lab Disk 照片](/wp-content/uploads/2021/11/linux-lab-distros/linux-lab-disk.jpg)
 
-Linux Lab Disk 即插即跑动图：
+Windows 即插即跑 Linux Lab Disk 动图：
 
 ![Linux Lab Disk 在 Windows 下即插即跑](/images/disks/linux-lab-disk-mint-win-boot.gif)
+
+Linux 即插即跑 Linux Lab Disk 动图：
+
+![Linux Lab Disk 在 Linux 下即插即跑](/images/disks/linux-lab-disk-kali-linux-boot.gif)
+
+免关机来回切换 Windows 和 Linux Lab Disk 动图：
+
+![面关机来回切换](/images/disks/linux-lab-disk-mint-autoswitch.gif)
 
 ## 产品特性
 

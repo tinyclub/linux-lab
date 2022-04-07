@@ -46,7 +46,7 @@ Linux 即插即跑 Linux Lab Disk 动图：
 
 免关机来回切换 Windows 和 Linux Lab Disk 动图：
 
-![面关机来回切换](/images/disks/linux-lab-disk-mint-autoswitch.gif)
+![免关机来回切换](/images/disks/linux-lab-disk-mint-autoswitch.gif)
 
 ## 产品特性
 
@@ -135,7 +135,7 @@ PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao
 
 - 在 Windows 下通过 Virtualbox 并行启动时出现黑屏或者很慢
     * 第一种情况同上，可能也需要进入 BIOS 使能虚拟化技术相关选项。
-    * 另外一种情况可能是您正在使用 wsl2，由于 wsl2 导致 Virtualbox 无法正常使用虚拟化技术，所以此时需 [彻底关闭 wsl2](https://zhuanlan.zhihu.com/p/468333378)。
+    * 另外一种情况可能是您正在使用 hyper-v 或 wsl2，由于 hyper-v 或 wsl2 导致 Virtualbox 无法正常使用硬件虚拟化加速技术，所以此时需 [彻底关闭 hyperv 或 wsl2](https://zhuanlan.zhihu.com/p/468333378)。
 
 - 在 Windows 下无法通过 vmboot 切换到 Linux Lab Disk
     * 可能是您的主机不兼容 vmboot 或者 vmboot 还未能支持您的主机，需要联系我们协助确认，请在某宝直接私信联系。

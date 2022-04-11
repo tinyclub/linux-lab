@@ -133,6 +133,10 @@ PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao
 - 在 Linux 下通过 Virtualbox 并行启动时出现黑屏或者很慢
     * 这种情况可能需要进入 BIOS 使能虚拟化技术相关选项，相关选项跟处理器型号有关；如果开启后还存在问题，可能是处理器并不支持虚拟化技术。
 
+- 桌面图标不见了
+    * 如果刚切换到了中文语言，可能是桌面路径发生了变化，此时退回英文桌面并再次切换到中文桌面，但是切换时请选择保留原来的桌面路径。
+    * 如果未切换过语言，可能是插件配置问题。如果在 Gnome 桌面下，可以用 `tweaks` 或 `gnome-shell-extension-prefs` 重新设置 Desktop Icons 或 Desktop Icons NG (DING) 插件。
+
 - 在 Windows 下通过 Virtualbox 并行启动时出现黑屏或者很慢
     * 第一种情况同上，可能也需要进入 BIOS 使能虚拟化技术相关选项。
     * 另外一种情况可能是您正在使用 hyper-v 或 wsl2，由于 hyper-v 或 wsl2 导致 Virtualbox 无法正常使用硬件虚拟化加速技术，所以此时需 [彻底关闭 hyperv 或 wsl2](https://zhuanlan.zhihu.com/p/468333378)。

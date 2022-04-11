@@ -77,7 +77,7 @@ mkdir linux/arch/tsar
 
 > The specifications of a processor are often—logically or physically—split into a least two parts (as were, for example, the recently published specifications for the new [RISC-V](http://www.riscv.org/) processor). The first part usually details the user-level ISA, which basically means the list of user-level instructions that the processor is able to understand—and execute. The second part describes the privileged architecture, which includes the list of kernel-level-only instructions and the various system registers that control the processor status.
 
-处理器的规格书通常在逻辑上或物理上至少分为两部分（例如，最近发布的新 [RISC-V](http://www.riscv.org/) 处理器规格）。第一部分基本上是指用户级 ISA，这是处理器能够理解和执行的用户级指令列表。第二部分描述了特权架构，其中包括仅内核级指令列表和控制处理器状态的各种系统寄存器。
+处理器的规格书通常在逻辑上或物理上至少分为两部分（例如，最近发布的新 [RISC-V](http://www.riscv.org/) 处理器规格）。第一部分基本上是指用户级 ISA，这是处理器能够理解和执行的用户级指令列表。第二部分描述了特权架构，其中包括内核级特有指令列表和控制处理器状态的各种系统寄存器。
 
 > This second part contains the majority—if not the entirety—of the information that makes a port special and thus often prevents the developer from opportunely reusing code from other architectures.
 
@@ -131,7 +131,7 @@ mkdir linux/arch/tsar
 
 > Above the direct mapping region is the vmalloc region that is controlled by `vmalloc()`. This allocation mechanism provides the ability to allocate pages of memory in a virtually contiguous way in spite of the fact that these pages may not necessarily be physically contiguous. It is particularly useful for allocating a large amount of memory pages in a virtually contiguous manner, as otherwise it can be impossible to find the equivalent amount of contiguous free physical pages.
 
-在直接映射区之上时 vmalloc 区域，是由 `vmalloc（）` 控制的。这种分配机制提供了以虚拟连续的方式分配内存页的能力，尽管这些页不一定必须是物理上连续的。它对于以虚拟连续的方式分配大量内存页特别有用，否则可能无法找到等量的连续空闲物理页。
+在直接映射区之上是 vmalloc 区域，是由 `vmalloc（）` 控制的。这种分配机制提供了以虚拟连续的方式分配内存页的能力，尽管这些页不一定必须是物理上连续的。它对于以虚拟连续的方式分配大量内存页特别有用，否则可能无法找到等量的连续空闲物理页。
 
 > Further reading about the memory management in Linux can be found in [*Linux Device Drivers* [PDF\]](https://lwn.net/images/pdf/LDD3/ch15.pdf) and this [LWN article](https://lwn.net/Articles/356378/).
 

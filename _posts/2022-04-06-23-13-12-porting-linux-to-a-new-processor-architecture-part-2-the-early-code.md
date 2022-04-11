@@ -23,10 +23,10 @@ tags:
   - time_init
 ---
 
-> Title:      [Porting Linux to a new processor architecture, part 2: The early code](https://lwn.net/Articles/656286/)<br/>
-> Author:     Joël Porquet@**September 2, 2015**<br/>
-> Translator: 通天塔 <985400330@qq.com><br/>
-> Revisor:    lzufalcon <falcon@tinylab.org><br/>
+> Title:      [Porting Linux to a new processor architecture, part 2: The early code](https://lwn.net/Articles/656286/)
+> Author:     Joël Porquet@**September 2, 2015**
+> Translator: 通天塔 <985400330@qq.com>
+> Revisor:    lzufalcon <falcon@tinylab.org>
 > Project:    [RISC-V Linux 内核剖析](https://gitee.com/tinylab/riscv-linux)
 
 ## 前言

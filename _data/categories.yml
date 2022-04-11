@@ -65,6 +65,8 @@
         - name: 时钟系统
         - name: 中断与异常
         - name: 内核同步
+          categories:
+            - name: 原子指令
         - name: 进程管理
           categories:
             - name: 进程调度
@@ -208,6 +210,8 @@
             - name: mtrace
             - name: ptrace
             - name: JTAG
+            - name: Stacktrace
+            - name: Tracepoint
     - name: 引导与启动
       categories:
         - name: Bootloaders
@@ -369,6 +373,12 @@
         - name: Clover
         - name: Emma
         - name: Kalistick
+    - name: 基准测试
+      categories:
+        - name: microbench
+        - name: GFXBench
+        - name: 3DMark
+        - name: spec2006
 
 - name: 行业观察
   categories:

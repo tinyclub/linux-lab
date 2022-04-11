@@ -10,6 +10,7 @@ description: "本文是 Porting Linux to a new processor architecture 系列翻�
 category:
   - 开源项目
   - Risc-V
+  - 移植 Linux 内核
 tags:
   - 移植
   - RISC-V

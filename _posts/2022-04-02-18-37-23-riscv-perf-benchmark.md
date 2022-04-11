@@ -10,6 +10,7 @@ description: "本文介绍了一款自研的 benchmark 工具，用于从指令�
 category:
   - 开源项目
   - Risc-V
+  - 基准测试
 tags:
   - Linux
   - RISC-V

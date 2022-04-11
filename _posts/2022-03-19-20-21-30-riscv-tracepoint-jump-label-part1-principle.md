@@ -10,10 +10,10 @@ description: "本文是对 RISC-V jump_label 架构支持分析成果的第 1 �
 category:
   - 开源项目
   - Risc-V
+  - Tracepoint
 tags:
   - Linux
   - RISC-V
-  - Tracepoint
   - Jump Label
   - 条件分支
   - 无条件跳转

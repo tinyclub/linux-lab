@@ -10,6 +10,7 @@ description: "本文介绍了一种快速体验 RISC-V Linux 系统发行版的�
 category:
   - 开源项目
   - Risc-V
+  - Docker
 tags:
   - Linux
   - RISC-V

@@ -9,6 +9,7 @@ description: "本文简单总结了过去三周 RISC-V Linux 内核剖析第 1 �
 category:
   - 开源项目
   - Risc-V
+  - 技术动态
 tags:
   - RISC-V
   - Linux 内核

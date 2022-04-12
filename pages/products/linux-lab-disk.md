@@ -15,6 +15,8 @@ tags:
   - 智能
   - 即插即用
   - 随身系统盘
+  - 泰晓
+  - 实验盘
   - Linux
   - Ubuntu
   - Deepin

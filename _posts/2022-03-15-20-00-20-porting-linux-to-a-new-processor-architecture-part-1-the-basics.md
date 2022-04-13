@@ -48,7 +48,7 @@ tags:
 
 > Sometimes, the answer to whether one should start a new port from scratch is crystal clear—if the new processor comes with a new instruction set architecture (ISA), that is usually a good indicator. Sometimes it is less clear. In my case, it took me a couple weeks to figure out this first question.
 
-有时候，要回答是否应该从头开始一个新的移植是十分清楚的 —— 如果新的处理器带来了新的指令集架构，这通常是一个非常好的指标。但另外一些时候，却有点模棱两可，就我而言，花了数周才厘清这这个问题。
+有时候，要回答是否应该从头开始一个新的移植是十分清楚的 —— 如果新的处理器带来了新的指令集架构，这通常是一个非常好的指标。但另外一些时候，却有点模棱两可，就我而言，花了数周才厘清这个问题。
 
 > At the time, May 2013, I had just been hired by the French academic computer lab [LIP6](http://www.lip6.fr/?LANG=en) to port the Linux kernel to [TSAR](https://www-soc.lip6.fr/trac/tsar), an academic processor architecture that the system-on-chip research group was designing. TSAR is an architecture that follows many of the current trends: lots of small, single-issue, energy-efficient processor cores around a scalable network-on-chip. It also adds some nice innovations: a full-hardware cache-coherency protocol for both data/instruction caches and translation lookaside buffers (TLBs) as well as physically distributed but logically shared memory.
 

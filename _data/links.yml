@@ -65,6 +65,11 @@
   description: Embedded Linux and kernel engineering, training
   group: links
 
+- title: Compiler Explorer
+  permalink: https://godbolt.org/
+  description: 在线编译器
+  group: links
+
 - title: Linaro
   permalink: https://www.linaro.org/
   description: ARM 开源组织。

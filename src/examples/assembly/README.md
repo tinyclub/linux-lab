@@ -21,7 +21,7 @@
   aarch64  | svc #0         | 64    | 93   | w8        | x0, x1   | x0, x1, x2
   mipsel   | syscall        | 4004  | 4001 | v0        | v0, v1   | a0, a1, a2
   mips64el | syscall        | 5001  | 5058 | v0        | v0, v1   | a0, a1, a2
-  riscv32  | ecall          | 04    | 93   | a7        | a0, a1   | a0, a1, a2
+  riscv32  | ecall          | 64    | 93   | a7        | a0, a1   | a0, a1, a2
   riscv64  | ecall          | 64    | 93   | a7        | a0, a1   | a0, a1, a2
   powerpc  | sc             | 4     | 1    | 0         | 3        | 3, 4, 5
   powerpc64| sc             | 4     | 1    | 0         | 3        | 3, 4, 5

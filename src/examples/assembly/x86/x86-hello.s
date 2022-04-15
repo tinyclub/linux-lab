@@ -6,8 +6,8 @@
 _start:
                         # write(1, msg, len)
     movl    $1, %ebx    # first argument: file handle (stdout)
-    movl    $len, %edx  # third argument: message length
     movl    $msg, %ecx  # second argument: pointer to message to write
+    movl    $len, %edx  # third argument: message length
 
     movl    $4, %eax    # system call number (sys_write)
     int     $0x80       # call kernel

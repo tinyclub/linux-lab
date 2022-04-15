@@ -27,11 +27,13 @@ __start:
 
                          # write(1, msg, len)
     li $a0, 1            # first argument: the standard output, 1
-    dla $a1, hello       # second argument: the string addr
+    dla $a1, msg         # second argument: the string addr
     li $a2, len          # third argument: the string len
+
     li $v0, 5001         # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
     syscall              # causes a system call trap.
 
+                         # exit(0)
                          # exit from this program via calling the sys_exit system call
     move $a0, $0         # or "li $a0, 0", set the normal exit status as 0
                          # you can print the exit status with "echo $?" after executing this program
@@ -40,6 +42,6 @@ __start:
 
     # rdata section
     .rdata
-hello:
+msg:
     .asciiz "Hello, MIPS64EL!\n"
-    len = . - hello      # len = current address - the string address
+    len = . - msg        # len = current address - the string address

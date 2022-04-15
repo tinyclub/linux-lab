@@ -26,8 +26,9 @@ __start:
 
                           # write(1, msg, len)
     li $a0, 1             # first argument: the standard output, 1
-    la $a1, hello         # second argument: the string addr
+    la $a1, msg           # second argument: the string addr
     li $a2, len           # third argument: the string len
+
     li $v0, 4004          # sys_write: system call number, defined as __NR_write in /usr/include/asm/unistd.h
     syscall               # causes a system call trap.
 
@@ -40,6 +41,6 @@ __start:
 
     # rdata section
     .rdata
-hello:
+msg:
     .asciiz "Hello, MIPSEL!\n"
-    len = . - hello       # len = current address - the string address
+    len = . - msg         # len = current address - the string address

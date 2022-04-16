@@ -29,4 +29,4 @@ all: $(OBJS)
 	$(LD) $(LDFLAGS) -o $(basename $@) $@
 
 clean:
-	rm -rf *.o $(basename $^)
+	rm -rf *.o $(basename $(OBJS))

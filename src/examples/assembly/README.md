@@ -11,6 +11,18 @@
     $ make -s -C arm
     Hello, ARM!
 
+    // Run all
+    $ make
+
+    // Debug all
+    $ make D=1
+
+    // Debug all automatically
+    $ make D=1 A=1
+
+    // Clean all
+    $ make clean
+
 ## Comparison
 
   Arch     | Syscall insn   | write | exit | Syscall # | Rets     | Args

@@ -1,21 +1,8 @@
 
-ARCH = $(shell basename `pwd` | tr -d [0-9])
-_ARCH = $(shell basename `pwd` | sed -e "s/power/p/g")
-ASMS = $(wildcard *.s)
-OBJS = $(ASMS:.s=.o)
+CARCH := powerpc
+QARCH := ppc64
 
-CROSS_COMPILE ?= $(ARCH)-linux-gnu-
-QEMU_USER ?= qemu-$(_ARCH)
+ABI     := -a64
+OFORMAT := elf64ppc
 
-AS = $(CROSS_COMPILE)as -a64
-LD = $(CROSS_COMPILE)ld -melf64ppc
-
-all: $(OBJS)
-	@$(QEMU_USER) $(basename $^)
-
-%.o: %.s
-	$(AS) -o $@ $<
-	$(LD) -o $(basename $@) $@
-
-clean:
-	rm -rf *.o $(basename $^)
+include ../common.mk

@@ -1,27 +1,12 @@
+# Need to register mips64el to /proc/sys/fs/binfmt_misc/register
+# Based on /usr/share/binfmts/
+# See the binfmt target, this must be run in host system, not guest
 
-ARCH = $(shell basename `pwd`)
-_ARCH = $(shell echo $(ARCH) | tr -d [0-9])
-ASMS = $(wildcard *.s)
-OBJS = $(ASMS:.s=.o)
+CARCH   := mipsel
+MABI    := 64
+OFORMAT := elf64ltsmip
 
-CROSS_COMPILE ?= $(_ARCH)-linux-gnu-
-QEMU_USER ?= qemu-$(ARCH)
-
-AS = $(CROSS_COMPILE)as -mabi=64
-LD = $(CROSS_COMPILE)ld -m elf64ltsmip
-
-all: $(OBJS)
-	@# Need to register mips64el to /proc/sys/fs/binfmt_misc/register
-	@# Based on /usr/share/binfmts/
-	@# See the binfmt target, this must be run in host system, not guest
-	@$(QEMU_USER) $(basename $^)
-
-%.o: %.s
-	$(AS) -o $@ $<
-	$(LD) -o $(basename $@) $@
-
-clean:
-	rm -rf *.o $(basename $^)
+include ../common.mk
 
 binfmt:
 	@# ref: http://magikh0e.ihtb.org/pubHardwareHacking/AnalyzingReversingAndEmulatingFirmware.html

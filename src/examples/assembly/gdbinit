@@ -1,0 +1,7 @@
+
+b _start
+b __start
+b ._start
+
+target remote :1234
+disassemble /r

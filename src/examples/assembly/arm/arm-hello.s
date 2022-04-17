@@ -24,7 +24,7 @@ _start:
     .thumb @ .code 16
     .thumb_func         /* must tell gcc the func is thumb func */
 _thumb:
-    mov    %r0, $0      /* do whatevery you want here */
+    mov    %r0, $0      /* do whatever you want here */
     bx     %lr          /* back from thumb to arm, we can simply use `blx _label` too */
     /* thumb code end */
 

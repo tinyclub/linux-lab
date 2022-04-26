@@ -12,7 +12,7 @@ Works perfectly:
     $ make boot ROOTDEV=/dev/nfs
 
 Buildroot provides rootfs config and toolchain, mainline linux provides the
-official kernel config, everything goes well. Qemu v4.0.0 has the risc64 board
+official kernel config, everything goes well. Qemu v4.0.0 has the riscv64 board
 support.
 
 ## BIOS

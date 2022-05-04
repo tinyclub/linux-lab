@@ -24,6 +24,8 @@ tags:
   - Kali
   - Mint
   - Fedora
+  - 出厂恢复
+  - Ubuntu 22.04
 ---
 
 ## 产品简介
@@ -65,6 +67,10 @@ Linux 即插即跑 Linux Lab Disk 动图：
 * [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
 
 * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
+
+* [即时实验](https://zhuanlan.zhihu.com/p/486268711)，集成自研 Linux Lab，Linux 0.11 Lab 等实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验。
+
+* 出厂恢复，全系版本已支持出厂恢复功能，用起来更安心！
 
 ## 可选容量
 

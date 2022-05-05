@@ -350,7 +350,7 @@ OpenSBI 提供了直接运行的 make 入口：
     }
     EXPORT_SYMBOL(sbi_ecall);
 
-其中，而 `a0-a5` 作为参数，`ext` 和 `fid` 一起决定 OpenSBI 服务的 id，而返回的错误信息和返回值通过 `a0-a1` 取回。
+其中，`a0-a5` 作为参数，而 `ext` 和 `fid` 一起决定 OpenSBI 服务的 id，而返回的错误信息和返回值通过 `a0-a1` 取回。
 
 关于服务的定义，可参考：
 
@@ -403,7 +403,7 @@ OpenSBI 提供了直接运行的 make 入口：
             SBI_EXT_IPI_SEND_IPI = 0,
     };
 
-其中，可以很容易看出 `ext` 和 `fid` 之间的关系，例如，在 base extension 下有 7 个 fid，而 time extension 下只有 1 个 fid，两者一起指定具体的服务函数，有点象 2 级映射。
+其中，可以很容易看出 `ext` 和 `fid` 之间的关系，例如，在 base extension 下有 7 个 fid，而 time extension 下只有 1 个 fid，两者一起指定具体的服务函数，有点像 2 级映射。
 
 具体地，timer 的 SBI 调用被封装成了：
 

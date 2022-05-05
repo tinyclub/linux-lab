@@ -350,7 +350,7 @@ OpenSBI 提供了直接运行的 make 入口：
     }
     EXPORT_SYMBOL(sbi_ecall);
 
-其中，`a0-a5` 作为参数，而 `ext` 和 `fid` 一起决定 OpenSBI 服务的 id，而返回的错误信息和返回值通过 `a0-a1` 取回。
+其中，`arg0-arg5` 作为参数，而 `ext` 和 `fid` 一起决定 OpenSBI 服务的 id，而返回的错误信息和返回值通过 `a0-a1` 取回。
 
 关于服务的定义，可参考：
 

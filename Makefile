@@ -582,7 +582,7 @@ endif
 ifneq ($(filter $(first_target),$(APPS)),)
  # The second targets passed after APPS, use them as the argument of the APPS.
  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
- x := $(APP_ARGS)
+ x := $(subst src/$(_$(call _uc,$(first_target))_SRC)/,,$(APP_ARGS))
 endif
 
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)

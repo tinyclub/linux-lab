@@ -536,7 +536,7 @@ SHARE_TAG       ?= hostshare
 APPS    := kernel uboot root qemu
 APP_MAP ?= bsp:BSP kernel:LINUX uboot:UBOOT root:BUILDROOT qemu:QEMU
 
-APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug do upload env config
+APP_TARGETS := source download checkout patch defconfig olddefconfig oldconfig menuconfig build cleanup cleansrc cleanall cleanstamp clean distclean saveall save saveconfig savepatch clone help list debug boot test test-debug upload env config
 
 define gengoalslist
 $(foreach i,$(or $2,$(APP_MAP)),$(if $($(lastword $(subst :,$(space),$i))),$(firstword $(subst :,$(space),$i))-$1))
@@ -561,20 +561,13 @@ ifeq ($(BUILD),all)
 endif
 
 first_target := $(firstword $(MAKECMDGOALS))
-ifneq ($(findstring -dox,$(first_target)),)
-  # use the rest as arguments for "do"
-  reserve_target := $(first_target:-do=)
-  APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  x              := $(APP_ARGS)
-else
- ifneq ($(findstring -defconfigx,$(first_target)x),)
-  # use the rest as arguments for "defconfig"
-  reserve_target := $(first_target:-defconfig=)
-  APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  ifneq ($(APP_ARGS),)
-    CFG_PREFIX   := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
-    $(CFG_PREFIX)CFG := $(APP_ARGS)
-  endif
+ifneq ($(findstring -defconfigx,$(first_target)x),)
+ # use the rest as arguments for "defconfig"
+ reserve_target := $(first_target:-defconfig=)
+ APP_ARGS       := $(filter-out $(reserve_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
+ ifneq ($(APP_ARGS),)
+   CFG_PREFIX   := $(subst x,,$(firstword $(foreach i,K U R Q,$(findstring x$i,x$(call _uc,$(first_target))))))
+   $(CFG_PREFIX)CFG := $(APP_ARGS)
  endif
 endif
 
@@ -593,11 +586,7 @@ ifneq ($(filter $(first_target),$(APPS)),)
 endif
 
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)
-  # use the rest as arguments for "do"
-  APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
-  ifeq ($(first_target),do)
-    x := $(filter-out $(first_target),$(wordlist 2,$(words $(APP_ARGS)),$(APP_ARGS)))
-  endif
+APP_ARGS := $(filter-out $(first_target),$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS)))
 
 define cli_detectapp
 ifeq ($$(origin $2),command line)
@@ -1559,8 +1548,6 @@ $1-build: _$1
 else
 $1-build: $$(call __stamp,$1,build)
 endif
-
-$1-do: _$1
 
 $1-release: $1 $1-save $1-saveconfig
 
@@ -4141,11 +4128,9 @@ endif
 $(addsuffix -%,$(call genaliastarget)): FORCE
 	$(Q)$(if $(findstring /,$@),,make $(NPD) $(call genaliassource,$@))
 
-ifneq ($(first_target),do)
 ifeq ($(findstring n,$(MFLAGS)),)
 $(addsuffix -%,$(APPS)):
 	$(Q)$(if $(word 3,$(subst -,$(space),$@)),make $(S) -n $@ >/dev/null 2>&1 || make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@) || true)
-endif
 endif
 
 ifneq ($(APP_ARGS),)

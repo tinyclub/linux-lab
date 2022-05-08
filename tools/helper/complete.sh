@@ -2,7 +2,7 @@
 #
 # bash git prompt support
 #
-# Copyright (C) 2021 Wu Zhangjin <falcon@ruma.tech>
+# Copyright (C) 2021-2022 Wu Zhangjin <falcon@ruma.tech>
 #
 
 # Allow commands with '='
@@ -19,17 +19,26 @@ function _makefile_targets {
     case $COMP_CWORD in
          2)
             if [[ -e "$(pwd)/Makefile" ]]; then
-                last_arg=${COMP_WORDS[COMPCWORD-1]}
-                common_targets="$(grep "^APP_TARGETS :=" $(pwd)/Makefile | cut -d '=' -f2)"
-                echo $common_targets | tr ' ' '\n' | grep -q "^$last_arg$"
+                last_arg=${COMP_WORDS[COMPCWORD-2]}
+                this_arg=${COMP_WORDS[COMPCWORD-1]}
+                common_targets="$(grep "^APP_TARGETS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
+                all_apps="$(grep "^APPS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
+
+                echo $common_targets | tr ' ' '\n' | grep -iq "^$last_arg$"
 
                 # FXIME: Not all of the packages support 'all'
                 if [ $? -eq 0 ]; then
-                  targets="all $(grep "^APPS :=" $(pwd)/Makefile | cut -d '=' -f2)"
+                  targets="all $all_apps"
                 else
-                  echo
-                  echo "LOG: No such command matched: "$last_arg""
-                  return 0
+                  echo $all_apps | tr ' ' '\n' | grep -iq "^$last_arg$"
+                  if [ $? -eq 0 ]; then
+                    if [ -d "$this_arg" ]; then
+                      targets="$(find $this_arg -maxdepth 1)"
+                    else
+                      files=$(find $this_arg* -maxdepth 0 2>/dev/null)
+                      targets="help $files"
+                    fi
+                  fi
                 fi
             fi
             ;;
@@ -38,8 +47,8 @@ function _makefile_targets {
             ignores="^_|-km|features|kernel-modules|module-|module$|FORCE|rootdir|default-"
             if [[ -e "$(pwd)/Makefile" ]]; then
                 BOARDS="$(find $(pwd)/boards/ -maxdepth 3 -name "Makefile" -exec egrep -H "^_BASE|^_PLUGIN" {} \; | tr -s '/' | egrep ".*" | sort -t':' -k2 | cut -d':' -f1 | egrep -v "/module" | sed -e "s%$(pwd)/boards/\(.*\)/Makefile%BOARD=\1%g")"
-                common_targets="$(grep "^APP_TARGETS :=" $(pwd)/Makefile | cut -d '=' -f2)"
-                all_apps="$(grep "^APPS :=" $(pwd)/Makefile | cut -d '=' -f2)"
+                common_targets="$(grep "^APP_TARGETS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
+                all_apps="$(grep "^APPS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
                 app_targets=''
                 for app in $all_apps
                 do
@@ -49,7 +58,7 @@ function _makefile_targets {
                     done
                 done
                 default_targets="$(egrep -e '^[a-zA-Z0-9_-]+:[^=]*' $(pwd)/Makefile | grep -v ":=" | cut -d ':' -f1 | egrep -v "$ignores" | tr '\n' ' ')"
-                targets="${boards} ${BOARDS} $common_targets $all_apps $default_targets"
+                targets="${boards} ${BOARDS} $common_targets $all_apps $app_targets $default_targets"
             fi
             ;;
     esac

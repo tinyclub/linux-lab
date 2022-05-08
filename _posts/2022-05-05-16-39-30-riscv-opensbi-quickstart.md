@@ -203,7 +203,7 @@ OpenSBI 提供了直接运行的 make 入口：
 在客制化 OpenSBI 以后，可以复制 OpenSBI build 目录中的 `fw_jump.elf` 到 Linux Lab 中的上述路径下进行使用。
 
     $ cd /labs/linux-lab
-    $ cp src/examples/build/platform/generic/firmware/fw_jump.elf boards/riscv64/virt/bsp/bios/opensbi/generic/fw_jump.elf
+    $ cp src/examples/qemu-opensbi/build/platform/generic/firmware/fw_jump.elf boards/riscv64/virt/bsp/bios/opensbi/generic/fw_jump.elf
 
 复制完以后就可以通过 `make boot` 引导 OpenSBI 和内核：
 

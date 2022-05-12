@@ -64,7 +64,7 @@ Linux 即插即跑 Linux Lab Disk 动图：
 
 * [时区兼容](https://zhuanlan.zhihu.com/p/474956863)，自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致。
 
-* [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
+* [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 [Windows](https://zhuanlan.zhihu.com/p/473168592) 或 [Linux](https://zhuanlan.zhihu.com/p/473549422?) 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
 
 * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
 

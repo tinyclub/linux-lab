@@ -123,7 +123,7 @@ Summer2021 项目开发周期为 3 个月，从 7 月 1 日到 10 月 22 日，�
 ### 项目一
 
 1. 项目标题：Linux Lab 打包实战
-2. 项目描述：本项目计划为 Linux Lab 的 Cloud Lab 管理环境打包，确保可以在 Linux、Windows、MacOS 等操作系统上更易、更快安装，允许通过软件仓库就能完成 Linux Lab 及 Cloud Lab 的安装及依赖环境的处理。。
+2. 项目描述：本项目计划为 Linux Lab 的 Cloud Lab 管理环境打包，确保可以在 Linux、Windows、MacOS 等操作系统上更易、更快安装，允许通过软件仓库就能完成 Linux Lab 及 Cloud Lab 的安装及依赖环境的处理。
 3. 项目难度：高
 4. 项目社区导师：@taotieren
 5. 导师联系方式：admin@taotieren.com

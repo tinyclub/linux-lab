@@ -55,8 +55,7 @@ Linux 即插即跑 Linux Lab Disk 动图：
 ## 产品特性
 
 * [智能启动](https://zhuanlan.zhihu.com/p/469054673?)，开创了 3 种全新的智能化 “傻瓜式” 使用方式，可自动检测后并行启动、可免关机直接来回切换、还可以智能记忆自动启动。
-    * [Windows 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120647445684225)
-    * [Linux 下安装智能启动管理软件](https://www.zhihu.com/zvideo/1486120654638899200)
+    * [如何安装智能启动管理软件](https://zhuanlan.zhihu.com/p/514051955)
 
 * [相互套娃](https://zhuanlan.zhihu.com/p/470708832)，多支 Linux Lab Disk 可相互启动或来回切换，因此，可根据喜好同时使用多个不同的 Linux 系统发行版。
 

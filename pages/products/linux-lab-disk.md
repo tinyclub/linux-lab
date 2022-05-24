@@ -134,7 +134,7 @@ PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao
 
 下面会不断更新汇总用户可能会提出的问题：
 
-- 引导过程中出现：`security verification failed`
+- 引导过程中出现：`security verification failed`, `Verification failed: (0x1A) Security Violation` 或类似错误
     * 部分 Linux 发行版不支持 Security Boot，需要进入 BIOS 中的 Security 设置中，确保 `Security Boot` 处于 `Disabled` 状态。
 
 - 在 Linux 下通过 Virtualbox 并行启动时出现黑屏或者很慢

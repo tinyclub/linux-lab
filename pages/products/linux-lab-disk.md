@@ -150,3 +150,10 @@ PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao
 
 - 在 Windows 下无法通过 vmboot 切换到 Linux Lab Disk
     * 可能是您的主机不兼容 vmboot 或者 vmboot 还未能支持您的主机，需要联系我们协助确认，请在某宝直接私信联系。
+
+- 出现 `Failed to load VMMR0.r0 (VERR_SUPLIB_WORLD_WRITABLE)`  错误
+    * 在 Windows 系统下，该错误可能是把 Virtualbox 直接安装在了某个盘的根目录下（例如：`D:`），Virtualbox 不能正确地新建子目录。需要用户创建一个子目录，并安装进去。也有其他用户反馈，路径必须是英文名，并且必须用管理员安装 Virtualbox。
+    * 在 Linux 系统下，`/usr` 等目录的权限异常可能会导致 Virtualbox 报告莫名奇妙的错误。这个错误可能需要去除 `/usr` 其他组的写权限：`chmod o-w /usr`。
+
+- 出现 `dlopen("/usr/lib/virtualbox/VBoxRT.so",) failed: <NULL>` 错误
+    * 在 Linux 下，如果 `/usr/lib` 所属的用户不是 `root`，则会出现该错误，需要手动修复：`sudo chown root:root /usr/lib`，见 [Ticket #16759](https://www.virtualbox.org/ticket/16759?cversion=0)。这个原因可能是用 tar 命令解压了带有错误属性的压缩包到根目录所致，比如说在压缩之前，`usr/lib` 属于普通用户，类似这样：`tar xyz.tar.gz -C /` 解压到根目录以后，会把根目录下的原有目录属性篡改掉。

@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.0-rc1 Manual
+% Linux Lab v1.0 Manual
 % [TinyLab Community | Tinylab.org](https://tinylab.org)
 % \today
 --><!-- metadata end -->
@@ -41,6 +41,7 @@
        - [3.1.2 Choosing a board](#312-choosing-a-board)
           - [3.1.2.1 Real board](#3121-real-board)
           - [3.1.2.2 Virtual board](#3122-virtual-board)
+       - [3.1.2.3 Buy one](#3123-buy-one)
        - [3.1.3 Using as plugins](#313-using-as-plugins)
        - [3.1.4 Configure boards](#314-configure-boards)
     - [3.2 Build in one command](#32-build-in-one-command)

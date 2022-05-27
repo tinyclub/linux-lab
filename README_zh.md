@@ -185,12 +185,12 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * <https://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
-    * 用于 Linux 0.11 学习，今后仅集成到 Linux Lab Disk
+    * 用于 Linux 0.11 学习，今后仅集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
     * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
-    * 用于 X86 Linux 汇编学习，今后仅集成到 Linux Lab Disk
+    * 用于 X86 Linux 汇编学习，今后仅集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/cs630-qemu-lab>
 
@@ -419,25 +419,28 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 
 下述安装过程比较详尽，兼顾了各大桌面系统，实际上针对某个系统的用法非常简单。
 
-如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [社区自营店](https://shop155917374.taobao.com) 选购一枚即插即用的 Linux Lab Disk，也可以在淘宝手机 APP 内搜索 “Linux Lab真盘” 后购买。
+如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店](https://shop155917374.taobao.com) 选购一枚即插即跑的 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)。它也叫 “泰晓 Linux 实验盘”，可以在淘宝手机 APP 内搜索 “泰晓 Linux” 后购买。
 
 Linux Lab Disk 已经支持如下功能：
 
 * 可选容量
-    * 覆盖 32G, 64G, 128G, 256G, 512G 等，可按需定制任意容量
+    * 覆盖 32G, 64G, 128G, 256G, 512G, 1T, 2T 等，可按需定制任意容量
 * 可选系统
     * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
-    * Ubuntu 18.04-21.04, Deepin 20.02+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
+    * Ubuntu 18.04-22.04, Deepin 20.05+, Fedora 34+, Mint 20.2+, Kali, Manjaro
 * 主要特性
     * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用
     * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测并并行启动
     * 智能切换：在 Windows, Linux 和 macOS 系统下自动检测并免关机切换系统
     * 透明倍容：可用容量翻倍，128G 可以当 ~256G 左右使用
-    * 内存编译：扩大可用容量，提升编译速度，节省擦写寿命
+    * 零损编译：扩大可用容量，提升编译速度，节省擦写寿命
+    * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统
 * 购买地址
-    * [泰晓科技自营店](https://shop155917374.taobao.com)，该地址为目前唯一官方在线销售地址
+    * [泰晓开源小店](https://shop155917374.taobao.com)，该地址为目前唯一官方在线销售地址
+* 产品详情
+    * [Linux Lab Disk 特性与功能简介和演示](https://tinylab.org/linux-lab-disk)
 
-[![Linux Lab 真盘 - Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
+[![泰晓 Linux 实验盘- Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 
 ## 2.1 软硬件要求
 
@@ -788,10 +791,6 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 由于不同的真实硬件开发板差异较大，所以在板级目录有提供专门的开发文档，例如：`boards/arm/ebf-imx6ull/README.md`。
 
-所有适配过的开发板会统一放置在 [社区自营店](https://shop155917374.taobao.com/) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的 Linux Lab 开发板群组。
-
-也可以直接在淘宝手机 APP 内搜索 “Linux Lab真板” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
-
 [![Linux Lab 真板 - 野火 IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
 #### 3.1.2.2 虚拟开发板
@@ -857,6 +856,14 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 检查开发板特定的配置：
 
     $ cat boards/arm/vexpress-a9/Makefile
+
+**说明**：由于开发与维护的工作量巨大，目前仅开放了一款虚拟开发板，如需其他虚拟开发板，可通过下一小节的介绍进行购买。
+
+#### 3.1.2.3 如何选购
+
+所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店](https://shop155917374.taobao.com/) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
+
+也可以直接在淘宝手机 APP 内搜索 “泰晓 Linux” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
 
 ### 3.1.3 以插件方式使用
 
@@ -2601,9 +2608,9 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 ## 付费支持我们
 
 * 网店：<https://shop155917374.taobao.com>
-    * 泰晓科技自营店，销售社区自研开源项目周边产品，用于补贴开源项目研发
-    * 已上架即插即用 Linux Lab Disk、Pocket Linux Disk 以及适配过的真实 Linux 开发板等
-    * 欢迎选购，也可以在淘宝手机 APP 内搜索 “Linux Lab” 找到我们
+    * 泰晓开源小店，销售社区自研开源项目周边产品，用于补贴开源项目研发
+    * 已上架即插即跑 Linux Lab Disk、Pocket Linux Disk 以及适配过的真实 Linux 开发板等
+    * 欢迎选购，也可以在淘宝手机 APP 内搜索 “泰晓 Linux” 找到我们
 
 * 星球：<https://t.zsxq.com/uB2vJyF>
     * 泰晓科技 VIP 知识频道

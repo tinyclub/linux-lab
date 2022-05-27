@@ -619,8 +619,6 @@ Only list real boards:
 
 Because real hardware boards differs from each other, so, board specific document are recommended, for example: `boards/arm/ebf-imx6ull/README.md`.
 
-All supported real hardware boards and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
-
 [![Linux Lab Board - IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
 
 #### 3.1.2.2 Virtual board
@@ -686,6 +684,12 @@ This allows to run multi boards in different terminals or background at the same
 Check the board specific configuration:
 
     $ cat boards/arm/vexpress-a9/Makefile
+
+**Notes**: More money are required to maintain this project, only one virtual board is free now, the others are non-free, buy one as you want.
+
+### 3.1.2.3 Buy one
+
+All supported real hardware boards, virtual hardware boards support and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
 
 ### 3.1.3 Using as plugins
 

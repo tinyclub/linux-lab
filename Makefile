@@ -1632,11 +1632,17 @@ $$(call _stamp,$1,license):
 	    echo "" ;\
 	    echo "Friendly reminder:" ;\
 	    echo "" ;\
-	    echo "  The Linux Lab BSP of board '$(BOARD)' is not free currently,"; \
-	    echo "  Please search 'Linux Lab BSP' and buy one from https://shop155917374.taobao.com"; \
+	    echo "  Thanks very much for your great support of our powerful Linux Lab project,"; \
+	    echo "  we are sorry to say, time and money are very required to long-term maintain,"; \
+	    echo "  so, some BSPs have been converted to non-free, thanks for your understanding!"; \
+	    echo "" ;\
+	    echo "  The Linux Lab BSP of this board '$(BOARD)' is such a non-free BSP now,"; \
+	    echo "  we can buy such a 'Linux Lab BSP' directly or buy a 'Linux Lab Disk' instead"; \
+	    echo "  (required to tell us to put one in as a gift, one non-free BSP per disk)."; \
+	    echo "" ;\
+	    echo "  Please search '泰晓 Linux' in taobao or https://shop155917374.taobao.com"; \
 	    echo "" ;\
 	    echo "Contact us via wechat: tinylab."; \
-	    echo "" ;\
 	    exit 1  ;\
 	  fi; \
 	else \

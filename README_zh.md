@@ -437,7 +437,7 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 
 如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店](https://shop155917374.taobao.com) 选购一枚即插即跑的 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)。它也叫 “泰晓 Linux 实验盘”，可以在淘宝手机 APP 内搜索 “泰晓 Linux” 后购买。
 
-Linux Lab Disk 已经支持如下功能：
+『Linux Lab Disk - 泰晓 Linux 实验盘』已经支持如下功能：
 
 * 可选容量
     * 覆盖 32G, 64G, 128G, 256G, 512G, 1T, 2T 等，可按需定制任意容量
@@ -445,16 +445,21 @@ Linux Lab Disk 已经支持如下功能：
     * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
     * Ubuntu 18.04-22.04, Deepin 20.05+, Fedora 34+, Mint 20.2+, Kali, Manjaro
 * 主要特性
-    * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即用
-    * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测并并行启动
+    * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即跑
+    * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测后并行启动
     * 智能切换：在 Windows, Linux 和 macOS 系统下自动检测并免关机切换系统
+    * 相互套娃：多支盘可相互启动或来回切换，可同时使用多个不同的 Linux 系统发行版
+    * 时区兼容：自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致
+    * 自动共享：在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式
     * 透明倍容：可用容量翻倍，128G 可以当 ~256G 左右使用
     * 零损编译：扩大可用容量，提升编译速度，节省擦写寿命
     * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统
+    * 即时实验，集成多套自研实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验
 * 购买地址
     * [泰晓开源小店](https://shop155917374.taobao.com)，该地址为目前唯一官方在线销售地址
 * 产品详情
-    * [Linux Lab Disk 特性与功能简介和演示](https://tinylab.org/linux-lab-disk)
+    * <https://tinylab.org/linux-lab-disk>
+    * 详细介绍了特性、功能与用法，配套了大量的演示视频
 
 [![泰晓 Linux 实验盘- Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
 

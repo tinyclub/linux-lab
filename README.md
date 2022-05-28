@@ -277,15 +277,23 @@ It supports:
     * From 32G to 512G and even 1T, 2T
 * Systems
     * Top6 Linux Distributions and even more based on your requirement
-    * Include Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
+    * Include Ubuntu 18.04-22.04, Deepin 20.5+, Fedora 34+, Mint 20.2+, Kali, Manjaro
 * Features
     * Boot from any powered-off 64bit X86 Machine, include PC, Laptop and MacBook
     * Boot from any running Windows, Linux and MacOS and run in parallel with them
     * Switch from or to any running Windows, Linux without poweroff
+    * Multiple Linux Lab Disks can boot or switch from/to each other
+    * Support timezone setting of different systems transparently, without manual setting
+    * Share files and clipboards automatically between the main system and our disk system
     * Support transparent compress, use 128G as ~256G capacity
     * Support memory compiling, speedup compiling and save disk erase life
+    * Support factory restore, allow restore factory system in some cases
+    * Merged in many labs, such as Linux Lab, Linux 0.11 Lab, be able to learn Linux kernel, embedded Linux, Uboot, Assembly, C, Python, Database, Network and so forth
 * Where to buy
     * [Taobao shop of TinyLab.org Community](https://shop155917374.taobao.com)
+* Product details
+    * <https://tinylab.org/linux-lab-disk>
+    * Introduce and demonstrate the features, functions and usage of Linux Lab Disk
 
 ## 2.1 Hardware and Software Requirement
 

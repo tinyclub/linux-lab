@@ -195,6 +195,21 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/cs630-qemu-lab>
 
+* RVOS Lab
+    * 用于 RISC-V OS 在线课程学习，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
+    * <https://gitee.com/tinylab/rvos-lab>
+
+* GUI Lab
+    * 用于学习嵌入式图形系统，如 Guilite，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
+    * <https://gitee.com/tinylab/gui-lab>
+
+* RISC-V Linux
+    * 用于研究 RISC-V 架构的 Linux 内核以及周边技术，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
+    * <https://gitee.com/tinylab/riscv-linux>
+
 ## 1.3 演示视频
 
 ### 1.3.1 开放教程

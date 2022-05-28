@@ -184,6 +184,21 @@ Related Projects:
     * Download it to `labs/cs630-qemu-lab` and use it in Linux Lab directly
     * <https://tinylab.org/cs630-qemu-lab>
 
+* RVOS Lab
+    * Learning RISC-V OS course, merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Download it to `src/examples` and use it in Linux Lab directly
+    * <https://gitee.com/tinylab/rvos-lab>
+
+* GUI Lab
+    * Learning embedded GUI (e.g. Guilite)，merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Download it to `src/examples` and use it in Linux Lab directly
+    * <https://gitee.com/tinylab/gui-lab>
+
+* RISC-V Linux
+    * Learning RISC-V Linux kernel, merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Download it to `src/examples` and use it in Linux Lab directly
+    * <https://gitee.com/tinylab/riscv-linux>
+
 ## 1.3 Demonstration
 
 ### 1.3.1 Free Video Courses In Chinese

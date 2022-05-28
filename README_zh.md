@@ -1839,7 +1839,7 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
     $ cd src/examples/assembly
     $ ls
-    aarch64  arm  mips64el	mipsel	powerpc  powerpc64  README.md  x86  x86_64
+    aarch64 arm mips64el mipsel powerpc powerpc64 riscv32 riscv64 x86 x86_64
     $ make -s -C aarch64/
     Hello, ARM64!
 

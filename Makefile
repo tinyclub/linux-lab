@@ -4070,7 +4070,7 @@ env-dump:
 env-save: board-config
 
 default-help:
-	$(Q)cat README.md
+	$(Q)less README_zh.md
 
 PHONY += env env-list env-prepare env-dump env-save lab-help
 

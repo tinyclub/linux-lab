@@ -1776,13 +1776,16 @@ $1-help:
 	$$(Q)$$(or $$(call $1_make_help),$$(call make_$1,help))
 
 $1_feature_patch_require := $$(subst $$(comma),_,$$(filter-out boot debug initrd module nfsroot,$$(subst $$(comma), ,$$(FEATURE))))
-$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$1.$$(if $$($1_feature_patch_require),$$($1_feature_patch_require).)patched
+$1_feature_patched_goals := $$($(call _uc,$1)_SRC_FULL)/.$$(subst /,.,$(BOARD)).$1.$$($2).$$(if $$($1_feature_patch_require),$$($1_feature_patch_require).)patched
 
 $1-verify:
-	$$(Q)[ -n "$$($1_feature_patch_require)" -a "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
-	  && find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | egrep -qv "$$(notdir $$($1_feature_patched_goals))|$1.patched" \
-	  && echo "ERR: the other $1 patchset has been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error." && exit 1 || true
-
+	$$(Q)if [ "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
+	  find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | egrep -qv "$$(notdir $$($1_feature_patched_goals))|$$(subst /,.,$(BOARD)).$1.$$($2).patched|$1.patched"; \
+	  if [ $$$$? -eq 0 ]; then \
+	    echo "ERR: the other $1 patchset have been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error."; \
+	    exit 1; \
+	  fi; \
+	fi
 
 $$($1_feature_patched_goals):
 	$$(Q)$($(call _uc,$1)_PATCH_EXTRAACTION)

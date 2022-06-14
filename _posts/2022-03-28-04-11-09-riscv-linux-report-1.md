@@ -2,7 +2,7 @@
 layout: post
 author: 'Wu Zhangjin'
 title: "RISC V Linux 内核兴趣小组活动简报（1）"
-draft: true
+draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /riscv-linux-report-1/
 description: "本文简单总结了过去三周 RISC-V Linux 内核剖析第 1 阶段活动的进展。"

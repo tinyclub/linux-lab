@@ -5,7 +5,7 @@ title: "RISC V Linux 内核兴趣小组活动简报（2）"
 draft: false
 license: "cc-by-nc-nd-4.0"
 permalink: /riscv-linux-report-2/
-description: "本文简单总结了过去 1 个月 RISC-V Linux 内核剖析第 2 阶段活动的进展。"
+description: "本文简单总结了过去 1 个月 RISC-V Linux 内核剖析活动的进展。"
 category:
   - 开源项目
   - Risc-V

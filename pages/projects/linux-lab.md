@@ -5,7 +5,7 @@ author: Wu Zhangjin
 layout: page
 permalink: /linux-lab/
 description: 基于 Qemu 的 Linux 内核开发环境，支持 Docker, 支持 Ubuntu / Windows / Mac OS X，也内置支持 Qemu，支持通过 Web 远程访问。
-update: 2016-06-19
+update: 2022-06-16
 categories:
   - 开源项目
   - Linux Lab
@@ -24,6 +24,8 @@ tags:
 该项目致力于快速构建一个基于 Qemu 的 Linux 内核开发环境。
 
   * 使用文档：[README_zh.md][2]
+      * [Linux Lab v1.0 中文手册](https://tinylab.org/pdfs/linux-lab-v1.0-manual-zh.pdf)
+      * [Linux Lab v1.0 英文手册](https://tinylab.org/pdfs/linux-lab-v1.0-manual-en.pdf)
 
   * 视频教程
       * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
@@ -85,6 +87,8 @@ tags:
   * [时区兼容](https://zhuanlan.zhihu.com/p/474956863)，自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致。
   * [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
   * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
+  * [即时实验](https://zhuanlan.zhihu.com/p/486268711)，集成自研 Linux Lab，Linux 0.11 Lab 等实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验。
+  * 出厂恢复，全系版本已支持出厂恢复功能，用起来更安心！
 
 
   功能连载（见 “[Linux知识星球](https://www.zhihu.com/column/tinylab)” 专栏，订阅可跟进后续更新）：
@@ -95,7 +99,12 @@ tags:
   * [RVOS 实验](https://zhuanlan.zhihu.com/p/476219392)，演示如何开展 RISC-V OS 课程实验，主要是 RISC-V 汇编与 OS 核心功能
   * [GUI 实验](https://zhuanlan.zhihu.com/p/477621099)，演示如何开展嵌入式图形应用开发实验，本次实验用的是 GuiLite
   * [C 语言入门实验](https://zhuanlan.zhihu.com/p/478136033)，演示如何在 Linux 下用 vim, gcc, make 做一个简单的 C 语言 Hello World 程序实验
-
+  * [汇编语言入门实验](https://zhuanlan.zhihu.com/p/479295461)，演示了如何开展32/64位 RISC-V、ARM、MIPS、X86 和 PowerPC 汇编语言实验
+  * [Shell 语言入门实验](https://zhuanlan.zhihu.com/p/480394038)，演示经典的 Hello World，包括执行方式、打印命令、退出码设置和简单参数传递。
+  * [数据库 SQL 入门实验](https://zhuanlan.zhihu.com/p/481035762)，演示了 sqlite3 的表创建、数据插入、select 与 update 语句及通过C语言访问数据库。
+  * [网络入门实验](https://zhuanlan.zhihu.com/p/481055861)，演示了 ip 和网关地址查看、静态&动态配置，NAT 与 网桥，ping, tcpdump 及 nmap。
+  * [用 Python 解个方程](https://zhuanlan.zhihu.com/p/481629409)，演示了如何安装 python 新模块并通过 SymPy 模块来演示如何解方程。
+  * [RISC-V Linux v5.17 内核实验](https://zhuanlan.zhihu.com/p/486268711)，演示了如何通过 Linux Lab Disk 开展 RISC-V 芯片 Linux v5.17 内核实验。
 
   购买地址：
 

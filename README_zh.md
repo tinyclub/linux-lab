@@ -36,6 +36,7 @@
        - [1.6.7 v0.7 @ 2021.06.03](#167-v07--20210603)
        - [1.6.8 v0.8 @ 2021.10.13](#168-v08--20211013)
        - [1.6.9 v0.9 @ 2022.01.13](#169-v09--20220113)
+       - [1.6.10 v1.0 @ 2022.06.16](#1610-v10--20220616)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
     - [2.1 软硬件要求](#21-软硬件要求)
     - [2.2 安装 Docker](#22-安装-docker)
@@ -426,6 +427,32 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 升级 llvm 工具链到 13
     * 升级内核版本到 v5.13
     * 新增 cleanall，可同时清理 source 和 build
+
+### 1.6.10 v1.0 @ 2022.06.16
+
+[v1.0](https://tinylab.org/linux-lab-v1.0/) 升级部分内核到 v5.17，修复内存编译功能，优化 make 自动补全功能，完善并新增 examples，更新文档。
+
+* v1.0 rc3
+    * 全面整理 Assembly 实验案例
+    * 删除多余的 do target，由其他更简洁的用法替代
+    * 允许更简单编译内核目标文件，例如：`make kernel arch/riscv/kernel/sbi.o`
+    * 修复 make 自动命令补全，允许通过 tab 按键快速补全常用命令
+    * 完善 make patch 命令
+    * 更新文档和 License 信息
+
+* v1.0 rc2
+    * 升级 RISC-V 支持，qemu 升级到 v6.0.0，内核升级到 v5.17
+    * 升级 arm/vexpress-a9 的默认内核到 v5.17
+    * 规范 build 输出路径，跟 `boards/` 下的路径保持一致，方便更快找到目标文件
+    * 完善 docker 文件系统运行和导出支持
+    * 新增 Python 实验案例
+    * 完善 Assembly 和 Shell 实验案例
+
+* v1.0 rc1
+    * 增加 test 功能，允许在 testcase 中执行多个命令
+    * 修复 test 中的内核参数传递问题，确保兼容 uboot 和 kernel
+    * 允许灵活增加 app 的子 make 目标，例如 `make root busybox-menuconfig`
+    * 修复两笔内存编译的问题
 
 # 2. Linux Lab 安装
 

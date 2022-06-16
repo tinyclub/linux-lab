@@ -449,7 +449,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 完善 Assembly 和 Shell 实验案例
 
 * v1.0 rc1
-    * 增加 test 功能，允许在 testcase 中执行多个命令
+    * 增强 test 功能，允许在 testcase 中执行多个命令
     * 修复 test 中的内核参数传递问题，确保兼容 uboot 和 kernel
     * 允许灵活增加 app 的子 make 目标，例如 `make root busybox-menuconfig`
     * 修复两笔内存编译的问题

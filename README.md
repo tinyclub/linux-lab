@@ -1769,6 +1769,7 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)](https://tinylab.org/why-linux-lab-v2)
 
 * User Manual
+    * [Linux Lab v1.0 User Manual](https://tinylab.org/pdfs/linux-lab-v1.0-manual-en.pdf)
     * [Linux Lab v0.9 User Manual](https://tinylab.org/pdfs/linux-lab-v0.9-manual-en.pdf)
     * [Linux Lab v0.8 User Manual](https://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf)
     * [Linux Lab Loongson Manual V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)

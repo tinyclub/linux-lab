@@ -1957,6 +1957,7 @@ Linux Lab 支持访问所有 APP 自身 Makefile 中定义的目标，譬如：
     * [Linux Lab：难以抗拒的十大理由 V2.0](https://tinylab.org/why-linux-lab-v2)
 
 * 中文用户手册
+    * [Linux Lab v1.0 中文手册](https://tinylab.org/pdfs/linux-lab-v1.0-manual-zh.pdf)
     * [Linux Lab v0.9 中文手册](https://tinylab.org/pdfs/linux-lab-v0.9-manual-zh.pdf)
     * [Linux Lab v0.8 中文手册](https://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf)
     * [Linux Lab 龙芯实验手册 V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)

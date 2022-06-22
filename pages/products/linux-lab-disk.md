@@ -13,19 +13,24 @@ tags:
   - 实验环境
   - 嵌入式
   - 智能
-  - 即插即用
+  - vmboot
   - 随身系统盘
+  - Linux系统盘
+  - 随身Linux
   - 泰晓
   - 实验盘
-  - Linux
+  - 随身Linux
   - Ubuntu
   - Deepin
   - Manjaro
   - Kali
   - Mint
   - Fedora
-  - 出厂恢复
   - Ubuntu 22.04
+  - 即插即跑
+  - 智能启动
+  - 透明倍容
+  - 出厂恢复
 ---
 
 ## 产品简介
@@ -69,7 +74,7 @@ Linux 即插即跑 Linux Lab Disk 动图：
 
 * [即时实验](https://zhuanlan.zhihu.com/p/486268711)，集成自研 Linux Lab，Linux 0.11 Lab 等实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验。
 
-* 出厂恢复，全系版本已支持出厂恢复功能，用起来更安心！
+* [出厂恢复](https://zhuanlan.zhihu.com/p/532405357)，全系 6 大 Linux 发行版已全部支持出厂恢复功能，在 "rm -rf /" 后都能启动并恢复出厂系统，同时支持自动备份和急救模式，用起来更安心！
 
 ## 可选容量
 

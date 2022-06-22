@@ -88,7 +88,7 @@ tags:
   * [自动共享](https://zhuanlan.zhihu.com/p/473168592)，在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式。
   * [零损编译](https://zhuanlan.zhihu.com/p/477047313)，支持“半内存”与“全内存”的编译方式，可实现磁盘“零”写，极大地提升磁盘寿命，并提升实验效率。
   * [即时实验](https://zhuanlan.zhihu.com/p/486268711)，集成自研 Linux Lab，Linux 0.11 Lab 等实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验。
-  * 出厂恢复，全系版本已支持出厂恢复功能，用起来更安心！
+  * [出厂恢复](https://zhuanlan.zhihu.com/p/532405357)，全系 6 大 Linux 发行版已全部支持出厂恢复功能，在 "rm -rf /" 后都能启动并恢复出厂系统，同时支持自动备份和急救模式，用起来更安心！
 
 
   功能连载（见 “[Linux知识星球](https://www.zhihu.com/column/tinylab)” 专栏，订阅可跟进后续更新）：

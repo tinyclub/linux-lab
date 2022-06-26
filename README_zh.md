@@ -752,7 +752,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
     [ mips64el/ls3a7a ]:
           ARCH     = mips
           CPU     ?= mips64r2
-          LINUX   ?= loongnix-release-1903
+          LINUX   ?= v5.7
           LINUX[LINUX_loongnix-release-1903] := 04b98684
           ROOTDEV_LIST ?= /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0

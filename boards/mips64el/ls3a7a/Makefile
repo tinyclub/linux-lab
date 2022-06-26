@@ -12,7 +12,7 @@ NETDEV_LIST ?= synopgmac rtl8139
 NETDEV  ?= synopgmac
 
 # Based on v3.10, from http://cgit.loongnix.org/cgit
-LINUX   ?= loongnix-release-1903
+LINUX   ?= v5.7
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
 # Mainline v5.7 boots but network not work currently, let's wait for v5.8

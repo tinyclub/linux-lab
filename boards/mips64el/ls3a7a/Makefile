@@ -12,7 +12,7 @@ NETDEV_LIST ?= synopgmac rtl8139
 NETDEV  ?= synopgmac
 
 # Based on v3.10, from https://gitee.com/tinylab/loongson-linux-v3.10
-LINUX   ?= v5.7
+LINUX   ?= loongnix-release-1903
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
 # Mainline v5.7 boots but network not work currently, let's wait for v5.8

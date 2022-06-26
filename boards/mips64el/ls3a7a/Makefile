@@ -25,7 +25,7 @@ KERNEL_SRC[LINUX_loongnix-release-1903] := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
-DTS[LINUX_loongnix-release-1903] ?= $(KERNEL_SRC)/arch/$(ARCH)/loongson/loongson-3/dts/loongson3_ls7a.dts
+DTS[LINUX_loongnix-release-1903] ?= $(TOP_SRC)/$(KERNEL_SRC)/arch/$(ARCH)/loongson/loongson-3/dts/loongson3_ls7a.dts
 DTB[LINUX_loongnix-release-1903] ?= $(BSP_KERNEL)/$(LINUX)/loongson3_ls7a.dtb
 
 ROOTDEV_LIST ?= /dev/sda /dev/ram0 /dev/nfs

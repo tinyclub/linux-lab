@@ -19,7 +19,7 @@ KERNEL_SRC := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
-DTS     ?= $(KERNEL_SRC)/arch/$(ARCH)/loongson2/dts/2k1000_board.dts
+DTS     ?= $(TOP_SRC)/$(KERNEL_SRC)/arch/$(ARCH)/loongson2/dts/2k1000_board.dts
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/2k1000_board.dtb
 
 ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs

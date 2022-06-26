@@ -11,7 +11,7 @@ SERIAL  ?= ttyS0
 NETDEV_LIST ?= synopgmac rtl8139
 NETDEV  ?= synopgmac
 
-# Based on v3.10, from http://cgit.loongnix.org/cgit
+# Based on v3.10, from https://gitee.com/tinylab/loongson-linux-v3.10
 LINUX   ?= v5.7
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
@@ -20,7 +20,7 @@ LINUX[LINUX_loongnix-release-1903] := 04b98684
 
 HOST_GCC := 9
 
-KERNEL_GIT[LINUX_loongnix-release-1903] := http://cgit.loongnix.org/cgit/linux-3.10
+KERNEL_GIT[LINUX_loongnix-release-1903] := https://gitee.com/tinylab/loongson-linux-v3.10
 KERNEL_SRC[LINUX_loongnix-release-1903] := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz

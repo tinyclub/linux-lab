@@ -10,11 +10,11 @@ SERIAL  ?= ttyS0
 NETDEV_LIST  ?= synopgmac rtl8139 e1000
 NETDEV  ?= synopgmac
 
-# Based on v3.10, from http://cgit.loongnix.org/cgit
+# Based on v3.10, from https://gitee.com/tinylab/loongson-linux-v3.10
 LINUX   ?= loongnix-release-1903
 LINUX[LINUX_loongnix-release-1903] := 04b98684
 
-KERNEL_GIT := http://cgit.loongnix.org/cgit/linux-3.10
+KERNEL_GIT := https://gitee.com/tinylab/loongson-linux-v3.10
 KERNEL_SRC := loongnix-linux-3.10
 
 ORIIMG  ?= vmlinuz

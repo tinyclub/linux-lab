@@ -73,9 +73,9 @@ Linux 将底层时钟硬件抽象为两类设备：clockevent 和 clocksource，
 
 `mtime` 频率由设备树 CPU 节点中的 timebase-frequency 定义，不同平台都各不相同，如 Kendryte K210 的频率是 7.8 MHz，平头哥 C910 的频率是 3 MHz，SiFive Unmatched A00 频率为 1 MHz。
 
-### NoMMU timer-riscv.c
+### NoMMU timer-clint.c
 
-timer-riscv.c 驱动适用于 NoMMU 系统，内核运行在 M 模式下，通过 CONFIG_CLINT_TIMER 使能该驱动。RV64 下 clocksource 是通过直接读取 `mtime` 寄存器实现的，RV32 系统需要分两次读取，并需要考虑产生进位的情况。
+timer-clint.c 驱动适用于 NoMMU 系统，内核运行在 M 模式下，通过 CONFIG_CLINT_TIMER 使能该驱动。RV64 下 clocksource 是通过直接读取 `mtime` 寄存器实现的，RV32 系统需要分两次读取，并需要考虑产生进位的情况。
 
 ```c
 #ifdef CONFIG_64BIT
@@ -125,9 +125,9 @@ static int clint_clock_next_event(unsigned long delta,
 }
 ```
 
-### MMU timer-clint.c
+### MMU timer-riscv.c
 
-timer-clint.c 驱动适用于有 MMU 的场景，内核运行在 S/HS 模式下，通过 CONFIG_RISCV_TIMER 可以使能该驱动。和 timer-riscv.c 的驱动相比，本质上也是访问 `mtime` 和 `mtimecmp` 寄存器，不过由于 S 模式下无法直接访问它们，需要通过其他方式间接完成。
+timer-riscv.c 驱动适用于有 MMU 的场景，内核运行在 S/HS 模式下，通过 CONFIG_RISCV_TIMER 可以使能该驱动。和 timer-riscv.c 的驱动相比，本质上也是访问 `mtime` 和 `mtimecmp` 寄存器，不过由于 S 模式下无法直接访问它们，需要通过其他方式间接完成。
 
 RV64 的 clocksource 是通过 csrr 直接读取 `time` 寄存器实现的；在 RV32 系统由于一条指令无法读完，需要分两次读取 `time` 和 `timeh`， 并考虑可能发生进位的情况。前面提到 `time` 和 `timeh` 这两个 CSR 是 `mtime` 寄存器的映射，因此频率与精度和 `mtime` 是一致的。
 

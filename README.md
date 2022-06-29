@@ -2194,8 +2194,7 @@ That's because the docker image is not updated, just enter into cloud-lab and re
 
 ### 6.3.1 NFS/tftpboot not work
 
-If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` and please
-make sure not use `tools/docker/trun`.
+If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` in guest side and please make sure not use `tools/docker/trun`.
 
 ### 6.3.2 How to switch windows in vim
 

@@ -2381,7 +2381,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 ### 6.3.1 NFS 与 tftpboot 不工作
 
-如果 NFS 或 tftpboot 不起作用，请在主机端运行 `modprobe nfsd` 并通过运行 `/configs/tools/restart-net-servers.sh` 重新启动网络服务，请确保不要使用 `tools/docker/trun`。
+如果 NFS 或 tftpboot 不起作用，请在主机端运行 `modprobe nfsd` 并在 Guest 侧通过 `/configs/tools/restart-net-servers.sh` 重新启动网络服务，请确保不要使用 `tools/docker/trun`。
 
 ### 6.3.2 在 vim 中无法切换窗口
 

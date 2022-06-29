@@ -139,36 +139,55 @@ PC 端可以直接访问 [泰晓科技开源小店](https://shop155917374.taobao
 
 下面会不断更新汇总用户可能会提出的问题：
 
-- 引导过程中出现：`security verification failed`, `Verification failed: (0x1A) Security Violation` 或类似错误
+- 引导过程中出现：`security verification failed`, `Verification failed: (0x1A) Security Violation` 或类似错误？
     * 部分 Linux 发行版不支持 Security Boot，需要进入 BIOS 中的 Security 设置中，确保 `Security Boot` 处于 `Disabled` 状态。
 
-- 在 Linux 下通过 Virtualbox 并行启动时出现黑屏或者很慢
+- 在 Linux 下通过 Virtualbox 并行启动时出现黑屏或者很慢？
     * 这种情况可能需要进入 BIOS 使能虚拟化技术相关选项，相关选项跟处理器型号有关；如果开启后还存在问题，可能是处理器并不支持虚拟化技术。
 
-- 在 Windows 下通过 Virtualbox 并行启动时出现黑屏或者很慢
+- 在 Windows 下通过 Virtualbox 并行启动时出现黑屏或者很慢？
     * 第一种情况同上，可能也需要进入 BIOS 使能虚拟化技术相关选项。
     * 另外一种情况可能是您正在使用 hyper-v 或 wsl2，由于 hyper-v 或 wsl2 导致 Virtualbox 无法正常使用硬件虚拟化加速技术，所以此时需 [彻底关闭 hyperv 或 wsl2](https://zhuanlan.zhihu.com/p/468333378)。
 
-- 在 Windows 下无法通过 vmboot 切换到 Linux Lab Disk
+- 在 Windows 下无法通过 vmboot 切换到 Linux Lab Disk？
     * 可能是您的主机不兼容 vmboot 或者 vmboot 还未能支持您的主机，需要联系我们协助确认，请在某宝直接私信联系。
 
-- 出现无法正常上网的情况，怎么办
+- 在 Windows 下，为什么只看到 10G/1G/256M？
+    * Linux Lab Disk 和 Pocket Linux Disk 都是随身 Linux 系统盘，所采用的文件系统主要为 Linux 文件系统，这类文件系统在 Windows 下不能识别。
+    * 为了方便访问数据，根据容量大小，会预留一定容量的 NTFS/exFat 分区，这类分区能在 Windows 下可以直接访问，可能是 10G/1G/256M 或者其他大小。
+    * 在 [智能启动](https://zhuanlan.zhihu.com/p/469054673?) 以后可以完整访问整个盘中的各个分区，包括 NTFS/exFAT 分区。
+
+- 在夏天使用金属固态 U 盘版本发热比较明显？
+    * 固态 U 盘版本采用超高速主控，读写速度快而且比较稳定，供电需求也相对较高，用的元器件功率相对较大，所以发热的感觉会较为明显，尤其是夏天室外温度本身比较高的情况下。
+    * 为了保护芯片的安全，需要把热量快速散出，所以固态 U 盘大多采用金属外壳，但是金属外壳用户感知到的温度会相对明显一些，相比较而言，如果采用塑料外壳，温度聚集在芯片内，会影响芯片的正常工作甚至会影响芯片的使用寿命。
+    * 如果使用时间较长，建议在风扇或者空调下使用，同时贴上随盘赠送的散热片；如果需要编译 Linux 内核等大型软件，建议开启 [零损编译](https://zhuanlan.zhihu.com/p/477047313)。
+    * 在长时间使用之后，请不要直接触碰，并放置在小孩接触不到的地方，等温度降低后再关机、安全移除并取出。
+    * 如果希望有更好的温度体验并且同时有大容量的需求，大家可以考虑直接入手店里的 Mini 移动固态硬盘版本，散热面积更大，外壳温度更低，而且比传统的 2.5 寸盘更轻更小巧。
+
+- 如何确保使用速度？
+    * 为了保证使用速度，建议在支持向下兼容的 USB3.x 甚至 USB4.x 的接口下使用，插入速度需要足够快和连贯（USB协议本身的要求），否则可能会被识别为 USB2.0。
+
+- 如何确保更安全地使用？
+    * 为了确保数据安全和系统安全，首先强烈建议把关键数据及时提交到 Github 或 Gitee 等代码仓库中；另外，建议开启 timeshift 并配置好自己希望的备份周期。
+    * 为了确保数据的一致性和系统的安全，在拔除之前，请及时保存正在编辑的数据，并正常关闭系统或电脑，在并行启动时还需安全移除所有分区，之后再拔除设备。
+
+- 出现无法正常上网的情况，怎么办？
     * 先通过系统的右上角或者右下角的网络设置，配置好无线热点等接入设备，如果无法选择联网设备，则说明可能缺失相应的驱动，可以通过并行启动安装一下，无线设备型号可以通过 Windows 查看
     * 打开命令行，检查 `ping 8.8.8.8` 能否工作，如果可以工作说明网络是通的，如果不能工作，说明驱动或联网设备没有配置好
     * 如果能 ping 通 8.8.8.8 还是不能访问网页，则可能是运营商的域名解析服务异常，可以在 `/etc/resolv.conf` 中追加一行 `nameserver 8.8.8.8` 来解决；为了防止网络服务更新该文件，可以用 `chattr +i /etc/resolv.conf` 锁定
 
-- 平时使用正常，偶现系统卡顿的情况，怎么办
+- 平时使用正常，偶现系统卡顿的情况，怎么办？
     * 如果电脑配置比较低（CPU 核数少、内存低），建议尽量独立开机启动，独占硬件资源性能会更强
     * 如果电脑配置比较高，在并行启动前，建议打开虚拟机，分配更多的处理器核心数和内存容量给虚拟机
     * 另外，建议避免同时执行多个大型任务，比如后台下载大型文件，前台同时执行很复杂的操作，比如同时打开大量浏览器标签，不再使用的软件建议及时退出
 
-- 桌面图标不见了
+- 桌面图标不见了？
     * 如果刚切换到了中文语言，可能是桌面路径发生了变化，此时退回英文桌面并再次切换到中文桌面，但是切换时请选择保留原来的桌面路径。
     * 如果未切换过语言，可能是插件配置问题。如果在 Gnome 桌面下，可以用 `tweaks` 或 `gnome-shell-extension-prefs` 重新设置 Desktop Icons 或 Desktop Icons NG (DING) 插件。
 
-- 出现 `Failed to load VMMR0.r0 (VERR_SUPLIB_WORLD_WRITABLE)`  错误
+- 出现 `Failed to load VMMR0.r0 (VERR_SUPLIB_WORLD_WRITABLE)`  错误？
     * 在 Windows 系统下，该错误可能是把 Virtualbox 直接安装在了某个盘的根目录下（例如：`D:`），Virtualbox 不能正确地新建子目录。需要用户创建一个子目录，并安装进去。也有其他用户反馈，路径必须是英文名，并且必须用管理员安装 Virtualbox。
     * 在 Linux 系统下，`/usr` 等目录的权限异常可能会导致 Virtualbox 报告莫名奇妙的错误。这个错误可能需要去除 `/usr` 其他组的写权限：`chmod o-w /usr`。
 
-- 出现 `dlopen("/usr/lib/virtualbox/VBoxRT.so",) failed: <NULL>` 错误
+- 出现 `dlopen("/usr/lib/virtualbox/VBoxRT.so",) failed: <NULL>` 错误？
     * 在 Linux 下，如果 `/usr/lib` 所属的用户不是 `root`，则会出现该错误，需要手动修复：`sudo chown root:root /usr/lib`，见 [Ticket #16759](https://www.virtualbox.org/ticket/16759?cversion=0)。这个原因可能是用 tar 命令解压了带有错误属性的压缩包到根目录所致，比如说在压缩之前，`usr/lib` 属于普通用户，类似这样：`tar xyz.tar.gz -C /` 解压到根目录以后，会把根目录下的原有目录属性篡改掉。

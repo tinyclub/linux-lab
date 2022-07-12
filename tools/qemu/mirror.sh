@@ -5,6 +5,9 @@
 
 TOP_DIR=$(cd $(dirname $0)/ && pwd)
 
+# Silence error: server certificate verification failed
+export GIT_SSL_NO_VERIFY=1
+
 # /path/to/mainline-qemu/.gitmodules
 GITMODULES=$1
 

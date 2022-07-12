@@ -1628,7 +1628,7 @@ $$(call _stamp,$1,license):
 	  if [ -d "$$($(call _uc,$1)_ROOT)" ]; then \
 	    touch $$@ && exit 0; \
 	  fi ; \
-          if [ "$(vip)" != "1" ]; then \
+          if [ "$(vip)" = "0" ]; then \
 	    echo "" ;\
 	    echo "Friendly reminder:" ;\
 	    echo "" ;\
@@ -1990,7 +1990,8 @@ _BSP ?= $(BSP)
 
 # NOTE: No tag or version defined for bsp repo currently, -source target need fetch latest all the time
 # Skip update of bsp repo for !vip user
-ifeq ($(vip),1)
+vip ?= 0
+ifneq ($(vip),0)
   __BSP := latest
 else
   __BSP := origin/master

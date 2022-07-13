@@ -634,6 +634,8 @@ endif # common commands
 
 # Prepare build environment
 
+SCRIPT_GETCCVER := tools/gcc/version.sh
+
 define genbuildenv
 
 GCC_$2   := $$(or $$(call __v,GCC,$2,$3),$(GCC))
@@ -646,7 +648,9 @@ CCORI_$2 := $$(or $$(call __v,CCORI,$2,$3),$(CCORI))
     else
       $$(eval $$(call __vs,CCORI,$2,$3))
     endif
-    GCC_$2_SWITCH := 1
+    ifneq ($$(GCC_$2),$$(shell $(SCRIPT_GETCCVER) $(CCPATH) $(CCPRE)))
+      GCC_$2_SWITCH := 1
+    endif
 endif
 
 ifeq ($$(filter $(XARCH),i386 x86_64),)
@@ -657,7 +661,11 @@ ifeq ($$(filter $(XARCH),i386 x86_64),)
     ifeq ($$(HOST_CCORI_$2)$$(HOST_CCORI),)
       HOST_CCORI_$2 := internal
     endif
-    HOST_GCC_$2_SWITCH := 1
+
+    # Use the default gcc directly for i386
+    ifneq ($$(HOST_GCC_$2),$$(shell $(SCRIPT_GETCCVER)))
+      HOST_GCC_$2_SWITCH := 1
+    endif
   endif
 endif
 endef # genbuildenv
@@ -666,12 +674,6 @@ endef # genbuildenv
 $(eval $(call __vs,CCORI,OS))
 $(eval $(call __vs,GCC,OS))
 $(eval $(call __vs,HOST_GCC,OS))
-
-#$(warning $(call genbuildenv,kernel,LINUX,OS))
-$(eval $(call genbuildenv,kernel,LINUX,OS))
-$(eval $(call genbuildenv,uboot,UBOOT,OS))
-$(eval $(call genbuildenv,qemu,QEMU,OS))
-$(eval $(call genbuildenv,root,BUILDROOT,OS))
 
 PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
@@ -927,6 +929,12 @@ ifneq ($(CCORI),)
   $(error Supported gcc original list: $(CCORI_LIST))
  endif
 endif
+
+#$(warning $(call genbuildenv,kernel,LINUX,OS))
+$(eval $(call genbuildenv,kernel,LINUX,OS))
+$(eval $(call genbuildenv,uboot,UBOOT,OS))
+$(eval $(call genbuildenv,qemu,QEMU,OS))
+$(eval $(call genbuildenv,root,BUILDROOT,OS))
 
 ifneq ($(LD_LIBRARY_PATH),)
   ifneq ($(LLPATH),)
@@ -1957,7 +1965,7 @@ $1-gcc:
 
 $1-hostgcc:
 	$$(Q)if [ -z "$(filter $(XARCH),x86_64 i386)" ]; then \
-	  [ "$$(GCC_$2_SWITCH)" = "1" ] && \
+	  [ "$$(HOST_GCC_$2_SWITCH)" = "1" ] && \
 	  make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0 || true; \
 	fi
 
@@ -2181,7 +2189,6 @@ PHONY += toolchain-source toolchain-download toolchain gcc
 include $(PREBUILT_TOOLCHAINS)/Makefile
 
 ifeq ($(CCORI),internal)
-  SCRIPT_GETCCVER := tools/gcc/version.sh
   # Get the real version of the file name: which gcc-$(CCVER)
   CCVER  := $$($(SCRIPT_GETCCVER) $(CCPATH) $(CCPRE))
   LDTVER := $$($(CCPRE)ld -v | tr -d -c '[0-9.]')

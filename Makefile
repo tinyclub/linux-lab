@@ -3458,7 +3458,7 @@ endef
 $(eval $(call genverify,NETDEV,NETDEV,,netdev_help))
 
 # TODO: net driver for $BOARD
-NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap
+NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown
 
 ifeq ($(NETDEV), virtio)
   MACADDR_TOOL   := tools/qemu/macaddr.sh

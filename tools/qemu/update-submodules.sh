@@ -20,4 +20,7 @@ grep -q $MIRROR_TAG $GITMODULES
 if [ $? -ne 0 ]; then
    sed -i -e "s%https://git.qemu.org/git/qemu-%https://gitee.com/$MIRROR_TAG/qemu-%g" $GITMODULES
    sed -i -e "s%https://git.qemu.org/git/%https://gitee.com/$MIRROR_TAG/qemu-%g" $GITMODULES
+   sed -i -e "s%https://gitlab.com/qemu-project/qemu-%https://gitee.com/$MIRROR_TAG/qemu-%g" $GITMODULES
+   sed -i -e "s%https://gitlab.com/qemu-project/%https://gitee.com/$MIRROR_TAG/qemu-%g" $GITMODULES
+   sed -i -e "s%https://gitlab.com/libvirt/%https://gitee.com/$MIRROR_TAG/qemu-%g" $GITMODULES
 fi

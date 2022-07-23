@@ -34,7 +34,7 @@ if [ $PULL -eq 1 ]; then
 fi
 
 echo "LOG: Running $image"
-id=$(docker run -d -v $qemu_user_static:$qemu_user_static $image)
+id=$(docker run -d -v --platform linux/$arch $qemu_user_static:$qemu_user_static $image)
 
 echo "LOG: Creating temporary rootdir: $rootdir"
 mkdir -p $rootdir

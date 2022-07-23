@@ -42,4 +42,4 @@ if [ $PULL -eq 1 ]; then
 fi
 
 echo "LOG: Running $image"
-docker run -it $mapping $image
+docker run --platform linux/$arch -it $mapping $image

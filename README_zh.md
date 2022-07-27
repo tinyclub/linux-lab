@@ -645,7 +645,10 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 如果上述命令不能正常工作，请根据上述命令打印出来的 VNC 服务器信息，自行配置所用客户端。
 
-**注意**：由于网络架构的差异，采用直连方式的 ssh 和 vnc 并不一定会工作，请优先使用 bash、webvnc 和 webssh 三种方式。
+**注意**：
+
+* vinagre 有全屏模式，但是默认没有开启，可通过菜单中的 `View -> Fullscreen` 勾选，但是勾选前请务必事先勾选 `Keyboard shortcuts`，否则只能通过 `sudo pkill x11vnc` 退出全屏。
+* 由于网络架构的差异，采用直连方式的 ssh 和 vnc 并不一定会工作，请优先使用 bash、webvnc 和 webssh 三种方式。
 
 ## 2.7 更新实验环境并重新运行
 

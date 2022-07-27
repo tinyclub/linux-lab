@@ -450,7 +450,10 @@ If really want to use local vnc clients, please install a vnc client, for exampl
 
 If the above command not work normally, based on the information printed above, please configure the vnc client yourself.
 
-**Notes**: The directly connected ssh and vnc may not always work, please use one of the other three methods instead.
+**Notes**:
+
+* vinagre has fullscreen mode, but not enabled by default, which can be enabled through menu: `View -> Fullscreen`, but must enable `Keyboard shortcuts` at first, otherwise, no way exit fullscreen except via `sudo pkill x11vnc`.
+* The directly connected ssh and vnc may not always work, please use one of the other three methods instead.
 
 ## 2.7 Update and rerun the lab
 

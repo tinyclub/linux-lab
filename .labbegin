@@ -15,8 +15,12 @@ ifeq ($(wildcard /usr/bin/make-3.81),)
 endif
 
 # Newer Qemu requires ninja
-ifeq ($(wildcard /usr/bin/ninja),)
-  PKGS[QEMU_$(call _any,QEMU,>=,v6.0.0)] := ninja;ninja-build
+ifneq ($(QEMU),)
+ ifneq ($(findstring xqemu, x$(MAKECMDGOALS)),)
+  ifeq ($(wildcard /usr/bin/ninja),)
+    PKGS[QEMU_$(call _any,QEMU,>=,v6.0.0)] := ninja;ninja-build
+  endif
+ endif
 endif
 
 # Install all required libraries if QEMU_FULL=1 specified

@@ -8,10 +8,9 @@
 
 **订阅公众号，关注项目状态：**
 
-![扫码订阅 “泰晓科技” 公众号](doc/images/tinylab-wechat.jpg)
+![扫码订阅“泰晓科技”公众号](doc/images/tinylab-wechat.jpg)
 
 <!-- toc start -->
-
 
 # 目录
 
@@ -130,7 +129,7 @@
        - [6.2.4 Boot 时报缺少 sdl2 库](#624-boot-时报缺少-sdl2-库)
     - [6.3 环境相关](#63-环境相关)
        - [6.3.1 NFS 与 tftpboot 不工作](#631-nfs-与-tftpboot-不工作)
-       - [6.3.2 在 vim 中无法切换窗口](#632-在-vim-中无法切换窗口)
+       - [6.3.2 在 VIM 中无法切换窗口](#632-在-vim-中无法切换窗口)
        - [6.3.3 长按 Backspace 不工作](#633-长按-backspace-不工作)
        - [6.3.4 如何快速切换中英文输入](#634-如何快速切换中英文输入)
        - [6.3.5 如何调节 Web 界面窗口的大小](#635-如何调节-web-界面窗口的大小)
@@ -163,7 +162,7 @@
 
 ## 1.1 项目简介
 
-本项目致力于创建一个基于 Docker + QEMU 的 Linux 实验环境，方便大家学习、开发和测试 [Linux 内核](http://www.kernel.org)。
+本项目致力于创建一个基于 Docker + QEMU 的 Linux 实验环境，方便大家学习、开发和测试 [Linux 内核][075]。
 
 Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用过程中的任何风险。
 
@@ -181,33 +180,32 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 关联项目：
 
-
 * Cloud Lab
     * Linux Lab 运行环境管理工具，自带图形和命令行界面，支持本地和远程登陆
     * <https://tinylab.org/cloud-lab>
 
 * Linux 0.11 Lab
-    * 用于 Linux 0.11 学习，今后仅集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 用于 Linux 0.11 学习，今后仅集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/linux-0.11-lab>
 
 * CS630 Qemu Lab
-    * 用于 X86 Linux 汇编学习，今后仅集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 用于 X86 Linux 汇编学习，今后仅集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/cs630-qemu-lab>
 
 * RVOS Lab
-    * 用于 RISC-V OS 在线课程学习，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 用于 RISC-V OS 在线课程学习，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
     * <https://gitee.com/tinylab/rvos-lab>
 
 * GUI Lab
-    * 用于学习嵌入式图形系统，如 Guilite，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 用于学习嵌入式图形系统，如 Guilite，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
     * <https://gitee.com/tinylab/gui-lab>
 
 * RISC-V Linux
-    * 用于研究 RISC-V 架构的 Linux 内核以及周边技术，已集成到 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)，即泰晓 Linux 实验盘
+    * 用于研究 RISC-V 架构的 Linux 内核以及周边技术，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
     * <https://gitee.com/tinylab/riscv-linux>
 
@@ -215,7 +213,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.3.1 开放教程
 
-  * [Linux Lab 公开课](https://www.cctalk.com/m/group/88948325)
+  * [Linux Lab 公开课][071]
       * Linux Lab 简介
       * 龙芯 Linux 内核开发
       * Linux Lab Disk 使用演示
@@ -224,16 +222,16 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.3.2 付费课程
 
-  * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
+  * [《360° 剖析 Linux ELF》][070]
       * 提供了上百个实验案例，全部通过 Linux Lab 验证
 
-  * [《Rust 语言快速上手》](https://cctalk.com/m/group/89507527)
+  * [《Rust 语言快速上手》][006]
       * 初步了解 Rust 语言、历史、特性、适应领域以及与嵌入式、Linux、GCC、GPU、C/C++ 语言的关系并快速上手，所有实验全部通过 Linux Lab 验证
 
-  * [《软件逆向工程初探》](https://www.cctalk.com/m/group/89626746)
+  * [《软件逆向工程初探》][072]
       * 了解软件逆向工程的基本概念，掌握开展软件逆向相关技术、流程和方法，通过实验实操，最终独立完成简单 C 程序逆向分析，所有实验全部通过 Linux Lab 验证
 
-  * [《Linux内核热补丁技术介绍与实战》](https://www.cctalk.com/m/group/89715946)
+  * [《Linux 内核热补丁技术介绍与实战》][073]
       * 学习 Linux 内核热补丁核心工作原理，跟随老师动手实现 AArch64 架构 Linux 内核热补丁核心功能，所有实验全部通过 Linux Lab 验证
 
 ## 1.4 项目功能
@@ -259,114 +257,114 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.5.1 项目起源
 
-大约十年前，我向 elinux.org 发起了一个 tinylinux 提案：[Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel)。该提案最终被采纳，因此我在这个项目上工作了几个月。
+大约十年前，我向 elinux.org 发起了一个 tinylinux 提案：[Work on Tiny Linux Kernel][010]。该提案最终被采纳，因此我在这个项目上工作了几个月。
 
 ### 1.5.2 项目缘由
 
-在项目开发过程中，编写了几个脚本用于验证一些新的小特性（譬如：[gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf)）是否破坏了几个主要的处理器架构上的内核功能。
+在项目开发过程中，编写了几个脚本用于验证一些新的小特性（譬如：[gc-sections][021]）是否破坏了几个主要的处理器架构上的内核功能。
 
 这些脚本使用 `qemu-system-ARCH` 作为处理器/开发板的模拟器，在模拟器上针对 Ftrace + Perf 运行了基本的启动测试和功能测试，并为之相应准备了内核配置文件（defconfig）、根文件系统（rootfs）以及一些测试脚本。但在当时的条件下，所有的工作只是简单地归档在一个目录下，并没有从整体上将它们组织起来。
 
 ### 1.5.3 项目诞生
 
-这些工作成果在我的硬盘里闲置了好多年，直到我遇到了 noVNC 和 Docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab)，此后，为了将此前开发的那些零散的脚本、内核配置文件、根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
+这些工作成果在我的硬盘里闲置了好多年，直到我遇到了 noVNC 和 Docker，并基于这些新技术开发了第一个 [Linux 0.11 Lab][004]，此后，为了将此前开发的那些零散的脚本、内核配置文件、根文件系统和测试脚本整合起来，我开发了 Linux Lab 这个系统。
 
 ## 1.6 项目变更
 
 ### 1.6.1 v0.1 @ 2019.06.28
 
-从 2016 年发起，经过数年的开发与迭代，Linux Lab 于 2019 年 6 月 28 日迎来了第 1 个正式版本 [v0.1](https://tinylab.org/linux-lab-v0.1/)。
+从 2016 年发起，经过数年的开发与迭代，Linux Lab 于 2019 年 6 月 28 日迎来了第 1 个正式版本 [v0.1][029]。
 
-* [v0.1 rc3](https://tinylab.org/linux-lab-v0.1-rc3/)
+* [v0.1 rc3][032]
     * 按需加载 prebuilt 并迁移代码仓库到国内，大幅优化了下载体验
 
-* [v0.1 rc2](https://tinylab.org/linux-lab-v0.1-rc2/)
+* [v0.1 rc2][031]
     * 修复了几处基础体验 Bugs
 
-* [v0.1 rc1](https://tinylab.org/linux-lab-v0.1-rc1/)
-    * 历史上发布的第 1 个版本，在历史功能上进一步添加了 raspi3 和 risc-v 支持
+* [v0.1 rc1][030]
+    * 历史上发布的第 1 个版本，在历史功能上进一步添加了 raspi3 和 RISC-V 支持
 
 ### 1.6.2 v0.2 @ 2019.10.30
 
-[v0.2](https://tinylab.org/linux-lab-v02/) 新增原生 Windows 支持、新增龙芯早期全系 MIPS 架构处理器支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
+[v0.2][033] 新增原生 Windows 支持、新增龙芯早期全系 MIPS 架构处理器支持、新增多个平台外置交叉编译器支持、新增实时 RT 支持、新增 host 侧免 root 支持等，并首次被某线上课程全程采用。
 
-* [v0.2 rc3](https://tinylab.org/linux-lab-v0.2-rc3/)
+* [v0.2 rc3][036]
     * 新增原生 Windows 支持，基于 Docker Toolbox，无需通过 Virtualbox 或 Vmware 额外安装系统
 
-* [v0.2 rc2](https://tinylab.org/linux-lab-v0.2-rc2/)
+* [v0.2 rc2][035]
     * 龙芯插件新增龙芯教育开发板支持
     * 在 docker 镜像中新增 gdb-multiarch 调试支持，避免为每个平台安装一个 gdb
 
-* [v0.2 rc1](https://tinylab.org/linux-lab-v0.2-rc1/)
-    * 携手龙芯实验室，以[独立插件](https://gitee.com/loongsonlab/loongson)的方式新增龙芯全面支持
+* [v0.2 rc1][034]
+    * 携手龙芯实验室，以[独立插件][012]的方式新增龙芯全面支持
     * 携手码云，在国内新增 Qemu、U-boot 和 Buildroot 的每日镜像
 
 ### 1.6.3 v0.3 @ 2020.03.12
 
-[v0.3](https://tinylab.org/linux-lab-v0.3/) 统一了所有组件的公共操作接口更方便记忆，进一步优化了大型仓库的下载体验，通过添加自动依赖关系简化了命令执行并大幅度提升实验效率，为多本知名 Linux 图书新增了 v2.6.10, v2.6.11, v2.6.12, v2.6.14, v2.6.21, v2.6.24 等多个历史版本内核，并发布了首份中文版用户手册。
+[v0.3][037] 统一了所有组件的公共操作接口更方便记忆，进一步优化了大型仓库的下载体验，通过添加自动依赖关系简化了命令执行并大幅度提升实验效率，为多本知名 Linux 图书新增了 v2.6.10, v2.6.11, v2.6.12, v2.6.14, v2.6.21, v2.6.24 等多个历史版本内核，并发布了首份中文版用户手册。
 
-* [v0.3 rc3](https://tinylab.org/linux-lab-v03-rc3/)
+* [v0.3 rc3][040]
     * 首次新增中文文档
 
-* [v0.3 rc2](https://tinylab.org/linux-lab-v03-rc2/)
+* [v0.3 rc2][039]
     * 提升 git 仓库下载体验：所有仓库下载切换为 git init+fetch，更为健壮
     * 提升自动化：常规动作都新增了依赖关系，一键自动下载、检出、打补丁、配置、编译、启动
 
-* [v0.3 rc1](https://tinylab.org/linux-lab-v03-rc1/)
+* [v0.3 rc1][038]
     * 添加多本知名 Linux 图书所用内核支持
 
 ### 1.6.4 v0.4 @ 2020.06.01
 
-[v0.4](https://tinylab.org/linux-lab-v0.4/) 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
+[v0.4][041] 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
 
-* [v0.4 rc3](https://tinylab.org/linux-lab-v04-rc3/)
+* [v0.4 rc3][044]
     * 新增 aarch64/virt Uboot 支持
     * 临时修复新版本内核上容器内插入 NFSD 模块引起的 Sync 卡死问题
 
-* [v0.4 rc2](https://tinylab.org/linux-lab-v04-rc2/)
+* [v0.4 rc2][043]
     * 新增第 16 块开发板
     * 新增 vnc 客户端登陆方法
 
-* [v0.4 rc1](https://tinylab.org/linux-lab-v04-rc1/)
+* [v0.4 rc1][042]
     * 切换内核镜像到更快的 codeaurora
     * 添加本地开发板配置和编辑接口
 
 ### 1.6.5 v0.5 @ 2020.09.12
 
-[v0.5](https://tinylab.org/linux-lab-v0.5/) 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
+[v0.5][045] 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
 
-* [v0.5 rc3](https://tinylab.org/linux-lab-v05-rc3/)
+* [v0.5 rc3][048]
     * 修复 arm/vexpress-a9 因编译器配置问题引起的 Uboot 编译失败
     * 进一步完善文档中对普通用户的使用要求，避免使用 root 带来的诸多问题
 
-* [v0.5 rc2](https://tinylab.org/linux-lab-v05-rc2/)
+* [v0.5 rc2][047]
     * 进一步改善 Qemu 编译体验，在 Gitee 新增 submodules 镜像，不再有挫折感
     * 新增 Arch/Manjaro docker 安装文档
-    * 修复 MacOS 大小写敏感的文件系统镜像制作步骤
+    * 修复 macOS 大小写敏感的文件系统镜像制作步骤
 
-* [v0.5 rc1](https://tinylab.org/linux-lab-v05-rc1/)
+* [v0.5 rc1][046]
     * 全面完善并合并早期对龙芯全系处理器的支持
     * 全面升级开发环境基础镜像到 Ubuntu 20.04
 
 ### 1.6.6 v0.6 @ 2021.02.06
 
-[v0.6](https://tinylab.org/linux-lab-v0.6/) 完善开发镜像，新增首块真实硬件开发板支持。
+[v0.6][049] 完善开发镜像，新增首块真实硬件开发板支持。
 
 * v0.6 rc3
     * 进一步完善真实硬件板的支持
 
-* [v0.6 rc2](https://tinylab.org/linux-lab-v06-rc2/)
+* [v0.6 rc2][051]
     * 新增首块真实硬件开发板 `arm/ebf-imx6ull` 支持
     * 新增命令行自动补全脚本，允许直接在命令行补全板子信息，提升使用效率
 
-* [v0.6 rc1](https://tinylab.org/linux-lab-v06-rc1/)
+* [v0.6 rc1][050]
     * 修复插件中的 BSP 包下载功能
     * 修复 x86 架构的内核编译问题
     * 修复 aarch64/virt 开发板 Uboot 引导问题
 
 ### 1.6.7 v0.7 @ 2021.06.03
 
-[v0.7](https://tinylab.org/linux-lab-v0.7/) 开发并发布首个 Linux Lab 实验盘，支持智能启动、运行时切换、透明倍容和内存编译。
+[v0.7][052] 开发并发布首个 Linux Lab 实验盘，支持智能启动、运行时切换、透明倍容和内存编译。
 
 * v0.7 rc3
     * 增加 v0.8 开发计划
@@ -378,7 +376,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 使用 truncate 取代 dd 创建磁盘镜像文件，提升创建速度
     * 为 source, checkout, patch 等目标新增 make 错误处理
 
-* [v0.7 rc1](https://tinylab.org/linux-lab-v07-rc1/)
+* [v0.7 rc1][053]
     * 启动 Linux Lab Disk 开发
     * 新增内存编译功能和使用文档
     * 新增桌面快捷方式对 Ubuntu 20.04 的支持
@@ -387,50 +385,50 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.8 v0.8 @ 2021.10.13
 
-[v0.8](https://tinylab.org/linux-lab-v0.8/) 新增 LLVM/Clang, Rust 和 openEuler 支持。
+[v0.8][054] 新增 LLVM/Clang, Rust 和 openEuler 支持。
 
-* [v0.8 rc3](https://tinylab.org/linux-lab-v08-rc3/)
+* [v0.8 rc3][055]
     * 新增 Rust for Kernel 开发支持
     * 新增 openEuler Kernel 开发支持
     * 新增 LLVM/Clang 编译支持，make kernel LLVM=1
     * 新增 rust 环境安装脚本
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Fedora
-* [v0.8 rc2](https://tinylab.org/manjaro2go/)
+* [v0.8 rc2][061]
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Manjaro
     * 早期文档中描述的更新步骤较重，替换为更为轻量级的更新步骤
-    * 修复 MacOS 上的 i386/pc 支持
+    * 修复 macOS 上的 i386/pc 支持
     * 进一步清理 rootfs 各种格式的依赖关系
     * 进一步优化 make debug，确保 debug 基于最新的改动
     * 清理不必要的 1234 端口映射，该部分可以让用户按需开启
-* [v0.8 rc1](https://tinylab.org/pocket-linux-disk-ubuntu/)
+* [v0.8 rc1][066]
     * 发布了首支 Pocket Linux Disk
     * Pocket Linux Disk 和 Linux Lab Disk 相继支持 Deepin
 
 ### 1.6.9 v0.9 @ 2022.01.13
 
-[v0.9](https://tinylab.org/linux-lab-v0.9/) 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
+[v0.9][056] 完善 Linux Lab for Windows，升级默认内核版本到 v5.13，大幅提升交互性能，Linux Lab Disk 同步支持运行时免关机切换系统并新增 Kali、Mint 等发行版支持。
 
-* [v0.9 rc3](https://tinylab.org/linux-lab-v09-rc3/)
+* [v0.9 rc3][059]
     * 新增 FAST FETCH 功能，支持单独快速下载指定内核版本
     * 新增 ONESHOT 内存编译功能，在原有内存编译的基础上增加代码内存缓存支持
     * 大幅优化 Linux Lab 的启动速度和交互性能，提升 10 到 20 倍
     * 完善 Linux Lab for Windows 支持，同时兼容 Docker Toolbox 和 Docker Desktop with wsl2
     * 升级镜像，导入 mipsel, arm 和 powerpc 的 gcc 4.3 支持并修复相关的兼容性问题
 
-* [v0.9 rc2](https://tinylab.org/linux-lab-v09-rc2/)
+* [v0.9 rc2][058]
     * 为 v2.6.29 及之前版本的内核导入 make 3.81
     * 为 Rust for Linux 新增 riscv64/virt 和 aarch64/virt 支持
     * 新增 lxterminal 和 qterminal 支持
     * Linux Lab Disk 新增 Kali 和 Mint 支持，并首次支持免关机切换系统
 
-* [v0.9 rc1](https://tinylab.org/linux-lab-v09-rc1/)
+* [v0.9 rc1][057]
     * 升级 llvm 工具链到 13
     * 升级内核版本到 v5.13
     * 新增 cleanall，可同时清理 source 和 build
 
 ### 1.6.10 v1.0 @ 2022.06.16
 
-[v1.0](https://tinylab.org/linux-lab-v1.0/) 升级部分内核到 v5.17，修复内存编译功能，优化 make 自动补全功能，完善并新增 examples，更新文档。
+[v1.0][060] 升级部分内核到 v5.17，修复内存编译功能，优化 make 自动补全功能，完善并新增 examples，更新文档。
 
 * v1.0 rc3
     * 全面整理 Assembly 实验案例
@@ -451,7 +449,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * v1.0 rc1
     * 增强 test 功能，允许在 testcase 中执行多个命令
     * 修复 test 中的内核参数传递问题，确保兼容 uboot 和 kernel
-    * 允许灵活增加 app 的子 make 目标，例如 `make root busybox-menuconfig`
+    * 允许灵活增加 App 的子 make 目标，例如 `make root busybox-menuconfig`
     * 修复两笔内存编译的问题
 
 # 2. Linux Lab 安装
@@ -462,7 +460,7 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 
 下述安装过程比较详尽，兼顾了各大桌面系统，实际上针对某个系统的用法非常简单。
 
-如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店](https://shop155917374.taobao.com) 选购一枚即插即跑的 [Linux Lab Disk](https://tinylab.org/linux-lab-disk)。它也叫 “泰晓 Linux 实验盘”，可以在淘宝手机 APP 内搜索 “泰晓 Linux” 后购买。
+如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店][022] 选购一枚即插即跑的 [Linux Lab Disk][028]。它也叫“泰晓 Linux 实验盘”，可以在淘宝手机 App 内搜索“泰晓 Linux”后购买。
 
 『Linux Lab Disk - 泰晓 Linux 实验盘』已经支持如下功能：
 
@@ -483,12 +481,12 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
     * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统
     * 即时实验，集成多套自研实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验
 * 购买地址
-    * [泰晓开源小店](https://shop155917374.taobao.com)，该地址为目前唯一官方在线销售地址
+    * [泰晓开源小店][022]，该地址为目前唯一官方在线销售地址
 * 产品详情
     * <https://tinylab.org/linux-lab-disk>
     * 详细介绍了特性、功能与用法，配套了大量的演示视频
 
-[![泰晓 Linux 实验盘- Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
+[![泰晓 Linux 实验盘 - Linux Lab Disk](doc/images/linux-lab-disk-demo.png)][022]
 
 ## 2.1 软硬件要求
 
@@ -497,14 +495,14 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 | 硬件类型     |  要求                | 说明                                          |
 |--------------|----------------------|-----------------------------------------------|
 | 处理器       | X86_64, > 1.5GHz     | 创建虚拟机时也务必选择 64 位 X86 处理器       |
-| 磁盘         | >= 50G               | 系统(25G), Docker 镜像(~5G), Linux Lab(20G)   |
+| 磁盘         | >= 50G               | 系统 (25G), Docker 镜像 (~5G), Linux Lab(20G)   |
 | 内存         | >= 4G                | 过低的内存可能会导致各种卡顿以及异常缓慢      |
 
 如果平时用的几率比较高，建议把磁盘空间提高到 100G ~ 200G 以上，内存可以提升到 8G 以上，处理器核数提升到 4 个以上。
 
-当前市面上所有支持 Docker 的 X86_64 系统都应该可以正常运行 Linux Lab，包括 Windows, Linux 和 MacOS，市面上几乎所有的 Linux 发行版都有用户尝试过。
+当前市面上所有支持 Docker 的 X86_64 系统都应该可以正常运行 Linux Lab，包括 Windows, Linux 和 macOS，市面上几乎所有的 Linux 发行版都有用户尝试过。
 
-请查看其他同学 [成功运行过 Linux Lab 的系统](https://gitee.com/tinylab/linux-lab/issues/I1FZBJ)，并分享你的情况，例如：
+请查看其他同学 [成功运行过 Linux Lab 的系统][014]，并分享你的情况，例如：
 
     $ cd /path/to/cloud-lab/
     $ tools/docker/env
@@ -518,11 +516,11 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
   - Linux, Mac OSX, Windows 10
 
-      使用 [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+      使用 [Docker CE][025]
 
   - 更早的 Windows 版本（含大部分老版本 Windows 10）
 
-      使用 [Docker Toolbox](https://get.daocloud.io/toolbox/)；也可通过 Virtualbox 或 Vmware 安装 Ubuntu 等 Linux 发行版后使用
+      使用 [Docker Toolbox][011]；也可通过 Virtualbox 或 Vmware 安装 Ubuntu 等 Linux 发行版后使用
 
 在运行 Linux Lab 之前，请参考 6.1.4 节确保无需 `sudo` 权限也可以正常运行以下命令：
 
@@ -530,31 +528,31 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 另外，在国内要正常使用 Docker，请**务必**配置好国内的 Docker 镜像加速服务：
 
-* [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
+* [阿里云 Docker 镜像使用文档][018]
     * 适合企业和家庭网络，需免费注册帐号并登陆后才能使用
 
-* [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+* [USTC Docker 镜像使用文档][020]
     * 适合高校网络
 
 使用 Linux Lab 过程中的常见 Docker 相关问题，请参考常见问题中的 6.1 节，镜像下载慢、下载超时、下载出错等问题都有详细解决方案。
 
-其他问题，请参考 [官方 Docker 文档](https://docs.docker.com)。
+其他问题，请参考 [官方 Docker 文档][007]。
 
 **Ubuntu 用户安装手册**
-  - [doc/install/ubuntu-docker.md](doc/install/ubuntu-docker.md)
+  - [doc/install/ubuntu-docker.md][003]
 
 **Arch 用户安装手册**
-  - [doc/install/arch-docker.md](doc/install/arch-docker.md)
+  - [doc/install/arch-docker.md][001]
 
 **Manjaro 用户安装手册**
-  - [doc/install/manjaro-docker.md](doc/install/manjaro-docker.md)
+  - [doc/install/manjaro-docker.md][002]
 
 **Windows 用户须知**：
 
-  - 请参考 [Docker 官方文档](https://docs.docker.com) 确保所用 Windows 版本支持 Docker 并根据情况选择安装 Docker Desktop 还是 Docker Toolbox
+  - 请参考 [Docker 官方文档][007] 确保所用 Windows 版本支持 Docker 并根据情况选择安装 Docker Desktop 还是 Docker Toolbox
 
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
-      - 在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键使用 “Git Bash Here”
+      - 在安装完 [Git For Windows][017] 后，可通过鼠标右键使用“Git Bash Here”
 
 ## 2.3 选择工作目录
 
@@ -565,7 +563,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请参考 5.7.1 节开启 Build Cache。
 
-对于 Windows 用户，在安装完 [Git For Windows](https://git-scm.com/downloads) 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
+对于 Windows 用户，在安装完 [Git For Windows][017] 后，可通过鼠标右键在选定的工作目录运行“Git Bash Here”。
 
 ## 2.4 切换到普通用户帐号
 
@@ -631,11 +629,11 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 |   登录方法     |   描述             |  缺省用户        |  登录所在地          |
 |----------------|--------------------|------------------|----------------------|
-|   bash         | docker bash        |  ubuntu          | 本地主机             |
-|   ssh          | 普通 ssh           |  ubuntu          | 本地主机             |
-|   vnc          | 普通 桌面          |  ubuntu          | 本地主机+VNC client  |
-|   webvnc       | web 桌面           |  ubuntu          | 本地主机或互联网     |
-|   webssh       | web ssh            |  ubuntu          | 本地主机或互联网     |
+|   bash         | docker bash        |  Ubuntu          | 本地主机             |
+|   ssh          | 普通 ssh           |  Ubuntu          | 本地主机             |
+|   vnc          | 普通 桌面          |  Ubuntu          | 本地主机+VNC client  |
+|   webvnc       | web 桌面           |  Ubuntu          | 本地主机或互联网     |
+|   webssh       | web ssh            |  Ubuntu          | 本地主机或互联网     |
 
 由于普通的 vnc 客户端五花八门，所以当前建议采用 webvnc，确保可以在各个平台能自动登陆。
 
@@ -675,7 +673,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 ## 2.8 快速上手：启动一个开发板
 
-进入实验环境, 切换目录:
+进入实验环境，切换目录：
 
     $ cd /labs/linux-lab
 
@@ -697,7 +695,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 键入 `poweroff` 即可关闭板子。
 
-**注意**：部分开发板的关机功能不完善，可通过 `CTRL+a x` （依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
+**注意**：部分开发板的关机功能不完善，可通过 `CTRL+a x`（依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
 
 # 3. Linux Lab 入门
 
@@ -705,7 +703,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 ### 3.1.1 列出支持的开发板
 
-列出内置支持的开发板:
+列出内置支持的开发板：
 
     $ make list
     [ aarch64/raspi3 ]:
@@ -808,16 +806,15 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
           LINUX   ?= v4.9.56
           ROOTDEV ?= /dev/nfs
 
-
-如果只想查看特定的架构，可以使用 `ARCH` 指定，也可以使用 `FILTER` 模糊匹配:
+如果只想查看特定的架构，可以使用 `ARCH` 指定，也可以使用 `FILTER` 模糊匹配：
 
     $ make list ARCH=arm
     $ make list FILTER=virt
 
-更多用法:
+更多用法：
 
     $ make list-board         # 仅显示 ARCH
-    $ make list-short         # ARCH 和 LINUX
+    $ make list-short         # ARCH 和 Linux
     $ make list-base          # 不包含插件
     $ make list-plugin        # 仅包含插件
     $ make list-full          # 所有板子信息
@@ -842,7 +839,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 由于不同的真实硬件开发板差异较大，所以在板级目录有提供专门的开发文档，例如：`boards/arm/ebf-imx6ull/README.md`。
 
-[![Linux Lab 真板 - 野火 IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
+[![Linux Lab 真板 - 野火 IMX6ULL](doc/images/ebf-imx6ull.png)][022]
 
 #### 3.1.2.2 虚拟开发板
 
@@ -912,20 +909,20 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 #### 3.1.2.3 如何选购
 
-所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店](https://shop155917374.taobao.com/) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
+所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店][023] 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
 
-也可以直接在淘宝手机 APP 内搜索 “泰晓 Linux” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
+也可以直接在淘宝手机 App 内搜索“泰晓 Linux”后购买，可搭配店内的“Linux Lab Disk”一起使用，用上“Linux Lab Disk”后就完全不需要安装独立的 Linux 开发环境。
 
 ### 3.1.3 以插件方式使用
 
-Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时，自身的代码体积不会变得太大。
+Linux Lab 支持“插件”功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时，自身的代码体积不会变得太大。
 
 该特性有助于支持基于 Linux Lab 学习一些书上的例子以及支持一些采用新的处理器体系架构的开发板，书籍中可能会涉及多个开发板或者是新的处理器架构，并可能会需要多个新的软件包（譬如交叉工具链和架构相关的 qemu 系统模拟器）。
 
-这里列出当前维护的插件:
+这里列出当前维护的插件：
 
-  - [中天微/C-Sky Linux](https://gitee.com/tinylab/csky)
-  - [龙芯/Loongson Linux](https://gitee.com/loongsonlab/loongson)
+  - [中天微/C-Sky Linux][013]
+  - [龙芯/Loongson Linux][012]
 
 其中，Loongson 已经在 v5.0 合并进主线。
 
@@ -933,7 +930,7 @@ Linux Lab 支持 “插件” 功能，允许在独立的 git 仓库中添加和
 
 每块开发板都有特定的配置，部分配置是可以根据需要进行修改的，比如说内存大小、内核版本、文件系统版本、QEMU 版本，以及其他外设配置，比如串口、网络等。
 
-配置方法很简单，参考现有的板级配置（`boards/<BOARD>/Makefile`）修改即可，以下命令会通过 vim 调出当前开发板的本地配置文件（`boards/<BOARD>/.labconfig`）：
+配置方法很简单，参考现有的板级配置（`boards/<BOARD>/Makefile`）修改即可，以下命令会通过 VIM 调出当前开发板的本地配置文件（`boards/<BOARD>/.labconfig`）：
 
     $ make edit
 
@@ -1002,7 +999,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 从 v0.5 开始，所有源代码下载在 Linux Lab 的 `src/` 目录下，历史版本都直接放在 Linux Lab 根目录，请注意该区别。
 
-**注意**：如果开启了 `CACHE_SRC` 或 `ONESHOT` （设置为 1），新下载的源码将被放置在 `build/src/` 目录下，里面的内容必须要手动保存和备份，否则在关机后会丢失。
+**注意**：如果开启了 `CACHE_SRC` 或 `ONESHOT`（设置为 1），新下载的源码将被放置在 `build/src/` 目录下，里面的内容必须要手动保存和备份，否则在关机后会丢失。
 
 ### 3.3.2 检出
 
@@ -1010,7 +1007,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make checkout APP=kernel,root
 
-单独检出相关部分:
+单独检出相关部分：
 
     $ make kernel-checkout
     $ make root-checkout
@@ -1130,14 +1127,13 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make save kernel
     $ make save root
 
-
 ### 3.3.7 启动
 
 缺省情况下采用非图形界面的串口方式启动，如果要退出可以使用 `CTRL+a x`, `poweroff`, `reboot` 或 `pkill qemu` 命令（具体参考 6.2.2 节）
 
     $ make boot
 
-图形方式启动 (如果要退出请使用 `CTRL+ALT+2 quit`):
+图形方式启动（如果要退出请使用 `CTRL+ALT+2 quit`）:
 
     $ make b=pc boot G=1 LINUX=v5.1 BUILDROOT=2019.11
     $ make b=versatilepb boot G=1 LINUX=v5.1 BUILDROOT=2016.05
@@ -1148,9 +1144,9 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 **注意**：
 
 * 真正的图形化方式启动需要 LCD 和键盘驱动的支持，上述开发板可以完美支持 Linux 内核 5.1 版本的运行，`raspi3` 和 `malta` 两款开发板支持 tty0 终端但不支持键盘输入。
-* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 Qemu 的 “View” 菜单切换到串口终端后使用。
+* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 Qemu 的“View”菜单切换到串口终端后使用。
 
-`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 qemu，可以通过在启动时指定 `G=1` 参数然后通过选择 “View” 菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 qemu 选项参数。
+ `vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 qemu，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 qemu 选项参数。
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
@@ -1231,12 +1227,12 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
 |选项| 说明                                                 |
 |----|------------------------------------------------------|
-| `y`| 编译内核中的模块或者使能其他内核选项                 |
-| `c`| 以插件方式编译内核模块，类似 `m` 选项                |
-| `o`| 以插件方式编译内核模块，类似 `m` 选项                |
-| `n`| 关闭一个内核选项                                     |
-| `s`| `RTC_SYSTOHC_DEVICE="rtc0"`，设置 rtc 设备为 rtc0    |
-| `v`| `PANIC_TIMEOUT=5`, 设置内核 panic 超时为 5 秒      |
+| `y` | 编译内核中的模块或者使能其他内核选项                 |
+| `c` | 以插件方式编译内核模块，类似 `m` 选项                |
+| `o` | 以插件方式编译内核模块，类似 `m` 选项                |
+| `n` | 关闭一个内核选项                                     |
+| `s` | `RTC_SYSTOHC_DEVICE="rtc0"`，设置 rtc 设备为 rtc0    |
+| `v` | `PANIC_TIMEOUT=5`, 设置内核 panic 超时为 5 秒      |
 
 在一条命令中使用多个选项：
 
@@ -1259,10 +1255,10 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 如果加上 `m` 参数，除了列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `src/linux-stable/` 下的所有模块：
 
     $ make modules-list m=hello
-         1	m=hello ; M=$PWD/src/modules/hello
+         1      m=hello ; M=$PWD/src/modules/hello
     $ make modules-list m=tun,minix
-         1	c=TUN ; m=tun ; M=drivers/net
-         2	c=MINIX_FS ; m=minix ; M=fs/minix
+         1      c=TUN ; m=tun ; M=drivers/net
+         2      c=MINIX_FS ; m=minix ; M=fs/minix
 
 使能一个内核模块：
 
@@ -1300,7 +1296,6 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make modules m=hello
     或
     $ make kernel $PWD/src/modules/hello/hello.ko
-
 
 ### 4.1.3 使用内核特性
 
@@ -1387,7 +1382,6 @@ Linux 官方社区提供了 RT Preemption 的实时系统特性，但是还有�
 
 上述功能与 `make config` 完全一致。
 
-
 ### 4.1.4 新建开发分支
 
 如果希望新建一个分支来做开发，那么可以参考如下步骤。
@@ -1463,7 +1457,7 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
 
-  `BOOTDEV` 用于设定 uboot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
+ `BOOTDEV` 用于设定 uboot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
 
 配置 U-boot：
 
@@ -1565,14 +1559,14 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     (host)$ sudo apt-get install -y qemu-user-static
 
-  ARM32/vexpress-a9 (用户名和密码均为 root):
+  ARM32/vexpress-a9（用户名和密码均为 root）:
 
-    (host)$ tools/root/docker/extract.sh tinylab/arm32v7-ubuntu arm
+    (host)$ tools/root/docker/extract.sh tinylab/arm32v7-Ubuntu arm
     (lab )$ make boot b=arm/vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
 
-  ARM64/raspi3 (用户名和密码均为 root):
+  ARM64/raspi3（用户名和密码均为 root）:
 
-    (host)$ tools/root/docker/extract.sh tinylab/arm64v8-ubuntu arm
+    (host)$ tools/root/docker/extract.sh tinylab/arm64v8-Ubuntu arm
     (lab )$ make boot b=aarch64/virt V=1 ROOTDEV=nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm64v8-ubuntu
 
 其他 Docker 中更多的根文件系统：
@@ -1619,7 +1613,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test-debug linux
 
-找出内核崩溃出错地址所在的代码行:
+找出内核崩溃出错地址所在的代码行：
 
     $ make kernel-calltrace func+offset/length
 
@@ -1670,7 +1664,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test TEST_CASE=/tools/ftrace/trace.sh
 
-运行客户机的测试用例（`COMMAND_LINE_SIZE` 必须足够大，譬如，4096，查看下文的 `cmdline_size` 特性 ）
+运行客户机的测试用例（`COMMAND_LINE_SIZE` 必须足够大，譬如，4096，查看下文的 `cmdline_size` 特性）
 
     $ make test TEST_BEGIN=date TEST_END=date TEST_CASE='ls /;echo hello world'
 
@@ -1678,7 +1672,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test TEST_REBOOT=2
 
-  **注意**: reboot 可以有以下几种结果 1) 挂起, 2) 继续; 3) 超时后被杀死, `TEST_TIMEOUT=30`; 4) 超时终止后不报错继续其他测试, `TIMEOUT_CONTINUE=1`
+  **注意**: reboot 可以有以下几种结果 1) 挂起，2) 继续；3) 超时后被杀死，`TEST_TIMEOUT=30`; 4) 超时终止后不报错继续其他测试，`TIMEOUT_CONTINUE=1`
 
 在一个特定的开发板上测试一个特定 Linux 版本的某个功能（`cmdline_size` 特性用于增加 `COMMAND_LINE_SIZE` 为 4096）：
 
@@ -1711,7 +1705,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION'
 
-测试时不使用 feature-init （若非必须可以节省时间）
+测试时不使用 feature-init（若非必须可以节省时间）
 
     $ make test m=lkdtm lkdtm_args='cpoint_name=DIRECT cpoint_type=EXCEPTION' TEST_INIT=0
     或
@@ -1748,7 +1742,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 测试内核调试：
 
     $ make test DEBUG=1
-
 
 **注意**: 上述测试在某些板子或者某些内核版本上可能会失败，如果有需要，请升级相应的内核版本。
 
@@ -1801,7 +1794,7 @@ Qemu 开发板：
 
 ### 4.8.4 通过 9p virtio 共享文件
 
-有关如何为一个新的开发板启用 9p virtio，请参考 [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup)。编译 qemu 时必须使用 `--enable-virtfs` 选项，同时内核必须打开必要的选项。
+有关如何为一个新的开发板启用 9p virtio，请参考 [qemu 9p setup][069]。编译 qemu 时必须使用 `--enable-virtfs` 选项，同时内核必须打开必要的选项。
 
 重新配置内核如下：
 
@@ -1819,7 +1812,7 @@ Qemu 开发板：
     9pnet_virtio: no channels available for device hostshare
     mount: mounting hostshare on /hostshare failed: No such file or directory
 
-  `-device virtio-9p-device` 需要较少的内核选项。
+ `-device virtio-9p-device` 需要较少的内核选项。
 
   为了使能以上选项，请输入以下命令：
 
@@ -1855,12 +1848,11 @@ Qemu 开发板：
     test
     $ touch /hostshare/guest-test   # Create a file in guest
 
-
 使用 Linux v5.1 验证过的开发板：
 
 | 开发板           | 支持状态                                                       |
 |------------------|----------------------------------------------------------------|
-|aarch64/virt      | virtio-9p-device (virtio-9p-pci 导致 nfsroot 不工作)           |
+|aarch64/virt      | virtio-9p-device（virtio-9p-pci 导致 nfsroot 不工作）           |
 |arm/vexpress-a9   | 仅支持 virtio-9p-device                                        |
 |arm/versatilepb   | 仅支持 virtio-9p-pci                                           |
 |x86_64/pc         | 仅支持 virtio-9p-pci                                           |
@@ -1891,7 +1883,7 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 ### 4.10.2 交叉编译和运行
 
-下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 X32 (code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC 和 RISCV 为例：
+下面简单介绍如何在 Linux Lab 下交叉编译和并运行 C 程序，以 X32 (code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC 和 RISC-V 为例：
 
     $ sudo apt-get update -y
 
@@ -1927,7 +1919,7 @@ Linux Lab 在 `src/examples/assembly` 目录下有许多汇编代码的例子：
 
 ## 4.11 运行任意的 make 目标
 
-Linux Lab 支持访问所有 APP 自身 Makefile 中定义的目标，譬如：
+Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
 
     $ make kernel help
     $ make kernel menuconfig
@@ -1956,37 +1948,37 @@ Linux Lab 支持访问所有 APP 自身 Makefile 中定义的目标，譬如：
 欢迎阅读下述文档学习更多用法：
 
 * 使用 Linux Lab 的好处
-    * [Linux Lab：难以抗拒的十大理由 V1.0](https://tinylab.org/why-linux-lab)
-    * [Linux Lab：难以抗拒的十大理由 V2.0](https://tinylab.org/why-linux-lab-v2)
+    * [Linux Lab：难以抗拒的十大理由 V1.0][067]
+    * [Linux Lab：难以抗拒的十大理由 V2.0][068]
 
 * 中文用户手册
-    * [Linux Lab v1.0 中文手册](https://tinylab.org/pdfs/linux-lab-v1.0-manual-zh.pdf)
-    * [Linux Lab v0.9 中文手册](https://tinylab.org/pdfs/linux-lab-v0.9-manual-zh.pdf)
-    * [Linux Lab v0.8 中文手册](https://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf)
-    * [Linux Lab 龙芯实验手册 V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+    * [Linux Lab v1.0 中文手册][065]
+    * [Linux Lab v0.9 中文手册][064]
+    * [Linux Lab v0.8 中文手册][063]
+    * [Linux Lab 龙芯实验手册 V0.2][062]
 
-* Linux Lab 视频公开课：含用法介绍、使用案例分享、发布会视频回放、Linux Lab Disk功能演示等
-    * [CCTALK](https://www.cctalk.com/m/group/88948325)
-    * [B 站](https://space.bilibili.com/687228362/channel/detail?cid=152574)
-    * [知乎](https://www.zhihu.com/people/wuzhangjin)
+* Linux Lab 视频公开课：含用法介绍、使用案例分享、发布会视频回放、Linux Lab Disk 功能演示等
+    * [CCTALK][071]
+    * [B 站][024]
+    * [知乎][074]
 
 * 采用 Linux Lab 作为实验环境的视频课程
-    * [《360° 剖析 Linux ELF》](https://www.cctalk.com/m/group/88089283)
-    * [《Rust 语言快速上手》](https://cctalk.com/m/group/89507527)
-    * [《软件逆向工程初探》](https://www.cctalk.com/m/group/89626746)
-    * [《Linux内核热补丁技术介绍与实战》](https://www.cctalk.com/m/group/89715946)
+    * [《360° 剖析 Linux ELF》][070]
+    * [《Rust 语言快速上手》][006]
+    * [《软件逆向工程初探》][072]
+    * [《Linux 内核热补丁技术介绍与实战》][073]
 
 * 采用 Linux Lab 或者 Linux Lab 正在支持的图书、课程等
-    * [成功适配过 Linux Lab 的国内外图书、线上课程列表](https://gitee.com/tinylab/linux-lab/issues/I49VV9)
+    * [成功适配过 Linux Lab 的国内外图书、线上课程列表][015]
 
 * 采用 Linux Lab 或者 Linux Lab 正在支持的真实硬件开发板
-    * [ARM IMX6ULL](https://shop155917374.taobao.com/)，野火电子
+    * [ARM IMX6ULL][023]，野火电子
     * RISCV-64 D1, 平头哥
 
 * Linux Lab 社区正在开发的周边硬件
-    * [Linux Lab Disk](https://shop155917374.taobao.com/)，免安装、即插即用 Linux Lab 开发环境
+    * [Linux Lab Disk][023]，免安装、即插即用 Linux Lab 开发环境
         * 支持 Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
-    * [Pocket Linux Disk](https://shop155917374.taobao.com/)，免安装、即插即用 Linux 发行版
+    * [Pocket Linux Disk][023]，免安装、即插即用 Linux 发行版
         * 支持 Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 
 # 5. Linux Lab 开发
@@ -2061,7 +2053,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ ls boards/aarch64/raspi3/bsp/configs/
     buildroot_2019.02.2_defconfig  linux_v5.1_defconfig
 
-`2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
+ `2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
 
 更多 clone 命令的用法如下：
 
@@ -2204,7 +2196,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 ### 6.1.3 本地主机不能运行 Linux Lab
 
-Linux Lab 的完整功能依赖于 [Cloud Lab](https://tinylab.org/cloud-lab) 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab](https://tinylab.org/cloud-lab) 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
+Linux Lab 的完整功能依赖于 [Cloud Lab][027] 所管理的完整 docker 环境，因此，请切勿尝试脱离 [Cloud Lab][027] 在本地主机上直接运行 Linux Lab，否则系统会报告缺少很多依赖软件包以及其他奇怪的错误。
 
 Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装好的环境来避免在不同系统中的软件包安装问题，从而加速我们上手的时间，因此 Linux Lab 暂无计划支持在本地主机环境下使用，也请不要提这样的需求。
 
@@ -2233,25 +2225,24 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
 解决方法是选择配置以下 Docker 镜像服务站点中的一个：
 
-  * [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker 镜像使用文档](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+  * [阿里云 Docker 镜像使用文档][018]
+  * [USTC Docker 镜像使用文档][020]
 
 Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进行 Mirror 站点配置：
 
-`/etc/docker/daemon.json`:
+ `/etc/docker/daemon.json`:
 
     {
         "registry-mirrors": ["<your accelerate address>"]
     }
 
-`/lib/systemd/system/docker.service`:
+ `/lib/systemd/system/docker.service`:
 
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
 
-`/etc/default/docker`:
+ `/etc/default/docker`:
 
     DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
-
 
 **注意**：以上三种方式不要同时配置，请选择适合 Docker 版本的方式选一种即可，新的 Linux 发行版一般都用 `/etc/docker/daemon.json`。
 
@@ -2259,7 +2250,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
     $ sudo service docker restart
 
-对于其他 Linux 系统，Windows 和 MacOS 系统，建议优先参考 [阿里云 Docker 镜像使用文档](https://help.aliyun.com/document_detail/60750.html)。
+对于其他 Linux 系统，Windows 和 macOS 系统，建议优先参考 [阿里云 Docker 镜像使用文档][018]。
 
 如果添加镜像后速度依然很慢，请仔细检查是否配置成功或者是否打错了地址：
 
@@ -2273,7 +2264,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
     $ tools/docker/save linux-lab
 
-在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
+在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的“Linux Lab”图标恢复运行，或者通过命令行像第一次运行那样：
 
     $ tools/docker/run linux-lab
 
@@ -2307,7 +2298,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 ### 6.1.10 Docker not work in Ubuntu 20.04
 
-如果在 Ubuntu 20.04 下 Docker 不工作，请尝试使用 `doc/install/daemon.json` 并清理 dockerd 的默认参数，更多内容请参考 [docker daemon](https://docs.docker.com/config/daemon/)：
+如果在 Ubuntu 20.04 下 Docker 不工作，请尝试使用 `doc/install/daemon.json` 并清理 dockerd 的默认参数，更多内容请参考 [docker daemon][008]：
 
     $ sudo cat /etc/systemd/system/docker.service.d/docker.conf
     [Service]
@@ -2322,7 +2313,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 ### 6.1.11 Error creating aufs mount
 
-如果遇到类似错误："error creating aufs mount to ... invalid arguments", 那意味着当前配置的 docker 存储驱动不被支持，可以从 [Storage Driver](https://docs.docker.com/storage/storagedriver/select-storage-driver/) 选配一个，例如:
+如果遇到类似错误："error creating aufs mount to ... invalid arguments", 那意味着当前配置的 docker 存储驱动不被支持，可以从 [Storage Driver][009] 选配一个，例如：
 
     $ sudo vim /etc/docker/daemon.json
     {
@@ -2336,15 +2327,15 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 ### 6.2.1 缺少 KVM 加速
 
-KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需要 cpu 和 bios 支持，否则，您可能会看到以下错误日志：
+KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需要 CPU 和 bios 支持，否则，您可能会看到以下错误日志：
 
     modprobe: ERROR: could not insert 'kvm_intel': Operation not supported
 
-检查 cpu 的虚拟化支持能力，如果没有输出，则说明 cpu 不支持虚拟化：
+检查 CPU 的虚拟化支持能力，如果没有输出，则说明 CPU 不支持虚拟化：
 
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
-如果 cpu 支持，我们还需要确保在 BIOS 中启用了该功能，只需重新启动计算机，按 “Delete” 键进入 BIOS，请确保 “Intel virtualization technology” 功能已启用。
+如果 CPU 支持，我们还需要确保在 BIOS 中启用了该功能，只需重新启动计算机，按“Delete”键进入 BIOS，请确保“Intel virtualization technology”功能已启用。
 
 ### 6.2.2 Guest 关机或重启后挂住
 
@@ -2368,11 +2359,10 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 | 停留界面               | 退出方式                              |
 |------------------------|---------------------------------------|
-| 串口控制台             | `CTRL+a x`                            |
-| 基于 Curses 的图形终端 | `ESC+2 quit` 或 `ALT+2 quit`          |
-| 基于 X 图形终端        | `CTRL+ALT+2 quit`                     |
+| 串口控制台             | `CTRL+a x`                             |
+| 基于 Curses 的图形终端 | `ESC+2 quit` 或 `ALT+2 quit`           |
+| 基于 X 图形终端        | `CTRL+ALT+2 quit`                      |
 | 通用方法               | `poweroff`, `reboot`, `kill`, `pkill` |
-
 
 ### 6.2.4 Boot 时报缺少 sdl2 库
 
@@ -2386,23 +2376,23 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 如果 NFS 或 tftpboot 不起作用，请在主机端运行 `modprobe nfsd` 并在 Guest 侧通过 `/configs/tools/restart-net-servers.sh` 重新启动网络服务，请确保不要使用 `tools/docker/trun`。
 
-### 6.3.2 在 vim 中无法切换窗口
+### 6.3.2 在 VIM 中无法切换窗口
 
-浏览器和 vim 中都提供了 `CTRL+w`，为了避免冲突，要从一个窗口切换到另一个窗口，请改用 `CTRL+Left` 或 `CTRL+Right` 键，Linux Lab 已将 `CTRL+Right` 映射为 `CTRL+w`，将 `CTRL+Left` 映射为 `CTRL+p`。
+浏览器和 VIM 中都提供了 `CTRL+w`，为了避免冲突，要从一个窗口切换到另一个窗口，请改用 `CTRL+Left` 或 `CTRL+Right` 键，Linux Lab 已将 `CTRL+Right` 映射为 `CTRL+w`，将 `CTRL+Left` 映射为 `CTRL+p`。
 
 ### 6.3.3 长按 Backspace 不工作
 
-长按键目前在 Web 界面中不起作用，因此，长按 “Delete” 或 “Backspace” 键不起作用，请改用 `alt+delete` 或 `alt+backspace` 组合键，以下是更多有关组合键的小技巧：
+长按键目前在 Web 界面中不起作用，因此，长按“Delete”或“Backspace”键不起作用，请改用 `alt+delete` 或 `alt+backspace` 组合键，以下是更多有关组合键的小技巧：
 
-|说明           | Vim           | Bash                      |
+|说明           | VIM           | Bash                      |
 |---------------|---------------|---------------------------|
-|行首/行尾      | `^/$`         | `Ctrl + a/e`              |
-|前进/后退一个字| `w/b`         | `Ctrl + Home/end`         |
-|向后剪切一个字 | `db`          | `Alt  + Delete/backspace` |
-|向前剪切一个字 | `dw`          | `Alt  + d`                |
-|剪切光标前所有 | `d^`          | `Ctrl + u`                |
-|剪切光标后所有 | `d$`          | `Ctrl + k`                |
-|粘帖剪切的内容 | `p`           | `Ctrl + y`                |
+|行首/行尾      | `^/$`          | `Ctrl + a/e`               |
+|前进/后退一个字| `w/b`          | `Ctrl + Home/end`          |
+|向后剪切一个字 | `db`           | `Alt  + Delete/backspace` |
+|向前剪切一个字 | `dw`           | `Alt  + d`                 |
+|剪切光标前所有 | `d^`           | `Ctrl + u`                 |
+|剪切光标后所有 | `d$`           | `Ctrl + k`                 |
+|粘帖剪切的内容 | `p`            | `Ctrl + y`                 |
 
 ### 6.3.4 如何快速切换中英文输入
 
@@ -2462,37 +2452,37 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
 
 ### 6.3.6 如何进入全屏模式
 
-打开左边的侧边栏，点击 “Fullscreen” 按钮。
+打开左边的侧边栏，点击“Fullscreen”按钮。
 
 ### 6.3.7 如何录屏
 
 1. 使能录制
 
-    打开左侧边栏，按 “Settings” 按钮，配置 “File/Title/Author/Category/Tags/Description”，然后启用 “Record Screen” 选项。
+    打开左侧边栏，按“Settings”按钮，配置“File/Title/Author/Category/Tags/Description”，然后启用“Record Screen”选项。
 
 2. 开始录制
 
-    按下 “Connect” 按钮。
+    按下“Connect”按钮。
 
 3. 停止录制
 
-    按下 “Disconnect” 按钮。
+    按下“Disconnect”按钮。
 
 4. 重放录制的视频
 
-    按下 “Play” 按钮。
+    按下“Play”按钮。
 
 5. 分享视频
 
-    视频存储在 “cloud-lab/recordings” 目录下，参考 [showdesk.io](http://showdesk.io/post) 的帮助进行分享。
+    视频存储在“cloud-lab/recordings”目录下，参考 [showdesk.io][019] 的帮助进行分享。
 
 ### 6.3.8 Web 界面无响应
 
-Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的 “刷新” 按钮或断开连接后重新连接。
+Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可能无法响应，要恢复该状态，请点击 Web 浏览器的“刷新”按钮或断开连接后重新连接。
 
 ### 6.3.9 登录 WEB 界面时超时或报错
 
-如果登陆 WEB 界面时出现 “Disconnect timeout”，请稍等片刻后继续点击左侧 “Connect” 按钮，如果依然无法成功，请按下述步骤检查。
+如果登陆 WEB 界面时出现“Disconnect timeout”，请稍等片刻后继续点击左侧“Connect”按钮，如果依然无法成功，请按下述步骤检查。
 
 首先检查 linux-lab 需要的 docker 容器是否正常启动（Up: 正常，Exit: 为不正常）：
 
@@ -2551,7 +2541,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ rm boards/aarch64/raspi3/bsp/root/2019.02.2/rootfs.ext2
     $ make boot
 
-`make boot` 命令可以自动创建该映像，请不要中途打断。
+ `make boot` 命令可以自动创建该映像，请不要中途打断。
 
 ### 6.4.2 linux/compiler-gcc7.h: No such file or directory
 
@@ -2578,7 +2568,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ hdiutil attach -mountpoint ~/Develop/labspace -nobrowse labspace.dmg.sparseimage
     $ cd ~/Develop/labspace
 
-**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk](https://shop155917374.taobao.com)。
+**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk][022]。
 
 ### 6.4.5 unable to create file: net/netfilter/xt_dscp.c
 
@@ -2591,7 +2581,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
     $ fsutil.exe file SetCaseSensitiveInfo <path/to/cloud-lab> enable
 
-**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk](https://shop155917374.taobao.com)。
+**注意**：Linux Lab Disk 不存在该问题，建议直接选购 [Linux Lab Disk][022]。
 
 ### 6.4.6 如何切到 root 用户
 
@@ -2609,7 +2599,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8
-    Makefile:594: *** ERR: v5.8 not in supported LINUX list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
+    Makefile:594: *** ERR: v5.8 not in supported Linux list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
 
     $ make boot QEMU=loongson-v1.1
     Makefile:606: *** ERR: loongson-v1.1 not in supported QEMU list: loongson-v1.0, clone one please: 'make qemu-clone QEMU_NEW=loongson-v1.1'.
@@ -2662,7 +2652,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 * 网店：<https://shop155917374.taobao.com>
     * 泰晓开源小店，销售社区自研开源项目周边产品，用于补贴开源项目研发
     * 已上架即插即跑 Linux Lab Disk、Pocket Linux Disk 以及适配过的真实 Linux 开发板等
-    * 欢迎选购，也可以在淘宝手机 APP 内搜索 “泰晓 Linux” 找到我们
+    * 欢迎选购，也可以在淘宝手机 App 内搜索“泰晓 Linux”找到我们
 
 * 星球：<https://t.zsxq.com/uB2vJyF>
     * 泰晓科技 VIP 知识频道
@@ -2683,22 +2673,98 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 以下是截止到本文档最新一次更新时的赞助列表：
 
 * 2021
-    * [吴伟老师](https://github.com/lazyparser)
+    * [吴伟老师][016]
         * 赞助 5000 元人民币现金并长期友好支持泰晓科技 Linux 技术社区
         * HelloGCC 负责人，HelloLLVM 负责人，PLCT 实验室项目总监。长期致力于推动编译技术及开源工具在国内的推广。欢迎关注公众号：HelloGCC
 
-    * [开源之夏 2021](https://summer.iscas.ac.cn)
+    * [开源之夏 2021][026]
         * 开源之夏 2021 赞助了如下项目：Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
 
     * 平头哥，赞助 1 块 D1 开发板
     * 全志，赞助 3 块 D1 开发板
 
 * 2020
-    * [龙芯](http://loongson.cn/)
+    * [龙芯][005]
         * 国产龙芯系列处理器设计与制造商
         * 龙芯公司赞助开发了 mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232 和相关文档及视频课程
 
-    * [开源之夏 2020](https://summer.iscas.ac.cn)
+    * [开源之夏 2020][026]
         * 开源之夏 2020 赞助了 Linux Lab 的镜像升级：从 Ubuntu 14.04 升级到 Ubuntu 20.04
 
     * 野火电子，赞助 6 块 IMX6ULL 开发板
+
+[001]: doc/install/arch-docker.md
+[002]: doc/install/manjaro-docker.md
+[003]: doc/install/ubuntu-docker.md
+[004]: http://gitee.com/tinylab/linux-0.11-lab
+[005]: http://loongson.cn/
+[006]: https://cctalk.com/m/group/89507527
+[007]: https://docs.docker.com
+[008]: https://docs.docker.com/config/daemon/
+[009]: https://docs.docker.com/storage/storagedriver/select-storage-driver/
+[010]: https://elinux.org/Work_on_Tiny_Linux_Kernel
+[011]: https://get.daocloud.io/toolbox/
+[012]: https://gitee.com/loongsonlab/loongson
+[013]: https://gitee.com/tinylab/csky
+[014]: https://gitee.com/tinylab/linux-lab/issues/I1FZBJ
+[015]: https://gitee.com/tinylab/linux-lab/issues/I49VV9
+[016]: https://github.com/lazyparser
+[017]: https://git-scm.com/downloads
+[018]: https://help.aliyun.com/document_detail/60750.html
+[019]: http://showdesk.io/post
+[020]: https://lug.ustc.edu.cn/wiki/mirrors/help/docker
+[021]: https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf
+[022]: https://shop155917374.taobao.com
+[023]: https://shop155917374.taobao.com/
+[024]: https://space.bilibili.com/687228362/channel/detail?cid=152574
+[025]: https://store.docker.com/search?type=edition&offering=community
+[026]: https://summer.iscas.ac.cn
+[027]: https://tinylab.org/cloud-lab
+[028]: https://tinylab.org/linux-lab-disk
+[029]: https://tinylab.org/linux-lab-v0.1/
+[030]: https://tinylab.org/linux-lab-v0.1-rc1/
+[031]: https://tinylab.org/linux-lab-v0.1-rc2/
+[032]: https://tinylab.org/linux-lab-v0.1-rc3/
+[033]: https://tinylab.org/linux-lab-v02/
+[034]: https://tinylab.org/linux-lab-v0.2-rc1/
+[035]: https://tinylab.org/linux-lab-v0.2-rc2/
+[036]: https://tinylab.org/linux-lab-v0.2-rc3/
+[037]: https://tinylab.org/linux-lab-v0.3/
+[038]: https://tinylab.org/linux-lab-v03-rc1/
+[039]: https://tinylab.org/linux-lab-v03-rc2/
+[040]: https://tinylab.org/linux-lab-v03-rc3/
+[041]: https://tinylab.org/linux-lab-v0.4/
+[042]: https://tinylab.org/linux-lab-v04-rc1/
+[043]: https://tinylab.org/linux-lab-v04-rc2/
+[044]: https://tinylab.org/linux-lab-v04-rc3/
+[045]: https://tinylab.org/linux-lab-v0.5/
+[046]: https://tinylab.org/linux-lab-v05-rc1/
+[047]: https://tinylab.org/linux-lab-v05-rc2/
+[048]: https://tinylab.org/linux-lab-v05-rc3/
+[049]: https://tinylab.org/linux-lab-v0.6/
+[050]: https://tinylab.org/linux-lab-v06-rc1/
+[051]: https://tinylab.org/linux-lab-v06-rc2/
+[052]: https://tinylab.org/linux-lab-v0.7/
+[053]: https://tinylab.org/linux-lab-v07-rc1/
+[054]: https://tinylab.org/linux-lab-v0.8/
+[055]: https://tinylab.org/linux-lab-v08-rc3/
+[056]: https://tinylab.org/linux-lab-v0.9/
+[057]: https://tinylab.org/linux-lab-v09-rc1/
+[058]: https://tinylab.org/linux-lab-v09-rc2/
+[059]: https://tinylab.org/linux-lab-v09-rc3/
+[060]: https://tinylab.org/linux-lab-v1.0/
+[061]: https://tinylab.org/manjaro2go/
+[062]: https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf
+[063]: https://tinylab.org/pdfs/linux-lab-v0.8-manual-zh.pdf
+[064]: https://tinylab.org/pdfs/linux-lab-v0.9-manual-zh.pdf
+[065]: https://tinylab.org/pdfs/linux-lab-v1.0-manual-zh.pdf
+[066]: https://tinylab.org/pocket-linux-disk-ubuntu/
+[067]: https://tinylab.org/why-linux-lab
+[068]: https://tinylab.org/why-linux-lab-v2
+[069]: https://wiki.qemu.org/Documentation/9psetup
+[070]: https://www.cctalk.com/m/group/88089283
+[071]: https://www.cctalk.com/m/group/88948325
+[072]: https://www.cctalk.com/m/group/89626746
+[073]: https://www.cctalk.com/m/group/89715946
+[074]: https://www.zhihu.com/people/wuzhangjin
+[075]: http://www.kernel.org

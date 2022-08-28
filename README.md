@@ -12,7 +12,6 @@
 
 <!-- toc start -->
 
-
 # Table of Content
 
 - [1. Linux Lab Overview](#1-linux-lab-overview)
@@ -119,7 +118,7 @@
        - [6.2.4 Boot with missing sdl2 libraries failure](#624-boot-with-missing-sdl2-libraries-failure)
     - [6.3 Environment Issues](#63-environment-issues)
        - [6.3.1 NFS/tftpboot not work](#631-nfstftpboot-not-work)
-       - [6.3.2 How to switch windows in vim](#632-how-to-switch-windows-in-vim)
+       - [6.3.2 How to switch Windows in vim](#632-how-to-switch-windows-in-vim)
        - [6.3.3 How to delete typo in shell command line](#633-how-to-delete-typo-in-shell-command-line)
        - [6.3.4 Language input switch shortcuts](#634-language-input-switch-shortcuts)
        - [6.3.5 How to tune the screen size](#635-how-to-tune-the-screen-size)
@@ -152,7 +151,7 @@
 
 ## 1.1 Project Introduction
 
-This project aims to create a Docker and Qemu based Linux development Lab to easier the learning, development and testing of [Linux Kernel](http://www.kernel.org).
+This project aims to create a Docker and Qemu based Linux development Lab to easier the learning, development and testing of [Linux Kernel][040].
 
 Linux Lab is open source with no warranty – use at your own risk.
 
@@ -185,17 +184,17 @@ Related Projects:
     * <https://tinylab.org/cs630-qemu-lab>
 
 * RVOS Lab
-    * Learning RISC-V OS course, merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Learning RISC-V OS course, merged in [Linux Lab Disk][029]
     * Download it to `src/examples` and use it in Linux Lab directly
     * <https://gitee.com/tinylab/rvos-lab>
 
 * GUI Lab
-    * Learning embedded GUI (e.g. Guilite)，merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Learning embedded GUI (e.g. Guilite)，merged in [Linux Lab Disk][029]
     * Download it to `src/examples` and use it in Linux Lab directly
     * <https://gitee.com/tinylab/gui-lab>
 
 * RISC-V Linux
-    * Learning RISC-V Linux kernel, merged in [Linux Lab Disk](https://tinylab.org/linux-lab-disk)
+    * Learning RISC-V Linux kernel, merged in [Linux Lab Disk][029]
     * Download it to `src/examples` and use it in Linux Lab directly
     * <https://gitee.com/tinylab/riscv-linux>
 
@@ -203,7 +202,7 @@ Related Projects:
 
 ### 1.3.1 Free Video Courses In Chinese
 
-  * [Linux Lab Open Videos](https://www.cctalk.com/m/group/88948325)
+  * [Linux Lab Open Videos][036]
       * Linux Lab Introduction
       * Loongson Linux Development
       * Linux Lab Disk Demonstration
@@ -212,18 +211,17 @@ Related Projects:
 
 ### 1.3.2 Non-Free Video Courses In Chinese
 
-  * [The Perspective of Linux ELF](https://www.cctalk.com/m/group/88089283)
+  * [The Perspective of Linux ELF][035]
       * Learn Linux ELF by practice, with hundreds of examples, all verified in Linux Lab
 
-  * [《Rust Language Quickstart》](https://cctalk.com/m/group/89507527)
+  * [《Rust Language Quickstart》][006]
       * Rust course for C programmer, with examples verified in Linux Lab
 
-  * [《Software Reverse Engineering Quickstart》](https://www.cctalk.com/m/group/89626746)
+  * [《Software Reverse Engineering Quickstart》][037]
       * Learn reverse engineering by practice, with examples verified in Linux Lab
 
-  * [《Linux Kernel Livepatch Introduction》](https://www.cctalk.com/m/group/89715946)
+  * [《Linux Kernel Livepatch Introduction》][038]
       * Learn Linux live patching in AArch64 by practice, with examples verified in Linux Lab
-
 
 ## 1.4 Project Functions
 
@@ -248,20 +246,20 @@ Continue reading for more features and usage.
 
 ### 1.5.1 Project Origins
 
-About 10 years ago (2010), a tinylinux proposal: [Work on Tiny Linux Kernel](https://elinux.org/Work_on_Tiny_Linux_Kernel) accepted by Embedded
+About 10 years ago (2010), a tinylinux proposal: [Work on Tiny Linux Kernel][010] accepted by Embedded
 Linux Foundation, therefore I have worked on this project for serveral months.
 
 ### 1.5.2 Problems Solved
 
-During the project cycle, several scripts written to verify if the adding tiny features (e.g. [gc-sections](https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf))
-breaks the other kernel features on the main cpu architectures.
+During the project cycle, several scripts written to verify if the adding tiny features (e.g. [gc-sections][021])
+breaks the other kernel features on the main CPU architectures.
 
 These scripts uses qemu-system-ARCH as the cpu/board simulator, basic boot+function tests have been done for ftrace+perf, accordingly, defconfigs,
 rootfs, test scripts have been prepared, at that time, all of them were simply put in a directory, without a design or holistic consideration.
 
 ### 1.5.3 Project Born
 
-They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab](http://gitee.com/tinylab/linux-0.11-lab) was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
+They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab][004] was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
 
 # 2. Linux Lab Installation
 
@@ -269,7 +267,7 @@ Linux Lab uses Docker, if have already installed Docker and configured the best 
 
 If really a Linux newbie or simply don't want to spend time on boring installation, buy the instant Linux Lab Disk:
 
-[![Linux Lab Disk](doc/images/linux-lab-disk-demo.png)](https://shop155917374.taobao.com)
+[![Linux Lab Disk](doc/images/linux-lab-disk-demo.png)][023]
 
 It supports:
 
@@ -280,7 +278,7 @@ It supports:
     * Include Ubuntu 18.04-22.04, Deepin 20.5+, Fedora 34+, Mint 20.2+, Kali, Manjaro
 * Features
     * Boot from any powered-off 64bit X86 Machine, include PC, Laptop and MacBook
-    * Boot from any running Windows, Linux and MacOS and run in parallel with them
+    * Boot from any running Windows, Linux and macOS and run in parallel with them
     * Switch from or to any running Windows, Linux without poweroff
     * Multiple Linux Lab Disks can boot or switch from/to each other
     * Support timezone setting of different systems transparently, without manual setting
@@ -290,7 +288,7 @@ It supports:
     * Support factory restore, allow restore factory system in some cases
     * Merged in many labs, such as Linux Lab, Linux 0.11 Lab, be able to learn Linux kernel, embedded Linux, Uboot, Assembly, C, Python, Database, Network and so forth
 * Where to buy
-    * [Taobao shop of TinyLab.org Community](https://shop155917374.taobao.com)
+    * [Taobao shop of TinyLab.org Community][023]
 * Product details
     * <https://tinylab.org/linux-lab-disk>
     * Introduce and demonstrate the features, functions and usage of Linux Lab Disk
@@ -309,7 +307,7 @@ If often use, please increase disk storage to 100G~200G, memory storage to 8G, c
 
 Currently, all of the X86_64 systems support Docker should be able to run Linux Lab, include Windows, Linux and MacOS, all of the popular Linux distributions may have been tried by different users.
 
-Welcome to take a look at [the systems running Linux Lab](https://github.com/tinyclub/linux-lab/issues/5) and share yours, for example:
+Welcome to take a look at [the systems running Linux Lab][016] and share yours, for example:
 
     $ cd /path/to/cloud-lab
     $ tools/docker/env
@@ -323,11 +321,11 @@ Docker is required by Linux Lab, please install it at first:
 
   - Linux, Mac OSX, Windows 10
 
-     [Docker CE](https://store.docker.com/search?type=edition&offering=community)
+     [Docker CE][026]
 
   - older Windows (include some older Windows 10)
 
-     [Docker Toolbox](https://get.daocloud.io/toolbox/); Install Ubuntu via Virtualbox or Vmware Virtual Machine
+     [Docker Toolbox][011]; Install Ubuntu via Virtualbox or Vmware Virtual Machine
 
 Before running Linux Lab, please refer to section 6.1.4 and make sure the following command works without sudo and without any issue:
 
@@ -335,31 +333,31 @@ Before running Linux Lab, please refer to section 6.1.4 and make sure the follow
 
 In China, to use docker service normally, please **must** configure one of chinese docker mirror sites, for example:
 
-* [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
+* [Aliyun Docker Mirror Documentation][018]
     * For non Univerisity users, require login with freely registered account
 
-* [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+* [USTC Docker Mirror Documentation][020]
     * For Univerisity users
 
 More docker related issues, such as download slowly, download timeout and download errors, are cleary documented in the 6.1 section of FAQs.
 
-The other issues, please read the [official docker docs](https://docs.docker.com).
+The other issues, please read the [official docker docs][007].
 
 **Notes for Ubuntu Users**
-  - [doc/install/ubuntu-docker.md](doc/install/ubuntu-docker.md)
+  - [doc/install/ubuntu-docker.md][003]
 
 **Notes for Arch Users**
-  - [doc/install/arch-docker.md](doc/install/arch-docker.md)
+  - [doc/install/arch-docker.md][001]
 
 **Notes for Manjaro Users**
-  - [doc/install/manjaro-docker.md](doc/install/manjaro-docker.md)
+  - [doc/install/manjaro-docker.md][002]
 
 **Notes for Windows Users**:
 
-  - Please make sure your Windows version support docker: [Official Docker Documentation](https://docs.docker.com) and determine Docker Desktop or Docker Toolbox should be used
+  - Please make sure your Windows version support docker: [Official Docker Documentation][007] and determine Docker Desktop or Docker Toolbox should be used
 
   - Linux Lab only tested with 'Git Bash' in Windows, please must use with it
-      - After installing [Git For Windows](https://git-scm.com/downloads), "Git Bash Here" will come out in right-button press menu
+      - After installing [Git For Windows][017], "Git Bash Here" will come out in right-button press menu
 
 ## 2.3 Choose a working directory
 
@@ -436,11 +434,11 @@ Summary of login methods:
 
 |   Login Method |   Description      |  Default User    |  Where               |
 |----------------|--------------------|------------------|----------------------|
-|   bash         | docker bash        |  ubuntu          | localhost            |
-|   ssh          | normal ssh         |  ubuntu          | localhost            |
-|   vnc          | normal vnc         |  ubuntu          | localhost+VNC client |
-|   webvnc       | web desktop        |  ubuntu          | anywhere via internet|
-|   webssh       | web ssh            |  ubuntu          | anywhere via internet|
+|   bash         | docker bash        |  Ubuntu          | localhost            |
+|   ssh          | normal ssh         |  Ubuntu          | localhost            |
+|   vnc          | normal vnc         |  Ubuntu          | localhost+VNC client |
+|   webvnc       | web desktop        |  Ubuntu          | anywhere via internet|
+|   webssh       | web ssh            |  Ubuntu          | anywhere via internet|
 
 Since vnc clients differs from operating systems, we use webvnc by default to make sure auto login vnc for all systems.
 
@@ -474,7 +472,7 @@ If modified the running environment of Linux Lab locally and want to reuse it in
     $ tools/docker/save linux-lab
     $ git checkout -- configs/linux-lab/docker/name
 
-Then rerurn linux lab:
+Then rerurn Linux lab:
 
     $ tools/docker/rerun linux-lab
 
@@ -621,7 +619,7 @@ List builtin boards:
 and more:
 
     $ make list-board         # only ARCH
-    $ make list-short         # ARCH and LINUX
+    $ make list-short         # ARCH and Linux
     $ make list-base          # no plugin
     $ make list-plugin        # only plugin
     $ make list-full          # everything
@@ -646,7 +644,7 @@ Only list real boards:
 
 Because real hardware boards differs from each other, so, board specific document are recommended, for example: `boards/arm/ebf-imx6ull/README.md`.
 
-[![Linux Lab Board - IMX6ULL](doc/images/ebf-imx6ull.png)](https://shop155917374.taobao.com)
+[![Linux Lab Board - IMX6ULL](doc/images/ebf-imx6ull.png)][023]
 
 #### 3.1.2.2 Virtual board
 
@@ -716,18 +714,18 @@ Check the board specific configuration:
 
 ### 3.1.2.3 Buy one
 
-All supported real hardware boards, virtual hardware boards support and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop](https://shop155917374.taobao.com/), after bought them, please contact with wechat: `tinylab` and join in the development group.
+All supported real hardware boards, virtual hardware boards support and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop][024], after bought them, please contact with wechat: `tinylab` and join in the development group.
 
 ### 3.1.3 Using as plugins
 
 The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
 
-Book examples or the boards with a whole new cpu architecture benefit from such feature a lot, for book examples may use many boards and a new cpu architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
+Book examples or the boards with a whole new CPU architecture benefit from such feature a lot, for book examples may use many boards and a new CPU architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
 
 Here maintains the available plugins:
 
-- [C-Sky Linux](https://gitee.com/tinylab/csky)
-- [Loongson Linux](https://gitee.com/loongsonlab/loongson)
+- [C-Sky Linux][013]
+- [Loongson Linux][012]
 
 The Loongson plugin has been merged into v5.0.
 
@@ -739,7 +737,7 @@ The configure method is very simple, just edit it by referring to current values
 
     $ make edit
 
-But please don't make a big change once, we often only need to tune linux version, this command is better for such case:
+But please don't make a big change once, we often only need to tune Linux version, this command is better for such case:
 
     $ make list-linux
     v4.12 v4.5.5 v5.0.10 [v5.1]
@@ -931,10 +929,9 @@ Save configs and images to `boards/<BOARD>/bsp/`:
     $ make save kernel
     $ make save root
 
-
 ### 3.3.7 Booting
 
-Boot with serial port (nographic) by default, exit with `CTRL+a x`, `poweroff`, `reboot` or `pkill qemu` (See [poweroff hang](#poweroff-hang)):
+Boot with serial port (nographic) by default, exit with `CTRL+a x`, `poweroff`, `reboot` or `pkill qemu`(See [poweroff hang](#poweroff-hang)):
 
     $ make boot
 
@@ -948,7 +945,7 @@ Boot with graphic (Exit with `CTRL+ALT+2 quit`):
 
 **Note**:
 
-* real graphic boot require LCD and keyboard drivers, the above boards work well, with linux v5.1, `raspi3` and `malta` has tty0 console but without keyboard input.
+* real graphic boot require LCD and keyboard drivers, the above boards work well, with Linux v5.1, `raspi3` and `malta` has tty0 console but without keyboard input.
 
 * new buildroot config files set tty console to serial with (`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`), to enable console with G=1, please change the `getty` line in `/etc/inittab`, for example, replace `ttyAMA0` with `console`, we can also simply switch to the serial console via the Qemu 'View' menu.
 
@@ -1013,7 +1010,7 @@ And more `<xxx>-list` are also supported with `list <xxx>`, for example:
 
 ### 4.1.1 non-interactive configuration
 
-A tool named `scripts/config` in linux kernel is helpful to get/set the kernel
+A tool named `scripts/config` in Linux kernel is helpful to get/set the kernel
 config options non-interactively, based on it, both of `kernel-getconfig`
 and `kernel-setconfig` are added to tune the kernel options, with them, we
 can simply "enable/disable/setstr/setval/getstate" of a kernel option or many
@@ -1039,12 +1036,12 @@ More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 
 | Option | Description
 |--------|-----------------------------------------------------------
-|`y`     | build the modules in kernel or enable anther kernel options.
-|`c`     | build the modules as pluginable modules, just like `m`.
-|`o`     | build the modules as pluginable modules, just like `m`.
-|`n`     | disable a kernel option.
-|`s`     | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
-|`v`     | `PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+| `y`    | build the modules in kernel or enable anther kernel options.
+| `c`    | build the modules as pluginable modules, just like `m`.
+| `o`    | build the modules as pluginable modules, just like `m`.
+| `n`    | disable a kernel option.
+| `s`    | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
+| `v`    | `PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
 
 Operates many options in one command line:
 
@@ -1067,10 +1064,10 @@ List available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/`:
 If `m` argument specified, list available modules in `src/modules/`, `boards/<BOARD>/bsp/modules/` and `src/linux-stable/`:
 
     $ make modules-list m=hello
-         1	m=hello ; M=$PWD/src/modules/hello
+         1      m=hello ; M=$PWD/src/modules/hello
     $ make modules-list m=tun,minix
-         1	c=TUN ; m=tun ; M=drivers/net
-         2	c=MINIX_FS ; m=minix ; M=fs/minix
+         1      c=TUN ; m=tun ; M=drivers/net
+         2      c=MINIX_FS ; m=minix ; M=fs/minix
 
 Enable one kernel module:
 
@@ -1109,7 +1106,6 @@ Build external kernel modules (the same as internel modules):
     Or
     $ make kernel x=$PWD/modules/hello/hello.ko
 
-
 ### 4.1.3 using kernel features
 
 #### 4.1.3.1 list supported kernel features
@@ -1145,7 +1141,7 @@ and in-mainline features.
       + uksm
         - v2.6.38
 
-Verified boards and linux versions are recorded there, so, it should work
+Verified boards and Linux versions are recorded there, so, it should work
 without any issue if the environment not changed.
 
 #### 4.1.3.2 using kernel modules
@@ -1307,7 +1303,7 @@ Save uboot images and configs:
 
 ## 4.3 Using Qemu Emulator
 
-Builtin qemu may not work with the newest linux kernel, so, we need compile and
+Builtin qemu may not work with the newest Linux kernel, so, we need compile and
 add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
 
 At first, build qemu-system-ARCH:
@@ -1362,7 +1358,7 @@ GCC version can be configured in board specific Makefile for Linux, Uboot, Qemu 
 
 With this configuration, GCC will be switched automatically during defconfig and compiling of the specified Linux v2.6.11.12.
 
-To build host tools, host gcc should be configured too(please specify b=`i386/pc` explicitly):
+To build host tools, host gcc should be configured too(please specify `b=i386/pc` explicitly):
 
     $ make gcc-list b=i386/pc
     $ make gcc-switch CCORI=internal GCC=4.8 b=i386/pc
@@ -1498,7 +1494,7 @@ Reboot the guest system for several times:
 
    NOTE: reboot may 1) hang, 2) continue; 3) timeout killed, TEST_TIMEOUT=30; 4) timeout continue, TIMEOUT_CONTINUE=1
 
-Test a feature of a specified linux version on a specified board(`cmdline_size` feature is for increase `COMMAND_LINE_SIZE` to 4096):
+Test a feature of a specified Linux version on a specified board(`cmdline_size` feature is for increase `COMMAND_LINE_SIZE` to 4096):
 
     $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init,kernel-cleanup
 
@@ -1613,7 +1609,7 @@ Qemu Board:
 
 ### 4.8.4 Share with 9p virtio
 
-To enable 9p virtio for a new board, please refer to [qemu 9p setup](https://wiki.qemu.org/Documentation/9psetup). qemu must be compiled with `--enable-virtfs`, and kernel must enable the necessary options.
+To enable 9p virtio for a new board, please refer to [qemu 9p setup][034]. qemu must be compiled with `--enable-virtfs`, and kernel must enable the necessary options.
 
 Reconfigure the kernel with:
 
@@ -1667,7 +1663,6 @@ Qemu Board:
     test
     $ touch /hostshare/guest-test   # Create a file in guest
 
-
 Verified boards with Linux v5.1:
 
 | boards          | Status
@@ -1703,7 +1698,7 @@ Use hello as example:
 
 ### 4.10.2 Cross build and Run
 
-Use X32 (Code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC and RISCV as example:
+Use X32 (Code for x86-64, int/long/pointer to 32bits), ARM, MIPS, PPC and RISC-V as example:
 
     $ sudo apt-get update -y
 
@@ -1772,33 +1767,33 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)](https://tinylab.org/why-linux-lab-v2)
 
 * User Manual
-    * [Linux Lab v1.0 User Manual](https://tinylab.org/pdfs/linux-lab-v1.0-manual-en.pdf)
-    * [Linux Lab v0.9 User Manual](https://tinylab.org/pdfs/linux-lab-v0.9-manual-en.pdf)
-    * [Linux Lab v0.8 User Manual](https://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf)
-    * [Linux Lab Loongson Manual V0.2](https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf)
+    * [Linux Lab v1.0 User Manual][033]
+    * [Linux Lab v0.9 User Manual][032]
+    * [Linux Lab v0.8 User Manual][031]
+    * [Linux Lab Loongson Manual V0.2][030]
 
 * Linux Lab Videos
-    * [CCTALK](https://m.cctalk.com/inst/sh8qtdag)
-    * [Bilibili](https://space.bilibili.com/687228362/channel/detail?cid=152574)
-    * [Zhihu](https://www.zhihu.com/people/wuzhangjin)
+    * [CCTALK][022]
+    * [Bilibili][025]
+    * [Zhihu][039]
 
 * Video Courses use Linux Lab as experiment environment
-    * [The Perspective Linux ELF](https://www.cctalk.com/m/group/88089283)
-    * [《Rust Language Quickstart》](https://cctalk.com/m/group/89507527)
-    * [《Software Reverse Engineering Quickstart》](https://www.cctalk.com/m/group/89626746)
-    * [《Linux Kernel Livepatch Introduction》](https://www.cctalk.com/m/group/89715946)
+    * [The Perspective Linux ELF][035]
+    * [《Rust Language Quickstart》][006]
+    * [《Software Reverse Engineering Quickstart》][037]
+    * [《Linux Kernel Livepatch Introduction》][038]
 
 * The books or courses Linux Lab supported or plan to support
-    * [books or courses list](https://gitee.com/tinylab/linux-lab/issues/I49VV9)
+    * [books or courses list][014]
 
 * The boards Linux Lab supported or plan to support
-    * [ARM IMX6ULL](https://shop155917374.taobao.com/)
+    * [ARM IMX6ULL][024]
     * RISCV-64 D1
 
 * The hardwares developed by Linux Lab community
-    * [Linux Lab Disk](https://shop155917374.taobao.com/), pre-installed Linux Lab disk
+    * [Linux Lab Disk][024], pre-installed Linux Lab disk
         * Support Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
-    * [Pocket Linux Disk](https://shop155917374.taobao.com/), pre-installed Linux distribution disk
+    * [Pocket Linux Disk][024], pre-installed Linux distribution disk
         * Support Ubuntu 18.04-21.04, Deepin 20.2+, Fedora 34+, Mint 20.2+, Ezgo 14.04+, Kali, Manjaro
 
 # 5. Linux Lab Development
@@ -1909,7 +1904,7 @@ Or clone a kernel config from the old one or the official defconfig:
     Or
 
     $ make B=i386/pc
-    $ pushd linux-stable && git checkout v5.4 && popd
+    $ pushd Linux-stable && git checkout v5.4 && popd
     $ make kernel-clone LINUX_NEW=v5.4 KCFG=i386_defconfig
 
 If no tag existed, a virtual tag name with the real commmit number can be configured as following:
@@ -2019,10 +2014,9 @@ If lab network still not work, please try another private network address and ev
 
 ### 6.1.3 Why not allow running Linux Lab in local host
 
-The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab](https://tinylab.org/cloud-lab), so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
+The full function of Linux Lab depends on the full docker environment managed by [Cloud Lab][028], so, please really never try and therefore please don't complain about why there are lots of packages missing failures and even the other weird issues.
 
 Linux Lab is designed to use pre-installed environment with the docker technology and save our life by avoiding the packages installation issues in different systems, so, Linux Lab would never support local host using even in the future.
-
 
 ### 6.1.4 Run tools without sudo
 
@@ -2049,10 +2043,10 @@ If ping not work, please check one by one:
 
 This means must configure one of the following docker mirror sites:
 
-  * [Aliyun Docker Mirror Documentation](https://help.aliyun.com/document_detail/60750.html)
-  * [USTC Docker Mirror Documentation](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)
+  * [Aliyun Docker Mirror Documentation][018]
+  * [USTC Docker Mirror Documentation][020]
 
-Potential methods of configuration in Ubuntu, depends on docker and ubuntu versions:
+Potential methods of configuration in Ubuntu, depends on docker and Ubuntu versions:
 
 `/etc/default/docker`:
 
@@ -2072,14 +2066,13 @@ Please restart docker service after change the accelerate address:
 
     $ sudo service docker restart
 
-For the other Linux systems, Windows and MacOS System, please refer to [Aliyun Mirror Speedup Document](https://help.aliyun.com/document_detail/60750.html).
+For the other Linux systems, Windows and macOS System, please refer to [Aliyun Mirror Speedup Document][018].
 
 IF still slow, please check if the mirror site is configured normally and without typos:
 
     $ docker info | grep -A1 -i Mirrors
      Registry Mirrors:
       https://XXXXX.mirror.aliyuncs.com/
-
 
 ### 6.1.7 Restart Linux Lab after host system shutdown or reboot
 
@@ -2121,7 +2114,7 @@ If get such error while running `make boot`, it means network issue, please refe
 
 ### 6.1.10 Docker not work in Ubuntu 20.04
 
-If docker not work in Ubuntu 20.04, please use `doc/install/daemon.json` and clean up the arguments of dockerd, learn more from [docker daemon](https://docs.docker.com/config/daemon/):
+If docker not work in Ubuntu 20.04, please use `doc/install/daemon.json` and clean up the arguments of dockerd, learn more from [docker daemon][008]:
 
     $ sudo cat /etc/systemd/system/docker.service.d/docker.conf
     [Service]
@@ -2136,7 +2129,7 @@ Please make sure using the best `registry-mirrors` for better download speed.
 
 ### 6.1.11 Error creating aufs mount
 
-If not work with failure like "error creating aufs mount to ... invalid arguments", that means the storage driver used by docker is not supported by current system, please choose another one from [this page](https://docs.docker.com/storage/storagedriver/select-storage-driver/), and configure it in `/etc/docker/daemon.json`, for example:
+If not work with failure like "error creating aufs mount to ... invalid arguments", that means the storage driver used by docker is not supported by current system, please choose another one from [this page][009], and configure it in `/etc/docker/daemon.json`, for example:
 
     $ sudo vim /etc/docker/daemon.json
     {
@@ -2150,15 +2143,15 @@ This issue is related to kernel version, the same system may upgrade kernel vers
 
 ### 6.2.1 Why kvm speedding up is disabled
 
-kvm only supports both of `qemu-system-i386` and `qemu-system-x86_64` currently, and it also requires the cpu and bios support, otherwise, you may get this error log:
+kvm only supports both of `qemu-system-i386` and `qemu-system-x86_64` currently, and it also requires the CPU and bios support, otherwise, you may get this error log:
 
     modprobe: ERROR: could not insert 'kvm_intel': Operation not supported
 
-Check cpu virtualization support, if nothing output, then, cpu not support virtualization:
+Check CPU virtualization support, if nothing output, then, cpu not support virtualization:
 
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
-If cpu supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
+If CPU supports, we also need to make sure it is enabled in bios features, simply reboot your computer, press 'Delete' to enter bios, please make sure the 'Intel virtualization technology' feature is 'enabled'.
 
 ### 6.2.2 Poweroff hang
 
@@ -2199,7 +2192,7 @@ That's because the docker image is not updated, just enter into cloud-lab and re
 
 If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart the net services via `/configs/tools/restart-net-servers.sh` in guest side and please make sure not use `tools/docker/trun`.
 
-### 6.3.2 How to switch windows in vim
+### 6.3.2 How to switch Windows in VIM
 
 `CTRL+w` is used in both of browser and vim, to switch from one window to another, please use `CTRL+Left` or `CTRL+Right` key instead, Linux Lab has remapped `CTRL+Right` to `CTRL+w` and `CTRL+Left` to `CTRL+p`.
 
@@ -2207,7 +2200,7 @@ If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart
 
 Long keypress not work in novnc client currently, so, long `Delete` not work, please use `alt+delete` or `alt+backspace` instead, more tips:
 
-|Function                  | Vim           | Bash                      |
+|Function                  | VIM           | Bash                      |
 |--------------------------|---------------|---------------------------|
 |begin/end                 | `^/$`         | `Ctrl + a/e`              |
 |forward/backward          | `w/b`         | `Ctrl + Home/end`         |
@@ -2220,7 +2213,6 @@ Long keypress not work in novnc client currently, so, long `Delete` not work, pl
 ### 6.3.4 Language input switch shortcuts
 
 In order to switch English/Chinese input method, please use `CTRL+s` shortcuts, it is used instead of `CTRL+space` to avoid conflicts with local system.
-
 
 ### 6.3.5 How to tune the screen size
 
@@ -2298,7 +2290,7 @@ Open the left sidebar, press the 'Fullscreen' button.
 
 * Share it
 
-    Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io](http://showdesk.io/post).
+    Videos are stored in 'cloud-lab/recordings', share it with help from [showdesk.io][019].
 
 ### 6.3.8 Linux Lab not response
 
@@ -2330,7 +2322,6 @@ If normal, that means the login account and password may have been invalid for s
     $ tools/docker/save linux-lab
 
 VNC login fails while using mismatched password, to fix up such issue, please clean up all and rerun it:
-
 
     $ tools/docker/clean linux-lab
     $ tools/docker/rerun linux-lab
@@ -2366,7 +2357,7 @@ This means the rootfs.ext2 image may be broken, please remove it and try `make b
 
 ### 6.4.2 linux/compiler-gcc7.h: No such file or directory
 
-This means using a newer gcc than the one linux kernel version supported, the solution is [switching to an older gcc version](#toolchain) via `make gcc-switch`, use `i386/pc` board as an example:
+This means using a newer gcc than the one Linux kernel version supported, the solution is [switching to an older gcc version](#toolchain) via `make gcc-switch`, use `i386/pc` board as an example:
 
     $ make gcc-list
     $ make gcc-switch CCORI=internal GCC=4.4
@@ -2412,7 +2403,7 @@ Such information means the specified value is not supported currently:
     ERR: /dev/vda not in supported ROOTDEV list: /dev/sda /dev/ram0 /dev/nfs, update may help: 'make bsp B=mips64el/ls3a7a'.  Stop.
 
     $ make boot LINUX=v5.8
-    Makefile:594: *** ERR: v5.8 not in supported LINUX list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
+    Makefile:594: *** ERR: v5.8 not in supported Linux list: loongnix-release-1903 v5.7, clone one please: 'make kernel-clone KERNEL_NEW=v5.8'.  Stop.
 
     $ make boot QEMU=loongson-v1.1
     Makefile:606: *** ERR: loongson-v1.1 not in supported QEMU list: loongson-v1.0, clone one please: 'make qemu-clone QEMU_NEW=loongson-v1.1'.
@@ -2482,11 +2473,11 @@ Welcome to mark our web site, star our git repositories:
 ### Sponsor list
 
 * 2021
-    * [Lazyparser](https://github.com/lazyparser)
+    * [Lazyparser][015]
         * HelloGCC and HelloLLVM founder
         * 5000RMB
 
-    * [Summer 2021](https://summer.iscas.ac.cn)
+    * [Summer 2021][027]
         * Such projects are sponsored by Summer 2021: Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
 
     * T-head
@@ -2496,12 +2487,53 @@ Welcome to mark our web site, star our git repositories:
         * 3 D1 boards
 
 * 2020
-    * [Loongson](http://loongson.cn/)
+    * [Loongson][005]
         * The famous Chinese Loongson CPU designer and manufacturer
         * Such boards are sponsored by Loongson: mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232
 
-    * [Summer 2020](https://summer.iscas.ac.cn)
+    * [Summer 2020][027]
         * Such projects are sponsored by Summer 2020: Linux Lab docker image upgrade from Ubuntu 14.04 to Ubuntu 20.04
 
     * Embedfire
         * 6 imx6ull boards
+
+[001]: doc/install/arch-docker.md
+[002]: doc/install/manjaro-docker.md
+[003]: doc/install/ubuntu-docker.md
+[004]: http://gitee.com/tinylab/linux-0.11-lab
+[005]: http://loongson.cn/
+[006]: https://cctalk.com/m/group/89507527
+[007]: https://docs.docker.com
+[008]: https://docs.docker.com/config/daemon/
+[009]: https://docs.docker.com/storage/storagedriver/select-storage-driver/
+[010]: https://elinux.org/Work_on_Tiny_Linux_Kernel
+[011]: https://get.daocloud.io/toolbox/
+[012]: https://gitee.com/loongsonlab/loongson
+[013]: https://gitee.com/tinylab/csky
+[014]: https://gitee.com/tinylab/linux-lab/issues/I49VV9
+[015]: https://github.com/lazyparser
+[016]: https://github.com/tinyclub/linux-lab/issues/5
+[017]: https://git-scm.com/downloads
+[018]: https://help.aliyun.com/document_detail/60750.html
+[019]: http://showdesk.io/post
+[020]: https://lug.ustc.edu.cn/wiki/mirrors/help/docker
+[021]: https://lwn.net/images/conf/rtlws-2011/proc/Yong.pdf
+[022]: https://m.cctalk.com/inst/sh8qtdag
+[023]: https://shop155917374.taobao.com
+[024]: https://shop155917374.taobao.com/
+[025]: https://space.bilibili.com/687228362/channel/detail?cid=152574
+[026]: https://store.docker.com/search?type=edition&offering=community
+[027]: https://summer.iscas.ac.cn
+[028]: https://tinylab.org/cloud-lab
+[029]: https://tinylab.org/linux-lab-disk
+[030]: https://tinylab.org/pdfs/linux-lab-loongson-manual-v0.2.pdf
+[031]: https://tinylab.org/pdfs/linux-lab-v0.8-manual-en.pdf
+[032]: https://tinylab.org/pdfs/linux-lab-v0.9-manual-en.pdf
+[033]: https://tinylab.org/pdfs/linux-lab-v1.0-manual-en.pdf
+[034]: https://wiki.qemu.org/Documentation/9psetup
+[035]: https://www.cctalk.com/m/group/88089283
+[036]: https://www.cctalk.com/m/group/88948325
+[037]: https://www.cctalk.com/m/group/89626746
+[038]: https://www.cctalk.com/m/group/89715946
+[039]: https://www.zhihu.com/people/wuzhangjin
+[040]: http://www.kernel.org

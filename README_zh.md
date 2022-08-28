@@ -1146,7 +1146,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 * 真正的图形化方式启动需要 LCD 和键盘驱动的支持，上述开发板可以完美支持 Linux 内核 5.1 版本的运行，`raspi3` 和 `malta` 两款开发板支持 tty0 终端但不支持键盘输入。
 * 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 Qemu 的“View”菜单切换到串口终端后使用。
 
- `vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 qemu，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 qemu 选项参数。
+`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 qemu，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 qemu 选项参数。
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
@@ -1457,7 +1457,7 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
 
- `BOOTDEV` 用于设定 uboot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
+  `BOOTDEV` 用于设定 uboot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
 
 配置 U-boot：
 
@@ -1812,7 +1812,7 @@ Qemu 开发板：
     9pnet_virtio: no channels available for device hostshare
     mount: mounting hostshare on /hostshare failed: No such file or directory
 
- `-device virtio-9p-device` 需要较少的内核选项。
+`-device virtio-9p-device` 需要较少的内核选项。
 
   为了使能以上选项，请输入以下命令：
 
@@ -2053,7 +2053,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ ls boards/aarch64/raspi3/bsp/configs/
     buildroot_2019.02.2_defconfig  linux_v5.1_defconfig
 
- `2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
+`2019.02.2` 是 buildroot 的版本，`v5.1` 是内核版本，这两个变量需要在 `boards/<BOARD>/Makefile` 中设置好。
 
 更多 clone 命令的用法如下：
 
@@ -2230,17 +2230,17 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
 Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进行 Mirror 站点配置：
 
- `/etc/docker/daemon.json`:
+`/etc/docker/daemon.json`:
 
     {
         "registry-mirrors": ["<your accelerate address>"]
     }
 
- `/lib/systemd/system/docker.service`:
+`/lib/systemd/system/docker.service`:
 
     ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
 
- `/etc/default/docker`:
+`/etc/default/docker`:
 
     DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=<your accelerate address>\""
 
@@ -2541,7 +2541,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     $ rm boards/aarch64/raspi3/bsp/root/2019.02.2/rootfs.ext2
     $ make boot
 
- `make boot` 命令可以自动创建该映像，请不要中途打断。
+`make boot` 命令可以自动创建该映像，请不要中途打断。
 
 ### 6.4.2 linux/compiler-gcc7.h: No such file or directory
 

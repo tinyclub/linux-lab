@@ -1763,8 +1763,8 @@ Allows to run sub-make goals of kernel, root and uboot directly without entering
 Read more:
 
 * Why
-    * [Why Using Linux Lab V1.0 (In Chinese)](https://tinylab.org/why-linux-lab)
-    * [Why Using Linux Lab V2.0 (In Chinese)](https://tinylab.org/why-linux-lab-v2)
+    * [Why Using Linux Lab V1.0 (In Chinese)][041]
+    * [Why Using Linux Lab V2.0 (In Chinese)][042]
 
 * User Manual
     * [Linux Lab v1.0 User Manual][033]
@@ -2537,3 +2537,6 @@ Welcome to mark our web site, star our git repositories:
 [038]: https://www.cctalk.com/m/group/89715946
 [039]: https://www.zhihu.com/people/wuzhangjin
 [040]: http://www.kernel.org
+
+[041]: https://tinylab.org/why-linux-lab
+[042]: https://tinylab.org/why-linux-lab-v2

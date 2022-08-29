@@ -155,7 +155,7 @@ This project aims to create a Docker and Qemu based Linux development Lab to eas
 
 Linux Lab is open source with no warranty – use at your own risk.
 
-[![Docker Qemu Linux Lab](doc/images/linux-lab.png)](http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/)
+[![Docker Qemu Linux Lab](doc/images/linux-lab.png)][043]
 
 ## 1.2 Project Homepage
 
@@ -2540,3 +2540,5 @@ Welcome to mark our web site, star our git repositories:
 
 [041]: https://tinylab.org/why-linux-lab
 [042]: https://tinylab.org/why-linux-lab-v2
+
+[043]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/

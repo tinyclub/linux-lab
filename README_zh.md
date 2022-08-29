@@ -1561,12 +1561,12 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
   ARM32/vexpress-a9（用户名和密码均为 root）:
 
-    (host)$ tools/root/docker/extract.sh tinylab/arm32v7-Ubuntu arm
+    (host)$ tools/root/docker/extract.sh tinylab/arm32v7-ubuntu arm
     (lab )$ make boot b=arm/vexpress-a9 U=0 V=1 MEM=1024M ROOTDEV=nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm32v7-ubuntu
 
   ARM64/raspi3（用户名和密码均为 root）:
 
-    (host)$ tools/root/docker/extract.sh tinylab/arm64v8-Ubuntu arm
+    (host)$ tools/root/docker/extract.sh tinylab/arm64v8-ubuntu arm
     (lab )$ make boot b=aarch64/virt V=1 ROOTDEV=nfs ROOTFS=$PWD/prebuilt/fullroot/tmp/tinylab-arm64v8-ubuntu
 
 其他 Docker 中更多的根文件系统：

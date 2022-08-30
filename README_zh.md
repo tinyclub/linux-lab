@@ -79,11 +79,11 @@
         - [4.1.3.6 持久化与清理 feature 设定](#4136-持久化与清理-feature-设定)
     - [4.1.4 新建开发分支](#414-新建开发分支)
     - [4.1.5 启用独立内核仓库](#415-启用独立内核仓库)
-  - [4.2 Uboot 引导程序](#42-uboot-引导程序)
+  - [4.2 U-Boot 引导程序](#42-uboot-引导程序)
   - [4.3 Qemu 模拟器](#43-qemu-模拟器)
   - [4.4 Toolchain 工具链](#44-toolchain-工具链)
   - [4.5 Rootfs 文件系统](#45-rootfs-文件系统)
-  - [4.6 Linux 与 Uboot 调试](#46-linux-与-uboot-调试)
+  - [4.6 Linux 与 U-Boot 调试](#46-linux-与-uboot-调试)
     - [4.6.1 调试 Linux](#461-调试-linux)
     - [4.6.2 调试 Uboot](#462-调试-uboot)
   - [4.7 自动化测试](#47-自动化测试)
@@ -104,7 +104,7 @@
   - [5.3 从一个已经支持的开发板中复制一份 Makefile](#53-从一个已经支持的开发板中复制一份-makefile)
   - [5.4 从头开始配置变量](#54-从头开始配置变量)
   - [5.5 同时准备 configs 文件](#55-同时准备-configs-文件)
-  - [5.6 选择 kernel，rootfs 和 uboot 的版本](#56-选择-kernel，rootfs-和-uboot-的版本)
+  - [5.6 选择 kernel，rootfs 和 U-Boot 的版本](#56-选择-kernel，rootfs-和-uboot-的版本)
   - [5.7 配置，编译和启动](#57-配置，编译和启动)
     - [5.7.1 编译加速并减少磁盘损耗](#571-编译加速并减少磁盘损耗)
   - [5.8 保存生成的镜像文件和配置文件](#58-保存生成的镜像文件和配置文件)
@@ -241,7 +241,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 |编号| 特性       |  描述                                                                                |
 |----|------------|--------------------------------------------------------------------------------------|
 |1   | 开发板     | 基于 QEMU，支持 7+ 主流体系架构，20+ 款流行虚拟开发板；支持多款真实开发板            |
-|2   | 组件       | 支持 Uboot，Linux, Buildroot，Qemu。支持 Linux v0.11, v2.6.10 ~ v5.x                 |
+|2   | 组件       | 支持 U-Boot，Linux, Buildroot，Qemu。支持 Linux v0.11, v2.6.10 ~ v5.x                |
 |3   | 预置组件   | 提供上述组件的预先编译版本，并按开发板分类存放，可即时下载使用                       |
 |4   | 根文件系统 | 支持 initrd，harddisk，mmc 和 nfs; ARM 架构提供 Debian 系统                          |
 |5   | Docker     | 包括 gcc-4.3 在内的交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链            |
@@ -297,7 +297,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * [v0.2 rc1][034]
     * 携手龙芯实验室，以 [独立插件][012] 的方式新增龙芯全面支持
-    * 携手码云，在国内新增 Qemu、U-boot 和 Buildroot 的每日镜像
+    * 携手码云，在国内新增 Qemu、U-Boot 和 Buildroot 的每日镜像
 
 ### 1.6.3 v0.3 @ 2020.03.12
 
@@ -315,10 +315,10 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.6.4 v0.4 @ 2020.06.01
 
-[v0.4][041] 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 Uboot 支持并升级 arm/vexpress-a9 的 Uboot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
+[v0.4][041] 通过提升镜像下载速度、优化 make 性能、完善登陆方式等进一步完善使用体验，同时首次为 64 位 ARM 架构的 aarch64/virt 新增 U-Boot 支持并升级 arm/vexpress-a9 的 U-Boot 到当前最新版本，另外，修复了一处新内核下在容器内插入 NFSD 模块导致的系统卡死问题。
 
 * [v0.4 rc3][044]
-    * 新增 aarch64/virt Uboot 支持
+    * 新增 aarch64/virt U-Boot 支持
     * 临时修复新版本内核上容器内插入 NFSD 模块引起的 Sync 卡死问题
 
 * [v0.4 rc2][043]
@@ -334,7 +334,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 [v0.5][045] 提前升级到新镜像 Ubuntu 20.04，全面导入龙芯系列处理器支持，并进一步完善各种细微体验。
 
 * [v0.5 rc3][048]
-    * 修复 arm/vexpress-a9 因编译器配置问题引起的 Uboot 编译失败
+    * 修复 arm/vexpress-a9 因编译器配置问题引起的 U-Boot 编译失败
     * 进一步完善文档中对普通用户的使用要求，避免使用 root 带来的诸多问题
 
 * [v0.5 rc2][047]
@@ -360,7 +360,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 * [v0.6 rc1][050]
     * 修复插件中的 BSP 包下载功能
     * 修复 x86 架构的内核编译问题
-    * 修复 aarch64/virt 开发板 Uboot 引导问题
+    * 修复 aarch64/virt 开发板 U-Boot 引导问题
 
 ### 1.6.7 v0.7 @ 2021.06.03
 
@@ -448,7 +448,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * v1.0 rc1
     * 增强 test 功能，允许在 testcase 中执行多个命令
-    * 修复 test 中的内核参数传递问题，确保兼容 uboot 和 kernel
+    * 修复 test 中的内核参数传递问题，确保兼容 U-Boot 和 kernel
     * 允许灵活增加 App 的子 make 目标，例如 `make root busybox-menuconfig`
     * 修复两笔内存编译的问题
 
@@ -479,7 +479,7 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
     * 透明倍容：可用容量翻倍，128G 可以当 ~256G 左右使用
     * 零损编译：扩大可用容量，提升编译速度，节省擦写寿命
     * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统
-    * 即时实验，集成多套自研实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、Uboot、汇编、C、Python、数据库、网络等实验
+    * 即时实验，集成多套自研实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、U-Boot、汇编、C、Python、数据库、网络等实验
 * 购买地址
     * [泰晓开源小店][022]，该地址为目前唯一官方在线销售地址
 * 产品详情
@@ -1027,7 +1027,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make cleanup kernel
     $ make cleanup root
 
-以上操作也适用于 qemu 和 uboot。
+以上操作也适用于 qemu 和 U-Boot。
 
 ### 3.3.3 打补丁
 
@@ -1163,7 +1163,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make boot kernel=new dtb=new root=new
 
-如果目标内核和 Uboot 不存在，重新编译一个之后再启动：
+如果目标内核和 U-Boot 不存在，重新编译一个之后再启动：
 
     $ make boot BUILD=kernel,uboot
 
@@ -1189,8 +1189,8 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make list BOOTDEV
     $ make list CCORI
     $ make list NETDEV
-    $ make list LINUX
-    $ make list UBOOT
+    $ make list linux
+    $ make list uboot
     $ make list QEMU
 
 使用 `list <xxx>` 可以实现更多 `<xxx>-list`，例如：
@@ -1433,17 +1433,17 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
 
 后面的版本号为代码仓库中的任意 git tag。
 
-## 4.2 Uboot 引导程序
+## 4.2 U-Boot 引导程序
 
 从当前支持 U-boot 的板子：`versatilepb` 和 `vexpress-a9` 中选择一款：
 
     $ make BOARD=vexpress-a9
 
-下载 Uboot：
+下载 U-Boot：
 
     $ make uboot-source
 
-检出一个特定的版本（版本号在 `boards/<BOARD>/Makefile` 中通过 UBOOT 指定）：
+检出一个特定的版本（版本号在 `boards/<BOARD>/Makefile` 中通过 U-Boot 指定）：
 
     $ make uboot-checkout
 
@@ -1457,7 +1457,7 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make uboot-patch BOOTDEV=sdcard
     $ make uboot-patch BOOTDEV=flash
 
-  `BOOTDEV` 用于设定 uboot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
+  `BOOTDEV` 用于设定 U-Boot 的存放设备以便从该设备引导，`ROOTDEV` 用于告诉内核从哪里加载 rootfs。
 
 配置 U-boot：
 
@@ -1487,7 +1487,7 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make uboot-images-clean
     $ make uboot-clean
 
-保存 uboot 镜像和配置：
+保存 U-Boot 镜像和配置：
 
     $ make uboot-save
     $ make uboot-saveconfig
@@ -1575,7 +1575,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     arm64v8/ubuntu  Ubuntu is a Debian-based Linux operating system  25
     arm64v8/debian  Debian is a Linux distribution that's composed  20
 
-## 4.6 Linux 与 Uboot 调试
+## 4.6 Linux 与 U-Boot 调试
 
 ### 4.6.1 调试 Linux
 
@@ -1623,7 +1623,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     tcp        0      0 0.0.0.0:1234            0.0.0.0:*              LISTEN      3943/qemu-xxx
     $ sudo kill -9 3943
 
-### 4.6.2 调试 Uboot
+### 4.6.2 调试 U-Boot
 
 如果想调试 Uboot（采用 `.gdb/uboot.default` 调试脚本）：
 
@@ -1727,7 +1727,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make test TEST=kernel,root TEST_PREPARE=board-init,kernel-cleanup,root-cleanup
 
-使用一条命令测试所有功能（带 uboot，如果支持的话，譬如：vexpress-a9）：
+使用一条命令测试所有功能（带 U-Boot，如果支持的话，譬如：vexpress-a9）：
 
     $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,kernel-cleanup,root-cleanup,uboot-cleanup
 
@@ -1941,7 +1941,7 @@ Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
     $ make uboot-help
     $ make uboot-menuconfig
 
-我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 uboot。
+我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 U-Boot。
 
 ## 4.12 更多用法
 
@@ -2011,14 +2011,14 @@ Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
 
 ## 5.5 同时准备 configs 文件
 
-我们需要为 Linux，buildroot 甚至 uboot 准备 config 文件。
+我们需要为 Linux，buildroot 甚至 U-Boot 准备 config 文件。
 
 Buildroot 已经为 buildroot 和内核配置提供了许多例子：
 
     buildroot: src/buildroot/configs/qemu_ARCH_BOARD_defconfig
     kernel: src/buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
 
-Uboot 也提供了许多缺省的配置文件：
+U-Boot 也提供了许多缺省的配置文件：
 
     uboot: src/u-boot/configs/vexpress_ca9x4_defconfig
 
@@ -2062,7 +2062,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ make kernel-clone LINUX=<old_version> LINUX_NEW=<new_version>
     $ make root-clone BUILDROOT=<old_version> BUILDROOT_NEW=<new_version>
 
-## 5.6 选择 kernel，rootfs 和 uboot 的版本
+## 5.6 选择 kernel，rootfs 和 U-Boot 的版本
 
 检出版本时请使用 `tag` 命令而非 `branch` 命令，以 kernel 为例：
 
@@ -2107,7 +2107,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ make kernel
     $ make boot
 
-同样的方法适用于 rootfs，uboot，甚至 qemu。
+同样的方法适用于 rootfs，U-Boot，甚至 qemu。
 
 ### 5.7.1 编译加速并减少磁盘损耗
 

@@ -68,7 +68,7 @@
         - [4.1.3.6 persist or clear feature setting](#4136-persist-or-clear-feature-setting)
     - [4.1.4 Create new development branch](#414-create-new-development-branch)
     - [4.1.5 Use standalone git repository](#415-use-standalone-git-repository)
-  - [4.2 Using Uboot Bootloader](#42-using-uboot-bootloader)
+  - [4.2 Using U-Boot Bootloader](#42-using-uboot-bootloader)
   - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
   - [4.4 Using Toolchains](#44-using-toolchains)
   - [4.5 Using Rootfs](#45-using-rootfs)
@@ -994,8 +994,8 @@ List supported options:
     $ make list BOOTDEV
     $ make list CCORI
     $ make list NETDEV
-    $ make list LINUX
-    $ make list UBOOT
+    $ make list linux
+    $ make list uboot
     $ make list QEMU
 
 And more `<xxx>-list` are also supported with `list <xxx>`, for example:
@@ -1242,7 +1242,7 @@ To configure the wsl2 kernel version, configure it as following:
 
 The value should be one of the available tag in `git tag` list.
 
-## 4.2 Using Uboot Bootloader
+## 4.2 Using U-Boot Bootloader
 
 Choose one of the tested boards: `versatilepb` and `vexpress-a9`.
 
@@ -1260,7 +1260,7 @@ Patching with necessary changes, `BOOTDEV` and `ROOTDEV` available, use `flash` 
 
     $ make uboot-patch
 
-Use `tftp`, `sdcard` or `flash` explicitly, should run `make uboot-checkout` before a new `uboot-patch`:
+Use `tftp`, `sdcard` or `flash` explicitly, should run `make U-Boot-checkout` before a new `uboot-patch`:
 
     $ make uboot-patch BOOTDEV=tftp
     $ make uboot-patch BOOTDEV=sdcard
@@ -1296,7 +1296,7 @@ Clean images if want to update ramdisk, dtb and uImage:
     $ make uboot-images-clean
     $ make uboot-clean
 
-Save uboot images and configs:
+Save U-Boot images and configs:
 
     $ make uboot-save
     $ make uboot-saveconfig
@@ -1395,7 +1395,7 @@ More rootfs from docker can be found:
     arm64v8/ubuntu  Ubuntu is a Debian-based Linux operating system  25
     arm64v8/debian  Debian is a Linux distribution that's composed  20
 
-## 4.6 Debugging Linux and Uboot
+## 4.6 Debugging Linux and U-Boot
 
 ### 4.6.1 Debugging Linux
 
@@ -1441,9 +1441,9 @@ if the debug port has been used, please try to find out who used the port and ki
     tcp        0      0 0.0.0.0:1234            0.0.0.0:*              LISTEN      3943/qemu-xxx
     $ sudo kill -9 3943
 
-### 4.6.2 Debugging Uboot
+### 4.6.2 Debugging U-Boot
 
-To debug uboot with `.gdb/uboot.default`:
+To debug U-Boot with `.gdb/uboot.default`:
 
     $ make debug uboot
 
@@ -1453,7 +1453,7 @@ But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this
 
     $ make debug uboot
 
-To automate uboot debug testing:
+To automate U-Boot debug testing:
 
     $ make test-debug uboot
 
@@ -1547,7 +1547,7 @@ Test everything in one command (from download to poweroff, see [poweroff hang](#
 
     $ make test TEST=kernel,root TEST_PREPARE=board-init,kernel-cleanup,root-cleanup
 
-Test everything in one command (with uboot while support, e.g. vexpress-a9):
+Test everything in one command (with U-Boot while support, e.g. vexpress-a9):
 
     $ make test TEST=kernel,root,uboot TEST_PREPARE=board-init,kernel-cleanup,root-cleanup,uboot-cleanup
 
@@ -1668,7 +1668,7 @@ Verified boards with Linux v5.1:
 | boards          | Status
 |-----------------|---------------------------------------------------
 |aarch64/virt     | virtio-9p-device (virtio-9p-pci breaks nfsroot)
-|arm/vexpress-a9  | only work with virtio-9p-device and without uboot booting
+|arm/vexpress-a9  | only work with virtio-9p-device and without U-Boot booting
 |arm/versatilepb  | only work with virtio-9p-pci
 |x86_64/pc        | only work with virtio-9p-pci
 |i386/pc          | only work with virtio-9p-pci
@@ -1756,7 +1756,7 @@ Linux Lab allows to access Makefile goals of the APPS easily, for example:
     $ make uboot-help
     $ make uboot-menuconfig
 
-Allows to run sub-make goals of kernel, root and uboot directly without entering into their own building directory.
+Allows to run sub-make goals of kernel, root and U-Boot directly without entering into their own building directory.
 
 ## 4.12 More Usage
 
@@ -1833,7 +1833,7 @@ Buildroot has provided many examples about buildroot and kernel configuration:
     buildroot: src/buildroot/configs/qemu_ARCH_BOARD_defconfig
     kernel: src/buildroot/board/qemu/ARCH-BOARD/linux-VERSION.config
 
-Uboot has also provided many default configs:
+U-Boot has also provided many default configs:
 
     uboot: src/u-boot/configs/vexpress_ca9x4_defconfig
 
@@ -1880,7 +1880,7 @@ More usage about the `xxx-clone` commands:
     $ make kernel-clone LINUX=<old_version> LINUX_NEW=<new_version>
     $ make root-clone BUILDROOT=<old_version> BUILDROOT_NEW=<new_version>
 
-## 5.6 Choose the versions of kernel, rootfs and uboot
+## 5.6 Choose the versions of kernel, rootfs and U-Boot
 
 Please use `tag` instead of `branch`, use kernel as an example:
 

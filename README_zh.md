@@ -80,7 +80,7 @@
     - [4.1.4 新建开发分支](#414-新建开发分支)
     - [4.1.5 启用独立内核仓库](#415-启用独立内核仓库)
   - [4.2 U-Boot 引导程序](#42-uboot-引导程序)
-  - [4.3 Qemu 模拟器](#43-qemu-模拟器)
+  - [4.3 QEMU 模拟器](#43-qemu-模拟器)
   - [4.4 Toolchain 工具链](#44-toolchain-工具链)
   - [4.5 Rootfs 文件系统](#45-rootfs-文件系统)
   - [4.6 Linux 与 U-Boot 调试](#46-linux-与-uboot-调试)
@@ -99,7 +99,7 @@
   - [4.11 运行任意的 make 目标](#411-运行任意的-make-目标)
   - [4.12 更多用法](#412-更多用法)
 - [5. Linux Lab 开发](#5-linux-lab-开发)
-  - [5.1 选择一个 qemu 支持的开发板](#51-选择一个-qemu-支持的开发板)
+  - [5.1 选择一个 QEMU 支持的开发板](#51-选择一个-qemu-支持的开发板)
   - [5.2 创建开发板的目录](#52-创建开发板的目录)
   - [5.3 从一个已经支持的开发板中复制一份 Makefile](#53-从一个已经支持的开发板中复制一份-makefile)
   - [5.4 从头开始配置变量](#54-从头开始配置变量)
@@ -122,7 +122,7 @@
     - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
     - [6.1.10 Docker not work in Ubuntu 20.04](#6110-docker-not-work-in-ubuntu-2004)
     - [6.1.11 Error creating aufs mount](#6111-error-creating-aufs-mount)
-  - [6.2 Qemu 相关](#62-qemu-相关)
+  - [6.2 QEMU 相关](#62-qemu-相关)
     - [6.2.1 缺少 KVM 加速](#621-缺少-kvm-加速)
     - [6.2.2 Guest 关机或重启后挂住](#622-guest-关机或重启后挂住)
     - [6.2.3 如何退出 qemu](#623-如何退出-qemu)
@@ -189,7 +189,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 下载到 `labs/linux-0.11-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/linux-0.11-lab>
 
-* CS630 Qemu Lab
+* CS630 QEMU Lab
     * 用于 X86 Linux 汇编学习，今后仅集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
     * 下载到 `labs/cs630-qemu-lab` 后，可直接在 Linux Lab 内使用
     * <https://tinylab.org/cs630-qemu-lab>
@@ -241,7 +241,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 |编号| 特性       |  描述                                                                                |
 |----|------------|--------------------------------------------------------------------------------------|
 |1   | 开发板     | 基于 QEMU，支持 7+ 主流体系架构，20+ 款流行虚拟开发板；支持多款真实开发板            |
-|2   | 组件       | 支持 U-Boot，Linux, Buildroot，Qemu。支持 Linux v0.11, v2.6.10 ~ v5.x                |
+|2   | 组件       | 支持 U-Boot，Linux, Buildroot，QEMU。支持 Linux v0.11, v2.6.10 ~ v5.x                |
 |3   | 预置组件   | 提供上述组件的预先编译版本，并按开发板分类存放，可即时下载使用                       |
 |4   | 根文件系统 | 支持 initrd，harddisk，mmc 和 nfs; ARM 架构提供 Debian 系统                          |
 |5   | Docker     | 包括 gcc-4.3 在内的交叉工具链已预先安装，还可灵活配置并下载外部交叉工具链            |
@@ -297,7 +297,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 * [v0.2 rc1][034]
     * 携手龙芯实验室，以 [独立插件][012] 的方式新增龙芯全面支持
-    * 携手码云，在国内新增 Qemu、U-Boot 和 Buildroot 的每日镜像
+    * 携手码云，在国内新增 QEMU、U-Boot 和 Buildroot 的每日镜像
 
 ### 1.6.3 v0.3 @ 2020.03.12
 
@@ -338,7 +338,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 进一步完善文档中对普通用户的使用要求，避免使用 root 带来的诸多问题
 
 * [v0.5 rc2][047]
-    * 进一步改善 Qemu 编译体验，在 Gitee 新增 submodules 镜像，不再有挫折感
+    * 进一步改善 QEMU 编译体验，在 Gitee 新增 submodules 镜像，不再有挫折感
     * 新增 Arch/Manjaro docker 安装文档
     * 修复 macOS 大小写敏感的文件系统镜像制作步骤
 
@@ -439,7 +439,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 更新文档和 License 信息
 
 * v1.0 rc2
-    * 升级 RISC-V 支持，qemu 升级到 v6.0.0，内核升级到 v5.17
+    * 升级 RISC-V 支持，QEMU 升级到 v6.0.0，内核升级到 v5.17
     * 升级 arm/vexpress-a9 的默认内核到 v5.17
     * 规范 build 输出路径，跟 `boards/` 下的路径保持一致，方便更快找到目标文件
     * 完善 docker 文件系统运行和导出支持
@@ -695,7 +695,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 键入 `poweroff` 即可关闭板子。
 
-**注意**：部分开发板的关机功能不完善，可通过 `CTRL+a x`（依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 Qemu。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 Qemu 进程。
+**注意**：部分开发板的关机功能不完善，可通过 `CTRL+a x`（依次按下 `CTRL` 和 `A`，同时释放，再单独按下 `x`）来退出 QEMU。当然，也可以另开一个控制台，通过 `kill` 或 `pkill` 退出 QEMU 进程。
 
 # 3. Linux Lab 入门
 
@@ -917,7 +917,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 Linux Lab 支持“插件”功能，允许在独立的 git 仓库中添加和维护开发板。采用独立的仓库维护可以确保 Linux Lab 在支持愈来愈多的开发板的同时，自身的代码体积不会变得太大。
 
-该特性有助于支持基于 Linux Lab 学习一些书上的例子以及支持一些采用新的处理器体系架构的开发板，书籍中可能会涉及多个开发板或者是新的处理器架构，并可能会需要多个新的软件包（譬如交叉工具链和架构相关的 qemu 系统模拟器）。
+该特性有助于支持基于 Linux Lab 学习一些书上的例子以及支持一些采用新的处理器体系架构的开发板，书籍中可能会涉及多个开发板或者是新的处理器架构，并可能会需要多个新的软件包（譬如交叉工具链和架构相关的 QEMU 系统模拟器）。
 
 这里列出当前维护的插件：
 
@@ -969,7 +969,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
     $ make cleanstamp kernel
 
-该功能同样适用于 root, uboot 和 qemu。
+该功能同样适用于 Rootfs，U-Boot 和 QEMU。
 
 ## 3.3 详细步骤分解
 
@@ -1027,7 +1027,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make cleanup kernel
     $ make cleanup root
 
-以上操作也适用于 qemu 和 U-Boot。
+以上操作也适用于 QEMU 和 U-Boot。
 
 ### 3.3.3 打补丁
 
@@ -1144,9 +1144,9 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 **注意**：
 
 * 真正的图形化方式启动需要 LCD 和键盘驱动的支持，上述开发板可以完美支持 Linux 内核 5.1 版本的运行，`raspi3` 和 `malta` 两款开发板支持 tty0 终端但不支持键盘输入。
-* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 Qemu 的“View”菜单切换到串口终端后使用。
+* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 QEMU 的“View”菜单切换到串口终端后使用。
 
-`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 qemu，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 qemu 选项参数。
+`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 QEMU，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 QEMU 选项参数。
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
@@ -1191,7 +1191,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make list NETDEV
     $ make list linux
     $ make list uboot
-    $ make list QEMU
+    $ make list qemu
 
 使用 `list <xxx>` 可以实现更多 `<xxx>-list`，例如：
 
@@ -1492,9 +1492,9 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make uboot-save
     $ make uboot-saveconfig
 
-## 4.3 Qemu 模拟器
+## 4.3 QEMU 模拟器
 
-内置的 qemu 或许不能和最新的 Linux 内核配套工作，为此我们有时不得不自己编译 qemu，自行编译 qemu 的方法在 vexpress-a9 和 virt 开发板上已经验证通过。
+内置的 QEMU 或许不能和最新的 Linux 内核配套工作，为此我们有时不得不自己编译 QEMU，自行编译 QEMU 的方法在 vexpress-a9 和 virt 开发板上已经验证通过。
 
 首先，编译 qemu-system-ARCH：
 
@@ -1502,13 +1502,13 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
     $ make qemu
     $ make qemu-save
 
-qemu-ARCH-static 和 qemu-system-ARCH 是不能一起编译的，为了制作 qemu-ARCH-static，请在开发板的 Makefile 中首先使能 `QEMU_US=1` 然后再重新编译。
+QEMU-ARCH-static 和 qemu-system-ARCH 是不能一起编译的，为了制作 qemu-ARCH-static，请在开发板的 Makefile 中首先使能 `QEMU_US=1` 然后再重新编译。
 
 如果指定了 QEMU 和 QTOOL，那么实验环境会优先使用 bsp 子模块中的 QEMU 和 QTOOL，而不是已经安装在本地系统中的版本，但会优先使用最近编译的版本，如果最近有编译过的话。
 
 在为新的内核实现移植时，如果使用 2.5 版本的 QEMU，Linux 5.0 在运行过程中会挂起，将 QEMU 升级到 2.12.0 后，问题消失。请在以后内核升级过程中注意相关的问题。
 
-Qemu 每次编译都会检查子仓库是否较新，但是下载通常没那么顺利。如果下载过一次子仓库以后不想再更新，可以通过如下方式禁止更新：
+QEMU 每次编译都会检查子仓库是否较新，但是下载通常没那么顺利。如果下载过一次子仓库以后不想再更新，可以通过如下方式禁止更新：
 
     $ make qemu git_module_status=0
 
@@ -1617,7 +1617,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make kernel-calltrace func+offset/length
 
-如果调试过程中提示端口 1234 被占用，可能是 qemu 服务没有正常退出，手动清理即可：
+如果调试过程中提示端口 1234 被占用，可能是 QEMU 服务没有正常退出，手动清理即可：
 
     $ sudo netstat -tlp | grep 1234
     tcp        0      0 0.0.0.0:1234            0.0.0.0:*              LISTEN      3943/qemu-xxx
@@ -1747,7 +1747,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ## 4.8 文件共享
 
-缺省支持如下方法在 Qemu 开发板和主机之间传输文件：
+缺省支持如下方法在 QEMU 开发板和主机之间传输文件：
 
 ### 4.8.1 在 rootfs 中安装文件
 
@@ -1773,7 +1773,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 ### 4.8.3 通过 tftp 传输文件
 
-在 Qemu 开发板上运行 `tftp` 命令访问主机的 tftp 服务器。
+在 QEMU 开发板上运行 `tftp` 命令访问主机的 tftp 服务器。
 
 主机侧：
 
@@ -1783,18 +1783,18 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
     $ ls tftpboot
     kft.patch kft.log
 
-Qemu 开发板：
+QEMU 开发板：
 
     $ ls
     kft_data.log
     $ tftp -g -r kft.patch 172.17.0.3
     $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
-**注意**：当把文件从 Qemu 开发板发送到主机侧时，必须先在主机上创建一个空的文件，这是一个 bug？！
+**注意**：当把文件从 QEMU 开发板发送到主机侧时，必须先在主机上创建一个空的文件，这是一个 bug？！
 
 ### 4.8.4 通过 9p virtio 共享文件
 
-有关如何为一个新的开发板启用 9p virtio，请参考 [qemu 9p setup][069]。编译 qemu 时必须使用 `--enable-virtfs` 选项，同时内核必须打开必要的选项。
+有关如何为一个新的开发板启用 9p virtio，请参考 [qemu 9p setup][069]。编译 QEMU 时必须使用 `--enable-virtfs` 选项，同时内核必须打开必要的选项。
 
 重新配置内核如下：
 
@@ -1807,7 +1807,7 @@ Qemu 开发板：
     CONFIG_VIRTIO_PCI=y
     CONFIG_PCI_HOST_GENERIC=y (only needed for the QEMU Arm 'virt' board)
 
-  如果需要使用 qemu 的 `-virtfs` 或 `-device virtio-9p-pci` 选项，需要使能以上 PCI 相关的选项，否则无法工作：
+  如果需要使用 QEMU 的 `-virtfs` 或 `-device virtio-9p-pci` 选项，需要使能以上 PCI 相关的选项，否则无法工作：
 
     9pnet_virtio: no channels available for device hostshare
     mount: mounting hostshare on /hostshare failed: No such file or directory
@@ -1842,7 +1842,7 @@ Docker 主机：
 
     $ make boot SHARE=1 SHARE_DIR=src/examples  # for c/assembly learning
 
-Qemu 开发板：
+QEMU 开发板：
 
     $ ls /hostshare/      # Access the file in guest
     test
@@ -1985,7 +1985,7 @@ Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
 
 本节介绍如何从头开始为 Linux Lab 添加一块新的开发板。
 
-## 5.1 选择一个 qemu 支持的开发板
+## 5.1 选择一个 QEMU 支持的开发板
 
 列出支持的开发板，以 arm 架构为例：
 
@@ -2107,7 +2107,7 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ make kernel
     $ make boot
 
-同样的方法适用于 rootfs，U-Boot，甚至 qemu。
+同样的方法适用于 rootfs，U-Boot，甚至 QEMU。
 
 ### 5.7.1 编译加速并减少磁盘损耗
 
@@ -2323,7 +2323,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 这里主要是跟内核版本有关，同样的系统升级内核后，Storage Driver 类型可能得相应调整。
 
-## 6.2 Qemu 相关
+## 6.2 QEMU 相关
 
 ### 6.2.1 缺少 KVM 加速
 
@@ -2349,13 +2349,13 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
   * aarch64/raspi3
   * arm/versatilepb
 
-在运行 `poweroff` 或 `reboot` 时，系统会直接挂起，为了退出 qemu，请使用 `CTRL+a x` 或执行 shell 命令 `pkill qemu`。
+在运行 `poweroff` 或 `reboot` 时，系统会直接挂起，为了退出 QEMU，请使用 `CTRL+a x` 或执行 shell 命令 `pkill qemu`。
 
 为了自动化测试这些开发板，请确保设置 `TEST_TIMEOUT`，例如：`make test TEST_TIMEOUT=50`。
 
 欢迎提供修复意见。
 
-### 6.2.3 如何退出 qemu
+### 6.2.3 如何退出 QEMU
 
 | 停留界面               | 退出方式                              |
 |------------------------|---------------------------------------|

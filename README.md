@@ -69,7 +69,7 @@
     - [4.1.4 Create new development branch](#414-create-new-development-branch)
     - [4.1.5 Use standalone git repository](#415-use-standalone-git-repository)
   - [4.2 Using U-Boot Bootloader](#42-using-uboot-bootloader)
-  - [4.3 Using Qemu Emulator](#43-using-qemu-emulator)
+  - [4.3 Using QEMU Emulator](#43-using-qemu-emulator)
   - [4.4 Using Toolchains](#44-using-toolchains)
   - [4.5 Using Rootfs](#45-using-rootfs)
   - [4.6 Debugging Linux and Uboot](#46-debugging-linux-and-uboot)
@@ -111,7 +111,7 @@
     - [6.1.9 pathspec FETCH_HEAD did not match any file known to git](#619-pathspec-fetch_head-did-not-match-any-file-known-to-git)
     - [6.1.10 Docker not work in Ubuntu 20.04](#6110-docker-not-work-in-ubuntu-2004)
     - [6.1.11 Error creating aufs mount](#6111-error-creating-aufs-mount)
-  - [6.2 Qemu Issues](#62-qemu-issues)
+  - [6.2 QEMU Issues](#62-qemu-issues)
     - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
     - [6.2.2 Poweroff hang](#622-poweroff-hang)
     - [6.2.3 How to exit qemu](#623-how-to-exit-qemu)
@@ -151,11 +151,11 @@
 
 ## 1.1 Project Introduction
 
-This project aims to create a Docker and Qemu based Linux development Lab to easier the learning, development and testing of [Linux Kernel][040].
+This project aims to create a Docker and QEMU based Linux development Lab to easier the learning, development and testing of [Linux Kernel][040].
 
 Linux Lab is open source with no warranty – use at your own risk.
 
-[![Docker Qemu Linux Lab](doc/images/linux-lab.png)][043]
+[![Docker QEMU Linux Lab](doc/images/linux-lab.png)][043]
 
 ## 1.2 Project Homepage
 
@@ -178,7 +178,7 @@ Related Projects:
     * Download it to `labs/linux-0.11-lab` and use it in Linux Lab directly
     * <https://tinylab.org/linux-0.11-lab>
 
-* CS630 Qemu Lab
+* CS630 QEMU Lab
     * Learning X86 Linux Assembly, only available in Linux Lab Disk from now on
     * Download it to `labs/cs630-qemu-lab` and use it in Linux Lab directly
     * <https://tinylab.org/cs630-qemu-lab>
@@ -229,7 +229,7 @@ Now, Linux Lab becomes an intergrated Linux learning, development and testing en
 
 | Items    | Description
 |----------|-----------------------------------------------------------------------
-|Boards    | Qemu based, 7+ main Architectures, 20+ popular boards; Several real boards supported too
+|Boards    | QEMU based, 7+ main Architectures, 20+ popular boards; Several real boards supported too
 |Components| Uboot, Linux / Modules, Buildroot, Qemu, Linux v0.11, v2.6.10 ~ 5.x supported
 |Prebuilt  | All of above components have been prebuilt
 |Rootfs    | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM
@@ -720,7 +720,7 @@ All supported real hardware boards, virtual hardware boards support and the rela
 
 The 'Plugin' feature is supported by Linux Lab, to allow boards being added and maintained in standalone git repositories. Standalone repository is very important to ensure Linux Lab itself not grow up big and big while more and more boards being added in.
 
-Book examples or the boards with a whole new CPU architecture benefit from such feature a lot, for book examples may use many boards and a new CPU architecture may need require lots of new packages (such as cross toolchains and the architecture specific qemu system tool).
+Book examples or the boards with a whole new CPU architecture benefit from such feature a lot, for book examples may use many boards and a new CPU architecture may need require lots of new packages (such as cross toolchains and the architecture specific QEMU system tool).
 
 Here maintains the available plugins:
 
@@ -830,7 +830,7 @@ If checkout not work due to local changes, save changes and run to get a clean e
     $ make cleanup kernel
     $ make cleanup root
 
-The same to qemu and uboot.
+The same to QEMU and U-Boot.
 
 ### 3.3.3 Patching
 
@@ -951,7 +951,7 @@ Boot with graphic (Exit with `CTRL+ALT+2 quit`):
 
 `vexpress-a9` and `virt` has no LCD support by default, but for the latest qemu, it is able to boot
 with G=1 and switch to serial console via the 'View' menu, this can not be used to test LCD and
-keyboard drivers. `XOPTS` specify the eXtra qemu options.
+keyboard drivers. `XOPTS` specify the eXtra QEMU options.
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
@@ -996,7 +996,7 @@ List supported options:
     $ make list NETDEV
     $ make list linux
     $ make list uboot
-    $ make list QEMU
+    $ make list qemu
 
 And more `<xxx>-list` are also supported with `list <xxx>`, for example:
 
@@ -1301,9 +1301,9 @@ Save U-Boot images and configs:
     $ make uboot-save
     $ make uboot-saveconfig
 
-## 4.3 Using Qemu Emulator
+## 4.3 Using QEMU Emulator
 
-Builtin qemu may not work with the newest Linux kernel, so, we need compile and
+Builtin QEMU may not work with the newest Linux kernel, so, we need compile and
 add external prebuilt qemu, this has been tested on vexpress-a9 and virt board.
 
 At first, build qemu-system-ARCH:
@@ -1312,18 +1312,18 @@ At first, build qemu-system-ARCH:
     $ make qemu
     $ make qemu-save
 
-qemu-ARCH-static and qemu-system-ARCH can not be compiled together. to build
-qemu-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and
+QEMU-ARCH-static and qemu-system-ARCH can not be compiled together. to build
+QEMU-ARCH-static, please enable `QEMU_US=1` in board specific Makefile and
 rebuild it.
 
 If QEMU and QTOOL specified, the one in bsp submodule will be used in advance of
 one installed in system, but the first used is the one just compiled if exists.
 
-While porting to newer kernel, Linux 5.0 hangs during boot on qemu 2.5, after
-compiling a newer qemu 2.12.0, no hang exists. please take notice of such issue
+While porting to newer kernel, Linux 5.0 hangs during boot on QEMU 2.5, after
+compiling a newer QEMU 2.12.0, no hang exists. please take notice of such issue
 in the future kernel upgrade.
 
-If already download qemu and its submodules and don't want to upadte the submodules,
+If already download QEMU and its submodules and don't want to upadte the submodules,
 just skip it:
 
     $ make qemu git_module_status=0
@@ -1563,7 +1563,7 @@ Test kernel debug:
 
 ## 4.8 File Sharing
 
-To transfer files between Qemu Board and Host, three methods are supported by
+To transfer files between QEMU Board and Host, three methods are supported by
 default:
 
 ### 4.8.1 Install files to rootfs
@@ -1588,7 +1588,7 @@ Host:
 
 ### 4.8.3 Transfer via tftp
 
-Using tftp server of host from the Qemu board with the `tftp` command.
+Using tftp server of host from the QEMU board with the `tftp` command.
 
 Host:
 
@@ -1598,14 +1598,14 @@ Host:
     $ ls tftpboot
     kft.patch kft.log
 
-Qemu Board:
+QEMU Board:
 
     $ ls
     kft_data.log
     $ tftp -g -r kft.patch 172.17.0.3
     $ tftp -p -r kft.log -l kft_data.log 172.17.0.3
 
-**Note**: while put file from Qemu board to host, must create an empty file in host firstly. Buggy?
+**Note**: while put file from QEMU board to host, must create an empty file in host firstly. Buggy?
 
 ### 4.8.4 Share with 9p virtio
 
@@ -1657,7 +1657,7 @@ Host:
 
     $ make boot SHARE=1 SHARE_DIR=src/examples  # for c/assembly learning
 
-Qemu Board:
+QEMU Board:
 
     $ ls /hostshare/      # Access the file in guest
     test
@@ -1800,7 +1800,7 @@ Read more:
 
 This introduces how to add a new board for Linux Lab.
 
-## 5.1 Choose a board supported by qemu
+## 5.1 Choose a board supported by QEMU
 
 list the boards, use arm as an example:
 
@@ -1925,7 +1925,7 @@ Use kernel as an example:
     $ make kernel
     $ make boot
 
-The same to rootfs, uboot and even qemu.
+The same to Rootfs, U-Boot and even QEMU.
 
 ### 5.7.1 Speed up compiling and save disk life
 
@@ -2139,7 +2139,7 @@ If not work with failure like "error creating aufs mount to ... invalid argument
 
 This issue is related to kernel version, the same system may upgrade kernel version and therefore support different storage driver.
 
-## 6.2 Qemu Issues
+## 6.2 QEMU Issues
 
 ### 6.2.1 Why kvm speedding up is disabled
 
@@ -2171,7 +2171,7 @@ To test such boards automatically, please make sure setting `TEST_TIMEOUT`, e.g.
 
 Welcome to fix up them.
 
-### 6.2.3 How to exit qemu
+### 6.2.3 How to exit QEMU
 
 | Where                 |  How
 |-----------------------|---------------------------------------

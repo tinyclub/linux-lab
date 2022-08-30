@@ -1,6 +1,6 @@
 <!-- metadata start --><!--
 % Linux Lab v1.0 中文手册
-% [泰晓科技 | Tinylab.org](https://tinylab.org)
+% [泰晓科技 | Tinylab.org][077]
 % \today
 --><!-- metadata end -->
 
@@ -11,7 +11,6 @@
 ![扫码订阅“泰晓科技”公众号](doc/images/tinylab-wechat.jpg)
 
 <!-- toc start -->
-
 
 # 目录
 
@@ -623,7 +622,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 选择某种登陆方式：
 
-    $ tools/docker/login list   # 列出并选择，并且记住
+    $ tools/docker/login list  # 列出并选择，并且记住
     $ tools/docker/login vnc    # 直接选择一种并记住
 
 登录方式汇总：
@@ -708,103 +707,103 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     $ make list
     [ aarch64/raspi3 ]:
-          ARCH     = arm64
-          CPU     ?= cortex-a53
-          LINUX   ?= v5.1
+          ARCH    = arm64
+          CPU    ?= cortex-a53
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0
           ROOTDEV ?= /dev/mmcblk0
     [ aarch64/virt ]:
-          ARCH     = arm64
-          CPU     ?= cortex-a57
-          LINUX   ?= v5.1
+          ARCH    = arm64
+          CPU    ?= cortex-a57
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ arm/mcimx6ul-evk ]:
-          ARCH     = arm
-          CPU     ?= cortex-a9
-          LINUX   ?= v5.4
+          ARCH    = arm
+          CPU    ?= cortex-a9
+          LINUX  ?= v5.4
           ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/mmcblk0
     [ arm/versatilepb ]:
-          ARCH     = arm
-          CPU     ?= arm926t
-          LINUX   ?= v5.1
+          ARCH    = arm
+          CPU    ?= arm926t
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ arm/vexpress-a9 ]:
-          ARCH     = arm
-          CPU     ?= cortex-a9
-          LINUX   ?= v5.1
+          ARCH    = arm
+          CPU    ?= cortex-a9
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ i386/pc ]:
-          ARCH     = x86
-          CPU     ?= qemu32
-          LINUX   ?= v5.1
+          ARCH    = x86
+          CPU    ?= qemu32
+          LINUX  ?= v5.1
           ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/hda
     [ mips64el/ls2k ]:
-          ARCH     = mips
-          CPU     ?= mips64r2
-          LINUX   ?= loongnix-release-1903
+          ARCH    = mips
+          CPU    ?= mips64r2
+          LINUX  ?= loongnix-release-1903
           LINUX[LINUX_loongnix-release-1903] := 04b98684
           ROOTDEV_LIST := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ mips64el/ls3a7a ]:
-          ARCH     = mips
-          CPU     ?= mips64r2
-          LINUX   ?= loongnix-release-1903
+          ARCH    = mips
+          CPU    ?= mips64r2
+          LINUX  ?= loongnix-release-1903
           LINUX[LINUX_loongnix-release-1903] := 04b98684
           ROOTDEV_LIST ?= /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ mipsel/ls1b ]:
-          ARCH     = mips
-          CPU     ?= mips32r2
-          LINUX   ?= v5.2
+          ARCH    = mips
+          CPU    ?= mips32r2
+          LINUX  ?= v5.2
           ROOTDEV_LIST ?= /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ mipsel/ls232 ]:
-          ARCH     = mips
-          CPU     ?= mips32r2
-          LINUX   ?= v2.6.32-r190726
+          ARCH    = mips
+          CPU    ?= mips32r2
+          LINUX  ?= v2.6.32-r190726
           ROOTDEV_LIST := /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ mipsel/malta ]:
-          ARCH     = mips
-          CPU     ?= mips32r2
-          LINUX   ?= v5.1
+          ARCH    = mips
+          CPU    ?= mips32r2
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ ppc/g3beige ]:
-          ARCH     = powerpc
-          CPU     ?= generic
-          LINUX   ?= v5.1
+          ARCH    = powerpc
+          CPU    ?= generic
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ riscv32/virt ]:
-          ARCH     = riscv
-          CPU     ?= any
-          LINUX   ?= v5.0.13
+          ARCH    = riscv
+          CPU    ?= any
+          LINUX  ?= v5.0.13
           ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ riscv64/virt ]:
-          ARCH     = riscv
-          CPU     ?= any
-          LINUX   ?= v5.1
+          ARCH    = riscv
+          CPU    ?= any
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ x86_64/pc ]:
-          ARCH     = x86
-          CPU     ?= qemu64
-          LINUX   ?= v5.1
+          ARCH    = x86
+          CPU    ?= qemu64
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
     [ csky/virt ]:
-          ARCH     = csky
-          CPU     ?= ck810
-          LINUX   ?= v4.9.56
+          ARCH    = csky
+          CPU    ?= ck810
+          LINUX  ?= v4.9.56
           ROOTDEV ?= /dev/nfs
 
 如果只想查看特定的架构，可以使用 `ARCH` 指定，也可以使用 `FILTER` 模糊匹配：
@@ -814,8 +813,8 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 更多用法：
 
-    $ make list-board         # 仅显示 ARCH
-    $ make list-short         # ARCH 和 Linux
+    $ make list-board        # 仅显示 ARCH
+    $ make list-short        # ARCH 和 Linux
     $ make list-base          # 不包含插件
     $ make list-plugin        # 仅包含插件
     $ make list-full          # 所有板子信息
@@ -832,9 +831,9 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     $ make list-real
     [ arm/ebf-imx6ull ]:
-      ARCH     = arm
-      CPU     ?= cortex-a9
-      LINUX   ?= v4.19.35
+      ARCH    = arm
+      CPU    ?= cortex-a9
+      LINUX  ?= v4.19.35
       ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
       ROOTDEV ?= /dev/mmcblk0
 
@@ -857,36 +856,36 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
     $ make list FILTER=virt
     [ aarch64/virt ]:
-          ARCH     = arm64
-          CPU     ?= cortex-a57
-          LINUX   ?= v5.1
+          ARCH    = arm64
+          CPU    ?= cortex-a57
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/sda /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ riscv32/virt ]:
-          ARCH     = riscv
-          CPU     ?= any
-          LINUX   ?= v5.0.13
+          ARCH    = riscv
+          CPU    ?= any
+          LINUX  ?= v5.0.13
           ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
     [ riscv64/virt ]:
-          ARCH     = riscv
-          CPU     ?= any
-          LINUX   ?= v5.1
+          ARCH    = riscv
+          CPU    ?= any
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/vda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/vda
 
     $ make list FILTER=/pc
     [ i386/pc ]:
-          ARCH     = x86
-          CPU     ?= qemu32
-          LINUX   ?= v5.1
+          ARCH    = x86
+          CPU    ?= qemu32
+          LINUX  ?= v5.1
           ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/hda
     [ x86_64/pc ]:
-          ARCH     = x86
-          CPU     ?= qemu64
-          LINUX   ?= v5.1
+          ARCH    = x86
+          CPU    ?= qemu64
+          LINUX  ?= v5.1
           ROOTDEV_LIST := /dev/hda /dev/ram0 /dev/nfs
           ROOTDEV_LIST[LINUX_v3.2] := /dev/sda /dev/ram0 /dev/nfs
           ROOTDEV ?= /dev/ram0
@@ -1246,7 +1245,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
     $ make modules
     $ make modules-install
-    $ make root-rebuild     // not need for nfs boot
+    $ make root-rebuild    // not need for nfs boot
     $ make boot
 
 列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块：
@@ -1256,10 +1255,10 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 如果加上 `m` 参数，除了列出 `src/modules/` 和 `boards/<BOARD>/bsp/modules/` 路径下的所有模块外，还会列出 `src/linux-stable/` 下的所有模块：
 
     $ make modules-list m=hello
-         1      m=hello ; M=$PWD/src/modules/hello
+        1      m=hello ; M=$PWD/src/modules/hello
     $ make modules-list m=tun,minix
-         1      c=TUN ; m=tun ; M=drivers/net
-         2      c=MINIX_FS ; m=minix ; M=fs/minix
+        1      c=TUN ; m=tun ; M=drivers/net
+        2      c=MINIX_FS ; m=minix ; M=fs/minix
 
 使能一个内核模块：
 
@@ -1430,7 +1429,7 @@ v0.8 开始新增了 `KERNEL_FORK` 支持，可以配置独立的第三方 Linux
 如果要配置 wsl2 的版本，参考如下配置修改即可：
 
     $ make edit
-    LINUX[KERNEL_FORK_wsl2]   := linux-msft-wsl-5.10.74.3
+    LINUX[KERNEL_FORK_wsl2]  := linux-msft-wsl-5.10.74.3
 
 后面的版本号为代码仓库中的任意 git tag。
 
@@ -1573,8 +1572,8 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 其他 Docker 中更多的根文件系统：
 
     $ docker search arm64 | egrep "ubuntu|debian"
-    arm64v8/ubuntu   Ubuntu is a Debian-based Linux operating system  25
-    arm64v8/debian   Debian is a Linux distribution that's composed  20
+    arm64v8/ubuntu  Ubuntu is a Debian-based Linux operating system  25
+    arm64v8/debian  Debian is a Linux distribution that's composed  20
 
 ## 4.6 Linux 与 Uboot 调试
 
@@ -1621,7 +1620,7 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 如果调试过程中提示端口 1234 被占用，可能是 qemu 服务没有正常退出，手动清理即可：
 
     $ sudo netstat -tlp | grep 1234
-    tcp        0      0 0.0.0.0:1234            0.0.0.0:*               LISTEN      3943/qemu-xxx
+    tcp        0      0 0.0.0.0:1234            0.0.0.0:*              LISTEN      3943/qemu-xxx
     $ sudo kill -9 3943
 
 ### 4.6.2 调试 Uboot
@@ -1824,7 +1823,7 @@ Docker 主机：
 
     $ modprobe 9pnet_virtio
     $ lsmod | grep 9p
-    9pnet_virtio           17519  0
+    9pnet_virtio          17519  0
     9pnet                  72068  1 9pnet_virtio
 
 主机：
@@ -1833,21 +1832,21 @@ Docker 主机：
 
     $ make root-rebuild
 
-    $ touch hostshare/test     # Create a file in host
+    $ touch hostshare/test    # Create a file in host
 
     $ make boot U=0 ROOTDEV=ram0 PBR=1 SHARE=1
 
-    $ make boot SHARE=1 SHARE_DIR=src/modules   # for external modules development
+    $ make boot SHARE=1 SHARE_DIR=src/modules  # for external modules development
 
-    $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/   # for internal modules learning
+    $ make boot SHARE=1 SHARE_DIR=build/aarch64/linux-v5.1-virt/  # for internal modules learning
 
-    $ make boot SHARE=1 SHARE_DIR=src/examples   # for c/assembly learning
+    $ make boot SHARE=1 SHARE_DIR=src/examples  # for c/assembly learning
 
 Qemu 开发板：
 
-    $ ls /hostshare/       # Access the file in guest
+    $ ls /hostshare/      # Access the file in guest
     test
-    $ touch /hostshare/guest-test   # Create a file in guest
+    $ touch /hostshare/guest-test  # Create a file in guest
 
 使用 Linux v5.1 验证过的开发板：
 
@@ -2256,7 +2255,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 如果添加镜像后速度依然很慢，请仔细检查是否配置成功或者是否打错了地址：
 
     $ docker info | grep -A1 -i Mirrors
-     Registry Mirrors:
+    Registry Mirrors:
       https://XXXXX.mirror.aliyuncs.com/
 
 ### 6.1.7 关机或重启主机后如何恢复运行 Linux Lab
@@ -2419,31 +2418,31 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
     $ xrandr --current
     Screen 0: minimum 1 x 1, current 1916 x 891, maximum 16384 x 16384
     Virtual1 connected primary 1916x891+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
-       1916x891      60.00*+
-       2560x1600     59.99
-       1920x1440     60.00
-       1856x1392     60.00
-       1792x1344     60.00
-       1920x1200     59.88
-       1600x1200     60.00
-       1680x1050     59.95
-       1400x1050     59.98
-       1280x1024     60.02
-       1440x900      59.89
-       1280x960      60.00
-       1360x768      60.02
-       1280x800      59.81
-       1152x864      75.00
-       1280x768      59.87
-       1024x768      60.00
-       800x600       60.32
-       640x480       59.94
+      1916x891      60.00*+
+      2560x1600    59.99
+      1920x1440    60.00
+      1856x1392    60.00
+      1792x1344    60.00
+      1920x1200    59.88
+      1600x1200    60.00
+      1680x1050    59.95
+      1400x1050    59.98
+      1280x1024    60.02
+      1440x900      59.89
+      1280x960      60.00
+      1360x768      60.02
+      1280x800      59.81
+      1152x864      75.00
+      1280x768      59.87
+      1024x768      60.00
+      800x600      60.32
+      640x480      59.94
 
 更新屏幕尺寸：
 
     $ cd /path/to/cloud-lab
-    $ tools/docker/resize 1280x1024   # 指定任意一个尺寸
-    $ tools/docker/resize             # 不带参数则设定为主系统同样的屏幕尺寸
+    $ tools/docker/resize 1280x1024  # 指定任意一个尺寸
+    $ tools/docker/resize            # 不带参数则设定为主系统同样的屏幕尺寸
 
 如果需要做到全屏，可按如下步骤操作：
 
@@ -2771,3 +2770,5 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [075]: http://www.kernel.org
 
 [076]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
+
+[077]: https://tinylab.org

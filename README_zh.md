@@ -422,7 +422,7 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * Linux Lab Disk 新增 Kali 和 Mint 支持，并首次支持免关机切换系统
 
 * [v0.9 rc1][057]
-    * 升级 llvm 工具链到 13
+    * 升级 LLVM 工具链到 13
     * 升级内核版本到 v5.13
     * 新增 cleanall，可同时清理 source 和 build
 

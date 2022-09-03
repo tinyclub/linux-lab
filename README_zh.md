@@ -2767,8 +2767,6 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [072]: https://www.cctalk.com/m/group/89626746
 [073]: https://www.cctalk.com/m/group/89715946
 [074]: https://www.zhihu.com/people/wuzhangjin
-[075]: http://www.kernel.org
-
+[075]: https://www.kernel.org
 [076]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
-
 [077]: https://tinylab.org

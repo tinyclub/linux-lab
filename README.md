@@ -2537,10 +2537,7 @@ Welcome to mark our web site, star our git repositories:
 [038]: https://www.cctalk.com/m/group/89715946
 [039]: https://www.zhihu.com/people/wuzhangjin
 [040]: http://www.kernel.org
-
 [041]: https://tinylab.org/why-linux-lab
 [042]: https://tinylab.org/why-linux-lab-v2
-
 [043]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
-
 [044]: https://tinylab.org

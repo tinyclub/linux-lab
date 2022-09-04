@@ -12,7 +12,6 @@
 
 <!-- toc start -->
 
-
 # Table of Content
 
 - [1. Linux Lab Overview](#1-linux-lab-overview)
@@ -228,18 +227,18 @@ Related Projects:
 
 Now, Linux Lab becomes an intergrated Linux learning, development and testing environment, it supports:
 
-| Items    | Description
-|----------|-----------------------------------------------------------------------
-|Boards    | QEMU based, 7+ main Architectures, 20+ popular boards; Several real boards supported too
-|Components| Uboot, Linux / Modules, Buildroot, Qemu, Linux v0.11, v2.6.10 ~ 5.x supported
-|Prebuilt  | All of above components have been prebuilt
-|Rootfs    | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM
-|Docker    | Cross toolchains from gcc-4.3 available in one command, external ones configurable
-|Access    | Accessible from local or remote, include CLI and GUI, support bash, ssh, vnc, web vnc and web ssh
-|Network   | Builtin bridge networking, every board has network (except Raspi3)
-|Boot      | Support serial port, curses (bash/ssh friendly) and graphic booting
-|Testing   | Support automatic testing via `make test` target
-|Debugging | debuggable via `make debug` target
+| Items      | Description                                                                                       |
+|------------|---------------------------------------------------------------------------------------------------|
+| Boards     | QEMU based, 7+ main Architectures, 20+ popular boards; Several real boards supported too          |
+| Components | Uboot, Linux / Modules, Buildroot, Qemu, Linux v0.11, v2.6.10 ~ 5.x supported                     |
+| Prebuilt   | All of above components have been prebuilt                                                        |
+| Rootfs     | Support include initrd, harddisk, mmc and nfs, Debian availab for ARM                             |
+| Docker     | Cross toolchains from gcc-4.3 available in one command, external ones configurable                |
+| Access     | Accessible from local or remote, include CLI and GUI, support bash, ssh, vnc, web vnc and web ssh |
+| Network    | Builtin bridge networking, every board has network (except Raspi3)                                |
+| Boot       | Support serial port, curses (bash/ssh friendly) and graphic booting                               |
+| Testing    | Support automatic testing via `make test` target                                                  |
+| Debugging  | debuggable via `make debug` target                                                                |
 
 Continue reading for more features and usage.
 
@@ -298,11 +297,11 @@ It supports:
 
 Linux Lab is a full embedded Linux development system, it needs enough calculation capacity and disk & memory storage space, to avoid potential extension issues, here is the recommended configuration:
 
-| Hardware     | Requirement      | Description                                          |
-|--------------|------------------|------------------------------------------------------|
-| Processor    | X86_64, > 1.5GHz | Must choose 64bit X86 while using virtual machine    |
-| Disk         | >= 50G           | System (25G), Docker Images(~5G), Linux Lab (20G)    |
-| Memory       | >= 4G            | Lower than 4G may have many unpredictable exceptions |
+| Hardware  | Requirement      | Description                                          |
+|-----------|------------------|------------------------------------------------------|
+| Processor | X86_64, > 1.5GHz | Must choose 64bit X86 while using virtual machine    |
+| Disk      | >= 50G           | System (25G), Docker Images(~5G), Linux Lab (20G)    |
+| Memory    | >= 4G            | Lower than 4G may have many unpredictable exceptions |
 
 If often use, please increase disk storage to 100G~200G, memory storage to 8G, cpu cores to 4 and above.
 
@@ -433,13 +432,13 @@ Choose one of the methods:
 
 Summary of login methods:
 
-|   Login Method |   Description      |  Default User    |  Where               |
-|----------------|--------------------|------------------|----------------------|
-|   bash         | docker bash        |  Ubuntu          | localhost            |
-|   ssh          | normal ssh         |  Ubuntu          | localhost            |
-|   vnc          | normal vnc         |  Ubuntu          | localhost+VNC client |
-|   webvnc       | web desktop        |  Ubuntu          | anywhere via internet|
-|   webssh       | web ssh            |  Ubuntu          | anywhere via internet|
+| Login Method | Description | Default User | Where                 |
+|--------------|-------------|--------------|-----------------------|
+| bash         | docker bash | Ubuntu       | localhost             |
+| ssh          | normal ssh  | Ubuntu       | localhost             |
+| vnc          | normal vnc  | Ubuntu       | localhost+VNC client  |
+| webvnc       | web desktop | Ubuntu       | anywhere via internet |
+| webssh       | web ssh     | Ubuntu       | anywhere via internet |
 
 Since vnc clients differs from operating systems, we use webvnc by default to make sure auto login vnc for all systems.
 
@@ -1035,14 +1034,14 @@ Enable a kernel module:
 
 More control commands of `kernel-setconfig` including `y, n, c, o, s, v`:
 
-| Option | Description
-|--------|-----------------------------------------------------------
-| `y`    | build the modules in kernel or enable anther kernel options.
-| `c`    | build the modules as pluginable modules, just like `m`.
-| `o`    | build the modules as pluginable modules, just like `m`.
-| `n`    | disable a kernel option.
-| `s`    | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0
-| `v`    | `PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.
+| Option | Description                                                  |
+|--------|--------------------------------------------------------------|
+| `y`    | build the modules in kernel or enable anther kernel options. |
+| `c`    | build the modules as pluginable modules, just like `m`.      |
+| `o`    | build the modules as pluginable modules, just like `m`.      |
+| `n`    | disable a kernel option.                                     |
+| `s`    | `RTC_SYSTOHC_DEVICE="rtc0"`, set the rtc device to rtc0      |
+| `v`    | `PANIC_TIMEOUT=5`, set the kernel panic timeout to 5 secs.   |
 
 Operates many options in one command line:
 
@@ -1111,7 +1110,7 @@ Build external kernel modules (the same as internel modules):
 
 #### 4.1.3.1 list supported kernel features
 
-Kernel features are abstracted in `src/feature/linux/, including their
+Kernel features are abstracted in `src/feature/linux/`, including their
 configurations patchset, it can be used to manage both of the out-of-mainline
 and in-mainline features.
 
@@ -1495,7 +1494,7 @@ Reboot the guest system for several times:
 
   NOTE: reboot may 1) hang, 2) continue; 3) timeout killed, TEST_TIMEOUT=30; 4) timeout continue, TIMEOUT_CONTINUE=1
 
-Test a feature of a specified Linux version on a specified board(`cmdline_size` feature is for increase `COMMAND_LINE_SIZE` to 4096):
+Test a feature of a specified Linux version on a specified board (`cmdline_size` feature is for increase `COMMAND_LINE_SIZE` to 4096):
 
     $ make test f=kft LINUX=v2.6.36 b=malta TEST_PREPARE=board-init,kernel-cleanup
 
@@ -1666,15 +1665,15 @@ QEMU Board:
 
 Verified boards with Linux v5.1:
 
-| boards          | Status
-|-----------------|---------------------------------------------------
-|aarch64/virt     | virtio-9p-device (virtio-9p-pci breaks nfsroot)
-|arm/vexpress-a9  | only work with virtio-9p-device and without U-Boot booting
-|arm/versatilepb  | only work with virtio-9p-pci
-|x86_64/pc        | only work with virtio-9p-pci
-|i386/pc          | only work with virtio-9p-pci
-|riscv64/virt     | work with virtio-9p-pci and virtio-9p-dev
-|riscv32/virt     | work with virtio-9p-pci and virtio-9p-dev
+| boards          | Status                                                     |
+|-----------------|------------------------------------------------------------|
+| aarch64/virt    | virtio-9p-device (virtio-9p-pci breaks nfsroot)            |
+| arm/vexpress-a9 | only work with virtio-9p-device and without U-Boot booting |
+| arm/versatilepb | only work with virtio-9p-pci                               |
+| x86_64/pc       | only work with virtio-9p-pci                               |
+| i386/pc         | only work with virtio-9p-pci                               |
+| riscv64/virt    | work with virtio-9p-pci and virtio-9p-dev                  |
+| riscv32/virt    | work with virtio-9p-pci and virtio-9p-dev                  |
 
 ## 4.9 Learning Assembly
 
@@ -2174,12 +2173,12 @@ Welcome to fix up them.
 
 ### 6.2.3 How to exit QEMU
 
-| Where                 |  How
-|-----------------------|---------------------------------------
-| Serial Port Console   | `CTRL+a x`
-| Curses based Graphic  | `ESC+2 quit` Or `ALT+2 quit`
-| X based Graphic       | `CTRL+ALT+2 quit`
-| Generic Methods       | `poweroff`, `reboot`, `kill`, `pkill`
+| Where                | How                                   |
+|----------------------|---------------------------------------|
+| Serial Port Console  | `CTRL+a x`                            |
+| Curses based Graphic | `ESC+2 quit` Or `ALT+2 quit`          |
+| X based Graphic      | `CTRL+ALT+2 quit`                     |
+| Generic Methods      | `poweroff`, `reboot`, `kill`, `pkill` |
 
 ### 6.2.4 Boot with missing sdl2 libraries failure
 
@@ -2201,15 +2200,15 @@ If nfs or tftpboot not work, please run `modprobe nfsd` in host side and restart
 
 Long keypress not work in novnc client currently, so, long `Delete` not work, please use `alt+delete` or `alt+backspace` instead, more tips:
 
-|Function                  | VIM           | Bash                      |
-|--------------------------|---------------|---------------------------|
-|begin/end                 | `^/$`         | `Ctrl + a/e`              |
-|forward/backward          | `w/b`         | `Ctrl + Home/end`         |
-|cut one word backword     | `db`          | `Alt  + Delete/backspace` |
-|cut one word forward      | `dw`          | `Alt  + d`                |
-|cut all to begin          | `d^`          | `Ctrl + u`                |
-|cut all to end            | `d$`          | `Ctrl + k`                |
-|paste all cutted          | `p`           | `Ctrl + y`                |
+| Function              | VIM   | Bash                      |
+|-----------------------|-------|---------------------------|
+| begin/end             | `^/$` | `Ctrl + a/e`              |
+| forward/backward      | `w/b` | `Ctrl + Home/end`         |
+| cut one word backword | `db`  | `Alt  + Delete/backspace` |
+| cut one word forward  | `dw`  | `Alt  + d`                |
+| cut all to begin      | `d^`  | `Ctrl + u`                |
+| cut all to end        | `d$`  | `Ctrl + k`                |
+| paste all cutted      | `p`   | `Ctrl + y`                |
 
 ### 6.3.4 Language input switch shortcuts
 

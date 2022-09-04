@@ -12,6 +12,7 @@
 
 <!-- toc start -->
 
+
 # Table of Content
 
 - [1. Linux Lab Overview](#1-linux-lab-overview)
@@ -68,13 +69,13 @@
         - [4.1.3.6 persist or clear feature setting](#4136-persist-or-clear-feature-setting)
     - [4.1.4 Create new development branch](#414-create-new-development-branch)
     - [4.1.5 Use standalone git repository](#415-use-standalone-git-repository)
-  - [4.2 Using U-Boot Bootloader](#42-using-uboot-bootloader)
+  - [4.2 Using U-Boot Bootloader](#42-using-u-boot-bootloader)
   - [4.3 Using QEMU Emulator](#43-using-qemu-emulator)
   - [4.4 Using Toolchains](#44-using-toolchains)
   - [4.5 Using Rootfs](#45-using-rootfs)
-  - [4.6 Debugging Linux and Uboot](#46-debugging-linux-and-uboot)
+  - [4.6 Debugging Linux and U-Boot](#46-debugging-linux-and-u-boot)
     - [4.6.1 Debugging Linux](#461-debugging-linux)
-    - [4.6.2 Debugging Uboot](#462-debugging-uboot)
+    - [4.6.2 Debugging U-Boot](#462-debugging-u-boot)
   - [4.7 Test Automation](#47-test-automation)
   - [4.8 File Sharing](#48-file-sharing)
     - [4.8.1 Install files to rootfs](#481-install-files-to-rootfs)
@@ -88,13 +89,13 @@
   - [4.11 Running any make goals](#411-running-any-make-goals)
   - [4.12 More Usage](#412-more-usage)
 - [5. Linux Lab Development](#5-linux-lab-development)
-  - [5.1 Choose a board supported by qemu](#51-choose-a-board-supported-by-qemu)
+  - [5.1 Choose a board supported by QEMU](#51-choose-a-board-supported-by-qemu)
   - [5.2 Create the board directory](#52-create-the-board-directory)
   - [5.3 Clone a Makefile from an existing board](#53-clone-a-makefile-from-an-existing-board)
   - [5.4 Configure the variables from scratch](#54-configure-the-variables-from-scratch)
-  - [5.5 At the same time, prepare the configs](#55-at-the-same-time,-prepare-the-configs)
-  - [5.6 Choose the versions of kernel, rootfs and uboot](#56-choose-the-versions-of-kernel,-rootfs-and-uboot)
-  - [5.7 Configure, build and boot them](#57-configure,-build-and-boot-them)
+  - [5.5 At the same time, prepare the configs](#55-at-the-same-time-prepare-the-configs)
+  - [5.6 Choose the versions of kernel, rootfs and U-Boot](#56-choose-the-versions-of-kernel-rootfs-and-u-boot)
+  - [5.7 Configure, build and boot them](#57-configure-build-and-boot-them)
     - [5.7.1 Speed up compiling and save disk life](#571-speed-up-compiling-and-save-disk-life)
   - [5.8 Save the images and configs](#58-save-the-images-and-configs)
   - [5.9 Upload everything](#59-upload-everything)
@@ -114,7 +115,7 @@
   - [6.2 QEMU Issues](#62-qemu-issues)
     - [6.2.1 Why kvm speedding up is disabled](#621-why-kvm-speedding-up-is-disabled)
     - [6.2.2 Poweroff hang](#622-poweroff-hang)
-    - [6.2.3 How to exit qemu](#623-how-to-exit-qemu)
+    - [6.2.3 How to exit QEMU](#623-how-to-exit-qemu)
     - [6.2.4 Boot with missing sdl2 libraries failure](#624-boot-with-missing-sdl2-libraries-failure)
   - [6.3 Environment Issues](#63-environment-issues)
     - [6.3.1 NFS/tftpboot not work](#631-nfstftpboot-not-work)

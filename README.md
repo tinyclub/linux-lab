@@ -1,3 +1,4 @@
+> Corrector: [TinyCorrect](https://gitee.com/tinylab/tinycorrect) - [autocorrect]<br/>
 <!-- metadata start --><!--
 % Linux Lab v1.0 Manual
 % [TinyLab Community | Tinylab.org][044]
@@ -2220,10 +2221,10 @@ There are tow methods to tune the screen size, one is auto scaling by noVNC, ano
 
 The first one is setting noVNC before connecting.
 
-    * Press the left sidebar of noVNC web page
-    * Disconnect
-    * Enable 'Auto Scaling Mode' via 'Settings -> Scaling Mode: -> Local Scaling -> Apply'
-    * Connect
+* Press the left sidebar of noVNC web page
+* Disconnect
+* Enable 'Auto Scaling Mode' via 'Settings -> Scaling Mode: -> Local Scaling -> Apply'
+* Connect
 
 The second one is setting `SCREEN_SIZE` while running Linux Lab.
 

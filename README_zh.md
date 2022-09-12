@@ -2404,10 +2404,10 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 先来介绍第一种，也就是屏幕自适应，这种方法很方便，但是屏幕字体由于拉伸变形后略微有些发虚。
 
-    * 点击 noVNC Web 页面左侧的边栏（左侧有个小箭头）
-    * 断开连接
-    * 点击设置：'Settings -> Scaling Mode: -> Local Scaling -> Apply'
-    * 重新连接
+* 点击 noVNC Web 页面左侧的边栏（左侧有个小箭头）
+* 断开连接
+* 点击设置：'Settings -> Scaling Mode: -> Local Scaling -> Apply'
+* 重新连接
 
 接下来介绍第二种方法，即在启动 Lab 时指定一个合适的分辨率。
 

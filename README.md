@@ -1,4 +1,3 @@
-> Corrector: [TinyCorrect](https://gitee.com/tinylab/tinycorrect) - [autocorrect]<br/>
 <!-- metadata start --><!--
 % Linux Lab v1.0 Manual
 % [TinyLab Community | Tinylab.org][044]
@@ -2429,14 +2428,14 @@ If using external filesystem, please make sure the filesystem architecture follo
 
 # 7. Contact and Sponsor
 
-## Contact Us
+## 7.1 Contact Us
 
 Welcome to join our discuss group:
 
 * Wechat: **tinylab**
 * Email: contact /AT\ tinylab /dot/ org
 
-## Give me a star
+## 7.2 Give me a star
 
 Welcome to mark our web site, star our git repositories:
 
@@ -2450,7 +2449,7 @@ Welcome to mark our web site, star our git repositories:
     * Gitee: <https://gitee.com/tinylab>
     * Github：<https://github.com/tinyclub>
 
-## Buy our products
+## 7.3 Buy our products
 
 * Store: <https://shop155917374.taobao.com>
     * The taobao store of TinyLab.org community, mainly sell products around our open source projects
@@ -2465,13 +2464,13 @@ Welcome to mark our web site, star our git repositories:
     * TinyLab School -- The video channel of TinyLab.org community
     * Video Live, Video Courses are shared by active Linux professionals from TinyLab.org community
 
-## Sponsor
+## 7.4 Sponsor
 
-### Sponsor via wechat
+### 7.4.1 Sponsor via wechat
 
 ![contact-sponsor](doc/images/contact-sponsor.png)
 
-### Sponsor list
+### 7.4.2 Sponsor list
 
 * 2021
     * [Lazyparser][015]

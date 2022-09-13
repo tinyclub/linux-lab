@@ -2626,14 +2626,14 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 # 7. 联系并赞助我们
 
-## 联系方式
+## 7.1 联系方式
 
 欢迎联系我们加入 Linux Lab 的用户和开发人员讨论组。
 
 * 微信：**tinylab**
 * 邮箱：contact /AT\ tinylab /dot/ org
 
-## 关注并参与
+## 7.2 关注并参与
 
 欢迎收藏 Linux Lab 所属社区网站，并在仓库首页右上角标上 Star。
 
@@ -2647,7 +2647,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     * Gitee: <https://gitee.com/tinylab/linux-lab>
     * Github：<https://github.com/tinyclub/linux-lab>
 
-## 付费支持我们
+## 7.3 付费支持我们
 
 * 网店：<https://shop155917374.taobao.com>
     * 泰晓开源小店，销售社区自研开源项目周边产品，用于补贴开源项目研发
@@ -2662,13 +2662,13 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
     * 泰晓学院 —— 泰晓科技视频频道
     * 不定期邀请社区长期活跃的 Linux 技术专家做视频直播与视频课程知识分享
 
-## 扫码提供赞助
+## 7.4 扫码提供赞助
 
-### 赞助我们
+### 7.4.1 赞助我们
 
 ![Linux Lab 需要更多的用户或者赞助~ 加入我们吧！](doc/images/contact-sponsor.png)
 
-### 赞助列表
+### 7.4.2 赞助列表
 
 以下是截止到本文档最新一次更新时的赞助列表：
 

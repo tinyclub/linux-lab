@@ -12,7 +12,7 @@
 	ignore = all
 [submodule "u-boot"]
 	path = src/u-boot
-	url = https://gitee.com/mirrors/u-boot.git
+	url = https://gitlab.com/qemu-project/u-boot.git
 	ignore = all
 [submodule "boards/aarch64/raspi3/bsp"]
 	ignore = all

@@ -213,7 +213,8 @@ _QEMU_SRC   ?= $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK)-qemu),qemu)
 QEMU_SRC    ?= $(_QEMU_SRC)
 
 #UBOOT_GIT  ?= https://github.com/u-boot/u-boot.git
-UBOOT_GIT   ?= https://gitee.com/mirrors/u-boot.git
+#UBOOT_GIT  ?= https://gitee.com/mirrors/u-boot.git
+UBOOT_GIT   ?= https://gitlab.com/qemu-project/u-boot.git
 _UBOOT_GIT  := $(UBOOT_GIT)
 _UBOOT_SRC  ?= $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK)-uboot),u-boot)
 UBOOT_SRC   ?= $(_UBOOT_SRC)

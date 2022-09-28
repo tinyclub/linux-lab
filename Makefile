@@ -206,7 +206,8 @@ PREBUILT_BIOS       := $(PREBUILT_DIR)/bios
 
 # Core source: remote and local
 #QEMU_GIT   ?= https://github.com/qemu/qemu.git
-QEMU_GIT    ?= https://gitee.com/mirrors/qemu.git
+#QEMU_GIT   ?= https://gitee.com/mirrors/qemu.git
+QEMU_GIT    ?= https://gitlab.com/qemu-project/qemu.git
 _QEMU_GIT   := $(QEMU_GIT)
 _QEMU_SRC   ?= $(if $(QEMU_FORK),$(call _lc,$(QEMU_FORK)-qemu),qemu)
 QEMU_SRC    ?= $(_QEMU_SRC)

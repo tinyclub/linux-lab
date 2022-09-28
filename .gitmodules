@@ -1,6 +1,6 @@
 [submodule "qemu"]
 	path = src/qemu
-	url = https://gitee.com/mirrors/qemu.git
+	url = https://gitlab.com/qemu-project/qemu.git
 	ignore = all
 [submodule "buildroot"]
 	path = src/buildroot

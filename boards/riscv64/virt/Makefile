@@ -4,8 +4,8 @@ ARCH    := riscv
 XARCH   := riscv64
 # Use the default setting
 CPU     ?=
-SMP     ?= 4
-MEM     ?= 128M
+SMP     ?= 1
+MEM     ?= 256M
 QEMU    ?= v6.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
@@ -14,6 +14,23 @@ BUILDROOT?= 2019.05
 NETDEV_LIST := virtio
 NETDEV  ?= virtio
 SERIAL  ?= ttyS0
+
+UBOOT   ?= v2022.04
+
+KRN_ADDR?= 0x84000000
+DTB_ADDR?= 0x87000000
+#DTB_ADDR?= $$fdtcontroladdr
+RDK_ADDR?= 0x87500000
+
+# QEMU load env.img to ram and then U-boot import it from ram
+ENV_DEV_LIST := ram
+ENV_DEV      ?= ram
+ENV_OFFSET   ?= 0
+ENV_ADDR     ?= 0x87300000
+
+UCONFIG ?= qemu-riscv.h
+BOOTDEV_LIST := ram
+BOOTDEV ?= ram
 
 # ref: https://wiki.qemu.org/Documentation/9psetup
 # 9pnet based network filesystem sharing, aarch64/virt board support both virtio-9p-pci/-virtfs and virtio-9p-device
@@ -34,9 +51,14 @@ FSTYPE  ?= ext2
 # fw_jump.elf is from https://github.com/riscv/opensbi
 BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
 
-KRN_ADDR ?= 0x80200000
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
+
+DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-riscv.dts
+UORIIMG ?= arch/$(ARCH)/boot/Image
+BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
+UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/Image
+DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-riscv.dtb
 
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)

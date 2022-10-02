@@ -72,7 +72,9 @@ PFLASH_BS   ?= 512
 # Environment Offset, see CONFIG_ENV_OFFSET in $UCONFIG
 ENV_OFFSET  ?= 0
 ENV_SIZE    ?= 1
-ENVDEV      ?= flash
+# ram, flash
+ENV_DEV_LIST := ram flash
+ENV_DEV     ?= flash
 ifeq ($(ENV_DEV), flash)
   ENV_ADDR  ?= 0x4000000
 else

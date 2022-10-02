@@ -3664,10 +3664,8 @@ ifeq ($(U),1)
       endif
     endif
   endif
-  ifeq ($(UBOOT_BIOS),1)
-    ifneq ($(ENV_DEV), flash)
-      BOOT_CMD += -device loader,file=$(ENV_IMG),addr=$(ENV_ADDR)
-    endif
+  ifeq ($(ENV_DEV),ram)
+    BOOT_CMD += -device loader,file=$(ENV_IMG),addr=$(ENV_ADDR)
   endif
 
   ifneq ($(PFLASH_SIZE),0)

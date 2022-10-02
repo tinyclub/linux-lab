@@ -18,8 +18,7 @@ SERIAL  ?= ttyS0
 UBOOT   ?= v2022.04
 
 KRN_ADDR?= 0x84000000
-DTB_ADDR?= 0x87000000
-#DTB_ADDR?= $$fdtcontroladdr
+DTB_ADDR?= $$fdtcontroladdr
 RDK_ADDR?= 0x87500000
 
 # QEMU load env.img to ram and then U-boot import it from ram
@@ -59,6 +58,10 @@ UORIIMG ?= arch/$(ARCH)/boot/Image
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/Image
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-riscv.dtb
+
+ifneq ($(wildcard $(DTB)),)
+  DTB_ADDR := 0x87000000
+endif
 
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)

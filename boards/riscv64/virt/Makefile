@@ -4,7 +4,7 @@ ARCH    := riscv
 XARCH   := riscv64
 # Use the default setting
 CPU     ?=
-SMP     ?= 1
+SMP     ?= 4
 MEM     ?= 256M
 QEMU    ?= v6.0.0
 # Enable QEMU_US=1 for qemu-user-static

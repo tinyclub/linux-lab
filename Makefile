@@ -3162,7 +3162,9 @@ ifeq ($(findstring /dev/ram,$(ROOTDEV)),)
   RDK_ADDR   := -
 endif
 ifeq ($(DTS),)
-  DTB_ADDR   := -
+  ifneq ($(DTB_ADDR),$$fdtcontroladdr)
+    DTB_ADDR   := -
+  endif
 endif
 
 export U_BOOT_CMD IP ROUTE ROOTDEV BOOTDEV ROOTDIR PFLASH_BASE KRN_ADDR KRN_SIZE RDK_ADDR RDK_SIZE DTB_ADDR DTB_SIZE
@@ -3656,7 +3658,9 @@ ifeq ($(U),1)
   ifeq ($(RAM_BOOT),1)
     BOOT_CMD += -device loader,file=$(UKIMAGE),addr=$(KRN_ADDR)
     ifneq ($(DTB_ADDR),-)
-      BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
+      ifneq ($(DTB_ADDR),$$fdtcontroladdr)
+        BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
+      endif
     endif
     ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
       ifneq ($(RDK_ADDR),-)

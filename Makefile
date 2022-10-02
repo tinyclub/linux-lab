@@ -3206,7 +3206,8 @@ root-ud-clean:
 
 PHONY += root-ud root-ud-rebuild root-ud-clean
 
-# aarch64 not add uboot header for kernel image
+# aarch64 and riscv don't add uboot header for kernel image
+ifneq ($(UKIMAGE), $(KIMAGE))
 $(UKIMAGE): $(KIMAGE)
 	$(Q)if [ "$(PBK)" = "0" ]; then \
 	  if [ "$(notdir $(UKIMAGE))"  = "uImage" ]; then \
@@ -3215,6 +3216,9 @@ $(UKIMAGE): $(KIMAGE)
 	    cp -v $(KIMAGE) $(UKIMAGE); \
 	  fi; \
 	fi
+else
+$(UKIMAGE):
+endif
 
 ifneq ($(INVALID_ROOTFS),1)
   U_ROOT_IMAGE := $(UROOTFS)

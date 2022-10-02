@@ -3642,9 +3642,13 @@ ifeq ($(U),1)
   endif
   ifeq ($(RAM_BOOT),1)
     BOOT_CMD += -device loader,file=$(UKIMAGE),addr=$(KRN_ADDR)
-    BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
+    ifneq ($(DTB_ADDR),-)
+      BOOT_CMD += -device loader,file=$(DTB),addr=$(DTB_ADDR)
+    endif
     ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
-      BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
+      ifneq ($(RDK_ADDR),-)
+        BOOT_CMD += -device loader,file=$(UROOTFS),addr=$(RDK_ADDR)
+      endif
     endif
   endif
   ifeq ($(UBOOT_BIOS),1)

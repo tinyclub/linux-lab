@@ -1173,7 +1173,7 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 
 使用不同的 rootfs 启动（依赖于开发板的支持，启动后检查 `/dev/`）
 
-    $ make boot ROOTDEV=ram      // support by all boards, basic boot method
+    $ make boot ROOTDEV=ram0     // support by all boards, basic boot method
     $ make boot ROOTDEV=nfs      // depends on network driver, only raspi3 not work
     $ make boot ROOTDEV=sda
     $ make boot ROOTDEV=mmcblk0

@@ -978,7 +978,7 @@ Boot without Uboot (only `versatilepb` and `vexpress-a9` boards tested):
 
 Boot with different rootfs (depends on board, check `/dev/` after boot):
 
-    $ make boot ROOTDEV=ram      // support by all boards, basic boot method
+    $ make boot ROOTDEV=ram0     // support by all boards, basic boot method
     $ make boot ROOTDEV=nfs      // depends on network driver, only raspi3 not work
     $ make boot ROOTDEV=sda
     $ make boot ROOTDEV=mmcblk0

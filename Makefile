@@ -2173,10 +2173,15 @@ _qemu_update_submodules:
 
 _qemu: _qemu_update_submodules
 	$(call make_qemu,$(QT))
-	$(Q)if [ ! -L  $(QEMU_BUILD)/etc/qemu-ifup ]; then \
+	$(Q)if [ ! -L  $(QEMU_BUILD)/../etc/qemu-ifup ]; then \
 	  mkdir -p $(QEMU_BUILD)/../etc/; \
 	  ln -sf /etc/qemu-ifup $(QEMU_BUILD)/../etc/qemu-ifup; \
 	  ln -sf /etc/qemu-ifdown $(QEMU_BUILD)/../etc/qemu-ifdown; \
+	fi
+	$(Q)if [ ! -L  $(QEMU_BUILD)/qemu-bundle$(PREBUILT_QEMU_DIR)/etc/qemu-ifup ]; then \
+	  mkdir -p $(QEMU_BUILD)/qemu-bundle$(PREBUILT_QEMU_DIR)/etc/; \
+	  ln -sf /etc/qemu-ifup $(QEMU_BUILD)/qemu-bundle$(PREBUILT_QEMU_DIR)/etc/qemu-ifup; \
+	  ln -sf /etc/qemu-ifdown $(QEMU_BUILD)/qemu-bundle$(PREBUILT_QEMU_DIR)/etc/qemu-ifdown; \
 	fi
 
 endif # Qemu targets

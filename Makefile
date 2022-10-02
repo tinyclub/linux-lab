@@ -2912,7 +2912,7 @@ IMAGE := $(notdir $(ORIIMG))
 
 # aarch64 not add uboot header for kernel image
 ifeq ($(U),1)
-  ifeq ($(ARCH),arm64)
+  ifeq ($(UKIMAGE),$(KIMAGE))
     IMAGE := Image
   else
     IMAGE := uImage

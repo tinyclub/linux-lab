@@ -53,11 +53,11 @@ BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 
-DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-riscv.dts
+DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dts
 UORIIMG ?= arch/$(ARCH)/boot/Image
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/Image
-DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-riscv.dtb
+DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dtb
 
 ifneq ($(wildcard $(DTB)),)
   DTB_ADDR := 0x87000000

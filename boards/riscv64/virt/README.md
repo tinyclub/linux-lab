@@ -34,6 +34,21 @@ We can build one in Linux Lab with these commands:
     $ make all PLATFORM=generic LLVM=1 PLATFORM_RISCV_XLEN=64
     $ ls build/platform/generic/firmware/fw_jump.elf
 
+## DTS
+
+The cpu, memory and external devices configuration in dts must match the
+setting from the QEMU options, otherwise, it may not boot.
+
+If want to change the QEMU options, please make sure update the dts
+configurations too, or, simply reset `DTB` variable like this to use the
+default dtb transferred by QEMU:
+
+    $ make boot DTB=
+
+The default dtb is dumped out of QEMU:
+
+    $ make boot DUMPDTB=1
+
 ## References
 
 * [Qemu RISCV Documentation](https://wiki.qemu.org/Documentation/Platforms/RISCV)

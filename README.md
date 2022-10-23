@@ -2025,6 +2025,10 @@ To use the tools under `tools` without sudo, please make sure add your account t
     $ sudo usermod -aG docker <USER>
     $ newgrp docker
 
+If get error: "newgrp: group 'docker' does not exist", please add 'docker' group manually:
+
+    $ sudo groupadd docker
+
 **Notes**: Currently, root user is not allowed to run Linux Lab。
 
 ### 6.1.5 Network not work

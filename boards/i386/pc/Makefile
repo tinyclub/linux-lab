@@ -6,6 +6,8 @@ XARCH   := i386
 # qemu-system-i386 -M pc -cpu ?
 CPU     ?= qemu32
 MEM     ?= 128M
+SMP     ?= 4
+LINUX   ?= v5.13
 
 # This is for old linux 0.11 floppy support
 QEMU    ?= v0.10.6
@@ -27,8 +29,6 @@ QEMU_VNC    :=
 GCC[QEMU_v0.10.6] := 4.4
 endif
 
-SMP     ?= 4
-LINUX   ?= v5.13
 BUILDROOT?= 2019.02.2
 
 # Add board detailed configuration

@@ -3508,7 +3508,14 @@ ifneq ($(OS), trusty)
 endif
 
 ifeq ($(ROOTDEV),/dev/nfs)
+  nfsd=1
   ifeq ($(wildcard /proc/fs/nfsd),)
+    nfsd=0
+  endif
+  ifeq ($(wildcard /proc/fs/nfs/exports),)
+    nfsd=0
+  endif
+  ifeq ($(nfsd),0)
     $(error ERR: 'nfsd' module not inserted, please follow the steps to start nfs service: 1. insert nfsd module in host: 'modprobe nfsd', 2. restart nfs service in docker: '/configs/tools/restart-net-servers.sh')
   endif
   # ref: linux-stable/Documentation/filesystems/nfs/nfsroot.txt

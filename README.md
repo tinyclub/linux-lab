@@ -1775,6 +1775,7 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)][042]
 
 * User Manual
+    * [Linux Lab v1.1 User Manual][050]
     * [Linux Lab v1.0 User Manual][033]
     * [Linux Lab v0.9 User Manual][032]
     * [Linux Lab v0.8 User Manual][031]
@@ -2566,3 +2567,4 @@ Welcome to mark our web site, star our git repositories:
 [047]: https://gitee.com/tinylab/pwn-lab
 [048]: https://tinylab.org/riscv-linux
 [049]: https://tinylab.org/summer2022
+[050]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-en.pdf

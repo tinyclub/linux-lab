@@ -1981,6 +1981,7 @@ Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
     * [Linux Lab：难以抗拒的十大理由 V2.0][068]
 
 * 中文用户手册
+    * [Linux Lab v1.1 中文手册][086]
     * [Linux Lab v1.0 中文手册][065]
     * [Linux Lab v0.9 中文手册][064]
     * [Linux Lab v0.8 中文手册][063]
@@ -2823,3 +2824,4 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [083]: https://gitee.com/tinylab/pwn-lab
 [084]: https://tinylab.org/riscv-linux
 [085]: https://tinylab.org/summer2022
+[086]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-zh.pdf

@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.0 Manual
+% Linux Lab v1.1 Manual
 % [TinyLab Community | Tinylab.org][044]
 % \today
 --><!-- metadata end -->
@@ -138,12 +138,12 @@
     - [6.4.7 not in supported list](#647-not-in-supported-list)
     - [6.4.8 is not a valid rootfs directory](#648-is-not-a-valid-rootfs-directory)
 - [7. Contact and Sponsor](#7-contact-and-sponsor)
-  - [Contact Us](#contact-us)
-  - [Give me a star](#give-me-a-star)
-  - [Buy our products](#buy-our-products)
-  - [Sponsor](#sponsor)
-    - [Sponsor via wechat](#sponsor-via-wechat)
-    - [Sponsor list](#sponsor-list)
+  - [7.1 Contact Us](#71-contact-us)
+  - [7.2 Give me a star](#72-give-me-a-star)
+  - [7.3 Buy our products](#73-buy-our-products)
+  - [7.4 Sponsor](#74-sponsor)
+    - [7.4.1 Sponsor via wechat](#741-sponsor-via-wechat)
+    - [7.4.2 Sponsor list](#742-sponsor-list)
 
 <!-- toc end -->
 

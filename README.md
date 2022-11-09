@@ -210,26 +210,30 @@ Related Projects:
 
 ### 1.3.1 Free Video Courses In Chinese
 
-  * [Linux Lab Open Videos][036]
-      * Linux Lab Introduction
-      * Loongson Linux Development
-      * Linux Lab Disk Demonstration
-      * Linux Lab Release Meeting Replay Videos
-      * Rust For Linux Introduction
+* [Linux Lab Open Videos][036]
+    * Linux Lab Introduction
+    * Loongson Linux Development
+    * Linux Lab Disk Demonstration
+    * Linux Lab Release Meeting Replay Videos
+    * Rust For Linux Introduction
+
+* [Linux Kernel Observation][051]
+
+* [RISC-V Linux Kernel Investigation][052]
 
 ### 1.3.2 Non-Free Video Courses In Chinese
 
-  * [《The Perspective of Linux ELF》][035]
-      * Learn Linux ELF by practice, with hundreds of examples, all verified in Linux Lab
+* [《The Perspective of Linux ELF》][035]
+    * Learn Linux ELF by practice, with hundreds of examples, all verified in Linux Lab
 
-  * [《Rust Language Quickstart》][006]
-      * Rust course for C programmer, with examples verified in Linux Lab
+* [《Rust Language Quickstart》][006]
+    * Rust course for C programmer, with examples verified in Linux Lab
 
-  * [《Software Reverse Engineering Quickstart》][037]
-      * Learn reverse engineering by practice, with examples verified in Linux Lab
+* [《Software Reverse Engineering Quickstart》][037]
+    * Learn reverse engineering by practice, with examples verified in Linux Lab
 
-  * [《Linux Kernel Livepatch Introduction》][038]
-      * Learn Linux live patching in AArch64 by practice, with examples verified in Linux Lab
+* [《Linux Kernel Livepatch Introduction》][038]
+    * Learn Linux live patching in AArch64 by practice, with examples verified in Linux Lab
 
 ## 1.4 Project Functions
 
@@ -2568,3 +2572,5 @@ Welcome to mark our web site, star our git repositories:
 [048]: https://tinylab.org/riscv-linux
 [049]: https://tinylab.org/summer2022
 [050]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-en.pdf
+[051]: https://www.cctalk.com/m/group/90483396
+[052]: https://www.cctalk.com/m/group/90251209

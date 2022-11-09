@@ -222,26 +222,32 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 
 ### 1.3.1 开放教程
 
-  * [Linux Lab 公开课][071]
-      * Linux Lab 简介
-      * 龙芯 Linux 内核开发
-      * Linux Lab Disk 使用演示
-      * Linux Lab 发布会视频回放
-      * Rust For Linux 简介
+* [Linux Lab 公开课][071]
+    * Linux Lab 简介
+    * 龙芯 Linux 内核开发
+    * Linux Lab Disk 使用演示
+    * Linux Lab 发布会视频回放
+    * Rust For Linux 简介
+
+* [Linux 内核观察][087]
+    * 在新的 Linux 内核版本发布后，通过视频讲解其中的关键变更
+
+* [RISC-V Linux 内核剖析][088]
+   * RISC-V Linux 内核技术调研在线视频分享
 
 ### 1.3.2 付费课程
 
-  * [《360° 剖析 Linux ELF》][070]
-      * 提供了上百个实验案例，全部通过 Linux Lab 验证
+* [《360° 剖析 Linux ELF》][070]
+    * 提供了上百个实验案例，全部通过 Linux Lab 验证
 
-  * [《Rust 语言快速上手》][006]
-      * 初步了解 Rust 语言、历史、特性、适应领域以及与嵌入式、Linux、GCC、GPU、C/C++ 语言的关系并快速上手，所有实验全部通过 Linux Lab 验证
+* [《Rust 语言快速上手》][006]
+    * 初步了解 Rust 语言、历史、特性、适应领域以及与嵌入式、Linux、GCC、GPU、C/C++ 语言的关系并快速上手，所有实验全部通过 Linux Lab 验证
 
-  * [《软件逆向工程初探》][072]
-      * 了解软件逆向工程的基本概念，掌握开展软件逆向相关技术、流程和方法，通过实验实操，最终独立完成简单 C 程序逆向分析，所有实验全部通过 Linux Lab 验证
+* [《软件逆向工程初探》][072]
+    * 了解软件逆向工程的基本概念，掌握开展软件逆向相关技术、流程和方法，通过实验实操，最终独立完成简单 C 程序逆向分析，所有实验全部通过 Linux Lab 验证
 
-  * [《Linux 内核热补丁技术介绍与实战》][073]
-      * 学习 Linux 内核热补丁核心工作原理，跟随老师动手实现 AArch64 架构 Linux 内核热补丁核心功能，所有实验全部通过 Linux Lab 验证
+* [《Linux 内核热补丁技术介绍与实战》][073]
+    * 学习 Linux 内核热补丁核心工作原理，跟随老师动手实现 AArch64 架构 Linux 内核热补丁核心功能，所有实验全部通过 Linux Lab 验证
 
 ## 1.4 项目功能
 
@@ -2825,3 +2831,5 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [084]: https://tinylab.org/riscv-linux
 [085]: https://tinylab.org/summer2022
 [086]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-zh.pdf
+[087]: https://www.cctalk.com/m/group/90483396
+[088]: https://www.cctalk.com/m/group/90251209

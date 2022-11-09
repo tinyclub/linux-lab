@@ -36,6 +36,7 @@
     - [1.6.8 v0.8 @ 2021.10.13](#168-v08--20211013)
     - [1.6.9 v0.9 @ 2022.01.13](#169-v09--20220113)
     - [1.6.10 v1.0 @ 2022.06.16](#1610-v10--20220616)
+    - [1.6.11 v1.1 @ 2022.11.09](#1611-v11--20221109)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
   - [2.1 软硬件要求](#21-软硬件要求)
   - [2.2 安装 Docker](#22-安装-docker)
@@ -451,6 +452,26 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 修复 test 中的内核参数传递问题，确保兼容 U-Boot 和 kernel
     * 允许灵活增加 App 的子 make 目标，例如 `make root busybox-menuconfig`
     * 修复两笔内存编译的问题
+
+### 1.6.11 v1.1 @ 2022.11.09
+
+[v1.1][079] 升级部分内核到 v6.0.7，升级 QEMU 编译到 v7.0，通过 [TinyCorrect][080] 修复文档并新增 RISC-V U-Boot 开发支持。
+
+* v1.1 rc3
+  * 新增 RISC-V U-Boot 开发支持
+  * 新增 QEMU dumpdtb 支持
+  * 修复新版内核上的 nfsd 模块检测
+  * 修复文档中的 ROOTDEV 用法
+
+* v1.1 rc2
+  * 完善 QEMU 编译依赖安装
+  * 用 TinyCorrect 修复所有文档排版错误
+  * 修复 tools/toc.sh 脚本，对齐到 TinyCorrect 要求的格式
+
+* [v1.1 rc1][078]
+  * 新增 QEMU v7.0 编译支持
+  * 新增龙芯虚拟开发板：`mips64el/loongson3-virt`，适配官方 v5.18 内核
+  * 升级 RISC-V 内核版本到 v6.0.7
 
 # 2. Linux Lab 安装
 
@@ -2778,3 +2799,6 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [075]: https://www.kernel.org
 [076]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
 [077]: https://tinylab.org
+[078]: https://tinylab.org/linux-lab-v1.1-rc1/
+[079]: https://tinylab.org/linux-lab-v1.1/
+[080]: https://gitee.com/tinylab/tinycorrect

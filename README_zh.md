@@ -1,4 +1,3 @@
-> Corrector: [TinyCorrect](https://gitee.com/tinylab/tinycorrect) v0.1 - [codeinline autocorrect]<br/>
 <!-- metadata start --><!--
 % Linux Lab v1.1 中文手册
 % [泰晓科技 | Tinylab.org][077]

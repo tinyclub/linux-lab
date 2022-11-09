@@ -2701,13 +2701,21 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 以下是截止到本文档最新一次更新时的赞助列表：
 
+* 2022
+    * [Summer 2022][085]
+        * 赞助项目：[Microbench][081], [OpenHW Lab][082], [PWN Lab][083]
+
+    * PLCT 实验室
+        * 赞助了 2 块 D1 开发板
+        * 赞助了 [RISC-V Linux 内核技术调研][084] 活动
+
 * 2021
     * [吴伟老师][016]
         * 赞助 5000 元人民币现金并长期友好支持泰晓科技 Linux 技术社区
         * HelloGCC 负责人，HelloLLVM 负责人，PLCT 实验室项目总监。长期致力于推动编译技术及开源工具在国内的推广。欢迎关注公众号：HelloGCC
 
     * [开源之夏 2021][026]
-        * 开源之夏 2021 赞助了如下项目：Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
+        * 赞助项目：Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
 
     * 平头哥，赞助 1 块 D1 开发板
     * 全志，赞助 3 块 D1 开发板
@@ -2718,7 +2726,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
         * 龙芯公司赞助开发了 mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232 和相关文档及视频课程
 
     * [开源之夏 2020][026]
-        * 开源之夏 2020 赞助了 Linux Lab 的镜像升级：从 Ubuntu 14.04 升级到 Ubuntu 20.04
+        * 赞助项目：从 Ubuntu 14.04 升级到 Ubuntu 20.04
 
     * 野火电子，赞助 6 块 IMX6ULL 开发板
 
@@ -2802,3 +2810,8 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [078]: https://tinylab.org/linux-lab-v1.1-rc1/
 [079]: https://tinylab.org/linux-lab-v1.1/
 [080]: https://gitee.com/tinylab/tinycorrect
+[081]: https://gitee.com/tinylab/microbench
+[082]: https://gitee.com/tinylab/openhw-lab
+[083]: https://gitee.com/tinylab/pwn-lab
+[084]: https://tinylab.org/riscv-linux
+[085]: https://tinylab.org/summer2022

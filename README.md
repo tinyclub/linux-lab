@@ -2476,13 +2476,21 @@ Welcome to mark our web site, star our git repositories:
 
 ### 7.4.2 Sponsor list
 
+* 2022
+    * [Summer 2022][049]
+        * Sponsored projects: [Microbench][045], [OpenHW Lab][046], [PWN Lab][047]
+
+    * PLCT Lab
+        * 2 D1 boards
+        * Sponsored [RISC-V Linux Project][048]
+
 * 2021
     * [Lazyparser][015]
         * HelloGCC and HelloLLVM founder
         * 5000RMB
 
     * [Summer 2021][027]
-        * Such projects are sponsored by Summer 2021: Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
+        * Sponsored projects: Rust for Linux, openEuler Kernel for aarch64/virt and x86_64/pc
 
     * T-head
         * 1 D1 board
@@ -2493,10 +2501,10 @@ Welcome to mark our web site, star our git repositories:
 * 2020
     * [Loongson][005]
         * The famous Chinese Loongson CPU designer and manufacturer
-        * Such boards are sponsored by Loongson: mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232
+        * Sponsored boards: mips64el/ls2k, mips64el/ls3a7a, mipsel/ls1b, mipsel/ls232
 
     * [Summer 2020][027]
-        * Such projects are sponsored by Summer 2020: Linux Lab docker image upgrade from Ubuntu 14.04 to Ubuntu 20.04
+        * Sponsored projects: Linux Lab docker image upgrade from Ubuntu 14.04 to Ubuntu 20.04
 
     * Embedfire
         * 6 imx6ull boards
@@ -2545,3 +2553,8 @@ Welcome to mark our web site, star our git repositories:
 [042]: https://tinylab.org/why-linux-lab-v2
 [043]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
 [044]: https://tinylab.org
+[045]: https://gitee.com/tinylab/microbench
+[046]: https://gitee.com/tinylab/openhw-lab
+[047]: https://gitee.com/tinylab/pwn-lab
+[048]: https://tinylab.org/riscv-linux
+[049]: https://tinylab.org/summer2022

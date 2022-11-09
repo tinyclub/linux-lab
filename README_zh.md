@@ -1,3 +1,4 @@
+> Corrector: [TinyCorrect](https://gitee.com/tinylab/tinycorrect) v0.1 - [codeinline autocorrect]<br/>
 <!-- metadata start --><!--
 % Linux Lab v1.1 中文手册
 % [泰晓科技 | Tinylab.org][077]
@@ -495,7 +496,7 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 
 下述安装过程比较详尽，兼顾了各大桌面系统，实际上针对某个系统的用法非常简单。
 
-如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店][022] 选购一枚即插即跑的 [Linux Lab Disk][028]。它也叫“泰晓 Linux 实验盘”，可以在淘宝手机 App 内搜索“泰晓 Linux”后购买。
+如果确实是 Linux 新手或不喜欢无聊的安装过程，想**免安装**立马使用 Linux Lab，那么可以从 [泰晓开源小店][022] 选购一枚即插即跑的 [Linux Lab Disk][028]。它也叫“泰晓 Linux 实验盘”，可以在淘宝手机 App 内搜索 “泰晓 Linux” 后购买。
 
 『Linux Lab Disk - 泰晓 Linux 实验盘』已经支持如下功能：
 
@@ -587,7 +588,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
   - 请参考 [Docker 官方文档][007] 确保所用 Windows 版本支持 Docker 并根据情况选择安装 Docker Desktop 还是 Docker Toolbox
 
   - Linux Lab 当前仅在 Git Bash 验证过，请务必配合 Git Bash 使用
-      - 在安装完 [Git For Windows][017] 后，可通过鼠标右键使用“Git Bash Here”
+      - 在安装完 [Git For Windows][017] 后，可通过鼠标右键使用 “Git Bash Here”
 
 ## 2.3 选择工作目录
 
@@ -598,7 +599,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 对于 Windows 和 Mac OSX 用户，要正常编译 Linux，请参考 5.7.1 节开启 Build Cache。
 
-对于 Windows 用户，在安装完 [Git For Windows][017] 后，可通过鼠标右键在选定的工作目录运行“Git Bash Here”。
+对于 Windows 用户，在安装完 [Git For Windows][017] 后，可通过鼠标右键在选定的工作目录运行 “Git Bash Here”。
 
 ## 2.4 切换到普通用户帐号
 
@@ -946,7 +947,7 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店][023] 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
 
-也可以直接在淘宝手机 App 内搜索“泰晓 Linux”后购买，可搭配店内的“Linux Lab Disk”一起使用，用上“Linux Lab Disk”后就完全不需要安装独立的 Linux 开发环境。
+也可以直接在淘宝手机 App 内搜索 “泰晓 Linux” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
 
 ### 3.1.3 以插件方式使用
 
@@ -1179,9 +1180,9 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 **注意**：
 
 * 真正的图形化方式启动需要 LCD 和键盘驱动的支持，上述开发板可以完美支持 Linux 内核 5.1 版本的运行，`raspi3` 和 `malta` 两款开发板支持 tty0 终端但不支持键盘输入。
-* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 QEMU 的“View”菜单切换到串口终端后使用。
+* 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 QEMU 的 “View” 菜单切换到串口终端后使用。
 
-`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 QEMU，可以通过在启动时指定 `G=1` 参数然后通过选择“View”菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 QEMU 选项参数。
+`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 QEMU，可以通过在启动时指定 `G=1` 参数然后通过选择 “View” 菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 QEMU 选项参数。
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
     $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
@@ -2308,7 +2309,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
     $ tools/docker/save linux-lab
 
-在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的“Linux Lab”图标恢复运行，或者通过命令行像第一次运行那样：
+在关机或者重启主机（或虚拟机）系统后，通常可以通过点击桌面的 “Linux Lab” 图标恢复运行，或者通过命令行像第一次运行那样：
 
     $ tools/docker/run linux-lab
 
@@ -2379,7 +2380,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
     $ cat /proc/cpuinfo | egrep --color=always "vmx|svm"
 
-如果 CPU 支持，我们还需要确保在 BIOS 中启用了该功能，只需重新启动计算机，按“Delete”键进入 BIOS，请确保“Intel virtualization technology”功能已启用。
+如果 CPU 支持，我们还需要确保在 BIOS 中启用了该功能，只需重新启动计算机，按 “Delete” 键进入 BIOS，请确保 “Intel virtualization technology” 功能已启用。
 
 ### 6.2.2 Guest 关机或重启后挂住
 
@@ -2426,7 +2427,7 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 ### 6.3.3 长按 Backspace 不工作
 
-长按键目前在 Web 界面中不起作用，因此，长按“Delete”或“Backspace”键不起作用，请改用 `alt+delete` 或 `alt+backspace` 组合键，以下是更多有关组合键的小技巧：
+长按键目前在 Web 界面中不起作用，因此，长按 “Delete” 或 “Backspace” 键不起作用，请改用 `alt+delete` 或 `alt+backspace` 组合键，以下是更多有关组合键的小技巧：
 
 |说明           | VIM           | Bash                       |
 |---------------|---------------|----------------------------|
@@ -2496,29 +2497,29 @@ Linux Lab 的屏幕尺寸是由 `xrandr` 捕获的，如果不起作用，请检
 
 ### 6.3.6 如何进入全屏模式
 
-打开左边的侧边栏，点击“Fullscreen”按钮。
+打开左边的侧边栏，点击 “Fullscreen” 按钮。
 
 ### 6.3.7 如何录屏
 
 1. 使能录制
 
-    打开左侧边栏，按“Settings”按钮，配置“File/Title/Author/Category/Tags/Description”，然后启用“Record Screen”选项。
+    打开左侧边栏，按 “Settings” 按钮，配置 “File/Title/Author/Category/Tags/Description”，然后启用 “Record Screen” 选项。
 
 2. 开始录制
 
-    按下“Connect”按钮。
+    按下 “Connect” 按钮。
 
 3. 停止录制
 
-    按下“Disconnect”按钮。
+    按下 “Disconnect” 按钮。
 
 4. 重放录制的视频
 
-    按下“Play”按钮。
+    按下 “Play” 按钮。
 
 5. 分享视频
 
-    视频存储在“cloud-lab/recordings”目录下，参考 [showdesk.io][019] 的帮助进行分享。
+    视频存储在 “cloud-lab/recordings” 目录下，参考 [showdesk.io][019] 的帮助进行分享。
 
 ### 6.3.8 Web 界面无响应
 
@@ -2526,7 +2527,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 ### 6.3.9 登录 WEB 界面时超时或报错
 
-如果登陆 WEB 界面时出现“Disconnect timeout”，请稍等片刻后继续点击左侧“Connect”按钮，如果依然无法成功，请按下述步骤检查。
+如果登陆 WEB 界面时出现 “Disconnect timeout”，请稍等片刻后继续点击左侧 “Connect” 按钮，如果依然无法成功，请按下述步骤检查。
 
 首先检查 linux-lab 需要的 docker 容器是否正常启动（Up: 正常，Exit: 为不正常）：
 
@@ -2696,7 +2697,7 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 * 网店：<https://shop155917374.taobao.com>
     * 泰晓开源小店，销售社区自研开源项目周边产品，用于补贴开源项目研发
     * 已上架即插即跑 Linux Lab Disk、Pocket Linux Disk 以及适配过的真实 Linux 开发板等
-    * 欢迎选购，也可以在淘宝手机 App 内搜索“泰晓 Linux”找到我们
+    * 欢迎选购，也可以在淘宝手机 App 内搜索 “泰晓 Linux” 找到我们
 
 * 星球：<https://t.zsxq.com/uB2vJyF>
     * 泰晓科技 VIP 知识频道

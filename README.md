@@ -219,7 +219,7 @@ Related Projects:
 
 ### 1.3.2 Non-Free Video Courses In Chinese
 
-  * [The Perspective of Linux ELF][035]
+  * [《The Perspective of Linux ELF》][035]
       * Learn Linux ELF by practice, with hundreds of examples, all verified in Linux Lab
 
   * [《Rust Language Quickstart》][006]

@@ -2048,20 +2048,20 @@ If get error: "newgrp: group 'docker' does not exist", please add 'docker' group
 
 If ping not work, please check one by one:
 
-  * DNS issue
+* DNS issue
 
-      if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
+    if `ping 8.8.8.8` work, please check `/etc/resolv.conf` and make sure it is the same as your host configuration.
 
-  * IP issue
+* IP issue
 
-      if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
+    if ping not work, please refer to [network conflict issue](#docker-network-conflicts-with-lan) and change the ip range of docker containers.
 
 ### 6.1.6 Client.Timeout exceeded while waiting headers
 
 This means must configure one of the following docker mirror sites:
 
-  * [Aliyun Docker Mirror Documentation][018]
-  * [USTC Docker Mirror Documentation][020]
+* [Aliyun Docker Mirror Documentation][018]
+* [USTC Docker Mirror Documentation][020]
 
 Potential methods of configuration in Ubuntu, depends on docker and Ubuntu versions:
 
@@ -2174,13 +2174,13 @@ If CPU supports, we also need to make sure it is enabled in bios features, simpl
 
 Both of the `poweroff` and `reboot` commands not work on these boards currently (LINUX=v5.1):
 
-  * mipsel/malta (exclude LINUX=v2.6.36)
-  * mipsel/ls232
-  * mipsel/ls1b
-  * mips64el/ls2k
-  * mips64el/ls3a7a
-  * aarch64/raspi3
-  * arm/versatilepb
+* mipsel/malta (exclude LINUX=v2.6.36)
+* mipsel/ls232
+* mipsel/ls1b
+* mips64el/ls2k
+* mips64el/ls3a7a
+* aarch64/raspi3
+* arm/versatilepb
 
 System will directly hang there while running `poweroff` or `reboot`, to exit qemu, please pressing `CTRL+a x` or using `pkill qemu`.
 
@@ -2352,8 +2352,8 @@ If the above command not work, please try this one (**It will clean more data, p
 
 Users report many snap issues, please use apt-get instead:
 
-  * users can not be added to docker group and break non-root operation.
-  * snap service exhausts the /dev/loop devices and break mount operation.
+* users can not be added to docker group and break non-root operation.
+* snap service exhausts the /dev/loop devices and break mount operation.
 
 ### 6.3.11 How to exit fullscreen mode of vnc clients
 

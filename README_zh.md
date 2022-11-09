@@ -472,20 +472,20 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
 [v1.1][079] 升级部分内核到 v6.0.7，升级 QEMU 编译到 v7.0，通过 [TinyCorrect][080] 修复文档并新增 RISC-V U-Boot 开发支持。
 
 * v1.1 rc3
-  * 新增 RISC-V U-Boot 开发支持
-  * 新增 QEMU dumpdtb 支持
-  * 修复新版内核上的 nfsd 模块检测
-  * 修复文档中的 ROOTDEV 用法
+    * 新增 RISC-V U-Boot 开发支持
+    * 新增 QEMU dumpdtb 支持
+    * 修复新版内核上的 nfsd 模块检测
+    * 修复文档中的 ROOTDEV 用法
 
 * v1.1 rc2
-  * 完善 QEMU 编译依赖安装
-  * 用 TinyCorrect 修复所有文档排版错误
-  * 修复 tools/toc.sh 脚本，对齐到 TinyCorrect 要求的格式
+    * 完善 QEMU 编译依赖安装
+    * 用 TinyCorrect 修复所有文档排版错误
+    * 修复 tools/toc.sh 脚本，对齐到 TinyCorrect 要求的格式
 
 * [v1.1 rc1][078]
-  * 新增 QEMU v7.0 编译支持
-  * 新增龙芯虚拟开发板：`mips64el/loongson3-virt`，适配官方 v5.18 内核
-  * 升级 RISC-V 内核版本到 v6.0.7
+    * 新增 QEMU v7.0 编译支持
+    * 新增龙芯虚拟开发板：`mips64el/loongson3-virt`，适配官方 v5.18 内核
+    * 升级 RISC-V 内核版本到 v6.0.7
 
 # 2. Linux Lab 安装
 
@@ -2257,20 +2257,20 @@ Linux Lab 的设计初衷是旨在通过利用 docker 技术使用预先安装�
 
 如果无法 ping 通，请根据下面列举的方法逐一排查：
 
-  * DNS 问题
+* DNS 问题
 
-      如果 `ping 8.8.8.8` 工作正常，请检查 `/etc/resolv.conf` 并确保其与主机配置相同。
+    如果 `ping 8.8.8.8` 工作正常，请检查 `/etc/resolv.conf` 并确保其与主机配置相同。
 
-  * IP 问题
+* IP 问题
 
-      如果 ping 不起作用，请参阅 6.1.2 并更改 docker 容器的 ip 地址范围。
+    如果 ping 不起作用，请参阅 6.1.2 并更改 docker 容器的 ip 地址范围。
 
 ### 6.1.6 Client.Timeout exceeded while waiting headers
 
 解决方法是选择配置以下 Docker 镜像服务站点中的一个：
 
-  * [阿里云 Docker 镜像使用文档][018]
-  * [USTC Docker 镜像使用文档][020]
+* [阿里云 Docker 镜像使用文档][018]
+* [USTC Docker 镜像使用文档][020]
 
 Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进行 Mirror 站点配置：
 
@@ -2385,13 +2385,13 @@ KVM 当前仅支持 `qemu-system-i386` 和 `qemu-system-x86_64`，并且还需�
 
 当前对于以下开发板，基于内核版本 5.1（LINUX=v5.1），`poweroff` 和 `reboot` 命令无法正常工作：
 
-  * mipsel/malta (exclude `LINUX=v2.6.36`)
-  * mipsel/ls1b
-  * mipsel/ls232
-  * mips64el/ls2k
-  * mips64el/ls3a7a
-  * aarch64/raspi3
-  * arm/versatilepb
+* mipsel/malta (exclude `LINUX=v2.6.36`)
+* mipsel/ls1b
+* mipsel/ls232
+* mips64el/ls2k
+* mips64el/ls3a7a
+* aarch64/raspi3
+* arm/versatilepb
 
 在运行 `poweroff` 或 `reboot` 时，系统会直接挂起，为了退出 QEMU，请使用 `CTRL+a x` 或执行 shell 命令 `pkill qemu`。
 
@@ -2563,8 +2563,8 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 
 用户报告了许多 `snap` 相关的问题，请改用 `apt-get` 安装 docker：
 
-  * 无法将普通用户添加到 docker 用户组从而导致必须通过 root 用户使用 docker。
-  * snap 服务会耗尽 `/dev/loop` 设备从而导致无法挂载文件系统。
+* 无法将普通用户添加到 docker 用户组从而导致必须通过 root 用户使用 docker。
+* snap 服务会耗尽 `/dev/loop` 设备从而导致无法挂载文件系统。
 
 ### 6.3.11 如何退出 VNC 客户端全屏模式
 

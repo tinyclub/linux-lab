@@ -198,6 +198,14 @@ Related Projects:
     * Download it to `src/examples` and use it in Linux Lab directly
     * <https://gitee.com/tinylab/riscv-linux>
 
+* RISC-V Lab
+    * Learning embedded RISC-V software development，merged in [Linux Lab Disk][029]
+    * <https://gitee.com/tinylab/riscv-lab>
+
+* ARM Lab
+    * Learning embedded ARM software development，merged in [Linux Lab Disk][029]
+    * <https://gitee.com/tinylab/arm-lab>
+
 ## 1.3 Demonstration
 
 ### 1.3.1 Free Video Courses In Chinese

@@ -210,6 +210,14 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 下载到 `src/examples` 后，可直接在 Linux Lab 内做实验
     * <https://gitee.com/tinylab/riscv-linux>
 
+* RISC-V Lab
+    * 用于学习嵌入式 RISC-V 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
+    * <https://gitee.com/tinylab/riscv-lab>
+
+* ARM Lab
+    * 用于学习嵌入式 ARM 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
+    * <https://gitee.com/tinylab/arm-lab>
+
 ## 1.3 演示视频
 
 ### 1.3.1 开放教程

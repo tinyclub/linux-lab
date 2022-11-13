@@ -2522,9 +2522,9 @@ Welcome to mark our web site, star our git repositories:
     * Embedfire
         * 6 imx6ull boards
 
-[001]: doc/install/arch-docker.md
-[002]: doc/install/manjaro-docker.md
-[003]: doc/install/ubuntu-docker.md
+[001]: https://gitee.com/tinylab/linux-lab/blob/master/doc/install/arch-docker.md
+[002]: https://gitee.com/tinylab/linux-lab/blob/master/doc/install/manjaro-docker.md
+[003]: https://gitee.com/tinylab/linux-lab/blob/master/doc/install/ubuntu-docker.md
 [004]: http://gitee.com/tinylab/linux-0.11-lab
 [005]: http://loongson.cn/
 [006]: https://cctalk.com/m/group/89507527

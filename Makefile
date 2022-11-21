@@ -2465,7 +2465,11 @@ PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
 
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
-root-dir-install: root-dir-install-system root-dir-install-modules
+ifneq ($(wildcard $(KERNEL_BUILD)),)
+  ROOT_DIR_INSTALL_MODULES := root-dir-install-modules
+endif
+
+root-dir-install: root-dir-install-system $(ROOT_DIR_INSTALL_MODULES)
 
 root-dir-install-system: src/system
 	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)

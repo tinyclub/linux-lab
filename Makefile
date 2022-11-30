@@ -3657,7 +3657,7 @@ ifeq ($(DUMPDTB), 1)
   QEMU_DTB ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dtb
   QEMU_DTS := $(QEMU_DTB:.dtb=.dts)
   DUMPDTB_OPT ?= ,dumpdtb=$(QEMU_DTB)
-  DUMPDTB_CMD ?= $(Q)[ -f $(QEMU_DTB) ] && dtc -o $(QEMU_DTS) -O dts -I dtb $(QEMU_DTB)
+  DUMPDTB_CMD ?= $(Q)[ -f $(QEMU_DTB) ] && sudo chown $(USER):$(USER) $(QEMU_DTB) && dtc -o $(QEMU_DTS) -O dts -I dtb $(QEMU_DTB)
 endif
 
 EMULATOR_OPTS ?= -M $(MACH)$(DUMPDTB_OPT) $(if $(CPU),-cpu $(CPU)) -m $(call _v,MEM,LINUX) $(NET) -smp $(call _v,SMP,LINUX) $(KERNEL_OPT) $(EXIT_ACTION)

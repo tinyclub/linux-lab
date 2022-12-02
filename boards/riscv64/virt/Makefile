@@ -10,6 +10,11 @@ QEMU    ?= v6.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
 LINUX   ?= v5.18.9
+
+# git repos for other kernel fork
+KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
+LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-132.0.0
+
 BUILDROOT?= 2019.05
 NETDEV_LIST := virtio
 NETDEV  ?= virtio

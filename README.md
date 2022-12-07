@@ -271,7 +271,7 @@ rootfs, test scripts have been prepared, at that time, all of them were simply p
 
 ### 1.5.3 Project Born
 
-They have slept in my harddisk for several years without any attention, untill one day, docker and novnc came to my world, at first, [Linux 0.11 Lab][004] was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
+They have slept in my harddisk for several years without any attention, until one day, docker and novnc came to my world, at first, [Linux 0.11 Lab][004] was born, after that, Linux Lab was designed to unify all of the above scripts, defconfigs, rootfs and test scripts.
 
 # 2. Linux Lab Installation
 
@@ -1869,7 +1869,7 @@ good helper to utilize existing configs:
     $ make root-menuconfig
     $ make root-saveconfig
 
-Edit the configs and Makefile untill they match our requirements.
+Edit the configs and Makefile until they match our requirements.
 
     $ make kernel-menuconfig
     $ make root-menuconfig

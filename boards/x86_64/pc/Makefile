@@ -9,7 +9,7 @@ MEM     ?= 128M
 SMP     ?= 4
 LINUX   ?= v5.13
 
-# git repos for other kernel fork
+# git repos for the other kernel forks
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-5.10.0
 

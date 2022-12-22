@@ -11,7 +11,7 @@ QEMU    ?= v6.0.0
 QEMU_US ?= 0
 LINUX   ?= v5.18.9
 
-# git repos for other kernel fork
+# git repos for the other kernel forks
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-132.0.0
 

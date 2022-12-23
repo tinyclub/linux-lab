@@ -1392,7 +1392,7 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
     $ make kernel-cleanall
 
     // 开展测试，这里的小写是为了节省时间，并且该 feature 设定不会保存，仅当次测试有效
-    $ make test f=rust m=rust_print
+    $ make test f=rust m=minimal
 
 #### 4.1.3.4 启用 kft feature
 

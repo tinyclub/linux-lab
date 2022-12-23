@@ -23,7 +23,6 @@ SERIAL  ?= ttyS0
 UBOOT   ?= v2022.04
 
 KRN_ADDR?= 0x84000000
-DTB_ADDR?= $$fdtcontroladdr
 RDK_ADDR?= 0x87500000
 
 # QEMU load env.img to ram and then U-boot import it from ram

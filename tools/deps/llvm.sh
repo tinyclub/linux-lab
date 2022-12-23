@@ -3,9 +3,9 @@
 # llvm.sh
 #
 
-# version 13 is verified for rust-for-linux compiling
+# version 15 is verified for rust-for-linux compiling
 V=$1
-[ -z "$V" ] && V=13
+[ -z "$V" ] && V=15
 
 wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- $V
 

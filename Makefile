@@ -2547,6 +2547,7 @@ KERNEL_CLEAN_DEPS       := kernel-modules-clean
 kernel-oldnoconfig: kernel-olddefconfig
 
 # kernel features support
+KERNEL_FEATURE_ENV_TOOL := tools/kernel/feature-env.sh
 KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
 KERNEL_FEATURE_CONFIG_TOOL := tools/kernel/feature-config.sh
 KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
@@ -2554,24 +2555,30 @@ KERNEL_FEATURE_PATCH_TOOL := tools/kernel/feature-patch.sh
 ifneq ($(FEATURE),)
 kernel-source: $(call __stamp,kernel,outdir) $(call __stamp,kernel,source.feature)
 
-feature_downloaded_goals := $(foreach i,$(FEATURE),$(if $(wildcard $(FEATURE_DIR)/$i/$(LINUX)),$(FEATURE_DIR)/$i/$(LINUX)/feature.downloaded))
-
-$(call _stamp,kernel,source.feature): $(feature_downloaded_goals) $(ENV_FILES)
+$(call __stamp,kernel,source.feature): $(call __stamp,kernel,feature.downloaded) $(ENV_FILES)
 	$(Q)touch $@
 
-$(feature_downloaded_goals):
+$(call __stamp,kernel,feature.downloaded):
 	$(Q)echo "Downloading kernel feature patchset: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_DOWNLOAD_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)"
+	$(Q)touch $@
+
+kernel-env: $(call __stamp,kernel,env.feature)
+
+$(call __stamp,kernel,env.feature):
+	$(Q)echo "Appling kernel feature envs: $(FEATURE)"
+	$(Q)$(KERNEL_FEATURE_ENV_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+	$(Q)touch $@
 
 kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call __stamp,kernel,defconfig.feature)
-$(call _stamp,kernel,defconfig.feature): $(ENV_FILES)
+$(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	$(Q)touch $@
 endif
 
 kernel-feature-cleanstamp:
-	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature)
+	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature env.feature feature.downloaded)
 
 kernel-cleanstamp: kernel-feature-cleanstamp
 

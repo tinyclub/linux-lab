@@ -5,7 +5,8 @@ CURDIR=$(cd $(dirname $0)/ && pwd)
 # prepare necessary deps
 LABDIR=/labs/linux-lab
 
-which clang >/dev/null 2>&1
+# require specific verion?
+which clang-15 >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "LOG: Install missing llvm & clang"
     $LABDIR/tools/deps/llvm.sh
@@ -33,9 +34,3 @@ if [ -f "$HOME/.cargo/bin/rustc" -a -d "$HOME/.rustup/toolchains" ]; then
        echo '[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"' >> $HOME/.bashrc
     fi
 fi
-
-pushd $CURDIR >/dev/null
-if [ ! -f feature.downloaded ]; then
-    touch feature.downloaded
-fi
-popd >/dev/null

@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# kernel-download.sh -- Apply the available kernel features
+# kernel-env.sh -- Apply the available kernel features
 #
-# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
+# Copyright (C) 2016-2022 Wu Zhangjin <falcon@ruma.tech>
 #
 
 ARCH=$1
@@ -39,7 +39,7 @@ do
         #echo "$path"
 
         #echo "Downloading feature: $f"
-        [ -x "$path/download.sh" ] && $path/download.sh
+        [ -x "$path/env.sh" ] && $path/env.sh
     done #f
 done #d
 
@@ -56,7 +56,7 @@ do
             #echo "$path"
 
             #echo "Downloading feature: $f"
-            [ -x "$path/download.sh" ] && $path/download.sh
+            [ -x "$path/env.sh" ] && $path/env.sh
 
         done #path
     done #d

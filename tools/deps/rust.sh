@@ -47,7 +47,7 @@ EOF
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
   RUSTUP_UPDATE_ROOT=https://mirrors.sjtug.sjtu.edu.cn/rust-static/rustup \
   RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static \
-  sh -s -- -y -v --default-toolchain 1.62-x86_64-unknown-linux-gnu --profile minimal -c rust-src,rustfmt,clippy && \
+  sh -s -- -y -v --default-toolchain 1.62.0-x86_64-unknown-linux-gnu --profile minimal -c rust-src,rustfmt,clippy && \
   echo "RUSTUP_DIST_SERVER=https://mirrors.sjtug.sjtu.edu.cn/rust-static" >> $HOME/.cargo/env && \
   bash -c "source $HOME/.cargo/env && cargo install --locked --version 0.56.0 bindgen" && exit 0
 

@@ -1382,11 +1382,11 @@ Linux 内核提供了一个脚本 `scripts/config`，可用于非交互方式获
 
     $ make BOARD=x86_64/pc
 
-切换到 v5.13 内核，因为当前最新 rust patchset 只能打在 v5.13 内核上：
+切换到 v6.1.1 内核：
 
-    $ make config LINUX=v5.13
+    $ make config LINUX=v6.1.1
 
-编译内核，并使用 `rust_print` 模块进行测试：
+编译内核，并使用 `rust_minimal` 模块进行测试：
 
     // 清理干净，方便启动一个全新的测试
     $ make kernel-cleanall

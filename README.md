@@ -1171,11 +1171,11 @@ Use `x86_64/pc` as an example：
 
     $ make BOARD=x86_64/pc
 
-switch to v5.13 Linux, because the current latest rust patchset can only be applied to v5.13:
+switch to v6.1.1 Linux:
 
-    $ make config LINUX=v5.13
+    $ make config LINUX=v6.1.1
 
-Compile the kernel, and test it with one of the simplest module - `rust_print`:
+Compile the kernel, and test it with one of the simplest module - `rust_minimal`:
 
     // clean up everything for a whole new test
     $ make kernel-cleanall

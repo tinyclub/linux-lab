@@ -2568,12 +2568,12 @@ $(call _stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	$(Q)touch $@
+endif
 
 kernel-feature-cleanstamp:
 	$(Q)rm -rvf $(addprefix $(KERNEL_BUILD)/.stamp_kernel-,source.feature defconfig.feature)
 
 kernel-cleanstamp: kernel-feature-cleanstamp
-endif
 
 FCS ?= 0
 ifneq ($(filter command line,$(foreach i,F FEATURE FEATURES,$(origin $i))),)

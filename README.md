@@ -1181,7 +1181,7 @@ Compile the kernel, and test it with one of the simplest module - `rust_print`:
     $ make kernel-cleanall
 
     // this 'f' variable will not be saved for standalone make targets
-    $ make test f=rust m=minimal
+    $ make test f=rust m=rust_minimal
 
 #### 4.1.3.4 using kft feature
 

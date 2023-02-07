@@ -1183,7 +1183,8 @@ _PBR := $(PBR)
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
 NOLIBC_DIR          := tools/testing/selftests/nolibc
 # The 'init' source code for initramfs, customize it for your own project
-NOLIBC_SRC          ?= $(KERNEL_ABS_SRC)/$(NOLIBC_DIR)/nolibc-test.c
+nolibc_src          ?= $(KERNEL_ABS_SRC)/$(NOLIBC_DIR)/nolibc-test.c
+NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
 NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)

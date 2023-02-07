@@ -18,7 +18,6 @@ int main(int argc, int argv[])
 	printf("Hello, nolibc!\n");
 
 #ifdef NOLIBC
-#define LINUX_REBOOT_CMD_HALT 0xcdef0123
 	reboot(LINUX_REBOOT_CMD_HALT);
 #endif
 

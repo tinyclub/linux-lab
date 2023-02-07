@@ -3172,12 +3172,14 @@ $(NOLIBC_BIN): $(NOLIBC_SRC) nolibc-sysroot
 
 nolibc-init: $(NOLIBC_BIN)
 
-$(NOLIBC_INITRAMFS)/init: nolibc-init
-	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
-	$(Q)mkdir -p $(NOLIBC_INITRAMFS)
-	$(Q)cp $(NOLIBC_BIN) $(NOLIBC_INITRAMFS)/init
+$(NOLIBC_INITRAMFS): nolibc-init
+	$(Q)echo "Creating $@"
+	$(Q)mkdir -p $@ $@/dev
+	$(Q)cp $(NOLIBC_BIN) $@/init
+	$(Q)[ -c $@/dev/console ] || sudo mknod $@/dev/console c 5 1
+	$(Q)[ -c $@/dev/null ] || sudo mknod $@/dev/null c 1 3
 
-nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
+nolibc-initramfs: $(NOLIBC_INITRAMFS)
 
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))

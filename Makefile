@@ -1181,20 +1181,23 @@ PBR ?= 0
 _PBR := $(PBR)
 
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
-NOLIBC_SRC   := tools/testing/selftests/nolibc
+NOLIBC_DIR          := tools/testing/selftests/nolibc
 # The 'init' source code for initramfs, customize it for your own project
-NPLIBC_TEST  := $(NOLIBC_SRC)/nolibc-test.c
-NOLIBC_BUILD := $(NOLIBC_SRC)/initramfs
+NOLIBC_SRC          ?= $(KERNEL_ABS_SRC)/$(NOLIBC_DIR)/nolibc-test.c
+NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
+NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
+NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
+NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 
 nolibc ?= $(noroot)
 NOLIBC ?= $(nolibc)
 
 # Prefer nolibc initramfs
 ifeq ($(NOLIBC),1)
-  ifneq ($(wildcard $(KERNEL_ABS_SRC)/$(NOLIBC_BUILD)),)
+  ifneq ($(wildcard $(NOLIBC_SRC)),)
     # Override ROOTFS and ROOTDEV setting to embed nolibc initramfs automatically, no extra rootfs required
     # Use initramfs generated from nolibc instead of the others
-    override ROOTFS := $(KERNEL_ABS_SRC)/$(NOLIBC_BUILD)
+    override ROOTFS := $(NOLIBC_INITRAMFS)
     # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
     override ROOTDEV := /dev/null
   endif
@@ -2357,11 +2360,16 @@ $(eval $(call genclone,root,buildroot,R))
 #$(warning $(call genenvdeps,root,BUILDROOT)
 $(eval $(call genenvdeps,root,BUILDROOT,R))
 
-root-nolibc:
-	$(call make_kernel,initramfs,$(NOLIBC_SRC))
+root-nolibc: nolibc-initramfs
 root-nolibc-clean:
-	$(call make_kernel,clean,$(NOLIBC_SRC))
-PHONY += root-nolibc root-nolibc-clean
+	$(Q)echo "Cleaning nolibc output"
+	$(Q)rm -rf $(NOLIBC_SYSROOT)
+	$(Q)rm -rf $(NOLIBC_BIN)
+	$(Q)rm -rf $(NOLIBC_INITRAMFS)
+
+nolibc: root-nolibc
+nolibc-clean: root-nolibc-clean
+PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean
 
 # Build Buildroot
 root-buildroot:
@@ -3142,6 +3150,33 @@ module-getconfig: kernel-getconfig
 module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
+
+# Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables
+NOLIBC_LDFLAGS := -s
+
+$(NOLIBC_SYSROOT_ARCH):
+	$(Q)echo "Generating $@"
+	$(Q)mkdir -p $(NOLIBC_SYSROOT)
+	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
+	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
+
+nolibc-sysroot: $(NOLIBC_SYSROOT_ARCH)
+
+$(NOLIBC_BIN): $(NOLIBC_SRC) nolibc-sysroot
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
+	  -nostdlib -static -I$(NOLIBC_SYSROOT_ARCH)/include $< -lgcc
+
+nolibc-init: $(NOLIBC_BIN)
+
+$(NOLIBC_INITRAMFS)/init: nolibc-init
+	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
+	$(Q)mkdir -p $(NOLIBC_INITRAMFS)
+	$(Q)cp $(NOLIBC_BIN) $(NOLIBC_INITRAMFS)/init
+
+nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
 
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))

@@ -1144,6 +1144,10 @@ ROOTDEV ?= /dev/ram0
 $(eval $(call _vs,ROOTDEV,LINUX))
 
 # Verify rootdev argument
+# use /dev/null to embeded initrd in kernel image
+ifeq ($(findstring null,$(ROOTDEV_LIST)),)
+  ROOTDEV_LIST += /dev/null
+endif
 #$(warning $(call genverify,ROOTDEV,ROOTDEV,,0))
 $(eval $(call genverify,ROOTDEV,ROOTDEV,,0))
 

@@ -1180,6 +1180,26 @@ ROOTDEV_TYPE_TOOL   := tools/root/rootdev_type.sh
 PBR ?= 0
 _PBR := $(PBR)
 
+# Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
+NOLIBC_SRC   := tools/testing/selftests/nolibc
+# The 'init' source code for initramfs, customize it for your own project
+NPLIBC_TEST  := $(NOLIBC_SRC)/nolibc-test.c
+NOLIBC_BUILD := $(NOLIBC_SRC)/initramfs
+
+nolibc ?= $(noroot)
+NOLIBC ?= $(nolibc)
+
+# Prefer nolibc initramfs
+ifeq ($(NOLIBC),1)
+  ifneq ($(wildcard $(KERNEL_ABS_SRC)/$(NOLIBC_BUILD)),)
+    # Override ROOTFS and ROOTDEV setting to embed nolibc initramfs automatically, no extra rootfs required
+    # Use initramfs generated from nolibc instead of the others
+    override ROOTFS := $(KERNEL_ABS_SRC)/$(NOLIBC_BUILD)
+    # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
+    override ROOTDEV := /dev/null
+  endif
+endif
+
 ifeq ($(_PBR), 0)
   ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
     ifneq ($(wildcard $(PREBUILT_IROOTFS)),)
@@ -1481,15 +1501,15 @@ endef
 $(eval $(call __vs,MAKE,LINUX))
 
 define make_kernel
-$(C_PATH) $(MAKE) $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC) $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $1
+$(C_PATH) $(MAKE) $(NPD) O=$(KERNEL_BUILD) -C $(KERNEL_ABS_SRC)/$2 $(if $(LLVM),LLVM=$(LLVM)) $(if $(CLANG),CC=clang) ARCH=$(ARCH) LOADADDR=$(KRN_ADDR) CROSS_COMPILE=$(CCPRE) V=$(V) $(KOPTS) -j$(JOBS) $1
 endef
 
 define make_root
-make $(NPD) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC) V=$(V) -j$(JOBS) $1
+make $(NPD) O=$(ROOT_BUILD) -C $(ROOT_ABS_SRC)/$2 V=$(V) -j$(JOBS) $1
 endef
 
 define make_uboot
-$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC) ARCH=$(subst arm64,arm,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $1
+$(C_PATH) make $(NPD) O=$(UBOOT_BUILD) -C $(UBOOT_ABS_SRC)/$2 ARCH=$(subst arm64,arm,$(ARCH)) CROSS_COMPILE=$(CCPRE) -j$(JOBS) $1
 endef
 
 # generate target dependencies
@@ -2337,6 +2357,12 @@ $(eval $(call genclone,root,buildroot,R))
 #$(warning $(call genenvdeps,root,BUILDROOT)
 $(eval $(call genenvdeps,root,BUILDROOT,R))
 
+root-nolibc:
+	$(call make_kernel,initramfs,$(NOLIBC_SRC))
+root-nolibc-clean:
+	$(call make_kernel,clean,$(NOLIBC_SRC))
+PHONY += root-nolibc root-nolibc-clean
+
 # Build Buildroot
 root-buildroot:
 	$(call make_root,$(RT))
@@ -2949,9 +2975,14 @@ endif
 KOPTS ?=
 
 ifneq ($(findstring /dev/null,$(ROOTDEV)),)
-  ROOT_RD := $(IROOTFS)
   # directory is ok, but is not compressed cpio
-  KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
+  ifneq ($(wildcard $(IROOTFS)),)
+    KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
+    ROOT_RD := $(IROOTFS)
+  else
+    KOPTS   += CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
+    ROOT_RD := $(ROOTFS)
+  endif
 else
   KOPTS   += CONFIG_INITRAMFS_SOURCE=
 endif
@@ -2993,6 +3024,10 @@ endif
 # Ignore DTB and RD dependency if KT is not kernel image
 ifeq ($(KT),$(IMAGE))
   KERNEL_DEPS := $(KERNEL_DTB) $(ROOT_RD)
+endif
+
+ifeq ($(NOLIBC),1)
+  KERNEL_DEPS := root-nolibc
 endif
 
 ifneq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),)

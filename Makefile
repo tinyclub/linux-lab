@@ -1181,13 +1181,11 @@ PBR ?= 0
 _PBR := $(PBR)
 
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
-NOLIBC_DIR          := tools/testing/selftests/nolibc
+NOLIBC_H            := $(KERNEL_ABS_SRC)/tools/include/nolibc/nolibc.h
 # The 'init' source code for initramfs, customize it for your own project
-nolibc_src          ?= $(KERNEL_ABS_SRC)/$(NOLIBC_DIR)/nolibc-test.c
+nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
-NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
-NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 
 nolibc ?= $(noroot)
@@ -2364,7 +2362,6 @@ $(eval $(call genenvdeps,root,BUILDROOT,R))
 root-nolibc: nolibc-initramfs
 root-nolibc-clean:
 	$(Q)echo "Cleaning nolibc output"
-	$(Q)rm -rf $(NOLIBC_SYSROOT)
 	$(Q)rm -rf $(NOLIBC_BIN)
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
@@ -3153,26 +3150,16 @@ module-setconfig: kernel-setconfig
 PHONY += module-getconfig module-setconfig modules-config module-config
 
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-NOLIBC_CFLAGS  ?= -Os -DNOLIBC -fno-ident -fno-asynchronous-unwind-tables
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables
 NOLIBC_LDFLAGS := -s
 
-$(NOLIBC_SYSROOT_ARCH):
-	$(Q)echo "Generating $@"
-	$(Q)mkdir -p $(NOLIBC_SYSROOT)
-	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
-	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
-
-nolibc-sysroot: $(NOLIBC_SYSROOT_ARCH)
-
-$(NOLIBC_BIN): $(NOLIBC_SRC) nolibc-sysroot
+$(NOLIBC_BIN): $(NOLIBC_SRC)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
-	  -nostdlib -static -I$(NOLIBC_SYSROOT_ARCH)/include $< -lgcc
+	  -nostdlib -static -include $(NOLIBC_H) $< -lgcc
 
-nolibc-init: $(NOLIBC_BIN)
-
-$(NOLIBC_INITRAMFS): nolibc-init
+$(NOLIBC_INITRAMFS): $(NOLIBC_BIN)
 	$(Q)echo "Creating $@"
 	$(Q)mkdir -p $@ $@/dev
 	$(Q)cp $(NOLIBC_BIN) $@/init

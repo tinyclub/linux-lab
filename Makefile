@@ -3167,7 +3167,7 @@ endif
 
 # nolibc gc sections and debug support
 nolibc_gc       ?= 1
-nolibc_gc_debug ?= 1
+nolibc_gc_debug ?= 0
 
 ifeq ($(nolibc_gc),1)
   NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections

@@ -14,13 +14,15 @@
 #ifndef NOLIBC
 #include <stdio.h>
 #include <unistd.h>
+#else
+#define __NOLIBC__
 #endif
 
 int main(int argc, char *argv[])
 {
 	printf("Hello, nolibc!\n");
 
-#ifdef NOLIBC
+#ifdef __NOLIBC__
 	reboot(LINUX_REBOOT_CMD_HALT);
 #endif
 

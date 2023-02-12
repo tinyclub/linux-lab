@@ -1186,6 +1186,8 @@ NOLIBC_H            := $(KERNEL_ABS_SRC)/tools/include/nolibc/nolibc.h
 nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
+NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
+NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 
 nolibc ?= $(noroot)
@@ -2362,6 +2364,7 @@ $(eval $(call genenvdeps,root,BUILDROOT,R))
 root-nolibc: nolibc-initramfs
 root-nolibc-clean:
 	$(Q)echo "Cleaning nolibc output"
+	$(Q)rm -rf $(NOLIBC_SYSROOT)
 	$(Q)rm -rf $(NOLIBC_BIN)
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
@@ -3153,11 +3156,27 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables
 NOLIBC_LDFLAGS := -s
 
-$(NOLIBC_BIN): $(NOLIBC_SRC)
+ifeq ($(nolibc_inc),header)
+  NOLIBC_INC := -include $(NOLIBC_H)
+else
+  NOLIBC_CFLAGS += -D__NOLIBC__
+  NOLIBC_DEP := $(NOLIBC_SYSROOT_ARCH)
+  NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
+endif
+
+# Use UAPI headers from kernel source code
+$(NOLIBC_SYSROOT_ARCH):
+	$(Q)echo "Generating $@"
+	$(Q)mkdir -p $(NOLIBC_SYSROOT)
+	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
+	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
+
+# With the -include $(NOLIBC_H) option, use UAPI headers provided by the toolchain
+$(NOLIBC_BIN): $(NOLIBC_SRC) $(NOLIBC_DEP)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
-	  -nostdlib -static -include $(NOLIBC_H) $< -lgcc
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 
 $(NOLIBC_INITRAMFS): $(NOLIBC_BIN)
 	$(Q)echo "Creating $@"

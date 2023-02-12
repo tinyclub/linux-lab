@@ -3156,12 +3156,26 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables
 NOLIBC_LDFLAGS := -s
 
+# nolibc use method: header or sysroot
 ifeq ($(nolibc_inc),header)
   NOLIBC_INC := -include $(NOLIBC_H)
 else
   NOLIBC_CFLAGS += -D__NOLIBC__
   NOLIBC_DEP := $(NOLIBC_SYSROOT_ARCH)
   NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
+endif
+
+# nolibc gc sections and debug support
+nolibc_gc       ?= 1
+nolibc_gc_debug ?= 1
+
+ifeq ($(nolibc_gc),1)
+  NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
+  NOLIBC_LDFLAGS += -Wl,--gc-sections
+endif
+
+ifeq ($(nolibc_gc_debug),1)
+  NOLIBC_LDFLAGS += -Wl,--print-gc-sections
 endif
 
 # Use UAPI headers from kernel source code

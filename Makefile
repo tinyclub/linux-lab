@@ -3201,6 +3201,9 @@ $(NOLIBC_INITRAMFS): $(NOLIBC_BIN)
 
 nolibc-initramfs: $(NOLIBC_INITRAMFS)
 
+nolibc-syscall: $(NOLIBC_BIN)
+	$(Q)$(C_PATH) tools/syscall/dump.sh $(CCPRE)objdump $(NOLIBC_BIN) $(XARCH)
+
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
 

@@ -36,7 +36,7 @@ scall_ni="kernel/sys_ni.c"
 
 # Parse used system call numbers
 syscalls_used=""
-for num in $($OBJDUMP -d $BIN | egrep "$load_inc|$scall_inc" | egrep -B1 "$scall_inc" | egrep "$load_inc" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | tr -d '$')
+for num in $($OBJDUMP -d $BIN | egrep "$load_inc|$scall_inc" | egrep -B1 "$scall_inc" | egrep "$load_inc" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"

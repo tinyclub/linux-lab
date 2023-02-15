@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# dump.sh -- dump system call used
+# dump.sh -- dump system calls used
 #
 
 BIN=$1
@@ -14,17 +14,17 @@ GCC=${CCPRE}gcc
 # Arch support, based on tools/include/nolibc/arch-<ARCH>.h
 case $XARCH in
   riscv*)
-    load_inc="li[[:space:]]*a7"
-    scall_inc="ecall"
+    load_ins="li[[:space:]]*a7"
+    scall_ins="ecall"
     num_pos=2
     scall_table="arch/riscv/kernel/syscall_table.c"
     compat_scall_table="arch/riscv/kernel/compat_syscall_table.c"
     ;;
   x86_64)
-    load_inc="%rax|%eax"
-    scall_inc="syscall"
+    load_ins="%rax|%eax"
+    scall_ins="syscall"
     num_pos=1
-    scall_table="arch/x86/entry/syscall_64.c"
+    scall_table="arch/x86/entry/syscalls/syscall_64.tbl"
     ;;
   *)
     echo "ERR: not supported"
@@ -36,7 +36,7 @@ scall_ni="kernel/sys_ni.c"
 
 # Parse used system call numbers
 syscalls_used=""
-for num in $($OBJDUMP -d $BIN | egrep "$load_inc|$scall_inc" | egrep -B1 "$scall_inc" | egrep "$load_inc" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
+for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B1 "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"
@@ -64,7 +64,7 @@ else
 #include <asm/unistd.h>
 __EOF__
 
-  # TODO: add compat specific map
+  # TODO: add compat specific map and gc-sections support
   compat_syscall_map=$syscall_map
 fi
 
@@ -92,6 +92,7 @@ do
 
     ;;
   x86_64)
+    # update the *.tbl directly, comment the unused ones with a prefix '#'
     ;;
   *)
     echo "ERR: not supported"
@@ -99,31 +100,3 @@ do
     ;;
  esac
 done
-
-# Update kernel/sys_ni.c? not necessary
-update_scall_ni=0
-
-if [ $update_scall_ni -eq 1 ]; then
- sed -i -e "/LINUX LAB INSERT START/,/LINUX LAB INSERT END/d" $KSRC/$scall_ni
- echo "// LINUX LAB INSERT START" >> $KSRC/$scall_ni
-
- for f in ${syscall[*]}
- do
-  matched=0
-  [ "x$f" = "xsys_ni_syscall" ] && continue
-
-  _f=$(echo $f | sed -e 's/^sys_//g')
-  for s in $syscalls_used
-  do
-    if [ ${syscall[$s]} = "$f" ]; then
-      matched=1
-    fi
-  done
-  if [ $matched -eq 0 ]; then
-    echo "COND_SYSCALL($_f);" >> $KSRC/$scall_ni
-    echo "COND_SYSCALL_COMPAT($_f);" >> $KSRC/$scall_ni
-  fi
- done
-
- echo "// LINUX LAB INSERT END" >> $KSRC/$scall_ni
-fi

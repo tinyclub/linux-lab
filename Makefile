@@ -1186,6 +1186,8 @@ NOLIBC_H            := $(KERNEL_ABS_SRC)/tools/include/nolibc/nolibc.h
 nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
+NOLIBC_OBJ          := $(KERNEL_BUILD)/nolibc/init.o
+NOLIBC_PGC          := $(KERNEL_BUILD)/nolibc/init.p
 NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
@@ -2366,6 +2368,8 @@ root-nolibc-clean:
 	$(Q)echo "Cleaning nolibc output"
 	$(Q)rm -rf $(NOLIBC_SYSROOT)
 	$(Q)rm -rf $(NOLIBC_BIN)
+	$(Q)rm -rf $(NOLIBC_OBJ)
+	$(Q)rm -rf $(NOLIBC_PGC)
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
 nolibc: root-nolibc
@@ -3201,7 +3205,14 @@ $(NOLIBC_INITRAMFS): $(NOLIBC_BIN)
 
 nolibc-initramfs: $(NOLIBC_INITRAMFS)
 
-nolibc-syscall: $(NOLIBC_BIN)
+$(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)gcc -c $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
+
+nolibc-syscall: $(NOLIBC_OBJ)
+	$(Q)make $(S) $(NOLIBC_BIN) nolibc_gc_debug=1 2>&1 | tee -a $(NOLIBC_PGC)
 	$(Q)$(C_PATH) tools/syscall/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE)
 
 _kernel: $(KERNEL_DEPS)

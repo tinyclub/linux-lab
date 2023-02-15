@@ -9,6 +9,7 @@ KSRC=$3
 INC="$4"
 CCPRE=$5
 
+READELF=${CCPRE}readelf
 OBJDUMP=${CCPRE}objdump
 GCC=${CCPRE}gcc
 
@@ -42,11 +43,28 @@ esac
 # TODO: This should be fixed up manually or use another method instead, such as system call tracing?
 # TODO: Add a new section to record the used system calls in nolibc itself, dump that section instead is better
 syscalls_used=""
+
+# These must be true, but may include some not stripped
+OBJ=$BIN.o
+syscalls_num=$($OBJDUMP -d -j .rodata.syscalls $OBJ | sed -n -e '/.rodata.syscalls/,/^$/{/.rodata.syscalls/!{/^$/!{p}}}' | tr -d -c '[0-9a-zA-Z \t\n]' | tr '\t' ' ' | tr -s ' ' | cut -d ' ' -f3 | sed -e 's/^0*//g' | awk '{printf("0x%s\n",$0);}')
+for num in $syscalls_num
+do
+  # echo $(($num))
+  syscalls_used="$syscalls_used $(($num))"
+done
+
+# Get out the syscalls stripped
+PGC=$BIN.p
+syscalls_stripped=$(cat $PGC | grep .text.*sys_ | sed -e "s/ '.text.sys_\([^ ]*\)' /\n\1\n/g")
+
 for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B$bak_pos "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"
 done
+
+# Remove duplicated
+syscalls_used=$(echo $syscalls_used | tr ' ' '\n' | sort -u -g)
 
 # Convert system call numbers to system call functions
 _syscall_macros=$(mktemp)
@@ -77,7 +95,9 @@ cat $syscall_macros | sed -e 's/#define __NR[0-9]*_\([^ ]*\) \(.*\)/syscall[$((\
 for s in $syscalls_used
 do
   n=${syscall[$s]}
-  [ -z "$n" ] && echo "The dumped system call: $s is invalid, please fix it up manually" && continue
+  [ -z "$n" ] && continue
+  echo $syscalls_stripped | tr ' ' '\n' | grep -q "^$n$"
+  [ $? -eq 0 ] && continue
   echo $s $n
 done
 

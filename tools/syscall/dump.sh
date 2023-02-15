@@ -20,6 +20,8 @@ case $XARCH in
     scall_ins="ecall"
     bak_pos=1
     num_pos=2
+    # We don't care COMPAT mode, that mode should be disabled eventually for embedded system?
+    scall_table="arch/riscv/kernel/syscall_table.c"
     ;;
   mipsel)
     load_ins="li[[:space:]]*v0"
@@ -52,6 +54,9 @@ do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"
 done
+
+# The .rodata.syscalls may include the syscalls even not stripped later, ignore it currently
+syscalls_used=""
 
 # Get out the syscalls stripped
 PGC=$BIN.p
@@ -104,4 +109,26 @@ done
 # Remove tmp files
 rm -rf $_syscall_macros $syscall_refs $syscall_macros $syscall_map
 
+# Update the system call table file
+for table in $scall_table
+do
+ sed -i -e "/LINUX LAB INSERT START/,/LINUX LAB INSERT END/d" $KSRC/$table
+
+ case $XARCH in
+  riscv*)
+    sed -i -e '/unistd.h>/i// LINUX LAB INSERT START' $KSRC/$table
+    sed -i -e '/unistd.h>/{s%^// *%%g;s%^%// %g}' $KSRC/$table
+
+    for s in $syscalls_used
+    do
+      sed -i -e '/unistd.h>/i\\t'[$s]' = '${syscall[$s]}',' $KSRC/$table
+    done
+
+    sed -i -e '/unistd.h>/i// LINUX LAB INSERT END' $KSRC/$table
+
+    ;;
+ esac
+done
+
+# Exit
 exit 0

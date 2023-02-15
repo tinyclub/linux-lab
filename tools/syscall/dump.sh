@@ -6,7 +6,8 @@
 BIN=$1
 XARCH=$2
 KSRC=$3
-CCPRE=$4
+INC="$4"
+CCPRE=$5
 
 OBJDUMP=${CCPRE}objdump
 GCC=${CCPRE}gcc
@@ -16,15 +17,20 @@ case $XARCH in
   riscv*)
     load_ins="li[[:space:]]*a7"
     scall_ins="ecall"
+    bak_pos=1
     num_pos=2
-    scall_table="arch/riscv/kernel/syscall_table.c"
-    compat_scall_table="arch/riscv/kernel/compat_syscall_table.c"
+    ;;
+  mipsel)
+    load_ins="li[[:space:]]*v0"
+    scall_ins="syscall"
+    bak_pos=1
+    num_pos=2
     ;;
   x86_64)
     load_ins="%rax|%eax"
     scall_ins="syscall"
+    bak_pos=1
     num_pos=1
-    scall_table="arch/x86/entry/syscalls/syscall_64.tbl"
     ;;
   *)
     echo "ERR: not supported"
@@ -32,71 +38,50 @@ case $XARCH in
     ;;
 esac
 
-scall_ni="kernel/sys_ni.c"
-
-# Parse used system call numbers
+# FIXME: Parse used system call numbers, this doesn't work when the code is optimized, the 'system call number' will not be always passed near the 'system call instruction'
+# TODO: This should be fixed up manually or use another method instead, such as system call tracing?
+# TODO: Add a new section to record the used system calls in nolibc itself, dump that section instead is better
 syscalls_used=""
-for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B1 "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
+for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B$bak_pos "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"
 done
 
-# Generate new syscall table
-syscall_map=$(mktemp)
-compat_syscall_map=$(mktemp)
+# Convert system call numbers to system call functions
+_syscall_macros=$(mktemp)
+  syscall_refs=$(mktemp)
+ syscall_macros=$(mktemp)
+    syscall_map=$(mktemp)
 
-if [[ "$XARCH" =~ "riscv" ]]; then
-  cat << __EOF__ | $GCC -xc - -E | grep -v '^#' | tr '\n' ' ' | sed -e 's/, */\n/g' | tr -d ' ' > $syscall_map
-#define __SYSCALL(nr, call)	syscall[\$((nr))] = #call,
-#include <asm/unistd.h>
+cat << __EOF__ | $GCC $INC -xc - -E -dM | grep "#define __NR" > $_syscall_macros
+#include <unistd.h>
 __EOF__
 
-  cat << __EOF__ | $GCC -xc - -E | grep -v '^#' | tr '\n' ' ' | sed -e 's/, */\n/g' | tr -d ' ' > $compat_syscall_map
-#define __SYSCALL_COMPAT
-#define __SYSCALL(nr, call)	syscall[\$((nr))] = #call,
-#include <asm/unistd.h>
-__EOF__
+# Move the referenced macros at the header to make sure the later ones execute normally
+refmacros=$(cat $_syscall_macros | egrep "__NR[0-9]*_[^ ]*$| \(__NR[0-9]*_[^ ]*" | cut -d ' ' -f3 | tr -d '(' | sort -u | tr '\n' ' ' | sed -e 's/ $//g' | tr ' ' '|')
 
-else
-  # Only test for x86
-  cat << __EOF__ | $GCC -xc - -E -dM | grep "#define __NR_" | sed -e 's/#define *__NR_\(.*\) \(.*\)/syscall[$((\2))]="\1"/g;s/__NR_//g' > $syscall_map
-#include <asm/unistd.h>
-__EOF__
+cat $_syscall_macros | egrep "^#define ($refmacros)" | sed -e 's/#define __NR[0-9]*_\([^ ]*\) /\1=/g' > $syscall_refs
 
-  # TODO: add compat specific map and gc-sections support
-  compat_syscall_map=$syscall_map
-fi
+# Dump out the pure macros
+cat $_syscall_macros | egrep -v "^#define ($refmacros)" > $syscall_macros
 
-# Update the system call table file
-for table in $scall_table $compat_scall_table
+# Convert macros to a system call map
+cat $syscall_macros | sed -e 's/#define __NR[0-9]*_\([^ ]*\) \(.*\)/syscall[$((\2))]="\1"/g;s/__NR_//g' >> $syscall_map
+
+# Mapping it
+. $syscall_refs
+. $syscall_map
+
+# Get the names
+for s in $syscalls_used
 do
- sed -i -e "/LINUX LAB INSERT START/,/LINUX LAB INSERT END/d" $KSRC/$table
- if [ "$table" = "$scall_table" ]; then
-   . $syscall_map
- else
-   . $compat_syscall_map
- fi
-
- case $XARCH in
-  riscv*)
-    sed -i -e '/unistd.h>/i// LINUX LAB INSERT START' $KSRC/$table
-    sed -i -e '/unistd.h>/{s%^// *%%g;s%^%// %g}' $KSRC/$table
-
-    for s in $syscalls_used
-    do
-      sed -i -e '/unistd.h>/i\\t'[$s]' = '${syscall[$s]}',' $KSRC/$table
-    done
-
-    sed -i -e '/unistd.h>/i// LINUX LAB INSERT END' $KSRC/$table
-
-    ;;
-  x86_64)
-    # update the *.tbl directly, comment the unused ones with a prefix '#'
-    ;;
-  *)
-    echo "ERR: not supported"
-    exit 1
-    ;;
- esac
+  n=${syscall[$s]}
+  [ -z "$n" ] && echo "The dumped system call: $s is invalid, please fix it up manually" && continue
+  echo $s $n
 done
+
+# Remove tmp files
+rm -rf $_syscall_macros $syscall_refs $syscall_macros $syscall_map
+
+exit 0

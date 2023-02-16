@@ -3156,7 +3156,7 @@ module-setconfig: kernel-setconfig
 PHONY += module-getconfig module-setconfig modules-config module-config
 
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
 NOLIBC_LDFLAGS := -s
 
 # nolibc use method: header or sysroot

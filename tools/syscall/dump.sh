@@ -116,29 +116,5 @@ done
 # Remove tmp files
 rm -rf $_syscall_macros $syscall_refs $syscall_macros $syscall_map
 
-# Update the system call table file, only for RISC-V like architectures which
-# have no updatable .tbl For the architectures who have .tbl, kernel space
-# patchset can be added to simply update a used .tbl with the configuration of
-# CONFIG_SYSCALLS_USED.
-for table in $scall_table
-do
- sed -i -e "/LINUX LAB INSERT START/,/LINUX LAB INSERT END/d" $KSRC/$table
-
- case $XARCH in
-  riscv*)
-    sed -i -e '/unistd.h>/i// LINUX LAB INSERT START' $KSRC/$table
-    sed -i -e '/unistd.h>/{s%^// *%%g;s%^%// %g}' $KSRC/$table
-
-    for s in $syscalls_used
-    do
-      sed -i -e '/unistd.h>/i\\t'[$s]' = '${syscall[$s]}',' $KSRC/$table
-    done
-
-    sed -i -e '/unistd.h>/i// LINUX LAB INSERT END' $KSRC/$table
-
-    ;;
- esac
-done
-
 # Exit
 exit 0

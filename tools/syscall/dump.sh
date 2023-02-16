@@ -64,30 +64,44 @@ done
 # Remove duplicated
 syscalls_used=$(echo $syscalls_used | tr ' ' '\n' | sort -u -g)
 
-# Convert system call numbers to system call functions
-_syscall_macros=$(mktemp)
-  syscall_refs=$(mktemp)
- syscall_macros=$(mktemp)
-    syscall_map=$(mktemp)
+if [[ ! "$XARCH" =~ "riscv" ]]; then
+  # Convert system call numbers to system call functions
+  _syscall_macros=$(mktemp)
+    syscall_refs=$(mktemp)
+   syscall_macros=$(mktemp)
+      syscall_map=$(mktemp)
 
-cat << __EOF__ | $GCC $INC -xc - -E -dM | grep "#define __NR" > $_syscall_macros
+  cat << __EOF__ | $GCC $INC -xc - -E -dM | grep "#define __NR" > $_syscall_macros
 #include <unistd.h>
 __EOF__
 
-# Move the referenced macros at the header to make sure the later ones execute normally
-refmacros=$(cat $_syscall_macros | egrep "__NR[0-9]*_[^ ]*$| \(__NR[0-9]*_[^ ]*" | cut -d ' ' -f3 | tr -d '(' | sort -u | tr '\n' ' ' | sed -e 's/ $//g' | tr ' ' '|')
+  # Move the referenced macros at the header to make sure the later ones execute normally
+  refmacros=$(cat $_syscall_macros | egrep "__NR[0-9]*_[^ ]*$| \(__NR[0-9]*_[^ ]*" | cut -d ' ' -f3 | tr -d '(' | sort -u | tr '\n' ' ' | sed -e 's/ $//g' | tr ' ' '|')
 
-cat $_syscall_macros | egrep "^#define ($refmacros)" | sed -e 's/#define __NR[0-9]*_\([^ ]*\) /\1=/g' > $syscall_refs
+  cat $_syscall_macros | egrep "^#define ($refmacros)" | sed -e 's/#define __NR[0-9]*_\([^ ]*\) /\1=/g' > $syscall_refs
 
-# Dump out the pure macros
-cat $_syscall_macros | egrep -v "^#define ($refmacros)" > $syscall_macros
+  # Dump out the pure macros
+  cat $_syscall_macros | egrep -v "^#define ($refmacros)" > $syscall_macros
 
-# Convert macros to a system call map
-cat $syscall_macros | sed -e 's/#define __NR[0-9]*_\([^ ]*\) \(.*\)/syscall[$((\2))]="\1"/g;s/__NR_//g' >> $syscall_map
+  # Convert macros to a system call map
+  cat $syscall_macros | sed -e 's/#define __NR[0-9]*_\([^ ]*\) \(.*\)/syscall[$((\2))]="\1"/g;s/__NR_//g' >> $syscall_map
 
-# Mapping it
-. $syscall_refs
-. $syscall_map
+  # Mapping it
+  . $syscall_refs
+  . $syscall_map
+
+else
+
+  syscall_map=$(mktemp)
+
+  cat << __EOF__ | $GCC $INC -xc - -E | grep -v '^#' | tr '\n' ' ' | sed -e 's/, */\n/g' | tr -d ' ' > $syscall_map
+#define __SYSCALL(nr, call)    syscall[\$((nr))] = #call,
+#include <asm/unistd.h>
+__EOF__
+
+  . $syscall_map
+
+fi
 
 # Get the names
 for s in $syscalls_used

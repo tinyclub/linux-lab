@@ -41,27 +41,20 @@ case $XARCH in
     ;;
 esac
 
-# FIXME: Parse used system call numbers, this doesn't work when the code is optimized, the 'system call number' will not be always passed near the 'system call instruction'
-# TODO: This should be fixed up manually or use another method instead, such as system call tracing?
-# TODO: Add a new section to record the used system calls in nolibc itself, dump that section instead is better
 syscalls_used=""
 
-# These must be true, but may include some not stripped
-OBJ=$BIN.o
-syscalls_num=$($OBJDUMP -d -j .rodata.syscalls $OBJ | sed -n -e '/.rodata.syscalls/,/^$/{/.rodata.syscalls/!{/^$/!{p}}}' | tr -d -c '[0-9a-zA-Z \t\n]' | tr '\t' ' ' | tr -s ' ' | cut -d ' ' -f3 | sed -e 's/^0*//g' | awk '{printf("0x%s\n",$0);}')
-for num in $syscalls_num
-do
-  # echo $(($num))
-  syscalls_used="$syscalls_used $(($num))"
-done
+# FIXME: The .rodata.syscalls may include the syscalls even not stripped later, ignore it currently
+if [[ ! "$XARCH" =~ "riscv" ]]; then
+  # A new section group has been added to nolibc to record the used system calls, the name and value have been encoded to the section name
+  PGC=$BIN.p
+  syscalls_used=$(cat $PGC | grep .rodata.syscall | sed -e "s/ '.rodata.syscall.\([^ ]*\)' /\n\1\n/g" | grep __NR_ | cut -d '.' -f2 | bc -l)
 
-# The .rodata.syscalls may include the syscalls even not stripped later, ignore it currently
-syscalls_used=""
+  # Get out the syscalls stripped
+  syscalls_stripped=$(cat $PGC | grep .text.*sys_ | sed -e "s/ '.text.sys_\([^ ]*\)' /\n\1\n/g")
+fi
 
-# Get out the syscalls stripped
-PGC=$BIN.p
-syscalls_stripped=$(cat $PGC | grep .text.*sys_ | sed -e "s/ '.text.sys_\([^ ]*\)' /\n\1\n/g")
-
+# Dump out used system calls with objdump
+# FIXME: this may not work well for the syscall number may be far from the system call instruction while optimization enabled
 for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B$bak_pos "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
@@ -109,7 +102,10 @@ done
 # Remove tmp files
 rm -rf $_syscall_macros $syscall_refs $syscall_macros $syscall_map
 
-# Update the system call table file
+# Update the system call table file, only for RISC-V like architectures which
+# have no updatable .tbl For the architectures who have .tbl, kernel space
+# patchset can be added to simply update a used .tbl with the configuration of
+# CONFIG_SYSCALLS_USED.
 for table in $scall_table
 do
  sed -i -e "/LINUX LAB INSERT START/,/LINUX LAB INSERT END/d" $KSRC/$table

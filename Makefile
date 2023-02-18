@@ -1203,6 +1203,8 @@ ifeq ($(NOLIBC),1)
     # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
     override ROOTDEV := /dev/null
   endif
+  # Tag defconfig
+  KTAG := nolibc$(if $(KTAG),_$(KTAG))
 endif
 
 ifeq ($(_PBR), 0)
@@ -1867,11 +1869,14 @@ endef # gengoals
 
 define gencfgs
 
-$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
+$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
 $3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 
 ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
-  $3CFG_FILE  := $$(_BSP_CONFIG)/$$($3CFG)
+  $3CFG_FILE   := $$(_BSP_CONFIG)/$$($3CFG)
+  ifeq ($$(wildcard $$($3CFG_FILE)),)
+    $3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
+  endif
 else
   $3CFG_FILES := $$($3CFG) $(_BSP_CONFIG)/$$($3CFG) $$($(call _uc,$1)_CONFIG_DIR)/$$($3CFG) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH)/$$($3CFG)
   _$3CFG_FILE := $$(firstword $$(strip $$(foreach i,$$($3CFG_FILES),$$(wildcard $$i) )))

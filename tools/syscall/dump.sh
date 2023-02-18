@@ -46,7 +46,7 @@ syscalls_used=""
 # FIXME: The .rodata.syscalls may include the syscalls even not stripped later, ignore it currently
 if [[ ! "$XARCH" =~ "riscv" ]]; then
   # A new section group has been added to nolibc to record the used system calls, the name and value have been encoded to the section name
-  PGC=$BIN.p
+  PGC=$BIN.pgc
   syscalls_used=$(cat $PGC | grep .rodata.syscall | sed -e "s/ '.rodata.syscall.\([^ ]*\)' /\n\1\n/g" | grep __NR_ | cut -d '.' -f2 | bc -l)
 
   # Get out the syscalls stripped

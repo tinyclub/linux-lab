@@ -1181,15 +1181,18 @@ PBR ?= 0
 _PBR := $(PBR)
 
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
-NOLIBC_H            := $(KERNEL_ABS_SRC)/tools/include/nolibc/nolibc.h
+NOLIBC_DIR          := $(KERNEL_ABS_SRC)/tools/include/nolibc
+NOLIBC_H            := $(NOLIBC_DIR)/nolibc.h
 # The 'init' source code for initramfs, customize it for your own project
 nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
-NOLIBC_PGC          := $(KERNEL_BUILD)/nolibc/init.p
+NOLIBC_PGC          := $(KERNEL_BUILD)/nolibc/init.pgc
+NOLIBC_SCALL        := $(KERNEL_BUILD)/nolibc/init.scall
 NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
+NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
 
 nolibc ?= $(noroot)
 NOLIBC ?= $(nolibc)
@@ -3004,6 +3007,10 @@ else
   KOPTS   += CONFIG_INITRAMFS_SOURCE=
 endif
 
+ifeq ($(NOLIBC),1)
+  KOPTS   += CONFIG_SYSCALLS_USED=$(NOLIBC_SCALL)
+endif
+
 DTC := tools/kernel/dtc
 
 # Update bootargs in dts if exists, some boards not support -append
@@ -3044,7 +3051,7 @@ ifeq ($(KT),$(IMAGE))
 endif
 
 ifeq ($(NOLIBC),1)
-  KERNEL_DEPS := root-nolibc
+  KERNEL_DEPS := root-nolibc nolibc-syscall
 endif
 
 ifneq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),)
@@ -3175,7 +3182,7 @@ endif
 
 # nolibc gc sections and debug support
 nolibc_gc       ?= 1
-nolibc_gc_debug ?= 0
+nolibc_gc_debug ?= 1
 
 ifeq ($(nolibc_gc),1)
   NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
@@ -3187,7 +3194,7 @@ ifeq ($(nolibc_gc_debug),1)
 endif
 
 # Use UAPI headers from kernel source code
-$(NOLIBC_SYSROOT_ARCH):
+$(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 	$(Q)echo "Generating $@"
 	$(Q)mkdir -p $(NOLIBC_SYSROOT)
 	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
@@ -3198,20 +3205,25 @@ $(NOLIBC_BIN): $(NOLIBC_SRC) $(NOLIBC_DEP)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
-	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
 
-$(NOLIBC_INITRAMFS): $(NOLIBC_BIN)
-	$(Q)echo "Creating $@"
-	$(Q)mkdir -p $@ $@/dev
-	$(Q)cp $(NOLIBC_BIN) $@/init
-	$(Q)[ -c $@/dev/console ] || sudo mknod $@/dev/console c 5 1
-	$(Q)[ -c $@/dev/null ] || sudo mknod $@/dev/null c 1 3
+$(NOLIBC_INITRAMFS)/init: $(NOLIBC_BIN)
+	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
+	$(Q)mkdir -p $(NOLIBC_INITRAMFS) $(NOLIBC_INITRAMFS)/dev
+	$(Q)cp $(NOLIBC_BIN) $@
+	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/console ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/console c 5 1
+	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/null ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/null c 1 3
 
-nolibc-initramfs: $(NOLIBC_INITRAMFS)
+nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
 
-nolibc-syscall:
-	$(Q)make $(S) $(NOLIBC_BIN) nolibc_gc_debug=1 2>&1 | tee -a $(NOLIBC_PGC)
-	$(Q)$(C_PATH) tools/syscall/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE)
+$(NOLIBC_SCALL): $(NOLIBC_BIN)
+	$(Q)$(C_PATH) tools/syscall/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
+		cut -d ' ' -f2 | > $(NOLIBC_SCALL)
+	$(Q)echo "Used system calls: $$(cat $(NOLIBC_SCALL))"
+
+nolibc-syscall: $(NOLIBC_SCALL)
+
+PHONY += nolibc-initramfs nolibc-syscall
 
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))

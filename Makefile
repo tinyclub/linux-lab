@@ -3196,6 +3196,7 @@ endif
 # Use UAPI headers from kernel source code
 $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 	$(Q)echo "Generating $@"
+	$(Q)rm -rf $(NOLIBC_SYSROOT)
 	$(Q)mkdir -p $(NOLIBC_SYSROOT)
 	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
 	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)

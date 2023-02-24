@@ -1978,7 +1978,93 @@ Linux Lab 支持访问所有 App 自身 Makefile 中定义的目标，譬如：
 
 我们无需进入相关的构造目录就可以直接运行这些 make 目标来制作 kernel、rootfs 和 U-Boot。
 
-## 4.12 更多用法
+## 4.12 提升内核开发效率
+
+### 4.12.1 编译加速并减少磁盘损耗
+
+**注意**：该动作有丢失数据风险，请确保数据安全！
+
+该功能旨在创建一个驻留在内存的临时目录，并挂载为 `/labs/linux-lab/build`，用于存储编译过程中的数据，**如果不主动保存，关机以后，所有编译过程中的数据会全部丢失**。
+
+启用临时缓存（创建一个驻留在内存的文件系统作为 build 目录）：
+
+    $ make build cache
+
+查看临时缓存的使用状态（如果已经启用则会显示状态）：
+
+    $ make build status
+
+用临时缓存做编译加速：
+
+    $ time make kernel
+
+备份临时缓存到永久的文件（如果觉得 build 目录的数据很重要）：
+
+    $ make build backup
+
+停止使用临时缓存（恢复默认的、存放在磁盘上的 build 目录）：
+
+    $ make build uncache
+
+恢复使用上次备份的缓存作为 build 目录：
+
+    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
+
+### 4.12.2 ONESHOT 模式
+
+v0.9 新增了一个 `ONESHOT` 控制开关，开启后，将启动如下功能：
+
+- 自动缓存 `build/` 到内存
+- 自动缓存 `src/` 到内存
+- 自动启用 fast fetch，即 git shallow fetch
+
+该模式适合的情况：
+
+- 如 `ONESHOT` 所示，该模式适合一次性的开发需求
+    - 用完需要主动执行 `kernel-saveconfig`, `kernel-save` 保存配置文件和编译结果
+
+- 适合内存较大但是磁盘较小或者性能较弱的实验主机
+    - `src/` 和 `build/` 都放在内存，而不是磁盘
+
+- 方便临时下载和编译内核
+    - 如实验主机未提前下载好内核，网速很慢，需临时下载和编译某个特定版本
+
+其用法很简单，在每次实验之前，执行该命令即可：
+
+    $ export ONESHOT=1
+
+如果想一直使用该模式，可以直接配置 `.labinit` 文件：
+
+    ONESHOT := 1
+
+### 4.12.3 Nolibc 模式
+
+v1.2-rc2 新增了 Nolibc 模式，允许极速编译内核和极小应用，并通过 initrd 把两者直接打包在一起，实现 “免 Rootfs” 内核部署。
+
+Nolibc 模式新增了如下两组文件：
+
+- 极小配置：`boards/<ARCH>/<BOARD>/bsp/configs/linux_v6.x_nolibc_defconfig`
+- 极小应用：`src/examples/nolibc/hello.c`
+
+类似上面的 `ONESHOT` 模式，在使用过程中开启 `NOLIBC` 即可：
+
+    $ export NOLIBC=1
+
+也可同样写入 `.labinit` 进而持久启用该模式：
+
+    NOLIBC := 1
+
+默认情况下，使用的应用是上面的 hello.c，如果想调整，可以类似地设定 `NOLIBC_SRC` 变量，调整前先做 clean：
+
+    $ make nolibc-clean
+
+然后在命令行传递：
+
+    $ make kernel NOLIBC_SRC=$PWD/src/examples/nolibc/hello.c
+
+该模式特别适合聚焦某个用户态依赖度不高的纯内核特性的开发。
+
+## 4.13 更多用法
 
 欢迎阅读下述文档学习更多用法：
 
@@ -2144,36 +2230,6 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
     $ make boot
 
 同样的方法适用于 rootfs，U-Boot，甚至 QEMU。
-
-### 5.7.1 编译加速并减少磁盘损耗
-
-**注意**：该动作有丢失数据风险，请确保数据安全！
-
-该功能旨在创建一个驻留在内存的临时目录，并挂载为 `/labs/linux-lab/build`，用于存储编译过程中的数据，**如果不主动保存，关机以后，所有编译过程中的数据会全部丢失**。
-
-启用临时缓存（创建一个驻留在内存的文件系统作为 build 目录）：
-
-    $ make build cache
-
-查看临时缓存的使用状态（如果已经启用则会显示状态）：
-
-    $ make build status
-
-用临时缓存做编译加速：
-
-    $ time make kernel
-
-备份临时缓存到永久的文件（如果觉得 build 目录的数据很重要）：
-
-    $ make build backup
-
-停止使用临时缓存（恢复默认的、存放在磁盘上的 build 目录）：
-
-    $ make build uncache
-
-恢复使用上次备份的缓存作为 build 目录：
-
-    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
 
 ## 5.8 保存生成的镜像文件和配置文件
 

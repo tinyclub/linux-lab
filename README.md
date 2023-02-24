@@ -1770,7 +1770,90 @@ Linux Lab allows to access Makefile goals of the APPS easily, for example:
 
 Allows to run sub-make goals of kernel, root and U-Boot directly without entering into their own building directory.
 
-## 4.12 More Usage
+## 4.12 Speed up kernel development
+
+### 4.12.1 Speed up compiling and save disk life
+
+**Notes**：This operation may lose data, please take care!
+
+This feature aims to create a ram based temporary filesystem as the 'build' directory, to store the building data, **If not backup them, they will be lost after shutting down the machine**.
+
+Create temporary building cache:
+
+    $ make build cache
+
+Check the status of building cache:
+
+    $ make build status
+
+Use the cache for building speedup:
+
+    $ time make kernel
+
+Backup the cache to a persistent file (If the building file are important to you):
+
+    $ make build backup
+
+Stop the building cache, revert back to use the build directory on the disk:
+
+    $ make build uncache
+
+Use the backup as the build directory:
+
+    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
+
+### 4.12.2 ONESHOT Mode
+
+v0.9 adds a `ONESHOT` switch, it can be used to enable such functions:
+
+- Auto cache `build/` in memory
+- Auto cache `src/` in memory
+- Auto enable fast fetch, a.k.a git shallow fetch
+
+It is good for:
+
+- Disposable, destroy after using
+    - If want, please save kernel and its config with `kernel-save` and `kernel-saveconfig`
+
+- Better for big-memory, small-disk and slow-CPU host machines
+    - Both `src/` and `build/` are put in memory, not in disk
+
+- Good for instant kernel downloading and building
+    - If target host has no Linux kernel source code, and the network is slow
+
+To use it, please simply run this before others:
+
+    $ export ONESHOT=1
+
+If want to make it persistent, just configure it in `.labinit`:
+
+    ONESHOT := 1
+
+### 4.12.3 Nolibc Mode
+
+v1.2-rc2 adds Nolibc mode, allows to build ultra small kernel and application, and package them together via initrd, to achieve "Kernel-only" deployments.
+
+Nolibc adds two types of files:
+
+- Small kernel config file: `boards/<ARCH>/<BOARD>/bsp/configs/linux_v6.x_nolibc_defconfig`
+- Small nolibc application: `src/examples/nolibc/hello.c`
+
+Just similar to `ONESHOT`, before developing, just run this to enable `NOLIBC` mode:
+
+    $ export NOLIBC=1
+
+Or, write to `.labinit` to let it always work:
+
+    NOLIBC := 1
+
+To change the target nolibc aplication, we can configure `NOLIBC_SRC`, otherwise, the above hello.c will be used by default:
+
+    $ make nolibc-clean
+    $ make kernel NOLIBC_SRC=$PWD/src/examples/nolibc/hello.c
+
+It is very good for pure kernel development.
+
+## 4.13 More Usage
 
 Read more:
 
@@ -1939,36 +2022,6 @@ Use kernel as an example:
     $ make boot
 
 The same to Rootfs, U-Boot and even QEMU.
-
-### 5.7.1 Speed up compiling and save disk life
-
-**Notes**：This operation may lose data, please take care!
-
-This feature aims to create a ram based temporary filesystem as the 'build' directory, to store the building data, **If not backup them, they will be lost after shutting down the machine**.
-
-Create temporary building cache:
-
-    $ make build cache
-
-Check the status of building cache:
-
-    $ make build status
-
-Use the cache for building speedup:
-
-    $ time make kernel
-
-Backup the cache to a persistent file (If the building file are important to you):
-
-    $ make build backup
-
-Stop the building cache, revert back to use the build directory on the disk:
-
-    $ make build uncache
-
-Use the backup as the build directory:
-
-    $ sudo mount /path/to/backup-file /labs/linux-lab/build/
 
 ## 5.8 Save the images and configs
 

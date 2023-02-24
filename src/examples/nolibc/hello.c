@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	printf("Hello, nolibc!\n");
 
 #ifdef __NOLIBC__
-	reboot(LINUX_REBOOT_CMD_HALT);
+	reboot(LINUX_REBOOT_CMD_POWER_OFF);
 #endif
 
 	return 0;

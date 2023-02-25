@@ -1836,7 +1836,7 @@ $1-verify:
 	$$(Q)if [ "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
 	  find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | egrep -qv "$$(subst /,.,$(BOARD)).$1.$$($2)|$1.patched"; \
 	  if [ $$$$? -eq 0 ]; then \
-	    echo "ERR: the other $1 patchset have been applied, please backup important changes and do 'make $1-cleanup' at first, otherwise, pass 'SKIP_VERIFY=1' to ignore such error."; \
+	    echo "ERR: the other $1 patches applied? If so, backup changes and 'make $1-cleanup', otherwise, ignore via 'SKIP_VERIFY=1' or 'make $1-patch -t'."; \
 	    exit 1; \
 	  fi; \
 	fi

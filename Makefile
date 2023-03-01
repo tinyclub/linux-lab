@@ -2539,7 +2539,7 @@ root-dir-install-modules: $(KERNEL_BUILD)
 $(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
 
 root-dir-prebuilt: bsp-outdir $(ROOTDIR_DEPS)
-	$(Q)if [ ! -d $(ROOTDIR)/bin ]; then \
+	$(Q)if [ ! -d $(ROOTDIR)/bin -a -f $(ROOT_GENDIR_TOOL) ]; then \
 	  echo "LOG: Generating rootfs directory with $(ROOT_GENDIR_TOOL) ..."; \
 	  rm -rf $(ROOTDIR).tmp; \
 	  rm -rf $(ROOTDIR); \

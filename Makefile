@@ -2424,10 +2424,12 @@ endif
 
 $(IROOTFS): bsp-outdir $(IROOTFS_DEPS)
 ifneq ($(IROOTFS_DEPS),)
+ ifneq ($(FS_TYPE),)
 	@echo "LOG: Generating ramdisk image with $(ROOT_GENRD_TOOL) ..."
 	$(Q)rm -rf $(IROOTFS).tmp
 	$(Q)ROOTDIR=$(ROOTDIR) FSTYPE=$(FSTYPE) HROOTFS=$(HROOTFS) INITRD=$(IROOTFS).tmp USER=$(USER) $(ROOT_GENRD_TOOL) || (rm $(IROOTFS) && exit 1)
 	$(Q)mv $(IROOTFS).tmp $(IROOTFS)
+ endif
 endif
 
 root-rd: $(IROOTFS)

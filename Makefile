@@ -1187,12 +1187,20 @@ NOLIBC_H            := $(NOLIBC_DIR)/nolibc.h
 nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
+NOLIBC_OBJ          := $(KERNEL_BUILD)/nolibc/init.o
+NOLIBC_FLT          := $(KERNEL_BUILD)/nolibc/init.flt
 NOLIBC_PGC          := $(KERNEL_BUILD)/nolibc/init.pgc
 NOLIBC_SCALL        := $(KERNEL_BUILD)/nolibc/init.scall
 NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
+
+ifeq ($(CPU_MODE),M)
+  _NOLIBC_BIN :=  $(NOLIBC_FLT)
+else
+  _NOLIBC_BIN :=  $(NOLIBC_BIN)
+endif
 
 nolibc ?= $(noroot)
 NOLIBC ?= $(nolibc)
@@ -2376,6 +2384,7 @@ root-nolibc-clean:
 	$(Q)rm -rf $(NOLIBC_SYSROOT)
 	$(Q)rm -rf $(NOLIBC_BIN)
 	$(Q)rm -rf $(NOLIBC_OBJ)
+	$(Q)rm -rf $(NOLIBC_FLT)
 	$(Q)rm -rf $(NOLIBC_PGC)
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
@@ -3170,6 +3179,7 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
 NOLIBC_LDFLAGS := -s
+NOLIBC_OBJCOPYFLAGS := --remove-section=.note.gnu.build-id --remove-section=.comment
 
 # nolibc use method: header or sysroot
 ifeq ($(nolibc_inc),header)
@@ -3202,16 +3212,28 @@ $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
 
 # With the -include $(NOLIBC_H) option, use UAPI headers provided by the toolchain
-$(NOLIBC_BIN): $(NOLIBC_SRC) $(NOLIBC_DEP)
+$(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) $(NOLIBC_LDFLAGS) -o $@ \
-	  -nostdlib -static $(NOLIBC_INC) $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -c -o $@ \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 
-$(NOLIBC_INITRAMFS)/init: $(NOLIBC_BIN)
+$(NOLIBC_BIN): $(NOLIBC_OBJ)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_LDFLAGS) -o $@ \
+	  -nostdlib -static $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
+
+$(NOLIBC_FLT): $(NOLIBC_BIN)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)objcopy $(NOLIBC_OBJCOPYFLAGS) $<
+	$(Q)tools/nolibc/elf2flt.$(XARCH) -v -r $(NOLIBC_OBJ) $(NOLIBC_BIN) -o $@
+
+$(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
 	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
 	$(Q)mkdir -p $(NOLIBC_INITRAMFS) $(NOLIBC_INITRAMFS)/dev
-	$(Q)cp $(NOLIBC_BIN) $@
+	$(Q)cp $< $@
 	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/console ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/console c 5 1
 	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/null ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/null c 1 3
 

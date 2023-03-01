@@ -18,6 +18,10 @@
 #define __NOLIBC__
 #endif
 
+#ifndef __NOLIBC__
+#include <linux/reboot.h>
+#endif
+
 int main(int argc, char *argv[])
 {
 	printf("Hello, nolibc!\n");

@@ -3218,7 +3218,7 @@ $(NOLIBC_INITRAMFS)/init: $(NOLIBC_BIN)
 nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
 
 $(NOLIBC_SCALL): $(NOLIBC_BIN)
-	$(Q)$(C_PATH) tools/syscall/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
+	$(Q)$(C_PATH) tools/nolibc/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
 		cut -d ' ' -f2 > $(NOLIBC_SCALL)
 	$(Q)echo "Used system calls: $$(cat $(NOLIBC_SCALL) | tr '\n' ' ')"
 

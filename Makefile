@@ -3217,6 +3217,10 @@ ifeq ($(nolibc_gc),1)
   NOLIBC_FLT_LDFLAGS += -e _start
 endif
 
+ifeq ($(nolibc_comp),1)
+  NOLIBC_E2FFLAGS := -z
+endif
+
 # Use UAPI headers from kernel source code
 $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 	$(Q)echo "Generating $@"
@@ -3244,7 +3248,7 @@ $(NOLIBC_FLT): $(NOLIBC_OBJ)
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $< 2>&1 | tee $(NOLIBC_PGC)
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
-	$(Q)tools/nolibc/elf2flt.$(XARCH) -z -a -v -p $@.gdb $@.elf -o $@
+	$(Q)tools/nolibc/elf2flt.$(XARCH) $(NOLIBC_E2FFLAGS) -a -v -p $@.gdb $@.elf -o $@
 	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $(NOLIBC_BIN) $< >/dev/null
 

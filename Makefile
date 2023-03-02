@@ -3204,15 +3204,18 @@ nolibc_gc_debug ?= 1
 
 ifeq ($(nolibc_gc),1)
   NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
-  NOLIBC_LDFLAGS += -Wl,--gc-sections
+  NOLIBC_LDFLAGS += --gc-sections
 endif
 
 ifeq ($(nolibc_gc_debug),1)
-  NOLIBC_LDFLAGS += -Wl,--print-gc-sections
+  NOLIBC_LDFLAGS += --print-gc-sections
 endif
 
 # ref: elf2flt.ld.in from https://github.com/uclinux-dev/elf2flt
-NOLIBC_FLT_LDFLAGS += -Ttools/nolibc/elf2flt.ld
+NOLIBC_FLT_LDFLAGS := -Ttools/nolibc/elf2flt.ld
+ifeq ($(nolibc_gc),1)
+  NOLIBC_FLT_LDFLAGS += -e _start
+endif
 
 # Use UAPI headers from kernel source code
 $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
@@ -3232,14 +3235,13 @@ $(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
 $(NOLIBC_BIN): $(NOLIBC_OBJ)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_LDFLAGS) -o $@ \
-	  -nostdlib -static $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $@ $< 2>&1 | tee $(NOLIBC_PGC)
 
 # ref: ld-elf2flt.in from https://github.com/uclinux-dev/elf2flt
 $(NOLIBC_FLT): $(NOLIBC_OBJ)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $<
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $< 2>&1 | tee $(NOLIBC_PGC)
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
 	$(Q)tools/nolibc/elf2flt.$(XARCH) -z -a -v -p $@.gdb $@.elf -o $@

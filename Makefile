@@ -1196,7 +1196,10 @@ NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
 
-ifeq ($(CPU_MODE),M)
+# CPU MMU
+CPU_MMU ?= 1
+
+ifeq ($(CPU_MMU),0)
   _NOLIBC_BIN :=  $(NOLIBC_FLT)
 else
   _NOLIBC_BIN :=  $(NOLIBC_BIN)

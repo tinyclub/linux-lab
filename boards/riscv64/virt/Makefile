@@ -71,6 +71,7 @@ ifneq ($(wildcard $(DTB)),)
 endif
 
 ifneq ($(CPU_MODE),S)
+  override CPU_MMU := 0
   override SMP := 1
   override BIOS := none
   override U := 0

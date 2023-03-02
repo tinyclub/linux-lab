@@ -3246,6 +3246,7 @@ $(NOLIBC_FLT): $(NOLIBC_OBJ)
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
 	$(Q)tools/nolibc/elf2flt.$(XARCH) -z -a -v -p $@.gdb $@.elf -o $@
 	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $(NOLIBC_BIN) $< >/dev/null
 
 $(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
 	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
@@ -3256,7 +3257,7 @@ $(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
 
 nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
 
-$(NOLIBC_SCALL): $(NOLIBC_BIN)
+$(NOLIBC_SCALL): $(_NOLIBC_BIN)
 	$(Q)$(C_PATH) tools/nolibc/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
 		cut -d ' ' -f2 > $(NOLIBC_SCALL)
 	$(Q)echo "Used system calls: $$(cat $(NOLIBC_SCALL) | tr '\n' ' ')"

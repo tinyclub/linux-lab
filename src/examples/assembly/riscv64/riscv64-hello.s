@@ -14,6 +14,16 @@ _start:
     li a7, 64                    # __NR_write
     ecall
 
+#ifdef __NOLIBC__
+                                 # reboot, based on tools/include/nolibc/sys.h
+    li a0, 0xfffffffffee1dead
+    li a1, 0x28121969
+    li a2, 0x4321fedc
+    li a3, 0
+    li a7, 142
+    ecall
+#endif
+
     li a0, 0                     # return 0
     li a7, 93                    # __NR_exit
     ecall

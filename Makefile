@@ -3182,6 +3182,10 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
 NOLIBC_LDFLAGS := -s
 
+ifneq ($(findstring .sx,$(NOLIBC_SRC)x),)
+  NOLIBC_CFLAGS += -fno-pic
+endif
+
 # nolibc use method: header or sysroot
 ifeq ($(nolibc_inc),header)
   NOLIBC_INC := -include $(NOLIBC_H)

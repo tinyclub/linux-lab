@@ -3239,7 +3239,7 @@ $(NOLIBC_FLT): $(NOLIBC_OBJ)
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $(NOLIBC_INC) $<
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
 	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
-	$(Q)tools/nolibc/elf2flt.$(XARCH) -a -v -p $@.gdb $@.elf -o $@
+	$(Q)tools/nolibc/elf2flt.$(XARCH) -z -a -v -p $@.gdb $@.elf -o $@
 	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
 
 $(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)

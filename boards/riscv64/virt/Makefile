@@ -57,13 +57,18 @@ FSTYPE  ?= ext2
 # fw_jump.elf is from https://github.com/riscv/opensbi
 BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
 
+ifeq ($(vmlinuz),1)
+ORIIMG  ?= arch/$(ARCH)/boot/compressed/vmlinuz
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/vmlinuz
+else
 ORIIMG  ?= arch/$(ARCH)/boot/Image
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
+endif
 
 DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dts
-UORIIMG ?= arch/$(ARCH)/boot/Image
+UORIIMG ?= $(ORIIMG)
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
-UKIMAGE ?= $(BSP_KERNEL)/$(LINUX)/Image
+UKIMAGE ?= $(KIMAGE)
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dtb
 
 ifneq ($(wildcard $(DTB)),)

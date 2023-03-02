@@ -3181,7 +3181,6 @@ PHONY += module-getconfig module-setconfig modules-config module-config
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
 NOLIBC_LDFLAGS := -s
-NOLIBC_OBJCOPYFLAGS := --remove-section=.note.gnu.build-id --remove-section=.comment
 
 # nolibc use method: header or sysroot
 ifeq ($(nolibc_inc),header)
@@ -3205,6 +3204,9 @@ ifeq ($(nolibc_gc_debug),1)
   NOLIBC_LDFLAGS += -Wl,--print-gc-sections
 endif
 
+# ref: elf2flt.ld.in from https://github.com/uclinux-dev/elf2flt
+NOLIBC_FLT_LDFLAGS += -Ttools/nolibc/elf2flt.ld
+
 # Use UAPI headers from kernel source code
 $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 	$(Q)echo "Generating $@"
@@ -3226,11 +3228,15 @@ $(NOLIBC_BIN): $(NOLIBC_OBJ)
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_LDFLAGS) -o $@ \
 	  -nostdlib -static $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
 
-$(NOLIBC_FLT): $(NOLIBC_BIN)
+# ref: ld-elf2flt.in from https://github.com/uclinux-dev/elf2flt
+$(NOLIBC_FLT): $(NOLIBC_OBJ)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)objcopy $(NOLIBC_OBJCOPYFLAGS) $<
-	$(Q)tools/nolibc/elf2flt.$(XARCH) -v -r $(NOLIBC_OBJ) $(NOLIBC_BIN) -o $@
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $(NOLIBC_INC) $<
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
+	$(Q)tools/nolibc/elf2flt.$(XARCH) -a -v -p $@.gdb $@.elf -o $@
+	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
 
 $(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
 	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"

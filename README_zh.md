@@ -2085,7 +2085,6 @@ Nolibc 模式新增了如下两组文件：
 * Linux Lab 视频公开课：含用法介绍、使用案例分享、发布会视频回放、Linux Lab Disk 功能演示等
     * [CCTALK][071]
     * [B 站][024]
-    * [知乎][074]
 
 * 采用 Linux Lab 作为实验环境的视频课程
     * [《360° 剖析 Linux ELF》][070]
@@ -2877,7 +2876,6 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [071]: https://www.cctalk.com/m/group/88948325
 [072]: https://www.cctalk.com/m/group/89626746
 [073]: https://www.cctalk.com/m/group/89715946
-[074]: https://www.zhihu.com/people/wuzhangjin
 [075]: https://www.kernel.org
 [076]: http://showdesk.io/2017-03-11-14-16-15-linux-lab-usage-00-01-02/
 [077]: https://tinylab.org

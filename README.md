@@ -1874,7 +1874,6 @@ Read more:
 * Linux Lab Videos
     * [CCTALK][022]
     * [Bilibili][025]
-    * [Zhihu][039]
 
 * Video Courses use Linux Lab as experiment environment
     * [The Perspective Linux ELF][035]
@@ -2616,7 +2615,6 @@ Welcome to mark our web site, star our git repositories:
 [036]: https://www.cctalk.com/m/group/88948325
 [037]: https://www.cctalk.com/m/group/89626746
 [038]: https://www.cctalk.com/m/group/89715946
-[039]: https://www.zhihu.com/people/wuzhangjin
 [040]: http://www.kernel.org
 [041]: https://tinylab.org/why-linux-lab
 [042]: https://tinylab.org/why-linux-lab-v2

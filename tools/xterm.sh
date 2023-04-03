@@ -20,14 +20,14 @@ pid=`ppid`
 for i in `seq 1 $DEPTH`
 do
     _XTERM=`pcmd $pid`
-    echo $_XTERM | grep -v grep | grep -v $THIS_SCRIPT | egrep -q $TERM_MATCH
+    echo $_XTERM | grep -v grep | grep -v $THIS_SCRIPT | grep -E -q $TERM_MATCH
     [ $? -eq 0 ] && found=1 && break
     pid=`ppid $pid`
     depth=$i
 done
 
 # Get the command name
-[ $found -eq 1 ] && XTERM=$(basename `echo $_XTERM | tr ' ' '\n' | egrep $TERM_MATCH`)
+[ $found -eq 1 ] && XTERM=$(basename `echo $_XTERM | tr ' ' '\n' | grep -E $TERM_MATCH`)
 
 XTERM=${XTERM:-$1}
 

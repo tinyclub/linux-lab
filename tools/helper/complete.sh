@@ -46,7 +46,7 @@ function _makefile_targets {
             # Find makefile targets available in the current directory
             ignores="^_|-km|features|kernel-modules|module-|module$|FORCE|rootdir|default-"
             if [[ -e "$(pwd)/Makefile" ]]; then
-                BOARDS="$(find $(pwd)/boards/ -maxdepth 3 -name "Makefile" -exec egrep -H "^_BASE|^_PLUGIN" {} \; | tr -s '/' | egrep ".*" | sort -t':' -k2 | cut -d':' -f1 | egrep -v "/module" | sed -e "s%$(pwd)/boards/\(.*\)/Makefile%BOARD=\1%g")"
+                BOARDS="$(find $(pwd)/boards/ -maxdepth 3 -name "Makefile" -exec grep -E -H "^_BASE|^_PLUGIN" {} \; | tr -s '/' | grep -E ".*" | sort -t':' -k2 | cut -d':' -f1 | grep -E -v "/module" | sed -e "s%$(pwd)/boards/\(.*\)/Makefile%BOARD=\1%g")"
                 common_targets="$(grep "^APP_TARGETS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
                 all_apps="$(grep "^APPS .*:=" $(pwd)/Makefile | cut -d '=' -f2)"
                 app_targets=''
@@ -57,7 +57,7 @@ function _makefile_targets {
                         app_targets="$app_targets $app-$target"
                     done
                 done
-                default_targets="$(egrep -e '^[a-zA-Z0-9_-]+:[^=]*' $(pwd)/Makefile | grep -v ":=" | cut -d ':' -f1 | egrep -v "$ignores" | tr '\n' ' ')"
+                default_targets="$(grep -E -e '^[a-zA-Z0-9_-]+:[^=]*' $(pwd)/Makefile | grep -v ":=" | cut -d ':' -f1 | grep -E -v "$ignores" | tr '\n' ' ')"
                 targets="${boards} ${BOARDS} $common_targets $all_apps $app_targets $default_targets"
             fi
             ;;

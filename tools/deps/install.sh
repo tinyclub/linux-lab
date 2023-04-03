@@ -26,7 +26,7 @@ do
     [ $? -eq 0 ] && continue
   fi
 
-  echo "$pkg" | egrep -iq "http|ftp"
+  echo "$pkg" | grep -E -iq "http|ftp"
   if [ $? -eq 0 ]; then
     echo $pkg | grep ".deb"
     if [ $? -eq 0 ]; then

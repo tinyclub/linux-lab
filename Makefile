@@ -308,11 +308,11 @@ define _vsif
 endef
 
 define _any
-$(shell echo $($1) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \$2 $(call _v2v,$3)) -eq 1 ] && echo $($1))
+$(shell echo $($1) | grep -E -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \$2 $(call _v2v,$3)) -eq 1 ] && echo $($1))
 endef
 
 define _range
-$(shell echo $($1) | egrep -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \>= $(call _v2v,$2)) -eq 1 -a $$(expr $(call _v2v,$($1)) \<= $(call _v2v,$3)) -eq 1 ] && echo $($1))
+$(shell echo $($1) | grep -E -q "^v|^[0-9]" && [ $$(expr $(call _v2v,$($1)) \>= $(call _v2v,$2)) -eq 1 -a $$(expr $(call _v2v,$($1)) \<= $(call _v2v,$3)) -eq 1 ] && echo $($1))
 endef
 
 define _latest_init
@@ -1334,11 +1334,11 @@ FILTER     ?= .*
 VAR_FILTER ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 
 define getboardvars
-cat $(BOARD_MAKEFILE) | egrep -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|^$$"  | tr -d '?: ' | cut -d '=' -f1 | uniq
+cat $(BOARD_MAKEFILE) | grep -E -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|^$$"  | tr -d '?: ' | cut -d '=' -f1 | uniq
 endef
 
 define showboardvars
-echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | egrep --colour=auto "$(VAR_FILTER)"
+echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardvars)))),"    $(v) = $($(v)) \n") | tr -s '/' | grep -E --colour=auto "$(VAR_FILTER)"
 endef
 
 BSP_CHECKOUT ?= bsp-checkout
@@ -1480,13 +1480,13 @@ ifneq ($(findstring xlist,x$(first_target)),)
 endif
 # List targets for boards and plugins
 board-info:
-	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(ARCH_FILTER),) -maxdepth 3 -name "Makefile" -exec egrep -H "$(BTYPE)" {} \; \
-		| tr -s '/' | egrep "$(FILTER)" \
+	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(ARCH_FILTER),) -maxdepth 3 -name "Makefile" -exec grep -E -H "$(BTYPE)" {} \; \
+		| tr -s '/' | grep -E "$(FILTER)" \
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
-		| egrep -v "/module" \
+		| grep -E -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g;s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| egrep -v " *_BASE| *_PLUGIN| *#" | egrep -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval " \
-		| egrep --colour=auto "$(VAR_FILTER)"
+		| grep -E -v " *_BASE| *_PLUGIN| *#" | grep -E -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval " \
+		| grep -E --colour=auto "$(VAR_FILTER)"
 
 BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin full)
 
@@ -1834,7 +1834,7 @@ $$($1_patched_goals):
 
 $1-verify:
 	$$(Q)if [ "$(SKIP_VERIFY)" != "1" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ]; then \
-	  find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | egrep -qv "$$(subst /,.,$(BOARD)).$1.$$($2)|$1.patched"; \
+	  find $$($(call _uc,$1)_SRC_FULL) -maxdepth 1 -name "*.patched" | grep -E -qv "$$(subst /,.,$(BOARD)).$1.$$($2)|$1.patched"; \
 	  if [ $$$$? -eq 0 ]; then \
 	    echo "ERR: the other $1 patches applied? If so, backup changes and 'make $1-cleanup', otherwise, ignore via 'SKIP_VERIFY=1' or 'make $1-patch -t'."; \
 	    exit 1; \
@@ -2651,7 +2651,7 @@ kernel-features: kernel-feature
 
 kernel-feature-list:
 	$(Q)echo [ $(FEATURE_DIR) ]:
-	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | egrep "$(FILTER)$(if $(FEATURE),$(subst $(comma),|,$(FEATURE)))" | egrep -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g;s%[^/]*/.*/%      * %g;s%[^/]*/%    - %g"
+	$(Q)find $(FEATURE_DIR) -mindepth 1 | sed -e "s%$(FEATURE_DIR)/%%g" | sort | grep -E "$(FILTER)$(if $(FEATURE),$(subst $(comma),|,$(FEATURE)))" | grep -E -v ".gitignore|downloaded" | sed -e "s%\(^[^/]*$$\)%  + \1%g;s%[^/]*/.*/%      * %g;s%[^/]*/%    - %g"
 
 kernel-features-list: kernel-feature-list
 features-list: kernel-feature-list
@@ -2782,9 +2782,9 @@ ifeq ($(one_module),1)
       endif
     endif
   else
-    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
+    M_PATH := $(shell find $(EXT_MODULE_DIR) -name "Makefile" | xargs -i grep -E -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
     ifeq ($(M_PATH),)
-      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i egrep -iH "^obj-.*[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
+      M_PATH := $(shell find $(KERNEL_SEARCH_PATH) -name "Makefile" | xargs -i grep -E -iH "^obj-.*[[:space:]]*[+:]*=[[:space:]]*($(module))\.o" {} | sed -e "s%\(.*\)/Makefile.*%\1%g" | head -1)
       ifneq ($(M_PATH),)
         M_PATH := $(subst $(KERNEL_MODULE_DIR)/,,$(M_PATH))
         internal_module :=1
@@ -2852,7 +2852,7 @@ kernel-modules:
 
 ifneq ($(module),)
   IMF ?= $(subst $(comma),|,$(module))
-  MF  ?= egrep "$(IMF)"
+  MF  ?= grep -E "$(IMF)"
   internal_search := 1
 else
   IMF :=.*
@@ -2861,7 +2861,7 @@ endif
 
 # If m or M argument specified, search modules in kernel source directory
 ifneq ($(M),)
-  PF ?= egrep "$(subst $(comma),|,$(M))"
+  PF ?= grep -E "$(subst $(comma),|,$(M))"
   internal_search := 1
 else
   PF := cat
@@ -2870,8 +2870,8 @@ endif
 kernel-modules-list: kernel-modules-list-full
 
 kernel-modules-list-full:
-	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=$$PWD/\1%g" | tr -s '/' | cat -n
-	$(Q)[ "$(internal_search)" = "1" ] && find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i egrep -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | tr -s '/' | cat -n || true
+	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i grep -E -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=$$PWD/\1%g" | tr -s '/' | cat -n
+	$(Q)[ "$(internal_search)" = "1" ] && find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i grep -E -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | tr -s '/' | cat -n || true
 
 PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
 
@@ -3138,7 +3138,7 @@ kernel-getconfig: FORCE
 
 _kernel-getconfig: $(DEFAULT_KCONFIG)
 	$(Q)printf "option state: $(o)="&& $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)egrep -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)grep -E -iH "_$(o)( |=|_)" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 	$(Q)echo
 
 kernel-config: kernel-setconfig
@@ -3154,7 +3154,7 @@ _kernel-setconfig: $(DEFAULT_KCONFIG)
 	$(Q)echo "Configuring new kernel config: $(KCONFIG_OPT) ..."
 	$(Q)echo "\nChecking kernel config: $(KCONFIG_OPT) ...\n"
 	$(Q)printf "option state: $(KCONFIG_OPT)=" && $(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) $(KCONFIG_GET_OPT)
-	$(Q)egrep -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
+	$(Q)grep -E -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 	$(Q)echo
 
 PHONY += kernel-getconfig kernel-config kernel-setconfig _kernel-getconfig _kernel-setconfig

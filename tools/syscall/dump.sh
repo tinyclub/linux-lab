@@ -55,7 +55,7 @@ fi
 
 # Dump out used system calls with objdump
 # FIXME: this may not work well for the syscall number may be far from the system call instruction while optimization enabled
-for num in $($OBJDUMP -d $BIN | egrep "$load_ins|$scall_ins" | egrep -B$bak_pos "$scall_ins" | egrep "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
+for num in $($OBJDUMP -d $BIN | grep -E "$load_ins|$scall_ins" | grep -E -B$bak_pos "$scall_ins" | grep -E "$load_ins" | rev | cut -d ' ' -f1 | rev | cut -d ',' -f$num_pos | sort -u -g | tr -d '$')
 do
   # echo $(($num))
   syscalls_used="$syscalls_used $(($num))"
@@ -76,12 +76,12 @@ if [[ ! "$XARCH" =~ "riscv" ]]; then
 __EOF__
 
   # Move the referenced macros at the header to make sure the later ones execute normally
-  refmacros=$(cat $_syscall_macros | egrep "__NR[0-9]*_[^ ]*$| \(__NR[0-9]*_[^ ]*" | cut -d ' ' -f3 | tr -d '(' | sort -u | tr '\n' ' ' | sed -e 's/ $//g' | tr ' ' '|')
+  refmacros=$(cat $_syscall_macros | grep -E "__NR[0-9]*_[^ ]*$| \(__NR[0-9]*_[^ ]*" | cut -d ' ' -f3 | tr -d '(' | sort -u | tr '\n' ' ' | sed -e 's/ $//g' | tr ' ' '|')
 
-  cat $_syscall_macros | egrep "^#define ($refmacros)" | sed -e 's/#define __NR[0-9]*_\([^ ]*\) /\1=/g' > $syscall_refs
+  cat $_syscall_macros | grep -E "^#define ($refmacros)" | sed -e 's/#define __NR[0-9]*_\([^ ]*\) /\1=/g' > $syscall_refs
 
   # Dump out the pure macros
-  cat $_syscall_macros | egrep -v "^#define ($refmacros)" > $syscall_macros
+  cat $_syscall_macros | grep -E -v "^#define ($refmacros)" > $syscall_macros
 
   # Convert macros to a system call map
   cat $syscall_macros | sed -e 's/#define __NR[0-9]*_\([^ ]*\) \(.*\)/syscall[$((\2))]="\1"/g;s/__NR_//g' >> $syscall_map

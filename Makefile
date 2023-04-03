@@ -3796,7 +3796,7 @@ D ?= 0
 DEBUG ?= $(D)
 
 # Launch Qemu, prefer our own instead of the prebuilt one
-BOOT_CMD := sudo $(EMULATOR) $(EMULATOR_OPTS)
+BOOT_CMD := sudo prlimit -n1024 $(EMULATOR) $(EMULATOR_OPTS)
 
 ifeq ($(U),1)
   ifeq ($(SD_BOOT),1)

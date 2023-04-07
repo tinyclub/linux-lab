@@ -4176,6 +4176,10 @@ PHONY += _debug _debug_init_1 _debug_init_2
 endif # DEBUG != 0
 
 _BOOT_DEPS ?=
+# Always update initrd with src/system
+ifneq ($(INITRD),)
+  _BOOT_DEPS += root-rd-rebuild
+endif
 ifneq ($(BOOT_PREPARE),)
   override BOOT_PREPARE := $(subst $(comma),$(space),$(BOOT_PREPARE))
   _BOOT_DEPS += $(BOOT_PREPARE)

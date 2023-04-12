@@ -409,6 +409,14 @@ BOARD_UBOOT  ?= $(BOARD_DIR)/uboot$(_UBOOT_FORK)
 BOARD_ROOT   ?= $(BOARD_DIR)/root$(_ROOT_FORK)
 BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 
+# CPU MMU
+nommu ?= 0
+NOMMU ?= $(nommu)
+
+# Nolibc support
+nolibc ?= $(noroot)
+NOLIBC ?= $(nolibc)
+
 ifneq ($(BOARD),)
   ifneq ($(wildcard $(BOARD_MAKEFILE)),)
     include $(BOARD_MAKEFILE)
@@ -1196,17 +1204,11 @@ NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
 
-# CPU MMU
-CPU_MMU ?= 1
-
-ifeq ($(CPU_MMU),0)
+ifeq ($(NOMMU),1)
   _NOLIBC_BIN :=  $(NOLIBC_FLT)
 else
   _NOLIBC_BIN :=  $(NOLIBC_BIN)
 endif
-
-nolibc ?= $(noroot)
-NOLIBC ?= $(nolibc)
 
 # Prefer nolibc initramfs
 ifeq ($(NOLIBC),1)

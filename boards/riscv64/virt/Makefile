@@ -11,9 +11,6 @@ QEMU    ?= v6.0.0
 QEMU_US ?= 0
 LINUX   ?= v5.18.9
 
-# Allow run kernel and system in pure M mode with CPU_MODE=M
-CPU_MODE ?= S
-
 # git repos for the other kernel forks
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git
 LINUX[KERNEL_FORK_openeuler]   ?= 5.10.0-132.0.0
@@ -75,11 +72,7 @@ ifneq ($(wildcard $(DTB)),)
   DTB_ADDR := 0x87000000
 endif
 
-ifneq ($(CPU_MODE),S)
-  override CPU_MMU := 0
-endif
-
-ifeq ($(CPU_MMU),0)
+ifeq ($(NOMMU),1)
   override SMP := 1
   override BIOS := none
   override U := 0

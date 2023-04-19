@@ -1308,7 +1308,7 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
       ROOTFS    := $(BSP_ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
     endif
   else
-    BSP_ROOTDIR ?= $(BSP_BUILD)$(subst $(TOP_DIR),root,$(PREBUILT_ROOT_DIR))/rootfs
+    BSP_ROOTDIR ?= $(BSP_BUILD)/$(subst $(TOP_DIR),root,$(PREBUILT_ROOT_DIR))/rootfs
   endif
 
   ifeq ($(FS_TYPE),dir)

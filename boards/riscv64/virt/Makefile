@@ -62,11 +62,11 @@ ORIIMG  ?= arch/$(ARCH)/boot/Image
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 endif
 
-DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dts
+#DTS     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dts
 UORIIMG ?= $(ORIIMG)
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 UKIMAGE ?= $(KIMAGE)
-DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dtb
+#DTB     ?= $(BSP_KERNEL)/$(LINUX)/qemu-$(XARCH)-$(MACH).dtb
 
 ifneq ($(wildcard $(DTB)),)
   DTB_ADDR := 0x87000000

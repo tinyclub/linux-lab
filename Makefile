@@ -2384,9 +2384,11 @@ $(eval $(call genclone,root,buildroot,R))
 $(eval $(call genenvdeps,root,BUILDROOT,R))
 
 root-nolibc: nolibc-initramfs
-root-nolibc-clean:
+root-nolibc-distclean: root-nolibc-clean
 	$(Q)echo "Cleaning nolibc output"
 	$(Q)rm -rf $(NOLIBC_SYSROOT)
+
+root-nolibc-clean:
 	$(Q)rm -rf $(NOLIBC_BIN)
 	$(Q)rm -rf $(NOLIBC_OBJ)
 	$(Q)rm -rf $(NOLIBC_FLT)
@@ -2394,8 +2396,9 @@ root-nolibc-clean:
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
 nolibc: root-nolibc
+nolibc-distclean: root-nolibc-distclean
 nolibc-clean: root-nolibc-clean
-PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean
+PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean nolibc-distclean
 
 # Build Buildroot
 root-buildroot:

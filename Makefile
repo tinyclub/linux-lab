@@ -220,8 +220,8 @@ _UBOOT_SRC  ?= $(if $(UBOOT_FORK),$(call _lc,$(UBOOT_FORK)-uboot),u-boot)
 UBOOT_SRC   ?= $(_UBOOT_SRC)
 
 #KERNEL_GIT ?= https://github.com/tinyclub/linux-stable.git
-#KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
-KERNEL_GIT  ?= https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
+# KERNEL_GIT ?= https://mirrors.tuna.tsinghua.edu.cn/git/linux-stable.git
+KERNEL_GIT ?= https://gitlab.com/linux-kernel/stable.git
 #KERNEL_GIT ?= git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 _KERNEL_GIT := $(KERNEL_GIT)
 _KERNEL_SRC ?= $(if $(KERNEL_FORK),$(call _lc,$(KERNEL_FORK)-kernel),linux-stable)

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# kernel-download.sh -- Apply the available kernel features
+# feature-download.sh -- Apply the available kernel features
 #
 # Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
 #

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# kernel-env.sh -- Apply the available kernel features
+# feature-env.sh -- Apply the available kernel features
 #
 # Copyright (C) 2016-2022 Wu Zhangjin <falcon@ruma.tech>
 #

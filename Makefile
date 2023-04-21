@@ -1210,6 +1210,14 @@ else
   _NOLIBC_BIN :=  $(NOLIBC_BIN)
 endif
 
+ifeq ($(NOMMU),1)
+  CFGS[K_N] += CONFIG_MMU
+  CFGS[K_Y] += CONFIG_BINFMT_FLAT
+else
+  CFGS[K_Y] += CONFIG_MMU
+  CFGS[K_N] += CONFIG_BINFMT_FLAT
+endif
+
 # Prefer nolibc initramfs
 ifeq ($(NOLIBC),1)
   ifneq ($(wildcard $(NOLIBC_SRC)),)

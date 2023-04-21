@@ -2028,7 +2028,7 @@ define genenvdeps
 # This allows to install extra tools has not been installed
 $$(eval $$(call __vsp,PKGS,$2))
 
-$1-tools:
+$1-tools: $$(if $$($2_PKGS),FORCE)
 	$$(Q)[ -n "$$($2_PKGS)" ] && tools/deps/install.sh '$$($2_PKGS)' || true
 
 $1-deps: $1-tools _env

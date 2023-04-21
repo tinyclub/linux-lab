@@ -9,7 +9,7 @@ MEM     ?= 256M
 QEMU    ?= v6.0.0
 # Enable QEMU_US=1 for qemu-user-static
 QEMU_US ?= 0
-LINUX   ?= v5.18.9
+LINUX   ?= v6.2
 
 # git repos for the other kernel forks
 KERNEL_GIT[KERNEL_FORK_openeuler] := https://gitee.com/openeuler/kernel.git

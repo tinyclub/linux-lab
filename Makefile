@@ -1944,24 +1944,28 @@ $$(call _stamp,$1,defconfig): $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
-$$($(call _uc,$1)_BUILD)/.config: $$(call _stamp,$1,defconfig)
+$1_config := $(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config))
 
-$1-defconfig: $$($(call _uc,$1)_BUILD)/.config
+$$($1_config): $$(call _stamp,$1,defconfig)
+
+$1-defconfig: $$($1_config)
+
+$1-defconfig: $$(call _stamp,$1,defconfig)
 
 $1-oldefconfig: $1-olddefconfig
 $1-olddefconfig: $$(call __stamp,$1,olddefconfig)
 
-$$(call _stamp,$1,olddefconfig): $$($(call _uc,$1)_BUILD)/.config
+$$(call _stamp,$1,olddefconfig): $$($1_config)
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	$$(Q)touch $$@
 
 $1-oldconfig: $$(call __stamp,$1,oldconfig)
 
-$$(call _stamp,$1,oldconfig): $$($(call _uc,$1)_BUILD)/.config
+$$(call _stamp,$1,oldconfig): $$($1_config)
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	$$(Q)touch $$@
 
-$1-menuconfig: $$($(call _uc,$1)_BUILD)/.config
+$1-menuconfig: $$($1_config)
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 PHONY += $(addprefix $1-,defconfig olddefconfig oldconfig menuconfig)
@@ -2226,6 +2230,7 @@ $(eval $(call gensource,qemu,QEMU))
 $(eval $(call gendeps,qemu))
 #$(warning $(call gengoals,qemu,QEMU))
 $(eval $(call gengoals,qemu,QEMU))
+#$(warning $(call gencfgs,qemu,QEMU,Q))
 $(eval $(call gencfgs,qemu,QEMU,Q))
 #$(warning $(call genenvdeps,qemu,QEMU,Q))
 $(eval $(call genenvdeps,qemu,QEMU,Q))

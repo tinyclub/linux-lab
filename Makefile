@@ -3070,7 +3070,7 @@ ifeq ($(KT),$(IMAGE))
 endif
 
 ifeq ($(NOLIBC),1)
-  KERNEL_DEPS := root-nolibc nolibc-syscall
+  KERNEL_DEPS += root-nolibc nolibc-syscall
 endif
 
 ifneq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),)

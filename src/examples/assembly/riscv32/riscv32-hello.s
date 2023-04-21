@@ -1,6 +1,6 @@
 #
 # Ref: https://github.com/riscv/riscv-asm-manual/blob/master/riscv-asm.md
-#      __NR_write, __NR_exit defined include/uapi/asm-generic/unistd.h
+#      __NR_write, __NR_exit defined include/uapi/asm-generic/unistd.h, /usr/include/asm-generic/unistd.h
 #
 
     .section .rodata

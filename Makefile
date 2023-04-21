@@ -3079,10 +3079,6 @@ ifeq ($(KT),$(IMAGE))
   KERNEL_DEPS := $(KERNEL_DTB) $(ROOT_RD)
 endif
 
-ifeq ($(NOLIBC),1)
-  KERNEL_DEPS += root-nolibc nolibc-syscall
-endif
-
 ifneq ($(filter _kernel-setconfig,$(MAKECMDGOALS)),)
   ksetconfig  := 1
 endif
@@ -3272,7 +3268,9 @@ $(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
 	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/console ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/console c 5 1
 	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/null ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/null c 1 3
 
-nolibc-initramfs: $(NOLIBC_INITRAMFS)/init
+$(NOLIBC_INITRAMFS): $(NOLIBC_INITRAMFS)/init $(NOLIBC_SCALL)
+
+nolibc-initramfs: $(NOLIBC_INITRAMFS)
 
 $(NOLIBC_SCALL): $(_NOLIBC_BIN)
 	$(Q)$(C_PATH) tools/nolibc/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \

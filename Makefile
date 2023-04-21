@@ -1936,7 +1936,9 @@ $$(call _stamp,$1,defconfig): $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)touch $$@
 
-$1-defconfig: $$(call __stamp,$1,defconfig)
+$$($(call _uc,$1)_BUILD)/.config: $$(call _stamp,$1,defconfig)
+
+$1-defconfig: $$($(call _uc,$1)_BUILD)/.config
 
 $1-oldefconfig: $1-olddefconfig
 $1-olddefconfig: $$(call __stamp,$1,olddefconfig)
@@ -1951,7 +1953,7 @@ $$(call _stamp,$1,oldconfig): $$($(call _uc,$1)_BUILD)/.config
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	$$(Q)touch $$@
 
-$1-menuconfig:
+$1-menuconfig: $$($(call _uc,$1)_BUILD)/.config
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 PHONY += $(addprefix $1-,defconfig olddefconfig oldconfig menuconfig)
@@ -3154,8 +3156,6 @@ endif
 ifneq ($(filter kernel-getconfig,$(MAKECMDGOALS)),)
   o ?= $m
 endif
-
-$(DEFAULT_KCONFIG): kernel-defconfig
 
 kernel-getconfig: FORCE
 	$(Q)$(if $(o), $(foreach _o, $(subst $(comma),$(space),$(o)), \

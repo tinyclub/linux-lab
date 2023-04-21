@@ -70,6 +70,8 @@ UKIMAGE ?= $(KIMAGE)
 
 ifneq ($(wildcard $(DTB)),)
   DTB_ADDR := 0x87000000
+else
+  DTB_ADDR := $$fdtcontroladdr
 endif
 
 ifeq ($(NOMMU),1)

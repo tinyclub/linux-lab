@@ -1418,7 +1418,7 @@ BOARD_LABCONFIG := $(BOARD_DIR)/.labconfig
 
 # Trace the changes of the frequently used config files automatically, the changes will trigger remake of some targets
 # TODO: more config files should be added, but some of the files may have some issues, which changes all the time and breaks the remake logic
-ENV_FILES := .board_config $(BOARD_LABCONFIG)
+ENV_FILES := .board_config $(wildcard $(BOARD_LABCONFIG))
 $(ENV_FILES):
 
 edit: local-edit

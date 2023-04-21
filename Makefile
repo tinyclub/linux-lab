@@ -1891,6 +1891,14 @@ PHONY += $(addprefix $1-,list help checkout patch debug boot test)
 
 endef # gengoals
 
+# Allow force enable the default config
+ifneq ($(findstring force-,$(MAKECMDGOALS)),)
+  ifneq ($(findstring -defconfig,$(MAKECMDGOALS)),)
+    FORCE_DEFCONFIG ?= 1
+    export FORCE_DEFCONFIG
+  endif
+endif
+
 define gencfgs
 
 $(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
@@ -1926,7 +1934,7 @@ ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
 endif
 
-$$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES)
+$$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$(CFGS[$3_N]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -d $$n;))

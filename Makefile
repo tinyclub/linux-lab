@@ -1975,7 +1975,7 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
-NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_defconfig
+NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_$$(if $$($3TAG),$$($3TAG)_)defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifeq ($$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)),)

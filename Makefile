@@ -413,6 +413,10 @@ BOARD_KERNEL ?= $(BOARD_DIR)/kernel$(_KERNEL_FORK)
 nommu ?= 0
 NOMMU ?= $(nommu)
 
+# Allow run Kernel as BIOS
+LINUX_BIOS ?= 0
+KERNEL_BIOS ?= $(LINUX_BIOS)
+
 # Nolibc support
 nolibc ?= $(noroot)
 NOLIBC ?= $(nolibc)
@@ -969,8 +973,10 @@ HOST_CPU_THREADS := $$(nproc)
 JOBS             ?= $(HOST_CPU_THREADS)
 
 # Emulator configurations
+ifeq ($(KERNEL_BIOS),0)
 ifneq ($(BIOS),)
   BIOS_ARG       := -bios $(BIOS)
+endif
 endif
 
 # Another qemu-system-$(ARCH)
@@ -3844,9 +3850,9 @@ ifneq ($(PORIIMG),)
   KERNEL_OPT   ?= -kernel $(PKIMAGE) -device loader,file=$(QEMU_KIMAGE),addr=$(KRN_ADDR)
 else
   ifeq ($(U),1)
-    KERNEL_OPT ?= $(if $(UBOOT_BIOS),-bios,-kernel) $(QEMU_KIMAGE)
+    KERNEL_OPT ?= $(if $(findstring 1,$(UBOOT_BIOS)),-bios,-kernel) $(QEMU_KIMAGE)
   else
-    KERNEL_OPT ?= -kernel $(QEMU_KIMAGE)
+    KERNEL_OPT ?= $(if $(findstring 1,$(KERNEL_BIOS)),-bios,-kernel) $(QEMU_KIMAGE)
   endif
 endif
 
@@ -3891,7 +3897,7 @@ ifeq ($(U),1)
     # Load pflash for booting with uboot every time
     # pflash is at least used as the env storage
     # unit=1 means the second pflash, the first one is unit=0
-    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw$(if $(UBOOT_BIOS),$(comma)unit=1)
+    BOOT_CMD += -drive if=pflash,file=$(PFLASH_IMG),format=raw$(if $(findstring 1,$(UBOOT_BIOS)),$(comma)unit=1)
   endif
 else # U != 1
   ifneq ($(findstring /dev/ram,$(ROOTDEV)),)
@@ -4041,7 +4047,7 @@ endif
 CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
 
 ifneq ($(U),1)
-  BOOT_CMD += -append "$(CMDLINE)"
+  BOOT_CMD += $(if $(findstring -kernel,$(CMDLINE)),-append "$(CMDLINE)")
 endif
 
 ifneq ($(TEST_REBOOT), 0)

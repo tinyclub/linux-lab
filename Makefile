@@ -3270,6 +3270,8 @@ $(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
 $(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -E -o $@.i \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -c -o $@ \
 	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 

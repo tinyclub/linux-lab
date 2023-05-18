@@ -3226,6 +3226,15 @@ else
   NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
 endif
 
+ifeq ($(XARCH),riscv32)
+  # FIXME: need to use lw/sw instead of ld/sd in tools/include/nolibc/arch-riscv.h
+  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32
+  # Linux commit d4c08b9776b3 ("riscv: Use latest system call ABI") removed all of the time32 syscalls
+  # FIXME: "Cheat" unistd.h to compile without such syscalls, but we can not really use such syscalls
+  NOLIBC_CFLAGS  += -D__ARCH_WANT_TIME32_SYSCALLS -D__NR_lseek=__NR_llseek
+  NOLIBC_LDFLAGS += -melf32lriscv_ilp32
+endif
+
 # nolibc gc sections and debug support
 nolibc_gc       ?= 1
 nolibc_gc_debug ?= 1

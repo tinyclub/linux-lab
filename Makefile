@@ -3768,6 +3768,7 @@ endif
 
 # Extra kernel command line
 CMDLINE += $(call _v,XKCLI,LINUX)
+CMDLINE += $(call _v,KCLI,LINUX)
 
 # Graphic output? we prefer Serial port ;-)
 G ?= 0

@@ -1217,9 +1217,9 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
     $ make boot ROOTDEV=mmcblk0
     $ make boot ROOTDEV=vda      // virtio based block device
 
-使用额外的内核命令行参数启动（格式：`XKCLI = eXtra Kernel Command LIne`）：
+使用额外的内核命令行参数启动（格式：`KCLI = Additional Kernel Command LIne`）：
 
-    $ make boot ROOTDEV=nfs XKCLI="init=/bin/bash"
+    $ make boot ROOTDEV=nfs KCLI="init=/bin/bash"
 
 列出支持的选项：
 

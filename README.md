@@ -999,9 +999,9 @@ Boot with different rootfs (depends on board, check `/dev/` after boot):
     $ make boot ROOTDEV=mmcblk0
     $ make boot ROOTDEV=vda      // virtio based block device
 
-Boot with extra kernel command line (XKCLI = eXtra Kernel Command LIne):
+Boot with extra kernel command line (KCLI = Additional Kernel Command LIne):
 
-    $ make boot ROOTDEV=nfs XKCLI="init=/bin/bash"
+    $ make boot ROOTDEV=nfs KCLI="init=/bin/bash"
 
 List supported options:
 

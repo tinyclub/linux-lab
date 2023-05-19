@@ -1198,7 +1198,9 @@ _PBR := $(PBR)
 NOLIBC_DIR          := $(KERNEL_ABS_SRC)/tools/include/nolibc
 NOLIBC_H            := $(NOLIBC_DIR)/nolibc.h
 # The 'init' source code for initramfs, customize it for your own project
-nolibc_src          ?= $(TOP_DIR)/src/examples/nolibc/hello.c
+nolibc-hello        ?= $(TOP_DIR)/src/examples/nolibc/hello.c
+nolibc-test         ?= $(KERNEL_ABS_SRC)/tools/testing/selftests/nolibc/nolibc-test.c
+nolibc_src          ?= $(nolibc-hello)
 NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
 NOLIBC_OBJ          := $(KERNEL_BUILD)/nolibc/init.o
@@ -1209,6 +1211,13 @@ NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
+
+ifeq ($(nolibc_src),test)
+  override nolibc_src := $(nolibc-test)
+endif
+ifneq ($(nolibc_test),)
+  XKCLI += "NOLIBC_TEST=$(nolibc_test)"
+endif
 
 ifeq ($(NOMMU),1)
   _NOLIBC_BIN :=  $(NOLIBC_FLT)

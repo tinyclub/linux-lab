@@ -1184,10 +1184,10 @@ v0.3 以及之后的版本默认增加了目标依赖支持，所以，如果想
 * 真正的图形化方式启动需要 LCD 和键盘驱动的支持，上述开发板可以完美支持 Linux 内核 5.1 版本的运行，`raspi3` 和 `malta` 两款开发板支持 tty0 终端但不支持键盘输入。
 * 新版 `BUILDROOT` 配置文件目前设定了 tty 终端为串口（`BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"`），如需启用图形控制台，请修改目标文件系统 `/etc/inittab` 中对应的 `getty` 代码行，例如，把 `ttyAMA0` 替换为 `console`；也可简单通过 QEMU 的 “View” 菜单切换到串口终端后使用。
 
-`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 QEMU，可以通过在启动时指定 `G=1` 参数然后通过选择 “View” 菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `XOPTS` 选项指定额外的 QEMU 选项参数。
+`vexpress-a9` 和 `virt` 缺省情况下不支持 LCD，但对于最新的 QEMU，可以通过在启动时指定 `G=1` 参数然后通过选择 “View” 菜单切换到串口终端，但这么做无法用于测试 LCD 和键盘驱动。我们可以通过 `QOPTS` 选项指定额外的 QEMU 选项参数。
 
     $ make b=vexpress-a9 CONSOLE=ttyAMA0 boot G=1 LINUX=v5.1
-    $ make b=raspi3 CONSOLE=ttyAMA0 XOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
+    $ make b=raspi3 CONSOLE=ttyAMA0 QOPTS="-serial vc -serial vc" boot G=1 LINUX=v5.1
 
 基于 curses 图形方式启动（这么做适合采用 bash/ssh 的登录方式，但不是对所有开发板都有效，退出时需要使用 `ESC+2 quit` 或 `ALT+2 quit`）
 

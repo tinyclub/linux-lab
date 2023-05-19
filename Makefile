@@ -3974,7 +3974,7 @@ else
 endif
 
 # Add extra qemu options
-BOOT_CMD += $(XOPTS) $(XQOPT)
+BOOT_CMD += $(XOPTS) $(XQOPT) $(QOPTS)
 
 # Get DEBUG option if -debug found in goals
 ifeq (debug,$(firstword $(MAKECMDGOALS)))

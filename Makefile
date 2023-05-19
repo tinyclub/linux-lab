@@ -1216,12 +1216,18 @@ ifneq ($(findstring nolibc,$(FEATURE)),)
   ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
     PREPARE += nolibc-clean nolibc
     export nolibc=1
-    export nolibc_src=test
+    # If no nolibc_src manual setting, use nolibc-test by default
+    ifneq ($(origin nolibc_src),command line)
+      export nolibc_src=test
+    endif
   endif
 endif
 
 ifeq ($(nolibc_src),test)
   override nolibc_src := $(nolibc-test)
+endif
+ifeq ($(nolibc_src),hello)
+  override nolibc_src := $(nolibc-hello)
 endif
 ifneq ($(nolibc_test),)
   XKCLI += "NOLIBC_TEST=$(nolibc_test)"

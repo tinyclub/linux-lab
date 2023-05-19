@@ -1212,6 +1212,14 @@ NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
 
+ifneq ($(findstring nolibc,$(FEATURE)),)
+  ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
+    PREPARE += nolibc-clean nolibc
+    export nolibc=1
+    export nolibc_src=test
+  endif
+endif
+
 ifeq ($(nolibc_src),test)
   override nolibc_src := $(nolibc-test)
 endif

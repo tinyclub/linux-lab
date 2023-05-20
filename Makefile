@@ -2489,7 +2489,7 @@ ifeq ($(XARCH),riscv32)
   BITS_WORDSIZE_H := /usr/riscv64-linux-gnu/include/bits/wordsize.h
 
 $(NOLIBC_SRC): FORCE
-	$(Q)[ -f $(BITS_WORDSIZE_H) ] && grep -q rv32i $(BITS_WORDSIZE_H) && sudo cp tools/nolibc/wordsize.h $(BITS_WORDSIZE_H)
+	$(Q)[ -f $(BITS_WORDSIZE_H) ] && grep -q 'rv32i-based targets are not supported' $(BITS_WORDSIZE_H) && sudo cp tools/nolibc/wordsize.h $(BITS_WORDSIZE_H) || true
 endif
 
 # nolibc gc sections and debug support

@@ -2440,16 +2440,20 @@ root-nolibc-clean:
 	$(Q)rm -rf $(NOLIBC_PGC)
 	$(Q)rm -rf $(NOLIBC_INITRAMFS)
 
+root-nolibc-rebuild: root-nolibc-clean root-nolibc
+
 nolibc: root-nolibc
 nolibc-distclean: root-nolibc-distclean
 nolibc-clean: root-nolibc-clean
+nolibc-rebuild: root-nolibc-rebuild
 
-root: root-nolibc
-root-rebuild: root-nolibc-clean root-nolibc
-root-clean: root-nolibc-clean
-root-distclean: root-nolibc-distclean
+root root-rd: root-nolibc
+root-clean root-rd-clean: root-nolibc-clean
+root-distclean root-rd-distclean: root-nolibc-distclean
+root-rebuild root-rd-rebuild: root-nolibc-rebuild
 
-PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean nolibc-distclean root root-rebuild root-clean root-distclean
+NOLIBC_TARGETS := root-nolibc nolibc root root-rd
+PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$(NOLIBC_TARGETS)))
 
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL

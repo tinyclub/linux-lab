@@ -4113,7 +4113,7 @@ endif
 CMDLINE  := $(subst $space$space,$space,$(strip $(CMDLINE)))
 
 ifneq ($(U),1)
-  BOOT_CMD += $(if $(findstring -kernel,$(CMDLINE)),-append "$(CMDLINE)")
+  BOOT_CMD += $(if $(findstring -kernel,$(BOOT_CMD)),-append "$(CMDLINE)")
 endif
 
 ifneq ($(TEST_REBOOT), 0)

@@ -2108,7 +2108,9 @@ ifeq ($(wildcard $(BSP_SRC)/.git),)
   BSP ?= FETCH_HEAD
 else
   # Already fetched
-  BSP ?= $(if $(wildcard $(BSP_SRC)/.git/refs/remotes/origin/master),origin/master,FETCH_HEAD)
+  BSP_MASTER := $(BSP_SRC)/.git/refs/remotes/origin/master
+  BSP_HEAD := $(if $(wildcard $(BSP_SRC)/.git/HEAD),HEAD,FETCH_HEAD)
+  BSP ?= $(if $(wildcard $(BSP_MASTER)),origin/master,$(BSP_HEAD))
 endif
 _BSP ?= $(BSP)
 

@@ -2438,6 +2438,110 @@ root-distclean: root-nolibc-distclean
 
 PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean nolibc-distclean root root-rebuild root-clean root-distclean
 
+# Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
+NOLIBC_LDFLAGS := -s
+
+ifneq ($(findstring .sx,$(NOLIBC_SRC)x),)
+  NOLIBC_CFLAGS += -fno-pic
+endif
+
+# nolibc use method: header or sysroot
+ifeq ($(nolibc_inc),header)
+  NOLIBC_INC := -include $(NOLIBC_H)
+else
+  NOLIBC_CFLAGS += -D__NOLIBC__
+  NOLIBC_DEP := $(NOLIBC_SYSROOT_ARCH)
+  NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
+endif
+
+ifeq ($(XARCH),riscv32)
+  # ref: https://lore.kernel.org/linux-riscv/cover.1684425792.git.falcon@tinylab.org/T/#t
+  # FIXME: need to use lw/sw instead of ld/sd in tools/include/nolibc/arch-riscv.h
+  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32
+  # Linux commit d4c08b9776b3 ("riscv: Use latest system call ABI") removed all of the time32 syscalls
+  # FIXME: "Cheat" unistd.h to compile without such syscalls, but we can not really use such syscalls
+  NOLIBC_CFLAGS  += -D__ARCH_WANT_TIME32_SYSCALLS
+  NOLIBC_LDFLAGS += -melf32lriscv_ilp32
+endif
+
+# nolibc gc sections and debug support
+nolibc_gc       ?= 1
+nolibc_gc_debug ?= 1
+
+ifeq ($(nolibc_gc),1)
+  NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
+  NOLIBC_LDFLAGS += --gc-sections
+endif
+
+ifeq ($(nolibc_gc_debug),1)
+  NOLIBC_LDFLAGS += --print-gc-sections
+endif
+
+# ref: elf2flt.ld.in from https://github.com/uclinux-dev/elf2flt
+NOLIBC_FLT_LDFLAGS := -Ttools/nolibc/elf2flt.ld
+ifeq ($(nolibc_gc),1)
+  NOLIBC_FLT_LDFLAGS += -e _start
+endif
+
+nolibc_comp ?= 0
+ifeq ($(nolibc_comp),1)
+  NOLIBC_E2FFLAGS := -z
+endif
+
+# Use UAPI headers from kernel source code
+$(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
+	$(Q)echo "Generating $@"
+	$(Q)rm -rf $(NOLIBC_SYSROOT)
+	$(Q)mkdir -p $(NOLIBC_SYSROOT)
+	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
+	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
+
+# With the -include $(NOLIBC_H) option, use UAPI headers provided by the toolchain
+$(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -E -o $@.i \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -c -o $@ \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
+
+$(NOLIBC_BIN): $(NOLIBC_OBJ)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $@ $< 2>&1 | tee $(NOLIBC_PGC)
+
+# ref: ld-elf2flt.in from https://github.com/uclinux-dev/elf2flt
+$(NOLIBC_FLT): $(NOLIBC_OBJ)
+	$(Q)echo "Building $@"
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $< 2>&1 | tee $(NOLIBC_PGC)
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
+	$(Q)tools/nolibc/elf2flt.$(XARCH) $(NOLIBC_E2FFLAGS) -a -v -p $@.gdb $@.elf -o $@
+	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
+	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $(NOLIBC_BIN) $< >/dev/null
+
+$(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
+	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
+	$(Q)mkdir -p $(NOLIBC_INITRAMFS) $(NOLIBC_INITRAMFS)/dev
+	$(Q)cp $< $@
+	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/console ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/console c 5 1
+	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/null ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/null c 1 3
+
+$(NOLIBC_INITRAMFS): $(NOLIBC_INITRAMFS)/init $(NOLIBC_SCALL)
+
+nolibc-initramfs: $(NOLIBC_INITRAMFS)
+
+$(NOLIBC_SCALL): $(_NOLIBC_BIN)
+	$(Q)$(C_PATH) tools/nolibc/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
+		cut -d ' ' -f2 > $(NOLIBC_SCALL)
+	$(Q)echo "Used system calls: $$(cat $(NOLIBC_SCALL) | tr '\n' ' ')"
+
+nolibc-syscall: $(NOLIBC_SCALL)
+
+PHONY += nolibc-initramfs nolibc-syscall
+
 else # !NOLIBC
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
@@ -3241,109 +3345,6 @@ module-getconfig: kernel-getconfig
 module-setconfig: kernel-setconfig
 
 PHONY += module-getconfig module-setconfig modules-config module-config
-
-# Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
-NOLIBC_LDFLAGS := -s
-
-ifneq ($(findstring .sx,$(NOLIBC_SRC)x),)
-  NOLIBC_CFLAGS += -fno-pic
-endif
-
-# nolibc use method: header or sysroot
-ifeq ($(nolibc_inc),header)
-  NOLIBC_INC := -include $(NOLIBC_H)
-else
-  NOLIBC_CFLAGS += -D__NOLIBC__
-  NOLIBC_DEP := $(NOLIBC_SYSROOT_ARCH)
-  NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
-endif
-
-ifeq ($(XARCH),riscv32)
-  # ref: https://lore.kernel.org/linux-riscv/cover.1684425792.git.falcon@tinylab.org/T/#t
-  # FIXME: need to use lw/sw instead of ld/sd in tools/include/nolibc/arch-riscv.h
-  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32
-  # Linux commit d4c08b9776b3 ("riscv: Use latest system call ABI") removed all of the time32 syscalls
-  # FIXME: "Cheat" unistd.h to compile without such syscalls, but we can not really use such syscalls
-  NOLIBC_CFLAGS  += -D__ARCH_WANT_TIME32_SYSCALLS
-  NOLIBC_LDFLAGS += -melf32lriscv_ilp32
-endif
-
-# nolibc gc sections and debug support
-nolibc_gc       ?= 1
-nolibc_gc_debug ?= 1
-
-ifeq ($(nolibc_gc),1)
-  NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
-  NOLIBC_LDFLAGS += --gc-sections
-endif
-
-ifeq ($(nolibc_gc_debug),1)
-  NOLIBC_LDFLAGS += --print-gc-sections
-endif
-
-# ref: elf2flt.ld.in from https://github.com/uclinux-dev/elf2flt
-NOLIBC_FLT_LDFLAGS := -Ttools/nolibc/elf2flt.ld
-ifeq ($(nolibc_gc),1)
-  NOLIBC_FLT_LDFLAGS += -e _start
-endif
-
-ifeq ($(nolibc_comp),1)
-  NOLIBC_E2FFLAGS := -z
-endif
-
-# Use UAPI headers from kernel source code
-$(NOLIBC_SYSROOT_ARCH): $(NOLIBC_FILES)
-	$(Q)echo "Generating $@"
-	$(Q)rm -rf $(NOLIBC_SYSROOT)
-	$(Q)mkdir -p $(NOLIBC_SYSROOT)
-	$(Q)$(call make_kernel,headers_standalone OUTPUT=$(NOLIBC_SYSROOT)/,tools/include/nolibc)
-	$(Q)mv $(NOLIBC_SYSROOT)/sysroot $(NOLIBC_SYSROOT_ARCH)
-
-# With the -include $(NOLIBC_H) option, use UAPI headers provided by the toolchain
-$(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
-	$(Q)echo "Building $@"
-	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -E -o $@.i \
-	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
-	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -c -o $@ \
-	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
-
-$(NOLIBC_BIN): $(NOLIBC_OBJ)
-	$(Q)echo "Building $@"
-	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $@ $< 2>&1 | tee $(NOLIBC_PGC)
-
-# ref: ld-elf2flt.in from https://github.com/uclinux-dev/elf2flt
-$(NOLIBC_FLT): $(NOLIBC_OBJ)
-	$(Q)echo "Building $@"
-	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) $(NOLIBC_FLT_LDFLAGS) -r -d -o $@.elf2flt $< 2>&1 | tee $(NOLIBC_PGC)
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -Ur -o $@.elf $@.elf2flt
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_FLT_LDFLAGS) -o $@.gdb $@.elf2flt
-	$(Q)tools/nolibc/elf2flt.$(XARCH) $(NOLIBC_E2FFLAGS) -a -v -p $@.gdb $@.elf -o $@
-	$(Q)rm -rf $@.elf2flt $@.gdb $@.elf
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $(NOLIBC_BIN) $< >/dev/null
-
-$(NOLIBC_INITRAMFS)/init: $(_NOLIBC_BIN)
-	$(Q)echo "Creating $(NOLIBC_INITRAMFS)"
-	$(Q)mkdir -p $(NOLIBC_INITRAMFS) $(NOLIBC_INITRAMFS)/dev
-	$(Q)cp $< $@
-	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/console ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/console c 5 1
-	$(Q)[ -c $(NOLIBC_INITRAMFS)/dev/null ] || sudo mknod $(NOLIBC_INITRAMFS)/dev/null c 1 3
-
-$(NOLIBC_INITRAMFS): $(NOLIBC_INITRAMFS)/init $(NOLIBC_SCALL)
-
-nolibc-initramfs: $(NOLIBC_INITRAMFS)
-
-$(NOLIBC_SCALL): $(_NOLIBC_BIN)
-	$(Q)$(C_PATH) tools/nolibc/dump.sh $(NOLIBC_BIN) $(XARCH) $(KERNEL_ABS_SRC) "$(NOLIBC_INC)" $(CCPRE) | \
-		cut -d ' ' -f2 > $(NOLIBC_SCALL)
-	$(Q)echo "Used system calls: $$(cat $(NOLIBC_SCALL) | tr '\n' ' ')"
-
-nolibc-syscall: $(NOLIBC_SCALL)
-
-PHONY += nolibc-initramfs nolibc-syscall
 
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))

@@ -2004,6 +2004,7 @@ endef # gencfgs
 define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
+ifneq ($$($(call _uc,$2)_NEW),$$($(call _uc,$2)))
 NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_$$(if $$($3TAG),$$($3TAG)_)defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
@@ -2033,6 +2034,14 @@ $1-cloneconfig:
 
 $1-clonepatch:
 endif
+
+else  # X_NEW = X
+
+$1-cloneconfig $1-clonepatch:
+	$(Q)l=$$$$(grep -r $$($(call _uc,$2)) $$(BOARD_LABCONFIG)) && echo "Please remove $$$$l from $$(BOARD_LABCONFIG)"
+	$(Q)echo "ERR: Not able to clone from $$($(call _uc,$2)) to $$($(call _uc,$2)_NEW)" && false
+
+endif # X_NEW = X
 
 else
 $1-cloneconfig $1-clonepatch:

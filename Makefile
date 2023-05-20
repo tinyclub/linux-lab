@@ -2482,6 +2482,10 @@ ifeq ($(XARCH),riscv32)
   # FIXME: "Cheat" unistd.h to compile without such syscalls, but we can not really use such syscalls
   NOLIBC_CFLAGS  += -D__ARCH_WANT_TIME32_SYSCALLS
   NOLIBC_LDFLAGS += -melf32lriscv_ilp32
+  BITS_WORDSIZE_H := /usr/riscv64-linux-gnu/include/bits/wordsize.h
+
+$(NOLIBC_SRC): FORCE
+	$(Q)[ -f $(BITS_WORDSIZE_H) ] && grep -q rv32i $(BITS_WORDSIZE_H) && sudo cp tools/nolibc/wordsize.h $(BITS_WORDSIZE_H)
 endif
 
 # nolibc gc sections and debug support

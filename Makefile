@@ -1357,7 +1357,11 @@ ifneq ($(ROOTFS), $(BUILDROOT_IROOTFS))
   ifeq ($(FS_TYPE),rd)
     IROOTFS := $(ROOTFS)
   else
-    IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+    ifeq ($(NOLIBC),1)
+      IROOTFS := $(ROOTFS)
+    else
+      IROOTFS := $(ROOTDIR)$(ROOTFS_INITRD_SUFFIX)
+    endif
   endif
 
   ifeq ($(FS_TYPE),hd)

@@ -1213,7 +1213,6 @@ NOLIBC_H            := $(NOLIBC_DIR)/nolibc.h
 nolibc-hello        ?= $(TOP_DIR)/src/examples/nolibc/hello.c
 nolibc-test         ?= $(KERNEL_ABS_SRC)/tools/testing/selftests/nolibc/nolibc-test.c
 nolibc_src          ?= $(nolibc-hello)
-NOLIBC_SRC          ?= $(nolibc_src)
 NOLIBC_BIN          := $(KERNEL_BUILD)/nolibc/init
 NOLIBC_OBJ          := $(KERNEL_BUILD)/nolibc/init.o
 NOLIBC_FLT          := $(KERNEL_BUILD)/nolibc/init.flt
@@ -1230,6 +1229,8 @@ endif
 ifeq ($(nolibc_src),hello)
   override nolibc_src := $(nolibc-hello)
 endif
+NOLIBC_SRC          ?= $(nolibc_src)
+
 ifneq ($(nolibc_test),)
   XKCLI += "NOLIBC_TEST=$(nolibc_test)"
 endif

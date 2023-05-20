@@ -2426,6 +2426,9 @@ endif # toolchain targets
 ifneq ($(findstring root,$(MAKECMDGOALS)),)
  root_targets ?= 1
 endif
+ifneq ($(findstring nolibc,$(MAKECMDGOALS)),)
+ root_targets ?= 1
+endif
 
 ifeq ($(root_targets),1)
 ifeq ($(NOLIBC),1)

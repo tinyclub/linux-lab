@@ -4319,7 +4319,10 @@ ifneq ($(BOOT_PREPARE),)
   _BOOT_DEPS += $(BOOT_PREPARE)
 endif
 _BOOT_DEPS += $(BOARD_SAVE)
+# NOLIBC initramfs must be prepared before building kernel image
+ifneq ($(NOLIBC),1)
 _BOOT_DEPS += root-$(DEV_TYPE)
+endif
 _BOOT_DEPS += $(UBOOT_IMGS)
 _BOOT_DEPS += $(DEBUG_CLIENT)
 _BOOT_DEPS += $(BOOT_DTB)

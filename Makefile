@@ -1194,6 +1194,17 @@ ROOTDEV_TYPE_TOOL   := tools/root/rootdev_type.sh
 PBR ?= 0
 _PBR := $(PBR)
 
+ifneq ($(findstring nolibc,$(FEATURE)),)
+  ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
+    export nolibc=1
+    PREPARE += root-rebuild
+    # If no nolibc_src manual setting, use nolibc-test by default
+    ifneq ($(origin nolibc_src),command line)
+      export nolibc_src=test
+    endif
+  endif
+endif
+
 ifeq ($(NOLIBC),1)
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
 NOLIBC_DIR          := $(KERNEL_ABS_SRC)/tools/include/nolibc
@@ -1212,17 +1223,6 @@ NOLIBC_SYSROOT      := $(KERNEL_BUILD)/nolibc/sysroot
 NOLIBC_SYSROOT_ARCH := $(NOLIBC_SYSROOT)/$(ARCH)
 NOLIBC_INITRAMFS    := $(KERNEL_BUILD)/nolibc/initramfs
 NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
-
-ifneq ($(findstring nolibc,$(FEATURE)),)
-  ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
-    export nolibc=1
-    PREPARE += root-rebuild
-    # If no nolibc_src manual setting, use nolibc-test by default
-    ifneq ($(origin nolibc_src),command line)
-      export nolibc_src=test
-    endif
-  endif
-endif
 
 ifeq ($(nolibc_src),test)
   override nolibc_src := $(nolibc-test)

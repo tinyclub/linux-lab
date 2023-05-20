@@ -1214,8 +1214,8 @@ NOLIBC_FILES        := $(wildcard $(NOLIBC_DIR)/*.h)
 
 ifneq ($(findstring nolibc,$(FEATURE)),)
   ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
-    PREPARE += nolibc-clean nolibc
     export nolibc=1
+    PREPARE += root-rebuild
     # If no nolibc_src manual setting, use nolibc-test by default
     ifneq ($(origin nolibc_src),command line)
       export nolibc_src=test
@@ -1836,7 +1836,6 @@ $1-cleanstamp:
 	$$(Q)rm -rvf $$(addprefix $$($(call _uc,$1)_BUILD)/.stamp_$1-,outdir source checkout patch env modules modules-km defconfig olddefconfig menuconfig build bsp license)
 
 ## clean up $1 source code
-ifneq ($1$(NOLIBC),root1)
 $1-cleansrc: $1-cleanup
 $1-cleanup: $1-cleanstamp
 	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
@@ -1856,7 +1855,6 @@ $1-distclean:
 	  $$(call make_$1,distclean); \
 	  rm -rvf $$($(call _uc,$1)_BUILD); \
 	fi
-endif
 
 PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
 
@@ -2415,6 +2413,32 @@ ifneq ($(findstring root,$(MAKECMDGOALS)),)
 endif
 
 ifeq ($(root_targets),1)
+ifeq ($(NOLIBC),1)
+
+root-nolibc: nolibc-initramfs
+root-nolibc-distclean: root-nolibc-clean
+	$(Q)echo "Cleaning nolibc output"
+	$(Q)rm -rf $(NOLIBC_SYSROOT)
+
+root-nolibc-clean:
+	$(Q)rm -rf $(NOLIBC_BIN)
+	$(Q)rm -rf $(NOLIBC_OBJ)
+	$(Q)rm -rf $(NOLIBC_FLT)
+	$(Q)rm -rf $(NOLIBC_PGC)
+	$(Q)rm -rf $(NOLIBC_INITRAMFS)
+
+nolibc: root-nolibc
+nolibc-distclean: root-nolibc-distclean
+nolibc-clean: root-nolibc-clean
+
+root: root-nolibc
+root-rebuild: root-nolibc-clean root-nolibc
+root-clean: root-nolibc-clean
+root-distclean: root-nolibc-distclean
+
+PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean nolibc-distclean root root-rebuild root-clean root-distclean
+
+else # !NOLIBC
 _BUILDROOT  ?= $(call _v,BUILDROOT,BUILDROOT)
 
 #$(warning $(call gensource,root,BUILDROOT))
@@ -2436,23 +2460,6 @@ $(eval $(call gencfgs,root,buildroot,R))
 $(eval $(call genclone,root,buildroot,R))
 #$(warning $(call genenvdeps,root,BUILDROOT)
 $(eval $(call genenvdeps,root,BUILDROOT,R))
-
-root-nolibc: nolibc-initramfs
-root-nolibc-distclean: root-nolibc-clean
-	$(Q)echo "Cleaning nolibc output"
-	$(Q)rm -rf $(NOLIBC_SYSROOT)
-
-root-nolibc-clean:
-	$(Q)rm -rf $(NOLIBC_BIN)
-	$(Q)rm -rf $(NOLIBC_OBJ)
-	$(Q)rm -rf $(NOLIBC_FLT)
-	$(Q)rm -rf $(NOLIBC_PGC)
-	$(Q)rm -rf $(NOLIBC_INITRAMFS)
-
-nolibc: root-nolibc
-nolibc-distclean: root-nolibc-distclean
-nolibc-clean: root-nolibc-clean
-PHONY += root-nolibc root-nolibc-clean nolibc nolibc-clean nolibc-distclean
 
 # Build Buildroot
 root-buildroot:
@@ -2555,9 +2562,6 @@ endif
 
 RT ?= $(x)
 
-ifeq ($(NOLIBC),1)
-_root: root-nolibc
-else # !NOLIBC
 ifneq ($(RT),)
 _root:
 	$(Q)$(call make_root,$(RT))
@@ -2565,14 +2569,8 @@ else
 _root: $(ROOT)
 	$(Q)make $(S) root-rebuild
 endif
-endif # !NOLIBC
 
-ifeq ($(NOLIBC),1)
-root-clean: root-nolibc-clean
-root-distclean: root-nolibc-distclean
-else
 root-clean: $(addsuffix -clean,$(addprefix root-,dir hd $(if $(UBOOT),ud) rd))
-endif
 
 # root directory
 ifneq ($(FS_TYPE),dir)
@@ -2658,6 +2656,7 @@ root-hd-clean:
 
 PHONY += root-hd root-hd-rebuild root-hd-clean
 
+endif # !NOLIBC
 endif # Root targets
 
 # Linux Kernel targets

@@ -1194,6 +1194,7 @@ ROOTDEV_TYPE_TOOL   := tools/root/rootdev_type.sh
 PBR ?= 0
 _PBR := $(PBR)
 
+ifeq ($(NOLIBC),1)
 # Allow build and embed minimal initramfs with nolibc from tools/include/nolibc to kernel image
 NOLIBC_DIR          := $(KERNEL_ABS_SRC)/tools/include/nolibc
 NOLIBC_H            := $(NOLIBC_DIR)/nolibc.h
@@ -1248,16 +1249,15 @@ else
 endif
 
 # Prefer nolibc initramfs
-ifeq ($(NOLIBC),1)
-  ifneq ($(wildcard $(NOLIBC_SRC)),)
-    # Override ROOTFS and ROOTDEV setting to embed nolibc initramfs automatically, no extra rootfs required
-    # Use initramfs generated from nolibc instead of the others
-    override ROOTFS := $(NOLIBC_INITRAMFS)
-    # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
-    override ROOTDEV := /dev/null
-  endif
-  # Tag defconfig
-  KTAG := nolibc$(if $(KTAG),_$(KTAG))
+ifneq ($(wildcard $(NOLIBC_SRC)),)
+  # Override ROOTFS and ROOTDEV setting to embed nolibc initramfs automatically, no extra rootfs required
+  # Use initramfs generated from nolibc instead of the others
+  override ROOTFS := $(NOLIBC_INITRAMFS)
+  # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
+  override ROOTDEV := /dev/null
+endif
+# Tag defconfig
+KTAG := nolibc$(if $(KTAG),_$(KTAG))
 endif
 
 ifeq ($(_PBR), 0)

@@ -2465,6 +2465,10 @@ PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$
 NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL
 NOLIBC_LDFLAGS := -s
 
+ifeq ($(nolibc_stkp),1)
+  NOLIBC_CFLAGS  += -DNOLIBC_STACKPROTECTOR -fstack-protector-all
+endif
+
 ifneq ($(findstring .sx,$(NOLIBC_SRC)x),)
   NOLIBC_CFLAGS += -fno-pic
 endif

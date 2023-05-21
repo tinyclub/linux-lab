@@ -1440,7 +1440,7 @@ board-clean: board-cleanstamp
 board-save:
 	$(Q)echo "$(BOARD)" > .board_config
 
-PHONY += board board-init board-clean board-save board-cleanstamp
+PHONY += board $(addprefix board-,init show save clean cleanstamp)
 
 board-edit:
 	$(Q)vim $(BOARD_MAKEFILE)
@@ -1469,7 +1469,7 @@ default-config: local-config
 local-config: $(BOARD_GOAL)
 	$(Q)$(foreach vs, $(MAKEOVERRIDES), tools/board/config.sh $(vs) $(BOARD_LABCONFIG) $(LINUX);)
 
-PHONY += board-config board-edit
+PHONY += config edit default-config $(addprefix board-,config edit) $(addprefix local-,config edit)
 
 # Plugin targets
 
@@ -1498,7 +1498,7 @@ plugin-list:
 plugin-list-full:
 	$(Q)find $(BOARDS_DIR) -maxdepth 3 -name ".plugin" | xargs -i dirname {} | cat -n
 
-PHONY += plugin-save plugin-clean plugin plugin-list plugin-list-full
+PHONY += plugin $(addprefix plugin-,save clean list list-full)
 
 ifneq ($(findstring xlist,x$(first_target)),)
   # all: 0, plugin: 1, noplugin: 2
@@ -1583,8 +1583,10 @@ define gendeps
 $1-patch: $1-checkout
 $1-defconfig: $1-patch
 $1-defconfig: $1-env
+ifeq ($1,kernel)
 $1-modules-install: $1-modules
 $1-modules-install-km: $1-modules-km
+endif
 $1-help: $1-defconfig
 
 $1_defconfig_childs := $(addprefix $1-,config getconfig saveconfig menuconfig oldconfig oldnoconfig olddefconfig build buildroot modules modules-km do)
@@ -1652,7 +1654,7 @@ $1-release: $1 $1-save $1-saveconfig
 
 $1-new $1-clone: $1-cloneconfig $1-clonepatch
 
-PHONY += $(addprefix $1-,save saveconfig savepatch build release new clone)
+PHONY += _$1 $(addprefix $1-,save saveall saveconfig savepatch build release new clone)
 
 endef # gendeps
 
@@ -1832,7 +1834,7 @@ $1_source_childs := $1-download download-$1
 
 $$($1_source_childs): $1-source
 
-PHONY += $(addprefix $1-,source download license) download-$1
+PHONY += $(addprefix $1-,license source checkout outdir download) download-$1
 
 $1-%-cleanstamp:
 	$$(Q)rm -vf $$(call _stamp,$1,$$(subst $1-,,$$(subst -cleanstamp,,$$@)))
@@ -1861,7 +1863,7 @@ $1-distclean:
 	  rm -rvf $$($(call _uc,$1)_BUILD); \
 	fi
 
-PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc cleanall outdir clean distclean)
+PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc clean cleanall rawclean distclean)
 
 endef # gensource
 
@@ -1921,7 +1923,7 @@ $1-test: _test
 $1-test-debug:
 	$$(Q)make _test DEBUG=$1
 
-PHONY += $(addprefix $1-,list help checkout patch debug boot test)
+PHONY += $(addprefix $1-,list help verify patch savepatch debug boot test test-debug) debug-$1
 
 endef # gengoals
 
@@ -2002,7 +2004,7 @@ $$(call _stamp,$1,oldconfig): $$($1_config)
 $1-menuconfig: $$($1_config)
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
-PHONY += $(addprefix $1-,defconfig olddefconfig oldconfig menuconfig)
+PHONY += $(addprefix $1-,defconfig olddefconfig oldefconfig oldconfig menuconfig)
 
 endef # gencfgs
 
@@ -2091,7 +2093,7 @@ $$(call _stamp,$1,env): $1-deps $1-gcc $1-hostgcc
 
 $1-env: $$(call __stamp,$1,env)
 
-PHONY += $1-env
+PHONY += $(addprefix $1-,tools deps gcc hostgcc env)
 
 endef #genenvdeps
 
@@ -2302,6 +2304,8 @@ _qemu: _qemu_update_submodules
 	  ln -sf /etc/qemu-ifdown $(QEMU_BUILD)/qemu-bundle$(PREBUILT_QEMU_DIR)/etc/qemu-ifdown; \
 	fi
 
+PHONY += _qemu _qemu_update_submodules
+
 endif # Qemu targets
 
 # Toolchains targets
@@ -2364,7 +2368,7 @@ toolchain-list:
 
 gcc-list: toolchain-list
 
-PHONY += toolchain-list gcc-list
+PHONY += toolchain-list gcc-list toolchain
 
 toolchain-info:
 	@echo
@@ -2643,7 +2647,7 @@ root-rd-rebuild: root-dir root-rd-clean $(IROOTFS) FORCE
 root-rd-clean:
 	$(Q)[ "$(IROOTFS)" != "$(PREBUILT_IROOTFS)" ] && rm -vf $(IROOTFS) || true
 
-PHONY += root-rd root-rd-rebuild root-rd-clean
+PHONY += root-rd $(addprefix root-rd-,rebuild clean)
 
 ROOT_GENDISK_TOOL       := $(TOOL_DIR)/root/dir2$(DEV_TYPE).sh
 
@@ -2686,6 +2690,8 @@ root-rebuild-buildroot:
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
 
+HONY += root-rebuild $(addprefix root-rebuild-,prebuilt buildroot)
+
 ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)
   ifeq ($(wildcard $(BUILDROOT_IROOTFS)),)
@@ -2724,7 +2730,7 @@ endif
 root-dir rootdir: $(ROOTDIR)
 root-dir-rebuild rootdir-rebuild: root-dir-clean $(ROOTDIR) FORCE
 
-PHONY += root-dir rootdir root-dir-rebuild rootdir-rebuild
+PHONY += root-dir rootdir $(addsuffix -rebuild,root-dir rootdir)
 
 # Install src/system
 
@@ -2741,6 +2747,8 @@ root-dir-install-system: src/system
 
 root-dir-install-modules: $(KERNEL_BUILD)
 	$(Q)echo "LOG: Install modules" && make $(S) module-install || true
+
+PHONE += root-dir-install $(addprefix root-dir-install-,system modules)
 
 $(ROOTDIR): $(ROOTDIR_GOAL) root-dir-install
 
@@ -2760,10 +2768,12 @@ root-dir-clean rootdir-clean:
 
 root-dir-distclean rootdir-distclean: rootdir-clean
 
-PHONY += root-dir-distclean rootdir-distclean root-dir-clean rootdir-clean
+PHONY += $(addprefix root-dir-,prebuilt buildroot clean distclean) $(addprefix rootdir-,clean distclean)
 
 fullclean: $(call gengoalslist,distclean)
 	$(Q)git clean -fdx
+
+PHONY += fullclean
 
 ifeq ($(FS_TYPE),dir)
   HROOTFS_DEPS  := $(ROOTDIR)
@@ -2789,7 +2799,7 @@ root-hd-rebuild: root-hd-clean $(HROOTFS) FORCE
 root-hd-clean:
 	-$(Q)rm -vf $(HROOTFS)
 
-PHONY += root-hd root-hd-rebuild root-hd-clean
+PHONY += root-hd $(addprefix root-hd-,rebuild clean)
 
 endif # !NOLIBC
 endif # Root targets
@@ -2811,6 +2821,8 @@ KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
 KERNEL_CLEAN_DEPS       := kernel-modules-clean
 
 kernel-oldnoconfig: kernel-olddefconfig
+
+PHONY += kernel-oldnoconfig
 
 # kernel features support
 KERNEL_FEATURE_ENV_TOOL := tools/kernel/feature-env.sh
@@ -2873,14 +2885,15 @@ kernel-features-list: kernel-feature-list
 features-list: kernel-feature-list
 feature-list: kernel-feature-list
 
-PHONY += kernel-feature feature features kernel-features kernel-feature-list kernel-features-list features-list
+FEATURES_TARGETS := feature features kernel-feature kernel-features
+PHONY += $(addsuffix -list,$(FEATURES_TARGETS)) $(FEATURES_TARGETS) kernel-feature-cleanstamp
 
 kernel-feature-test: kernel-test
 kernel-features-test: kernel-feature-test
 features-test: kernel-feature-test
 feature-test: kernel-feature-test
 
-PHONY += kernel-feature-test kernel-features-test features-test feature-test
+PHONY += $(addsuffix -test,$(FEATURES_TARGETS))
 
 #$(warning $(call gensource,kernel,LINUX))
 $(eval $(call gensource,kernel,LINUX))
@@ -3040,7 +3053,7 @@ KERNEL_MODULES_DEPS := modules-prompt kernel-modules-save
 export KM
 endif
 
-PHONY += modules-prompt kernel-modules-save
+PHONY += modules-prompt $(addprefix kernel-modules-,save)
 
 # Both internal and external modules require modules_prepare (prepare and scripts, such as scripts/mod/modpost)
 MODULE_PREPARE := modules_prepare
@@ -3053,6 +3066,8 @@ kernel-modules-config: $(DEFAULT_KCONFIG)
 
 kernel-modules-defconfig: $(DEFAULT_KCONFIG)
 	$(Q)make -s $(NPD) kernel-olddefconfig
+
+PHONY += $(addprefix kernel-modules-,config defconfig)
 
 kernel-modules-km: kernel-modules-config $(if $(m),kernel-config) kernel-modules-defconfig $(KERNEL_MODULES_DEPS)
 	@# M variable can not be set for modules_prepare target
@@ -3089,7 +3104,7 @@ kernel-modules-list-full:
 	$(Q)find $(EXT_MODULE_DIR) -name "Makefile" | $(PF) | xargs -i grep -E -iH "^obj-m[[:space:]]*[+:]*=[[:space:]]*.*($(IMF)).*\.o" {} | sed -e "s%$(PWD)\(.*\)/Makefile:obj-m[[:space:]]*[+:]*=[[:space:]]*\(.*\).o%m=\2 ; M=$$PWD/\1%g" | tr -s '/' | cat -n
 	$(Q)[ "$(internal_search)" = "1" ] && find $(KERNEL_SEARCH_PATH) -name "Makefile" | $(PF) | xargs -i grep -E -iH "^obj-.*_($(IMF))(\)|_).*[[:space:]]*[+:]*=[[:space:]]*($(IMF)).*\.o" {} | sed -e "s%$(KERNEL_MODULE_DIR)/\(.*\)/Makefile:obj-\$$(CONFIG_\(.*\))[[:space:]]*[+:]*=[[:space:]]*\(.*\)\.o%c=\2 ; m=\3 ; M=\1%g" | tr -s '/' | cat -n || true
 
-PHONY += kernel-modules-km kernel-modules kernel-modules-list kernel-modules-list-full
+PHONY += kernel-modules $(addprefix kernel-modules-,km list list-full)
 
 # From linux-stable/scripts/depmod.sh, v5.1
 SCRIPTS_DEPMOD := $(TOP_DIR)/tools/kernel/depmod.sh
@@ -3131,7 +3146,7 @@ kernel-modules-clean-km:
 kernel-modules-clean:
 	$(Q)$(KERNEL_MODULE_CLEAN) $(KERNEL_BUILD)
 
-PHONY += kernel-modules-install-km kernel-modules-install kernel-modules-clean
+PHONY += $(addprefix kernel-modules-,install install-km clean clean-km)
 
 _module: kernel-modules-km plugin-save
 module-list: kernel-modules-list plugin-save
@@ -3145,7 +3160,7 @@ modules-list-full: module-list-full
 module-test: kernel-test
 modules-test: module-test
 
-PHONY += _module module-list module-list-full _module-install _module-clean modules-list modules-list-full
+PHONY += _module $(addprefix _module-,install clean) $(addprefix module-,list list-full) $(addprefix modules-,list list-full)
 
 kernel-module: module
 module: FORCE
@@ -3168,8 +3183,6 @@ module-clean: FORCE
 	$(Q)$(if $(M), $(foreach _M, $(subst $(comma),$(space),$(M)), \
 		echo "\nCleaning module: $(_M) ...\n" && make $(NPD) _module-clean M=$(_M);) echo '')
 
-PHONY += kernel-module kernel-module-install kernel-module-clean module-install module-clean
-
 # If no M, m/module/modules, M_PATH specified, compile internel modules by default
 ifneq ($(firstword $(MAKECMDGOALS)),list)
 
@@ -3185,7 +3198,8 @@ endif
 
 endif # skip modules target for list command
 
-PHONY += modules modules-install modules-clean module module-install module-clean
+MODULE_TARGETS := kernel-module module modules
+PHONY += $(MODULE_TARGETS) $(addsuffix -clean,$(MODULE_TARGETS)) $(addsuffix -install,$(MODULE_TARGETS))
 
 endif # module targets
 
@@ -3367,7 +3381,7 @@ _kernel-setconfig: $(DEFAULT_KCONFIG)
 	$(Q)grep -E -iH "_$(KCONFIG_OPT)(_|=| )" $(DEFAULT_KCONFIG) | sed -e "s%$(TOP_DIR)/%%g"
 	$(Q)echo
 
-PHONY += kernel-getconfig kernel-config kernel-setconfig _kernel-getconfig _kernel-setconfig
+PHONY += $(addprefix kernel-,config getconfig setconfig) $(addprefix _kernel-,getconfig setconfig)
 
 module-config: module-setconfig
 modules-config: module-setconfig
@@ -3375,7 +3389,7 @@ modules-config: module-setconfig
 module-getconfig: kernel-getconfig
 module-setconfig: kernel-setconfig
 
-PHONY += module-getconfig module-setconfig modules-config module-config
+PHONY += $(addprefix module-,config getconfig setconfig) modules-config
 
 _kernel: $(KERNEL_DEPS)
 	$(call make_kernel,$(KT))
@@ -3495,7 +3509,7 @@ root-ud-rebuild: root-ud-clean $(UROOTFS) FORCE
 root-ud-clean:
 	$(Q)rm -vf $(UROOTFS) || true
 
-PHONY += root-ud root-ud-rebuild root-ud-clean
+PHONY += root-ud $(addprefix root-ud-,rebuild clean)
 
 # aarch64 and riscv don't add uboot header for kernel image
 ifneq ($(UKIMAGE), $(KIMAGE))
@@ -3569,7 +3583,7 @@ uboot-images-distclean: uboot-images-clean
 UBOOT_IMGS := uboot-images
 UBOOT_IMGS_DISTCLEAN := uboot-images-distclean
 
-PHONY += _uboot-images uboot-images uboot-images-clean uboot-images-distclean
+PHONY += _uboot-images uboot-images $(addprefix uboot-images-,clean distclean)
 
 endif # Uboot specific part
 endif # Uboot targets
@@ -3646,6 +3660,8 @@ endif
 # Check ip variable
 getip:
 	$(Q)if [ -z "$(BOARD_IP)" ]; then echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && exit 1; fi
+
+PHONY += getip
 
 # Upload images to remote board
 
@@ -4421,7 +4437,7 @@ env-save: board-config
 default-help:
 	$(Q)less README_zh.md
 
-PHONY += env env-list env-prepare env-dump env-save lab-help
+PHONY += _env env $(addprefix env-,list prepare dump save) default-help tools-install
 
 # memory building support
 BUILD_CACHE_TOOL   := tools/build/cache
@@ -4464,7 +4480,7 @@ backup-build:
 	@echo "Backing up Cache ..."; echo; \
 	sudo $(BUILD_BACKUP_TOOL) || true
 
-PHONY += cache-build uncache-build backup-build
+PHONY += $(addsuffix -build,cache status uncache backup)
 
 # include $(TOP_DIR)/.labend if exist
 $(eval $(call _ti,labend))
@@ -4516,8 +4532,8 @@ force-%:
 	$(Q)make $(NPD) $(subst force-,,$@)-cleanstamp
 	$(Q)make $(NPD) $(subst force-,,$@)
 
-PHONY += FORCE
-
 FORCE:
+
+PHONY += FORCE
 
 .PHONY: $(PHONY)

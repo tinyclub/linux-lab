@@ -1819,7 +1819,7 @@ $$(call _stamp,$1,checkout): $$(ENV_FILES)
 	  && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) \
 	  && touch $$@ \
 	  || (echo "ERR: Failed to checkout $$(_$2) of $1 in $$($(call _uc,$1)_SRC_FULL)" \
-	     && echo "ERR: Please backup important changes on demand and run 'make $1-cleanup'." \
+	     && echo "ERR: Please backup important changes on demand and run 'make $1-cleanup' or simply do a 'make $1-checkout -t'." \
 	     && exit 1)
 
 $1-checkout: $$(call __stamp,$1,checkout)

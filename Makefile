@@ -2470,7 +2470,7 @@ NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCAL
 NOLIBC_LDFLAGS := -s
 
 ifeq ($(nolibc_stkp),1)
-  NOLIBC_CFLAGS  += -DNOLIBC_STACKPROTECTOR -fstack-protector-all
+  NOLIBC_CFLAGS  += -DNOLIBC_STACKPROTECTOR -mstack-protector-guard=global -fstack-protector-all
 endif
 
 ifneq ($(findstring .sx,$(NOLIBC_SRC)x),)

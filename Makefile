@@ -2487,12 +2487,8 @@ else
 endif
 
 ifeq ($(XARCH),riscv32)
-  # ref: https://lore.kernel.org/linux-riscv/cover.1684425792.git.falcon@tinylab.org/T/#t
-  # FIXME: need to use lw/sw instead of ld/sd in tools/include/nolibc/arch-riscv.h
+  # rv32 support patch is ready for both tools/nolibc and selftests/nolibc, see https://lore.kernel.org/linux-riscv/
   NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32
-  # Linux commit d4c08b9776b3 ("riscv: Use latest system call ABI") removed all of the time32 syscalls
-  # FIXME: "Cheat" unistd.h to compile without such syscalls, but we can not really use such syscalls
-  NOLIBC_CFLAGS  += -D__ARCH_WANT_TIME32_SYSCALLS
   NOLIBC_LDFLAGS += -melf32lriscv_ilp32
   BITS_WORDSIZE_H := /usr/riscv64-linux-gnu/include/bits/wordsize.h
 

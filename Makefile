@@ -468,6 +468,12 @@ ifeq ($(CACHE_BUILD)$(CACHE_SRC)$(FAST_FETCH),111)
   TOP_SRC    := $(TOP_BUILD)/src
 endif
 
+# Don't touch the kernel code, let kernel developer do himself
+ifeq ($(DEVMODE),1)
+  SKIP_VERIFY ?= 1
+  SKIP_CHECKOUT ?= 1
+endif
+
 # Allow boards to customize source and repos
 KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
 ROOT_ABS_SRC   := $(TOP_SRC)/$(ROOT_SRC)

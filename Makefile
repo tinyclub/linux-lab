@@ -1813,14 +1813,19 @@ $1-source: $$(call __stamp,$1,source)
 $1-checkout: $1-source
 
 $$(call _stamp,$1,checkout): $$(ENV_FILES)
-	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	$$(Q)if [ -z "$(SKIP_CHECKOUT)" ]; then \
+	  [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \
+	  && git cat-file -e HEAD 2>/dev/null && git log -1 --oneline HEAD 2>/dev/null || true \
 	  && echo "Checking out $$(_$2) ..." \
 	  && git checkout --progress $$(GIT_CHECKOUT_FORCE) $$(_$2) \
 	  && touch $$@ \
 	  || (echo "ERR: Failed to checkout $$(_$2) of $1 in $$($(call _uc,$1)_SRC_FULL)" \
 	     && echo "ERR: Please backup important changes on demand and run 'make $1-cleanup' or simply do a 'make $1-checkout -t'." \
-	     && exit 1)
+	     && exit 1); \
+	else \
+	  touch $$@; \
+	fi
 
 $1-checkout: $$(call __stamp,$1,checkout)
 

@@ -1969,7 +1969,8 @@ else
   endif
 endif
 
-_$3CFG := $$(notdir $$($3CFG_FILE))
+# different boards should not use the same name of defconfig, add $(XARCH)_$(MACH) as the prefix
+_$3CFG := $(XARCH)_$(MACH)_$$(notdir $$($3CFG_FILE))
 
 ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
@@ -1977,7 +1978,7 @@ endif
 
 $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
-	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))
+	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR))/$$(_$3CFG)
 	$$(Q)$$(if $$(CFGS[$3_N]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -d $$n;))
 	$$(Q)$$(if $$(CFGS[$3_Y]),$$(foreach y,$$(CFGS[$3_Y]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -e $$y;))
 

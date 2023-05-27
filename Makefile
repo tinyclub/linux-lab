@@ -1238,7 +1238,7 @@ endif
 NOLIBC_SRC          ?= $(nolibc_src)
 
 ifneq ($(nolibc_test),)
-  XKCLI += "NOLIBC_TEST=$(nolibc_test)"
+  XKCLI += NOLIBC_TEST=$(nolibc_test)
 endif
 
 ifeq ($(NOMMU),1)
@@ -4180,9 +4180,9 @@ ifneq ($(TEST_TIMEOUT),0)
 
   # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
 ifneq ($(findstring serial,$(XOPTS)),)
-    XOPTS     := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
+  XOPTS           := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
 else
-    XOPTS     += -serial mon:pipe:$(TEST_LOG_PIPE)
+  XOPTS           += -serial mon:pipe:$(TEST_LOG_PIPE)
 endif
 
   # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1

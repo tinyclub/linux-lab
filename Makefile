@@ -4179,11 +4179,11 @@ ifneq ($(TEST_TIMEOUT),0)
   TEST_RET        ?= $$TEST_LOGGING/boot.ret
 
   # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
-ifneq ($(findstring serial,$(XOPTS)),)
-  XOPTS           := $(shell echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
-else
-  XOPTS           += -serial mon:pipe:$(TEST_LOG_PIPE)
-endif
+  ifneq ($(findstring serial,$(XOPTS)),)
+    XOPTS         := $$(echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
+  else
+    XOPTS         += -serial mon:pipe:$(TEST_LOG_PIPE)
+  endif
 
   # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
   TIMEOUT_CONTINUE ?= 0

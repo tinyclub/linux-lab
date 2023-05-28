@@ -4211,11 +4211,11 @@ export BOARD TEST_TIMEOUT TEST_LOGGING TEST_LOG TEST_LOG_PIPE TEST_LOG_PID TEST_
 boot-test: bsp-checkout
 	$(Q)echo "Running $@" ; \
 	if [ "$(BOOT_TEST)" = "default" ]; then \
-	  $(TEST_BEFORE) make $(NPD) _boot board=$(BOARD) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
+	  $(TEST_BEFORE) make $(NPD) _boot U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
 	else \
 	  for r in $$(seq 0 $(TEST_REBOOT)); do \
 	    echo "\nRebooting test: $$r\n"; \
-	    $(TEST_BEFORE) make $(NPD) _boot board=$(BOARD) U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
+	    $(TEST_BEFORE) make $(NPD) _boot U=$(TEST_UBOOT) XOPTS="$(TEST_XOPTS)" TEST=default ROOTDEV=$(TEST_RD) FEATURE=boot$(if $(FEATURE),$(comma)$(FEATURE)) $(TEST_AFTER); \
 	  done ; \
 	fi
 

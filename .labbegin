@@ -21,6 +21,9 @@ ifneq ($(QEMU),)
   ifeq ($(wildcard /usr/bin/ninja),)
     PKGS[QEMU_$(call _any,QEMU,>=,v6.0.0)] := ninja;ninja-build
   endif
+  ifeq ($(wildcard /usr/bin/pyvenv),)
+    PKGS[QEMU_$(call _any,QEMU,>=,v8.0.1)] += python3-venv
+  endif
 
   # Install all required libraries if QEMU_FULL=1 specified
   ifeq ($(QEMU_FULL),1)

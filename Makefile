@@ -2195,6 +2195,7 @@ ifeq ($(qemu_targets),1)
 #    TODO: start vnc viewer automatically while qemu boots and listen on vnc port.
 # 4. --disable-kvm is used to let qemu boot in docker environment which not have kvm.
 # 5. --enable-virtfs adds 9pnet sharing support, depends on libattr1-dev libcap-dev
+# 6. --disable-docs is used to not build the docs
 #
 
 
@@ -2249,6 +2250,7 @@ else
     # (too old ubuntu), use vnc instead
     QEMU_SDL    ?= 1
     QEMU_CURSES ?= 1
+    QEMU_DOCS   ?= 0
     ifneq ($(QEMU_SDL),0)
       QEMU_CONF += --enable-sdl
     endif
@@ -2267,6 +2269,14 @@ else
 
     ifeq ($(QEMU_CURSES),1)
       QEMU_CONF   += --enable-curses
+    endif
+
+    ifneq ($(QEMU_DOCS),)
+      ifeq ($(QEMU_DOCS),1)
+        QEMU_CONF   += --enable-docs
+      else
+        QEMU_CONF   += --disable-docs
+      endif
     endif
   endif
 

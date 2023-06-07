@@ -2356,7 +2356,7 @@ toolchain-install-internal:
 	$(Q)if ! which $(CCPRE)gcc-$(GCC) >/dev/null; then \
 	  gcc_pkg=$(subst -xyz,,gcc-$(GCC)-$(CCPRE)xyz); \
 	  echo "Installing internal toolchain: $$gcc_pkg ...";  \
-	  [ "$(XARCH)" = "i386" -o "$(XACH)" = "x86_64" ] && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; \
+	  [ "$(XARCH)" = "i386" -o "$(XARCH)" = "x86_64" ] && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; \
 	  sudo apt-get -y update \
 	  && sudo apt-get install $$gcc_pkg \
 	  && sudo update-alternatives --install /usr/bin/$(CCPRE)gcc $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) $$((50+RANDOM%50)); \

@@ -2188,7 +2188,7 @@ ifeq ($(qemu_targets),1)
 # Notes:
 #
 # 1. --enable-curses is required for G=2, boot with LCD/keyboard from ssh login
-#    deps: sudo apt-get install libncursesw5-dev
+#    deps: sudo apt install -y libncursesw5-dev
 # 2. --enable-sdl is required for G=1, but from v4.0.0, it requires libsdl2-dev,
 # 3. --disable-vnc disable vnc graphic support, this is not that friendly because
 #    it requires to install a vnc viewer, such as vinagre.
@@ -2358,7 +2358,7 @@ toolchain-install-internal:
 	  echo "Installing internal toolchain: $$gcc_pkg ...";  \
 	  [ "$(XARCH)" = "i386" -o "$(XARCH)" = "x86_64" ] && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; \
 	  sudo apt-get -y update \
-	  && sudo apt-get install $$gcc_pkg \
+	  && sudo apt install -y $$gcc_pkg \
 	  && sudo update-alternatives --install /usr/bin/$(CCPRE)gcc $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) $$((50+RANDOM%50)); \
 	fi
 
@@ -2406,7 +2406,7 @@ toolchain-clean-internal:
 	$(Q)gcc=$$(which $(CCPRE)gcc-$(GCC)) >/dev/null \
 	  && gcc_pkg=$$(dpkg -S $$gcc | cut -d ':' -f1) \
 	  && echo "Removing $$gcc_pkg ..." \
-	  && sudo apt-get remove --purge $$gcc_pkg \
+	  && sudo apt remove --purge --yes $$gcc_pkg \
 	  && echo "Update alternativies for $(CCPRE)gcc" \
 	  && update-alternatives --remove $(CCPRE)gcc /usr/bin/$(CCPRE)gcc-$(GCC) \
 	  && update-alternatives --verbose --set $(CCPRE)gcc $$(update-alternatives --list $(CCPRE)gcc | sort -u | tail -1) || true

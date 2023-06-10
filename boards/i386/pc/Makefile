@@ -7,7 +7,7 @@ XARCH   := i386
 CPU     ?= qemu32
 MEM     ?= 128M
 SMP     ?= 4
-LINUX   ?= v5.13
+LINUX   ?= v6.1.1
 
 # This is for old linux 0.11 floppy support
 QEMU    ?= v0.10.6

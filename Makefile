@@ -2518,6 +2518,11 @@ $(NOLIBC_SRC): FORCE
 	$(Q)[ -f $(BITS_WORDSIZE_H) ] && grep -q 'rv32i-based targets are not supported' $(BITS_WORDSIZE_H) && sudo cp tools/nolibc/wordsize.h $(BITS_WORDSIZE_H) || true
 endif
 
+ifeq ($(XARCH),i386)
+  NOLIBC_CFLAGS  += -m32
+  NOLIBC_LDFLAGS += -melf_i386
+endif
+
 # nolibc gc sections and debug support
 nolibc_gc       ?= 1
 nolibc_gc_debug ?= 1

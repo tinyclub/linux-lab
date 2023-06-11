@@ -5,7 +5,7 @@ XARCH   := ppc
 # Not sure, use the default setting
 CPU     ?=
 # Note: <2.6.37 kernel don't have __NR_socket implementation
-LINUX   ?= v5.13
+LINUX   ?= v6.3.6
 
 GCC[LINUX_v2.6.36] := 4.3
 

@@ -82,3 +82,7 @@
 	ignore = all
 	path = boards/arm/ebf-imx6ull/bsp
 	url = https://gitee.com/tinylab/ebf-imx6ull.git
+[submodule "boards/loongarch/virt/bsp"]
+	ignore = all
+	path = boards/loongarch/virt/bsp
+	url = https://gitee.com/tinylab/qemu-loongarch-virt.git

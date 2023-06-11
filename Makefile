@@ -1263,8 +1263,12 @@ ifneq ($(wildcard $(NOLIBC_SRC)),)
   # Build initramfs into kernel image with CONFIG_INITRAMFS_SOURCE
   override ROOTDEV := /dev/null
 endif
+
 # Tag defconfig
 KTAG := nolibc$(if $(KTAG),_$(KTAG))
+
+# Set TEST_ROOTDEV
+TEST_ROOTDEV ?= $(ROOTDEV)
 endif
 
 ifeq ($(_PBR), 0)

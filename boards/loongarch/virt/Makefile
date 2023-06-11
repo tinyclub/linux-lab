@@ -18,7 +18,7 @@ HOST_GCC := 9
 # no buildroot support for loongarch currently, use nolibc initrd by default
 NOLIBC  ?= 1
 
-ROOTDEV_LIST := /dev/ram0
+ROOTDEV_LIST := /dev/ram0 /dev/nfs
 ROOTDEV      ?= /dev/ram0
 
 # download from https://github.com/loongson/Firmware/tree/main/LoongArchVirtMachine

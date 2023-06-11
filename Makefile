@@ -2488,7 +2488,7 @@ NOLIBC_TARGETS := root-nolibc nolibc root root-rd
 PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$(NOLIBC_TARGETS)))
 
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -std=c89 -DRECORD_SYSCALL
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -std=c89 -DRECORD_SYSCALL -Wl,-s
 NOLIBC_LDFLAGS := -s
 
 ifeq ($(nolibc_stkp),1)
@@ -2510,7 +2510,7 @@ endif
 
 ifeq ($(XARCH),riscv32)
   # rv32 support patch is ready for both tools/nolibc and selftests/nolibc, see https://lore.kernel.org/linux-riscv/
-  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32
+  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32 -Wl,-melf32lriscv_ilp32
   NOLIBC_LDFLAGS += -melf32lriscv_ilp32
   BITS_WORDSIZE_H := /usr/riscv64-linux-gnu/include/bits/wordsize.h
 
@@ -2519,7 +2519,7 @@ $(NOLIBC_SRC): FORCE
 endif
 
 ifeq ($(XARCH),i386)
-  NOLIBC_CFLAGS  += -m32
+  NOLIBC_CFLAGS  += -m32 -Wl,-melf_i386
   NOLIBC_LDFLAGS += -melf_i386
 endif
 
@@ -2528,11 +2528,12 @@ nolibc_gc       ?= 1
 nolibc_gc_debug ?= 1
 
 ifeq ($(nolibc_gc),1)
-  NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections
+  NOLIBC_CFLAGS  += -ffunction-sections -fdata-sections -Wl,--gc-sections
   NOLIBC_LDFLAGS += --gc-sections
 endif
 
 ifeq ($(nolibc_gc_debug),1)
+  NOLIBC_CFLAGS  += -Wl,--print-gc-sections
   NOLIBC_LDFLAGS += --print-gc-sections
 endif
 
@@ -2567,7 +2568,8 @@ $(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
 $(NOLIBC_BIN): $(NOLIBC_OBJ)
 	$(Q)echo "Building $@"
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(C_PATH) $(CCPRE)ld $(NOLIBC_LDFLAGS) -o $@ $< 2>&1 | tee $(NOLIBC_PGC)
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -o $@ \
+	  -nostdlib -static $< -lgcc 2>&1 | tee $(NOLIBC_PGC)
 
 # ref: ld-elf2flt.in from https://github.com/uclinux-dev/elf2flt
 $(NOLIBC_FLT): $(NOLIBC_OBJ)

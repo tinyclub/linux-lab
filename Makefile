@@ -2488,8 +2488,12 @@ NOLIBC_TARGETS := root-nolibc nolibc root root-rd
 PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$(NOLIBC_TARGETS)))
 
 # Nolibc build support, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -std=c89 -DRECORD_SYSCALL -Wl,-s
+NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -DRECORD_SYSCALL -Wl,-s
 NOLIBC_LDFLAGS := -s
+
+# Apply -std=c89 when LINUX >= v6.4
+NOLIBC_CFLAGS[LINUX_$(call _any,LINUX,>=,v6.4)] += -std=c89
+$(eval $(call __vs,NOLIBC_CFLAGS,LINUX))
 
 ifeq ($(nolibc_stkp),1)
   NOLIBC_CFLAGS  += -DNOLIBC_STACKPROTECTOR -mstack-protector-guard=global -fstack-protector-all

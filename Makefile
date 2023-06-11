@@ -4550,7 +4550,7 @@ endef
 
 ifneq ($(BOARD_DOWNLOAD),)
 $(APP_TARGETS): $(BOARD_DOWNLOAD)
-	$(Q)make $(S) $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
+	$(Q)make $(NPD) $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
 else
 $(APP_TARGETS): $(foreach a,$(app),$(call real_target,$(first_target),$(a)) )
 endif

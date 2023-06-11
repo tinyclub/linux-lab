@@ -1,9 +1,9 @@
 
-# loongarch/virt board Usage
+# loongarch64/virt board Usage
 
 ## Select me
 
-    $ make B=loongarch/virt
+    $ make B=loongarch64/virt
 
 ## Boot me with initrd
 

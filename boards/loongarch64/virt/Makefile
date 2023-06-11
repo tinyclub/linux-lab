@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
+# Copyright (C) 2023 Wu Zhangjin <falcon@ruma.tech>
 _BASE   := 1
 ARCH    := loongarch
 XARCH   := loongarch64

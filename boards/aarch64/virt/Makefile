@@ -16,7 +16,7 @@ UBOOT   ?= v2019.10
 CCORI[UBOOT_v2019.10,OS_trusty]:= linaro
 CCORI[UBOOT_v2019.10,OS_focal] := internal
 
-LINUX   ?= v5.13
+LINUX   ?= v6.1.1
 BUILDROOT?= 2019.11.1
 
 # git repos for the other kernel forks

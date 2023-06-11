@@ -1407,7 +1407,7 @@ echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardva
 endef
 
 BSP_CHECKOUT ?= bsp-checkout
-ifeq ($(wildcard $(BSP_ROOT)),)
+ifeq ($(wildcard $(_BSP_CONFIG)),)
   ifneq ($(app),default)
     BOARD_DOWNLOAD := $(BSP_CHECKOUT)
   endif

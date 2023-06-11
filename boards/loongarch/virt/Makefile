@@ -8,6 +8,9 @@ SERIAL  ?= ttyS0,115200
 
 QEMU    ?= v8.0.2
 
+NETDEV_LIST ?= e1000
+NETDEV  ?= e1000
+
 LINUX   ?= v6.3.6
 
 HOST_GCC := 9

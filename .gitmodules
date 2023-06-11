@@ -86,3 +86,7 @@
 	ignore = all
 	path = boards/loongarch64/virt/bsp
 	url = https://gitee.com/tinylab/qemu-loongarch64-virt.git
+[submodule "boards/s390x/s390-ccw-virtio/bsp"]
+	ignore = all
+	path = boards/s390x/s390-ccw-virtio/bsp
+	url = https://gitee.com/tinylab/qemu-s390x-s390-ccw-virtio.git

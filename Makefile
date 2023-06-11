@@ -2531,6 +2531,10 @@ ifeq ($(XARCH),i386)
   NOLIBC_LDFLAGS += -melf_i386
 endif
 
+ifeq ($(XARCH),s390x)
+  NOLIBC_CFLAGS  += -m64
+endif
+
 # nolibc gc sections and debug support
 nolibc_gc       ?= 1
 nolibc_gc_debug ?= 1
@@ -3818,7 +3822,8 @@ NET ?=  -net nic,model=$(call _v,NETDEV,LINUX) -net tap,script=/etc/qemu-ifup,do
 ifeq ($(NETDEV), virtio)
   MACADDR_TOOL   := tools/qemu/macaddr.sh
   RANDOM_MACADDR := $$($(MACADDR_TOOL))
-  NET += -device virtio-net-device,netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
+  VIRTIO_NET_DEVICE ?= virtio-net-device
+  NET += -device $(VIRTIO_NET_DEVICE),netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
 endif
 
 # Kernel command line configuration

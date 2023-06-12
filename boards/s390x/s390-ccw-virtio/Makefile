@@ -18,7 +18,7 @@ LINUX   ?= v6.3.6
 HOST_GCC := 9
 
 # no buildroot support for loongarch currently, use nolibc initrd by default
-NOLIBC  ?= 1
+NOLIBC  := $(or $(NOLIBC),1)
 
 ROOTDEV_LIST := /dev/ram0 /dev/nfs
 ROOTDEV      ?= /dev/ram0

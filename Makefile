@@ -145,7 +145,7 @@ FEATURE_DIR := $(TOP_SRC)/feature/linux
 
 # Search board in basic arch list while board name given without arch specified
 ifneq ($(BOARD),)
- BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 riscv32 riscv64 csky
+ BASE_ARCHS := arm aarch64 mipsel mips64el ppc i386 x86_64 riscv32 riscv64 csky s390x s390 loongarch64 loongarch alpha parisc sparc
  ifeq ($(wildcard $(BOARD_DIR)/Makefile),)
   ARCH := $(strip $(firstword $(foreach arch,$(BASE_ARCHS),$(if $(wildcard $(TOP_DIR)/$(BOARDS_DIR)/$(arch)/$(BOARD)),$(arch) ))))
   ifneq ($(ARCH),)

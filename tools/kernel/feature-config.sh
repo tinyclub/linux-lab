@@ -27,6 +27,8 @@ KFD_BSP=${TOP_DIR}/boards/${BOARD}/bsp/feature/linux
 KFD=${TOP_SRC}/feature/linux
 FEATURE="$(echo $FEATURE | tr ',' ' ')"
 
+MT="${TOP_DIR}/tools/kernel/merge_config.sh -m -y -O ${KERNEL_OUTPUT} ${KERNEL_OUTPUT}/.config"
+
 for d in $KFD_CORE
 do
     for f in $FEATURE
@@ -40,9 +42,13 @@ do
 
         echo "Applying feature: $f"
 
-        [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-        [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
-        [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
+        configfiles=""
+        for c in $path/config $path/config.$XARCH.$MACH $path/config.$MACH
+        do
+            [ -f "$c" ] && configfiles="$configfiles $c"
+        done
+
+        [ -n "$configfiles" ] && $MT $configfiles
     done #f
 done #d
 
@@ -60,9 +66,13 @@ do
 
             echo "Applying feature: $f"
 
-            [ -f "$path/config" ] && cat $path/config >> ${KERNEL_OUTPUT}/.config
-            [ -f "$path/config.$XARCH.$MACH" ] && cat $path/config.$XARCH.$MACH >> ${KERNEL_OUTPUT}/.config
-            [ -f "$path/config.$MACH" ] && cat $path/config.$MACH >> ${KERNEL_OUTPUT}/.config
+            configfiles=""
+            for c in $path/config $path/config.$XARCH.$MACH $path/config.$MACH
+            do
+                [ -f "$c" ] && configfiles="$configfiles $c"
+            done
+
+            [ -n "$configfiles" ] && $MT $configfiles
         done #path
     done #d
 done #f

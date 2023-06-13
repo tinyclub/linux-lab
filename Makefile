@@ -3823,7 +3823,7 @@ ifeq ($(NETDEV), virtio)
   MACADDR_TOOL   := tools/qemu/macaddr.sh
   RANDOM_MACADDR := $$($(MACADDR_TOOL))
   VIRTIO_NET_DEVICE ?= virtio-net-device
-  NET += -device $(VIRTIO_NET_DEVICE),netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0
+  NET += -device $(VIRTIO_NET_DEVICE),netdev=net0,mac=$(RANDOM_MACADDR) -netdev tap,id=net0,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown
 endif
 
 # Kernel command line configuration

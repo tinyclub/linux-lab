@@ -23,3 +23,4 @@
 
 * src/qemu/docs/system/loongarch/virt.rst
 * https://github.com/foxsen/qemu-loongarch-runenv
+* https://github.com/loongson/Firmware/blob/main/LoongArchVirtMachine/

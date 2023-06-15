@@ -40,29 +40,52 @@ done
 
 [ "$boards" == "all" ] && boards="$def_boards"
 
-TEST_LOGDIR=${TOP_DIR}/logging
-TEST_LOGFILE=${TEST_LOGDIR}/nolibc.log
+TEST_LOGDIR=${TOP_DIR}/logging/nolibc
+TEST_LOGFILE=${TEST_LOGDIR}/nolibc-test.log
 mkdir -p $TEST_LOGDIR
 
 rm -rf $TEST_LOGFILE
 
+function get_arch
+{
+    local board="$1"
+    echo $board | cut -d'/' -f1 | sed -e 's/mips.*/mips/g;s/s390.*/s390/g;s/riscv.*/riscv/g;s/ppc.*/powerpc/g'
+}
+
+function get_arch_file
+{
+    local arch="$1"
+    echo ${TOP_DIR}/src/linux-stable/tools/include/nolibc/arch-$arch.h
+}
+
+function get_arch_logfile
+{
+    local arch="$1"
+    echo $TEST_LOGDIR/$arch-nolibc-test.log
+}
+
+function print_line
+{
+    echo "=====================================================================" | tee -a $TEST_LOGFILE
+}
+
 for b in $boards
 do
-    arch=$(echo $b | cut -d'/' -f1 | sed -e 's/mips.*/mips/g;s/s390.*/s390/g;s/riscv.*/riscv/g;s/ppc.*/powerpc/g')
-    arch_file=${TOP_DIR}/src/linux-stable/tools/include/nolibc/arch-$arch.h
+    arch=$(get_arch $b)
+    arch_file=$(get_arch_file $arch)
 
-    echo "=====================================================================" | tee -a $TEST_LOGFILE
+    print_line
     if [ -f "$arch_file" ]; then
         echo "LOG: running nolibc test for $b" | tee -a $TEST_LOGFILE
-        echo "=====================================================================" | tee -a $TEST_LOGFILE
+        print_line
 
-        ARCH_LOGFILE=$TEST_LOGDIR/$arch-nolibc.log
+	ARCH_LOGFILE=$(get_arch_logfile $arch)
         rm -rf $ARCH_LOGFILE
-        time make test f=nolibc DEVMODE=1 TEST_TIMEOUT=10 b=$b | col -bp | tee -a $ARCH_LOGFILE
+        make test f=nolibc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $ARCH_LOGFILE
         cat $ARCH_LOGFILE >> $TEST_LOGFILE
 
         # Parse and report it, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
-        echo "=====================================================================" | tee -a $TEST_LOGFILE
+        print_line
         echo "LOG: testing report for $b:" | tee -a $TEST_LOGFILE
 	echo
         awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++;print} /\[SKIPPED\][\r]*$$/{s++;print} \
@@ -71,6 +94,28 @@ do
 
     else
         echo "LOG: current nolibc doesn't support $b" | tee -a $TEST_LOGFILE
+    fi
+done
+
+echo
+echo "LOG: testing summary:"
+echo
+
+echo -e "arch/board\tresult"
+
+for b in $boards
+do
+    arch=$(get_arch $b)
+    arch_file=$(get_arch_file $arch)
+
+    if [ -f "$arch_file" ]; then
+	ARCH_LOGFILE=$(get_arch_logfile $arch)
+        printf "%-8s\t" $b
+        awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
+             END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
+             printf(" See all results in %s\n", ARGV[1]) }' $ARCH_LOGFILE
+    else
+        echo "$b\tnot supported"
     fi
 done
 

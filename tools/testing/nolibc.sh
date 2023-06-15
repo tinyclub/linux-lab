@@ -13,6 +13,7 @@ def_boards="arm/vexpress-a9 \
     i386/pc \
     x86_64/pc \
     mipsel/malta \
+    loongarch64/virt \
     riscv64/virt \
     riscv32/virt \
     s390x/s390-ccw-virtio"
@@ -54,7 +55,7 @@ rm -rf $TEST_LOGFILE
 function get_arch
 {
     local board="$1"
-    echo $board | cut -d'/' -f1 | sed -e 's/mips.*/mips/g;s/s390.*/s390/g;s/riscv.*/riscv/g;s/ppc.*/powerpc/g'
+    echo $board | cut -d'/' -f1 | sed -e 's/mips.*/mips/g;s/s390.*/s390/g;s/riscv.*/riscv/g;s/ppc.*/powerpc/g;s/loongarch.*/loongarch/g'
 }
 
 function get_arch_file

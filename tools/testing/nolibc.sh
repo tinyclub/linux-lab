@@ -24,10 +24,12 @@ while [ -z "$boards" ]
 do
     echo "LOG: Available boards for nolibc testing:"
     echo
-    echo $def_boards | tr ' ' '\n' | cat -n
+    echo all $def_boards | tr ' ' '\n' | cat -n
     echo
 
     read -p "LOG: Choose one or more for nolibc test? " boardnumbers
+
+    [ "$boardnumbers" == "1" ] && boards=all && break
 
     boardnumbers="$(echo $boardnumbers | tr ',' ' ' | tr ';' ' ')"
     for n in $boardnumbers

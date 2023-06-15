@@ -2889,6 +2889,7 @@ kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call _
 $(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
+	$(Q)$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig))
 	$(Q)touch $@
 endif
 

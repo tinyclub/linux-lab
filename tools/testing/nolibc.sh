@@ -60,10 +60,10 @@ function get_arch_file
     echo ${TOP_DIR}/src/linux-stable/tools/include/nolibc/arch-$arch.h
 }
 
-function get_arch_logfile
+function get_board_logfile
 {
-    local arch="$1"
-    echo $TEST_LOGDIR/$arch-nolibc-test.log
+    local board="$(echo $1 | tr '/' '-')"
+    echo $TEST_LOGDIR/$board-nolibc-test.log
 }
 
 function print_line
@@ -81,18 +81,18 @@ do
         echo "LOG: running nolibc test for $b" | tee -a $TEST_LOGFILE
         print_line
 
-	ARCH_LOGFILE=$(get_arch_logfile $arch)
-        rm -rf $ARCH_LOGFILE
-        make test f=nolibc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $ARCH_LOGFILE
-        cat $ARCH_LOGFILE >> $TEST_LOGFILE
+        BOARD_LOGFILE=$(get_board_logfile $b)
+        rm -rf $BOARD_LOGFILE
+        make test f=nolibc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $BOARD_LOGFILE
+        cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE
 
         # Parse and report it, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile
         print_line
         echo "LOG: testing report for $b:" | tee -a $TEST_LOGFILE
-	echo
+        echo
         awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++;print} /\[SKIPPED\][\r]*$$/{s++;print} \
              END{ printf("\n%d test(s) passed, %d skipped, %d failed.\n", p, s, f); \
-             printf("See all results in %s\n", ARGV[1]) }' $ARCH_LOGFILE | tee -a $TEST_LOGFILE
+             printf("See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE | tee -a $TEST_LOGFILE
 
     else
         echo "LOG: current nolibc doesn't support $b" | tee -a $TEST_LOGFILE
@@ -111,11 +111,11 @@ do
     arch_file=$(get_arch_file $arch)
 
     if [ -f "$arch_file" ]; then
-	ARCH_LOGFILE=$(get_arch_logfile $arch)
+        BOARD_LOGFILE=$(get_board_logfile $b)
         printf "%-8s\t" $b
         awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
              END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
-             printf(" See all results in %s\n", ARGV[1]) }' $ARCH_LOGFILE
+             printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
     else
         echo "$b\tnot supported"
     fi

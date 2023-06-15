@@ -40,7 +40,7 @@ do
     do
         sednp="${n}p;$sednp"
     done
-    boards=$(echo $def_boards | tr ' ' '\n' | sed -n "$sednp")
+    boards=$(echo all $def_boards | tr ' ' '\n' | sed -n "$sednp")
     [ -z "$boards" ] && echo "Please choose a valid board number in the list."
 done
 

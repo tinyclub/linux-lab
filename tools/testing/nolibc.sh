@@ -20,6 +20,9 @@ def_boards="arm/vexpress-a9 \
 # Allow user test a target board
 boards=$1
 
+# Allow pass nolibc_inc via environment
+[ -z "$nolibc_inc" ] && nolibc_inc=sysroot
+
 while [ -z "$boards" ]
 do
     echo "LOG: Available boards for nolibc testing:"
@@ -83,7 +86,7 @@ do
 
         BOARD_LOGFILE=$(get_board_logfile $b)
         rm -rf $BOARD_LOGFILE
-        make test f=nolibc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $BOARD_LOGFILE
+        make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $BOARD_LOGFILE
         cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE
 
         # Parse and report it, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile

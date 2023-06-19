@@ -121,7 +121,7 @@ do
              END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
              printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
     else
-        echo "$b\tnot supported"
+        echo -e "$b\tnot supported"
     fi
 done
 

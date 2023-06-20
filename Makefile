@@ -1201,9 +1201,9 @@ PBR ?= 0
 _PBR := $(PBR)
 
 ifneq ($(findstring nolibc,$(FEATURE)),)
-  ifeq ($(findstring nolibc,$(TEST)$(PREPARE)$(TEST_PREPARE)),)
+  ifeq ($(findstring nolibcy,$(addsuffix y,$(TEST)$(PREPARE)$(TEST_PREPARE))),)
     export nolibc=1
-    TEST_PREPARE += root-rebuild
+    override TEST_PREPARE := $(TEST_PREPARE) root-rebuild
     # If no nolibc_src manual setting, use nolibc-test by default
     ifneq ($(origin nolibc_src),command line)
       export nolibc_src=test

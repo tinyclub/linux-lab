@@ -24,7 +24,6 @@ boards=$1
 # Allow pass nolibc_inc via environment
 [ -z "$nolibc_inc" ] && nolibc_inc=sysroot
 [ -z "$nolibc_timeout" ] && nolibc_timeout=10
-[ -z "$nolibc_prepare" ] && nolibc_prepare=kernel-cleanup
 
 while [ -z "$boards" ]
 do

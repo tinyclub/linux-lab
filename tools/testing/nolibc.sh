@@ -23,6 +23,7 @@ boards=$1
 
 # Allow pass nolibc_inc via environment
 [ -z "$nolibc_inc" ] && nolibc_inc=sysroot
+[ -z "$nolibc_timeout" ] && nolibc_timeout=10
 
 while [ -z "$boards" ]
 do
@@ -87,7 +88,7 @@ do
 
         BOARD_LOGFILE=$(get_board_logfile $b)
         rm -rf $BOARD_LOGFILE
-        make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_TIMEOUT=10 b=$b | tee -a $BOARD_LOGFILE
+        make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_TIMEOUT=$nolibc_timeout b=$b | tee -a $BOARD_LOGFILE
         cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE
 
         # Parse and report it, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile

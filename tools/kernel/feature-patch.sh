@@ -40,9 +40,12 @@ do
 
         echo "Applying feature: $f"
 
-        [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
-        [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
-        [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
+        for p in "$path/patch" "$path/patch.$XARCH.$MACH" "$path/patch.$MACH"
+        do
+            if [ -f "$p" ]; then
+                patch -r- -N -l -d ${KERNEL_SRC} -p1 < "$p"
+            fi
+        done
 
         # apply the patchset maintained by multiple xxx.patch
         patchset="`find $path $MAXDEPTH -type f -name "*.patch" -o -name "*.mbx" | sort`"
@@ -58,11 +61,15 @@ do
             echo $p | grep -q \.ignore/
             [ $? -eq 0 ] && continue
 
-            [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
+            if [ -f "$p" ]; then
+                patch -r- -N -l -d ${KERNEL_SRC} -p1 < "$p"
+            fi
         done #p
 
         echo "Patching more: $f"
-        [ -x "$path/patch.sh" ] && $path/patch.sh $ARCH $KERNEL_SRC
+        if [ -x "$path/patch.sh" ]; then
+            $path/patch.sh $ARCH $KERNEL_SRC
+        fi
 
     done #f
 done #d
@@ -81,9 +88,12 @@ do
 
             echo "Applying feature: $f"
 
-            [ -f "$path/patch" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch
-            [ -f "$path/patch.$XARCH.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$XARCH.$MACH
-            [ -f "$path/patch.$MACH" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $path/patch.$MACH
+            for p in "$path/patch" "$path/patch.$XARCH.$MACH" "$path/patch.$MACH"
+            do
+                if [ -f "$p" ]; then
+                    patch -r- -N -l -d ${KERNEL_SRC} -p1 < "$p"
+                fi
+            done
 
             # apply the patchset maintained by multiple xxx.patch
             MAXDEPTH=""
@@ -101,20 +111,20 @@ do
                 echo $p | grep -q \.ignore/
                 [ $? -eq 0 ] && continue
 
-                [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
-
-
-                if [ $? -ne 0 ]; then
-                    grep -iq "GIT binary patch" $p
-                    [ $? -eq 0 ] && pushd ${KERNEL_SRC} >/dev/null && git apply -p1 < $p && popd >/dev/null
+                if [ -f "$p" ]; then
+                    patch -r- -N -l -d ${KERNEL_SRC} -p1 < "$p"
+                    if [ $? -ne 0 ]; then
+                        grep -iq "GIT binary patch" $p
+                        [ $? -eq 0 ] && pushd ${KERNEL_SRC} >/dev/null && git apply -p1 < "$p" && popd >/dev/null
+                    fi
                 fi
             done #p
 
             echo "Patching more: $f"
-            [ -x "$path/patch.sh" ] && $path/patch.sh $ARCH $KERNEL_SRC
+            if [ -x "$path/patch.sh" ]; then
+                $path/patch.sh $ARCH $KERNEL_SRC
+            fi
 
         done #path
     done #d
 done #f
-
-exit 0

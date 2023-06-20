@@ -33,6 +33,12 @@ do
         echo $p | grep -q \.ignore/
         [ $? -eq 0 ] && continue
 
-        [ -f "$p" ] && patch -r- -N -l -d ${ROOT_SRC} -p1 < $p
+        if [ -f "$p" ]; then
+            patch -r- -N -l -d ${ROOT_SRC} -p1 < "$p"
+        fi
     done
+
+    if [ -x "$d/patch.sh" ]; then
+        $d/patch.sh $ROOT_SRC
+    fi
 done

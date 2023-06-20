@@ -25,7 +25,9 @@ if [ $LINUX_BASE != $LINUX ]; then
 fi
 
 KPD_ROOT=${TOP_SRC}/patch/linux/
-[ -x "$KPD_ROOT/patch.sh" ] && $KPD_ROOT/patch.sh $KERNEL_SRC
+if [ -x "$KPD_ROOT/patch.sh" ]; then
+    $KPD_ROOT/patch.sh $KERNEL_SRC
+fi
 
 for d in $KPD_BOARD_BASE $KPD_BOARD $KPD_BSP_BASE $KPD_BSP $KPD_BASE $KPD
 do
@@ -41,11 +43,12 @@ do
         echo $p | grep -q \.ignore/
         [ $? -eq 0 ] && continue
 
-        [ -f "$p" ] && patch -r- -N -l -d ${KERNEL_SRC} -p1 < $p
-
-        if [ $? -ne 0 ]; then
-            grep -iq "GIT binary patch" $p
-            [ $? -eq 0 ] && pushd ${KERNEL_SRC} >/dev/null && git apply -p1 < $p && popd >/dev/null
+        if [ -f "$p" ]; then
+            patch -r- -N -l -d ${KERNEL_SRC} -p1 < "$p"
+            if [ $? -ne 0 ]; then
+                grep -iq "GIT binary patch" $p
+                [ $? -eq 0 ] && pushd ${KERNEL_SRC} >/dev/null && git apply -p1 < "$p" && popd >/dev/null
+            fi
         fi
     done
 

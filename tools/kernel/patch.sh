@@ -49,5 +49,7 @@ do
         fi
     done
 
-    [ -x "$d/patch.sh" ] && $d/patch.sh $KERNEL_SRC
+    if [ -x "$d/patch.sh" ]; then
+        $d/patch.sh $KERNEL_SRC
+    fi
 done

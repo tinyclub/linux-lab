@@ -24,6 +24,7 @@ boards=$1
 # Allow pass nolibc_inc via environment
 [ -z "$nolibc_inc" ] && nolibc_inc=sysroot
 [ -z "$nolibc_timeout" ] && nolibc_timeout=10
+[ -z "$nolibc_run" ] && nolibc_run=1
 
 while [ -z "$boards" ]
 do
@@ -80,6 +81,11 @@ for b in $boards
 do
     arch=$(get_arch $b)
     arch_file=$(get_arch_file $arch)
+
+    # Allow skip the running
+    if [ $nolibc_run -ne 1 ]; then
+        break
+    fi
 
     print_line
     if [ -f "$arch_file" ]; then

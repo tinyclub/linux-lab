@@ -138,9 +138,13 @@ do
     if [ -f "$arch_file" ]; then
         BOARD_LOGFILE=$(get_board_logfile $b)
         printf "%${max_len}s | " $b
-        awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
-             END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
-             printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
+        if [ -f $BOARD_LOGFILE ]; then
+            awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
+                 END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
+                 printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
+        else
+            printf "no test log found\n"
+        fi
     else
         printf "%${max_len}s | not supported\n" "$b"
     fi

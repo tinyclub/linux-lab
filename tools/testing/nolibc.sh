@@ -114,7 +114,21 @@ echo
 echo "LOG: testing summary:"
 echo
 
-echo -e "arch/board\tresult"
+max_len=0
+for b in $boards
+do
+    len=$(echo -n $b | wc -c)
+    if [ $len -gt $max_len ]; then
+        max_len=$len
+    fi
+done
+
+if [ $max_len -lt 12 ]; then
+    max_len=12
+fi
+
+printf "%${max_len}s | result\n" "arch/board"
+printf "%${max_len}s-|------------\n" "-----------"
 
 for b in $boards
 do
@@ -123,12 +137,12 @@ do
 
     if [ -f "$arch_file" ]; then
         BOARD_LOGFILE=$(get_board_logfile $b)
-        printf "%-8s\t" $b
+        printf "%${max_len}s | " $b
         awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
              END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
              printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
     else
-        echo -e "$b\tnot supported"
+        printf "%${max_len}s | not supported\n" "$b"
     fi
 done
 

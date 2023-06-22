@@ -1983,6 +1983,7 @@ endif
 
 # different boards should not use the same name of defconfig, add $(XARCH)_$(MACH) as the prefix
 _$3CFG := $(XARCH)_$(MACH)_$$(notdir $$($3CFG_FILE))
+_$3CFG_FULL := $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 
 ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
@@ -1990,11 +1991,11 @@ endif
 
 $(call _uc,$1)_NOCONFIG := $$$$([ "allnoconfig" = $$($(call _uc,$1)_OLDDEFCONFIG) ] && echo KCONFIG_ALLCONFIG=$$($(call _uc,$1)_BUILD)/.config)
 
-$$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
+$$(_$3CFG_FULL): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
-	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG))
+	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$@)
 
-$$(call _stamp,$1,defconfig): $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
+$$(call _stamp,$1,defconfig): $$(_$3CFG_FULL)
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_BUILD)/.config $$($3CFGS))
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))

@@ -1248,11 +1248,9 @@ else
 endif
 
 ifeq ($(NOMMU),1)
-  CFGS[K_N] += CONFIG_MMU
-  CFGS[K_Y] += CONFIG_BINFMT_FLAT
+  KCFGS += -d MMU -e BINFMT_FLAT
 else
-  CFGS[K_Y] += CONFIG_MMU
-  CFGS[K_N] += CONFIG_BINFMT_FLAT
+  KCFGS += -e MMU -d BINFMT_FLAT
 endif
 
 # Prefer nolibc initramfs
@@ -1989,8 +1987,7 @@ endif
 $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG))
-	$$(Q)$$(if $$(CFGS[$3_N]),$$(foreach n,$$(CFGS[$3_N]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -d $$n;))
-	$$(Q)$$(if $$(CFGS[$3_Y]),$$(foreach y,$$(CFGS[$3_Y]),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) -e $$y;))
+	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG) $$($3CFGS))
 
 $$(call _stamp,$1,defconfig): $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
@@ -2948,8 +2945,7 @@ $(eval $(call genclone,kernel,linux,K))
 #$(warning $(call genenvdeps,kernel,LINUX,K))
 $(eval $(call genenvdeps,kernel,LINUX,K))
 # Get configs must be enabled/disabled for target toolchain and kernel versions
-$(eval $(call __vs,CFGS[K_N],GCC,LINUX))
-$(eval $(call __vs,CFGS[K_Y],GCC,LINUX))
+$(eval $(call __vs,KCFGS,GCC,LINUX))
 
 # Module targets
 ifneq ($(findstring module,$(MAKECMDGOALS)),)

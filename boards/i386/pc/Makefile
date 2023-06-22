@@ -19,7 +19,7 @@ GCC[LINUX_$(call _any,LINUX,<=,v2.6.36)] := 4.4
 GCC[LINUX_$(call _range,LINUX,v2.6.37,v5.2.1023)] := 4.8
 
 # Disable RETPOLINE for Linux <= v5.1, enabled by gcc=9 by default, but conflicts with fcf-protector
-CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := RETPOLINE
+KCFGS[GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := -d RETPOLINE
 
 ifeq ($(QEMU),v0.10.6)
 QEMU_SDL    := 0

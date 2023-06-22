@@ -20,7 +20,7 @@ GCC[LINUX_$(call _any,LINUX,<=,v5.1.1023)] := 4.8
 
 # Disable RETPOLINE for Linux <= v4.18, enabled by gcc=9 by default, but conflicts with fcf-protector
 # Boot2docker use v4.19, but require retpoline support
-CFGS[K_N][GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := RETPOLINE
+KCFGS[GCC_9,LINUX_$(call _any,LINUX,<=,v5.1.1023)] := -d RETPOLINE
 
 # Force change ARCH for kernel version <= 2.6.23
 # $(eval $(call _vsif,ARCH,$(XARCH),LINUX,<=,v2.6.23))

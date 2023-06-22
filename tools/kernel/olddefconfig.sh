@@ -7,18 +7,17 @@
 
 makefile=$1
 
-oldconfig=olddefconfig
+oldconfig=allnoconfig
 
 if [ -n "$makefile" -a -f "$makefile" ]; then
-  grep olddefconfig -q $makefile
-  if [ $? -ne 0 ]; then
-    grep oldnoconfig -q $makefile
-    if [ $? -ne 0 ]; then
-      oldconfig=oldconfig
-    else
-      oldconfig=oldnoconfig
+  for c in allnoconfig olddefconfig oldnoconfig oldconfig
+  do
+    grep -w $c -q $makefile
+    if [ $? -eq 0 ]; then
+      oldconfig=$c
+      break
     fi
-  fi
+  done
 fi
 
 echo $oldconfig

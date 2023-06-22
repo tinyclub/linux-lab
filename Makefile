@@ -1984,6 +1984,8 @@ ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
 endif
 
+$(call _uc,$1)_NOCONFIG := $$$$([ "allnoconfig" = $$($(call _uc,$1)_OLDDEFCONFIG) ] && echo KCONFIG_ALLCONFIG=$$($(call _uc,$1)_BUILD)/.config)
+
 $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$(FORCE_DEFCONFIG),FORCE)
 	$$(Q)$$(if $$($(call _uc,$1)_CONFIG_DIR),mkdir -p $$($(call _uc,$1)_CONFIG_DIR))
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG))
@@ -1991,7 +1993,7 @@ $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE
 $$(call _stamp,$1,defconfig): $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
 	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_BUILD)/.config $$($3CFGS))
-	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))
 	$$(Q)touch $$@
 
 $1_config := $(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config))
@@ -2006,7 +2008,7 @@ $1-oldefconfig: $1-olddefconfig
 $1-olddefconfig: $$(call __stamp,$1,olddefconfig)
 
 $$(call _stamp,$1,olddefconfig): $$($1_config)
-	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
+	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))
 	$$(Q)touch $$@
 
 $1-oldconfig: $$(call __stamp,$1,oldconfig)
@@ -2887,7 +2889,7 @@ kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call _
 $(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
-	$(Q)$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig))
+	$(Q)$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig) $(KERNEL_NOCONFIG))
 	$(Q)touch $@
 endif
 

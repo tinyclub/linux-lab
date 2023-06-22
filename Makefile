@@ -472,6 +472,7 @@ endif
 ifeq ($(DEVMODE),1)
   SKIP_VERIFY ?= 1
   SKIP_CHECKOUT ?= 1
+  SKIP_NOTICE ?= 1
 endif
 
 # Allow boards to customize source and repos
@@ -728,6 +729,9 @@ ifneq ($(findstring xbsp, x$(MAKECMDGOALS)),)
   notice := warning
 endif
 ifneq ($(findstring clone, $(MAKECMDGOALS)),)
+  notice := ignore
+endif
+ifneq ($(SKIP_NOTICE),)
   notice := ignore
 endif
 

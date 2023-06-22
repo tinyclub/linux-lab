@@ -1955,21 +1955,28 @@ endif
 define gencfgs
 
 $(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
+$(call _uc,$1)_CONFIG_FILE_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.$$(if $$($3TAG),$$($3TAG).)config
 $3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
+$3CFG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_NOCONFIG)
 
 ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
   $3CFG_FILE   := $$(_BSP_CONFIG)/$$($3CFG)
   ifeq ($$(wildcard $$($3CFG_FILE)),)
     $3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
   endif
-else
+endif
+
+ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
+ ifeq ($$(wildcard $$($3CFG_FILE)),)
   $3CFG_FILES := $$($3CFG) $$(addsuffix /$$($3CFG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES := $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
   _$3CFG_FILE := $$(firstword $$(strip $$(foreach i,$$($3CFG_FILES),$$(wildcard $$i) )))
   ifneq ($$(_$3CFG_FILE),)
     $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
   else
     $$(error $$($3CFG): can not be found, please pass a valid $1 defconfig)
   endif
+ endif
 endif
 
 ifeq ($$($(call _uc,$1)_CONFIG_DIR),)
@@ -1982,7 +1989,8 @@ else
 endif
 
 # different boards should not use the same name of defconfig, add $(XARCH)_$(MACH) as the prefix
-_$3CFG := $(XARCH)_$(MACH)_$$(notdir $$($3CFG_FILE))
+_$3CFG_FILE := $$(notdir $$($3CFG_FILE))
+_$3CFG := $(XARCH)_$(MACH)_$$(if $$(findstring $$($(call _uc,$2)),$$(_$3CFG_FILE)),,$$($(call _uc,$2))_)$$(_$3CFG_FILE)
 _$3CFG_FULL := $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
 
 ifneq ($$($3CFG_BUILTIN),)
@@ -1996,7 +2004,7 @@ $$(_$3CFG_FULL): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$@)
 
 $$(call _stamp,$1,defconfig): $$(_$3CFG_FULL)
-	$$(Q)$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG)))
+	$$(Q)$$(if $$(findstring _defconfig,$$(_$3CFG_FILE)),$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))),$$(call make_$1,allnoconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG) KCONFIG_ALLCONFIG=$$(_$3CFG_FULL)))
 	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_BUILD)/.config $$($3CFGS))
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))
 	$$(Q)touch $$@

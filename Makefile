@@ -2013,7 +2013,7 @@ $$(_$3CFG_FULL): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$@)
 
 $$(call _stamp,$1,defconfig): $$(_$3CFG_FULL)
-	$$(if $$(findstring _defconfig,$$(_$3CFG_FILE)),$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))),$$(call make_$1,allnoconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG) KCONFIG_ALLCONFIG=$$(_$3CFG_FULL)))
+	$$(if $$(findstring _defconfig,$$(_$3CFG_FILE)),$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG_UNIQ) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))),$$(call make_$1,allnoconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG) KCONFIG_ALLCONFIG=$$(_$3CFG_FULL)))
 	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_BUILD)/.config $$($3CFGS))
 	$$(if $$($3CFGS),$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG)))
 	$$(Q)touch $$@

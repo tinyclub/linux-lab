@@ -2912,7 +2912,7 @@ kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call _
 $(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
-	$(Q)$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig) $(KERNEL_NOCONFIG))
+	$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig) $(KERNEL_NOCONFIG))
 	$(Q)touch $@
 endif
 
@@ -4292,7 +4292,7 @@ ifeq ($(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG_FILE)),)
 endif
 
 kernel-init: $(KERNEL_INIT_DEPS) $(KERNEL_DEPS)
-	$(Q)$(call make_kernel,$(IMAGE))
+	$(call make_kernel,$(IMAGE))
 
 feature-init: $(if $(FEATURE),feature kernel-init) FORCE
 

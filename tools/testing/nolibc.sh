@@ -8,6 +8,7 @@
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
 def_boards="arm/vexpress-a9 \
+    arm/virt \
     aarch64/virt \
     ppc/g3beige \
     i386/pc \

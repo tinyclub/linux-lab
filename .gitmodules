@@ -8,7 +8,7 @@
 	ignore = all
 [submodule "linux-stable"]
 	path = src/linux-stable
-	url = https://kernel.source.codeaurora.cn/pub/scm/linux/kernel/git/stable/linux.git
+	url = https://gitlab.com/linux-kernel/stable.git
 	ignore = all
 [submodule "u-boot"]
 	path = src/u-boot
@@ -97,4 +97,4 @@
 [submodule "boards/ppc/ppce500/bsp"]
 	ignore = all
 	path = boards/ppc/ppce500/bsp
-	url = https://gitee.com/tinylab/qemu-ppc-ppce500
+	url = https://gitee.com/tinylab/qemu-ppc-ppce500.git

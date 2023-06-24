@@ -94,3 +94,7 @@
 	ignore = all
 	path = boards/arm/virt/bsp
 	url = https://gitee.com/tinylab/qemu-arm-virt.git
+[submodule "boards/ppc/ppce500/bsp"]
+	ignore = all
+	path = boards/ppc/ppce500/bsp
+	url = https://gitee.com/tinylab/qemu-ppc-ppce500

@@ -11,6 +11,7 @@ def_boards="arm/vexpress-a9 \
     arm/virt \
     aarch64/virt \
     ppc/g3beige \
+    ppc/ppce500 \
     i386/pc \
     x86_64/pc \
     mipsel/malta \

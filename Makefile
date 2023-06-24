@@ -1954,22 +1954,27 @@ endif
 
 define gencfgs
 
-$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
-$(call _uc,$1)_CONFIG_FILE_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.$$(if $$($3TAG),$$($3TAG).)config
+$(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
+$(call _uc,$1)_CONFIG_FILE_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.config
+$(call _uc,$1)_CONFIG_FILE_TAG ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
+$(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.$$(if $$($3TAG),$$($3TAG).)config
 $3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 $3CFG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_NOCONFIG)
+$3CFG_TAG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG)
+$3CFG_TAG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG)
 
+# Configs search order: TAGGED > Version Specific > TAGGED generic > Version generic
 ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
-  $3CFG_FILE   := $$(_BSP_CONFIG)/$$($3CFG)
-  ifeq ($$(wildcard $$($3CFG_FILE)),)
-    $3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
-  endif
+  $3CFG_FILE   := $$(_BSP_CONFIG)/$$($3CFG_TAG)
 endif
 
 ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
  ifeq ($$(wildcard $$($3CFG_FILE)),)
-  $3CFG_FILES := $$($3CFG) $$(addsuffix /$$($3CFG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
-  $3CFG_FILES := $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES := $$($3CFG_TAG) $$(addsuffix /$$($3CFG_TAG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG_TAG_NOCONFIG) $$(addsuffix /$$($3CFG_TAG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG) $$(addsuffix /$$($3CFG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+
   _$3CFG_FILE := $$(firstword $$(strip $$(foreach i,$$($3CFG_FILES),$$(wildcard $$i) )))
   ifneq ($$(_$3CFG_FILE),)
     $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
@@ -1990,8 +1995,8 @@ endif
 
 # different boards should not use the same name of defconfig, add $(XARCH)_$(MACH) as the prefix
 _$3CFG_FILE := $$(notdir $$($3CFG_FILE))
-_$3CFG := $(XARCH)_$(MACH)_$$(if $$(findstring $$($(call _uc,$2)),$$(_$3CFG_FILE)),,$$($(call _uc,$2))_)$$(_$3CFG_FILE)
-_$3CFG_FULL := $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG)
+_$3CFG_UNIQ := $(XARCH)_$(MACH)_$$(if $$(findstring $$($(call _uc,$2)),$$(_$3CFG_FILE)),,$$($(call _uc,$2))_)$$(_$3CFG_FILE)
+_$3CFG_FULL := $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG_UNIQ)
 
 ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
@@ -2004,7 +2009,7 @@ $$(_$3CFG_FULL): $$(if $$($3CFG_BUILTIN),,$$($3CFG_FILE)) $$(ENV_FILES) $$(if $$
 	$$(Q)$$(if $$($3CFG_BUILTIN),,cp $$($3CFG_FILE) $$@)
 
 $$(call _stamp,$1,defconfig): $$(_$3CFG_FULL)
-	$$(Q)$$(if $$(findstring _defconfig,$$(_$3CFG_FILE)),$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))),$$(call make_$1,allnoconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG) KCONFIG_ALLCONFIG=$$(_$3CFG_FULL)))
+	$$(if $$(findstring _defconfig,$$(_$3CFG_FILE)),$$(or $$(call $1_make_defconfig),$$(call make_$1,$$(_$3CFG) $$($(call _uc,$1)_CONFIG_EXTRAFLAG))),$$(call make_$1,allnoconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG) KCONFIG_ALLCONFIG=$$(_$3CFG_FULL)))
 	$$(Q)$$(if $$($3CFGS),$$(SCRIPTS_$3CONFIG) --file $$($(call _uc,$1)_BUILD)/.config $$($3CFGS))
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))
 	$$(Q)touch $$@
@@ -2866,7 +2871,7 @@ _KERNEL ?= $(_LINUX)
 # see commit: 312ee68752faaa553499775d2c191ff7a883826f kconfig: announce removal of oldnoconfig if used
 #        and: 04c459d204484fa4747d29c24f00df11fe6334d4 kconfig: remove oldnoconfig target
 KERNEL_OLDDEFCONFIG     := $$(tools/kernel/olddefconfig.sh $(KERNEL_ABS_SRC)/scripts/kconfig/Makefile)
-KERNEL_CONFIG_DIR       := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs/
+KERNEL_CONFIG_DIR       := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
 KERNEL_CLEAN_DEPS       := kernel-modules-clean

@@ -1980,7 +1980,9 @@ ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
     $3CFG_FILE := $$(subst //,/,$$(_$3CFG_FILE))
   else
     ifneq ($$(wildcard $$(call __stamp,bsp,source)),)
-      $$(error $$($3CFG_FILE): can not be found, please pass a valid $1 defconfig)
+      ifneq ($$($3CFG_FILE),)
+        $$(error $$($3CFG_FILE): can not be found, please pass a valid $1 defconfig)
+      endif
     endif
   endif
  endif

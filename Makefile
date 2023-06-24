@@ -4281,11 +4281,11 @@ FI           ?= $(FEATURE_INIT)
 
 KERNEL_INIT_DEPS := kernel-olddefconfig
 # without obvious defconfig trigger, olddefconfig may not work when the source is not downloaded.
-ifeq ($(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG)),)
+ifeq ($(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG_FILE)),)
   KERNEL_INIT_DEPS := kernel-defconfig kernel-olddefconfig
 endif
 
-kernel-init: $(KERNEL_INIT_DEPS)
+kernel-init: $(KERNEL_INIT_DEPS) $(KERNEL_DEPS)
 	$(Q)$(call make_kernel,$(IMAGE))
 
 feature-init: $(if $(FEATURE),feature kernel-init) FORCE

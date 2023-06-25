@@ -43,5 +43,6 @@ We can build one in Linux Lab with these commands:
 * [Prebuilt GNU Toolchain](https://www.sifive.com/boards)
 * [RISC-V Proxy Kernel and Boot Loader](https://github.com/riscv/riscv-pk)
 * [RISC-V Open Source Supervisor Binary Interface](https://github.com/riscv/opensbi)
+* https://gitlab.com/qemu-project/qemu/-/blob/master/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
 * buildroot/configs/qemu_riscv32_virt_defconfig
 * buildroot/board/qemu/riscv32-virt/

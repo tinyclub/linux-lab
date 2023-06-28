@@ -4287,7 +4287,7 @@ FI           ?= $(FEATURE_INIT)
 
 KERNEL_INIT_DEPS := kernel-olddefconfig
 # without obvious defconfig trigger, olddefconfig may not work when the source is not downloaded.
-ifeq ($(wildcard $(KERNEL_CONFIG_DIR)/$(_KCFG_FILE)),)
+ifeq ($(wildcard $(KERNEL_CONFIG_DIR)),)
   KERNEL_INIT_DEPS := kernel-defconfig kernel-olddefconfig
 endif
 

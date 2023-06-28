@@ -2018,28 +2018,28 @@ $$(call _stamp,$1,defconfig): $$(_$3CFG_FULL)
 	$$(if $$($3CFGS),$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG)))
 	$$(Q)touch $$@
 
-$1_config := $(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config))
+$(call _uc,$1)_CONFIG = $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1)_BUILD)/$$(or $$($(call _uc,$1)_CONFIG_STATUS),.config))
 
-$$($1_config): $$(call _stamp,$1,defconfig)
+$$($(call _uc,$1)_CONFIG): $$(call _stamp,$1,defconfig)
 
-$1-defconfig: $$($1_config)
+$1-defconfig: $$($(call _uc,$1)_CONFIG)
 
 $1-defconfig: $$(call _stamp,$1,defconfig)
 
 $1-oldefconfig: $1-olddefconfig
 $1-olddefconfig: $$(call __stamp,$1,olddefconfig)
 
-$$(call _stamp,$1,olddefconfig): $$($1_config)
+$$(call _stamp,$1,olddefconfig): $$($(call _uc,$1)_CONFIG)
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,$$(or $$($(call _uc,$1)_OLDDEFCONFIG),olddefconfig) $$($(call _uc,$1)_CONFIG_EXTRAFLAG) $$($(call _uc,$1)_NOCONFIG))
 	$$(Q)touch $$@
 
 $1-oldconfig: $$(call __stamp,$1,oldconfig)
 
-$$(call _stamp,$1,oldconfig): $$($1_config)
+$$(call _stamp,$1,oldconfig): $$($(call _uc,$1)_CONFIG)
 	$$($(call _uc,$1)_CONFIG_EXTRACMDS)$$(call make_$1,oldconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 	$$(Q)touch $$@
 
-$1-menuconfig: $$($1_config)
+$1-menuconfig: $$($(call _uc,$1)_CONFIG)
 	$$(call make_$1,menuconfig $$($(call _uc,$1)_CONFIG_EXTRAFLAG))
 
 PHONY += $(addprefix $1-,defconfig olddefconfig oldefconfig oldconfig menuconfig)
@@ -2884,6 +2884,23 @@ kernel-oldnoconfig: kernel-olddefconfig
 
 PHONY += kernel-oldnoconfig
 
+#$(warning $(call gensource,kernel,LINUX))
+$(eval $(call gensource,kernel,LINUX))
+# Add basic kernel & modules deps
+#$(warning $(call gendeps,kernel))
+$(eval $(call gendeps,kernel))
+#$(warning $(call gengoals,kernel,LINUX))
+$(eval $(call gengoals,kernel,LINUX))
+# Configure Kernel
+#$(warning $(call gencfgs,kernel,linux,K))
+$(eval $(call gencfgs,kernel,linux,K))
+#$(warning $(call genclone,kernel,linux,K))
+$(eval $(call genclone,kernel,linux,K))
+#$(warning $(call genenvdeps,kernel,LINUX,K))
+$(eval $(call genenvdeps,kernel,LINUX,K))
+# Get configs must be enabled/disabled for target toolchain and kernel versions
+$(eval $(call __vs,KCFGS,GCC,LINUX))
+
 # kernel features support
 KERNEL_FEATURE_ENV_TOOL := tools/kernel/feature-env.sh
 KERNEL_FEATURE_DOWNLOAD_TOOL := tools/kernel/feature-download.sh
@@ -2909,7 +2926,7 @@ $(call __stamp,kernel,env.feature):
 	$(Q)touch $@
 
 kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call __stamp,kernel,defconfig.feature)
-$(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
+$(call __stamp,kernel,defconfig.feature): $(ENV_FILES) $(KERNEL_CONFIG)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig) $(KERNEL_NOCONFIG))
@@ -2955,23 +2972,6 @@ features-test: kernel-feature-test
 feature-test: kernel-feature-test
 
 PHONY += $(addsuffix -test,$(FEATURES_TARGETS))
-
-#$(warning $(call gensource,kernel,LINUX))
-$(eval $(call gensource,kernel,LINUX))
-# Add basic kernel & modules deps
-#$(warning $(call gendeps,kernel))
-$(eval $(call gendeps,kernel))
-#$(warning $(call gengoals,kernel,LINUX))
-$(eval $(call gengoals,kernel,LINUX))
-# Configure Kernel
-#$(warning $(call gencfgs,kernel,linux,K))
-$(eval $(call gencfgs,kernel,linux,K))
-#$(warning $(call genclone,kernel,linux,K))
-$(eval $(call genclone,kernel,linux,K))
-#$(warning $(call genenvdeps,kernel,LINUX,K))
-$(eval $(call genenvdeps,kernel,LINUX,K))
-# Get configs must be enabled/disabled for target toolchain and kernel versions
-$(eval $(call __vs,KCFGS,GCC,LINUX))
 
 # Module targets
 ifneq ($(findstring module,$(MAKECMDGOALS)),)

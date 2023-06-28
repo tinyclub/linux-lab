@@ -4291,6 +4291,10 @@ ifeq ($(wildcard $(KERNEL_CONFIG_DIR)),)
   KERNEL_INIT_DEPS := kernel-defconfig kernel-olddefconfig
 endif
 
+ifeq ($(MENUCONFIG),1)
+  KERNEL_INIT_DEPS += kernel-menuconfig
+endif
+
 kernel-init: $(KERNEL_INIT_DEPS) $(KERNEL_DEPS)
 	$(call make_kernel,$(IMAGE))
 

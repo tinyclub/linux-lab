@@ -2022,8 +2022,6 @@ $(call _uc,$1)_CONFIG = $$(if $$($(call _uc,$1)_CONFIG_STATUS),,$$($(call _uc,$1
 
 $$($(call _uc,$1)_CONFIG): $$(call _stamp,$1,defconfig)
 
-$1-defconfig: $$($(call _uc,$1)_CONFIG)
-
 $1-defconfig: $$(call _stamp,$1,defconfig)
 
 $1-oldefconfig: $1-olddefconfig
@@ -2926,7 +2924,7 @@ $(call __stamp,kernel,env.feature):
 	$(Q)touch $@
 
 kernel-olddefconfig kernel-menuconfig: $(call __stamp,kernel,defconfig) $(call __stamp,kernel,defconfig.feature)
-$(call __stamp,kernel,defconfig.feature): $(ENV_FILES) $(KERNEL_CONFIG)
+$(call __stamp,kernel,defconfig.feature): $(ENV_FILES)
 	$(Q)echo "Appling kernel feature configs: $(FEATURE)"
 	$(Q)$(KERNEL_FEATURE_CONFIG_TOOL) $(ARCH) $(XARCH) $(BOARD) $(LINUX) $(KERNEL_ABS_SRC) $(KERNEL_BUILD) "$(FEATURE)" || true
 	$(call make_kernel,$(or $(KERNEL_OLDDEFCONFIG),olddefconfig) $(KERNEL_NOCONFIG))

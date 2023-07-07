@@ -2002,6 +2002,9 @@ _$3CFG_FILE := $$(notdir $$($3CFG_FILE))
 _$3CFG_UNIQ := $(XARCH)_$(MACH)_$$(if $$(findstring $$($(call _uc,$2)),$$(_$3CFG_FILE)),,$$($(call _uc,$2))_)$$(_$3CFG_FILE)
 _$3CFG_FULL := $$($(call _uc,$1)_CONFIG_DIR)/$$(_$3CFG_UNIQ)
 
+# update variable XXX_CONFIG_FILE
+$(call _uc,$1)_CONFIG_FILE := $$(_$3CFG_FILE)
+
 ifneq ($$($3CFG_BUILTIN),)
 $$($3CFG_FILE)): $$(call __stamp,$1,source)
 endif

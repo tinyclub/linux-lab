@@ -65,7 +65,14 @@ function get_arch
 function get_arch_file
 {
     local arch="$1"
-    echo ${TOP_DIR}/src/linux-stable/tools/include/nolibc/arch-$arch.h
+
+    old_arch_file=${TOP_DIR}/src/linux-stable/tools/include/nolibc/arch-$arch.h
+    new_arch_file=${TOP_DIR}/src/linux-stable/tools/include/nolibc/$arch/sys.h
+    if [ -f $old_arch_file ]; then
+      echo $old_arch_file;
+    else
+      echo $new_arch_file;
+    fi
 }
 
 function get_board_logfile

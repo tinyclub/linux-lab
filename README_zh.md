@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.1 中文手册
+% Linux Lab v1.2 中文手册
 % [泰晓科技 | Tinylab.org][077]
 % \today
 --><!-- metadata end -->
@@ -37,6 +37,7 @@
     - [1.6.9 v0.9 @ 2022.01.13](#169-v09--20220113)
     - [1.6.10 v1.0 @ 2022.06.16](#1610-v10--20220616)
     - [1.6.11 v1.1 @ 2022.11.09](#1611-v11--20221109)
+    - [1.6.12 v1.2 @ 2023.07.09](#1612-v12--20230709)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
   - [2.1 软硬件要求](#21-软硬件要求)
   - [2.2 安装 Docker](#22-安装-docker)
@@ -489,6 +490,25 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * 新增 QEMU v7.0 编译支持
     * 新增龙芯虚拟开发板：`mips64el/loongson3-virt`，适配官方 v5.18 内核
     * 升级 RISC-V 内核版本到 v6.0.7
+
+### 1.6.12 v1.2 @ 2023.07.09
+
+v1.2 升级部分内核到 v6.3.6，升级部分 QEMU 版本到 v8.0.2，新增 nolibc 和 NOMMU 开发支持，另有新增 4 款虚拟开发板：`ppc/ppce500`, `arm/virt`, `loongarch/virt` 和 `s390x/s390-ccw-virtio`。
+
+* v1.2 rc3
+    * 新增 QEMU v8.0.x 开发支持
+    * 新增 NOMMU 开发支持
+    * 修复新版 Manjaro 下启动卡死的问题
+
+* v1.2 rc2
+    * 新增 nolibc 开发支持
+    * 新增 syscall 裁减开发支持
+    * 新增 oneshot 模式和 nolibc 模式的使用文档
+
+* v1.2 rc1
+    * 新增部分内核到 v6.1.1
+    * 更新 rust-for-kernel 支持
+    * 为 riscv64/virt 新增 openeuler 内核支持
 
 # 2. Linux Lab 安装
 
@@ -2076,6 +2096,7 @@ Nolibc 模式新增了如下两组文件：
     * [Linux Lab：难以抗拒的十大理由 V2.0][068]
 
 * 中文用户手册
+    * [Linux Lab v1.2 中文手册][089]
     * [Linux Lab v1.1 中文手册][086]
     * [Linux Lab v1.0 中文手册][065]
     * [Linux Lab v0.9 中文手册][064]
@@ -2890,3 +2911,4 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [086]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-zh.pdf
 [087]: https://www.cctalk.com/m/group/90483396
 [088]: https://www.cctalk.com/m/group/90251209
+[089]: https://tinylab.org/pdfs/linux-lab-v1.2-manual-zh.pdf

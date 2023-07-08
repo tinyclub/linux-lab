@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.1 Manual
+% Linux Lab v1.2 Manual
 % [TinyLab Community | Tinylab.org][044]
 % \today
 --><!-- metadata end -->
@@ -1865,6 +1865,7 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)][042]
 
 * User Manual
+    * [Linux Lab v1.2 User Manual][053]
     * [Linux Lab v1.1 User Manual][050]
     * [Linux Lab v1.0 User Manual][033]
     * [Linux Lab v0.9 User Manual][032]
@@ -2628,3 +2629,4 @@ Welcome to mark our web site, star our git repositories:
 [050]: https://tinylab.org/pdfs/linux-lab-v1.1-manual-en.pdf
 [051]: https://www.cctalk.com/m/group/90483396
 [052]: https://www.cctalk.com/m/group/90251209
+[053]: https://tinylab.org/pdfs/linux-lab-v1.2-manual-en.pdf

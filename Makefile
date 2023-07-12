@@ -2579,6 +2579,8 @@ $(NOLIBC_OBJ): $(NOLIBC_SRC) $(NOLIBC_DEP)
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -E -o $@.i \
 	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
+	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -S -o $@.s \
+	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 	$(Q)$(C_PATH) $(CCPRE)gcc $(NOLIBC_CFLAGS) -c -o $@ \
 	  -nostdlib -static $(NOLIBC_INC) $< -lgcc
 

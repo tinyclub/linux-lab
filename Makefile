@@ -4295,6 +4295,9 @@ endif
 ifeq ($(MENUCONFIG),1)
   KERNEL_INIT_DEPS += kernel-menuconfig
 endif
+ifeq ($(SAVECONFIG),1)
+  KERNEL_INIT_DEPS += kernel-saveconfig
+endif
 
 kernel-init: $(KERNEL_INIT_DEPS) $(KERNEL_DEPS)
 	$(call make_kernel,$(IMAGE))

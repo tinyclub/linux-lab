@@ -7,7 +7,9 @@
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 
-def_boards="arm/vexpress-a9 \
+def_boards="\
+    arm/versatilepb \
+    arm/vexpress-a9 \
     arm/virt \
     aarch64/virt \
     ppc/g3beige \

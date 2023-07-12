@@ -113,9 +113,9 @@ do
         print_line
         echo "LOG: testing report for $b:" | tee -a $TEST_LOGFILE
         echo
-        awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++;print} /\[SKIPPED\][\r]*$$/{s++;print} \
-             END{ printf("\n%d test(s) passed, %d skipped, %d failed.\n", p, s, f); \
-             printf("See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE | tee -a $TEST_LOGFILE
+	awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{if (!f) printf("\n"); f++; print} /\[SKIPPED\][\r]*$$/{s++;print} \
+             END{ printf("\n%d test(s): %3d passed, %3d skipped, %3d failed.\n", p+s+f, p, s, f); \
+             printf("\nSee all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE | tee -a $TEST_LOGFILE
 
     else
         echo "LOG: current nolibc doesn't support $b" | tee -a $TEST_LOGFILE
@@ -152,7 +152,8 @@ do
         printf "%${max_len}s | " $b
         if [ -f $BOARD_LOGFILE ]; then
             awk '/\[OK\][\r]*$$/{p++} /\[FAIL\][\r]*$$/{f++} /\[SKIPPED\][\r]*$$/{s++} \
-                 END{ printf("%d test(s) passed, %d skipped, %d failed.", p, s, f); \
+                 END{ printf("%3d test(s): %3d passed, %3d skipped, %3d failed => status: ", p+s+f, p, s, f); \
+                 if (f) printf("failure."); else if (s) printf("warning."); else printf("success.");; \
                  printf(" See all results in %s\n", ARGV[1]) }' $BOARD_LOGFILE
         else
             printf "no test log found\n"

@@ -45,6 +45,11 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 HROOTFS ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.$(FSTYPE)
 
+# rv32 nolibc support patch is ready for both tools/nolibc and selftests/nolibc, see https://lore.kernel.org/linux-riscv/
+# Use the same toolchain as riscv64
+NOLIBC_CFLAGS  := -march=rv32im -mabi=ilp32 -Wl,-melf32lriscv_ilp32
+NOLIBC_LDFLAGS := -melf32lriscv_ilp32
+
 #XKCLI   ?= earlycon=sbi
 QTOOL[OS_trusty]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 QTOOL[OS_focal]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)

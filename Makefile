@@ -2520,8 +2520,8 @@ PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$
 NOLIBC_STD[LINUX_$(call _any,LINUX,>=,v6.4)] := -std=c89
 $(eval $(call __vs,NOLIBC_STD,LINUX))
 
-NOLIBC_CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables $(NOLIBC_STD) -DRECORD_SYSCALL -Wl,-s
-NOLIBC_LDFLAGS := -s
+NOLIBC_CFLAGS  += -Os -fno-ident -fno-asynchronous-unwind-tables $(NOLIBC_STD) -DRECORD_SYSCALL -Wl,-s
+NOLIBC_LDFLAGS += -s
 
 ifeq ($(nolibc_stkp),1)
   NOLIBC_CFLAGS  += -DNOLIBC_STACKPROTECTOR -mstack-protector-guard=global -fstack-protector-all
@@ -2538,25 +2538,6 @@ else
   NOLIBC_CFLAGS += -D__NOLIBC__
   NOLIBC_DEP := $(NOLIBC_SYSROOT_ARCH)
   NOLIBC_INC := -I$(NOLIBC_SYSROOT_ARCH)/include
-endif
-
-ifeq ($(XARCH),riscv32)
-  # rv32 support patch is ready for both tools/nolibc and selftests/nolibc, see https://lore.kernel.org/linux-riscv/
-  NOLIBC_CFLAGS  += -march=rv32im -mabi=ilp32 -Wl,-melf32lriscv_ilp32
-  NOLIBC_LDFLAGS += -melf32lriscv_ilp32
-  BITS_WORDSIZE_H := /usr/riscv64-linux-gnu/include/bits/wordsize.h
-
-$(NOLIBC_SRC): FORCE
-	$(Q)[ -f $(BITS_WORDSIZE_H) ] && grep -q 'rv32i-based targets are not supported' $(BITS_WORDSIZE_H) && sudo cp tools/nolibc/wordsize.h $(BITS_WORDSIZE_H) || true
-endif
-
-ifeq ($(XARCH),i386)
-  NOLIBC_CFLAGS  += -m32 -Wl,-melf_i386
-  NOLIBC_LDFLAGS += -melf_i386
-endif
-
-ifeq ($(XARCH),s390x)
-  NOLIBC_CFLAGS  += -m64
 endif
 
 # nolibc gc sections and debug support

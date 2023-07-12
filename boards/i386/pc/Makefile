@@ -45,6 +45,10 @@ $(eval $(call _vsif,ARCH,$(XARCH),LINUX,<=,v2.6.23))
 NETDEV_LIST ?= ne2k_pci e1000 rtl8139 pcnet
 NETDEV  ?= e1000
 
+# Use the same toolchain as x86_64
+NOLIBC_CFLAGS  := -m32 -Wl,-melf_i386
+NOLIBC_LDFLAGS := -melf_i386
+
 ROOTDEV_LIST ?= /dev/hda /dev/ram0 /dev/nfs
 ROOTDEV_LIST[LINUX_v2.6.34.9] ?= /dev/sda /dev/ram0 /dev/nfs
 ROOTDEV ?= /dev/ram0

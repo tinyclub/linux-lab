@@ -19,6 +19,7 @@ HOST_GCC := 9
 
 # no buildroot support for loongarch currently, use nolibc initrd by default
 NOLIBC  := $(or $(NOLIBC),1)
+NOLIBC_CFLAGS := -m64
 
 ROOTDEV_LIST := /dev/ram0 /dev/nfs
 ROOTDEV      ?= /dev/ram0

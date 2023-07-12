@@ -48,7 +48,11 @@ HAS_DTS[LINUX_v2.6.14.7] := 0
 HAS_DTS := $(call _v,HAS_DTS,LINUX,1)
 
 ifeq ($(HAS_DTS), 1)
-  ORIDTB  ?= arch/$(ARCH)/boot/dts/versatile-pb.dtb
+  # Fix up dts path for kernel >= v6.4
+  DTS_SUBPATH[LINUX_$(call _any,LINUX,>=,v6.4)] = arm/
+  $(eval $(call __vs,DTS_SUBPATH,LINUX))
+
+  ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DTS_SUBPATH)versatile-pb.dtb
   BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 else
   BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/nodtb/u-boot

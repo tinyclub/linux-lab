@@ -19,13 +19,17 @@ NETDEV  ?= smc91c111
 
 SERIAL  ?= ttymxc0
 
+# Fix up dts path for kernel >= v6.4
+DTS_SUBPATH[LINUX_$(call _any,LINUX,>=,v6.4)] = nxp/imx/
+$(eval $(call __vs,DTS_SUBPATH,LINUX))
+
 ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
 
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext4
 ORIIMG  ?= arch/$(ARCH)/boot/zImage
 DIMAGE  ?= imx6ull-nand-npi.dtb
-ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DIMAGE)
+ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DTS_SUBPATH)$(DIMAGE)
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
 KRELEASE?= $(BSP_KERNEL)/$(LINUX)/kernel.release
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/$(DIMAGE)

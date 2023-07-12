@@ -54,11 +54,15 @@ SERIAL  ?= ttyAMA0
 
 ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
 
+# Fix up dts path for kernel >= v6.4
+DTS_SUBPATH[LINUX_$(call _any,LINUX,>=,v6.4)] = arm/
+$(eval $(call __vs,DTS_SUBPATH,LINUX))
+
 ROOTDEV ?= /dev/ram0
 FSTYPE  ?= ext2
 ORIIMG  ?= arch/$(ARCH)/boot/zImage
 UORIIMG ?= arch/$(ARCH)/boot/uImage
-ORIDTB  ?= arch/$(ARCH)/boot/dts/vexpress-v2p-ca9.dtb
+ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DTS_SUBPATH)vexpress-v2p-ca9.dtb
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/vexpress-v2p-ca9.dtb

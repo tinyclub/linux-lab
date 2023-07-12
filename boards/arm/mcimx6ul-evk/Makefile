@@ -19,10 +19,14 @@ SERIAL  ?= ttymxc0
 
 ROOTDEV_LIST := /dev/mmcblk0 /dev/ram0 /dev/nfs
 
+# Fix up dts path for kernel >= v6.4
+DTS_SUBPATH[LINUX_$(call _any,LINUX,>=,v6.4)] = nxp/imx/
+$(eval $(call __vs,DTS_SUBPATH,LINUX))
+
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext4
 ORIIMG  ?= arch/$(ARCH)/boot/zImage
-ORIDTB  ?= arch/$(ARCH)/boot/dts/imx6ul-liteboard.dtb
+ORIDTB  ?= arch/$(ARCH)/boot/dts/$(DTS_SUBPATH)imx6ul-liteboard.dtb
 KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/zImage
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/imx6ul-liteboard.dtb
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz

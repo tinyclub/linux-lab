@@ -10,5 +10,5 @@ ifeq ($(CCORI), mirrors.edge.kernel.org)
   CCBASE := gcc-$(CCVER)-nolibc/$(subst -x,,$(CCPRE)x)
   CCPATH ?= $(TOOLCHAIN)/$(CCBASE)/bin
   _CCBASE := x86_64-$(subst /,-,$(CCBASE))
-  CCURL  := https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/$(CCVER)/$(_CCBASE).tar.gz
+  CCURL  := https://mirrors.ustc.edu.cn/kernel.org/tools/crosstool/files/bin/x86_64/$(CCVER)/$(_CCBASE).tar.gz
 endif

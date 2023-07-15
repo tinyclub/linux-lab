@@ -9,7 +9,7 @@ ccpath=$1
 ccpre=$2
 
 # Get current gcc version
-ccver=$(/usr/bin/env PATH=$ccpath:$PATH ${ccpre}gcc --version | sed -ne '1{s/^.*) //pg}')
+ccver=$(/usr/bin/env PATH=$ccpath:$PATH ${ccpre}gcc --version 2>/dev/null | sed -ne '1{s/^.*) //pg}')
 
 for i in $ccver ${ccver%.*} ${ccver%%.*}
 do

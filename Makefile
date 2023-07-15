@@ -2489,7 +2489,7 @@ endif
 ifeq ($(root_targets),1)
 ifeq ($(NOLIBC),1)
 
-root-nolibc: nolibc-initramfs
+root-nolibc: env-prepare nolibc-initramfs
 root-nolibc-distclean: root-nolibc-clean
 	$(Q)echo "Cleaning nolibc output"
 	$(Q)rm -rf $(NOLIBC_SYSROOT)

@@ -31,6 +31,9 @@ boards=$1
 [ -z "$nolibc_timeout" ] && nolibc_timeout=10
 [ -z "$nolibc_run" ] && nolibc_run=1
 
+# Customize nolibc_timeout for boards
+nolibc_timeout["ppc64le-pseries"]=15
+
 while [ -z "$boards" ]
 do
     echo "LOG: Available boards for nolibc testing:"
@@ -106,8 +109,15 @@ do
 
         BOARD_LOGFILE=$(get_board_logfile $b)
         rm -rf $BOARD_LOGFILE
+
+        # Silence bsp download info, must download it manually before testing
         make bsp-outdir b=$b
         make bsp -t b=$b
+
+        # get board specific timeout setting
+        board=$(echo $b | tr '/' '-')
+        [ -n "${nolibc_timeout[$board]}" ] && nolibc_timeout=${nolibc_timeout[$board]}
+
         make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_PREPARE=$nolibc_prepare TEST_TIMEOUT=$nolibc_timeout b=$b | tee -a $BOARD_LOGFILE
         cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE
 

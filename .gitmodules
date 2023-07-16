@@ -98,7 +98,7 @@
 	ignore = all
 	path = boards/ppc/ppce500/bsp
 	url = https://gitee.com/tinylab/qemu-ppc-ppce500.git
-[submodule "boards/ppc64le/pseries-kinetic/bsp"]
+[submodule "boards/ppc64le/pseries/bsp"]
 	ignore = all
-	path = boards/ppc64le/pseries-kinetic/bsp
-	url = https://gitee.com/tinylab/qemu-ppc64le-pseries-kinetic.git
+	path = boards/ppc64le/pseries/bsp
+	url = https://gitee.com/tinylab/qemu-ppc64le-pseries.git

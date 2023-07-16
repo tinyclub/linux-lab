@@ -14,7 +14,7 @@ def_boards="\
     aarch64/virt \
     ppc/g3beige \
     ppc/ppce500 \
-    ppc64le/pseries-kinetic \
+    ppc64le/pseries \
     i386/pc \
     x86_64/pc \
     mipsel/malta \

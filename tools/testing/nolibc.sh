@@ -106,6 +106,7 @@ do
 
         BOARD_LOGFILE=$(get_board_logfile $b)
         rm -rf $BOARD_LOGFILE
+        make bsp-outdir b=$b
         make bsp -t b=$b
         make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_PREPARE=$nolibc_prepare TEST_TIMEOUT=$nolibc_timeout b=$b | tee -a $BOARD_LOGFILE
         cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE

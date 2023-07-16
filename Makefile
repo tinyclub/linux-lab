@@ -2163,8 +2163,6 @@ _BSP ?= $(BSP)
 vip ?= 0
 ifneq ($(vip),0)
   __BSP := latest
-else
-  __BSP := origin/master
 endif
 
 # Check and configure board type

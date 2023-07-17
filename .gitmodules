@@ -102,3 +102,7 @@
 	ignore = all
 	path = boards/ppc64le/pseries/bsp
 	url = https://gitee.com/tinylab/qemu-ppc64le-pseries.git
+[submodule "boards/ppc64le/powernv/bsp"]
+	ignore = all
+	path = boards/ppc64le/powernv/bsp
+	url = https://gitee.com/tinylab/qemu-ppc64le-powernv.git

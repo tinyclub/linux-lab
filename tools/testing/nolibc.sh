@@ -16,6 +16,8 @@ def_boards="\
     ppc/ppce500 \
     ppc64le/pseries \
     ppc64le/powernv \
+    ppc64/pseries \
+    ppc64/powernv \
     i386/pc \
     x86_64/pc \
     mipsel/malta \
@@ -35,6 +37,8 @@ boards=$1
 # Customize nolibc_timeout for boards
 nolibc_timeout["ppc64le-pseries"]=15
 nolibc_timeout["ppc64le-powernv"]=20
+nolibc_timeout["ppc64-pseries"]=15
+nolibc_timeout["ppc64-powernv"]=20
 
 while [ -z "$boards" ]
 do

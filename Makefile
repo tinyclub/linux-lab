@@ -3282,7 +3282,7 @@ else
 endif
 
 ifeq ($(NOLIBC),1)
-  KOPTS   += CONFIG_SYSCALLS_USED=$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall)
+  KOPTS   += CONFIG_USED_SYSCALLS=$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall)
 endif
 
 DTC := tools/kernel/dtc

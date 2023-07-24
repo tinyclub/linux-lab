@@ -10,7 +10,7 @@ LINUX   ?= v6.4
 NOLIBC  := $(or $(NOLIBC),1)
 
 # Use the same toolchain as ppc64le
-NOLIBC_CFLAGS  := -mbig-endian -mmultiple -Wl,-EB -Wl,-melf64ppc
+NOLIBC_CFLAGS  := -mbig-endian -mmultiple -Wl,-EB -Wl,-melf64ppc -mno-vsx
 NOLIBC_LDFLAGS := -EB -melf64ppc
 
 SERIAL  ?= hvc0

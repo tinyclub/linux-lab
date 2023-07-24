@@ -9,6 +9,8 @@ LINUX   ?= v6.4
 # no buildroot support for arm/virt currently, use nolibc initrd by default
 NOLIBC  := $(or $(NOLIBC),1)
 
+NOLIBC_CFLAGS := -mno-vsx
+
 SERIAL  ?= hvc0
 
 ROOTDEV_LIST := /dev/ram0

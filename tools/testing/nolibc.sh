@@ -124,7 +124,7 @@ do
         board=$(echo $b | tr '/' '-')
         [ -n "${nolibc_timeout[$board]}" ] && nolibc_timeout=${nolibc_timeout[$board]}
 
-        make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_PREPARE=$nolibc_prepare TEST_TIMEOUT=$nolibc_timeout b=$b | tee -a $BOARD_LOGFILE
+        make test f=nolibc nolibc_inc=$nolibc_inc DEVMODE=1 TEST_PREPARE=$nolibc_prepare TEST_TIMEOUT=$nolibc_timeout TEST_LOG=$BOARD_LOGFILE b=$b
         cat $BOARD_LOGFILE | col -bp >> $TEST_LOGFILE
 
         # Parse and report it, based on src/linux-stable/tools/testing/selftests/nolibc/Makefile

@@ -4236,9 +4236,9 @@ ifneq ($(TEST_TIMEOUT),0)
 
   TEST_EXPECTED ?= $(KERNEL_OFF)
 
-  TIMEOUT_CMD = t=$(TEST_TIMEOUT); \
+  TIMEOUT_CMD = t=$(TEST_TIMEOUT); sleep 5; \
 	while [ $$t -gt 0 ]; do                                                        \
-	    sleep 5; t=$$(expr $$t - 5); echo "detecting $(TEST_EXPECTED) ...";        \
+	    sleep 1; t=$$(expr $$t - 1); echo "detecting $(TEST_EXPECTED) ...";        \
 	    if grep -qE "$(TEST_EXPECTED)" "$(TEST_LOG)"; then                         \
 		sudo pkill -15 qemu-system-$(XARCH);                                   \
 		echo "test finish"; t=1; TIMEOUT_RET=0; break;                         \

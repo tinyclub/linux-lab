@@ -9,7 +9,8 @@ LINUX   ?= v6.4
 # no buildroot support for arm/virt currently, use nolibc initrd by default
 NOLIBC  := $(or $(NOLIBC),1)
 
-NOLIBC_CFLAGS := -mno-vsx
+NOLIBC_CFLAGS := -m64 -mlittle-endian -Wl,-EL,-melf64lppc -mno-multiple -mno-vsx -mabi=elfv2
+NOLIBC_LDFLAGS := -EL -melf64lppc
 
 SERIAL  ?= hvc0
 

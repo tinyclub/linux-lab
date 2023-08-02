@@ -4238,20 +4238,21 @@ ifneq ($(TEST_TIMEOUT),0)
 
   TEST_EXPECTED ?= $(KERNEL_OFF)
 
-  TIMEOUT_CMD = t=$(TEST_TIMEOUT); sleep 5; \
+  TIMEOUT_CMD = t=$(TEST_TIMEOUT); \
 	while [ $$t -gt 0 ]; do                                                        \
-	    sleep 1; t=$$(expr $$t - 1); echo "detecting $(TEST_EXPECTED) ...";        \
+	    echo "detecting $(TEST_EXPECTED) ...";                                     \
 	    if grep -qE "$(TEST_EXPECTED)" "$(TEST_LOG)"; then                         \
 		sudo pkill -15 qemu-system-$(XARCH);                                   \
 		echo "test finish"; t=1; TIMEOUT_RET=0; break;                         \
 	    fi;                                                                        \
+	    sleep 1; t=$$(expr $$t - 1);                                               \
 	done;                                                                          \
 	if [ $$t -le 0 ]; then sudo pkill -15 qemu-system-$(XARCH); echo "qemu-system-$(XARCH) timeout"; TIMEOUT_RET=1; fi
 
   TEST_LOGGING ?= TEST_LOGGING=$(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$$(date +"%Y%m%d-%H%M%S")
   TEST_BEFORE ?= $(TEST_LOGGING); mkdir -p $$TEST_LOGGING && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
 	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
-	&& sleep 1; (
+	&& (
   TEST_AFTER  ?= &); $(TIMEOUT_CMD); echo $$TIMEOUT_RET > $(TEST_RET); sudo kill -15 $$(cat $(TEST_LOG_PID)); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \
 	ret=$$(cat $(TEST_RET)) && [ $$ret -ne 0 ] && echo "ERR: Boot timeout in $(TEST_TIMEOUT)." && echo "ERR: Log saved in $(TEST_LOG)" && exit $$ret; \
 	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then echo "LOG: Test continue after timeout kill in $(TEST_TIMEOUT)."; else echo "LOG: Boot run successfully."; fi; \

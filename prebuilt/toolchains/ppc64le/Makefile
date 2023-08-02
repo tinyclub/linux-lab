@@ -1,5 +1,7 @@
+
 # Makefile
 
+CCORI ?= internal
 CCORI_LIST ?= internal mirrors.edge.kernel.org
 
 ifeq ($(CCORI), internal)

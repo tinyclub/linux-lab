@@ -1,6 +1,6 @@
 # Makefile
 
-CCORI ?= mirrors.edge.kernel.org
+CCORI ?= internal
 CCORI_LIST ?= internal mirrors.edge.kernel.org
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/ppc64
 

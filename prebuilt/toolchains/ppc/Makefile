@@ -1,6 +1,6 @@
 # Makefile
 
-CCORI ?= bootlin
+CCORI ?= internal
 CCORI_LIST ?= internal bootlin mirrors.edge.kernel.org
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/$(XARCH)
 

@@ -932,7 +932,9 @@ else # CCORI != null
         ifeq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
           # If CCORI specified and it is not there, just download one
           ifeq ($(wildcard $(TOOLCHAIN)),)
-            $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+            ifneq ($(SKIP_NOTICE),1)
+              $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+            endif
           endif
         endif
       endif
@@ -2520,8 +2522,8 @@ PHONY += $(NOLIBC_TARGETS) $(foreach x,clean distclean rebuild,$(addsuffix -$x,$
 NOLIBC_STD[LINUX_$(call _any,LINUX,>=,v6.4)] := -std=c89
 $(eval $(call __vs,NOLIBC_STD,LINUX))
 
-NOLIBC_CFLAGS  += -Os -fno-ident -fno-asynchronous-unwind-tables $(NOLIBC_STD) -DRECORD_SYSCALL -Wl,-s
-NOLIBC_LDFLAGS += -s
+NOLIBC_CFLAGS  += -Os -ffreestanding -fno-ident -fno-asynchronous-unwind-tables $(NOLIBC_STD) -DRECORD_SYSCALL #-Wl,-s
+NOLIBC_LDFLAGS += #-s
 
 ifeq ($(nolibc_stkp),1)
   NOLIBC_CFLAGS  += -fno-stack-protector -mstack-protector-guard=global -fstack-protector-all

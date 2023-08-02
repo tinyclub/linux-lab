@@ -4231,7 +4231,7 @@ ifneq ($(TEST_TIMEOUT),0)
   # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
   TIMEOUT_CONTINUE ?= 0
 
-  KERNEL_OFF  = reboot: System halted|reboot: Power down|Kernel panic - not syncing: Attempted to kill init|Rebooting
+  KERNEL_OFF  = reboot: System halted|reboot: Power down|Kernel panic|Rebooting
   KERNEL_INIT = Linux Version
   KERNEL_FINI = Freeing .* memory
   INIT_RUN    = Run .* as init process

@@ -3273,10 +3273,10 @@ KOPTS ?=
 ifneq ($(findstring /dev/null,$(ROOTDEV)),)
   # directory is ok, but is not compressed cpio
   ifneq ($(wildcard $(IROOTFS)),)
-    KOPTS   += CONFIG_INITRAMFS_SOURCE=$(IROOTFS)
+    KOPTS   += CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(IROOTFS))"
     ROOT_RD := $(IROOTFS)
   else
-    KOPTS   += CONFIG_INITRAMFS_SOURCE=$(ROOTFS)
+    KOPTS   += CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(ROOTFS))"
     ROOT_RD := $(ROOTFS)
   endif
 else
@@ -3284,7 +3284,7 @@ else
 endif
 
 ifeq ($(NOLIBC),1)
-  KOPTS   += CONFIG_USED_SYSCALLS=$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall)
+  KOPTS   += CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))"
 endif
 
 DTC := tools/kernel/dtc

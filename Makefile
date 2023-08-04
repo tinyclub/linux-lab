@@ -4096,6 +4096,13 @@ else
   endif
 endif
 
+ifeq ($(FBDEV), virtio)
+  BOOT_CMD += -device virtio-gpu-pci
+endif
+ifneq ($(filter $(FBDEV),bochs vga),)
+  BOOT_CMD += -device VGA
+endif
+
 # Add extra qemu options
 BOOT_CMD += $(XOPTS) $(XQOPT) $(QOPTS)
 

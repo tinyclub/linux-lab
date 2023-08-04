@@ -4097,7 +4097,6 @@ else
 endif
 
 # Frame buffer device support
-FBDEV ?= std
 ifeq ($(FBDEV), virtio)
   BOOT_CMD += -device virtio-gpu-pci
 endif

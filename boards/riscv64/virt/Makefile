@@ -20,6 +20,9 @@ NETDEV_LIST := virtio
 NETDEV  ?= virtio
 SERIAL  ?= ttyS0
 
+# use bochs as VGA graphic device
+FBDEV   ?= std
+
 UBOOT   ?= v2022.04
 
 KRN_ADDR?= 0x84000000
@@ -90,4 +93,4 @@ QTOOL[OS_focal]   ?= $(BSP_QEMU)/$(QEMU)/bin/qemu-system-$(XARCH)
 # external toolchain, please download it while: make toolchain
 # Available CCORI: bootlin, gnu-mcu-eclipse
 CCORI[OS_trusty]   ?= gnu-mcu-eclipse
-CCORI[OS_focal]    ?= internal
+CCORI[OS_focal]    ?= mirrors.edge.kernel.org

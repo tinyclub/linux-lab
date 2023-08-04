@@ -4096,10 +4096,12 @@ else
   endif
 endif
 
+# Frame buffer device support
+FBDEV ?= std
 ifeq ($(FBDEV), virtio)
   BOOT_CMD += -device virtio-gpu-pci
 endif
-ifneq ($(filter $(FBDEV),bochs vga),)
+ifneq ($(filter $(FBDEV),bochs vga std),)
   BOOT_CMD += -device VGA
 endif
 

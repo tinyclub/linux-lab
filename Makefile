@@ -3282,7 +3282,7 @@ ifneq ($(findstring /dev/null,$(ROOTDEV)),)
     ROOT_RD := $(ROOTFS)
   endif
 else
-  KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && CONFIG_INITRAMFS_SOURCE="")
+  KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE))")
 endif
 
 # Allow configure INITRAMFS_SOURCE, prefer menuconfig to commandline

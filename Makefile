@@ -3275,20 +3275,20 @@ INITRAMFS_SOURCE_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s INI
 ifneq ($(findstring /dev/null,$(ROOTDEV)),)
   # directory is ok, but is not compressed cpio
   ifneq ($(wildcard $(IROOTFS)),)
-    KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(IROOTFS))")
+    KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && echo CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(IROOTFS))")
     ROOT_RD := $(IROOTFS)
   else
-    KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(ROOTFS))")
+    KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && echo CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE),$(ROOTFS))")
     ROOT_RD := $(ROOTFS)
   endif
 else
-  KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE))")
+  KOPTS   += $$([ -z "$(INITRAMFS_SOURCE_CONFIG)" ] && echo CONFIG_INITRAMFS_SOURCE="$(or $(CONFIG_INITRAMFS_SOURCE))")
 endif
 
 # Allow configure INITRAMFS_SOURCE, prefer menuconfig to commandline
 USED_SYSCALLS_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s USED_SYSCALLS | tr -d '\n')
 ifeq ($(NOLIBC),1)
-  KOPTS   += $$([ -z "$(USED_SYSCALLS_CONFIG)" ] && CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))")
+  KOPTS   += $$([ -z "$(USED_SYSCALLS_CONFIG)" ] && echo CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))")
 endif
 
 DTC := tools/kernel/dtc

@@ -3288,7 +3288,7 @@ endif
 # Allow configure INITRAMFS_SOURCE, prefer menuconfig to commandline
 USED_SYSCALLS_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s USED_SYSCALLS | tr -d '\n')
 ifeq ($(NOLIBC),1)
-  KOPTS   += $$([ -z "$(USED_SYSCALLS_CONFIG)" ] && CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))"
+  KOPTS   += $$([ -z "$(USED_SYSCALLS_CONFIG)" ] && CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))")
 endif
 
 DTC := tools/kernel/dtc

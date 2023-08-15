@@ -4,6 +4,10 @@
 #
 # Usage: nolibc.sh [board]
 #
+# Note, to get a clean testing without checkout, need run with:
+#
+#    $ DEVMODE=1 nolibc_prepare=nolibc-distclean,kernel-mrproper tools/testing/nolibc.sh
+#
 
 TOP_DIR=$(cd $(dirname $0)/../../ && pwd)
 

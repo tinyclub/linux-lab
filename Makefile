@@ -4230,22 +4230,7 @@ TEST_UBOOT   ?= $(U)
 ifneq ($(TEST_TIMEOUT),0)
   TEST_ENV        ?= $$TEST_LOGGING/boot.env
   TEST_LOG        ?= $$TEST_LOGGING/boot.log
-
-  # ref: https://fadeevab.com/how-to-setup-qemu-output-to-console-and-automate-using-shell-script/#3inputoutputthroughanamedpipefile
-  # Must create pipe.in and pipe.out, if only one pipe, the guess output will work as guest input
-  # and breaks uboot autoboot progress
-
-  TEST_LOG_PIPE   ?= $$TEST_LOGGING/boot.log.pipe
-  TEST_LOG_PID    ?= $$TEST_LOGGING/boot.log.pid
-  TEST_LOG_READER ?= tools/qemu/reader.sh
   TEST_RET        ?= $$TEST_LOGGING/boot.ret
-
-  # Ref: /labs/linux-lab/logging/arm64-virt-linux-v5.1/20190520-145101/boot.log
-  ifneq ($(findstring serial,$(XOPTS)),)
-    XOPTS         := $$(echo "$(XOPTS) " | sed -e "s%-serial [^ ]* %-serial mon:pipe:$(TEST_LOG_PIPE) %g")
-  else
-    XOPTS         += -serial mon:pipe:$(TEST_LOG_PIPE)
-  endif
 
   # Allow test continue if the board always hang after poweroff, please pass TIMEOUT_CONTINUE=1
   TIMEOUT_CONTINUE ?= 0
@@ -4269,13 +4254,11 @@ ifneq ($(TEST_TIMEOUT),0)
 	if [ $$t -le 0 ]; then sudo pkill -15 qemu-system-$(XARCH); echo "qemu-system-$(XARCH) timeout"; TIMEOUT_RET=1; fi
 
   TEST_LOGGING ?= TEST_LOGGING=$(TOP_DIR)/logging/$(XARCH)-$(MACH)-linux-$(LINUX)/$$(date +"%Y%m%d-%H%M%S")
-  TEST_BEFORE ?= $(TEST_LOGGING); mkdir -p $$TEST_LOGGING && sync && mkfifo $(TEST_LOG_PIPE).in && mkfifo $(TEST_LOG_PIPE).out && touch $(TEST_LOG_PID) && make env-dump > $(TEST_ENV) \
-	&& $(TEST_LOG_READER) $(TEST_LOG_PIPE) $(TEST_LOG) $(TEST_LOG_PID) 2>&1 \
-	&& (
-  TEST_AFTER  ?= &); $(TIMEOUT_CMD); echo $$TIMEOUT_RET > $(TEST_RET); sudo kill -15 $$(cat $(TEST_LOG_PID)); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \
-	ret=$$(cat $(TEST_RET)) && [ $$ret -ne 0 ] && echo "ERR: Boot timeout in $(TEST_TIMEOUT)." && echo "ERR: Log saved in $(TEST_LOG)" && exit $$ret; \
+  TEST_BEFORE ?= $(TEST_LOGGING); mkdir -p $$TEST_LOGGING && sync && make env-dump > $(TEST_ENV) && (
+  TEST_AFTER  ?= | tee $(TEST_LOG) &); $(TIMEOUT_CMD); echo $$TIMEOUT_RET > $(TEST_RET); [ $(TIMEOUT_CONTINUE) -eq 1 ] && echo 0 > $(TEST_RET); \
+	ret=$$(cat $(TEST_RET)) && rm $(TEST_RET) && [ $$ret -ne 0 ] && echo "ERR: Boot timeout in $(TEST_TIMEOUT)." && echo "ERR: Log saved in $(TEST_LOG)" && exit $$ret; \
 	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then echo "LOG: Test continue after timeout kill in $(TEST_TIMEOUT)."; else echo "LOG: Boot run successfully."; fi; \
-	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then sleep 2; rm -rf $(TEST_LOG_PIPE).in $(TEST_LOG_PIPE).out; fi
+	if [ $(TIMEOUT_CONTINUE) -eq 1 ]; then sleep 2; fi
   # If not support netowrk, should use the other root device
 endif
 

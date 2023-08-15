@@ -1870,6 +1870,12 @@ $1-cleanup: $1-cleanstamp
 	  && git reset --hard \
 	  && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$1]) || true
 
+$1-mrproper:
+	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	  && cd $$($(call _uc,$1)_SRC_FULL) \
+	  && echo "Removing all generated files + config + various backup files in $$($(call _uc,$1)_SRC) ..." \
+	  && make ARCH=$(ARCH) mrproper || true
+
 $1-clean: $1-rawclean
 $1-cleanall: $1-clean $1-cleansrc
 
@@ -1882,7 +1888,7 @@ $1-distclean:
 	  rm -rvf $$($(call _uc,$1)_BUILD); \
 	fi
 
-PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc clean cleanall rawclean distclean)
+PHONY += $(addprefix $1-,cleanstamp cleanup cleansrc clean cleanall rawclean distclean mrproper)
 
 endef # gensource
 

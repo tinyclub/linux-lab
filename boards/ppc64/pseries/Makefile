@@ -5,7 +5,7 @@ XARCH   := ppc64
 MEM     ?= 256M
 
 # Qemu 7.0 was released with a replacement for SLOF called VOF, enable it
-MACH_OPT ?= x-vof=on
+MACH_OPT ?= #x-vof=on
 
 LINUX   ?= v6.4
 

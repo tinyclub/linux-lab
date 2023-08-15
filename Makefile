@@ -3277,7 +3277,7 @@ endif
 KOPTS ?=
 
 # Allow configure INITRAMFS_SOURCE, prefer menuconfig to commandline
-INITRAMFS_SOURCE_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s INITRAMFS_SOURCE | tr -d '\n')
+INITRAMFS_SOURCE_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s INITRAMFS_SOURCE 2>/dev/null | tr -d '\n')
 ifneq ($(findstring /dev/null,$(ROOTDEV)),)
   # directory is ok, but is not compressed cpio
   ifneq ($(wildcard $(IROOTFS)),)
@@ -3292,7 +3292,7 @@ else
 endif
 
 # Allow configure INITRAMFS_SOURCE, prefer menuconfig to commandline
-USED_SYSCALLS_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s USED_SYSCALLS | tr -d '\n')
+USED_SYSCALLS_CONFIG = $$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s USED_SYSCALLS 2>/dev/null | tr -d '\n')
 ifeq ($(NOLIBC),1)
   KOPTS   += $$([ -z "$(USED_SYSCALLS_CONFIG)" ] && echo CONFIG_USED_SYSCALLS="$(or $(CONFIG_USED_SYSCALLS),$$(scall=$(NOLIBC_SCALL) && [ -s $$scall ] && echo $$scall))")
 endif

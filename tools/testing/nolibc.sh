@@ -37,6 +37,7 @@ boards=$1
 [ -z "$nolibc_inc" ] && nolibc_inc=sysroot
 [ -z "$nolibc_timeout" ] && nolibc_timeout=10
 [ -z "$nolibc_run" ] && nolibc_run=1
+[ -z "$nolibc_report" ] && nolibc_report=0
 
 # Customize nolibc_timeout for boards
 nolibc_timeout["ppc64le-pseries"]=15
@@ -108,7 +109,7 @@ do
     arch_file=$(get_arch_file $arch)
 
     # Allow skip the running
-    if [ $nolibc_run -ne 1 ]; then
+    if [ $nolibc_run -ne 1 -o $nolibc_report -eq 1 ]; then
         break
     fi
 

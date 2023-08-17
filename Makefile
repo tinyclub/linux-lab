@@ -1871,7 +1871,7 @@ $1-cleanup: $1-cleanstamp
 	  && git clean -fdx $$(GIT_CLEAN_EXTRAFLAGS[$1]) || true
 
 $1-mrproper:
-	$$(Q)[ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
+	$$(Q)[ "$1" = "kernel" -a "$1" = "u-boot" -a -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \
 	  && echo "Removing all generated files + config + various backup files in $$($(call _uc,$1)_SRC) ..." \
 	  && make ARCH=$(ARCH) mrproper || true

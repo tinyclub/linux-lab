@@ -21,7 +21,7 @@ NETDEV  ?= virtio
 SERIAL  ?= ttyS0
 
 # use bochs as VGA graphic device
-FBDEV   ?= std
+FBDEV   ?= stdvga
 
 UBOOT   ?= v2022.04
 

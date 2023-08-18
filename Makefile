@@ -4111,7 +4111,7 @@ endif
 ifeq ($(FBDEV), virtio)
   BOOT_CMD += -device virtio-gpu-pci
 endif
-ifneq ($(filter $(FBDEV),bochs vga std),)
+ifneq ($(filter $(FBDEV),bochs stdvga),)
   BOOT_CMD += -device VGA
 endif
 

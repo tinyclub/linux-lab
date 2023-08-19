@@ -3,7 +3,7 @@ ASMS = $(wildcard *.s)
 OBJS = $(ASMS:.s=.o)
 
 CROSS_COMPILE ?= $(or $(CARCH),$(ARCH))-linux-gnu$(EABI)-
-QEMU_USER ?= env PATH=$(QEMU_PATH):$(PATH) qemu-$(or $(QARCH),$(ARCH))
+QEMU_USER ?= $(or $(shell env PATH=$(QEMU_PATH):$(PATH) which qemu-$(or $(QARCH),$(ARCH))))
 
 AS := $(CROSS_COMPILE)as
 LD := $(CROSS_COMPILE)ld
@@ -14,14 +14,16 @@ LDFLAGS ?= $(if $(OFORMAT),-m$(OFORMAT))
 ifeq ($(DEBUG)$(D),1)
   AFLAGS    += -g
   LDFLAGS   += -g
+  ifneq ($(QEMU_USER),)
   QEMU_USER += -g 1234 -singlestep
+  endif
   QEMU_BACK := &
   GDBINIT   := $(if $(AUTO)$(A),gdbinit.auto,gdbinit)
   GDB_ARCH  ?= gdb-multiarch -q -x ../$(GDBINIT)
 endif
 
 all: $(OBJS)
-	@$(QEMU_USER) $(basename $^) $(QEMU_BACK)
+	@$(QEMU_USER) ./$(basename $^) $(QEMU_BACK)
 	@if [ -n "$(GDB_ARCH)" ]; then $(GDB_ARCH) $(basename $^); fi
 
 %.o: %.s

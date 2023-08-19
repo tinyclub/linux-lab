@@ -1,8 +1,13 @@
 # Makefile
 
 CCORI ?= mirrors.edge.kernel.org
-CCORI_LIST ?= mirrors.edge.kernel.org
+CCORI_LIST ?= internal mirrors.edge.kernel.org
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/s390x
+
+ifeq ($(CCORI), internal)
+  CCPRE   ?= s390-linux-gnu-
+  CCPATH  ?= $(dir $(shell which $(CCPRE)gcc))
+endif
 
 ifeq ($(CCORI), mirrors.edge.kernel.org)
   CCPRE  ?= s390-linux-

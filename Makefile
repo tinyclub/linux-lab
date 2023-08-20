@@ -4108,12 +4108,14 @@ else
 endif
 
 # Frame buffer device support
-ifeq ($(FBDEV), virtio)
-  BOOT_CMD += -device virtio-gpu-pci
-endif
-ifneq ($(filter $(FBDEV),bochs stdvga),)
-  BOOT_CMD += -device VGA
-endif
+ifeq ($(G),1)
+  ifeq ($(FBDEV), virtio)
+    BOOT_CMD += -device virtio-gpu-pci
+  endif
+  ifneq ($(filter $(FBDEV),bochs stdvga),)
+    BOOT_CMD += -device VGA
+  endif
+endif # G=1
 
 # Add extra qemu options
 BOOT_CMD += $(XOPTS) $(XQOPT) $(QOPTS)

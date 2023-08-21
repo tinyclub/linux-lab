@@ -14,6 +14,9 @@
 #ifndef NOLIBC
 #include <stdio.h>
 #include <unistd.h>
+#ifndef _NOLIBC_STDIO_H
+#include <sys/reboot.h>
+#endif
 #else
 #define __NOLIBC__
 #endif
@@ -26,7 +29,7 @@ int main(int argc, char *argv[])
 {
 	printf("Hello, nolibc!\n");
 
-#ifdef __NOLIBC__
+#if defined(__NOLIBC__) || defined(__REBOOT__)
 	reboot(LINUX_REBOOT_CMD_POWER_OFF);
 #endif
 

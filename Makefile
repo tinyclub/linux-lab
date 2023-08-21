@@ -4581,7 +4581,7 @@ $(addsuffix -%,$(call genaliastarget)): FORCE
 
 ifeq ($(findstring n,$(MFLAGS)),)
 $(addsuffix -%,$(APPS)):
-	$(Q)$(if $(word 3,$(subst -,$(space),$@)),make $(S) -n $@ >/dev/null 2>&1 || make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@) || true)
+	$(Q)$(if $(word 2,$(subst -,$(space),$@)),make $(S) -n $@ >/dev/null 2>&1 || make $(NPD) $(firstword $(subst -,$(space),$@)) x=$(subst $(firstword $(subst -,$(space),$@))-,,$@) || true)
 endif
 
 ifneq ($(APP_ARGS),)

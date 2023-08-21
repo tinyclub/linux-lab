@@ -54,8 +54,8 @@ ROOTDEV ?= /dev/vda
 
 FSTYPE  ?= ext2
 
-# fw_jump.elf is from https://github.com/riscv/opensbi
-BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_jump.elf
+# fw_jump.elf and fw_dynamic.elf are built from https://gitlab.com/qemu-project/opensbi
+BIOS    ?= $(or $(wildcard $(BSP_BIOS)/opensbi/generic/fw_dynamic.elf),$(BSP_BIOS)/opensbi/generic/fw_jump.elf)
 
 ifeq ($(vmlinuz),1)
 ORIIMG  ?= arch/$(ARCH)/boot/compressed/vmlinuz

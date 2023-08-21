@@ -35,7 +35,7 @@ ENV_OFFSET   ?= 0
 ENV_ADDR     ?= 0x87300000
 
 UCONFIG ?= qemu-riscv.h
-BOOTDEV_LIST := ram
+BOOTDEV_LIST := tftp ram
 BOOTDEV ?= ram
 
 # ref: https://wiki.qemu.org/Documentation/9psetup

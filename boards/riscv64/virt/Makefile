@@ -22,6 +22,8 @@ SERIAL  ?= ttyS0
 
 # use bochs as VGA graphic device
 FBDEV   ?= stdvga
+# use virtio as keyboard device
+KBDEV   ?= virtio
 
 UBOOT   ?= v2022.04
 

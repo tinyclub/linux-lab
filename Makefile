@@ -4115,6 +4115,10 @@ ifeq ($(G),1)
   ifneq ($(filter $(FBDEV),bochs stdvga),)
     BOOT_CMD += -device VGA
   endif
+
+  ifeq ($(KBDEV),virtio)
+    BOOT_CMD += -device virtio-keyboard
+  endif
 endif # G=1
 
 # Add extra qemu options

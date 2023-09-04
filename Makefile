@@ -936,8 +936,12 @@ else # CCORI != null
         ifeq ($(wildcard $(CCPATH)/$(CCPRE)gcc),)
           # If CCORI specified and it is not there, just download one
           ifeq ($(wildcard $(TOOLCHAIN)),)
-            ifneq ($(SKIP_NOTICE),1)
-              $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+            ifneq ($(notice),ignore)
+              ifeq ($(notice),error)
+                $(error ERR: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+              else
+                $(warning WARN: No internal and external toolchain found, please refer to prebuilt/toolchains/ and prepare one)
+              endif
             endif
           endif
         endif
@@ -1993,8 +1997,12 @@ ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
   else
     ifneq ($$(wildcard $$(call __stamp,bsp,source)),)
       ifneq ($$($3CFG_FILE),)
-        ifneq ($(SKIP_NOTICE),1)
-          $$(error $$($3CFG_FILE): can not be found, please pass a valid $1 defconfig)
+        ifneq ($$(notice),ignore)
+          ifeq ($$(notice),error)
+            $$(error ERR: $$($3CFG_FILE): can not be found, please pass a valid $1 defconfig)
+          else
+            $$(warning WARN: $$($3CFG_FILE): can not be found, please pass a valid $1 defconfig)
+          endif
         endif
       endif
     endif

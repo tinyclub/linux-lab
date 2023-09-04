@@ -2177,6 +2177,10 @@ vip ?= 0
 ifneq ($(vip),0)
   __BSP := latest
 endif
+# Always update the free boards
+ifneq ($(filter $(BOARD),$(BOARD_FREE)),)
+  __BSP := latest
+endif
 
 # Check and configure board type
 # If board support virt and real, allow configure it via VIRT

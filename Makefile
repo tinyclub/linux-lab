@@ -728,6 +728,11 @@ endif
 ifneq ($(findstring xbsp, x$(MAKECMDGOALS)),)
   notice := warning
 endif
+# warning instead of error for BOARD switch
+ifeq ($(MAKECMDGOALS),)
+  notice := warning
+endif
+# warning instead of error for clone targets
 ifneq ($(findstring clone, $(MAKECMDGOALS)),)
   notice := ignore
 endif
@@ -753,10 +758,9 @@ define genverify
     ifeq ($$(filter $$($2), $$($2_LIST)),)
       $$(if $4,$$(eval $$(call $4)))
       verify_notice := $$(BOARD): $$($2) not in supported $2 list: $$($2_LIST),$(if $(KERNEL_FORK), KERNEL_FORK is set as $(KERNEL_FORK)$(comma))
+      verify_notice += update may help: 'make bsp B=$$(BOARD)'
       ifneq ($$(filter $$(call _lc,$1),$(APPS)),)
-        verify_notice += clone one please: 'make $$(call _lc,$1)-clone $2_NEW=$$($2)'
-      else
-        verify_notice += update may help: 'make bsp B=$$(BOARD)'
+        verify_notice += or clone one please: 'make $$(call _lc,$1)-clone $2_NEW=$$($2)'
       endif
       ifneq ($$(notice), ignore)
         ifeq ($$(notice), error)

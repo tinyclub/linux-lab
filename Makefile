@@ -467,6 +467,9 @@ ifeq ($(DEVMODE),1)
   SKIP_CHECKOUT ?= 1
   SKIP_NOTICE ?= 1
 endif
+ifneq ($(vip),0)
+  SKIP_NOTICE ?= 1
+endif
 
 # Allow boards to customize source and repos
 KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)

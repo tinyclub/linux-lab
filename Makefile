@@ -189,13 +189,6 @@ BSP_TOOLCHAIN   ?= $(BSP_DIR)/toolchains
 BSP_CONFIG      := $(BSP_DIR)/configs
 BSP_PATCH       := $(BSP_DIR)/patch
 
-# Support old directory arch
-ifneq ($(wildcard $(BSP_DIR)),)
-  _BSP_CONFIG := $(BSP_CONFIG)
-else
-  _BSP_CONFIG := $(BOARD_DIR)
-endif
-
 # Get the machine name for qemu-system-$(XARCH)
 MACH          ?= $(notdir $(BOARD))
 
@@ -1419,7 +1412,7 @@ echo [ $(BOARD) ]:"\n" $(foreach v,$(or $(VAR),$(or $1,$(shell $(call getboardva
 endef
 
 BSP_CHECKOUT ?= bsp-checkout
-ifeq ($(wildcard $(_BSP_CONFIG)),)
+ifeq ($(wildcard $(BSP_CONFIG)),)
   ifneq ($(app),default)
     BOARD_DOWNLOAD := $(BSP_CHECKOUT)
   endif
@@ -1981,15 +1974,15 @@ $3CFG_TAG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG)
 
 # Configs search order: TAGGED > Version Specific > TAGGED generic > Version generic
 ifeq ($$($3CFG_TAG),$$($(call _uc,$1)_CONFIG_FILE))
-  $3CFG_FILE   := $$(_BSP_CONFIG)/$$($3CFG_TAG)
+  $3CFG_FILE   := $$(BSP_CONFIG)/$$($3CFG_TAG)
 endif
 
 ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
  ifeq ($$(wildcard $$($3CFG_FILE)),)
-  $3CFG_FILES := $$($3CFG_TAG) $$(addsuffix /$$($3CFG_TAG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
-  $3CFG_FILES += $$($3CFG_TAG_NOCONFIG) $$(addsuffix /$$($3CFG_TAG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
-  $3CFG_FILES += $$($3CFG) $$(addsuffix /$$($3CFG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
-  $3CFG_FILES += $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(_BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES := $$($3CFG_TAG) $$(addsuffix /$$($3CFG_TAG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG_TAG_NOCONFIG) $$(addsuffix /$$($3CFG_TAG_NOCONFIG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG) $$(addsuffix /$$($3CFG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  $3CFG_FILES += $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
 
   _$3CFG_FILE := $$(firstword $$(strip $$(foreach i,$$($3CFG_FILES),$$(wildcard $$i) )))
   ifneq ($$(_$3CFG_FILE),)
@@ -2074,7 +2067,7 @@ define genclone
 ifneq ($$($(call _uc,$2)_NEW),)
 
 ifneq ($$($(call _uc,$2)_NEW),$$($(call _uc,$2)))
-NEW_$3CFG_FILE := $$(_BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_$$(if $$($3TAG),$$($3TAG)_)defconfig
+NEW_$3CFG_FILE := $$(BSP_CONFIG)/$$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2)_NEW)_$$(if $$($3TAG),$$($3TAG)_)defconfig
 NEW_PREBUILT_$(call _uc,$1)_DIR := $$(subst $$($(call _uc,$2)),$$($(call _uc,$2)_NEW),$$(PREBUILT_$(call _uc,$1)_DIR))
 
 ifeq ($$(wildcard $$(NEW_PREBUILT_$(call _uc,$1)_DIR)),)
@@ -3812,29 +3805,29 @@ qemu-save:
 uboot-saveconfig:
 	$(Q)$(call make_uboot,savedefconfig) || true
 	$(Q)if [ -f $(UBOOT_BUILD)/defconfig ]; then \
-	  cp -v $(UBOOT_BUILD)/defconfig $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	  cp -v $(UBOOT_BUILD)/defconfig $(BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	else \
-	  cp -v $(UBOOT_BUILD)/.config $(_BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
+	  cp -v $(UBOOT_BUILD)/.config $(BSP_CONFIG)/$(UBOOT_CONFIG_FILE); \
 	fi
 
 # kernel < 2.6.36 doesn't support: `make savedefconfig`
 kernel-saveconfig:
 	$(Q)$(call make_kernel,savedefconfig M=) || true
 	$(Q)if [ -f $(KERNEL_BUILD)/defconfig ]; then \
-	  cp -v $(KERNEL_BUILD)/defconfig $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	  cp -v $(KERNEL_BUILD)/defconfig $(BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	else \
-	  cp -v $(KERNEL_BUILD)/.config $(_BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
+	  cp -v $(KERNEL_BUILD)/.config $(BSP_CONFIG)/$(KERNEL_CONFIG_FILE); \
 	fi
 
 root-saveconfig:
 	$(Q)$(call make_root,savedefconfig) || true
 	$(Q)defconfig=$$(grep BR2_DEFCONFIG $(ROOT_BUILD)/.config | cut -d '=' -f2 | tr -d '"'); \
 	if [ $$? -eq 0 -a -n "$$defconfig" -a -f "$$defconfig" ]; then \
-	  cp -v $$defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	  cp -v $$defconfig $(BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	elif [ -f $(ROOT_BUILD)/defconfig ]; then \
-	  cp -v $(ROOT_BUILD)/defconfig $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	  cp -v $(ROOT_BUILD)/defconfig $(BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	else \
-	  cp -v $(ROOT_BUILD)/.config $(_BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
+	  cp -v $(ROOT_BUILD)/.config $(BSP_CONFIG)/$(ROOT_CONFIG_FILE); \
 	fi
 
 # For virtual boards

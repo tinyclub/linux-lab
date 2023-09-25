@@ -2172,10 +2172,14 @@ ifeq ($(wildcard $(BSP_SRC)/.git),)
   # First init
   BSP ?= FETCH_HEAD
 else
-  # Already fetched
-  BSP_MASTER := $(BSP_SRC)/.git/refs/remotes/origin/master
-  BSP_HEAD := $(if $(wildcard $(BSP_SRC)/.git/HEAD),HEAD,FETCH_HEAD)
-  BSP ?= $(if $(wildcard $(BSP_MASTER)),origin/master,$(BSP_HEAD))
+  ifeq ($(wildcard $(BSP_CONFIG)),)
+    # Already fetched
+    BSP_MASTER := $(BSP_SRC)/.git/refs/remotes/origin/master
+    BSP_HEAD := $(if $(wildcard $(BSP_SRC)/.git/HEAD),HEAD,FETCH_HEAD)
+    BSP ?= $(if $(wildcard $(BSP_MASTER)),origin/master,$(BSP_HEAD))
+  else
+    BSP ?= origin/master
+  endif
 endif
 _BSP ?= $(BSP)
 

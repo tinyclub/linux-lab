@@ -2888,6 +2888,10 @@ KERNEL_CONFIG_DIR       := $(KERNEL_ABS_SRC)/arch/$(ARCH)/configs
 KERNEL_CONFIG_EXTRAFLAG := M=
 KERNEL_CONFIG_EXTRACMDS := yes N | $(empty)
 KERNEL_CLEAN_DEPS       := kernel-modules-clean
+# Must be assigned before gengoals
+ifneq ($(FEATURE),)
+KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true;
+endif
 
 kernel-oldnoconfig: kernel-olddefconfig
 
@@ -2954,8 +2958,6 @@ endif
 
 kernel-feature:
 	$(Q)[ $(FCS) -eq 1 ] && tools/board/config.sh FEATURE=$(FEATURE) $(BOARD_LABCONFIG) $(LINUX) || true
-
-KERNEL_PATCH_EXTRAACTION := [ -n "$$(FEATURE)" ] && $$(KERNEL_FEATURE_PATCH_TOOL) $$(ARCH) $$(XARCH) $$(BOARD) $$(LINUX) $$(KERNEL_ABS_SRC) $$(KERNEL_BUILD) "$$(FEATURE)" || true;
 
 ifneq ($(firstword $(MAKECMDGOALS)),list)
 feature: kernel-feature

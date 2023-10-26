@@ -11,7 +11,7 @@ QEMU    ?= v8.0.2
 NETDEV_LIST ?= e1000
 NETDEV  ?= e1000
 
-LINUX   ?= v6.3.6
+LINUX   ?= v6.5.4
 
 HOST_GCC := 9
 

@@ -114,3 +114,7 @@
 	ignore = all
 	path = boards/ppc64/powernv/bsp
 	url = https://gitee.com/tinylab/qemu-ppc64-powernv
+[submodule "boards/riscv64/tiny-riscv-box/bsp"]
+	ignore = all
+	path = boards/riscv64/tiny-riscv-box/bsp
+	url = https://gitee.com/tinylab/tiny-riscv-box.git

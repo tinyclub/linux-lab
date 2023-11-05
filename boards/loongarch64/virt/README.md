@@ -9,6 +9,10 @@
 
     $ make boot
 
+## Boot me with NFS rootfs
+
+    $ make boot ROOTDEV=nfs
+
 ## Debug with qemu
 
   Debug interactively:

@@ -1407,7 +1407,7 @@ FILTER     ?= .*
 VAR_FILTER ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 
 define getboardvars
-cat $(BOARD_MAKEFILE) | grep -E -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|^$$"  | tr -d '?: ' | cut -d '=' -f1 | uniq
+cat $(BOARD_MAKEFILE) | grep -E -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|override |^$$"  | tr -d '?: ' | cut -d '=' -f1 | uniq
 endef
 
 define showboardvars

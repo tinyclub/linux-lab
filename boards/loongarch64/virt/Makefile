@@ -11,7 +11,7 @@ QEMU    ?= v8.0.2
 NETDEV_LIST ?= e1000 e1000e ne2k_pci rtl8139
 NETDEV  ?= e1000
 
-LINUX   ?= v6.5.4
+LINUX   ?= v6.6
 
 HOST_GCC := 9
 

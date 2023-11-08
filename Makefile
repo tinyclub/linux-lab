@@ -2801,8 +2801,9 @@ root-dir-rebuild rootdir-rebuild: root-dir-clean $(ROOTDIR) FORCE
 
 PHONY += root-dir rootdir $(addsuffix -rebuild,root-dir rootdir)
 
-# Install src/system
+# Install src/system, src/overlay $(BSP_ROOT)/system and $(BSP_ROOT)/$(BUILDROOT)/system
 
+ROOT_SYSTEM_OVERLAY := src/system $(wildcard src/overlay) $(wildcard $(BSP_ROOT)/overlay) $(wildcard $(BSP_ROOT)/$(BUILDROOT)/overlay)
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
 ifneq ($(wildcard $(KERNEL_BUILD)),)
@@ -2811,8 +2812,8 @@ endif
 
 root-dir-install: root-dir-install-system $(ROOT_DIR_INSTALL_MODULES)
 
-root-dir-install-system: src/system
-	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) $(ROOT_INSTALL_TOOL)
+root-dir-install-system: $(ROOT_SYSTEM_OVERLAY)
+	$(Q)echo "LOG: Install system" && ROOTDIR=$(ROOTDIR) SYSTEM="$(ROOT_SYSTEM_OVERLAY)" $(ROOT_INSTALL_TOOL)
 
 root-dir-install-modules: $(KERNEL_BUILD)
 	$(Q)echo "LOG: Install modules" && make $(S) module-install || true

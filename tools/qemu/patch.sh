@@ -40,6 +40,10 @@ do
 
         if [ -f "$p" ]; then
             patch -r- -N -l -d ${QEMU_SRC} -p1 < "$p"
+            if [ $? -ne 0 ]; then
+                grep -iq "GIT binary patch" $p
+                [ $? -eq 0 ] && pushd ${QEMU_SRC} >/dev/null && git apply -p1 < "$p" && popd >/dev/null
+            fi
         fi
     done
 

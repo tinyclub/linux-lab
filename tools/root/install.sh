@@ -21,6 +21,6 @@ do
 
   # Copy everything, including devices (recreate)
   if [ -d "$sys" ]; then
-    sudo rsync -au --devices $sys/* $ROOTDIR/
+    sudo rsync -au $sys/* $ROOTDIR/
   fi
 done

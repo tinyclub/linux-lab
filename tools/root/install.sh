@@ -16,14 +16,11 @@ do
   echo "LOG: SYSTEM: $sys"
 
   # The rootdir
-  #ROOTDIR=$1
   [ -z "$ROOTDIR" ] && echo "LOG: target ROOTDIR can not be empty" && exit 1
   echo "LOG: ROOTDIR: $ROOTDIR"
 
-  for f in `find $sys -type f | sed -e "s%$sys%%g"`
-  do
-      dest=`dirname $f`
-      [ ! -d $ROOTDIR/$dest ] && mkdir -p $ROOTDIR/$dest
-      cp --remove-destination $sys/$f $ROOTDIR/$f
-  done
+  # Copy everything, including devices (recreate)
+  if [ -d "$sys" ]; then
+    sudo rsync -au --devices $sys/* $ROOTDIR/
+  fi
 done

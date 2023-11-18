@@ -215,11 +215,11 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * <https://gitee.com/tinylab/riscv-linux>
 
 * RISC-V Lab
-    * 用于学习嵌入式 RISC-V 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
+    * 用于学习嵌入式 RISC-V 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 RISC-V 实验盘
     * <https://gitee.com/tinylab/riscv-lab>
 
 * ARM Lab
-    * 用于学习嵌入式 ARM 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 Linux 实验盘
+    * 用于学习嵌入式 ARM 软件开发，已集成到 [Linux Lab Disk][028]，即泰晓 ARM 实验盘
     * <https://gitee.com/tinylab/arm-lab>
 
 ## 1.3 演示视频
@@ -523,23 +523,26 @@ Linux Lab 基于 Docker，对于已经安装 Docker 并配置了国内加速镜�
 『Linux Lab Disk - 泰晓 Linux 实验盘』已经支持如下功能：
 
 * 可选容量
-    * 覆盖 32G, 64G, 128G, 256G, 512G, 1T, 2T 等，可按需定制任意容量
+    * 覆盖 32G, 64G, 128G, 256G, 512G, 1T, 2T, 4T 等，可按需定制任意容量
+* 可选形态
+    * 高速或固态 U 盘、Mini 移动硬盘、固态硬盘（含 NVME / SATA）
 * 可选系统
     * 覆盖全球 Top6 发行版，可按需定制更多 Linux 发行版
-    * Ubuntu 18.04-22.04, Deepin 20.05+, Fedora 34+, Mint 20.2+, Kali, Manjaro
+    * Ubuntu 18.04-22.04, Deepin 20.08+, Fedora 37+, Mint 21.1+, Kali, Manjaro
 * 主要特性
     * 随身携带：支持在 64 位 X86 台式机、笔记本和 macBook 上即插即跑
-    * 智能启动：在 Windows, Linux 和 macOS 系统下自动检测后并行启动
-    * 智能切换：在 Windows, Linux 和 macOS 系统下自动检测并免关机切换系统
+    * 智能启动：在 Windows, Linux 系统下自动检测后并行启动
+    * 智能切换：在 Windows, Linux 系统下自动检测并免关机切换系统
     * 相互套娃：多支盘可相互启动或来回切换，可同时使用多个不同的 Linux 系统发行版
     * 时区兼容：自动兼容 Windows, MacOS 和 Linux 的时区设定，跟主系统来回任意切换后时间保持一致
     * 自动共享：在 Windows 或 Linux 主系统下并行运行时，自动提供多种与主系统的文件与粘贴板共享方式
     * 透明倍容：可用容量翻倍，128G 可以当 ~256G 左右使用
     * 零损编译：扩大可用容量，提升编译速度，节省擦写寿命
-    * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统
+    * 出厂恢复：在主系统出现某些故障的情况下，允许恢复出厂系统，也支持按需配置备份和还原功能
     * 即时实验，集成多套自研实验环境，可在 1 分钟内开展 Linux 内核、嵌入式 Linux、U-Boot、汇编、C、Python、数据库、网络等实验
 * 购买地址
-    * [泰晓开源小店][022]，该地址为目前唯一官方在线销售地址
+    * [泰晓开源小店][022]，该地址为目前泰晓社区官方唯一淘宝销售地址
+    * 泰晓科技 B 站工房，关注 B 站的 [泰晓科技](https://space.bilibili.com/687228362) 账号，即可进工房选购
 * 产品详情
     * <https://tinylab.org/linux-lab-disk>
     * 详细介绍了特性、功能与用法，配套了大量的演示视频
@@ -967,9 +970,11 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 #### 3.1.2.3 如何选购
 
-所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店][023] 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
+所有适配过的开发板，包括真实开发板与虚拟开发板（即 Linux Lab BSP），都会统一放置在 [泰晓开源小店][023] 或 [泰晓 B 站工房](https://space.bilibili.com/687228362) 供大家选购，选购完毕后可以加微信号 `tinylab` 申请进入相应的技术群组。
 
 也可以直接在淘宝手机 App 内搜索 “泰晓 Linux” 后购买，可搭配店内的 “Linux Lab Disk” 一起使用，用上 “Linux Lab Disk” 后就完全不需要安装独立的 Linux 开发环境。
+
+为了便利大家开展不同架构处理器 Linux 内核与嵌入式 Linux 系统的学习，泰晓社区于近日推出了泰晓 RISC-V 实验盘、泰晓 ARM 实验盘、泰晓 X86 实验盘、泰晓 LoongArch 实验盘等特定架构实验盘，分别内置了特定架构的虚拟开发板。
 
 ### 3.1.3 以插件方式使用
 

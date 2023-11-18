@@ -202,11 +202,11 @@ Related Projects:
     * <https://gitee.com/tinylab/riscv-linux>
 
 * RISC-V Lab
-    * Learning embedded RISC-V software development，merged in [Linux Lab Disk][029]
+    * Learning embedded RISC-V software development，merged in [Linux Lab Disk][029] for RISC-V
     * <https://gitee.com/tinylab/riscv-lab>
 
 * ARM Lab
-    * Learning embedded ARM software development，merged in [Linux Lab Disk][029]
+    * Learning embedded ARM software development，merged in [Linux Lab Disk][029] for ARM
     * <https://gitee.com/tinylab/arm-lab>
 
 ## 1.3 Demonstration
@@ -287,13 +287,15 @@ If really a Linux newbie or simply don't want to spend time on boring installati
 It supports:
 
 * Capacity
-    * From 32G to 512G and even 1T, 2T
+    * From 32G to 512G and even 1T, 2T, 4T
+* Products
+    * High Speed U Disk, Solid U Disk, Portable disk, Solid disk (NVME / SATA)
 * Systems
     * Top6 Linux Distributions and even more based on your requirement
-    * Include Ubuntu 18.04-22.04, Deepin 20.5+, Fedora 34+, Mint 20.2+, Kali, Manjaro
+    * Include Ubuntu 18.04-22.04, Deepin 20.8+, Fedora 37+, Mint 21.1+, Kali, Manjaro
 * Features
     * Boot from any powered-off 64bit X86 Machine, include PC, Laptop and MacBook
-    * Boot from any running Windows, Linux and macOS and run in parallel with them
+    * Boot from any running Windows, Linux and run in parallel with them
     * Switch from or to any running Windows, Linux without poweroff
     * Multiple Linux Lab Disks can boot or switch from/to each other
     * Support timezone setting of different systems transparently, without manual setting
@@ -304,6 +306,7 @@ It supports:
     * Merged in many labs, such as Linux Lab, Linux 0.11 Lab, be able to learn Linux kernel, embedded Linux, Uboot, Assembly, C, Python, Database, Network and so forth
 * Where to buy
     * [Taobao shop of TinyLab.org Community][023]
+    * [Bilibili Shop][025]
 * Product details
     * <https://tinylab.org/linux-lab-disk>
     * Introduce and demonstrate the features, functions and usage of Linux Lab Disk
@@ -729,7 +732,7 @@ Check the board specific configuration:
 
 ### 3.1.2.3 Buy one
 
-All supported real hardware boards, virtual hardware boards support and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop][024], after bought them, please contact with wechat: `tinylab` and join in the development group.
+All supported real hardware boards, virtual hardware boards support and the related Linux Lab Disk will be put in [TinyLab.org's Taobao Shop][024] or [Bilibili Shop][025], after bought them, please contact with wechat: `tinylab` and join in the development group.
 
 ### 3.1.3 Using as plugins
 

@@ -13,15 +13,15 @@ obj-m+= ldt.o
 #obj-m+= ldt_configfs_basic.o
 obj-m+= kthread_sample.o
 
-KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+KERNEL_SRC ?= /lib/modules/$(shell uname -r)/build
 
 all:	modules dio
 
 modules:
-	$(MAKE) -C $(KERNELDIR) M=$$PWD modules
+	$(MAKE) -C $(KERNEL_SRC) M=$$PWD modules
 
 modules_install:
-	$(MAKE) -C $(KERNELDIR) M=$$PWD modules_install
+	$(MAKE) -C $(KERNEL_SRC) M=$$PWD modules_install
 
 clean:
 	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions modules.order Module.symvers dio *.tmp *.log

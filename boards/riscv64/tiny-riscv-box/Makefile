@@ -32,6 +32,6 @@ CCPRE	?= riscv64-unknown-linux-musl-
 
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
 
-BIOS    ?= $(BSP_BIOS)/opensbi/generic/fw_dynamic.bin
+BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin
 
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz

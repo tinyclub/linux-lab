@@ -699,9 +699,11 @@ ifneq ($(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)),)
 endif
 
 ifneq ($(GCC),)
-  # Force using internal CCORI if GCC specified
+  # Force using internal CCORI if GCC specified and there is really an internal gcc
   ifeq ($(CCORI),)
-    CCORI := internal
+    ifneq ($(shell which $(CCPRE)gcc),)
+      CCORI := internal
+    endif
   endif
 endif
 

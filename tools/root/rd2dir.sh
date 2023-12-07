@@ -12,7 +12,7 @@
 _ROOTDIR=$(echo ${INITRD} | sed -e "s%.cpio.gz%%g" | sed -e "s%.cpio%%g")
 
 FS_CPIO_GZ=${_ROOTDIR}.cpio.gz
-CPIO_GZ=${_ROOTDIR}.cpio
+FS_CPIO=${_ROOTDIR}.cpio
 
 mkdir -p ${ROOTDIR}
 

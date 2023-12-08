@@ -3789,8 +3789,8 @@ endif
 
 boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
-	$(Q)$(SSH_CMD) 'sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt'
-	$(Q)$(SSH_CMD) 'sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt'
+	$(Q)$(SSH_CMD) 'if [ -f /boot/uEnv.txt ]; then sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt; fi'
+	$(Q)$(SSH_CMD) 'if [ -f /boot/uEnv.txt ]; then sed -i -e "s/dtb=.*/dtb=$(DIMAGE)/g" /boot/uEnv.txt; fi'
 
 reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"

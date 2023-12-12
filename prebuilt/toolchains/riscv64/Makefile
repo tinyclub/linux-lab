@@ -1,6 +1,6 @@
 # Makefile
 
-CCORI ?= gnu-mcu-eclipse
+CCORI ?= mirrors.edge.kernel.org
 CCORI_LIST ?= internal bootlin gnu-mcu-eclipse mirrors.edge.kernel.org
 TOOLCHAIN  ?= $(PREBUILT_TOOLCHAINS)/riscv64
 

@@ -694,6 +694,12 @@ $(eval $(call __vs,HOST_GCC,OS))
 
 PREBUILT_TOOLCHAIN_MAKEFILE := $(PREBUILT_TOOLCHAINS)/$(XARCH)/Makefile
 
+# Local toolchain package means builtin toolchain too
+ifneq ($(wildcard $(CCURL)),)
+  CCORI := builtin
+  CCORI_LIST += builtin
+endif
+
 ifneq ($(wildcard $(PREBUILT_TOOLCHAIN_MAKEFILE)),)
   include $(PREBUILT_TOOLCHAIN_MAKEFILE)
 endif
@@ -2428,8 +2434,10 @@ toolchain-install-internal:
 
 toolchain-install-external:
 	$(Q)if [ -z "$(CCPATH)" -o ! -d "$(CCPATH)" ]; then \
-	  echo "Downloading prebuilt toolchain from $(CCURL) ..."; \
-	  cd $(TOOLCHAIN) && wget -c $(CCURL) && tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN); \
+	  echo "Downloading or decompressing prebuilt toolchain from $(CCURL) ..."; \
+	  cd $(TOOLCHAIN) && \
+	  if [ "$(CCORI)" != "builtin" ]; then wget -c $(CCURL); fi && \
+	  tar $(TAR_OPTS) $(CCTAR) -C $(TOOLCHAIN); \
 	fi
 
 PHONY += gcc-install toolchain-install toolchain-install-internal toolchain-install-external

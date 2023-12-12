@@ -29,6 +29,10 @@ DTB     ?= $(BSP_KERNEL)/$(LINUX)/cv1800b_milkv_duo_sd.dtb
 
 CCPATH	?= $(BSP_TOOLCHAIN)/riscv64-linux-musl-x86_64/bin
 CCPRE	?= riscv64-unknown-linux-musl-
+# Path to toolchain package
+CCURL     ?= $(BSP_TOOLCHAIN)/toolchain.tar.xz
+# Path to decompressing directory
+TOOLCHAIN ?= $(BSP_TOOLCHAIN)
 
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
 

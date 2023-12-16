@@ -1,7 +1,8 @@
 
 # TODO List
 
-* Add more tools support: trace-cmd, perf, memtester
+* Upgrade qemu tools
+* Add more tools support: trace-cmd, perf, memtester, mtools, genext2fs
 * Add prebuilt toolchains with sysroot for buildroot
 * Add LDT, LDD3 examples, need kernel modules support
 * Add more kernel features: BFS

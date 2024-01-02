@@ -1,6 +1,6 @@
 # Copyright (C) 2020 Wu Zhangjin <falcon@tinylab.org>
 # _BASE: 1, virt; 2, real; 3: virt+real
-_BASE   := 1
+_BASE   := 2
 ARCH    := riscv
 XARCH   := riscv64
 CPU     ?= cv1800b

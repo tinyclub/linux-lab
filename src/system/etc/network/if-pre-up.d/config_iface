@@ -19,4 +19,4 @@ if [ -z "$ip" ]; then
   fi
 fi
 
-echo "eth: $eth, ip: $ip, gw: $route"
+[ -n "$ip" ] && echo -n "eth: $eth, ip: $ip, gw: $route"

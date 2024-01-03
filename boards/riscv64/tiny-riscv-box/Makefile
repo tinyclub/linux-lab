@@ -58,19 +58,28 @@ LOCAL_KIMAGE ?= $(IMAGE_BUILD)/boot.sd
 REMOTE_KIMAGE ?= /media/boot/boot.sd
 LOCAL_DTB    ?= $(LOCAL_KIMAGE)
 REMOTE_DTB   ?= $(REMOTE_KIMAGE)
+LOCAL_BIMAGE ?= $(IMAGE_BUILD)/fip.bin
+REMOTE_BIMAGE ?= /media/boot/fip.bin
+
+# Prepare local fip.bin and remote fip.bin store directory
+$(LOCAL_BIMAGE): fip-bin remote-boot
+
+fip-bin:
+	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
+	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/fip-bin.sh
 
 # Prepare local boot.sd and remote boot.sd store directory
-$(LOCAL_KIMAGE): local-boot-sd remote-boot-sd
+$(LOCAL_KIMAGE): boot-sd remote-boot
 
-local-boot-sd:
+boot-sd:
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
 
-remote-boot-sd: FORCE
+remote-boot: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
 	$(Q)$(SSH_CMD) -t "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
 
-PHONY += local_boot_sd remote_boot_sd
+PHONY += fip-bin boot-sd remote-boot
 
 # Put all images together to one SD Card image, you must build and save the sub images manually
 IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img

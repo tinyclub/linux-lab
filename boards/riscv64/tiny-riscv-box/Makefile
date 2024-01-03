@@ -34,6 +34,9 @@ CCURL     ?= $(BSP_TOOLCHAIN)/toolchain.tar.xz
 # Path to decompressing directory
 TOOLCHAIN ?= $(BSP_TOOLCHAIN)
 
+# Prefer serial port login instead of ssh
+LOGIN_METHOD ?= serial
+
 # Usb ethernet ip, only for usb rndis mode
 BOARD_IP  ?= 192.168.42.1
 

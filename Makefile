@@ -3703,8 +3703,10 @@ ifeq ($(_VIRT),0)
 # Remote automatical login related parts
 LOGIN_METHOD ?= ssh
 
+ifneq ($(findstring upload,$(MAKECMDGOALS)),)
 ifneq ($(LOGIN_METHOD),ssh)
   $(error Only support ssh upload method currently)
+endif
 endif
 
 # The ip address of target board, must make sure python3-serial is installed
@@ -3795,7 +3797,11 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
-BOOT_METHOD ?= serial
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(LOGIN_METHOD) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+  BOOT_METHOD ?= serial
+else
+  BOOT_METHOD ?= ssh
+endif
 
 ifneq ($(BOOT_METHOD),serial)
 boot-config: getip

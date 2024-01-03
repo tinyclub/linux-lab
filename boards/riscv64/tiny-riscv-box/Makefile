@@ -65,14 +65,16 @@ REMOTE_BIMAGE ?= /media/boot/fip.bin
 # Prepare local fip.bin and remote fip.bin store directory
 $(LOCAL_BIMAGE): fip-bin remote-boot
 
-fip-bin:
+fip-bin-deps: $(BIOS) $(BIMAGE) $(wildcard $(BSP_DIR)/firmwares/*)
+fip-bin: fip-bin-deps
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/fip-bin.sh
 
 # Prepare local boot.sd and remote boot.sd store directory
 $(LOCAL_KIMAGE): boot-sd remote-boot
 
-boot-sd:
+boot-sd-deps: $(DTB) $(KIMAGE) $(BSP_DIR)/configs/multi.its
+boot-sd: boot-sd-deps
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
 
@@ -107,7 +109,7 @@ clean-image:
 
 post-image: $(IMAGE_BIN)
 
-$(IMAGE_BIN):
+$(IMAGE_BIN): fip-bin-deps boot-sd-deps $(ROOTFS) $(BSP_DIR)/configs/genimage.cfg
 	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 

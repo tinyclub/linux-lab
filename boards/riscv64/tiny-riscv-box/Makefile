@@ -34,6 +34,9 @@ CCURL     ?= $(BSP_TOOLCHAIN)/toolchain.tar.xz
 # Path to decompressing directory
 TOOLCHAIN ?= $(BSP_TOOLCHAIN)
 
+# Usb ethernet ip, only for usb rndis mode
+BOARD_IP  ?= 192.168.42.1
+
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
 
 BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin

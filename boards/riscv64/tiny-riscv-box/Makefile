@@ -68,7 +68,7 @@ local-boot-sd:
 
 remote-boot-sd: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
-	$(Q)$(SSH_CMD) "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
+	$(Q)$(SSH_CMD) -t "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
 
 PHONY += local_boot_sd remote_boot_sd
 

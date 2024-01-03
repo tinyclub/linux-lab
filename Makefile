@@ -3704,12 +3704,6 @@ ifeq ($(_VIRT),0)
 # Remote automatical login related parts
 LOGIN_METHOD ?= ssh
 
-ifneq ($(findstring upload,$(MAKECMDGOALS)),)
-ifneq ($(LOGIN_METHOD),ssh)
-  $(error Only support ssh upload method currently)
-endif
-endif
-
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   GETIP_TOOL     ?= $(TOP_DIR)/tools/helper/getip.py
@@ -3747,8 +3741,20 @@ ifneq ($(MAKECMDGOALS),)
 endif
 
 # Check ip variable
+PING_RETRIES ?= 10
+
 getip:
-	$(Q)if [ -z "$(BOARD_IP)" ]; then echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && exit 1; fi
+	$(Q)if [ -z "$(BOARD_IP)" ]; then \
+	  echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && false; \
+	else \
+	  ping -c1 -W1 $(BOARD_IP) >/dev/null 2>&1; \
+          if [ $$? -ne 0 ]; then \
+	    read -p "LOG: Please plugin or replug usb data cable between main board and host ..." tmp; \
+	    echo "LOG: Waiting for $(BOARD_IP)"; ping_retries=$(PING_RETRIES); \
+	    for i in `seq 1 $$ping_retries`; do ping -c1 -W1 $(BOARD_IP) && break; done; \
+	    if [ $$i -eq $$ping_retries ]; then echo "ERR: Failed to connect $(BOARD_IP)"; false; fi; \
+	  fi; \
+	fi
 
 PHONY += getip
 
@@ -4525,10 +4531,14 @@ ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(LOGIN_METHOD) != "ssh" ] && sudo sh -c '
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/sh' || true
+  GETIP := getip
 endif
 
 ifneq ($(findstring boot,$(MAKECMDGOALS)),)
-  _BOOT_DEPS := boot-config reboot
+  _BOOT_DEPS := $(GETIP) boot-config reboot
+endif
+ifneq ($(findstring login,$(MAKECMDGOALS)),)
+  _BOOT_DEPS := $(GETIP)
 endif
 
 _test _debug:

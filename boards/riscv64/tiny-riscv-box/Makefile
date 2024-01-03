@@ -34,6 +34,12 @@ CCURL     ?= $(BSP_TOOLCHAIN)/toolchain.tar.xz
 # Path to decompressing directory
 TOOLCHAIN ?= $(BSP_TOOLCHAIN)
 
+BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
+
+BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin
+
+ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+
 # Prefer serial port login instead of ssh
 LOGIN_METHOD ?= serial
 
@@ -60,8 +66,33 @@ remote_boot_sd: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
 	$(Q)$(SSH_CMD) "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
 
-BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
+PHONY += remote_boot_sd
 
-BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin
+# Put all images together to one SD Card image, you must build and save the sub images manually
+IMAGE_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/image
+IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img
 
-ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
+clean-image:
+	$(Q)echo "LOG: Removing $(IMAGE_BIN) ..."
+	$(Q)rm -rf $(IMAGE_BIN)
+
+post-image: $(IMAGE_BIN)
+
+$(IMAGE_BIN):
+	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
+	$(Q)cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
+
+burn-image: $(IMAGE_BIN)
+	$(Q)echo "LOG: Burning $(IMAGE_BIN) ..."
+	$(Q)if [ -z "$(SD_SIZE)" -o -z "$(SD_CARD)" ]; then \
+	  echo "ERR: Please configure SD_CARD and SD_SIZE in $(BOARD_LABCONFIG) with these commands:"; \
+	  echo ""; \
+	  echo "     $$ make local-config SD_CARD=/path/to/your-sd-card"; \
+	  echo "     $$ lsblk -dbno size /path/to/your-sd-card"; \
+	  echo "     $$ make local-config SD_SIZE=the-above-bytes-of-your-sd-card"; \
+	  echo ""; \
+	  false; \
+	fi
+	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) $(BSP_DIR)/tools/burn-image.sh
+
+PHONY += post-image burn-image clean-image

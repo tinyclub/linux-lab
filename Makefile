@@ -3733,7 +3733,7 @@ SSH_CMD   := $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKey
 SCP_CMD   := $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 SSH_RSH   := --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
-RSYNC_CMD := SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
+RSYNC_CMD ?= SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
@@ -3781,7 +3781,11 @@ modules-upload: getip $(LOCAL_MODULES)$(m)
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'
-	$(Q)$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/; \
+	else \
+	  $(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/; \
+	fi
 
 # Add dummmy entries for upload target
 ifeq ($(first_target), upload)

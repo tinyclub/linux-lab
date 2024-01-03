@@ -40,6 +40,11 @@ LOGIN_METHOD ?= serial
 # Usb ethernet ip, only for usb rndis mode
 BOARD_IP  ?= 192.168.42.1
 
+# Upload support, require run /mnt/system/usb-rndis.sh after connect the main board to host
+REMOTE_MODULES ?= /mnt/system/ko/3rd/
+# We don't have a rsync in the target system? use scp instead
+RSYNC_CMD ?= $(SCP_CMD) -r
+
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
 
 BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin

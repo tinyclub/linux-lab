@@ -82,7 +82,7 @@ remote-boot: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
 	$(Q)$(SSH_CMD) -t "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
 
-PHONY += fip-bin boot-sd remote-boot
+PHONY += fip-bin boot-sd remote-boot fip-bin-deps boot-sd-deps
 
 # Put all images together to one SD Card image, you must build and save the sub images manually
 IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img

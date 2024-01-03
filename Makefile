@@ -3795,6 +3795,9 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
+BOOT_METHOD ?= serial
+
+ifneq ($(BOOT_METHOD),serial)
 boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'if [ -f /boot/uEnv.txt ]; then sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt; fi'
@@ -3802,7 +3805,17 @@ boot-config: getip
 
 reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"
-	$(Q)$(SSH_CMD) 'sudo reboot' || true
+	$(Q)$(SSH_CMD) 'sudo reboot 2>/dev/null | reboot' || true
+else
+
+REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
+
+boot-config:
+	$(Q)echo "LOG: Before booting, please upload or burn images manually"
+reboot:
+	$(Q)echo "LOG: Rebooting via serial"
+	$(Q)$(REBOOT_CMD) || true
+endif
 
 PHONY += boot-config reboot
 

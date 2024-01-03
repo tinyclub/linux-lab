@@ -3825,6 +3825,7 @@ boot-config: getip
 reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"
 	$(Q)$(SSH_CMD) 'sudo reboot 2>/dev/null | reboot' || true
+	$(Q)sleep 1
 else
 
 REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
@@ -3834,6 +3835,7 @@ boot-config:
 reboot:
 	$(Q)echo "LOG: Rebooting via serial"
 	$(Q)$(REBOOT_CMD) || true
+	$(Q)sleep 1
 endif
 
 PHONY += boot-config reboot

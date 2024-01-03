@@ -2769,7 +2769,7 @@ root-rebuild-buildroot:
 	$(Q)chown -R $(USER):$(USER) $(BUILDROOT_ROOTDIR)
 	$(Q)[ $(build_root_uboot) -eq 1 ] && make $(S) $(BUILDROOT_UROOTFS) || true
 
-HONY += root-rebuild $(addprefix root-rebuild-,prebuilt buildroot)
+PHONY += root-rebuild $(addprefix root-rebuild-,prebuilt buildroot)
 
 ROOT ?= $(ROOTDIR)
 ifeq ($(_PBR), 0)

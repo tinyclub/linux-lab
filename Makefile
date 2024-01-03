@@ -3770,19 +3770,19 @@ REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
 REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
 REMOTE_BIMAGE  ?= /boot/$(BIMAGE)
 
-uboot-upload: getip $(call __stamp,uboot,build) $(LOCAL_BIMAGE)
+uboot-upload: getip uboot-save $(LOCAL_BIMAGE)
 	$(Q)echo "LOG: Upload uboot image from $(LOCAL_BIMAGE) to $(BOARD_IP):$(REMOTE_BIMAGE)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_BIMAGE))'
 	$(Q)$(SCP_CMD) $(LOCAL_BIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_BIMAGE)
 
 ifneq ($(DTS),)
-dtb-upload: getip $(call __stamp,kernel,build) $(LOCAL_DTB)
+dtb-upload: getip kernel-save $(LOCAL_DTB)
 	$(Q)echo "LOG: Upload dtb image from $(LOCAL_DTB) to $(BOARD_IP):$(REMOTE_DTB)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
 	$(Q)$(SCP_CMD) $(LOCAL_DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
 endif
 
-kernel-upload: getip $(call __stamp,kernel,build) $(LOCAL_KIMAGE)
+kernel-upload: getip kernel-save $(LOCAL_KIMAGE)
 	$(Q)echo "LOG: Upload kernel image from $(LOCAL_KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
 	$(Q)$(SCP_CMD) $(LOCAL_KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)

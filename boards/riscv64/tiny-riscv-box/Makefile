@@ -77,11 +77,11 @@ RSYNC_CMD ?= $(SCP_CMD) -r
 IMAGE_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/image
 
 LOCAL_KIMAGE ?= $(IMAGE_BUILD)/boot.sd
-REMOTE_KIMAGE ?= /media/boot/boot.sd
+REMOTE_KIMAGE ?= /boot/boot.sd
 LOCAL_DTB    ?= $(LOCAL_KIMAGE)
 REMOTE_DTB   ?= $(REMOTE_KIMAGE)
 LOCAL_BIMAGE ?= $(IMAGE_BUILD)/fip.bin
-REMOTE_BIMAGE ?= /media/boot/fip.bin
+REMOTE_BIMAGE ?= /boot/fip.bin
 
 # Prepare local fip.bin and remote fip.bin store directory
 $(LOCAL_BIMAGE): fip-bin remote-boot
@@ -100,8 +100,8 @@ boot-sd: boot-sd-deps
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
 
 remote-boot: FORCE
-	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
-	$(Q)$(SSH_CMD) -t "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
+	$(Q)echo "LOG: Mounting remote SD Card boot partition from /dev/mmcblk0p1 to /boot/"
+	$(Q)$(SSH_CMD) "mkdir -p /boot; grep -q '/dev/mmcblk0p1 /boot ' /proc/mounts || mount /dev/mmcblk0p1 /boot/" || true
 
 PHONY += fip-bin boot-sd remote-boot fip-bin-deps boot-sd-deps
 

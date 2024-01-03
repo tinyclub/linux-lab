@@ -3752,7 +3752,7 @@ getip:
 	    read -p "LOG: Please plugin or replug usb data cable between main board and host ..." tmp; \
 	    echo "LOG: Waiting for $(BOARD_IP)"; ping_retries=$(PING_RETRIES); \
 	    for i in `seq 1 $$ping_retries`; do ping -c1 -W1 $(BOARD_IP) && break; done; \
-	    if [ $$i -eq $$ping_retries ]; then echo "ERR: Failed to connect $(BOARD_IP)"; false; fi; \
+	    if [ $$i -eq $$ping_retries ]; then echo "ERR: Failed to connect $(BOARD_IP), please try again or plugin serial cable instead."; false; fi; \
 	  fi; \
 	fi
 

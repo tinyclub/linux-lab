@@ -45,6 +45,21 @@ REMOTE_MODULES ?= /mnt/system/ko/3rd/
 # We don't have a rsync in the target system? use scp instead
 RSYNC_CMD ?= $(SCP_CMD) -r
 
+# Both kimage and dtb are put in boot.sd
+LOCAL_KIMAGE ?= $(BSP_DIR)/tools/boot.sd
+REMOTE_KIMAGE ?= /media/boot/boot.sd
+LOCAL_DTB    ?= $(LOCAL_KIMAGE)
+REMOTE_DTB   ?= $(REMOTE_KIMAGE)
+
+# Prepare local boot.sd and remote boot.sd store directory
+$(LOCAL_KIMAGE): $(KIMAGE) $(DTB) remote_boot_sd
+	$(Q)echo "LOG: Building $(REMOTE_KIMAGE)"
+	$(Q)cd $(BSP_DIR)/tools/; cp $(LINUX_KIMAGE) ./; lzma -fk Image; cp $(LINUX_DTB) ./; mkimage -f multi.its boot.sd; rm Image Image.lzma
+
+remote_boot_sd: FORCE
+	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
+	$(Q)$(SSH_CMD) "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
+
 BIMAGE  ?= $(BSP_UBOOT)/$(UBOOT)/u-boot.bin
 
 BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin

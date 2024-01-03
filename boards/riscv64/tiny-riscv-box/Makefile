@@ -64,7 +64,7 @@ $(LOCAL_KIMAGE): local-boot-sd remote-boot-sd
 
 local-boot-sd:
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
-	$(Q)cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
+	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
 
 remote-boot-sd: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
@@ -83,7 +83,7 @@ post-image: $(IMAGE_BIN)
 
 $(IMAGE_BIN):
 	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
-	$(Q)cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
+	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 
 burn-image: $(IMAGE_BIN)
 	$(Q)echo "LOG: Burning $(IMAGE_BIN) ..."

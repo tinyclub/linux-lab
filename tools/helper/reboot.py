@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 #
-# getip.py  -- get ip address via serial port
+# reboot.py  -- reboot via serial port
 #
 # Copyright (C) 2020 Wu Zhangjin <falcon@tinylab.org>
 #
-# Usage: ./getip.py /dev/ttyUSB0 115200
+# Usage: ./reboot.py /dev/ttyUSB0 115200
 #
 # Note: let this script run without password: `passwd -d USER_NAME`
 #
@@ -17,14 +17,14 @@ serial_port = sys.argv[1] if len(sys.argv) > 1 else '/dev/ttyUSB0'
 serial_baudrate = sys.argv[2] if len(sys.argv) > 2 else '115200'
 login_user = sys.argv[3] if len(sys.argv) > 3 else 'debian'
 login_pass = sys.argv[4] if len(sys.argv) > 4 else 'linux-lab'
-run_cmd = sys.argv[5] if len(sys.argv) > 5 else "sudo reboot"
+run_cmd = sys.argv[5] if len(sys.argv) > 5 else "sudo reboot 2>/dev/null || reboot"
 
 # configure the serial connections (the parameters differs on the device you are connecting to)
 ser = serial.Serial(
     port = serial_port,
     baudrate = serial_baudrate,
-    rtscts = True,
-    dsrdtr = True,
+    rtscts = False,
+    dsrdtr = False,
     timeout = 1
 )
 
@@ -45,8 +45,8 @@ if (out.decode("utf-8").find("$ ")) == -1 and (out.decode("utf-8").find("# ")) =
         time.sleep(0.2)
         while ser.inWaiting() > 0:
             out += ser.read(1)
-        if out != '':
-            print (out.decode("utf-8"))
+        #if out != '':
+        #    print (out.decode("utf-8"))
         if (out.decode("utf-8").find("=> ")) != -1:
             ser.write(b"reset\n");
         if (out.decode("utf-8").find("resetting")) != -1:
@@ -58,8 +58,8 @@ if (out.decode("utf-8").find("$ ")) == -1 and (out.decode("utf-8").find("# ")) =
         time.sleep(0.2)
         while ser.inWaiting() > 0:
             out += ser.read(1)
-        if out != '':
-            print (out.decode("utf-8"))
+        #if out != '':
+        #    print (out.decode("utf-8"))
 
     ser.write(login_pass.encode() + b"\r\n")
     while out.decode("utf-8").find("$ ") == -1 and (out.decode("utf-8").find("# ")) == -1:
@@ -67,8 +67,8 @@ if (out.decode("utf-8").find("$ ")) == -1 and (out.decode("utf-8").find("# ")) =
         time.sleep(0.5)
         while ser.inWaiting() > 0:
             out += ser.read(1)
-        if out != '':
-            print (out.decode("utf-8"))
+        #if out != '':
+        #    print (out.decode("utf-8"))
 
 ser.write(run_cmd.encode("utf-8") + b"\r\n")
 out = b''

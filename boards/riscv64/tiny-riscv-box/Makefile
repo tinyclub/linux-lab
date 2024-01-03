@@ -110,10 +110,10 @@ clean-image:
 post-image: $(IMAGE_BIN)
 
 $(IMAGE_BIN): fip-bin-deps boot-sd-deps $(ROOTFS) $(BSP_DIR)/configs/genimage.cfg
-	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
+	$(Q)echo "LOG: Building $(IMAGE_BIN) with old images, rebuild them with 'make prepare-image' if require ..."
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 
-burn-image: $(IMAGE_BIN)
+burn-image:
 	$(Q)echo "LOG: Burning $(IMAGE_BIN) ..."
 	$(Q)if [ -z "$(SD_SIZE)" -o -z "$(SD_CARD)" ]; then \
 	  echo "ERR: Please configure SD_CARD and SD_SIZE in $(BOARD_LABCONFIG) with these commands:"; \

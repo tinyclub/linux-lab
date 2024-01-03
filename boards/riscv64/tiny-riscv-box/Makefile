@@ -52,24 +52,27 @@ REMOTE_MODULES ?= /mnt/system/ko/3rd/
 RSYNC_CMD ?= $(SCP_CMD) -r
 
 # Both kimage and dtb are put in boot.sd
-LOCAL_KIMAGE ?= $(BSP_DIR)/tools/boot.sd
+IMAGE_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/image
+
+LOCAL_KIMAGE ?= $(IMAGE_BUILD)/boot.sd
 REMOTE_KIMAGE ?= /media/boot/boot.sd
 LOCAL_DTB    ?= $(LOCAL_KIMAGE)
 REMOTE_DTB   ?= $(REMOTE_KIMAGE)
 
 # Prepare local boot.sd and remote boot.sd store directory
-$(LOCAL_KIMAGE): $(KIMAGE) $(DTB) remote_boot_sd
-	$(Q)echo "LOG: Building $(REMOTE_KIMAGE)"
-	$(Q)cd $(BSP_DIR)/tools/; cp $(LINUX_KIMAGE) ./; lzma -fk Image; cp $(LINUX_DTB) ./; mkimage -f multi.its boot.sd; rm Image Image.lzma
+$(LOCAL_KIMAGE): local-boot-sd remote-boot-sd
 
-remote_boot_sd: FORCE
+local-boot-sd:
+	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
+	$(Q)cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
+
+remote-boot-sd: FORCE
 	$(Q)echo "LOG: Mounting from remote /dev/mmcblk0p1 to /media/boot/"
 	$(Q)$(SSH_CMD) "mkdir -p /media/boot; grep -q /media/boot /proc/mounts || mount /dev/mmcblk0p1 /media/boot/" || true
 
-PHONY += remote_boot_sd
+PHONY += local_boot_sd remote_boot_sd
 
 # Put all images together to one SD Card image, you must build and save the sub images manually
-IMAGE_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/image
 IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img
 
 clean-image:

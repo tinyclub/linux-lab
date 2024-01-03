@@ -84,6 +84,22 @@ PHONY += fip-bin boot-sd remote-boot
 
 # Put all images together to one SD Card image, you must build and save the sub images manually
 IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img
+IMAGE_MODULES ?= hello,8723du
+
+prepare-rootfs: root-dir
+	$(Q)make root-dir-install-system
+	$(Q)make root-rd
+
+prepare-modules: root-dir
+	$(Q)make modules-install
+	$(Q)make modules-install m=$(IMAGE_MODULES)
+	$(Q)make root-rd
+
+prepare-uboot: uboot-save
+prepare-kernel: kernel-save
+prepare-dtb: prepare-kernel
+
+prepare-image: $(addprefix prepare-,uboot kernel rootfs modules)
 
 clean-image:
 	$(Q)echo "LOG: Removing $(IMAGE_BIN) ..."
@@ -108,4 +124,4 @@ burn-image: $(IMAGE_BIN)
 	fi
 	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) $(BSP_DIR)/tools/burn-image.sh
 
-PHONY += post-image burn-image clean-image
+PHONY += post-image burn-image clean-image $(addprefix prepare-,uboot kernel rootfs modules image)

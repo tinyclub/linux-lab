@@ -4508,10 +4508,10 @@ else
 # FIXME: The real boot should be able to control the power button Here it is
 # only connect or login.
 
-ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(LOGIN_METHOD) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
-  RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/sh'
+  RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/sh' || true
 endif
 
 ifneq ($(findstring boot,$(MAKECMDGOALS)),)

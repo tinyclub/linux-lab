@@ -3213,7 +3213,9 @@ kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
 
 kernel-modules-install: $(MODULE_ROOTDIR_GOAL)
 	$(Q)[ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ] \
-	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) || true
+	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) \
+	  && rm $(ROOTDIR)/lib/modules/*/build \
+	  && rm $(ROOTDIR)/lib/modules/*/source || true
 
 ifeq ($(internal_module),1)
   M_ABS_PATH := $(KERNEL_BUILD)/$(M_PATH)
@@ -3787,13 +3789,9 @@ kernel-upload: getip kernel-save $(LOCAL_KIMAGE)
 	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
 	$(Q)$(SCP_CMD) $(LOCAL_KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)
 
-$(LOCAL_MODULES)$(m):
-	$(Q)make modules-install m=$(m)
-	$(Q)touch $(LOCAL_MODULES)$(m)
-
 module-upload: modules-upload
 
-modules-upload: getip $(LOCAL_MODULES)$(m)
+modules-upload: getip modules-install
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'

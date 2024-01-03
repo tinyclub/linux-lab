@@ -47,7 +47,8 @@ LOGIN_METHOD ?= serial
 BOARD_IP  ?= 192.168.42.1
 
 # Upload support, require run /mnt/system/usb-rndis.sh after connect the main board to host
-REMOTE_MODULES ?= /mnt/system/ko/3rd/
+LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/
+REMOTE_MODULES ?= /lib/modules/
 # We don't have a rsync in the target system? use scp instead
 RSYNC_CMD ?= $(SCP_CMD) -r
 

@@ -46,6 +46,24 @@ LOGIN_METHOD ?= serial
 # Usb ethernet ip, only for usb rndis mode
 BOARD_IP  ?= 192.168.42.1
 
+# OpenSBI build and save support, based on tiny-riscv-box branch
+OPENSBI_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/opensbi
+opensbi-build: toolchain-install $(BSP_DIR)/opensbi/src
+	$(Q)echo "LOG: Building OpenSBI ..."
+	$(Q)env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH) \
+	make $(NPD) -C $(BSP_DIR)/opensbi/src \
+	PLATFORM=generic FW_PAYLOAD_PATH=$(BIMAGE) FW_FDT_PATH=$(DTB) CROSS_COMPILE=$(CCPRE) \
+	O=$(OPENSBI_BUILD)
+
+opensbi-clean: $(BSP_DIR)/opensbi/src
+	$(Q)make $(NPD) -C $(BSP_DIR)/opensbi/src O=$(OPENSBI_BUILD) clean
+
+OPENSBI_BIOS := $(OPENSBI_BUILD)/platform/generic/firmware/fw_dynamic.bin
+$(OPENSBI_BIOS): opensbi-build
+
+opensbi-save: $(OPENSBI_BIOS)
+	$(Q)cp -v $^ $(BIOS)
+
 # Upload support, require run /mnt/system/usb-rndis.sh after connect the main board to host
 LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/
 REMOTE_MODULES ?= /lib/modules/
@@ -97,11 +115,12 @@ prepare-modules: root-dir
 	$(Q)make modules-install m=$(IMAGE_MODULES)
 	$(Q)make root-rd
 
+prepare-opensbi: opensbi-save
 prepare-uboot: uboot-save
 prepare-kernel: kernel-save
 prepare-dtb: prepare-kernel
 
-prepare-image: $(addprefix prepare-,uboot kernel rootfs modules)
+prepare-image: $(addprefix prepare-,opensbi uboot kernel rootfs modules)
 
 clean-image:
 	$(Q)echo "LOG: Removing $(IMAGE_BIN) ..."
@@ -126,4 +145,4 @@ burn-image:
 	fi
 	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) $(BSP_DIR)/tools/burn-image.sh
 
-PHONY += post-image burn-image clean-image $(addprefix prepare-,uboot kernel rootfs modules image)
+PHONY += post-image burn-image clean-image $(addprefix prepare-,opensbi uboot kernel rootfs modules image)

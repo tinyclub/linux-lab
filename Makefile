@@ -3881,7 +3881,7 @@ ifeq (run,$(first_target))
 CMD := $(strip $(subst xyz$(first_target),,xyz$(MAKECMDGOALS)))
 
 ifeq ($(CMD),)
-  $(error ERR: At least one command must be specified to run!)
+  $(error ERR: At least one command must be specified to run, for example, make run ls /)
 endif
 
 # Ignore 'targets' of run

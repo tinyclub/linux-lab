@@ -147,4 +147,7 @@ burn-image:
 	fi
 	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) $(BSP_DIR)/tools/burn-image.sh
 
-PHONY += post-image burn-image clean-image $(addprefix prepare-,opensbi uboot kernel rootfs modules image)
+# FIXME: Still not include the slow rootfs building, please run it manually with 'make root'
+allinone: prepare-image post-image burn-image
+
+PHONY += allinone post-image burn-image clean-image $(addprefix prepare-,opensbi uboot kernel rootfs modules image)

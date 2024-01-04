@@ -3859,7 +3859,7 @@ else
 endif
 
 ifeq (run,$(first_target))
-CMD := $(strip $(subst $(first_target),,$(MAKECMDGOALS)))
+CMD := $(strip $(subst xyz$(first_target),,xyz$(MAKECMDGOALS)))
 
 ifeq ($(CMD),)
   $(error ERR: At least one command must be specified to run!)

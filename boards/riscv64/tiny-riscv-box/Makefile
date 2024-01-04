@@ -64,6 +64,8 @@ $(OPENSBI_BIOS): opensbi-build
 opensbi-save: $(OPENSBI_BIOS)
 	$(Q)cp -v $^ $(BIOS)
 
+PHONY += $(addprefix opensbi-,build clean save)
+
 # Upload support, require run /mnt/system/usb-rndis.sh after connect the main board to host
 LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/
 REMOTE_MODULES ?= /lib/modules/

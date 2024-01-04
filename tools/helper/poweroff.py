@@ -89,3 +89,4 @@ while ser.inWaiting() > 0:
     out += ser.read(1)
 if out != '':
     print (out.decode("utf-8"))
+ser.close()

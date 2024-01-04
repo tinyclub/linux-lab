@@ -53,6 +53,7 @@ if not re.search("$ |# ", out.decode("utf-8")):
         if (out.decode("utf-8").find("cv180x_c906# ")) != -1:
             ser.write(b"reset\n");
         if (out.decode("utf-8").find("resetting")) != -1:
+            ser.close()
             quit()
 
     ser.write(login_user.encode() + b"\r\n")
@@ -91,3 +92,4 @@ while ser.inWaiting() > 0:
     out += ser.read(1)
 if out != '':
     print (out.decode("utf-8"))
+ser.close()

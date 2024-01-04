@@ -104,3 +104,4 @@ while not re.search("$ |# ", out.decode("utf-8")):
         for l in out.decode("utf-8").split("\r\n"):
             if re.search("^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$", l):
                 print("%s" % l)
+                ser.close()

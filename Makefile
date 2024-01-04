@@ -3831,15 +3831,29 @@ reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"
 	$(Q)$(SSH_CMD) 'sudo reboot 2>/dev/null | reboot' || true
 	$(Q)sleep 1
+
+poweroff: shutdown
+shutdown: getip
+	$(Q)echo "LOG: Powering off via ssh"
+	$(Q)$(SSH_CMD) 'sudo poweroff 2>/dev/null | poweroff' || true
+	$(Q)sleep 1
+
 else
 
 REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
+SHUTDOWN_CMD = sudo tools/helper/poweroff.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
 
 boot-config:
 	$(Q)echo "LOG: Before booting, please upload or burn images manually"
 reboot:
 	$(Q)echo "LOG: Rebooting via serial"
 	$(Q)$(REBOOT_CMD) || true
+	$(Q)sleep 1
+
+poweroff: shutdown
+shutdown:
+	$(Q)echo "LOG: Powering off via serial"
+	$(Q)$(SHUTDOWN_CMD) || true
 	$(Q)sleep 1
 endif
 

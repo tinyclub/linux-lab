@@ -48,6 +48,7 @@ BOARD_IP  ?= 192.168.42.1
 
 # OpenSBI build and save support, based on tiny-riscv-box branch
 OPENSBI_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/opensbi
+opensbi: opensbi-build
 opensbi-build: toolchain-install $(BSP_DIR)/opensbi/src
 	$(Q)echo "LOG: Building OpenSBI ..."
 	$(Q)env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH) \
@@ -64,7 +65,7 @@ $(OPENSBI_BIOS): opensbi-build
 opensbi-save: $(OPENSBI_BIOS)
 	$(Q)cp -v $^ $(BIOS)
 
-PHONY += $(addprefix opensbi-,build clean save)
+PHONY += opensbi $(addprefix opensbi-,build clean save)
 
 # Upload support, require run /mnt/system/usb-rndis.sh after connect the main board to host
 LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/

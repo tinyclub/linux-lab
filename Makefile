@@ -3704,7 +3704,7 @@ kernel-save:
 ifeq ($(_VIRT),0)
 
 # Remote automatical login related parts
-LOGIN_METHOD ?= ssh
+COM ?= ssh
 
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
@@ -3815,13 +3815,13 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
-ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(LOGIN_METHOD) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
-  BOOT_METHOD ?= serial
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(COM) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+  COM ?= serial
 else
-  BOOT_METHOD ?= ssh
+  COM ?= ssh
 endif
 
-ifneq ($(BOOT_METHOD),serial)
+ifneq ($(COM),serial)
 boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'if [ -f /boot/uEnv.txt ]; then sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt; fi'
@@ -4534,7 +4534,7 @@ else
 # FIXME: The real boot should be able to control the power button Here it is
 # only connect or login.
 
-ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(LOGIN_METHOD) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(COM) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
   ifneq ($(findstring boot,$(MAKECMDGOALS)),)

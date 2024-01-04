@@ -41,7 +41,7 @@ BIOS    ?= $(BSP_DIR)/opensbi/bin/fw_dynamic.bin
 ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 
 # Prefer serial port login instead of ssh
-LOGIN_METHOD ?= serial
+COM ?= serial
 
 # Usb ethernet ip, only for usb rndis mode
 BOARD_IP  ?= 192.168.42.1

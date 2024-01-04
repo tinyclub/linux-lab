@@ -3838,10 +3838,14 @@ shutdown: getip
 	$(Q)$(SSH_CMD) 'sudo poweroff 2>/dev/null | poweroff' || true
 	$(Q)sleep 1
 
+run: getip
+	$(Q)echo "LOG: Running command via ssh: $(CMD)$(C)$(c)"
+	$(Q)$(SSH_CMD) '$(CMD)$(C)$(c)' || true
 else
 
 REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
 SHUTDOWN_CMD = sudo tools/helper/poweroff.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
+RUN_CMD = sudo tools/helper/run.py $(BOARD_SERIAL) $(BOARD_BAUDRATE) $(BOARD_USER) $(BOARD_PASS)
 
 boot-config:
 	$(Q)echo "LOG: Before booting, please upload or burn images manually"
@@ -3855,6 +3859,10 @@ shutdown:
 	$(Q)echo "LOG: Powering off via serial"
 	$(Q)$(SHUTDOWN_CMD) || true
 	$(Q)sleep 1
+
+run:
+	$(Q)echo "LOG: Running command via serial: $(CMD)$(C)$(c)"
+	$(Q)$(RUN_CMD) '$(CMD)$(C)$(c)' || true
 endif
 
 PHONY += boot-config reboot

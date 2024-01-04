@@ -3813,15 +3813,33 @@ modules-upload: getip modules-install
 
 # Both push and pull have only two arguments
 ifeq ($(filter $(first_target),push pull file-upload file-download),$(first_target))
-ONE := $(firstword $(subst $(first_target),,$(MAKECMDGOALS)))
-ANOTHER := $(lastword $(subst $(first_target),,$(MAKECMDGOALS)))
+ARGS := $(strip $(subst xyz$(first_target),,xyz$(MAKECMDGOALS)))
+ONE := $(firstword $(ARGS))
+ANOTHER := $(lastword $(ARGS))
+
+ifeq ($(ARGS),)
+  $(error ERR: At least one file argument must be specified to push or pull, for example, make push ./local-file; make pull /remote-file)
+endif
 
 # Ignore 'targets' of push and pull
-$(eval $(ONE) $(ANOTHER):FORCE;@:)
+$(eval $(ARGS):FORCE;@:)
+
+ifeq ($(filter $(first_target),push file-upload),$(first_target))
+  ifeq ($(ANOTHER),$(ONE))
+    ANOTHER := /
+  endif
+endif
+ifeq ($(filter $(first_target),pull file-download),$(first_target))
+  ifeq ($(ANOTHER),$(ONE))
+    ANOTHER := ./
+  endif
+endif
+
 endif
 
 push: file-upload
 file-upload:
+	$(Q)echo "LOG: Pushing local '$(ONE)' to remote '$(ANOTHER)'"
 	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
 	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
 	  $(RSYNC_CMD) $(ONE) $(BOARD_IP):$(ANOTHER); \
@@ -3831,6 +3849,7 @@ file-upload:
 
 pull: file-download
 file-download:
+	$(Q)echo "LOG: Pulling remote '$(ONE)' to local '$(ANOTHER)'"
 	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
 	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
 	  $(RSYNC_CMD) $(BOARD_IP):$(ONE) $(ANOTHER); \

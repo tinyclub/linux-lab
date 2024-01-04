@@ -3762,7 +3762,17 @@ PHONY += getip
 
 # Upload images to remote board
 
-ifneq ($(findstring upload,$(MAKECMDGOALS)),)
+ifneq ($(findstring load,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
+endif
+ifneq ($(findstring push,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
+endif
+ifneq ($(findstring pull,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
+endif
+
+ifeq ($(FILE_UPDOWN),1)
 LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
 LOCAL_KIMAGE   ?= $(KIMAGE)
 LOCAL_DTB      ?= $(DTB)
@@ -3801,12 +3811,39 @@ modules-upload: getip modules-install
 	  $(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/; \
 	fi
 
+# Both push and pull have only two arguments
+ifeq ($(filter $(first_target),push pull file-upload file-download),$(first_target))
+ONE := $(firstword $(subst $(first_target),,$(MAKECMDGOALS)))
+ANOTHER := $(lastword $(subst $(first_target),,$(MAKECMDGOALS)))
+
+# Ignore 'targets' of push and pull
+$(eval $(ONE) $(ANOTHER):FORCE;@:)
+endif
+
+push: file-upload
+file-upload:
+	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(ONE) $(BOARD_IP):$(ANOTHER); \
+	else \
+	  $(RSYNC_CMD) $(ONE) $(BOARD_USER)@$(BOARD_IP):$(ANOTHER); \
+	fi
+
+pull: file-download
+file-download:
+	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(BOARD_IP):$(ONE) $(ANOTHER); \
+	else \
+	  $(RSYNC_CMD) $(BOARD_USER)@$(BOARD_IP):$(ONE) $(ANOTHER); \
+	fi
+
 # Add dummmy entries for upload target
 ifeq ($(first_target), upload)
 $(addsuffix -upload, root qemu):
 endif
 
-PHONY += $(addsuffix -upload,kernel dtb module modules root uboot qemu) upload
+PHONY += $(addsuffix -upload,kernel dtb module modules root uboot qemu file) upload push pull file-download
 
 endif # -upload
 

@@ -89,11 +89,11 @@ if (out.decode("utf-8").find("cv180x_c906# ")) != -1:
         #if out != '':
         #    print (out.decode("utf-8"))
 
-ser.write(run_cmd.encode("utf-8") + b"\r\n")
+ser.write(run_cmd.encode("utf-8") + b"\n")
 out = b''
 time.sleep(0.5)
 while ser.inWaiting() > 0:
     out += ser.read(1)
 if out != '':
-    print (out.decode("utf-8"))
+    print (out.decode("utf-8").replace(run_cmd + "\r\n",''))
 ser.close()

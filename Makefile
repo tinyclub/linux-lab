@@ -3821,6 +3821,17 @@ else
   COM ?= ssh
 endif
 
+ifeq (run,$(first_target))
+CMD := $(subst $(first_target),,$(MAKECMDGOALS))
+
+ifeq ($(CMD),)
+  $(error ERR: At least one command must be specified to run!)
+endif
+
+# Ignore 'targets' of run
+$(eval $(CMD):FORCE;@:)
+endif
+
 ifneq ($(COM),serial)
 boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
@@ -3839,8 +3850,8 @@ shutdown: getip
 	$(Q)sleep 1
 
 run: getip
-	$(Q)echo "LOG: Running command via ssh: $(CMD)$(C)$(c)"
-	$(Q)$(SSH_CMD) '$(CMD)$(C)$(c)' || true
+	$(Q)echo "LOG: Running command via ssh: $(CMD)"
+	$(Q)$(SSH_CMD) '$(CMD)' || true
 else
 
 REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
@@ -3861,8 +3872,8 @@ shutdown:
 	$(Q)sleep 1
 
 run:
-	$(Q)echo "LOG: Running command via serial: $(CMD)$(C)$(c)"
-	$(Q)$(RUN_CMD) '$(CMD)$(C)$(c)' || true
+	$(Q)echo "LOG: Running command via serial: $(CMD)"
+	$(Q)$(RUN_CMD) '$(CMD)' || true
 endif
 
 PHONY += boot-config reboot

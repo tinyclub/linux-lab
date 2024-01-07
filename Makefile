@@ -3293,11 +3293,7 @@ IMAGE := $(notdir $(ORIIMG))
 
 # aarch64 not add uboot header for kernel image
 ifeq ($(U),1)
-  ifeq ($(UKIMAGE),$(KIMAGE))
-    IMAGE := Image
-  else
-    IMAGE := uImage
-  endif
+  IMAGE := $(notdir $(UKIMAGE))
 endif
 
 # Default kernel target is kernel image

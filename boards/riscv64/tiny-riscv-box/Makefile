@@ -18,9 +18,9 @@ ROOTDEV_LIST := /dev/mmcblk0
 ROOTDEV ?= /dev/mmcblk0
 FSTYPE  ?= ext4
 
-ORIIMG  ?= arch/$(ARCH)/boot/Image
+ORIIMG  ?= arch/$(ARCH)/boot/Image.lzma
 UORIIMG ?= $(ORIIMG)
-KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image
+KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image.lzma
 UKIMAGE ?= $(KIMAGE)
 KRELEASE?= $(BSP_KERNEL)/$(LINUX)/kernel.release
 

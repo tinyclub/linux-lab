@@ -131,7 +131,7 @@ clean-image:
 
 post-image: $(IMAGE_BIN)
 
-$(IMAGE_BIN): fip-bin-deps boot-sd-deps $(ROOTFS) $(BSP_DIR)/configs/genimage.cfg
+$(IMAGE_BIN): fip-bin-deps boot-sd-deps $(BSP_DIR)/configs/genimage.cfg FORCE
 	$(Q)echo "LOG: Building $(IMAGE_BIN) with old images, rebuild them with 'make prepare-image' if require ..."
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 

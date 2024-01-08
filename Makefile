@@ -3708,6 +3708,7 @@ ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/d
   GETIP_TIMEOUT  ?= 2
   BOARD_IP       ?= $$(sudo timeout $(GETIP_TIMEOUT) python3 $(GETIP_TOOL) $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
+  BOARD_IP ?= $$(for ip in $(BOARD_IP_LIST); do ping -c1 -W1 $$ip >/dev/null 2>&1 && echo $$ip && break; done)
   SSH_TARGETS    ?= login boot boot-config reboot -upload
   TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
   ifneq ($(TARGET_MATCHED),)
@@ -3743,7 +3744,9 @@ PING_RETRIES ?= 10
 
 getip:
 	$(Q)if [ -z "$(BOARD_IP)" ]; then \
-	  echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && false; \
+	  echo "ERR: getip failed, $(BOARD_SERIAL) may not be there or connected by another client."; \
+	  echo "ERR: If not have a serial cable, please configure IP manually via 'make local-config BOARD_IP=ip'"; \
+	  false; \
 	else \
 	  ping -c1 -W1 $(BOARD_IP) >/dev/null 2>&1; \
           if [ $$? -ne 0 ]; then \
@@ -3834,7 +3837,7 @@ endif
 endif
 
 push: file-upload
-file-upload:
+file-upload: getip
 	$(Q)echo "LOG: Pushing local '$(ONE)' to remote '$(ANOTHER)'"
 	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
 	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
@@ -3844,7 +3847,7 @@ file-upload:
 	fi
 
 pull: file-download
-file-download:
+file-download: getip
 	$(Q)echo "LOG: Pulling remote '$(ONE)' to local '$(ANOTHER)'"
 	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
 	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \

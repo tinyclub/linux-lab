@@ -43,8 +43,8 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 # Prefer serial port login instead of ssh
 COM ?= serial
 
-# Usb ethernet ip, only for usb rndis mode
-BOARD_IP  ?= 192.168.42.1
+# Please list all available ip here, the first ping-able one will be used
+BOARD_IP_LIST ?= 192.168.42.1
 
 # OpenSBI build and save support, based on tiny-riscv-box branch
 OPENSBI_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/opensbi

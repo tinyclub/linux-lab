@@ -2812,9 +2812,9 @@ root-dir-rebuild rootdir-rebuild: root-dir-clean $(ROOTDIR) FORCE
 
 PHONY += root-dir rootdir $(addsuffix -rebuild,root-dir rootdir)
 
-# Install src/system, src/overlay $(BSP_ROOT)/system and $(BSP_ROOT)/$(BUILDROOT)/system
+# Install src/system, $(BSP_ROOT)/system and $(BSP_ROOT)/$(BUILDROOT)/system
 
-ROOT_SYSTEM_OVERLAY := src/system $(wildcard src/overlay) $(wildcard $(BSP_ROOT)/overlay) $(wildcard $(BSP_ROOT)/$(BUILDROOT)/overlay)
+ROOT_SYSTEM_OVERLAY := src/system $(wildcard $(BSP_ROOT)/system) $(wildcard $(BSP_ROOT)/$(BUILDROOT)/system)
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
 ifneq ($(wildcard $(KERNEL_BUILD)),)

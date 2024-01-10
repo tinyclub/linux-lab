@@ -48,8 +48,11 @@ BOARD_IP_LIST ?= 192.168.42.1
 
 # OpenSBI build and save support, based on tiny-riscv-box branch
 OPENSBI_BUILD = $(TOP_BUILD)/$(XARCH)/$(MACH)/opensbi
+OPENSBI_BIOS := $(OPENSBI_BUILD)/platform/generic/firmware/fw_dynamic.bin
+
 opensbi: opensbi-build
-opensbi-build: toolchain-install $(BSP_DIR)/opensbi/src
+opensbi-build: $(OPENSBI_BIOS)
+$(OPENSBI_BIOS): toolchain-install $(BSP_DIR)/opensbi/src
 	$(Q)echo "LOG: Building OpenSBI ..."
 	$(Q)env PATH=$(if $(CCPATH),$(CCPATH):)$(PATH) \
 	make $(NPD) -C $(BSP_DIR)/opensbi/src \
@@ -59,11 +62,13 @@ opensbi-build: toolchain-install $(BSP_DIR)/opensbi/src
 opensbi-clean: $(BSP_DIR)/opensbi/src
 	$(Q)make $(NPD) -C $(BSP_DIR)/opensbi/src O=$(OPENSBI_BUILD) clean
 
-OPENSBI_BIOS := $(OPENSBI_BUILD)/platform/generic/firmware/fw_dynamic.bin
-$(OPENSBI_BIOS): opensbi-build
-
 opensbi-save: $(OPENSBI_BIOS)
-	$(Q)cp -v $^ $(BIOS)
+	$(Q)cp -v $^ $(BSP_DIR)/opensbi/bin/
+
+# Use latest build opensbi instead of the old one
+ifneq ($(wildcard $(OPENSBI_BIOS)),)
+  BIOS := $(wildcard $(OPENSBI_BIOS))
+endif
 
 PHONY += opensbi $(addprefix opensbi-,build clean save)
 
@@ -82,6 +87,9 @@ LOCAL_DTB    ?= $(LOCAL_KIMAGE)
 REMOTE_DTB   ?= $(REMOTE_KIMAGE)
 LOCAL_BIMAGE ?= $(IMAGE_BUILD)/fip.bin
 REMOTE_BIMAGE ?= /boot/fip.bin
+
+# Export some file variables, make sure package the latest images to SD Card Image
+export KIMAGE DTB BIOS BIMAGE ROOTFS
 
 # Prepare local fip.bin and remote fip.bin store directory
 $(LOCAL_BIMAGE): fip-bin remote-boot
@@ -132,7 +140,7 @@ clean-image:
 post-image: $(IMAGE_BIN)
 
 $(IMAGE_BIN): fip-bin-deps boot-sd-deps $(BSP_DIR)/configs/genimage.cfg FORCE
-	$(Q)echo "LOG: Building $(IMAGE_BIN) with old images, rebuild them with 'make prepare-image' if require ..."
+	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 
 burn-image:

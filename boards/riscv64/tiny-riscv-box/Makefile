@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Wu Zhangjin <falcon@tinylab.org>
+# Copyright (C) 2023-2024 Wu Zhangjin <falcon@tinylab.org>, All Rights Reserved.
 # _BASE: 1, virt; 2, real; 3: virt+real
 _BASE   := 2
 ARCH    := riscv

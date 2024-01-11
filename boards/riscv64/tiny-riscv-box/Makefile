@@ -43,6 +43,9 @@ ROOTFS  ?= $(BSP_ROOT)/$(BUILDROOT)/rootfs.cpio.gz
 # Prefer serial port login instead of ssh
 COM ?= serial
 
+# Caching build
+CACHE_BUILD ?= 1
+
 # Please list all available ip here, the first ping-able one will be used
 BOARD_IP_LIST ?= 192.168.42.1
 
@@ -139,9 +142,17 @@ clean-image:
 
 post-image: $(IMAGE_BIN)
 
-$(IMAGE_BIN): fip-bin-deps boot-sd-deps $(BSP_DIR)/configs/genimage.cfg FORCE
+ifeq ($(CACHE_BUILD),1)
+  CACHE_BUILD_TARGET := cache-build
+endif
+
+$(call _stamp,image,outdir): $(CACHE_BUILD_TARGET)
+	$(Q)mkdir -p $(IMAGE_BUILD)
+	$(Q)touch $@
+
+$(IMAGE_BIN): $(call _stamp,image,outdir) fip-bin-deps boot-sd-deps $(BSP_DIR)/configs/genimage.cfg FORCE
 	$(Q)echo "LOG: Building $(IMAGE_BIN) ..."
-	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
+	$(Q)cd $(IMAGE_BUILD); $(BSP_DIR)/tools/post-image.sh
 
 burn-image:
 	$(Q)echo "LOG: Burning $(IMAGE_BIN) ..."

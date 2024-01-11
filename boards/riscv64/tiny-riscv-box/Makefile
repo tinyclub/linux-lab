@@ -154,7 +154,7 @@ burn-image:
 	  echo ""; \
 	  false; \
 	fi
-	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) $(BSP_DIR)/tools/burn-image.sh
+	$(Q)SD_IMAGE=$(IMAGE_BIN) SD_SIZE=$(SD_SIZE) SD_CARD=$(SD_CARD) SD_MAX=$(SD_MAX) $(BSP_DIR)/tools/burn-image.sh
 
 # FIXME: Still not include the slow rootfs building, please run it manually with 'make root'
 allinone: prepare-image post-image burn-image

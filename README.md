@@ -2069,18 +2069,13 @@ To optimize docker images download speed, please refer to section 6.1.6.
 
 ### 6.1.2 Docker network conflicts with LAN
 
-We assume the docker network is `10.66.0.0/16`, if not, we'd better change it as following:
+Cloud Lab use a default `172.20.0.0/16` subnet, if this conflicts with another one, please change it like this:
 
-    $ sudo vim /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-
-    $ sudo vim /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16
-
-Please restart docker service and lab container to make this change works:
-
-    $ sudo service docker restart
-    $ tools/docker/rerun linux-lab
+    $ tools/docker/rm-all
+    $ vim configs/linux-lab/docker/subnet
+    $ cat configs/linux-lab/docker/subnet
+    172.23.0.0/16
+    $ tools/docker/run linux-lab
 
 If lab network still not work, please try another private network address and eventually to avoid conflicts with LAN address.
 
@@ -2130,7 +2125,7 @@ Potential methods of configuration in Ubuntu, depends on docker and Ubuntu versi
 
 `/lib/systemd/system/docker.service`:
 
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+    ExecStart=/usr/bin/dockerd -H fd:// --registry-mirror=<your accelerate address>
 
 `/etc/docker/daemon.json`:
 

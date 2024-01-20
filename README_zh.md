@@ -2299,18 +2299,13 @@ Linux Lab 也提供许多有效的配置，`xxx-clone` 命令有助于利用现�
 
 ### 6.1.2 Docker 网络与 LAN 冲突
 
-假设 docker 网络为 `10.66.0.0/16`，否则，最好采用如下方式对其进行更改：
+Cloud Lab 默认为 Docker 容器分配了一个 `172.20.0.0/16` 的网段，如果局域网内有其他服务在使用同样的网段，容器将无法正常联网，此时请通过修改 `configs/linux-lab/docker/subnet` 配置另外一个网段，例如：
 
-    $ sudo vim /etc/default/docker
-    DOCKER_OPTS="$DOCKER_OPTS --bip=10.66.0.10/16"
-
-    $ sudo vim /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16
-
-请重新启动 docker 服务和 lab 容器以使更改生效：
-
-    $ sudo service docker restart
-    $ tools/docker/rerun linux-lab
+    $ tools/docker/rm-all
+    $ vim configs/linux-lab/docker/subnet
+    $ cat configs/linux-lab/docker/subnet
+    172.23.0.0/16
+    $ tools/docker/run linux-lab
 
 如果 Linux Lab 的网络仍然无法正常工作，请尝试使用另一个专用网络地址，并最终避免与 LAN 地址冲突。
 
@@ -2366,7 +2361,7 @@ Ubuntu 系统下，请根据不同版本情况选择下述**某一种**方法进
 
 `/lib/systemd/system/docker.service`:
 
-    ExecStart=/usr/bin/dockerd -H fd:// --bip=10.66.0.10/16 --registry-mirror=<your accelerate address>
+    ExecStart=/usr/bin/dockerd -H fd:// --registry-mirror=<your accelerate address>
 
 `/etc/default/docker`:
 

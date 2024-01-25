@@ -98,6 +98,7 @@ export KIMAGE DTB BIOS BIMAGE ROOTFS
 $(LOCAL_BIMAGE): fip-bin remote-boot
 
 fip-bin-deps: $(BIOS) $(BIMAGE) $(wildcard $(BSP_DIR)/firmwares/*)
+fip.bin: fip-bin
 fip-bin: fip-bin-deps
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/fip-bin.sh
@@ -106,6 +107,7 @@ fip-bin: fip-bin-deps
 $(LOCAL_KIMAGE): boot-sd remote-boot
 
 boot-sd-deps: $(DTB) $(KIMAGE) $(BSP_DIR)/configs/multi.its
+boot.sd: boot-sd
 boot-sd: boot-sd-deps
 	$(Q)echo "LOG: Building $(LOCAL_KIMAGE)"
 	$(Q)mkdir -p $(IMAGE_BUILD); cd $(IMAGE_BUILD); $(BSP_DIR)/tools/boot-sd.sh
@@ -114,7 +116,7 @@ remote-boot: FORCE
 	$(Q)echo "LOG: Mounting remote SD Card boot partition from /dev/mmcblk0p1 to /boot/"
 	$(Q)$(SSH_CMD) "mkdir -p /boot; grep -q '/dev/mmcblk0p1 /boot ' /proc/mounts || mount /dev/mmcblk0p1 /boot/" || true
 
-PHONY += fip-bin boot-sd remote-boot fip-bin-deps boot-sd-deps
+PHONY += fip.bin boot.sd fip-bin boot-sd remote-boot fip-bin-deps boot-sd-deps
 
 # Put all images together to one SD Card image, you must build and save the sub images manually
 IMAGE_BIN = $(IMAGE_BUILD)/tiny-riscv-box.img

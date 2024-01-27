@@ -3822,6 +3822,7 @@ endif
 
 # Ignore 'targets' of push and pull
 $(eval $(ARGS):FORCE;@:)
+PHONY += $(ARGS)
 
 ifeq ($(filter $(first_target),push file-upload),$(first_target))
   ifeq ($(ANOTHER),$(ONE))

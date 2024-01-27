@@ -3886,6 +3886,7 @@ endif
 
 # Ignore 'targets' of run
 $(eval $(CMD):FORCE;@:)
+PHONY += $(CMD)
 endif
 
 ifneq ($(COM),serial)
@@ -4756,6 +4757,7 @@ endif
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(APP_ARGS):FORCE;@:)
+PHONY += $(APP_ARGS)
 endif
 
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)

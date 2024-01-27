@@ -40,6 +40,8 @@ ser = serial.Serial(
 
 ser.isOpen()
 
+# send the etx (CTRL+C) to terminate previous commands
+ser.write(b"\x03")
 # send the character to the device
 ser.write(b"\n")
 out = b''

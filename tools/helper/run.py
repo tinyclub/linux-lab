@@ -38,6 +38,8 @@ ser = serial.Serial(
 
 ser.isOpen()
 
+# send the etx (CTRL+C) to terminate previous commands
+ser.write(b"\x03")
 # send the character to the device
 ser.write(b"\n")
 out = b''
@@ -89,7 +91,7 @@ if (out.decode("utf-8").find("cv180x_c906# ")) != -1:
         #if out != '':
         #    print (out.decode("utf-8"))
 
-ser.write(run_cmd.encode("utf-8") + b"&\n")
+ser.write(run_cmd.encode("utf-8") + b"\n")
 out = b''
 time.sleep(0.5)
 while ser.inWaiting() > 0:

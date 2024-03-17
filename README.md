@@ -309,6 +309,7 @@ It supports:
     * Support transparent compress, use 128G as ~256G capacity
     * Support memory compiling, speedup compiling and save disk erase life
     * Support factory restore, allow restore factory system in some cases
+    * Support volatile memory booting, allow read and write from memory, faster and longer
     * Merged in many labs, such as Linux Lab, Linux 0.11 Lab, be able to learn Linux kernel, embedded Linux, Uboot, Assembly, C, Python, Database, Network and so forth
 * Where to buy
     * [Taobao shop of TinyLab.org Community][023]

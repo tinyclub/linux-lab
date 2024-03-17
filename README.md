@@ -160,6 +160,8 @@ Linux Lab is open source with no warranty – use at your own risk.
 
 [![Docker QEMU Linux Lab](doc/images/linux-lab.png)][043]
 
+**Friendly Notice**: TinyLab Community have developed [Linux Lab Disk][023], you can buy from [TinyLab.org's Taobao Shop][024] or [Bilibili Shop][025].
+
 ## 1.2 Project Homepage
 
 * Homepage
@@ -223,6 +225,10 @@ Related Projects:
 * [Linux Kernel Observation][051]
 
 * [RISC-V Linux Kernel Investigation][052]
+
+* RISC-V Linux System Development Course
+    * [Part I][https://space.bilibili.com/687228362/channel/collectiondetail?sid=1750690], Require [Linux RISC-V Disk][023]
+    * [Part II][https://space.bilibili.com/687228362/channel/collectiondetail?sid=2021659], Require [Tiny RISC-V Box][055]
 
 ### 1.3.2 Non-Free Video Courses In Chinese
 
@@ -1868,6 +1874,7 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)][042]
 
 * User Manual
+    * [Linux Lab v1.3 User Manual][054]
     * [Linux Lab v1.2 User Manual][053]
     * [Linux Lab v1.1 User Manual][050]
     * [Linux Lab v1.0 User Manual][033]
@@ -2628,3 +2635,5 @@ Welcome to mark our web site, star our git repositories:
 [051]: https://www.cctalk.com/m/group/90483396
 [052]: https://www.cctalk.com/m/group/90251209
 [053]: https://tinylab.org/pdfs/linux-lab-v1.2-manual-en.pdf
+[054]: https://tinylab.org/pdfs/linux-lab-v1.3-manual-en.pdf
+[055]: https://tinylab.org/tiny-riscv-box

@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.2 中文手册
+% Linux Lab v1.3 中文手册
 % [泰晓科技 | Tinylab.org][077]
 % \today
 --><!-- metadata end -->
@@ -515,6 +515,30 @@ v1.2 升级部分内核到 v6.3.6，升级部分 QEMU 版本到 v8.0.2，新增 
     * 新增部分内核到 v6.1.1
     * 更新 rust-for-kernel 支持
     * 为 riscv64/virt 新增 openeuler 内核支持
+
+### 1.6.13 v1.3 @ 2024.03.17
+
+v1.3 升级部分内核到 v6.6，新增上游内核工具链支持，完善 riscv64 和 nolibc 开发支持，另有新增 2 款虚拟开发板：`ppc64le/pseries` 和 `ppc64le/powernv`。
+
+* v1.3 rc3
+    * riscv64: 默认工具链改为更轻量的上游内核工具链
+    * toolchain: 新增内置工具链的自动解压支持
+    * boot: Shell 从 `/bin/bash` 改为更为通用的 `/bin/sh`
+    * examples: 修复 C 语言例子的编译参数，确保可以在 RISC-V Lab 下编译
+    * README: 新增 RISC-V Linux 公开课视频链接，新增网络冲突说明
+
+* v1.3 rc2
+    * loongarch：新增 v6.5.4, v6.6 和 buildroot 支持
+    * riscv64: 修复 riscv64-hello.s 的 `#ifdef` 错误
+    * patch: 完善二进制补丁的检测与 Apply 支持
+    * notice: 调整部分 errors 为 warnings，提高可用性
+
+* v1.3 rc1
+    * ppc64: 新增 `ppc64le/pseries` 和 `ppc64le/powernv` 等虚拟开发板支持
+    * toolchain: 新增支持 <https://mirrors.edge.kernel.org/pub/tools/crosstool/>
+    * riscv64: 新增图形显示支持
+    * nolibc: 新增 `arm/versatilepb` 等多个板子的测试支持
+    * test: 完善 timeout 机制
 
 # 2. Linux Lab 安装
 

@@ -30,7 +30,7 @@ function _makefile_targets {
                 if [ $? -eq 0 ]; then
                   targets="all $all_apps"
                 else
-                  echo $all_apps | tr ' ' '\n' | grep -iq "^$last_arg$"
+                  echo "$all_apps push pull" | tr ' ' '\n' | grep -iq "^$last_arg$"
                   if [ $? -eq 0 ]; then
                     if [ -d "$this_arg" ]; then
                       targets="$(find $this_arg -maxdepth 1)"

@@ -1415,7 +1415,7 @@ FILTER     ?= .*
 VAR_FILTER ?= ^[ [\./_a-z0-9-]* \]|^ *[\_a-zA-Z0-9]* *
 
 define getboardvars
-cat $(BOARD_MAKEFILE) | grep -E -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|override |^$$"  | tr -d '?: ' | cut -d '=' -f1 | uniq
+cat $(BOARD_MAKEFILE) | grep -E -v "^ *\#|ifeq|ifneq|else|endif|include |call |eval |_BASE|_PLUGIN|override |export|PHONY|^$$|:$$|: " | grep -P -v "\t" | tr -d '?: ' | cut -d '=' -f1 | uniq
 endef
 
 define showboardvars
@@ -1566,7 +1566,8 @@ board-info:
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| grep -E -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g;s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| grep -E -v " *_BASE| *_PLUGIN| *#" | grep -E -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval " \
+		| grep -E -v " *_BASE| *_PLUGIN| *#" | grep -E -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval |export|PHONY|: |:$$" \
+		| grep -P -v "\t" \
 		| grep -E --colour=auto "$(VAR_FILTER)"
 
 BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin full)
@@ -2811,9 +2812,9 @@ root-dir-rebuild rootdir-rebuild: root-dir-clean $(ROOTDIR) FORCE
 
 PHONY += root-dir rootdir $(addsuffix -rebuild,root-dir rootdir)
 
-# Install src/system, src/overlay $(BSP_ROOT)/system and $(BSP_ROOT)/$(BUILDROOT)/system
+# Install src/system, $(BSP_ROOT)/system and $(BSP_ROOT)/$(BUILDROOT)/system
 
-ROOT_SYSTEM_OVERLAY := src/system $(wildcard src/overlay) $(wildcard $(BSP_ROOT)/overlay) $(wildcard $(BSP_ROOT)/$(BUILDROOT)/overlay)
+ROOT_SYSTEM_OVERLAY := src/system $(wildcard $(BSP_ROOT)/system) $(wildcard $(BSP_ROOT)/$(BUILDROOT)/system)
 ROOT_INSTALL_TOOL := $(TOOL_DIR)/root/install.sh
 
 ifneq ($(wildcard $(KERNEL_BUILD)),)
@@ -3212,7 +3213,9 @@ kernel-modules-install-km: $(MODULE_ROOTDIR_GOAL)
 
 kernel-modules-install: $(MODULE_ROOTDIR_GOAL)
 	$(Q)[ "$$($(SCRIPTS_KCONFIG) --file $(DEFAULT_KCONFIG) -s MODULES)" = "y" ] \
-	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) || true
+	  && $(call make_kernel,modules_install INSTALL_MOD_PATH=$(ROOTDIR)) \
+	  && rm $(ROOTDIR)/lib/modules/*/build \
+	  && rm $(ROOTDIR)/lib/modules/*/source || true
 
 ifeq ($(internal_module),1)
   M_ABS_PATH := $(KERNEL_BUILD)/$(M_PATH)
@@ -3290,11 +3293,7 @@ IMAGE := $(notdir $(ORIIMG))
 
 # aarch64 not add uboot header for kernel image
 ifeq ($(U),1)
-  ifeq ($(UKIMAGE),$(KIMAGE))
-    IMAGE := Image
-  else
-    IMAGE := uImage
-  endif
+  IMAGE := $(notdir $(UKIMAGE))
 endif
 
 # Default kernel target is kernel image
@@ -3701,11 +3700,7 @@ kernel-save:
 ifeq ($(_VIRT),0)
 
 # Remote automatical login related parts
-LOGIN_METHOD ?= ssh
-
-ifneq ($(LOGIN_METHOD),ssh)
-  $(error Only support ssh upload method currently)
-endif
+COM ?= ssh
 
 # The ip address of target board, must make sure python3-serial is installed
 ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
@@ -3713,6 +3708,7 @@ ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/d
   GETIP_TIMEOUT  ?= 2
   BOARD_IP       ?= $$(sudo timeout $(GETIP_TIMEOUT) python3 $(GETIP_TOOL) $(BOARD_SERIAL) $(BOARD_BAUDRATE))
 else
+  BOARD_IP ?= $$(for ip in $(BOARD_IP_LIST); do ping -c1 -W1 $$ip >/dev/null 2>&1 && echo $$ip && break; done)
   SSH_TARGETS    ?= login boot boot-config reboot -upload
   TARGET_MATCHED := $(strip $(foreach s,$(SSH_TARGETS),$(findstring $s,$(MAKECMDGOALS))))
   ifneq ($(TARGET_MATCHED),)
@@ -3731,7 +3727,7 @@ SSH_CMD   := $(SSH_PASS) ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKey
 SCP_CMD   := $(SSH_PASS) scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 SSH_RSH   := --rsh='sshpass -e ssh -l $(BOARD_USER) -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '
-RSYNC_CMD := SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
+RSYNC_CMD ?= SSHPASS=$(BOARD_PASS) rsync -av $(SSH_RSH)
 
 # KERNEL_RELEASE version info required by -upload and boot-config targets
 ifneq ($(MAKECMDGOALS),)
@@ -3744,49 +3740,129 @@ ifneq ($(MAKECMDGOALS),)
 endif
 
 # Check ip variable
+PING_RETRIES ?= 10
+
 getip:
-	$(Q)if [ -z "$(BOARD_IP)" ]; then echo "$(GETIP_TOOL) timeout, $(BOARD_SERIAL) may be connected by another client." && exit 1; fi
+	$(Q)if [ -z "$(BOARD_IP)" ]; then \
+	  echo "ERR: getip failed, $(BOARD_SERIAL) may not be there or connected by another client."; \
+	  echo "ERR: If not have a serial cable, please configure IP manually via 'make local-config BOARD_IP=ip'"; \
+	  false; \
+	else \
+	  ping -c1 -W1 $(BOARD_IP) >/dev/null 2>&1; \
+          if [ $$? -ne 0 ]; then \
+	    read -p "LOG: Please plugin or replug usb data cable between main board and host ..." tmp; \
+	    echo "LOG: Waiting for $(BOARD_IP)"; ping_retries=$(PING_RETRIES); \
+	    for i in `seq 1 $$ping_retries`; do ping -c1 -W1 $(BOARD_IP) && break; done; \
+	    if [ $$i -eq $$ping_retries ]; then echo "ERR: Failed to connect $(BOARD_IP), please try again or plugin serial cable instead."; false; fi; \
+	  fi; \
+	fi
 
 PHONY += getip
 
 # Upload images to remote board
 
-ifneq ($(findstring upload,$(MAKECMDGOALS)),)
-LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
-REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
-REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
-REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
-
-ifneq ($(DTS),)
-dtb-upload: getip $(call __stamp,kernel,build)
-	$(Q)echo "LOG: Upload dtb image from $(DTB) to $(BOARD_IP):$(REMOTE_DTB)"
-	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
-	$(Q)$(SCP_CMD) $(DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
+ifneq ($(findstring load,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
+endif
+ifneq ($(findstring push,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
+endif
+ifneq ($(findstring pull,$(MAKECMDGOALS)),)
+  FILE_UPDOWN := 1
 endif
 
-kernel-upload: getip $(call __stamp,kernel,build)
-	$(Q)echo "LOG: Upload kernel image from $(KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
-	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
-	$(Q)$(SCP_CMD) $(KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)
+ifeq ($(FILE_UPDOWN),1)
+LOCAL_MODULES  ?= $(ROOTDIR)/lib/modules/$(KERNEL_RELEASE)
+LOCAL_KIMAGE   ?= $(KIMAGE)
+LOCAL_DTB      ?= $(DTB)
+LOCAL_BIMAGE   ?= $(BIMAGE)
+REMOTE_MODULES ?= /lib/modules/$(KERNEL_RELEASE)
+REMOTE_KIMAGE  ?= /boot/vmlinuz-$(KERNEL_RELEASE)
+REMOTE_DTB     ?= /boot/dtbs/$(KERNEL_RELEASE)/$(DIMAGE)
+REMOTE_BIMAGE  ?= /boot/$(BIMAGE)
 
-$(LOCAL_MODULES)$(m):
-	$(Q)make modules-install m=$(m)
-	$(Q)touch $(LOCAL_MODULES)$(m)
+uboot-upload: getip $(LOCAL_BIMAGE)
+	$(Q)echo "LOG: Upload uboot image from $(LOCAL_BIMAGE) to $(BOARD_IP):$(REMOTE_BIMAGE)"
+	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_BIMAGE))'
+	$(Q)$(SCP_CMD) $(LOCAL_BIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_BIMAGE)
+
+ifneq ($(DTS),)
+dtb-upload: getip $(LOCAL_DTB)
+	$(Q)echo "LOG: Upload dtb image from $(LOCAL_DTB) to $(BOARD_IP):$(REMOTE_DTB)"
+	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_DTB); mkdir -p $(dir $(REMOTE_DTB))'
+	$(Q)$(SCP_CMD) $(LOCAL_DTB) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_DTB)
+endif
+
+kernel-upload: getip $(LOCAL_KIMAGE)
+	$(Q)echo "LOG: Upload kernel image from $(LOCAL_KIMAGE) to $(BOARD_IP):$(REMOTE_KIMAGE)"
+	$(Q)$(SSH_CMD) 'rm -f $(REMOTE_IMAGE); mkdir -p $(dir $(REMOTE_KIMAGE))'
+	$(Q)$(SCP_CMD) $(LOCAL_KIMAGE) $(BOARD_USER)@$(BOARD_IP):$(REMOTE_KIMAGE)
 
 module-upload: modules-upload
 
-modules-upload: getip $(LOCAL_MODULES)$(m)
+modules-upload: getip modules-install
 	$(Q)echo "LOG: Upload modules from $(LOCAL_MODULES) to $(BOARD_IP):$(REMOTE_MODULES)"
 	$(Q)rm -f $(LOCAL_MODULES)/source $(LOCAL_MODULES)/build
 	$(Q)$(SSH_CMD) 'mkdir -p $(REMOTE_MODULES)'
-	$(Q)$(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_IP):$(REMOTE_MODULES)/; \
+	else \
+	  $(RSYNC_CMD) $(LOCAL_MODULES)/* $(BOARD_USER)@$(BOARD_IP):$(REMOTE_MODULES)/; \
+	fi
+
+# Both push and pull have only two arguments
+ifeq ($(filter $(first_target),push pull file-upload file-download),$(first_target))
+ARGS := $(strip $(subst xyz$(first_target),,xyz$(MAKECMDGOALS)))
+ONE := $(firstword $(ARGS))
+ANOTHER := $(lastword $(ARGS))
+
+ifeq ($(ARGS),)
+  $(error ERR: At least one file argument must be specified to push or pull, for example, make push ./local-file; make pull /remote-file)
+endif
+
+# Ignore 'targets' of push and pull
+$(eval $(ARGS):FORCE;@:)
+PHONY += $(ARGS)
+
+ifeq ($(filter $(first_target),push file-upload),$(first_target))
+  ifeq ($(ANOTHER),$(ONE))
+    ANOTHER := /
+  endif
+endif
+ifeq ($(filter $(first_target),pull file-download),$(first_target))
+  ifeq ($(ANOTHER),$(ONE))
+    ANOTHER := ./
+  endif
+endif
+
+endif
+
+push: file-upload
+file-upload: getip
+	$(Q)echo "LOG: Pushing local '$(ONE)' to remote '$(ANOTHER)'"
+	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(ONE) $(BOARD_IP):$(ANOTHER); \
+	else \
+	  $(RSYNC_CMD) $(ONE) $(BOARD_USER)@$(BOARD_IP):$(ANOTHER); \
+	fi
+
+pull: file-download
+file-download: getip
+	$(Q)echo "LOG: Pulling remote '$(ONE)' to local '$(ANOTHER)'"
+	$(Q)$(SSH_CMD) 'mkdir -p $(dir $(ANOTHER))'
+	$(Q)if echo $(RSYNC_CMD) | grep -q rsync; then \
+	  $(RSYNC_CMD) $(BOARD_IP):$(ONE) $(ANOTHER); \
+	else \
+	  $(RSYNC_CMD) $(BOARD_USER)@$(BOARD_IP):$(ONE) $(ANOTHER); \
+	fi
 
 # Add dummmy entries for upload target
 ifeq ($(first_target), upload)
-$(addsuffix -upload, root uboot qemu):
+$(addsuffix -upload, root qemu):
 endif
 
-PHONY += $(addsuffix -upload,kernel dtb module modules root uboot qemu) upload
+PHONY += $(addsuffix -upload,kernel dtb module modules root uboot qemu file) upload push pull file-download
 
 endif # -upload
 
@@ -3795,6 +3871,25 @@ ifneq ($(BOOT_CONFIG),uEnv)
   $(error Only support uEnv configure method currently)
 endif
 
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(COM) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+  COM ?= serial
+else
+  COM ?= ssh
+endif
+
+ifeq (run,$(first_target))
+CMD := $(strip $(subst xyz$(first_target),,xyz$(MAKECMDGOALS)))
+
+ifeq ($(CMD),)
+  $(error ERR: At least one command must be specified to run, for example, make run ls /)
+endif
+
+# Ignore 'targets' of run
+$(eval $(CMD):FORCE;@:)
+PHONY += $(CMD)
+endif
+
+ifneq ($(COM),serial)
 boot-config: getip
 	$(Q)echo "LOG: Configure new kernel and dtbs images"
 	$(Q)$(SSH_CMD) 'if [ -f /boot/uEnv.txt ]; then sed -i -e "s/uname_r=.*/uname_r=$(KERNEL_RELEASE)/g" /boot/uEnv.txt; fi'
@@ -3802,7 +3897,41 @@ boot-config: getip
 
 reboot: getip
 	$(Q)echo "LOG: Rebooting via ssh"
-	$(Q)$(SSH_CMD) 'sudo reboot' || true
+	$(Q)$(SSH_CMD) 'sudo reboot 2>/dev/null | reboot' || true
+	$(Q)sleep 1
+
+poweroff: shutdown
+shutdown: getip
+	$(Q)echo "LOG: Powering off via ssh"
+	$(Q)$(SSH_CMD) 'sudo poweroff 2>/dev/null | poweroff' || true
+	$(Q)sleep 1
+
+run: getip
+	$(Q)echo "LOG: Running command via ssh: $(CMD)"
+	$(Q)$(SSH_CMD) '$(CMD)' || true
+else
+
+REBOOT_CMD = sudo tools/helper/reboot.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
+SHUTDOWN_CMD = sudo tools/helper/poweroff.py $(BOARD_SERIAL) $(BOARD_BAUDRATE)
+RUN_CMD = sudo tools/helper/run.py $(BOARD_SERIAL) $(BOARD_BAUDRATE) $(BOARD_USER) $(BOARD_PASS)
+
+boot-config:
+	$(Q)echo "LOG: Before booting, please upload or burn images manually"
+reboot:
+	$(Q)echo "LOG: Rebooting via serial"
+	$(Q)$(REBOOT_CMD) || true
+	$(Q)sleep 1
+
+poweroff: shutdown
+shutdown:
+	$(Q)echo "LOG: Powering off via serial"
+	$(Q)$(SHUTDOWN_CMD) || true
+	$(Q)sleep 1
+
+run:
+	$(Q)echo "LOG: Running command via serial: $(CMD)"
+	$(Q)$(RUN_CMD) '$(CMD)' || true
+endif
 
 PHONY += boot-config reboot
 
@@ -4495,14 +4624,22 @@ else
 # FIXME: The real boot should be able to control the power button Here it is
 # only connect or login.
 
-ifeq ($(shell [ -c $(BOARD_SERIAL) ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
+ifeq ($(shell [ -c $(BOARD_SERIAL) -a $(COM) != "ssh" ] && sudo sh -c 'echo > $(BOARD_SERIAL)' 2>/dev/null; echo $$?),0)
   RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via serial port" && sudo minicom -D $(BOARD_SERIAL) -b $(BOARD_BAUDRATE)
 else
-  RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/sh'
+  ifneq ($(findstring boot,$(MAKECMDGOALS)),)
+    RUN_BOOT_CMD ?= $(Q)echo "LOG: Please run 'make login' manually after board rebooted" || true
+  else
+    RUN_BOOT_CMD ?= $(Q)echo "LOG: Login via ssh protocol" && $(SSH_CMD) -t '/bin/sh' || true
+  endif
+  GETIP := getip
 endif
 
 ifneq ($(findstring boot,$(MAKECMDGOALS)),)
-  _BOOT_DEPS := boot-config reboot
+  _BOOT_DEPS := $(GETIP) boot-config reboot
+endif
+ifneq ($(findstring login,$(MAKECMDGOALS)),)
+  _BOOT_DEPS := $(GETIP)
 endif
 
 _test _debug:
@@ -4620,6 +4757,7 @@ endif
 ifneq ($(APP_ARGS),)
 # ...and turn them into do-nothing targets
 $(eval $(APP_ARGS):FORCE;@:)
+PHONY += $(APP_ARGS)
 endif
 
 ifneq ($(filter $(first_target),$(APP_TARGETS)),)

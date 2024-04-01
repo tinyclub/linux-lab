@@ -1,7 +1,7 @@
 #
 # Core Makefile
 #
-# Copyright (C) 2016-2021 Wu Zhangjin <falcon@ruma.tech>
+# Copyright (C) 2016-2024 Wu Zhangjin <falcon@ruma.tech>
 #
 
 TOP_DIR := $(CURDIR)

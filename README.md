@@ -1369,7 +1369,7 @@ Download, decompress and enable the external toolchain:
 
 Switch compiler version if exists, for example:
 
-    $ make gcc-switch CCORI=internal GCC=4.7
+    $ make gcc-switch CCORI=internal GCC=4.8
 
     $ make gcc-switch CCORI=linaro
 

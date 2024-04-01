@@ -1621,7 +1621,7 @@ Linux 内核主线的升级非常迅速，内置的工具链可能无法与其�
 
 切换编译器版本，例子如下：
 
-    $ make gcc-switch CCORI=internal GCC=4.7
+    $ make gcc-switch CCORI=internal GCC=4.8
 
     $ make gcc-switch CCORI=linaro
 

@@ -323,7 +323,7 @@ $3/$2.$1
 endef
 
 define _vf
-$(call _f,$(if $4,$(call _lc,$1)_$($1),$1),$2,$3)
+$(call _f,$(if $4,$(call _lc,$1)_$($1),$(call _lc,$1)),$2,$3)
 endef
 
 # include $3/$2.lowcase($1)_$1

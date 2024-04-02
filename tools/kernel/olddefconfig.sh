@@ -10,7 +10,15 @@ makefile=$1
 oldconfig=allnoconfig
 
 if [ -n "$makefile" -a -f "$makefile" ]; then
-  for c in allnoconfig olddefconfig oldnoconfig oldconfig
+  # allnoconfig only works after supports KCONFIG_ALLNOCONFIG
+  grep -w KCONFIG_ALLNOCONFIG "$makefile"
+  if [ $? -eq 0 ]; then
+    config_options="allnoconfig olddefconfig oldnoconfig oldconfig"
+  else
+    config_options="olddefconfig oldnoconfig oldconfig"
+  fi
+
+  for c in $config_options
   do
     grep -w $c -q $makefile
     if [ $? -eq 0 ]; then

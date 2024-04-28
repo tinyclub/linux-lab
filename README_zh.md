@@ -1684,17 +1684,11 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
     $ make kernel JOBS=1
 
-如果是通过 `vnc` 或者 `webvnc` 登陆的，可运行如下命令直接调试：
+可运行如下命令调试：
 
     $ make debug
 
-将打开一个新的终端窗口，从 `.gdb/kernel.default` 加载脚本，自动运行 gdb。
-
-但是，如果是通过 `bash`、`ssh` 或者 `webssh` 登陆的，请通过相应方式再登陆一次 Linux Lab，再次运行如下命令即可：
-
-    $ make debug
-
-主要原因是，控制台不支持多窗口，需要手动开多个窗口，方便一边运行，一边调试。
+该命令将使用 tmux 分割出两个终端分别运行 QEMU 和 gdb，并从 `.gdb/kernel.default` 加载脚本。
 
 如果想修改调试脚本，可以拷贝一份到 `.gdb/kernel.user`，这样就可以无缝升级：
 
@@ -1721,10 +1715,6 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 ### 4.6.2 调试 U-Boot
 
 如果想调试 Uboot（采用 `.gdb/uboot.default` 调试脚本）：
-
-    $ make debug uboot
-
-如果是通过控制台登陆的 Linux Lab，不会自动拉起窗口，请按提示再次执行如下命令即可开启调试：
 
     $ make debug uboot
 

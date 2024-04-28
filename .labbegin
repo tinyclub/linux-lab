@@ -32,6 +32,13 @@ ifneq ($(QEMU),)
  endif
 endif
 
+# With tmux, the Linux kernel can be debugged in the CLI
+ifneq ($(findstring debug,$(firstword $(MAKECMDGOALS)))),)
+  ifeq ($(wildcard /usr/bin/tmux),)
+    PKGS += tmux
+  endif
+endif
+
 # gcc 4.3 must work with 2.24 binutils (ld), otherwise, the kernel compiled not boot
 # LS is a predefined variable, use LDT (ld tool) instead here
 ifeq ($(CCORI),internal)

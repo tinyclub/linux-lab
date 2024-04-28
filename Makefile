@@ -4065,8 +4065,6 @@ G ?= 0
 
 # Force using curses based graphic mode for bash/ssh login
 ifneq ($(shell env | grep -q ^DISPLAY; echo $$?), 0)
-  XTERM := null
-
   ifeq ($(G), 1)
     override G := 2
   endif
@@ -4533,37 +4531,11 @@ HOME_GDB_INIT  ?= $(HOME)/.gdbinit
 # Force run as ubuntu to avoid permission issue of .gdbinit and ~/.gdbinit
 GDB_USER       ?= $(USER)
 
-# Xterm: terminator
-ifeq ($(XTERM), null)
-  XTERM_STATUS := 1
-else
-  XTERM ?= $(shell tools/xterm.sh qterminal)
-  # Testing should use non-interactive mode, otherwise, enable interactive.
-  ifneq ($(TEST),)
-    XTERM_CMD  ?= sudo -u $(GDB_USER) /bin/bash -c "$(GDB_CMD)"
-  else
-    XTERM_CMD  ?= $(XTERM) --workdir $(CURDIR) --title "$(GDB_CMD)" -e "$(GDB_CMD)"
-  endif
-  XTERM_STATUS := $(shell $(XTERM) --help >/dev/null 2>&1; echo $$?)
-endif
-
-ifeq ($(XTERM_STATUS), 0)
-  DEBUG_CMD  := $(XTERM_CMD)
-else
-  DEBUG_CMD  := $(Q)sleep 0.1 && echo "\nLOG: debug server started, please connect it with these commands:\n\n" \
-                                      "    (host) $$ cd /path/to/cloud-lab\n" \
-                                      "    (host) $$ tools/docker/bash linux-lab\n" \
-                                      "    ubuntu@linux-lab:/labs/linux-lab$$ make $(MAKECMDGOALS)\n" \
-                                      "\n\n" \
-                                      "NOTE: To exit debug server, please press 'CTRL+a x'\n\n"
-endif
-
 # FIXME: gdb not continue the commands in .gdbinit while runing with 'CASE=debug tools/testing/run.sh'
 #        just ignore the do_fork breakpoint to workaround it.
 _debug:
 	$(Q)cp -v $(notdir $(GDBINIT_DIR))/$(notdir $(GDB_INIT)) .gdbinit
 	$(Q)sudo -u $(GDB_USER) echo "add-auto-load-safe-path .gdbinit" > $(HOME_GDB_INIT)
-	$(Q)$(DEBUG_CMD) &
 
 _debug_init_1:
 	$(Q)sudo -u $(GDB_USER) sed -i -e "/do_fork/s/^#*//g" $(GDB_INIT)
@@ -4607,7 +4579,7 @@ ifneq ($(DEBUG),0)
   # Debug listen on a unqiue port, should run exclusively
   DEBUG_LOCK   := $(GDBINIT_DIR)/.lock
   KEEP_UNIQUE  := flock -n -x $(DEBUG_LOCK)
-  RUN_BOOT_CMD := $(KEEP_UNIQUE) $(BOOT_CMD) || $(GDB_CMD)
+  RUN_BOOT_CMD := tmux new-session -d '$(KEEP_UNIQUE) $(BOOT_CMD)' \; split-window -h '$(GDB_CMD)' \; attach
 else
   RUN_BOOT_CMD := $(BOOT_CMD)
 endif

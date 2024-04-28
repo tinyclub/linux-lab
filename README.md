@@ -1438,11 +1438,7 @@ And then debug it directly:
 
     $ make debug
 
-If login via `vnc` or `webvnc`, It will open a new terminal, load the scripts from `.gdb/kernel.default`, run gdb automatically.
-
-But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this command again to start debugging:
-
-    $ make debug
+The above command will use tmux to split into two terminals, each running QEMU and gdb respectively, and load the script from .gdb/kernel.default.
 
 To customize kernel gdbinit script, simply copy one and edit it manually:
 
@@ -1472,11 +1468,7 @@ To debug U-Boot with `.gdb/uboot.default`:
 
     $ make debug uboot
 
-If login with `vnc` or `webvnc`, the above command will open a terminal and start debugging automatically.
-
-But if login with `bash`, `ssh` or `webssh`, please read the prompt and run this command again to start real debugging:
-
-    $ make debug uboot
+The above command will use tmux to split into two terminals, each running QEMU and gdb respectively.
 
 To automate U-Boot debug testing:
 

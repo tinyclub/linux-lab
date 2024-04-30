@@ -1440,6 +1440,8 @@ And then debug it directly:
 
 The above command will use tmux to split into two terminals, each running QEMU and gdb respectively, and load the script from .gdb/kernel.default.
 
+To switch tmux panes, use CTRL+b followed by the arrow key (e.g., ←).
+
 To customize kernel gdbinit script, simply copy one and edit it manually:
 
     $ cp .gdb/kernel.default .gdb/kernel.user
@@ -1469,6 +1471,8 @@ To debug U-Boot with `.gdb/uboot.default`:
     $ make debug uboot
 
 The above command will use tmux to split into two terminals, each running QEMU and gdb respectively.
+
+To switch tmux panes, use CTRL+b followed by the arrow key (e.g., ←).
 
 To automate U-Boot debug testing:
 

@@ -1690,6 +1690,8 @@ GCC 的版本可以分别在开发板特定的 Makefile 中针对 Linux, Uboot, 
 
 该命令将使用 tmux 分割出两个终端分别运行 QEMU 和 gdb，并从 `.gdb/kernel.default` 加载脚本。
 
+可以使用 CTRL+b+方向键（例如←） 来切换 tmux 的窗格。
+
 如果想修改调试脚本，可以拷贝一份到 `.gdb/kernel.user`，这样就可以无缝升级：
 
     $ cp .gdb/kernel.default .gdb/kernel.user

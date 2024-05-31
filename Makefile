@@ -1977,10 +1977,12 @@ define gencfgs
 
 $(call _uc,$1)_CONFIG_FILE ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_defconfig
 $(call _uc,$1)_CONFIG_FILE_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.config
-$(call _uc,$1)_CONFIG_FILE_TAG ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
-$(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.$$(if $$($3TAG),$$($3TAG).)config
 $3CFG ?= $$($(call _uc,$1)_CONFIG_FILE)
 $3CFG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_NOCONFIG)
+
+ifneq ($$($3TAG),)
+$(call _uc,$1)_CONFIG_FILE_TAG ?= $$($(call _uc,$1)_FORK_)$2_$$($(call _uc,$2))_$$(if $$($3TAG),$$($3TAG)_)defconfig
+$(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG ?= $$($(call _uc,$1)_FORK_)$2.$$(if $$($3TAG),$$($3TAG).)config
 $3CFG_TAG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG)
 $3CFG_TAG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG)
 
@@ -1988,11 +1990,14 @@ $3CFG_TAG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG)
 ifeq ($$($3CFG_TAG),$$($(call _uc,$1)_CONFIG_FILE))
   $3CFG_FILE   := $$(BSP_CONFIG)/$$($3CFG_TAG)
 endif
+endif
 
 ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
  ifeq ($$(wildcard $$($3CFG_FILE)),)
-  $3CFG_FILES := $$($3CFG_TAG) $$(addsuffix /$$($3CFG_TAG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
-  $3CFG_FILES += $$($3CFG_TAG_NOCONFIG) $$(addsuffix /$$($3CFG_TAG_NOCONFIG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  ifneq ($$($3TAG),)
+    $3CFG_FILES := $$($3CFG_TAG) $$(addsuffix /$$($3CFG_TAG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+    $3CFG_FILES += $$($3CFG_TAG_NOCONFIG) $$(addsuffix /$$($3CFG_TAG_NOCONFIG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
+  endif
   $3CFG_FILES += $$($3CFG) $$(addsuffix /$$($3CFG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
   $3CFG_FILES += $$($3CFG_NOCONFIG) $$(addsuffix /$$($3CFG_NOCONFIG),$(BSP_CONFIG) $$($(call _uc,$1)_CONFIG_DIR) $$($(call _uc,$1)_SRC_FULL)/arch/$$(ARCH))
 

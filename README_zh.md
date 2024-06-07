@@ -104,6 +104,7 @@
     - [4.12.1 编译加速并减少磁盘损耗](#4121-编译加速并减少磁盘损耗)
     - [4.12.2 ONESHOT 模式](#4122-oneshot-模式)
     - [4.12.3 Nolibc 模式](#4123-nolibc-模式)
+    - [4.12.4 Tiny 模式](#4124-tiny-模式)
   - [4.13 更多用法](#413-更多用法)
 - [5. Linux Lab 开发](#5-linux-lab-开发)
   - [5.1 选择一个 QEMU 支持的开发板](#51-选择一个-qemu-支持的开发板)
@@ -2115,6 +2116,20 @@ Nolibc 模式新增了如下两组文件：
     $ make kernel NOLIBC_SRC=$PWD/src/examples/nolibc/hello.c
 
 该模式特别适合聚焦某个用户态依赖度不高的纯内核特性的开发。
+
+### 4.12.4 Tiny 模式
+
+在 Nolibc 模式的基础上，v1.4-rc2 新增了 Tiny 模式，允许极速编译内核，并引导 initrd。
+
+用法如下：
+
+    $ export KCFG=linux.tiny.config
+    $ make kernel
+    $ make boot ROOTDEV=ram0
+
+相比默认配置，该模式仅开启部分配置选项，确保可以引导 initrd 并支持命令行交互，因此编译速度较默认配置提升 10 倍。
+
+该模式特别适合测试、开发或预研一些内核新特性。
 
 ## 4.13 更多用法
 

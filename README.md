@@ -90,6 +90,7 @@
     - [4.12.1 Speed up compiling and save disk life](#4121-speed-up-compiling-and-save-disk-life)
     - [4.12.2 ONESHOT Mode](#4122-oneshot-mode)
     - [4.12.3 Nolibc Mode](#4123-nolibc-mode)
+    - [4.12.4 Tiny Mode](#4124-tiny-mode)
   - [4.13 More Usage](#413-more-usage)
 - [5. Linux Lab Development](#5-linux-lab-development)
   - [5.1 Choose a board supported by QEMU](#51-choose-a-board-supported-by-qemu)
@@ -1861,6 +1862,20 @@ To change the target nolibc aplication, we can configure `NOLIBC_SRC`, otherwise
     $ make kernel NOLIBC_SRC=$PWD/src/examples/nolibc/hello.c
 
 It is very good for pure kernel development.
+
+### 4.12.4 Tiny Mode
+
+Based on Nolibc mode, v1.4-rc2 adds Tiny mode, allows to build ultra small kernel but with initrd boot support.
+
+Usage:
+
+    $ export KCFG=linux.tiny.config
+    $ make kernel
+    $ make boot ROOTDEV=ram0
+
+Compare to defconfig, it only enables minimal config options and makes sure initrd boot with an interactive shell, so, the compiling speed is x10 faster.
+
+It is very good for kernel features testing, development and research.
 
 ## 4.13 More Usage
 

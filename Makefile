@@ -1566,7 +1566,7 @@ board-info:
 		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
 		| grep -E -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g;s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g" \
-		| grep -E -v " *_BASE| *_PLUGIN| *#" | grep -E -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval |export|PHONY|: |:$$" \
+		| grep -E -v " *_BASE| *_PLUGIN| *#" | grep -E -v "^[[:space:]]*$$|^[[:space:]]*include |call |eval |export|PHONY|: |[^]]:$$" \
 		| grep -P -v "\t" \
 		| grep -E --colour=auto "$(VAR_FILTER)"
 

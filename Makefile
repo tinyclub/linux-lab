@@ -1987,10 +1987,17 @@ $3CFG_TAG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG)
 $3CFG_TAG_NOCONFIG ?= $$($(call _uc,$1)_CONFIG_FILE_TAG_NOCONFIG)
 
 # Configs search order: TAGGED > Version Specific > TAGGED generic > Version generic
-ifeq ($$($3CFG_TAG),$$($(call _uc,$1)_CONFIG_FILE))
+ifeq ($$($3CFG_TAG),$$($(call _uc,$1)_CONFIG_FILE_TAG))
   $3CFG_FILE   := $$(BSP_CONFIG)/$$($3CFG_TAG)
 endif
+else
+# Configs search order: User Specified > Version generic
+ifeq ($$($3CFG),$$($(call _uc,$1)_CONFIG_FILE))
+  $3CFG_FILE   := $$(BSP_CONFIG)/$$($3CFG)
 endif
+endif
+
+# $$(warning $3CFG_FILE: $$($3CFG_FILE))
 
 ifneq ($$($(call _uc,$1)_CONFIG_DIR),)
  ifeq ($$(wildcard $$($3CFG_FILE)),)

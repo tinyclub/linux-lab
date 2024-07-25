@@ -2167,7 +2167,8 @@ $1-hostgcc:
 	  make $$(S) gcc-switch $$(if $$(HOST_CCORI_$2),CCORI=$$(HOST_CCORI_$2)) $$(if $$(HOST_GCC_$2),GCC=$$(HOST_GCC_$2)) b=i386/pc ROOTDEV=/dev/ram0 || true; \
 	fi
 
-$$(call _stamp,$1,env): $1-deps $1-gcc $1-hostgcc
+$$(call _stamp,$1,env):
+	$$(Q)make $(S) $1-deps $1-gcc $1-hostgcc
 	$$(Q)touch $$@
 
 $1-env: $$(call __stamp,$1,env)

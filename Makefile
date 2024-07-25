@@ -1856,7 +1856,7 @@ $$(call _stamp,$1,checkout): $$(ENV_FILES)
 
 $1-checkout: $$(call __stamp,$1,checkout)
 
-$$(call _stamp,$1,outdir): $$(CACHE_BUILD_TARGET)
+$$(call _stamp,$1,outdir): $$(BUILD_CACHE_TAG)
 	$$(Q)mkdir -p $$($(call _uc,$1)_BUILD)
 	$$(Q)touch $$@
 

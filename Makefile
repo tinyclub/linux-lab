@@ -1463,7 +1463,7 @@ board-init:
 board-clean: board-cleanstamp
 	$(Q)rm -rvf .board_config
 
-board-save:
+board-save .board_config:
 	$(Q)echo "$(BOARD)" > .board_config
 
 PHONY += board $(addprefix board-,init show save clean cleanstamp)

@@ -21,6 +21,7 @@ force-*
 *.mod
 *.mbx
 *.cover
+licenses/
 !tools/build/
 tmpfs/
 build.img

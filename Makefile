@@ -141,6 +141,7 @@ HOME_DIR    := /home/$(USER)
 GDBINIT_DIR := $(TOP_DIR)/.gdb
 TOP_SRC     := $(TOP_DIR)/src
 TOP_BUILD   := $(TOP_DIR)/build
+TOP_LICENSE := $(TOP_DIR)/licenses
 FEATURE_DIR := $(TOP_SRC)/feature/linux
 
 # Search board in basic arch list while board name given without arch specified
@@ -472,6 +473,7 @@ ifneq ($(vip),0)
 endif
 
 # Allow boards to customize source and repos
+BSP_ABS_SRC    := $(BSP_DIR)
 KERNEL_ABS_SRC := $(TOP_SRC)/$(KERNEL_SRC)
 ROOT_ABS_SRC   := $(TOP_SRC)/$(ROOT_SRC)
 UBOOT_ABS_SRC  := $(TOP_SRC)/$(UBOOT_SRC)
@@ -1584,6 +1586,11 @@ list-%: FORCE
 	  make -s $(subst list-,,$@)-list 2>/dev/null || true; \
 	fi
 
+# Define generic license check support
+define check_license
+sudo tools/license $1 "$(BOARD)" "$(BOARD_FREE)" "$($(call _uc,$1)_ABS_SRC)" $(vip) $(TOP_LICENSE)/$(BOARD)/$1/.license
+endef
+
 # Define generic target deps support
 define make_qemu
 $(C_PATH) make $(NPD) -C $(QEMU_BUILD)/$2 -j$(JOBS) V=$(V) $1
@@ -1746,36 +1753,10 @@ endif
 # Build the full src directory
 $(call _uc,$1)_SRC_FULL := $$($(call _uc,$1)_SROOT)/$$($(call _uc,$1)_SPATH)
 
-$1-license: $$(call __stamp,$1,license)
+$1-license: $(TOP_LICENSE)/$(BOARD)/$1/.license
 
-$$(call _stamp,$1,license):
-	@if [ "$1" = "bsp" ]; then \
-	  for f in $(BOARD_FREE); do \
-	    [ "$$$$f" = "$(BOARD)" ] && touch $$@ && exit 0; \
-	  done ; \
-	  if [ -d "$$($(call _uc,$1)_ROOT)" ]; then \
-	    touch $$@ && exit 0; \
-	  fi ; \
-          if [ "$(vip)" = "0" ]; then \
-	    echo "" ;\
-	    echo "Friendly reminder:" ;\
-	    echo "" ;\
-	    echo "  Thanks very much for your great support of our powerful Linux Lab project,"; \
-	    echo "  we are sorry to say, time and money are very required to long-term maintain,"; \
-	    echo "  so, some BSPs have been converted to non-free, thanks for your understanding!"; \
-	    echo "" ;\
-	    echo "  The Linux Lab BSP of this board '$(BOARD)' is such a non-free BSP now,"; \
-	    echo "  we can buy such a 'Linux Lab BSP' directly or buy a 'Linux Lab Disk' instead"; \
-	    echo "  (required to tell us to put one in as a gift, one non-free BSP per disk)."; \
-	    echo "" ;\
-	    echo "  Please search '泰晓 Linux' in taobao or https://shop155917374.taobao.com"; \
-	    echo "" ;\
-	    echo "Contact us via wechat: tinylab."; \
-	    exit 1  ;\
-	  fi; \
-	else \
-	  touch $$@; \
-	fi
+$(TOP_LICENSE)/$(BOARD)/$1/.license:
+	$$(Q)$(call check_license,$1)
 
 # Get the target tag
 $1_tag := $$(or $$(__$(call _uc,$2)),$$(_$(call _uc,$2)))
@@ -2865,7 +2846,7 @@ root-dir-distclean rootdir-distclean: rootdir-clean
 PHONY += $(addprefix root-dir-,prebuilt buildroot clean distclean) $(addprefix rootdir-,clean distclean)
 
 fullclean: $(call gengoalslist,distclean)
-	$(Q)git clean -fdx
+	$(Q)git clean -fdx -e licenses/
 
 PHONY += fullclean
 
@@ -3490,6 +3471,7 @@ module-setconfig: kernel-setconfig
 PHONY += $(addprefix module-,config getconfig setconfig) modules-config
 
 _kernel: $(KERNEL_DEPS)
+	$(Q)$(call check_license,bsp)
 	$(call make_kernel,$(KT))
 
 KERNEL_CALLTRACE_TOOL := tools/kernel/calltrace-helper.sh
@@ -4637,6 +4619,7 @@ PHONY += login
 endif
 
 _boot: $(_BOOT_DEPS)
+	$(Q)$(call check_license,bsp)
 	$(RUN_BOOT_CMD)
 	$(DUMPDTB_CMD)
 

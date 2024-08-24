@@ -1878,7 +1878,7 @@ $1-rawclean: $$($(call _uc,$1)_CLEAN_DEPS)
 
 $1-distclean:
 	$$(Q)if [ -f $$($(call _uc,$1)_BUILD)/Makefile ]; then \
-	  $$(call make_$1,distclean); \
+	  $$(or $$(call make_$1,distclean),true); \
 	  rm -rvf $$($(call _uc,$1)_BUILD); \
 	fi
 

@@ -2846,7 +2846,7 @@ root-dir-distclean rootdir-distclean: rootdir-clean
 PHONY += $(addprefix root-dir-,prebuilt buildroot clean distclean) $(addprefix rootdir-,clean distclean)
 
 fullclean: $(call gengoalslist,distclean)
-	$(Q)git clean -fdx -e licenses/
+	$(Q)git clean -fdx -e licenses/ -e src/
 
 PHONY += fullclean
 

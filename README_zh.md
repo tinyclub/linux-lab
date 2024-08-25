@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.3 中文手册
+% Linux Lab v1.4 中文手册
 % [泰晓科技 | Tinylab.org][077]
 % \today
 --><!-- metadata end -->
@@ -39,6 +39,7 @@
     - [1.6.11 v1.1 @ 2022.11.09](#1611-v11--20221109)
     - [1.6.12 v1.2 @ 2023.07.09](#1612-v12--20230709)
     - [1.6.13 v1.3 @ 2024.03.17](#1613-v13--20240317)
+    - [1.6.14 v1.4 @ 2024.08.25](#1614-v14--20240825)
 - [2. Linux Lab 安装](#2-linux-lab-安装)
   - [2.1 软硬件要求](#21-软硬件要求)
   - [2.2 安装 Docker](#22-安装-docker)
@@ -244,8 +245,9 @@ Linux Lab 是一个开源软件，不提供任何保证，请自行承担使用�
     * RISC-V Linux 内核技术调研在线视频分享
 
 * RISC-V Linux 系统开发公开课
-    * [第 1 期][https://space.bilibili.com/687228362/channel/collectiondetail?sid=1750690]，配套 [泰晓 RISC-V 实验盘][028]
-    * [第 2 期][https://space.bilibili.com/687228362/channel/collectiondetail?sid=2021659]，配套 [泰晓 RISC-V 实验箱][090]
+    * [第 1 期：嵌入式入门][https://space.bilibili.com/687228362/channel/collectiondetail?sid=1750690]，配套 [泰晓 RISC-V 实验盘][028]
+    * [第 2 期：嵌入式实战][https://space.bilibili.com/687228362/channel/collectiondetail?sid=2021659]，配套 [泰晓 RISC-V 实验箱][090]
+    * [第 3 期：嵌入式进阶][https://space.bilibili.com/687228362/channel/collectiondetail?sid=3128538]，配套 [泰晓 RISC-V 实验箱][090]
 
 ### 1.3.2 付费课程
 
@@ -541,6 +543,29 @@ v1.3 升级部分内核到 v6.6，新增上游内核工具链支持，完善 ris
     * riscv64: 新增图形显示支持
     * nolibc: 新增 `arm/versatilepb` 等多个板子的测试支持
     * test: 完善 timeout 机制
+
+### 1.6.14 v1.4 @ 2024.08.25
+
+v1.4 升级部分内核到 v6.10.6，新增支持基于真实硬件开发板的 “[泰晓 RISC-V 实验箱][090]”，新增最小化内核配置支持大幅提升内核编译速度，在单终端内新增多窗口调试功能，修复 defconfig, board-info, toolchains 等相关问题。
+
+* v1.4 rc3
+    * defconfig: 修复多处 `.config` 覆盖问题
+    * boards: 升级 `arm/vexpress-a9` 默认内核版本到 v6.10.6
+
+* v1.4 rc2
+    * debug: 新增 `CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y`
+    * debug: 用 tmux 实现单终端内的多窗口支持，调试更方便
+    * defconfig: 支持 `KTAG=nolibc` 或 `KCFG=linux.nolibc.config`
+    * defconfig: 新增 toolchains 依赖，部分配置动作需要准备好编译器
+    * board-info: 修复并美化 make list
+    * README: 新增 tiny 内核配置用法
+
+* v1.4 rc1
+    * boards: 新增 “泰晓实验箱” 支持，包括编译、烧录和运行
+    * config: 修复老版本内核的 olddefconfig 和 defconfig 支持
+    * tools: 完善基于 Python 的 helpers，包括 run, reboot 和 poweroff
+    * examples: 修复 riscv 例子的编译参数
+    * README: 更新网络和编译器相关用法
 
 # 2. Linux Lab 安装
 
@@ -2140,6 +2165,7 @@ Nolibc 模式新增了如下两组文件：
     * [Linux Lab：难以抗拒的十大理由 V2.0][068]
 
 * 中文用户手册
+    * [Linux Lab v1.4 中文手册][092]
     * [Linux Lab v1.3 中文手册][091]
     * [Linux Lab v1.2 中文手册][089]
     * [Linux Lab v1.1 中文手册][086]
@@ -2954,3 +2980,4 @@ Web 连接可能由于某些未知原因而挂起，导致 Linux Lab 有时可�
 [089]: https://tinylab.org/pdfs/linux-lab-v1.2-manual-zh.pdf
 [090]: https://tinylab.org/tiny-riscv-box
 [091]: https://tinylab.org/pdfs/linux-lab-v1.3-manual-zh.pdf
+[092]: https://tinylab.org/pdfs/linux-lab-v1.4-manual-zh.pdf

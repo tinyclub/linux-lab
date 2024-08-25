@@ -1,5 +1,5 @@
 <!-- metadata start --><!--
-% Linux Lab v1.3 Manual
+% Linux Lab v1.4 Manual
 % [TinyLab Community | Tinylab.org][044]
 % \today
 --><!-- metadata end -->
@@ -228,8 +228,9 @@ Related Projects:
 * [RISC-V Linux Kernel Investigation][052]
 
 * RISC-V Linux System Development Course
-    * [Part I][https://space.bilibili.com/687228362/channel/collectiondetail?sid=1750690], Require [Linux RISC-V Disk][023]
-    * [Part II][https://space.bilibili.com/687228362/channel/collectiondetail?sid=2021659], Require [Tiny RISC-V Box][055]
+    * [Part I: Embedded Quickstart][https://space.bilibili.com/687228362/channel/collectiondetail?sid=1750690], Require [Linux RISC-V Disk][023]
+    * [Part II: Embedded Practice][https://space.bilibili.com/687228362/channel/collectiondetail?sid=2021659], Require [Tiny RISC-V Box][055]
+    * [Part III: Embedded Advance][https://space.bilibili.com/687228362/channel/collectiondetail?sid=3128538], Require [Tiny RISC-V Box][055]
 
 ### 1.3.2 Non-Free Video Courses In Chinese
 
@@ -1886,6 +1887,7 @@ Read more:
     * [Why Using Linux Lab V2.0 (In Chinese)][042]
 
 * User Manual
+    * [Linux Lab v1.4 User Manual][056]
     * [Linux Lab v1.3 User Manual][054]
     * [Linux Lab v1.2 User Manual][053]
     * [Linux Lab v1.1 User Manual][050]
@@ -2649,3 +2651,4 @@ Welcome to mark our web site, star our git repositories:
 [053]: https://tinylab.org/pdfs/linux-lab-v1.2-manual-en.pdf
 [054]: https://tinylab.org/pdfs/linux-lab-v1.3-manual-en.pdf
 [055]: https://tinylab.org/tiny-riscv-box
+[056]: https://tinylab.org/pdfs/linux-lab-v1.4-manual-en.pdf

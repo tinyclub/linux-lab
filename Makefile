@@ -1530,11 +1530,18 @@ PHONY += plugin $(addprefix plugin-,save clean list list-full)
 
 ifneq ($(findstring xlist,x$(first_target)),)
   # all: 0, plugin: 1, noplugin: 2
-  LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
+  BLOCAL=both
+  ifneq ($(findstring -local,x$(MAKECMDGOALS)),)
+   BLOCAL=local
+  endif
+  ifneq ($(findstring -remote,x$(MAKECMDGOALS)),)
+   BLOCAL=remote
+  endif
+  LIST_GOAL := $(subst xlist,,$(subst xlist-remote,,$(subst xlist-local,,x$(MAKECMDGOALS))))
   LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
   VAR_FILTER := ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
 
-  ifneq ($(filter $(LIST_GOAL),default real virt base plugin full board short),)
+  ifneq ($(filter $(LIST_GOAL),default real virt base plugin full board short local remote),)
     BOARD :=
     BTYPE ?= ^_BASE|^_PLUGIN
     ifeq ($(LIST_GOAL),board)
@@ -1565,14 +1572,16 @@ endif
 board-info:
 	$(Q)find $(BOARDS_DIR)/$(BOARD)/$(or $(ARCH_FILTER),) -maxdepth 3 -name "Makefile" -exec grep -E -H "$(BTYPE)" {} \; \
 		| tr -s '/' | grep -E "$(FILTER)" \
-		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(PLUGIN) \
+		| sort -t':' -k2 | cut -d':' -f1 | xargs -i $(BOARD_TOOL) {} $(BLOCAL) $(PLUGIN) \
 		| grep -E -v "/module" \
 		| sed -e "s%boards/\(.*\)/Makefile%\1%g;s/[[:digit:]]\{2,\}\t/  /g;s/[[:digit:]]\{1,\}\t/ /g;s/^ \{1,\}/      /g" \
 		| grep -E -v " *_BASE| *_PLUGIN| *#|^[[:space:]]*$$|^[[:space:]]*include |call |eval |ifeq|ifneq|else|endif|export|override |PHONY|: |[^]]:$$" \
 		| grep -P -v "\t" \
 		| grep -E --colour=auto "$(VAR_FILTER)"
 
-BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin full)
+BOARD_INFO_TARGETS := $(addprefix list-,default board short real virt base plugin local remote full)
+BOARD_INFO_TARGETS += $(addprefix list-local-,default board short real virt base plugin full)
+BOARD_INFO_TARGETS += $(addprefix list-remote-,default board short real virt base plugin full)
 
 $(BOARD_INFO_TARGETS): board-info
 

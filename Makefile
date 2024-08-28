@@ -1532,11 +1532,11 @@ ifneq ($(findstring xlist,x$(first_target)),)
   # all: 0, plugin: 1, noplugin: 2
   LIST_GOAL := $(subst xlist,,x$(MAKECMDGOALS))
   LIST_GOAL := $(if $(LIST_GOAL),$(strip $(subst -,,$(LIST_GOAL))),default)
+  VAR_FILTER := ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
 
   ifneq ($(filter $(LIST_GOAL),default real virt base plugin full board short),)
     BOARD :=
     BTYPE ?= ^_BASE|^_PLUGIN
-    VAR_FILTER ?= ^ *ARCH |^\[ [\./_a-z0-9-]* \]|^ *CPU|^ *LINUX|^ *ROOTDEV
     ifeq ($(LIST_GOAL),board)
       VAR_FILTER := ^\[ [\./_a-z0-9-]* \]|^ *ARCH
     endif

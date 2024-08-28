@@ -645,13 +645,15 @@ List builtin boards:
 
 and more:
 
-    $ make list-board        # only ARCH
-    $ make list-short        # ARCH and Linux
+    $ make list-board         # only ARCH
+    $ make list-short         # ARCH and Linux
     $ make list-base          # no plugin
     $ make list-plugin        # only plugin
     $ make list-full          # everything
     $ make list-real          # real hardware boards
     $ make list-virt          # only virtual boards
+    $ make list-local         # downloaded boards
+    $ make list-remote        # not yet downloaded
 
 ### 3.1.2 Choosing a board
 

@@ -932,13 +932,15 @@ Linux Lab 是一套完备的嵌入式 Linux 开发环境，需要预留足够的
 
 更多用法：
 
-    $ make list-board        # 仅显示 ARCH
-    $ make list-short        # ARCH 和 Linux
+    $ make list-board         # 仅显示 ARCH
+    $ make list-short         # ARCH 和 Linux
     $ make list-base          # 不包含插件
     $ make list-plugin        # 仅包含插件
     $ make list-full          # 所有板子信息
     $ make list-real          # 仅真实硬件
     $ make list-virt          # 仅虚拟开发板
+    $ make list-local         # 已下载的开发板
+    $ make list-remote        # 未下载的开发板
 
 ### 3.1.2 选择一个开发板
 

@@ -1820,7 +1820,9 @@ $1-source: $$(call __stamp,$1,source)
 
 $1-checkout: $1-source
 
-$$(call _stamp,$1,checkout): $$(ENV_FILES)
+$$($(call _uc,$1)_SRC_FULL)/.git: $$(call __stamp,$1,source)
+
+$$(call _stamp,$1,checkout): $$(ENV_FILES) $$($(call _uc,$1)_SRC_FULL)/.git
 	$$(Q)if [ -z "$(SKIP_CHECKOUT)" ]; then \
 	  [ -d $$($(call _uc,$1)_SRC_FULL) -a -e $$($(call _uc,$1)_SRC_FULL)/.git ] \
 	  && cd $$($(call _uc,$1)_SRC_FULL) \

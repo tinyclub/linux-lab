@@ -33,8 +33,15 @@ if [ $PULL -eq 1 ]; then
     docker pull $image
 fi
 
+qemu_user_static=/usr/bin/qemu-${arch}-static
+qemu_user_target=/usr/bin/qemu-${arch}
+qemumap="-v $qemu_user_static:$qemu_user_static"
+qemumap="$qemumap -v $qemu_user_static:$qemu_user_target"
+
+mapping=" $qemumap "
+
 echo "LOG: Running $image"
-id=$(docker run -d -v --platform linux/$arch $qemu_user_static:$qemu_user_static $image)
+id=$(docker run -d --platform linux/$arch $mapping $image)
 
 echo "LOG: Creating temporary rootdir: $rootdir"
 mkdir -p $rootdir

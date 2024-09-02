@@ -46,7 +46,7 @@ qemumap="$qemumap -v $qemu_user_static:$qemu_user_target"
 mapping=" $qemumap "
 
 echo "LOG: Running $image"
-id=$(docker run -d --platform linux/$parch $mapping $image)
+id=$(docker run -d --network host --platform linux/$parch $mapping $image)
 
 echo "LOG: Creating temporary rootdir: $rootdir"
 mkdir -p $rootdir

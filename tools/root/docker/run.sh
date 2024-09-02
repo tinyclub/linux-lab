@@ -46,4 +46,4 @@ if [ $PULL -eq 1 ]; then
 fi
 
 echo "LOG: Running $image"
-docker run --platform linux/$parch -it $mapping $image
+docker run --network host --platform linux/$parch -it $mapping $image

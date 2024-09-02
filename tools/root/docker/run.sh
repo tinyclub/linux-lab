@@ -6,8 +6,9 @@
 #
 # examples:
 #
-# $ tools/rootfs/docker/run.sh arm64v8/ubuntu aarch64
-# $ tools/rootfs/docker/run.sh arm32v7/ubuntu arm
+# $ tools/root/docker/run.sh arm64v8/ubuntu aarch64
+# $ tools/root/docker/run.sh arm32v7/ubuntu arm
+# $ tools/root/docker/run.sh yangzewei2023/debian:loongarch64 loongarch64 loong64
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../../ && pwd)
@@ -15,8 +16,11 @@ PREBUILT_FULLROOT=$TOP_DIR/prebuilt/fullroot
 
 image=$1
 arch=$2
+# platform arch to qemu
+parch=$3
 
 [ -z "$arch" ] && arch=`dirname $image | tr -d '.'`
+[ -z "$parch" ] && parch=$arch
 
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
@@ -42,4 +46,4 @@ if [ $PULL -eq 1 ]; then
 fi
 
 echo "LOG: Running $image"
-docker run --platform linux/$arch -it $mapping $image
+docker run --platform linux/$parch -it $mapping $image

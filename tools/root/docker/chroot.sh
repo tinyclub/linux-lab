@@ -8,6 +8,7 @@
 #
 # $ tools/rootfs/docker/chroot.sh arm64v8/ubuntu /bin/bash
 # $ tools/rootfs/docker/chroot.sh arm32v7/ubuntu /bin/bash
+# $ tools/rootfs/docker/chroot.sh yangzewei2023/debian:loongarch64 /bin/bash
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../../ && pwd)

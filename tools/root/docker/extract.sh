@@ -6,17 +6,22 @@
 #
 # examples:
 #
-# $ tools/rootfs/docker/extract.sh arm64v8/ubuntu aarch64
-# $ tools/rootfs/docker/extract.sh arm32v7/ubuntu arm
+# $ tools/root/docker/extract.sh arm64v8/ubuntu aarch64
+# $ tools/root/docker/extract.sh arm32v7/ubuntu arm
+# $ tools/root/docker/extract.sh yangzewei2023/debian:loongarch64 loongarch64 loong64
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../../ && pwd)
 PREBUILT_FULLROOT=$TOP_DIR/prebuilt/fullroot
 
 image=$1
+# qemu arch
 arch=$2
+# platform arch to qemu
+parch=$3
 
 [ -z "$arch" ] && arch=`dirname $image | tr -d '.'`
+[ -z "$parch" ] && parch=$arch
 
 tmpdir=$(echo $image | tr '/' '-' | tr ':' '-')
 rootdir=$PREBUILT_FULLROOT/tmp/$tmpdir
@@ -41,7 +46,7 @@ qemumap="$qemumap -v $qemu_user_static:$qemu_user_target"
 mapping=" $qemumap "
 
 echo "LOG: Running $image"
-id=$(docker run -d --platform linux/$arch $mapping $image)
+id=$(docker run -d --platform linux/$parch $mapping $image)
 
 echo "LOG: Creating temporary rootdir: $rootdir"
 mkdir -p $rootdir

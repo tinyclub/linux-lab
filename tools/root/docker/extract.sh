@@ -8,7 +8,7 @@
 #
 # $ tools/root/docker/extract.sh arm64v8/ubuntu aarch64
 # $ tools/root/docker/extract.sh arm32v7/ubuntu arm
-# $ tools/root/docker/extract.sh yangzewei2023/debian:loongarch64 loongarch64 loong64
+# $ tools/root/docker/extract.sh loongcr.lcpu.dev/lcpu/debian loongarch64 loong64
 #
 
 TOP_DIR=$(cd $(dirname $0)/../../../ && pwd)

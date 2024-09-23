@@ -6,7 +6,7 @@ XARCH   := riscv64
 CPU     ?= cv1800b
 SMP     ?= 1
 MEM     ?= 64MB
-LINUX   ?= v6.10
+LINUX   ?= v6.11
 
 UBOOT   ?= v2024.01-rc5
 
@@ -24,7 +24,7 @@ KIMAGE  ?= $(BSP_KERNEL)/$(LINUX)/Image.lzma
 UKIMAGE ?= $(KIMAGE)
 KRELEASE?= $(BSP_KERNEL)/$(LINUX)/kernel.release
 
-ORIDTB  ?= arch/$(ARCH)/boot/dts/cvitek/cv1800b-milkv-duo.dtb
+ORIDTB  ?= arch/$(ARCH)/boot/dts/sophgo/cv1800b-milkv-duo.dtb
 DTB     ?= $(BSP_KERNEL)/$(LINUX)/cv1800b-milkv-duo.dtb
 
 CCPATH	?= $(BSP_TOOLCHAIN)/riscv64-linux-musl-x86_64/bin

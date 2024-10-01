@@ -19,8 +19,10 @@ else
   echo -e "# Table of Content\n" >> ${README}.toc
 fi
 
-cat $README | grep -v "^# Table of Content" | grep -v "^# 目录" | grep ^# | sed "s%^##### %        - %g" | sed "s%^#### %      - %g" | sed -e "s%^### %    - %g" | sed -e "s%^## %  - %g" | sed -e "s%^# %- %g"\
-	| sed -e "s%\(.*\)- \(.*\)%echo -n \"\1- [\2]\";echo \"(#\L\2)\" | tr ' ' '-' | tr -d '/' | tr -d '.' | tr -d ',' | sed -e 's/，//g'| tr -d ':' | tr -d '@'%g" | bash -v >>${README}.toc 2>/dev/null
+cat $README \
+	| grep -v "^# Table of Content" | grep -v "^# 目录" | grep ^# \
+	| sed "s%^##### %        - %g" | sed "s%^#### %      - %g" | sed -e "s%^### %    - %g" | sed -e "s%^## %  - %g" | sed -e "s%^# %- %g"\
+	| sed -e "s%\(.*\)- \(.*\)%echo -n \"\1- [\2]\";echo \"(#\L\2)\" | tr ' ' '-' | tr -d '/' | tr -d '.' | tr -d ',' | sed -e 's/，//g'| tr -d ':' | tr -d '@' | sed -e 's/[——：]//g'%g" | bash -v >>${README}.toc 2>/dev/null
 
 echo -e "\n<!-- toc end -->" >> ${README}.toc
 

@@ -118,3 +118,7 @@
 	ignore = all
 	path = boards/riscv64/tiny-riscv-box/bsp
 	url = https://gitee.com/tinylab/tiny-riscv-box.git
+[submodule "boards/riscv64/tiny-riscv-box-rt/bsp"]
+	ignore = all
+	path = boards/riscv64/tiny-riscv-box-rt/bsp
+	url = https://gitee.com/tinylab/tiny-riscv-box-rt.git
